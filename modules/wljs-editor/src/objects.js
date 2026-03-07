@@ -24,6 +24,7 @@ window.ObjectStorage = class {
       if (toBeRemoved && !this.doNotCollect && garbageCollector) {
         console.warn('No active refs. Removing...');
         delete ObjectHashMap[this.uid];
+        this.cached = false;
         delete this.cache;
         delete this.refs;
       }
@@ -68,6 +69,7 @@ window.ObjectStorage = class {
       console.log(target);
       getObject(target, self.uid).then((result) => {
         self.cache = result;
+        self.cached = true;
         //console.log('resolved');
         //console.log(self.cache);
         promise.resolve(self.cache);
@@ -84,6 +86,7 @@ window.ObjectStorage = class {
         
         getObject(target, self.uid).then((result) => {
             self.cache = result;
+            self.cached = true;
             //console.log('resolved');
             //console.log(self.cache);
             promise.resolve(self.cache);

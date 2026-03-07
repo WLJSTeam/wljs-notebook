@@ -7385,14 +7385,80 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   };
 
   g2d.Tooltip = async (args, env) => {
-    try {
-      await interpretate(args[0], env);
-    } catch(err) {
-      console.error(err);
-    }
+    const data = await interpretate(args[0], env);
+    let tooltipTimeout = null;
+    let tooltipEl = null;
+    let tool = null;
+
+    const showTooltip = async (node) => {
+      if (tooltipEl) return;
+
+      tooltipEl = document.createElement('div');
+      tooltipEl.classList.add('wljs-tooltip', 'text-sm', 'dark:invert', 'dark:hue-rotate-180','dark:contrast-75','dark:brightness-5', 'bg-white','dark:win:contrast-100');
+      tooltipEl.style.position = 'absolute';
+      tooltipEl.style.zIndex = '9999';
+      tooltipEl.style.padding = '4px 8px';
+      tooltipEl.style.borderRadius = '0.25rem';
+      //tooltipEl.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+      tooltipEl.style.pointerEvents = 'none';
+
+      // Position tooltip above the element
+      const rect = node.getBoundingClientRect();
+      console.warn(rect);
+      tooltipEl.style.left = `${rect.left + window.scrollX}px`;
+      tooltipEl.style.top = `${rect.top + window.scrollY - 30}px`;
+
+      document.body.appendChild(tooltipEl);
+
+      // Render tooltip content from args[0]
+      try {
+        tool = await interpretate(args[1], { element: tooltipEl });
+      } catch(err) {
+        tool = null;
+      }
+    };
+
+    const hideTooltip = () => {
+      if (tooltipTimeout) {
+        clearTimeout(tooltipTimeout);
+        tooltipTimeout = null;
+      }
+      if (tooltipEl) {
+        if (tool) {
+          tool.destroy();
+          tool = null;
+        } 
+        tooltipEl.remove();
+        tooltipEl = null;
+      }
+    };
+
+    /*env.element.addEventListener('mouseenter', () => {
+      tooltipTimeout = setTimeout(showTooltip, 300);
+    });
+
+    env.element.addEventListener('mouseleave', hideTooltip);*/
+    if (data instanceof d3.selection) {
+      data.on('mouseenter', () => {
+        tooltipTimeout = setTimeout(()=>showTooltip(data.node()), 300);
+      });
+      data.on('mouseleave', hideTooltip);
+    } else if (Array.isArray(data)) {
+      data.forEach((test) => {
+        if (test instanceof d3.selection) {
+          test.on('mouseenter', () => {
+            tooltipTimeout = setTimeout(()=>showTooltip(test.node()), 300);
+          });
+          test.on('mouseleave', hideTooltip);
+        }
+      })
+    } 
+
+    return data;
   }
 
-  g2d.Tooltip.update = g2d.Tooltip;
+  g2d.Tooltip.update = core.Tooltip;
+
  // g2d.Tooltip.destroy = g2d.Tooltip;
   
   g2d.Triangle.updateColor = (args, env) => {

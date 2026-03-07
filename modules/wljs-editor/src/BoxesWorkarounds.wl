@@ -1527,10 +1527,23 @@ Success /: MakeBoxes[f:Success[__], form: StandardForm] := With[{
   ]
 ]
 
-(* Tooltip: temporal plug *)
+(* Tooltip: reimplementation *)
 Unprotect[Tooltip];
 FormatValues[Tooltip] = {}
-Tooltip /: MakeBoxes[Tooltip[x_, rest___], form_] := MakeBoxes[x, form]
+ClearAll[Tooltip]
+
+makeTooltipId[expr_] := BoxForm`TooltipId[ CreateFrontEndObject[EditorView[ToString[expr/.{Charting`iHold -> HoldForm}, StandardForm] ] ][[1]] ]
+makeTooltipId[expr_String | expr_Real | expr_Integer] := BoxForm`TooltipText[expr]
+
+Tooltip[l1_List, l2_List] := (Tooltip@@#)&/@Transpose[{l1,l2}] /; Length[l1]===Length[l2]
+Tooltip[x_] := Tooltip[x, x]
+Tooltip[x_, expr_, ___] := Tooltip[x,  makeTooltipId[expr] ] /; (!MatchQ[expr, _BoxForm`TooltipText | _BoxForm`TooltipId])
+
+Tooltip /: MakeBoxes[Tooltip[x_, tool_, ___], form_] := With[{
+  boxes = MakeBoxes[x, form]
+},
+  BoxBox[boxes, ViewDecorator["Tooltip", tool] ]
+]
 
 (* ROOT Boxes *)
 Unprotect[Root];
