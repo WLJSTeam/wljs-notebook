@@ -2,7 +2,7 @@
 *contributed by [@yloose](https://github.com/yloose)*
 
 ## Description
-A docker container for the [Wolfram JS Frontend](https://github.com/JerryI/wolfram-js-frontend) project is provided here. The image is based on the on the [Wolfram Engine](https://hub.docker.com/r/wolframresearch/wolframengine) docker image to provide wolframscript.
+A docker container for the [WLJS Notebook](https://github.com/JerryI/wolfram-js-frontend) project is provided here. The image is based on the on the [Wolfram Engine](https://hub.docker.com/r/wolframresearch/wolframengine) docker image to provide wolframscript.
 
 ### What is included:
 - Node 18
@@ -28,7 +28,7 @@ docker run -it \
   -e PGID=$(id -g) \
   -p 8080:3000 \
   --name wljs \
-  ghcr.io/wljsteam/wolfram-js-frontend:main
+  ghcr.io/wljsteam/wljs-notebook:main
 ```
 
     You will now be prompted for your Wolfram login information, enter it and wait for the message `Open your browser at http://...`. You can now safely detach from the container using <kbd>Ctrl</kbd>+<kbd>p</kbd> <kbd>Ctrl</kbd>+<kbd>q</kbd> and close your terminal.
@@ -79,7 +79,7 @@ docker run -it \
   -e WOLFRAMID_PASSWORD=password \
   -p 8080:3000 \
   --name wljs \
-  ghcr.io/wljsteam/wolfram-js-frontend:main
+  ghcr.io/wljsteam/wljs-notebook:main
 ```
 
 ## Running as root
@@ -94,7 +94,7 @@ docker run -it \
   -e PGID=$(id -g) \
   -p 8080:3000 \
   --name wljs \
-  ghcr.io/wljsteam/wolfram-js-frontend:main
+  ghcr.io/wljsteam/wljs-notebook:main
 ```
 
 ## NGINX Proxy
@@ -234,6 +234,6 @@ docker run -it \
   -e PGID=$(id -g) \
   -p "127.0.0.1:3000:3000" \
   --name wljs \
-  ghcr.io/wljsteam/wolfram-js-frontend:main
+  ghcr.io/wljsteam/wljs-notebook:main
 ```
 
