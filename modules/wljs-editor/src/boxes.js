@@ -418,15 +418,6 @@
 
   core.Tooltip.update = core.Tooltip;
 
-  boxes['BoxForm`TooltipText'] = async (args, env) => {
-    env.element.innerText = await interpretate(args[0], {});
-    return {
-      name: 'TooltipText',
-      destroy: () => {
-      }
-    }
-  }  
-
   boxes.ViewDecorator.Tooltip = async (args, env) => {
     let tooltipTimeout = null;
     let tooltipEl = null;
@@ -453,6 +444,10 @@
 
       // Render tooltip content from args[0]
       tooltipItem = await interpretate(args[0], {element: tooltipEl});
+      if (typeof tooltipItem == 'number' || typeof tooltipItem == 'string') {
+        tooltipEl.innerText = tooltipItem;
+        tooltipItem = {destroy: () => {}};
+      }
     };
 
     const hideTooltip = () => {

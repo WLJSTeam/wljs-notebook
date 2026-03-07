@@ -7413,6 +7413,10 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
       // Render tooltip content from args[0]
       try {
         tool = await interpretate(args[1], { element: tooltipEl });
+        if (typeof tool == 'number' || typeof tool == 'string') {
+          tooltipEl.innerText = tool;
+          tool = {destroy: () => {}};
+        }
       } catch(err) {
         tool = null;
       }
