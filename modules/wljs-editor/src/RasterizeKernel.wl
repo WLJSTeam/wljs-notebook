@@ -121,7 +121,7 @@ Rasterize[any_, ___, OptionsPattern[] ] := With[{p = Promise[], channel = Create
 
   FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
 
-  With[{r = WaitAll[p, 45]},
+  With[{r = WaitAll[p, 45 + exposure]},
     If[FailureQ[r],
       Message[Rasterize::frontget];
     ];
@@ -199,7 +199,7 @@ ExportAsync[out_String | File[out_String], content_, maybe___, opts: OptionsPatt
 exportPDF[filename_, data_, opts___] :=
  Module[{char, strm},
   (* TODO: check for valid data here *)
-  char = WaitAll[producePDF[data, Sequence @@ Flatten[{opts}] ], 45 ];
+  char = WaitAll[producePDF[data, Sequence @@ Flatten[{opts}] ], 99999 ];
   strm = OpenWrite[filename, BinaryFormat->True];
   BinaryWrite[strm, char];
   Close[strm]

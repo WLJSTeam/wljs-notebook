@@ -1,6 +1,7 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+  <|"label" -> "CurrentNotebookImage", "type"->"keyword", "info"->"CurrentNotebookImage[] rasterizes current notebook content into an image"|>,
   <|"label" -> "Tooltip", "type" -> "keyword", "info" -> "Tooltip[expr, label] display label when the mouse is moved over expr"|>,
   <|"label" -> "PrintTemporary", "type" -> "keyword", "info"->"PrintTemporary[expr] prints expr and removes it after the evaluation is finished"|>,
   <|"label" -> "Monitor", "type"->"keyword", "info" -> "Monitor[expr,mon] generates a temporary monitor cell in which the continually updated current value of mon is displayed during the course of evaluation of expr"|>,
