@@ -191,7 +191,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
                                 "Type" -> "MessageBox", "Promise" -> requestPromise, "type" -> "question",
                                 "title" -> "Restore backup",
                                 "message" -> "We found an autosaved notebook "<>date<>" ago",
-                                "buttons" -> {"Restore", "Use original"},
+                                "buttons" -> {"Restore", "Use file"},
                                 "cancelId" -> 1,
                                 "Client" -> Null (* to prevent from adding *)
                             |>]
