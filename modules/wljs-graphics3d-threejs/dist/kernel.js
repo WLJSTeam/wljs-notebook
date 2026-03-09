@@ -5439,11 +5439,20 @@ if (PathRendering) {
 let renderer, domElement, controls, ptRenderer, activeCamera;
 let perspectiveCamera, orthoCamera;
 let envMap, scene;
+const planes = {near:0, far:2000};
 
 let orthoWidth = 5;
 
 if (options.OrthographicCameraWidth) {
     orthoWidth = await interpretate(options.OrthographicCameraWidth, env);
+}
+
+if (options.CameraNearPlane) {
+    planes.near = await interpretate(options.CameraNearPlane, env);
+}
+
+if (options.CameraFarPlane) {
+    planes.far = await interpretate(options.CameraFarPlane, env);
 }
 
 renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -5521,7 +5530,8 @@ if (PathRendering) {
 
 
 const orthoHeight = orthoWidth / aspect;
-orthoCamera = new THREE.OrthographicCamera( orthoWidth / - 2, orthoWidth / 2, orthoHeight / 2, orthoHeight / - 2, 0, 2000 );
+orthoCamera = new THREE.OrthographicCamera( orthoWidth / - 2, orthoWidth / 2, orthoHeight / 2, orthoHeight / - 2, planes.near, planes.far );
+
 orthoCamera.position.set( ...viewPoint );
 
 activeCamera = orthoCamera;
