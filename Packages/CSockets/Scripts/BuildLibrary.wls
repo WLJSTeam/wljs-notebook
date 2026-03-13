@@ -68,10 +68,21 @@ Block[{$directory, $libSrc, $libDir, $linkerOptions, uvLib},
     ]
 ]; 
 
-	$includes = "C:\\Github\\libuv\\include";
-	$libs = " C:\\Github\\libuv\\build\\Debug\\uv.lib";
-
-
-
-	build["usockets", "Libraries" -> {$libs, "ws2_32"}, "IncludeDirectories"->{$includes}] 
+Switch[$OperatingSystem,
+    "Windows",
+        $includes = "C:\\Github\\libuv\\include";
+        $libs = "C:\\Github\\libuv\\build\\Debug\\uv.lib";
+        build["usockets", "Libraries" -> {$libs, "ws2_32"}, "IncludeDirectories" -> {$includes}],
+    
+    "MacOSX",
+        $uvPrefix = "/opt/homebrew/opt/libuv";
+        $includes = FileNameJoin[{$uvPrefix, "include"}];
+        $libs = FileNameJoin[{$uvPrefix, "lib", "libuv.dylib"}];
+        build["usockets", "Libraries" -> {$libs}, "IncludeDirectories" -> {$includes}],
+    
+    "Unix",
+        $includes = "/usr/include";
+        $libs = "uv";
+        build["usockets", "Libraries" -> {$libs}, "IncludeDirectories" -> {$includes}]
+] 
 

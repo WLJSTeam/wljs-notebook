@@ -64,14 +64,15 @@ typedef struct {
     int _flag;
 } uState_t;
 
-#define hashmap_size 2048
+#define hashmap_size 16384
 uState_t uState[hashmap_size];
 
 uintptr_t hash(uintptr_t key, unsigned int offset) {
-    if (offset < 0 || offset > 32) {
-        perror("offset hash table is way too big!");
-        //SLEEP(10*ms);
-        exit(-1);
+    if (offset > 32) {
+        // Return a pseudo-random slot based on offset to avoid infinite recursion
+        printf("hash >> warning: offset %d is large, using linear fallback\n", offset);
+        uintptr_t knuth = 2654435769;
+        return ((key * knuth + offset * 37) >> 16) % hashmap_size;
     }
     uintptr_t knuth = 2654435769;
     uintptr_t y = key;
@@ -81,9 +82,18 @@ uintptr_t hash(uintptr_t key, unsigned int offset) {
 uintptr_t HashAllocate(uintptr_t socketId, int offset);
 
 void HashCopy(uintptr_t socketId, int offsetSrc, int offsetDest) {
+    if (offsetDest > 64) {
+        printf("hash >> copy depth limit reached, skipping\n");
+        return;
+    }
     uintptr_t hS = hash((uintptr_t)socketId, offsetSrc);
     printf("hash >> allocate for a copy\n");
     uintptr_t hD = HashAllocate((uintptr_t)socketId, offsetDest);
+    
+    if (hD == (uintptr_t)-1) {
+        printf("hash >> copy failed, no space\n");
+        return;
+    }
 
     printf("hash >> copied\n");
 
@@ -92,11 +102,22 @@ void HashCopy(uintptr_t socketId, int offsetSrc, int offsetDest) {
 
 //helper functions to check the status of the socket
 uintptr_t HashAllocate(uintptr_t socketId, int offset) {
+    if (offset > 64) {
+        printf("hash >> allocation depth limit reached!\n");
+        return (uintptr_t)-1;
+    }
+    
     printf("hash >> allocate %ld with offset %d\n", (uintptr_t)socketId, offset);
     uintptr_t h = hash((uintptr_t)socketId, offset);
     printf("hash >> %ld\n", h);
 
     if (uState[h]._flag == HASH_OCCUPIED) {
+        // Don't try to copy if it's the same socket (avoid infinite loop)
+        if (uState[h].stream == socketId) {
+            printf("hash >> same socket already here, using next slot\n");
+            return HashAllocate(socketId, offset + 1);
+        }
+        
         printf("hash >> collizion!\n");
 
         //copy the original value
@@ -128,12 +149,16 @@ void HashInit() {
 
 void HashFree(uintptr_t socketId, int offset) {
     //printf("hash >> freeing %ld\n", (uintptr_t)socketId);
+    if (offset > 32) {
+        printf("hash >> free offset too big, giving up\n");
+        return;
+    }
     uintptr_t h = hash((uintptr_t)socketId, offset);
     if (uState[h]._flag == HASH_NEXT) {
         return HashFree(socketId, offset + 1);
     }
 
-    if (uState[h]._flag == HASH_OCCUPIED) {
+    if (uState[h]._flag == HASH_OCCUPIED && uState[h].stream == socketId) {
         uState[h]._flag = HASH_FREE;
         return;
     }
@@ -143,6 +168,10 @@ void HashFree(uintptr_t socketId, int offset) {
 
 uintptr_t HashGet(uintptr_t socketId, int offset) {
     //printf("[HashGet] get\r\n\r\n");
+    if (offset > 64) {
+        printf("[HashGet] offset too large, giving up\r\n");
+        return (uintptr_t)-1;
+    }
     uintptr_t h = hash((uintptr_t)socketId, offset);
     if (uState[h]._flag == HASH_NEXT) {
         //printf("[HashGet] next\r\n\r\n");
@@ -156,6 +185,10 @@ uintptr_t HashGet(uintptr_t socketId, int offset) {
 
 void uStateSet(uintptr_t socketId, int state) {
     uintptr_t h = HashGet(socketId, 0);
+    if (h == (uintptr_t)-1) {
+        printf("[uStateSet] hash lookup failed\r\n\r\n");
+        return;
+    }
     if ((uintptr_t)(uState[h].stream) != (uintptr_t)socketId || uState[h]._flag == HASH_FREE) {
         printf("[uGetState] probably it is gone already\r\n\r\n");
         return;
@@ -165,6 +198,9 @@ void uStateSet(uintptr_t socketId, int state) {
 
 int fetchByStreamId(uv_stream_t *client) {
     uintptr_t h = HashGet((uintptr_t)client, 0);
+    if (h == (uintptr_t)-1) {
+        return -1;
+    }
     if ((uintptr_t)(uState[h].stream) != (uintptr_t)client) {
         return -1;
     }
@@ -355,7 +391,12 @@ void on_new_connection(uv_stream_t *server, int status) {
 
     
     //hash_table_occupy((uv_stream_t*)c, nsockets);
-    HashAllocate((uintptr_t)c, 0);
+    uintptr_t hResult = HashAllocate((uintptr_t)c, 0);
+    if (hResult == (uintptr_t)-1) {
+        fprintf(stderr, "Hash table full, rejecting connection\n");
+        free(c);
+        return;
+    }
     uStateSet((uintptr_t)c, nsockets);
 
     sockets[nsockets].stream = (uv_stream_t*)c;
@@ -442,7 +483,14 @@ DLLEXPORT int socket_open(WolframLibraryData libData, mint Argc, MArgument *Args
     findEmptySocketSlot();
 
     //hash_table_occupy((uv_stream_t*)s, nservers);
-    HashAllocate((uintptr_t)s, 0);
+    uintptr_t hResult = HashAllocate((uintptr_t)s, 0);
+    if (hResult == (uintptr_t)-1) {
+        fprintf(stderr, "Hash table full in socket_open\n");
+        uv_mutex_unlock(&mutex);
+        free(s);
+        MArgument_setInteger(Res, -1);
+        return LIBRARY_NO_ERROR;
+    }
     uStateSet((uintptr_t)s, nsockets);
 
     sockets[nsockets].stream = (uv_stream_t*)s;
