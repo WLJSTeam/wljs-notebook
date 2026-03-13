@@ -393,7 +393,11 @@
   boxes['BoxForm`TooltipId'] = async (args, env) => {
     let globalStore = {};
     //virtualization
-    await interpretate(['FrontEndExecutable', args[0]], { element: env.element, global: globalStore });
+    try {
+      await interpretate(['FrontEndExecutable', args[0]], { element: env.element, global: globalStore });
+    } catch(m) {
+      console.log('FE Object is not available for given tooltip');
+    }
     return {
       name: 'TooltipItem',
       destroy: () => {
@@ -407,6 +411,8 @@
       }
     }
   }
+
+  boxes['BoxForm`TooltipId'].update = (args, env) => {}
 
   core.Tooltip = async (args, env) => {
     try {

@@ -597,6 +597,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     return niceNumber(re) + ' + i' + niceNumber(im);
   };
   
+  const frameTicks = {};
+  frameTicks.Rotate = async (args, env) => {
+    return String(await interpretate(args[0], env));
+  };
+
   g2d.Graphics = async (args, env) => {
 
     await interpretate.shared.d3.load();
@@ -774,7 +779,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
   if (options.Ticks) {
-      options.Ticks = await interpretate(options.Ticks, {...env, context: g2d});
+      options.Ticks = await interpretate(options.Ticks, {...env, context: [frameTicks, g2d]});
 
       // keep your [left,right,bottom,top] convention
       if (!Array.isArray(ticks)) ticks = [true, false, true, false];
@@ -884,7 +889,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
     if (options.FrameTicks && framed && !tinyGraph) {
-      options.FrameTicks = await interpretate(options.FrameTicks, {...env, context: g2d});
+      options.FrameTicks = await interpretate(options.FrameTicks, {...env, context: [frameTicks, g2d]});
       //I HATE YOU WOLFRAM
 
       ticks = [true, true, true, true];
@@ -2403,7 +2408,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     const opts = await core._getRules(args, env);
     const oLength = Object.keys(opts).length;
     
-    if (args.length - oLength > 1) pos = await interpretate(args[1], env);
+    if (args.length - oLength > 1) pos = (await interpretate(args[1], env));
     let opos;
 
     if (pos instanceof NumericArrayObject) { // convert back automatically
@@ -2558,7 +2563,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           opos = [box.width/2, box.height/2];
       }
       
-    
+      if (!pos) pos = [0,0];
 
       foreignObject.attr('x', env.xAxis(pos[0]) - opos[0])
                  .attr('y', env.yAxis(pos[1]) + opos[1] - box.height);
@@ -2614,11 +2619,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       delete env.opacityRefs[env.root.uid];
     }
 
-    Object.values(env.local.stack).forEach((el) => {
+    if(env.local.stack) Object.values(env.local.stack).forEach((el) => {
       if (!el.dead) el.dispose();
     });
 
-    env.local.group.remove();
+    env.local.group?.remove();
   };
 
   g2d.Inset.virtual = true;
