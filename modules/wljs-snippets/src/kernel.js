@@ -5,9 +5,8 @@ let party;
 core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'] = async (args, env) => {
   const uid = interpretate(args[0], env);
   let doc = document.getElementById(uid);
-  if (!doc) {
-    doc = document.getElementsByTagName(uid)[0];
-  }
+  if (!doc) doc = document.getElementsByTagName(uid)[0];
+  if (!doc) return;
 
   if (!party) party = (await import('party-js')).default;
 

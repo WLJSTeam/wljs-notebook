@@ -5,9 +5,8 @@ let party;
 core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'] = async (args, env) => {
   const uid = interpretate(args[0], env);
   let doc = document.getElementById(uid);
-  if (!doc) {
-    doc = document.getElementsByTagName(uid)[0];
-  }
+  if (!doc) doc = document.getElementsByTagName(uid)[0];
+  if (!doc) return;
 
   if (!party) party = (await import('./index-8b2a62df.js').then(function (n) { return n.i; })).default;
 
@@ -18,7 +17,7 @@ core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'] = async (args, env
   });
 };
 
-core['MagicWand'] = core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand']
+core['MagicWand'] = core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'];
 
 core['CoffeeLiqueur`Extensions`CommandPalette`AI`Private`Siriwave'] = async (args, env) => {
   const op = await interpretate(args[0], env);
