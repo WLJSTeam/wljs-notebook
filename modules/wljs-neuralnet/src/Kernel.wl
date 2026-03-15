@@ -11,22 +11,33 @@ BeginPackage["CoffeeLiqueur`Extensions`NeuralNet`", {
 
 Begin["`Private`"]
 
-(* deferred evaluation. Applies only when a package has been loaded *)
-Internal`AddHandler["GetFileEvent",
- If[MatchQ[#, HoldComplete["NeuralNetworks`",_,_] ],
-    applyPatch;
-    (* TODO: remove this handler!!! *)
- ]&
-]
+neuralNetLoadedQ;
+If[OwnValues[libPath] === {}, libPath = $RemotePackageDirectory];
 
-applyPatch := With[{},
+With[{file = FileNameJoin[{libPath, "src", "Kernel.wl"}]},
+(* deferred evaluation. Applies only when a package has been loaded *)
+If[neuralNetLoadedQ =!= True,
+  Internal`AddHandler["GetFileEvent",
+   If[MatchQ[#, HoldComplete["NeuralNetworks`",_,_] ] && (neuralNetLoadedQ =!= True),
+      Echo["Loading neural nets..."];
+      Pause[1];
+      neuralNetLoadedQ = True;
+      Get[file];
+      (* TODO: remove this handler!!! *)
+   ]&
+  ]
+] ];
+
+
+
+If[neuralNetLoadedQ === True,
 
   Unprotect[ClassifierFunction];
   FormatValues[ClassifierFunction]={};
 
   ClassifierFunction /: MakeBoxes[c_ClassifierFunction, StandardForm] := 
       Module[{above, below},
-          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing]] &/@ Information[c, "Properties"] // Quiet, UpTo[10]];
+          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing] ] &/@ Information[c, "Properties"] // Quiet, UpTo[10] ];
 
           BoxForm`ArrangeSummaryBox[
              ClassifierFunction, (* head *)
@@ -43,7 +54,7 @@ applyPatch := With[{},
 
   PredictorFunction /: MakeBoxes[c_PredictorFunction, StandardForm] := 
       Module[{above, below},
-          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing]] &/@ Information[c, "Properties"] // Quiet, UpTo[10]];
+          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing] ] &/@ Information[c, "Properties"] // Quiet, UpTo[10] ];
 
           BoxForm`ArrangeSummaryBox[
              PredictorFunction, (* head *)
@@ -60,7 +71,7 @@ applyPatch := With[{},
 
   ClassifierMeasurementsObject /: MakeBoxes[c_ClassifierMeasurementsObject, StandardForm] := 
       Module[{above, below},
-          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing]] &/@ Information[c, "Properties"] // Quiet, UpTo[10]];
+          above = Take[With[{w = Information[c, #]}, If[MatchQ[w, _?NumberQ | _String | _Quantity | True | False | Automatic | Null], {BoxForm`SummaryItem[{TextString[#], w}]}, Nothing] ] &/@ Information[c, "Properties"] // Quiet, UpTo[10] ];
 
           BoxForm`ArrangeSummaryBox[
              ClassifierMeasurementsObject, (* head *)
@@ -175,9 +186,8 @@ applyPatch := With[{},
           MakeBoxes[msg, StandardForm]
         ];            
 
-];
+If[!AssociationQ[associatedNets], associatedNets = <||>];
 
-associatedNets = <||>;
 neuralPrinter[assoc_Association] := If[!AssociationQ[System`$EvaluationContext], Null, With[{callId = Hash[System`$EvaluationContext["ResultCellHash"]]},
   If[KeyExistsQ[associatedNets, callId],
   
@@ -200,7 +210,7 @@ neuralPrinter[assoc_Association] := If[!AssociationQ[System`$EvaluationContext],
           ];
       ];
 
-      length = Length[assoc["RoundLossList"]];
+      length = Length[assoc["RoundLossList"] ];
 
       params = {
         assoc["TimeElapsed"], assoc["TimeRemaining"],
@@ -229,9 +239,32 @@ neuralPrinter[assoc_Association] := If[!AssociationQ[System`$EvaluationContext],
 
     ]
     
-  ]
-] ];
+  ] ]
+  ]; 
 
+  (* WL14 with no reason reloads the definitons of some symbols *)
+  (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
+
+  If[Internal`Kernel`Watchdog["Enabled"],
+    With[{
+      file = FileNameJoin[{libPath, "src", "Kernel.wl"}],
+      tag = "NeuralNet"
+    },
+      Internal`Kernel`Watchdog["Assertion", "ClassifierFunction",
+        FormatValues[ClassifierFunction]//Hash
+      ,
+        Get[file]
+      , tag];
+      Internal`Kernel`Watchdog["Assertion", "NetChain",
+        DownValues[NeuralNetworks`Private`NetChain`makeNetChainBoxes]//Hash
+      ,
+        Get[file]
+      , tag];
+    
+    ]
+  ];
+
+];
 
 End[]
 EndPackage[]

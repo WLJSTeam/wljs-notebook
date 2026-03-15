@@ -8,7 +8,7 @@
     },  
     "defaultPackage": true,
     "wljs-meta": {
-      "kernel": "Kernel.wl",
+      "kernel": "src/Kernel.wl",
       "category": "Visualization",
       "priority": 1002
     },
