@@ -26,26 +26,45 @@ Objects = <||>
 Symbols = <||>
 
 
-Compressed[string_String, {"ExpressionJSON", "ZLIB"}] := ImportByteArray[ByteArray[Developer`RawUncompress[BaseDecode[string]//Normal]], "ExpressionJSON"]
+(* ::: Compression for large frontend objects :::*)
 
-compress[expr_, f: {"ExpressionJSON", "ZLIB"}] := Hold[expr]
-compress[expr_, f: {"ExpressionJSON", "ZLIB"}] := With[{arr = Normal[ExportByteArray[expr, "ExpressionJSON"] ]},
-  With[{data = BaseEncode[ByteArray[Developer`RawCompress[arr] ] ]},
-    Compressed[data, f] // Hold
-  ]
-] /; (ByteCount[expr] > 0.1 * 1024 * 1024);
+Compressed[string_String, {"ExpressionJSON", "ZLIB"}] := ImportByteArray[ByteArray[Developer`RawUncompress[BaseDecode[string]//Normal]], "ExpressionJSON"] // ReleaseHold
+
+compression;
+
+(* [NOTE] This is a deferred compression method, i.e. it is only applied when the object is requested via net / link *)
+(*        Otherwise ExpressionJSON uncontrollably lifts the context from symbols depending where forntend object was created, *)
+(*        this leads to some symbols to be falsly assumed to be in Global`, which will throw errors on the frontend *)
+(*        The only way to avoid this is to deffer compression and ExpressionJSON convertion.                        *)
+(* [FIXME] for the future: switch to Compress and WXF formats instead of JSON !!! *)
+
+(* apply only on large objects*)
+compression[expr_, {"ExpressionJSON", "ZLIB", "Defer"}] := Hold[expr] /; (ByteCount[expr] < 0.1 * 1024 * 1024);
+
+SetAttributes[releaseCompression, HoldAll]
+
+releaseCompression[compression[expr_, {"ExpressionJSON", "ZLIB", "Defer"}]] := With[{arr = Normal[ExportByteArray[expr, "ExpressionJSON"] ]},
+        With[{data = BaseEncode[ByteArray[Developer`RawCompress[arr] ] ]},
+            Compressed[data, {"ExpressionJSON", "ZLIB"}] // Hold
+        ]
+] 
+
+releaseCompression[expr_] := expr
+
+
+
 
 CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
     With[{
         data = Switch[OptionValue["Store"]
             , "Kernel"
-            , <|"Private" -> compress[expr, {"ExpressionJSON", "ZLIB"}]|>
+            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}]|>
 
             , "Frontend"
-            , <|"Public"  -> compress[expr, {"ExpressionJSON", "ZLIB"}]|>
+            , <|"Public"  -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}]|>
 
             ,_
-            , <|"Private" -> compress[expr, {"ExpressionJSON", "ZLIB"}], "Public" :> Objects[uid, "Private"]|>
+            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}], "Public" :> Objects[uid, "Private"]|>
         ]
     },
         If[!AssociationQ[Objects], 
@@ -69,7 +88,9 @@ CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[exp
 Options[CreateFrontEndObject] = {"Store" -> All}
 
 FrontEndRef[uid_String] := If[KeyExistsQ[Objects, uid], 
-    Objects[uid, "Private"] // ReleaseHold
+    With[{o = Objects[uid, "Private"]},
+        releaseCompression[o] (*Ehhhh Okay... we need to release it anyway *)
+    ] // ReleaseHold
 ,
     $MissingHandler[uid, "Private"] // ReleaseHold
 ]
@@ -79,7 +100,9 @@ FrontEndExecutable /: MakeBoxes[FrontEndExecutable[uid_String], StandardForm] :=
 GetObject[uid_String] := With[{},
     (*Echo["Getting object >> "<>uid];*)
     If[KeyExistsQ[Objects, uid],
-        Objects[uid, "Public"]
+        With[{ c = Objects[uid, "Public"] },
+            releaseCompression[c]
+        ]
     ,
         $Failed
     ]

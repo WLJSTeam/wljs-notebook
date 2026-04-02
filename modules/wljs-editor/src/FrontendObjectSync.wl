@@ -25,9 +25,13 @@ syncMonitor = ImportComponent[FileNameJoin[{rootDir, "templates", "SyncMonitor.w
 EventHandler[NotebookEditorChannel // EventClone, {
     "FetchFrontEndObject" -> Function[data,
            Echo["Sync >> requested from master kernel"];
-           With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]},
-                With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]},
-                    GenericKernel`Async[kernel, EventFire[promise, Resolve, result["Public"] ] ];
+           With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]}, 
+                (* [FIXME] Include these symbols normally using Needs[] *)
+                (* we release any possible deferred compression wrappers *)
+                With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Public"]},
+                    With[{c =  CoffeeLiqueur`Extensions`FrontendObject`Internal`releaseCompression[result]},
+                        GenericKernel`Async[kernel, EventFire[promise, Resolve, c ] ];
+                    ];
                 ];
            ];       
     ]
