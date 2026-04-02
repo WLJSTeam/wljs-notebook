@@ -5303,7 +5303,9 @@ if (!GUI && PathRendering) {
 /**
  * @type {HTMLElement}
  */
-const container = env.element;
+const container = document.createElement('div');
+container.classList.add('relative');
+env.element.appendChild(container);
 
 /**
  * @type {[Number, Number]}
@@ -5469,7 +5471,7 @@ env.local.renderer = renderer;
 
 //fix for translate-50% layout
 const layoutOffset = {x:0, y:0};
-if (container.classList.contains('slide-frontend-object')) {
+if (env.element.classList.contains('slide-frontend-object')) {
   layoutOffset.x = -1.0;
 }
 
@@ -5553,19 +5555,22 @@ if (PathRendering) {
 } 
 
 let controlObject = {
-  init: (camera, dom) => {
-    controlObject.o = new OrbitControls( camera, domElement );
-    controlObject.o.addEventListener('change', wakeFunction);
-    controlObject.o.target.set( 0, 1, 0 );
-    controlObject.o.update();
-  },
+    init: (camera, dom) => {
+      controlObject.o = new OrbitControls( camera, domElement );
+      controlObject.o.addEventListener('change', wakeFunction);
+      controlObject.o.target.set( 0, 1, 0 );
+      controlObject.o.update();
+    },
 
-  dispose: () => {
-    
-  }
-};
+    dispose: () => {
 
+    }
+  };
 
+if ('Controls' in options && !(await interpretate(options.Controls))) {
+  controlObject.disabled = true;
+  domElement.style.pointerEvents = 'none';
+} 
 
 if (options.Controls) {
 
@@ -5754,6 +5759,8 @@ if (options.Controls) {
 
   } 
 }
+
+
 
 env.local.controlObject = controlObject;
 
@@ -6981,6 +6988,7 @@ core.Graphics3D.destroy = (args, env) => {
   if (env.local.labelContainer) env.local.labelContainer.remove();
   if (env.local.guiContainer) env.local.guiContainer.remove();
   env.local.rendererContainer.remove();
+  env.local.element.remove();
 };
 
 core.Graphics3D.virtual = true;
