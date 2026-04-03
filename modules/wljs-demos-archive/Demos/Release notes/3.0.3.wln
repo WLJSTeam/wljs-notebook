@@ -1,8 +1,8 @@
-<|"Notebook" -> <|"Controller" -> "357410a8-af61-4063-8556-d5d017f8df87", 
+<|"Notebook" -> <|"Controller" -> "13c6a253-2092-40b8-bee7-dbb3adc5bdd8", 
    "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$419], "FocusedCellSelection" -> 
-    {99, 98}, "HaveToSaveAs" -> False, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "dbd46446-943a-482c-8a41-55d618176f0c", 
+     CoffeeLiqueur`Notebook`Cells`CellObj`$416], "FocusedCellSelection" -> 
+    {91, 90}, "HaveToSaveAs" -> False, "MessangerChannel" -> Messanger, 
+   "ModalsChannel" -> "e5078e31-8e83-4e8d-9a08-a6cf3d11cb1f", 
    "Objects" -> <|"ba444fb3-7f1e-4836-9025-b54f4dee96af" -> 
       <|"Public" -> Hold[
          CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["eJzdnU1\
@@ -121,20 +121,23 @@ m3PrB/riz9zr579+9UPnp9u7h+6n1pfP2Ndv/x9TZEpV", {"ExpressionJSON",
    "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
    "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
       "Release notes *3.0.3*", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$379]], 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$381]], 
      CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Window Throttling", 
       CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$382]], 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$386]], 
      CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
       "More tools for window management", 
       CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$385]], 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$388]], 
      CoffeeLiqueur`Extensions`TOC`Private`heading[2, "GPUArray symbols", 
       CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$391]], 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$395]], 
      CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
       "Copy cells as plain text", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$406]]}, 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$407]], 
+     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Misc", 
+      CoffeeLiqueur`Notebook`Cells`CellObj[
+       CoffeeLiqueur`Notebook`Cells`CellObj`$437]]}, 
    "TrashedCells" -> {"rasterDensityPlotAnim[x Sin[y+t], {x, -5, 5}, {y, 0, \
 10}, {t, 0, 2Pi}, PlotPoints->50]", "rasterDensityPlotAnim[f_, {xs_, xmin_, \
 xmax_}, {ys_, ymin_, ymax_}, {ts_, tmin_, tmax_}, OptionsPattern[]] := \n \
@@ -157,101 +160,101 @@ SeedRandom[123];\n  Table[Evaluate[Sum[Sin[RandomReal[10, 2] . {x, y} + t], \
 can make it dynamic manually or automatically:"}|>, 
  "Cells" -> {<|"Data" -> ".md\n# Release notes *3.0.3*\n\n<Now/>\n", 
     "Display" -> "codemirror", "Hash" -> 
-     "c9f80480-aeb6-4465-9c92-cfd2b81854f3", "Invisible" -> False, 
+     "2b57d766-461b-4670-adc6-36d6d916dd56", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "# Release notes *3.0.3*\n\nThu 2 Apr 2026 12:02:14", 
     "Display" -> "markdown", "Hash" -> 
-     "c94948ab-108f-42be-9e12-bdac7bc69900", "Invisible" -> False, 
+     "af1a4c4e-5892-4cdc-b74d-b57068fb2a5f", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\n## Window Throttling\nWe fixed unintended window \
 throttling on some machines, when it is not focused or hidden. This is \
 crucial for a long-living applications such as monitors (lab equipment), \
 where some data has to be updated continuously for hours or days. ", 
     "Display" -> "codemirror", "Hash" -> 
-     "c2098bd7-4069-46a9-9243-1f5d6c4a2da2", "Invisible" -> False, 
+     "de83861a-2a78-41c5-99d4-c4f43158634f", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "## Window Throttling\nWe fixed unintended window throttling \
 on some machines, when it is not focused or hidden. This is crucial for a \
 long-living applications such as monitors (lab equipment), where some data \
 has to be updated continuously for hours or days. ", "Display" -> "markdown", 
-    "Hash" -> "d12d825a-9581-4a9d-8217-f1b904c28deb", "Invisible" -> False, 
+    "Hash" -> "a4256d35-bc98-4609-afdd-e0c87c06e754", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\n## More tools for window management\nWe added \
 `WindowEventListener` akin to `SlideEventListener` used to capture global \
 events. For example:", "Display" -> "codemirror", 
-    "Hash" -> "1e4d4129-8fd1-4473-a3b5-92b8ffd9bd9a", "Invisible" -> False, 
+    "Hash" -> "19ca0e7d-3537-4a4e-bcfc-f9f18fc0c47c", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "## More tools for window management\nWe added \
 `WindowEventListener` akin to `SlideEventListener` used to capture global \
 events. For example:", "Display" -> "markdown", 
-    "Hash" -> "2d456206-ee63-48ea-9d10-eb86131248f9", "Invisible" -> False, 
+    "Hash" -> "5c6b013f-2107-488a-8b0d-8f90913a3ee2", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "ev = EventObject[];\nWindowEventListener[ev]", 
     "Display" -> "codemirror", "Hash" -> 
-     "194dee8f-0f03-41e7-95b3-fd70034cc040", "Invisible" -> False, 
+     "88ab5502-d301-46fe-ac58-3d4711c681ab", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "log = {};\nRefresh[log, 1]\nEventHandler[ev, {\n  ev_ :> \
 Function[Null,\n    AppendTo[log, ev];\n  ]\n}];", "Display" -> "codemirror", 
-    "Hash" -> "7a893665-b7f9-43fd-9db3-282218131ab5", "Invisible" -> False, 
+    "Hash" -> "5a912195-2118-41d4-8349-e841f84320a4", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\nIt can capture the following events from a window, where \
 it is placed:\n- `\"Mounted\"` - when the component/window has been loaded\n- \
 `\"Closed\"` - closing of a window\n- `\"Blur\"` - when a user removed focus \
 from a window\n- `\"Focus\"` - when a user has focused a window\n\nThis \
 component works in normal cells as well as on WLX. It does not occupy space \
 and renders nothing.", "Display" -> "codemirror", 
-    "Hash" -> "a78651c6-2814-4133-b8f4-7a11f6a8fc97", "Invisible" -> False, 
+    "Hash" -> "c8a0538f-1b84-4587-bd06-43abdb66c1a2", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "It can capture the following events from a window, where it \
 is placed:\n- `\"Mounted\"` - when the component/window has been loaded\n- \
 `\"Closed\"` - closing of a window\n- `\"Blur\"` - when a user removed focus \
 from a window\n- `\"Focus\"` - when a user has focused a window\n\nThis \
 component works in normal cells as well as on WLX. It does not occupy space \
 and renders nothing.", "Display" -> "markdown", 
-    "Hash" -> "db8eb961-c4a1-42ff-97cf-70d78477f1b2", "Invisible" -> False, 
+    "Hash" -> "c8de40a8-3807-43ef-aa49-b46792b51116", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\n## GPUArray symbols\nWe added a support for a recent \
 feature of WL - GPU arrays. They effectively store a reference to a data on \
 GPU, which can be used for cross-platform GPU computing (rather limited for \
 now):", "Display" -> "codemirror", "Hash" -> 
-     "bfa52046-9e22-411e-92a7-a46eb15a46b3", "Invisible" -> False, 
+     "3d9b6a81-6ef8-41a2-a25c-b8d90d656bf7", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "## GPUArray symbols\nWe added a support for a recent feature \
 of WL - GPU arrays. They effectively store a reference to a data on GPU, \
 which can be used for cross-platform GPU computing (rather limited for now):"\
-, "Display" -> "markdown", "Hash" -> "e2514ac7-c315-49fe-b3d1-8caa622e47a6", 
+, "Display" -> "markdown", "Hash" -> "a1b98db4-e230-4593-ac1d-8c9d9ee53979", 
     "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> 
      "arr = Table[BitXor[i,j]//N, {i,127}, {j,127}];\ng = GPUArray[arr]", 
     "Display" -> "codemirror", "Hash" -> 
-     "0f862ea1-d999-4385-8ce1-48a34a5a33df", "Invisible" -> False, 
+     "1ecd9e27-1515-41a0-bc22-04e60c952b0e", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "(*VB[*)BoxForm`temporalStorage$331093(*,*)(*\"1:eJxdkUmPolAAh\
 JktmcyvmOmT0p2wo0wyh4eCCig0CqidPvAWZGtkU4RfPzrHuVSqKnX66hc8u9EXiqKaH3fRcNKeaz\
 8h3Tb6RFELxwN1HfZvI9pX3+jxzxH9Qo9H9BP3mxg99jTO6ljwuoOerofF8lRhuQdKR7pYbKZhEqi\
@@ -261,94 +264,110 @@ th5nTSYjZyDwtsKnxDRkpDkmIuZXKqemb0abNNpGZqiY2Cf+I/1zIv3dqsL3JBGHRlKftgF+ozpA4\
 aH6VyOjozuZhWMT4NjMjfQpKtTW4Jrf5jklmGCVgCKrD7jWASsfUCl+OfpwfHdV+nxe/T5gf/rXdx\
 LTrbfH4aE2C7y/l+7qy/kv83jqy3JCWpDmJPm2z3qYd6QvwvvjD8=\"*)(*]VB*)", 
     "Display" -> "codemirror", "Hash" -> 
-     "ef03103b-89f0-4f99-83e4-3bd2037c1176", "Invisible" -> False, 
+     "77ec2b77-720e-4781-86ae-38639ad6ad3b", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\nDo math operation and plot it\n\n:::note\nNot all \
 operations are supported on GPU. It may fallback to CPU version\n:::", 
     "Display" -> "codemirror", "Hash" -> 
-     "1f60ca3e-07ea-400b-a7df-71a9e6edeaf8", "Invisible" -> False, 
+     "cbd89ecb-b44a-45b5-9c43-30a68e542574", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "Do math operation and plot it\n\n:::note\nNot all operations \
 are supported on GPU. It may fallback to CPU version\n:::", 
     "Display" -> "markdown", "Hash" -> 
-     "16003381-7cf1-4c2d-8ee9-f408018a60c5", "Invisible" -> False, 
+     "af6ae7e8-0e4b-44ac-a862-d081a495c6e2", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "g g - g // ArrayPlot ", "Display" -> "codemirror", 
-    "Hash" -> "ab4bb767-5db8-4afc-9ac6-3a4a6cef0600", "Invisible" -> False, 
+    "Hash" -> "67bb2f2a-75bb-4c2d-92e2-90e4be0d1a41", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "(*VB[*)(FrontEndRef[\"ba444fb3-7f1e-4836-9025-b54f4dee96af\"]\
 )(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJyWam\
 JikJRnrmqcZpuqaWBib6VoaGJnqJpmapJmkpKZamiWmAQCFYxXe\"*)(*]VB*)", 
     "Display" -> "codemirror", "Hash" -> 
-     "bcfa852d-5ae9-4af8-abc3-0a88288d25bc", "Invisible" -> False, 
+     "b6c5b1df-b67a-414c-ac54-e9734fe1fece", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\n## Copy cells as plain text\nWe added an option to copy \
 a group of cells as `InputForm`, it automatically strips off all syntax sugar \
 and marks input and output \
 cells\n\n\n![](/attachments/Screenshot-2026-04-02-at-12.53.25-01e.png)\n", 
     "Display" -> "codemirror", "Hash" -> 
-     "93a97765-6e43-4db2-8c06-13846a9e00e0", "Invisible" -> False, 
+     "181f797b-0530-43fa-8025-0388cdb586d5", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "## Copy cells as plain text\nWe added an option to copy a \
 group of cells as `InputForm`, it automatically strips off all syntax sugar \
 and marks input and output \
 cells\n\n\n![](/attachments/Screenshot-2026-04-02-at-12.53.25-01e.png)", 
     "Display" -> "markdown", "Hash" -> 
-     "741c8fa9-37a3-4277-b80b-c7e9723c91d4", "Invisible" -> False, 
+     "726aa7fe-585e-4bfb-9a3b-69c949cdb33e", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\nFor example:", "Display" -> "codemirror", 
-    "Hash" -> "531e78a5-cc77-4c81-a796-014093b14d07", "Invisible" -> False, 
+    "Hash" -> "e7ea81fd-874c-4e83-a54b-dc08a001a2d9", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "For example:", "Display" -> "markdown", 
-    "Hash" -> "8643ccf3-edad-4822-850b-fce9a28ad72f", "Invisible" -> False, 
+    "Hash" -> "c96be81e-21ec-438b-8162-a67fdac37859", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "Series[Sin[x], {x,0,2}]", "Display" -> "codemirror", 
-    "Hash" -> "750e2e6e-0cf8-40d0-9562-e28569070b71", "Invisible" -> False, 
+    "Hash" -> "d4023a7d-9e8f-4e4d-a9fb-f3cb8f4c8f59", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "(*VB[*)(SeriesData[x, 0, {1}, 1, 3, \
 1])(*,*)(*\"1:eJwlT11PwjAAXIwPxl8xedrKEocERN9alX0YUdbRZiM8TCmzcaVlbLEb8X/58xy\
 YXC53l3u4u3qX0ebMMIz9ZUdPa17JknD2jX87q/sWIGgJbAuzkrP9Y1ZlS+2YrmMefhxzeMJgZVvA\
 6TqgN7hnoY7jF/mGxYwnHpSjPMAlF2m4KaZJKtTow9/Nn8ce2T6gxS2m6RfqM6qiyr9zo6zxiLyhK\
 h8nM5g2ifQbquT8GmsY7HI3bGkCJ1EQL1rdTmqFgtqbhlTAHEH9KVjvuGFFELD/D513FNUFwxdHwb\
 L167ZoTmlc1uwPHtBIXA==\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "d50d54be-0ea1-4a39-910e-9d9c826b21bd", "Invisible" -> False, 
+    "Hash" -> "6e6d53d6-c989-4ce8-97bd-36fcfb18b66d", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> ".md\nCopied expression:", "Display" -> "codemirror", 
-    "Hash" -> "25f069a9-a2a9-49a7-93d0-acc22a1b2a18", "Invisible" -> False, 
+    "Hash" -> "d9f77916-2003-4f6e-a277-bf03e650484b", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "Copied expression:", "Display" -> "markdown", 
-    "Hash" -> "1fce3dba-7d4b-42b6-a719-63aff1cc796f", "Invisible" -> False, 
+    "Hash" -> "af9c6617-d244-4928-afe1-9e374f7f8709", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
    <|"Data" -> "(* ::: Input ::: *)\nSeries[Sin[x], {x,0,2}]\n\n(* ::: Output \
 ::: *)\n(SeriesData[x, 0, {1}, 1, 3, 1])", "Display" -> "codemirror", 
-    "Hash" -> "32ddd5b3-e2e2-4684-893b-15a6f57008b6", "Invisible" -> False, 
+    "Hash" -> "0ee9070b-4656-44e5-99db-c93ee8e1a309", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a2f235ff-2b98-4d6b-ad96-80ac07070793"|>}, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
+   <|"Data" -> ".md\n## Misc\n- Various bug fixes related to compressed \
+entities like images, or large plots\n- Fixed `Graphics3D` pan and rotation \
+on custom WLX components; added `\"Controls\"` option to disable/enable \
+rotation", "Display" -> "codemirror", 
+    "Hash" -> "8b90435d-6d57-40b2-8ac3-b41c2fa99ab7", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>, 
+   <|"Data" -> "## Misc\n- Various bug fixes related to compressed entities \
+like images, or large plots\n- Fixed `Graphics3D` pan and rotation on custom \
+WLX components; added `\"Controls\"` option to disable/enable rotation", 
+    "Display" -> "markdown", "Hash" -> 
+     "06170a57-23aa-45e7-bc91-9587f4fbdff3", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "a68adedd-fdcb-4106-896a-c95c748d76f5"|>}, 
  "serializer" -> "jsfn4"|>
