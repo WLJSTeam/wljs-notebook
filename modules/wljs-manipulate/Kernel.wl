@@ -404,9 +404,23 @@ Options[Refresh] = {UpdateInterval -> 1}
 
 *)
 
-Refresh::usage = "Refresh[expr_, UpdateInterval_] creates a dynamic widget, which reevalues expr every UpdateInterval (in seconds or Quantity[]). Refresh[expr_, ev_EventObject] is updated by external event object ev"
+Options[Refresh] = {UpdateInterval->Infinity, "JIT"->True, PerformanceGoal->"Speed"}
+
+
+Refresh::usage = "Refresh[expr_, UpdateInterval_] creates a dynamic widget, which reevalues expr every UpdateInterval (in seconds or Quantity[]).\nRefresh[expr_, ev_EventObject] is updated by external event object ev"
 
 (* Refresh[expr_, Rule[UpdateInterval, updateInterval_Quantity] | Rule[UpdateInterval, updateInterval_?NumericQ] ] := Refresh[expr, updateInterval ] *)
+
+FormatValues[Refresh] = {};
+
+Refresh /: MakeBoxes[Refresh[expr_, opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
+  interval = OptionValue[Refresh, opts, UpdateInterval]
+},
+{
+  r = Refresh[expr, If[TrueQ[interval < Infinity && NumberQ[interval] ], interval, 1.0 ] ],
+},
+  MakeBoxes[r, form]
+]
 
 Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?NumericQ, OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   interval = If[MatchQ[updateInterval, _Quantity], UnitConvert[updateInterval, "Milliseconds"] // QuantityMagnitude, updateInterval 1000],
@@ -459,17 +473,23 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
   ]
 ] 
 
-Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject, OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
+Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   event = CreateUUID[],
   evaluated = expr,
   diffTable = Unique["diffTable"]
+  bypassJIT = TrueQ[OptionValue[Refresh, opts, "JIT"] === False || OptionValue[Refresh, opts, PerformanceGoal] === "Quality"]
 },
   LeakyModule[{
     str = ToString[evaluated, StandardForm],
     currentExpression = evaluated
   },
   
-  (* event is fired from WL side *)
+  If[bypassJIT, 
+    ClearAll[currentExpression];
+    EventHandler[ev, Function[Null, With[{newExpr = expr},
+      str = ToString[newExpr, StandardForm];
+    ] ] ];
+  ,
     EventHandler[ev, Function[Null,
         With[
           {
@@ -481,13 +501,15 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject, OptionsPattern[]
           },
 
           df`Private`processDiffs[diffTable, currentExpression, newExpr, diffList, Function[editorExpr,
-            str = ToString[editorExpr, StandardForm];
+              str = ToString[editorExpr, StandardForm];
             False
-          ] ];  
+          ] ];
+          currentExpression = newExpr; 
 
-          currentExpression = newExpr;      
+          
         ];
-    ] ];
+    ] ];  
+  ];
 
     With[{
       editor = EditorView[str // Offload, "ReadOnly"->True, "FullReset"->True] 
