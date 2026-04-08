@@ -408,7 +408,7 @@ Options[Refresh] = {UpdateInterval -> 1}
 Options[Refresh] = Join[Options[Refresh], {UpdateInterval->Infinity, "JIT"->True, PerformanceGoal->"Speed"}];
 
 
-Refresh::usage = "Refresh[expr_] or Refresh[expr_, UpdateInterval->1] creates a dynamic widget, which reevalues expr every UpdateInterval in seconds.\nRefresh[expr_, ev_EventObject] is updated by external event object ev"
+Refresh::usage = "Refresh[expr_, UpdateInterval] creates a dynamic widget, which reevalues expr every UpdateInterval in seconds.\nRefresh[expr_, ev_EventObject] is updated by external event object ev"
 
 (* Refresh[expr_, Rule[UpdateInterval, updateInterval_Quantity] | Rule[UpdateInterval, updateInterval_?NumericQ] ] := Refresh[expr, updateInterval ] *)
 
