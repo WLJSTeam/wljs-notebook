@@ -404,7 +404,8 @@ Options[Refresh] = {UpdateInterval -> 1}
 
 *)
 
-Options[Refresh] = {UpdateInterval->Infinity, "JIT"->True, PerformanceGoal->"Speed"}
+
+Options[Refresh] = Join[Options[Refresh], {UpdateInterval->Infinity, "JIT"->True, PerformanceGoal->"Speed"}];
 
 
 Refresh::usage = "Refresh[expr_] or Refresh[expr_, UpdateInterval->1] creates a dynamic widget, which reevalues expr every UpdateInterval in seconds.\nRefresh[expr_, ev_EventObject] is updated by external event object ev"
@@ -413,14 +414,21 @@ Refresh::usage = "Refresh[expr_] or Refresh[expr_, UpdateInterval->1] creates a 
 
 FormatValues[Refresh] = {};
 
-Refresh /: MakeBoxes[Refresh[expr_, opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
+(* this is not going to work 
+  if we clear all values
+  then NeuralPackage stops working for some fucking reason
+  then we keep it for the future
+  default DownValues does not reveal anything...
+*)
+
+(*Refresh /: MakeBoxes[Refresh[expr_, opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   interval = OptionValue[Refresh, opts, UpdateInterval]
 },
 {
   r = Refresh[expr, If[TrueQ[interval < Infinity && NumberQ[interval] ], interval, 1.0 ] ]
 },
   MakeBoxes[r, form]
-]
+]*)
 
 Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?NumericQ, OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   interval = If[MatchQ[updateInterval, _Quantity], UnitConvert[updateInterval, "Milliseconds"] // QuantityMagnitude, updateInterval 1000],

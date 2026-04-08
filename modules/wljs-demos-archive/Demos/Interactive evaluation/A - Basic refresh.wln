@@ -1,49 +1,48 @@
-<|"Notebook" -> <|"Controller" -> "a6db3357-a7ec-4e6b-9c4d-9095b9901778", 
+<|"Notebook" -> <|"Controller" -> "b9cff6c2-be13-4f35-9a2a-2f3a18bc77cc", 
    "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$445], "FocusedCellSelection" -> 
-    {147, 146}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "df5aa0d1-2c9e-4688-ace4-84f2c98f3471", 
+     CoffeeLiqueur`Notebook`Cells`CellObj`$613], "FocusedCellSelection" -> 
+    {94, 93}, "MessangerChannel" -> Messanger, 
+   "ModalsChannel" -> "fc0cb252-fe22-4649-b4c1-52fb9d683c2b", 
    "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
 ules/wljs-demos-archive/Demos/Interactive evaluation/A - Basic refresh.wln", 
    "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
    "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Refresh", 
       CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$441]]}|>, 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$609]]}|>, 
  "Cells" -> {<|"Data" -> ".md\n## Refresh\nIf you need to keep track the \
 changes of some variable visually:", "Display" -> "codemirror", 
-    "Hash" -> "c9bad6a9-030e-4872-8e08-ad7b1a491dea", "Invisible" -> False, 
+    "Hash" -> "b952c134-ae0c-4b55-95f3-7548654a479b", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>, 
+    "UID" -> Null, "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>, 
    <|"Data" -> "## Refresh\nIf you need to keep track the changes of some \
 variable visually:", "Display" -> "markdown", 
-    "Hash" -> "599dcf44-1938-4730-88a4-5f8d61f9827c", "Invisible" -> False, 
+    "Hash" -> "baf6cc13-4454-4833-ab22-8579ce6e9d83", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>, 
-   <|"Data" -> "Refresh[Now]", "Display" -> "codemirror", 
-    "Hash" -> "dc8207d6-da52-41be-9e22-71821263e581", "Invisible" -> False, 
+    "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>, 
+   <|"Data" -> "Refresh[Now, 1]", "Display" -> "codemirror", 
+    "Hash" -> "c8ac2bef-f233-47db-8b9c-dbf977328c04", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>, 
+    "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>, 
    <|"Data" -> ".md\nIt works with images too and many other expressions:", 
     "Display" -> "codemirror", "Hash" -> 
-     "2bc8d7f8-2501-4ad0-b58f-3234f982f902", "Invisible" -> False, 
+     "76dd3558-26e7-42e2-a10c-21f2da454b87", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>, 
+    "UID" -> Null, "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>, 
    <|"Data" -> "It works with images too and many other expressions:", 
     "Display" -> "markdown", "Hash" -> 
-     "f2d7327c-443f-4873-9fd6-02747670efa1", "Invisible" -> False, 
+     "ea98507b-9439-4a88-a476-2ee75712756d", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>, 
+    "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>, 
    <|"Data" -> "img = ExampleData[{\"TestImage\", \"Lena\"}];\nRefresh[(img = \
-ImageAdjust[img] 0.005 + img; img), \
-UpdateInterval->(*FB[*)((1)(*,*)/(*,*)(30.0))(*]FB*)]", 
+ImageAdjust[img] 0.005 + img; img), (*FB[*)((1)(*,*)/(*,*)(30.0))(*]FB*)]", 
     "Display" -> "codemirror", "Hash" -> 
-     "e1335699-5377-4af1-a110-091dede9c2de", "Invisible" -> False, 
+     "90a41c9b-30c1-4755-9fd7-a0c8e4b76709", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "75998295-8ae1-4743-b3df-d7a1f1ae8321"|>}, 
+    "Notebook" -> "1a9ebf0b-45f3-4d42-ada0-ff20aa709ac9"|>}, 
  "serializer" -> "jsfn4"|>
