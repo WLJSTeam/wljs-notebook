@@ -1,0 +1,132 @@
+<|"Notebook" -> <|"Controller" -> "e130d04e-7a5f-4ff4-b747-072cea956468", 
+   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
+     CoffeeLiqueur`Notebook`Cells`CellObj`$637], "FocusedCellSelection" -> 
+    {9, 8}, "MessangerChannel" -> Messanger, "ModalsChannel" -> 
+    "4b107944-f0d6-46e4-9850-73da1108f24f", "Objects" -> <||>, 
+   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
+hive/Demos/Interactive evaluation/C - Camera Stream.wln", 
+   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
+   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Camera stream", 
+      CoffeeLiqueur`Notebook`Cells`CellObj[
+       CoffeeLiqueur`Notebook`Cells`CellObj`$608]], 
+     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Basic data-processing", 
+      CoffeeLiqueur`Notebook`Cells`CellObj[
+       CoffeeLiqueur`Notebook`Cells`CellObj`$632]]}, 
+   "TrashedCells" -> {"Set::shape: Lists \
+{ImageAcquisition`CaptureDump`res$689245, \
+ImageAcquisition`CaptureDump`allowOutput$689245} and \
+Refresh[ImageAcquisition`CaptureDump`iCurrentImage[], TrackedSymbols :> \
+{ImageAcquisition`CaptureDump`i$currentImage, \
+ImageAcquisition`CaptureDump`i$dynamicUpdateCounter}] are not the same \
+shape.", "(*VB[*)(FrontEndRef[\"0db4499d-f756-4a3c-b16a-781141be8ea4\"])(*,*)\
+(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6QkmZhYWqb\
+oppmbmumaJBon6yYZmiXqmlsYGpoYJqVapCaaAACDehWj\"*)(*]VB*)  // FindFaces", ".md\
+\nOne could also try applying neural network processing, for instance, to \
+identify faces. There is a built-in function for it in Wolfram Language \
+Standard Library:"}|>, "Cells" -> 
+  {<|"Data" -> ".md\n# Camera stream\nIn this example we will stream the data \
+from your connected web-camera or any other camera-like device and perform \
+real-time data processing", "Display" -> "codemirror", 
+    "Hash" -> "86f2ef68-d476-4b94-9ac6-7102e31fd287", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "# Camera stream\nIn this example we will stream the data from \
+your connected web-camera or any other camera-like device and perform \
+real-time data processing", "Display" -> "markdown", 
+    "Hash" -> "fb5177c7-7c03-4e47-8e34-ab546f1da0f0", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> ".md\nHow to take a photo in WL?", "Display" -> "codemirror", 
+    "Hash" -> "c1383e10-1492-4e2d-af2c-418d18ff7d2f", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "How to take a photo in WL?", "Display" -> "markdown", 
+    "Hash" -> "a2547909-324c-4b14-8e3d-f3f11d0cb48f", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "CurrentImage[]", "Display" -> "codemirror", 
+    "Hash" -> "807408d7-f543-42aa-aeb8-301fbbd0521a", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> ".md\nHowever, there is a better way if you need to stream the \
+data from a camera **continuously**:", "Display" -> "codemirror", 
+    "Hash" -> "7780479a-8d4d-45aa-bdb7-9cb67d024f3e", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "However, there is a better way if you need to stream the data \
+from a camera **continuously**:", "Display" -> "markdown", 
+    "Hash" -> "1023867b-b8db-4f6e-b7bd-231adca22cdd", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "cam = DeviceOpen[\"Camera\"];\ncam[\"FrameRate\"] = 60;", 
+    "Display" -> "codemirror", "Hash" -> 
+     "1422bb84-e41a-47f1-9d80-04552322f9c0", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "Refresh[\n  DeviceRead[cam], \n  UpdateInterval->1/30.0\n]", 
+    "Display" -> "codemirror", "Hash" -> 
+     "9516321b-6539-4ce4-9f4e-ae68d59da69b", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> ".md\nTo close", "Display" -> "codemirror", 
+    "Hash" -> "8e03ddd2-9082-41ce-b392-3424fee98338", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "To close", "Display" -> "markdown", 
+    "Hash" -> "e9596eca-c2a6-49c6-b3c2-1ea0d5e8a741", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "DeviceClose[cam]", "Display" -> "codemirror", 
+    "Hash" -> "59ad1c08-7da1-4420-810a-b2a153822245", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> 
+     ".md\n## Basic data-processing\nLet's try binarize our images", 
+    "Display" -> "codemirror", "Hash" -> 
+     "49d189c6-75bd-4a5d-bb54-5b2fdf014719", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "## Basic data-processing\nLet's try binarize our images", 
+    "Display" -> "markdown", "Hash" -> 
+     "709d0fd9-818d-4040-b4f5-5332dfe449ee", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> 
+     "Refresh[\n  DeviceRead[cam] // Binarize, \n  UpdateInterval->1/30.0\n]"\
+, "Display" -> "codemirror", "Hash" -> 
+     "fc337170-92f0-4409-9fbf-75889e1e8a00", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> ".md\nOr use false colors", "Display" -> "codemirror", 
+    "Hash" -> "3b1dc4af-1742-4152-8253-680d8a811988", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> "Or use false colors", "Display" -> "markdown", 
+    "Hash" -> "a0968b9a-6dd6-4464-bdd6-e2d49d3251f0", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>, 
+   <|"Data" -> 
+     "Refresh[\n  DeviceRead[cam] // Colorize, \n  UpdateInterval->1/30.0\n]"\
+, "Display" -> "codemirror", "Hash" -> 
+     "1abb8558-37a5-4145-a3aa-5ff33fbb6973", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "ad873a5c-5a92-4550-aa1a-fe0ede4cbd77"|>}, 
+ "serializer" -> "jsfn4"|>

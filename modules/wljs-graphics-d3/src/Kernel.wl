@@ -34,6 +34,17 @@ Options[Image] = Append[Options[Image], Antialiasing->True];*)
 
 Begin["`Private`"]
 
+Unprotect[CurrentImage];
+ClearAll[CurrentImage];
+
+CurrentImage[] := CurrentImage[1]
+CurrentImage[_] := With[{d = DeviceOpen["Camera"]}, {
+    img = DeviceRead[d]
+},
+    DeviceClose[d];
+    If[ImageQ[img], img, $Failed]
+]
+
 AnimationFrameListener[any_, Rule["Event", frameTrigger_EventObject]] := AnimationFrameListener[any, Rule["Event", frameTrigger[[1, "Id"]]]]
 
 AnimationFrameListener /: EventHandler[AnimationFrameListener[any_], f_] := With[{
