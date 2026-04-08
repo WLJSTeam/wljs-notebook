@@ -27,15 +27,14 @@ rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
 defaults = Get[FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}] ];
 
-testEndpoint[path_] := With[{test = Find[str = OpenRead[path], "# Map"]},
+testEndpoint[path_] := TimeConstrained[With[{test = Find[str = OpenRead[path], "# Map"]},
   Close[str];
   Echo["Test results: "]; Echo[test];
   test === "# Map"
-];
+], 6, False];
 
 endpoint = SelectFirst[{
     "https://wljs.io/llms-full.txt",
-    "https://wljs-docs-v2.vercel.app/llms-full.txt",
     FileNameJoin[{rootDir, "dist", "llm.txt"}]
 }, testEndpoint];
 

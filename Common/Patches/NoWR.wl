@@ -2,22 +2,14 @@ BeginPackage["CoffeeLiqueur`Patches`NoWR`"]
 
 Begin["`Private`"]
 
-With[{
-  words = DeleteDuplicates @ 
-    Select[StringLength[#] > 2 &] @ Flatten @ 
-      Map[
-        StringCases[#, 
-          CharacterRange["A", "Z"] ~~ 
-           Except[CharacterRange["A", "Z"]] ..] &] @ 
-       Select[StringLength[#] > 2 &] @ 
-        Names["System`*"]
-  },
-  Unprotect[RandomWord];
-  ClearAll[RandomWord];
-  
-  RandomWord[] := RandomChoice @ words;
-  RandomWord[n_Integer] := RandomChoice[words, n];
-]
+(* Credits to https://gist.github.com/trag1c/f74b2ab3589bc4ce5706f934616f6195 *)
+nouns = StringSplit[Import[{$InputFileName//DirectoryName, "Nouns.txt"}, "Text"], "\n"];
+
+Unprotect[RandomWord];
+
+ClearAll[RandomWord];
+RandomWord[] := RandomChoice @ nouns;
+RandomWord[n_Integer] := RandomChoice[nouns, n];
 
 End[]
 
