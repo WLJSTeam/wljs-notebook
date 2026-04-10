@@ -2216,7 +2216,7 @@ else {
             const parsedCommndLine = parseArgs(argv);
             console.log(parsedCommndLine);
 
-            if (parsedCommndLine.c) {
+            if (parsedCommndLine.a) {
               console.log('Parsed command line parameters');
               console.log(parsedCommndLine);
 
@@ -2228,9 +2228,7 @@ else {
               }
 
 
-            
-                return;
-            } 
+            }
 
 
             const protocol = new RegExp('wljs-url-message:\/\/(.*)').exec(argv[argv.length - 1]);
@@ -2897,7 +2895,7 @@ function create_first_window() {
     
 
     const parsedCommndLine = parseArgs(process.argv);
-    const commandOnly = parsedCommndLine.c;
+    const commandOnly = parsedCommndLine.a;
 
     if (commandOnly) net.fetch(server.url.default('local') + `/cmdapi/` + encodeURIComponent(JSON.stringify(parsedCommndLine)))
    
