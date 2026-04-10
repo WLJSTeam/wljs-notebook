@@ -756,6 +756,7 @@ buildMenu = (opts) => {
                 },
                 {
                     label: 'Evaluate All Cells',
+                    accelerator: shortcut('evaluate_all'),
                     click: async(ev) => {
                         console.log(ev);
                         windows.focused.call('evaluateall', true);

@@ -11,7 +11,7 @@
     "abort"         : ["Cmd+.", "Alt+."],
     "evaluate_init" : ["Cmd+i", "Alt+i"],
     "clear_outputs" : ["Cmd+u", "Alt+u"],
-    "evaluate_all"  : ["Cmd+a", "Alt+a"],
+    "evaluate_all"  : ["Cmd+j", "Alt+j"],
     "close"         : ["Cmd+q", "Alt+q"],
     "quit"          : ["Cmd+q", "Ctrl+q"]
 }

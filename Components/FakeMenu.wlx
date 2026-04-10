@@ -65,7 +65,7 @@ LayoutEvaluation = ExportString[{
   {
     <|"label"->"Abort", "name"->"abort", "a"->"Alt+."|>,
     <|"label"->"Evaluate initialization cells", "name"->"evalInit", "a"->"Alt+i"|>,
-    <|"label"->"Evaluate all cells", "name"->"evalAll"|>,
+    <|"label"->"Evaluate all cells", "name"->"evalAll", "a"->"Alt+j"|>,
     <|"type"->"separator"|>,
     <|"label"->"New Kernel", "name"->"newlocalkernel"|>,
     <|"label"->"Restart Kernel", "name"->"restartkernels"|>,
