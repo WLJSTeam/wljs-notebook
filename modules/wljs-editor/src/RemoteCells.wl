@@ -611,7 +611,15 @@ EventHandler[NotebookEditorChannel // EventClone,
                             
                         ],
                         any_String :> Function[data,
-                            GenericKernel`Async[kernel, EventFire[callback, any, data] ];
+                            Echo["Event generated on RemoteCellObject"];
+
+                            If[any === "Ready" && KeyExistsQ[win`HashMap, hash], (* if this is a window and it is ready *)
+                                With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["EvaluationContext"]["KernelWebSocket"]|>]},
+                                    GenericKernel`Async[kernel, EventFire[callback, any, winO] ];
+                                ]
+                            ,
+                                GenericKernel`Async[kernel, EventFire[callback, any, data] ];
+                            ]
                         ]
                     }]
                 ]
