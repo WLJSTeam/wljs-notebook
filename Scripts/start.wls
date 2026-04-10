@@ -11,6 +11,8 @@ Wolfram Engine is proprietary and distributed separately by Wolfram Research, In
 
 "This project is not affiliated with, endorsed by, or sponsored by Wolfram Research, Inc. Wolfram and Wolfram Language are trademarks of Wolfram Research, Inc." // Print;
 
+$AllowDataUpdates = False;
+
 PacletDirectoryUnload /@ PacletDirectoryLoad[]; (* FIXME WL autoloads some crap *)
 
 ParentDirectory[DirectoryName[$InputFileName]] // SetDirectory;

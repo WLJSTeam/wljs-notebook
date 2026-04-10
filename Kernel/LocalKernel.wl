@@ -283,6 +283,7 @@ start[k_LocalKernelObject] := Module[{link},
     k["ReadyQ"] = False;
 
     LinkWrite[link, Unevaluated[$HistoryLength = 0] ];
+    LinkWrite[link, Unevaluated[$AllowDataUpdates = False] ];
     With[{path = k["RootDirectory"]},
         LinkWrite[link, Unevaluated[ PacletDirectoryUnload /@ PacletDirectoryLoad[]; ] ];
         LinkWrite[link, Unevaluated[ SetDirectory[path] ] ] ;
@@ -314,7 +315,7 @@ start[k_LocalKernelObject] := Module[{link},
         
         
 
-        (* unknown bug, doesn't work in initialization ... *)
+        (* unknown WL bug, doesn't work in initialization ... *)
         LinkWrite[link, EnterTextPacket["Unprotect[Interpretation, InterpretationBox]"] ];
 
         LinkWrite[link, Unevaluated[ Get[FileNameJoin[{Directory[], "Common", "LPM", "LPM.wl"}] ] ] ];
