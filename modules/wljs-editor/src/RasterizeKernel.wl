@@ -106,12 +106,15 @@ CoffeeLiqueur`Extensions`Rasterize`Internal`GetPDF;
 Rasterize::frontget = "Could not get the rasterized data from the frontend";
 Rasterize::needraster = "Not supported directly. Please, apply Rasterize before exporting as an image"
 
+(* [TODO] Use runAsyncInTemporalWindow if CurrentWindow is none or Failed *)
+
 Rasterize[any_, ___, OptionsPattern[] ] := (
   Message[Rasterize::noelectron];
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
 Rasterize[any_, ___, OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
+  
   EventHandler[channel, Function[Null,
     Then[FrontFetchAsync[OverlayView["Capture", 1 ], "Window" -> window], Function[base,
       EventFire[p, Resolve, ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
@@ -205,6 +208,16 @@ exportPDF[filename_, data_, opts___] :=
   Close[strm]
 ]
 
+
+runAsyncInTemporalWindow[asyncfunctionGenerator_] := With[{win = CreateWindow[Cell["", "Output", "HTML"] ], p = Promise[]},
+EventHandler[win, {
+  "Ready" -> Function[winowObject,
+    Then[asyncfunctionGenerator[winowObject], Function[result,
+      EventFire[p, Resolve, result];
+      NotebookClose[win];
+    ] ]
+  ]
+}]; p]
 
 End[]
 EndPackage[]
