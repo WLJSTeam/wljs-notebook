@@ -7,7 +7,7 @@ PacletObject[
     "Creator" -> "WLJSTeam",
     "License" -> "AGPL",
     "PublisherID" -> "CoffeeLiqueur",
-    "Version" -> "3.0.3",
+    "Version" -> "3.0.4",
     "WolframVersion" -> "13.3+",
     "Extensions" -> {
       {
