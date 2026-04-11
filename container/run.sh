@@ -5,6 +5,11 @@ set -eux -o pipefail
 PUID=${PUID:-1000}
 PGID=${PGID:-1000}
 
+# Remove the base-image user to avoid UID collision 
+if id wolframengine &>/dev/null; then
+  userdel wolframengine || true
+fi
+
 groupmod -o -g "$PGID" wljs
 usermod -o -u "$PUID" wljs
 
