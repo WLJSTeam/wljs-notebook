@@ -2316,7 +2316,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     env.thickness = copy.thickness;
     env.width = copy.width;
-    env.opacity = copy.opacity;
+    //env.opacity = copy.opacity; (* pale 2D plots *)
     env.color = copy.color;
 
   }
