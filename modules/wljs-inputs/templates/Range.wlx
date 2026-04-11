@@ -1155,24 +1155,30 @@ Component[OptionsPattern[]] := With[{
     Step = Convert[OptionValue["Step"]], 
     Mode = OptionValue[Appearance],
     Initial = Convert[OptionValue["Initial"]],
-    external = OptionValue["TrackedSymbolUId"]
+    external = OptionValue["TrackedSymbolUId"],
+    LabelClass = OptionValue["LabelClass"],
+    LabelStyle = OptionValue["LabelStyle"],
+    CounterClass = OptionValue["CounterClass"],
+    CounterStyle = OptionValue["CounterStyle"],
+    SliderClass = OptionValue["SliderClass"],
+    SliderStyle = OptionValue["SliderStyle"]
 },
     {
         If[Mode === Automatic,
             <div class="relative shrink-0 gap-y-3 pb-2 flex flex-col sm-controls">
                 <div class="flex gap-x-5 sm-controls">
-                    <label for="default-range" class="block mb-2 text-sm font-medium text-gray-900"><Label/></label>
-                    <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 bg-gray-50 rounded-md border-2-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
+                    <label for="default-range" class="block mb-2 text-sm font-medium text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+                    <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 bg-gray-50 rounded-md border-2-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 {CounterClass}" style="{CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
                 </div>
-                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native"></input>
+                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="{SliderStyle}"></input>
             </div>
         ,
             <div class="relative shrink-0 gap-y-3 pb-2 flex flex-col sm-controls">
                 <div class="flex gap-x-5 sm-controls">
-                    <label for="default-range" class="block mb-2 text-sm font-medium text-gray-900"><Label/></label>
-                    <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 bg-gray-50 rounded-md border-2-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
+                    <label for="default-range" class="block mb-2 text-sm font-medium text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+                    <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 bg-gray-50 rounded-md border-2-gray-50 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 {CounterClass}" style="{CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
                 </div>
-                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native"></input>
+                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="{SliderStyle}"></input>
                 <input min="-10" max="10" step="0.1" value="0" id="f-#instanceId" type="range" class="sm-controls native sm-frange" aria-label="Fine tune" title="Fine tune"></input>
             </div>
         ]
@@ -1181,7 +1187,7 @@ Component[OptionsPattern[]] := With[{
     }
 ];
 
-Options[Component] = {Appearance->Automatic, "Event"->Null, "Label"->"", "Min"->0, "Max"->1, "Step"->1, "Initial"->0, "Topic"->"Default", "TrackedSymbolUId"->Null, "TrackedExpression"->Null};
+Options[Component] = {Appearance->Automatic, "Event"->Null, "Label"->"", "Min"->0, "Max"->1, "Step"->1, "Initial"->0, "Topic"->"Default", "TrackedSymbolUId"->Null, "TrackedExpression"->Null, "LabelClass"->"", "LabelStyle"->"", "CounterClass"->"", "CounterStyle"->"", "SliderClass"->"", "SliderStyle"->""};
 
 Component
 

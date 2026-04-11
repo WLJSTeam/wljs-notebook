@@ -45,7 +45,9 @@ Component[value_String:"", OptionsPattern[]] := With[{
         "relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-900  focus:outline-none sm:text-xs sm:leading-6 bg-gray-100",
         "relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left focus:outline-none border-0 sm:text-xs sm:leading-6"
     ],
-    CSSStyle = OptionValue["CSS"]
+    CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
+    LabelClass = OptionValue["LabelClass"],
+    LabelStyle = OptionValue["LabelStyle"]
 },
 {
     FinalCSS = StringJoin[StringTemplate["width: ``px;"][Round[size]], CSSStyle]
@@ -53,7 +55,7 @@ Component[value_String:"", OptionsPattern[]] := With[{
   {
     If[size === Automatic,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900"><Label/></label>
+            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="{ClassName}" placeholder="{Placeholder}"/>
             </div>
@@ -61,7 +63,7 @@ Component[value_String:"", OptionsPattern[]] := With[{
         </div>
     ,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900"><Label/></label>
+            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="{ClassName}" placeholder="{Placeholder}" aria-describedby="email-description"/>
             </div>
@@ -73,6 +75,6 @@ Component[value_String:"", OptionsPattern[]] := With[{
   }
 ]
 
-Options[Component] = {"CSS"->"", "Placeholder"->"Type here...", Appearance->Automatic, ImageSize->Automatic, "Label"->"", "Description"->"", "UId":>CreateUUID[], "Event"->Null, "Topic"->"Default"}
+Options[Component] = {"CSS"->"", "Style"->"", "Placeholder"->"Type here...", Appearance->Automatic, ImageSize->Automatic, "Label"->"", "Description"->"", "UId":>CreateUUID[], "Event"->Null, "Topic"->"Default", "LabelClass"->"", "LabelStyle"->""}
 
 Component

@@ -49,45 +49,6 @@ SetAttributes[AnonymousJavascript, HoldFirst]
 Unprotect[Tabular];
 FormatValues[Tabular] = {};
 
-EventHelper[list_] := Module[{handler, buffer, placeholder = Table[Null, {i, Length[list//First]}]},
-	handler[{"Replace", row_, col_, old_, new_}] := list[[row, col]] = ToExpression[new];
-	handler[{"Add", row_, col_, new_}] := list[[row, col]] = ToExpression[new];
-	handler[{"Remove", row_, col_, new_}] := list[[row, col]] = Null;
-
-	handler[{"RowsAdd", start_, n_}] := (buffer = list; Do[buffer = Insert[buffer, placeholder, start], {k,n}]; list = buffer);
-	handler[{"RowsRemove", start_, n_}] := (buffer = list; Do[buffer = Delete[buffer, start], {k,n}]; list = buffer);
-
-	handler[{"ColsAdd", start_, n_}] := With[{dummy = Table[Null, {i, Length[list]}]},
-		buffer = list;
-		
-			buffer = Transpose[buffer];
-			Do[
-				buffer = Insert[buffer, dummy, start];
-			, {k,n}];
-			buffer = Transpose[buffer];
-		
-		list = buffer;
-	];
-
-	handler[{"ColsRemove", start_, n_}] := With[{dummy = Table[Null, {i, Length[list]}]},
-		buffer = list;
-		
-			buffer = Transpose[buffer];
-			Do[
-				buffer = Delete[buffer, start];
-			, {k,n}];
-			buffer = Transpose[buffer];
-		
-		list = buffer;
-	];
-
-
-	handler
-]
-
-SetAttributes[EventHelper, HoldFirst]
-
-
 IntegrationHelper[zero_List:{0,0}][function_] := IntegrationHelper[zero, 0.01][function]
 IntegrationHelper[zero_List:{0,0}, delta_][function_] := IntegrationHelper[zero, {delta, delta}][function]
 IntegrationHelper[zero_List:{0,0}, delta_List][function_] := Module[{
@@ -236,7 +197,7 @@ InputRange[min_?NumberQ, max_?NumberQ, opts: OptionsPattern[] ] := InputRange[mi
 
 InputRange[EventObject[a_Association], rest__] := InputRange[rest, "Event" -> a["Id"] ]
 
-Options[InputRange] = {Appearance->Automatic, "Label"->"", "Event":>CreateUUID[], "Topic"->"Default", "TrackedExpression"->Null}
+Options[InputRange] = {Appearance->Automatic, "Label"->"", "Event":>CreateUUID[], "Topic"->"Default", "Class"->"", "Style"->"", "LabelClass"->"", "LabelStyle"->"", "CounterClass"->"", "CounterStyle"->"", "SliderClass"->"", "SliderStyle"->"", "TrackedExpression"->Null}
 
 InputAutocompleteX = ImportComponent[FileNameJoin[{$troot, "Autocomplete.wlx"}] ];
 
@@ -346,7 +307,7 @@ InputCheckbox[EventObject[a_Association], rest_]  := InputCheckbox[rest, "Event"
 InputCheckbox[EventObject[a_Association], rest__] := InputCheckbox[rest, "Event" -> a["Id"] ]
 InputCheckbox[EventObject[a_Association] ] := InputCheckbox["Event" -> a["Id"] ]
 
-Options[InputCheckbox] = {"Label"->"", "Description"->"", "Topic"->"Default", "Event":>CreateUUID[]}
+Options[InputCheckbox] = {"Label"->"", "Description"->"", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "Topic"->"Default", "Event":>CreateUUID[]}
 
 TextX = ImportComponent[FileNameJoin[{$troot, "Text.wlx"}] ];
 
@@ -358,7 +319,7 @@ InputText[EventObject[a_Association], rest_]  := InputText[rest, "Event" -> a["I
 InputText[EventObject[a_Association], rest__] := InputText[rest, "Event" -> a["Id"] ]
 InputText[EventObject[a_Association] ] := InputText["Event" -> a["Id"] ]
 
-Options[InputText] = {"Label"->"", "Description"->"", "Placeholder"->"", "Topic"->"Default", "Event":>CreateUUID[], ImageSize->Automatic}
+Options[InputText] = {"Label"->"", "Description"->"", "Placeholder"->"", "Topic"->"Default", "Event":>CreateUUID[], ImageSize->Automatic, "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->""}
 
 TextView[value_, opts: OptionsPattern[] ] := With[{id = CreateUUID[]},
 	HTMLView[ TextX["Placeholder"->"...", "UId" -> id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>], Epilog-> InternalElementUpdate[value, "text-string", "value"] ]
@@ -381,7 +342,7 @@ TextView /: MakeBoxes[t_TextView, frmt_] := With[{o = CreateFrontEndObject[t]},
 	MakeBoxes[o, frmt]
 ]
 
-Options[TextView] = {"CSS"->"", "Label"->"", "Description"->"", "Placeholder"->"", "Event"->Null, ImageSize->Automatic, Appearance->Automatic}
+Options[TextView] = {"CSS"->"", "Class"->"", "Style"->"", "Label"->"", "Description"->"", "Placeholder"->"", "Event"->Null, ImageSize->Automatic, Appearance->Automatic, "LabelClass"->"", "LabelStyle"->""}
 
 
 
@@ -447,10 +408,10 @@ InputRadio[apt_List, DefaultItem_:Null, opts: OptionsPattern[] ] := Module[{asso
 		EventFire[uid, OptionValue["Topic"], assoc[[selected, "Value"]] ]
 	]}];
 
-	EventObject[<|"Id"->uid, "Initial"->assoc[Selected, "Value"], "View"->HTMLView[RadioX[ "List" -> ({assoc[#, "Name"], #}&/@ Keys[assoc]), "Event"->id, "Selected"->Selected, "Label"->OptionValue["Label"] ], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]	
+	EventObject[<|"Id"->uid, "Initial"->assoc[Selected, "Value"], "View"->HTMLView[RadioX[ "List" -> ({assoc[#, "Name"], #}&/@ Keys[assoc]), "Event"->id, "Selected"->Selected, "Label"->OptionValue["Label"], opts ], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]	
 ] ]
 
-Options[InputRadio] = {"Label" -> "", "Topic" -> "Default", "Event":>CreateUUID[]}
+Options[InputRadio] = {"Label" -> "", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "ButtonClass"->"", "ButtonStyle"->"", "ContainerClass"->"", "ContainerStyle"->"", "ItemLabelClass"->"", "ItemLabelStyle"->"", "Topic" -> "Default", "Event":>CreateUUID[]}
 
 InputRadio[EventObject[a_Association], rest_]  := InputRadio[rest, "Event" -> a["Id"] ]
 InputRadio[EventObject[a_Association], rest__] := InputRadio[rest, "Event" -> a["Id"] ]
@@ -483,13 +444,13 @@ InputSelect[apt_List, DefaultItem_:Null, opts: OptionsPattern[] ] := Module[{ass
 		EventFire[uid, OptionValue["Topic"], assoc[selected, "Value"] ]
 	]}];
 
-	EventObject[<|"Id"->uid, "InternalId"->id, "HashSelected"->Selected, "HashList"->Keys[(#["Name"]&/@ assoc)], "Initial"->assoc[Selected, "Value"], "View"->HTMLView[SelectX[ #["Name"]&/@ assoc, "Event"->id, "Selected"->Selected, "Label"->OptionValue["Label"] ], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]	
+	EventObject[<|"Id"->uid, "InternalId"->id, "HashSelected"->Selected, "HashList"->Keys[(#["Name"]&/@ assoc)], "Initial"->assoc[Selected, "Value"], "View"->HTMLView[SelectX[ #["Name"]&/@ assoc, "Event"->id, "Selected"->Selected, "Label"->OptionValue["Label"], opts ], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]	
 ] ]
 
 InputSelect[EventObject[a_Association], rest_]  := InputSelect[rest, "Event" -> a["Id"] ]
 InputSelect[EventObject[a_Association], rest__] := InputSelect[rest, "Event" -> a["Id"] ]
 
-Options[InputSelect] = {"Label" -> "", "Topic" -> "Default", "Event":>CreateUUID[], "TrackedExpression"->Null}
+Options[InputSelect] = {"Label" -> "", "Class"->"", "Style"->"", "LabelClass"->"", "LabelStyle"->"", "SelectClass"->"", "SelectStyle"->"", "Topic" -> "Default", "Event":>CreateUUID[], "TrackedExpression"->Null}
 
 GroupX = ImportComponent[FileNameJoin[{$troot, "Group.wlx"}] ];
 
@@ -509,7 +470,7 @@ InputGroup[{in__EventObject}, opts: OptionsPattern[] ] := With[{evid = OptionVal
 	]
 ];
 
-Options[InputGroup] = {"Label" -> "", "Description"->"", "Event":>CreateUUID[], "Layout"->"Vertical"}
+Options[InputGroup] = {"Label" -> "", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "ContainerClass"->"", "ContainerStyle"->"", "Description"->"", "Event":>CreateUUID[], "Layout"->"Vertical"}
 
 InputGroup[EventObject[a_Association], rest_]  := InputGroup[rest, "Event" -> a["Id"] ]
 InputGroup[EventObject[a_Association], rest__] := InputGroup[rest, "Event" -> a["Id"] ]
@@ -541,22 +502,6 @@ InputGroup[in_?AssocEventsListQ, opts: OptionsPattern[] ] := With[{evid = Create
 Unprotect[TableView]
 ClearAll[TableView]
 
-InputTable::removed = "The support of InputTable was suspended due to low demand. Please send open Github issue"
-
-InputTable[list_, opts: OptionsPattern[] ] := LeakyModule[{loader}, With[{evid = OptionValue["Event"]},
-	If[Depth[list] < 3, Return[Module, Style["Must be a list of lists!", Background->Red] ] ];
-	Message[InputTable::removed];
-	
-	EventObject[<|"Id"->evid, "View"->Dataset[Take[list, Min[150, Length[list] ] ], "Event"->evid,  opts]|>]
-] ]
-
-Options[InputTable] = {"Height" -> 370, "Event":>CreateUUID[]}
-
-InputTable[EventObject[a_Association], rest_]  := InputTable[rest, "Event" -> a["Id"] ]
-InputTable[EventObject[a_Association], rest__] := InputTable[rest, "Event" -> a["Id"] ]
-
-
-SetAttributes[InputTable, HoldFirst]
 
 (* convert it to Dataset *)
 TableView[list_List, opts: OptionsPattern[] ] := If[OptionValue[TableHeadings] =!= Null,

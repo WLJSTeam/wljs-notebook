@@ -3,7 +3,11 @@ Component[opts_Association, OptionsPattern[]] := With[{
     Label = OptionValue["Label"], 
     Event = OptionValue["Event"],
     Topic = OptionValue["Topic"],
-    UId   = CreateUUID[]
+    UId   = CreateUUID[],
+    LabelClass = OptionValue["LabelClass"],
+    LabelStyle = OptionValue["LabelStyle"],
+    SelectClass = OptionValue["SelectClass"],
+    SelectStyle = OptionValue["SelectStyle"]
 },
 With[{
     Opts = Table[
@@ -18,8 +22,8 @@ With[{
 },
   {
     <div>
-      <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900"><Label/></label>
-      <select id="#instanceId" class="sm-controls mt-1 block rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys text-xs">
+      <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+      <select id="#instanceId" class="sm-controls mt-1 block rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys text-xs {SelectClass}" style="{SelectStyle}">
         <Opts/>
       </select>
     </div>
@@ -33,7 +37,7 @@ With[{
   }
 ] ]
 
-Options[Component] = {"Topic" -> "Default", "Label"->"", "Event"->"blackhole", "Selected" -> Null, "TrackedExpression"->Null}
+Options[Component] = {"Topic" -> "Default", "Label"->"", "Event"->"blackhole", "Selected" -> Null, "TrackedExpression"->Null, "LabelClass"->"", "LabelStyle"->"", "SelectClass"->"", "SelectStyle"->""}
 
 Component
 

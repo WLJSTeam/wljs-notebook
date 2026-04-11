@@ -3,17 +3,25 @@ Component[OptionsPattern[]] := With[{
     selected = OptionValue["Selected"],
     OnChange = OptionValue["Event"],
     Pattern = "Default",
-    Title = OptionValue["Label"]
+    Title = OptionValue["Label"],
+    LabelClass = OptionValue["LabelClass"],
+    LabelStyle = OptionValue["LabelStyle"],
+    ButtonClass = OptionValue["ButtonClass"],
+    ButtonStyle = OptionValue["ButtonStyle"],
+    ContainerClass = OptionValue["ContainerClass"],
+    ContainerStyle = OptionValue["ContainerStyle"],
+    ItemLabelClass = OptionValue["ItemLabelClass"],
+    ItemLabelStyle = OptionValue["ItemLabelStyle"]
 },
     With[{
         OptionsList = Table[With[{Name = OptionValue["List"][[index, 1]], Val = OptionValue["List"][[index, 2]], UId = UIDList[[index]]},
             If[selected === Val,
                 <div class="flex items-center">
-                    <input name="{OnChange}" value="{index}" checked="true" type="radio" class="h-4 w-4 border-gray-300  text-sys focus:ring-sys" /><label for="{UId}" class="ml-3 block text-sm  font-medium leading-6 text-gray-900"><Name/></label>
+                    <input name="{OnChange}" value="{index}" checked="true" type="radio" class="h-4 w-4 border-gray-300  text-sys focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm  font-medium leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
                 </div>
             ,
                 <div class="flex items-center">
-                    <input name="{OnChange}" value="{index}" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys" /><label for="{UId}" class="ml-3 block text-sm font-medium  leading-6 text-gray-900"><Name/></label>
+                    <input name="{OnChange}" value="{index}" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm font-medium  leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
                 </div>    
             ]
         ], {index, 1, Length @ OptionValue["List"]}]
@@ -22,8 +30,8 @@ Component[OptionsPattern[]] := With[{
             JSONList = ExportString[UIDList, "JSON"]
         },
             <fieldset>
-                <legend class="mt-1 text-sm leading-6 text-gray-600 "><Title/></legend>
-                <div class="mt-2 flex-row gap-x-2 flex items-baseline" id="#instanceId">
+                <legend class="mt-1 text-sm leading-6 text-gray-600 {LabelClass}" style="{LabelStyle}"><Title/></legend>
+                <div class="mt-2 flex-row gap-x-2 flex items-baseline {ContainerClass}" style="{ContainerStyle}" id="#instanceId">
                     <OptionsList/>
                 </div>
                 <script type="module">
@@ -42,6 +50,6 @@ Component[OptionsPattern[]] := With[{
     ]
 ]
 
-Options[Component] = {"Label"->"", "Topic"->"Default", "Event"->"", "List"->{}, "Selected"->""}
+Options[Component] = {"Label"->"", "Topic"->"Default", "Event"->"", "List"->{}, "Selected"->"", "LabelClass"->"", "LabelStyle"->"", "ButtonClass"->"", "ButtonStyle"->"", "ContainerClass"->"", "ContainerStyle"->"", "ItemLabelClass"->"", "ItemLabelStyle"->""}
 
 Component

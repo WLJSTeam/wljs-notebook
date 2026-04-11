@@ -1,8 +1,8 @@
-Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionValue["Label"], Description = OptionValue["Description"]},
+Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionValue["Label"], Description = OptionValue["Description"], LabelClass = OptionValue["LabelClass"], LabelStyle = OptionValue["LabelStyle"], ContainerClass = OptionValue["ContainerClass"], ContainerStyle = OptionValue["ContainerStyle"]},
 
   If[OptionValue["Layout"] === "Vertical", 
-    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls">
-      <div class="px-2 py-2">
+    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
+      <div class="px-2 py-2 {LabelClass}" style="{LabelStyle}">
         <Label/>
       </div>
       <div class="px-2 py-2 flex flex-col gap-y-3" data-type="group">
@@ -12,8 +12,8 @@ Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionVal
       </div>
     </div>
   ,
-    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls">
-      <div class="px-2 py-2">
+    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
+      <div class="px-2 py-2 {LabelClass}" style="{LabelStyle}">
         <Label/>
       </div>
       <div class="px-2 py-2 flex flex-row gap-x-3" data-type="group">
@@ -25,6 +25,6 @@ Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionVal
   ]
 ]
 
-Options[Component] = {"UId":>CreateUUID[], "Label"->"", "Description"->"", "Layout"->"Vertical"}
+Options[Component] = {"UId":>CreateUUID[], "Label"->"", "Description"->"", "Layout"->"Vertical", "LabelClass"->"", "LabelStyle"->"", "ContainerClass"->"", "ContainerStyle"->""}
 
 Component

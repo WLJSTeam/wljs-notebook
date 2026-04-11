@@ -1,11 +1,11 @@
-Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = OptionValue["Topic"], Uid = CreateUUID[], Label = OptionValue["Label"], Description = OptionValue["Description"], Checked = OptionValue["Checked"]},
+Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = OptionValue["Topic"], Uid = CreateUUID[], Label = OptionValue["Label"], Description = OptionValue["Description"], Checked = OptionValue["Checked"], class = OptionValue["Class"], style = OptionValue["Style"], labelClass = OptionValue["LabelClass"], labelStyle = OptionValue["LabelStyle"]},
     {
         <div class="relative flex items-start sm-controls">
             <div class="flex h-6 items-center">
-              <input id="#instanceId" type="checkbox" style="revert:all; appearance: auto"></input>
+              <input id="#instanceId" type="checkbox" class="{class}" style="revert:all; appearance: auto; {style}"></input>
             </div>
             <div class="ml-3 text-sm leading-6">
-              <label for="comments" class="font-medium text-gray-900"><Label/></label>
+              <label for="comments" class="font-medium text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
               <p class="text-gray-500"><Description/></p>
             </div>
         </div>
@@ -25,6 +25,6 @@ Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = Optio
     }
 ];
 
-Options[Component] = {"Event"->"blackhole", "Label"->"", "Description"->"", "Checked"->False, "Topic"->"Default"};
+Options[Component] = {"Event"->"blackhole", "Label"->"", "Description"->"", "Checked"->False, "Topic"->"Default", "Class"->"", "Style"->"", "LabelClass"->"", "LabelStyle"->""};
 
 Component
