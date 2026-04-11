@@ -105,6 +105,7 @@ CoffeeLiqueur`Extensions`Rasterize`Internal`GetPDF;
 
 Rasterize::frontget = "Could not get the rasterized data from the frontend";
 Rasterize::needraster = "Not supported directly. Please, apply Rasterize before exporting as an image"
+Rasterize::nowindow = "Creating offscreen window for rasterizing"
 
 (* [TODO] Use runAsyncInTemporalWindow if CurrentWindow is none or Failed *)
 
@@ -116,8 +117,6 @@ Rasterize[any_, ___, OptionsPattern[] ] := (
 Rasterize[any_, ___, opts: OptionsPattern[] ] := With[{window = OptionValue["Window"], p = Promise[], channel = CreateUUID[], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
 
   If[FailureQ[FrontSubmit[1+1, "Window"->window] ],
-
-    Print["Creating offscreen window for rasterizing"];
     EventFire[p, Resolve, True];
 
     With[{r = WaitAll[runAsyncInTemporalWindow[Function[a, 
@@ -161,6 +160,7 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], chann
   
   If[FailureQ[FrontSubmit[1+1, "Window"->window] ],
     EventFire[p, Resolve, True];
+    Message[Rasterize::nowindow ];
 
     runAsyncInTemporalWindow[Function[a, 
       RasterizeAsync[any, "Window"->a, opts]
@@ -193,6 +193,7 @@ producePDF[any_, OptionsPattern[] ] := (
 
 producePDF[any_, opts: OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
   If[FailureQ[FrontSubmit[1+1, "Window"->window] ],
+    Message[Rasterize::nowindow ];
     EventFire[p, Resolve, True];
     runAsyncInTemporalWindow[Function[a, 
       producePDF[any, "Window"->a, opts]
@@ -243,7 +244,7 @@ exportPDF[filename_, data_, opts___] :=
 ]
 
 
-runAsyncInTemporalWindow[asyncfunctionGenerator_] := With[{win = CreateWindow[Cell["", "Output", "HTML"] ], p = Promise[]},
+runAsyncInTemporalWindow[asyncfunctionGenerator_] := With[{win = CreateWindow[Cell["", "Output", "HTML"], "Offscreen"->True, WindowSize->{1920, 1280} ], p = Promise[]},
 EventHandler[win, {
   "Ready" -> Function[winowObject,
     Then[asyncfunctionGenerator[winowObject], Function[result,

@@ -255,7 +255,7 @@ App[request_] := With[{
         storeSettings[settings];              
       ];
 
-      If[env["AppJSON", "version"] =!= settings["CurrentVersion"], With[{version = env["AppJSON", "version"]},
+      If[AppExtensions`FrontendEnv["AppJSON", "version"] =!= settings["CurrentVersion"], With[{version = AppExtensions`FrontendEnv["AppJSON", "version"]},
         settings = Join[settings, <|"CurrentVersion" -> version|>];
         storeSettings[settings];
       ] ];

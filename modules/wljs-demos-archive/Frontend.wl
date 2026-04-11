@@ -9,7 +9,7 @@ Begin["`Internal`"]
 
 
 
-checkReleaseNotes[assoc_] := With[{client = assoc["Client"], settings = assoc["Settings"], env = assoc["Env"]}, If[env["AppJSON", "version"] =!= settings["CurrentVersion"], 
+checkReleaseNotes[assoc_] := With[{client = assoc["Client"], settings = assoc["Settings"], env = AppExtensions`FrontendEnv}, If[env["AppJSON", "version"] =!= settings["CurrentVersion"], 
   syncDemoFolder;
 
   With[{version = env["AppJSON", "version"]},

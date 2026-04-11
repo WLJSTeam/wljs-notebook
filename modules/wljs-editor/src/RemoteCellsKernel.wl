@@ -579,7 +579,7 @@ CreateWindow[expr_, opts: OptionsPattern[] ] := With[{transformed = Flatten[{tra
 
 
 
-Options[CreateWindow] = {"Notebook" :> RemoteNotebook[ System`$EvaluationContext["Notebook"] ], "Window":>CurrentWindow[], WindowTitle->"Projector", WindowSize->Automatic}
+Options[CreateWindow] = {"Offscreen"->False, "Notebook" :> RemoteNotebook[ System`$EvaluationContext["Notebook"] ], "Window":>CurrentWindow[], WindowTitle->"Projector", WindowSize->Automatic}
 
 CellPrint[any_, opts___] := With[{data = CellPrintGeneral[#, opts] &/@ Flatten[{transformCellExpr[any]}]},
     If[Length[data] === 1, data[[1]], data]

@@ -450,12 +450,16 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                 With[{win = win`WindowObj["Notebook" -> nb, "EvaluatedQ" -> evaluatedQ, "Title"->title, ImageSize->imageSize, "Display"->display, "Hash"->t["Meta", "Hash"], "Data" -> t["Data"], "Ref" -> First[nb["Cells"] ]["Hash"] ]},
                                                     Echo["project >> sending global event"];
                                                     EventFire[nb, "OnWindowCreate", <|"Window"->win, "Client"->cli|>];
-                                                    If[imageSize === Automatic,
-                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                    If[TrueQ[t["Meta", "Offscreen"] ],
+                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->"width=1,height=1"];
                                                     ,
-                                                        With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]] ], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
-                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
-                                                        ];
+                                                        If[!NumberQ[imageSize] && !ListQ[imageSize],
+                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                        ,
+                                                            With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]]], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
+                                                                WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
+                                                            ];
+                                                        ]
                                                     ]
                                                 ];                                                
                                             ];
@@ -473,12 +477,16 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                 With[{win = win`WindowObj["Notebook" -> nb, "EvaluatedQ" -> evaluatedQ, "Title"->title, ImageSize->imageSize, "Display"->display, "Hash"->t["Meta", "Hash"], "Data" -> t["Data"], "Ref" -> First[nb["Cells"] ]["Hash"] ]},
                                                     Echo["project >> sending global event"];
                                                     EventFire[nb, "OnWindowCreate", <|"Window"->win, "Client"->cli|>];
-                                                    If[imageSize === Automatic,
-                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                    If[TrueQ[t["Meta", "Offscreen"] ],
+                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->"width=1,height=1"];
                                                     ,
-                                                        With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]] ], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
-                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
-                                                        ];
+                                                        If[!NumberQ[imageSize] && !ListQ[imageSize],
+                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                        ,
+                                                            With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]]], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
+                                                                WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
+                                                            ];
+                                                        ]
                                                     ]
                                                 ];                                                
                                             ];
@@ -514,7 +522,8 @@ EventHandler[NotebookEditorChannel // EventClone,
                                         "EvaluatedQ" -> evaluatedQ,
                                         "Display" -> display,
                                         "Title" -> title,
-                                        ImageSize -> imageSize
+                                        ImageSize -> imageSize,
+                                        "Offscreen" -> TrueQ[t["Meta", "Offscreen"] ]
                                     |>]          
                                 ]
                             ,
@@ -526,12 +535,16 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                 With[{win = win`WindowObj["Notebook" -> notebook, "EvaluatedQ" -> evaluatedQ, "Title"->title, ImageSize->imageSize, "Display"->display, "Hash"->t["Meta", "Hash"], "Data" -> t["Data"], "Ref" -> First[notebook["Cells"] ]["Hash"] ]},
                                                     Echo["project >> sending global event"];
                                                     EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->cli|>];
-                                                    If[imageSize === Automatic,
-                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                    If[TrueQ[t["Meta", "Offscreen"] ],
+                                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->"width=1,height=1"];
                                                     ,
-                                                        With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]] ], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
-                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
-                                                        ];
+                                                        If[!NumberQ[imageSize] && !ListQ[imageSize],
+                                                            WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_];
+                                                        ,
+                                                            With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]]], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round] ]},
+                                                                WebUILocation[StringJoin["/window?id=", win["Hash"] ], cli, "Target"->_, "Features"->features]
+                                                            ];
+                                                        ]
                                                     ]
                                                 ];                                                
                                             ]
@@ -572,7 +585,8 @@ EventHandler[NotebookEditorChannel // EventClone,
                             "Data" -> t["Data"],
                             "EvaluatedQ" -> evaluatedQ,
                             "Display" -> display,
-                            ImageSize -> imageSize
+                            ImageSize -> imageSize,
+                            "Offscreen" -> TrueQ[t["Meta", "Offscreen"] ]
                         |>]          
                     ]
                           

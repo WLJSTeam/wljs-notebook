@@ -374,7 +374,7 @@ projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_
     ];
 ] 
 
-projectCellData[cell_, evaluatedQ_, data_, display_, uid_,  imageSize_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
+projectCellData[cell_, evaluatedQ_, data_, display_, uid_,  imageSize_, offscreen_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
     client = If[MatchQ[cli, _Symbol], notebook["Socket"], cli]
 },
 
@@ -384,12 +384,16 @@ projectCellData[cell_, evaluatedQ_, data_, display_, uid_,  imageSize_, notebook
             Echo["project >> sending global event"];
             EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->client|>];
 
-            If[imageSize === Automatic,
-                WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
+            If[offscreen,
+                WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_, "Features"->"width=1,height=1"];
             ,
-                With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]] ], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize ] ]},
-                    WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_, "Features" -> features];
-                ]
+                If[imageSize === Automatic,
+                    WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
+                ,
+                    With[{features = If[ListQ[imageSize], StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]] ], StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize ] ]},
+                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_, "Features" -> features];
+                    ]
+                ];            
             ];
     ];
 ] 
@@ -868,7 +872,7 @@ Component[OptionsPattern[]] := With[{
         "NotebookCellEvaluate" -> Function[cell, evaluateCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
         "NotebookCellEvaluateTemporal" -> Function[cell, evaluateCellFull[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
         "NotebookCellProject" -> Function[cell, projectCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellDataProject" -> Function[assoc, projectCellData[assoc["Cell"], Lookup[assoc, "EvaluatedQ", False], Lookup[assoc, "Data", assoc["Cell"]["Data"]], Lookup[assoc, "Display", "codemirror"], Lookup[assoc, "Hash", Null], Lookup[assoc, ImageSize, Automatic], notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "NotebookCellDataProject" -> Function[assoc, projectCellData[assoc["Cell"], Lookup[assoc, "EvaluatedQ", False], Lookup[assoc, "Data", assoc["Cell"]["Data"]], Lookup[assoc, "Display", "codemirror"], Lookup[assoc, "Hash", Null], Lookup[assoc, ImageSize, Automatic], Lookup[assoc, "Offscreen", False], notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
 
         "NotebookQ" -> Function[Null,
             notebook

@@ -1595,7 +1595,8 @@ function create_window(opts, cbk = () => {}) {
             width: 1024,
             height: 640,
             linuxMenuBar: true,
-            override: {}
+            override: {},
+            offscreen: false
         };
 
 
@@ -1679,8 +1680,14 @@ function create_window(opts, cbk = () => {}) {
 
         if (options.features) {
             options.features = parseWindowFeatures(options.features);
+            console.log(options.features);
             options.width = options.features.width || options.width;
             options.height = options.features.height || options.height;
+            if (options.width == 1 && options.height == 1) {
+                options.offscreen = true;
+                options.width = 1920;
+                options.height = 1280;
+            }
         }
 
         if (isMac) {
@@ -1699,7 +1706,8 @@ function create_window(opts, cbk = () => {}) {
                 webPreferences: {
                     //scrollBounce: true,
                     preload: path.join(__dirname, 'preload_main.js'),
-                    backgroundThrottling:  false 
+                    backgroundThrottling:  false,
+                    offscreen: options.offscreen 
                 },
                 ...options.override
 
@@ -1745,7 +1753,8 @@ function create_window(opts, cbk = () => {}) {
                 show: options.show,
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
-                    backgroundThrottling:  false 
+                    backgroundThrottling:  false ,
+                    offscreen: options.offscreen
                 },
                 ...options.override
 
@@ -1840,7 +1849,8 @@ function create_window(opts, cbk = () => {}) {
                 show: options.show,
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
-                    backgroundThrottling:  false 
+                    backgroundThrottling:  false ,
+                    offscreen: options.offscreen
                 },
                 ...options.override
 
