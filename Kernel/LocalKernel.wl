@@ -283,7 +283,7 @@ start[k_LocalKernelObject] := Module[{link},
     k["ReadyQ"] = False;
 
     LinkWrite[link, Unevaluated[$HistoryLength = 0] ];
-    LinkWrite[link, Unevaluated[$AllowDataUpdates = False] ];
+    (* LinkWrite[link, Unevaluated[$AllowDataUpdates = False] ]; *)
     With[{path = k["RootDirectory"]},
         LinkWrite[link, Unevaluated[ PacletDirectoryUnload /@ PacletDirectoryLoad[]; ] ];
         LinkWrite[link, Unevaluated[ SetDirectory[path] ] ] ;
