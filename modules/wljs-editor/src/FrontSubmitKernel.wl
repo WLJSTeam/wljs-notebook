@@ -14,17 +14,13 @@ CurrentWindow::usage = "Gets current window representation"
 FrontFetch::usage = "FrontFetch[expr] fetches an expression from frontend"
 FrontFetchAsync::usage = "FrontFetchAsync[expr] fetches an expression from frontend and returns Promise"
 
-FrontEndInstanceGroup::usage = "depricated"
-FrontEndInstanceGroupDestroy::usage = "depricated"
-
 
 FrontInstanceGroup::usage = "FrontInstanceGroup[] a constructor for a frontend instance group wrapper"
 FrontInstanceReference::usage = "FrontInstanceReference[] a constructor to make a pointer to a frontend instance"
 
 FrontInstanceGroupRemove::usage = "Removes FrontInstanceGroup similar to Delete"
 
-WindowObj;
-WindowObj::usage = "Internal represenation of a current window"
+WindowObj::usage = "Represenation of a current window"
 
 Begin["`Private`"]
 
@@ -153,19 +149,13 @@ Options[FrontFetch] = {"Format"->"RawJSON", "Window" :> CurrentWindow[]};
 Options[FrontFetchAsync] = {"Format"->"RawJSON", "Window" :> CurrentWindow[]};
 
 FrontSubmit[expr_String, opts: OptionsPattern[] ] := FrontSubmit[execJS[expr], opts ] 
-FrontSubmit[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["Socket"]},
-    If[OptionValue["Tracking"],     
-        (* DEPRICATED !!! *)
-        (* DEPRICATED !!! *)
-        With[{uid = CreateUUID[]}, 
-            If[FailureQ[WLJSTransportSend[FrontEndInstanceGroup[expr, uid], cli] ], $Failed,
-                FrontEndInstanceGroup[uid, OptionValue["Window"] ]
-            ] 
-        ]
+FrontSubmit[expr_, OptionsPattern[] ] := With[{win = OptionValue["Window"]},
+    If[Head[win] =!= WindowObj,     
+        $Failed
     ,
         
-        If[FailureQ[WLJSTransportSend[expr, cli] ], $Failed,
-            CoffeeLiqueur`Extensions`Communication`$lastClient = cli;
+        If[FailureQ[WLJSTransportSend[expr, win["Socket"] ] ], $Failed,
+            CoffeeLiqueur`Extensions`Communication`$lastClient = win["Socket"];
             Null
         ]          
     ]
@@ -174,13 +164,6 @@ FrontSubmit[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["Sock
 
 FrontSubmit[expr_, FrontInstanceReference[m_], opts___] := FrontSubmit[exec[expr, m], opts]
 
-
-(* DEPRICATED !!! *)
-FrontEndInstanceGroup /: Delete[FrontEndInstanceGroup[uid_, win_WindowObj], OptionsPattern[{"Window" :> CurrentWindow[]}] ] := With[{},
-    If[FailureQ[WLJSTransportSend[FrontEndInstanceGroupDestroy[uid], win["Socket"] ] ], $Failed,
-        Null
-    ]
-]
 
 Options[FrontSubmit] = {"Window" :> CurrentWindow[], "Tracking" -> False}
 
