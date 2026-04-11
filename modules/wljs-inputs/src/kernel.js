@@ -674,6 +674,10 @@ const sortCellValue = (cell) => {
     const [y = 0, m = 1, d = 1, h = 0, min = 0, s = 0] = parts;
     return new Date(y, m - 1, d, h, min, s).getTime();
   }
+  if (Array.isArray(cell) && cell[0] === 'Quantity') {
+    const val = parseBasicAtoms(cell[1]);
+    if (typeof val === 'number') return val;
+  }
   return null;
 }
 
@@ -1093,10 +1097,28 @@ core.Dataset = async (args, env) => {
         thElements.forEach((h, idx) => {
           h.arrow.innerText = idx === sortCol && sortDir !== 0 ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
         });
-        if (sortDir === 0) {
-          rows.sort((a, b) => a._origIdx - b._origIdx);
+        if (totalParts > 1) {
+          env.local.callback = async (data) => {
+            rows = await rowsReprocess(data);
+            rows.forEach((r, i) => { r._origIdx = i; });
+            pagination = Math.ceil(rows.length / pageSize);
+            currentPart = 0;
+            totalOffset = 0;
+            page = 0;
+            offset = 0;
+            viewPort.rebuild(rows, windowSize);
+            table.scrollTop = 0;
+          };
+          console.log('sorting call');
+          console.log(env.local.event)
+          server.kernel.io.fire(env.local.event, [colIndex + 1, sortDir], 'Sort');
+          return;
         } else {
-          rows.sort((a, b) => sortDir * compareCells(sortCellValue(a[colIndex]), sortCellValue(b[colIndex])));
+          if (sortDir === 0) {
+            rows.sort((a, b) => a._origIdx - b._origIdx);
+          } else {
+            rows.sort((a, b) => sortDir * compareCells(sortCellValue(a[colIndex]), sortCellValue(b[colIndex])));
+          }
         }
         page = 0;
         offset = 0;
@@ -1270,6 +1292,7 @@ core.Dataset = async (args, env) => {
 
       core[env.options.RequestCallback] = async (args) => {
         //console.error(args);
+        console.log('callback from server');
         const t = await interpretate(args[0], {...env, hold:true});
         env.local.callback(t);
       }
@@ -1515,10 +1538,26 @@ const tbView = async (args, env) => {
       thElements.forEach((h, idx) => {
         h.arrow.innerText = idx === sortCol && sortDir !== 0 ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
       });
-      if (sortDir === 0) {
-        rows.sort((a, b) => a._origIdx - b._origIdx);
+      if (totalParts > 1) {
+        env.local.callback = async (data) => {
+          rows = await rowsReprocess(data);
+          rows.forEach((r, i) => { r._origIdx = i; });
+          pagination = Math.ceil(rows.length / pageSize);
+          currentPart = 0;
+          totalOffset = 0;
+          page = 0;
+          offset = 0;
+          viewPort.rebuild(rows, windowSize);
+          table.scrollTop = 0;
+        };
+        server.kernel.io.fire(env.local.event, [colIndex + 1, sortDir], 'Sort');
+        return;
       } else {
-        rows.sort((a, b) => sortDir * compareCells(sortCellValue(a[colIndex]), sortCellValue(b[colIndex])));
+        if (sortDir === 0) {
+          rows.sort((a, b) => a._origIdx - b._origIdx);
+        } else {
+          rows.sort((a, b) => sortDir * compareCells(sortCellValue(a[colIndex]), sortCellValue(b[colIndex])));
+        }
       }
       page = 0;
       offset = 0;
@@ -1712,6 +1751,24 @@ const tbView = async (args, env) => {
     
     toStart.addEventListener('click', ()=>{
       if (block) return;
+      if (currentPart !== 0) {
+        block = true;
+        env.local.callback = async (data) => {
+          rows = await rowsReprocess(data);
+          rows.forEach((r, i) => { r._origIdx = i; });
+          pagination = Math.ceil(rows.length / pageSize);
+          currentPart = 0;
+          totalOffset = 0;
+          page = 0;
+          offset = 0;
+          viewPort.rebuild(rows, windowSize);
+          updateField(page);
+          table.scrollTop = 0;
+          block = false;
+        };
+        server.kernel.io.fire(env.local.event, 1, 'Part');
+        return;
+      }
       page = 0;
       offset = 0;
       viewPort.rebuild(rows, windowSize);
@@ -1721,6 +1778,24 @@ const tbView = async (args, env) => {
 
     toEnd.addEventListener('click', ()=>{
       if (block) return;
+      if (currentPart !== totalParts - 1) {
+        block = true;
+        env.local.callback = async (data) => {
+          rows = await rowsReprocess(data);
+          rows.forEach((r, i) => { r._origIdx = i; });
+          pagination = Math.ceil(rows.length / pageSize);
+          currentPart = totalParts - 1;
+          totalOffset = totalLength - rows.length;
+          page = pagination - 1;
+          offset = 0;
+          viewPort.rebuild(rows, windowSize);
+          updateField(page);
+          table.scrollTop = table.scrollHeight - table.clientHeight - 10;
+          block = false;
+        };
+        server.kernel.io.fire(env.local.event, totalParts, 'Part');
+        return;
+      }
       page = pagination - 1;
       offset = 0;
       viewPort.rebuild(rows, windowSize);

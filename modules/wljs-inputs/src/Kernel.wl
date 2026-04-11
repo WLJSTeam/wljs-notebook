@@ -673,9 +673,20 @@ DatasetWrapperBox[ l: List[__List], form_ ] := With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
 
-				EventHandler[event, {"Part"->Function[part,
-					WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-				]} ];
+				EventHandler[event, {
+					"Part"->Function[part,
+						WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+					],
+					"Sort"->Function[spec,
+						Echo[spec];
+						With[{col = spec[[1]], dir = spec[[2]]},
+							With[{sorted = If[dir === 0, l, SortBy[l, #[[col]]&, If[dir === -1, ReverseOrder, Order] ] ]},
+								store = splitDataset[sorted];
+								WLJSTransportSend[req[store[[1]]], Global`$Client ]
+							]
+						]
+					]
+				} ];
 
 				With[{view = MakeBoxes[o, form]},
 					AppendTo[garbage, Hold[store ] ];
@@ -695,9 +706,19 @@ DatasetWrapperBox[ l: List[__List], StandardForm] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, {"Part"->Function[part,
-			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] } ];
+		EventHandler[event, {
+			"Part"->Function[part,
+				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+			],
+			"Sort"->Function[spec,
+				With[{col = spec[[1]], dir = spec[[2]]},
+					With[{sorted = If[dir === 0, l, SortBy[l, #[[col]]&, If[dir === -1, ReverseOrder, Order] ] ]},
+						store = splitDataset[sorted];
+						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+					]
+				]
+			]
+		} ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -719,9 +740,19 @@ DatasetWrapperBox[ l_List , form_ ] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, {"Part"-> Function[part,
-			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] } ];
+		EventHandler[event, {
+			"Part"-> Function[part,
+				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+			],
+			"Sort"->Function[spec,
+				With[{col = spec[[1]], dir = spec[[2]]},
+					With[{sorted = If[dir === 0, l, SortBy[l, #[[col]]&, If[dir === -1, ReverseOrder, Order] ] ]},
+						store = splitDataset[sorted];
+						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+					]
+				]
+			]
+		} ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -743,9 +774,19 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, {"Part"->Function[part,
-			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] } ];
+		EventHandler[event, {
+			"Part"->Function[part,
+				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+			],
+			"Sort"->Function[spec,
+				With[{col = spec[[1]], dir = spec[[2]]},
+					With[{sorted = If[dir === 0, l, SortBy[l, #[[col]]&, If[dir === -1, ReverseOrder, Order] ] ]},
+						store = splitDataset[sorted];
+						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+					]
+				]
+			]
+		} ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -774,14 +815,25 @@ DatasetWrapperBox[ a: Association[r: Rule[_, _Association]..] , form_ ] := With[
 DatasetWrapperBox[ l : List[__Association] , form_] := With[{
 	parts = splitDataset[l],
 	req = Unique["tableRequest"],
-	event = CreateUUID[]
+	event = CreateUUID[],
+	assocKeys = Keys[First[l]]
 },
 
 	LeakyModule[{store},
 
-		EventHandler[event, {"Part"-> Function[part,
-			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] } ];
+		EventHandler[event, {
+			"Part"-> Function[part,
+				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+			],
+			"Sort"->Function[spec,
+				With[{col = spec[[1]], dir = spec[[2]]},
+					With[{sorted = If[dir === 0, l, SortBy[l, #[assocKeys[[col]] ]&, If[dir === -1, ReverseOrder, Order] ] ]},
+						store = splitDataset[sorted];
+						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+					]
+				]
+			]
+		} ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -823,6 +875,8 @@ enshureNormal[t_Tabular] := With[{n = Normal[t]},
 	]
 ]
 
+enshureNormal[t_] := t
+
 TabularPreviewBox[t_Tabular] := With[{},
 	EditorView[ToString[Style["Tabular requires WL > 14.2", Red, Frame->True], StandardForm]]
 ] /; $VersionNumber < 14.2
@@ -848,9 +902,18 @@ TabularPreviewBox[t_Tabular] := With[{
 			props = Function[key, transformProp[schema["ColumnProperties"][key] ] ] /@ keys
 		},
 			With[{out = tbView[ transform /@ data, props, heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
-				EventHandler[event, {"Part"->Function[part,
-					WLJSTransportSend[req[takePart[t, reduced, transform][part] ], Global`$Client ] 
-				] } ];
+				EventHandler[event, {
+					"Part"->Function[part,
+						WLJSTransportSend[req[takePart[t, reduced, transform][part] ], Global`$Client ] 
+					],
+					"Sort"->Function[spec,
+						With[{col = spec[[1]], dir = spec[[2]]},
+							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[keys[[col]] ]& ], True, Reverse @ enshureNormal @ SortBy[t, #[keys[[col]] ]& ] ]},
+								WLJSTransportSend[req[takePart[sorted, reduced, transform][1] ], Global`$Client ]
+							]
+						]
+					]
+				} ];
 				out
 			]
 		]
@@ -859,9 +922,18 @@ TabularPreviewBox[t_Tabular] := With[{
 			heading = ToString /@ Range[ Length[data[[1]]] ]
 		},
 			With[{out = tbView[data, transformProp /@ schema["ColumnProperties"], heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
-				EventHandler[event, {"Part"-> Function[part,
-					WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], Global`$Client ] 
-				] } ];				
+				EventHandler[event, {
+					"Part"-> Function[part,
+						WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], Global`$Client ] 
+					],
+					"Sort"->Function[spec,
+						With[{col = spec[[1]], dir = spec[[2]]},
+							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[[col]]& ], True, Reverse @ enshureNormal @ SortBy[t, #[[col]]& ] ]},
+								WLJSTransportSend[req[takePart[sorted, reduced, Identity][1] ], Global`$Client ]
+							]
+						]
+					]
+				} ];				
 				out
 			]
 		]
@@ -871,14 +943,25 @@ TabularPreviewBox[t_Tabular] := With[{
 DatasetWrapperBox[ l : List[__Association] ,  StandardForm] := With[{
 	parts = splitDataset[l],
 	req = Unique["tableRequest"],
-	event = CreateUUID[]
+	event = CreateUUID[],
+	assocKeys = Keys[First[l]]
 },
 
 	LeakyModule[{store},
 
-		EventHandler[event, {"Part"-> Function[part,
-			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] } ];
+		EventHandler[event, {
+			"Part"-> Function[part,
+				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+			],
+			"Sort"->Function[spec,
+				With[{col = spec[[1]], dir = spec[[2]]},
+					With[{sorted = If[dir === 0, l, SortBy[l, #[assocKeys[[col]] ]&, If[dir === -1, ReverseOrder, Order] ] ]},
+						store = splitDataset[sorted];
+						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+					]
+				]
+			]
+		} ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm],  "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
