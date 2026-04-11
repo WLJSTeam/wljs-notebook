@@ -22,6 +22,7 @@ Get[FileNameJoin[{Directory[], "Common", "LPM", "LPM.wl"}] ];
 
 Off[General::shdw]; (* avoid warning messages from ContextAliases *)
 Off[Part::partd]; (* avoid warning messages from WLX *)
+Off[OptionValue::optnf]
 
 (* WLJS Package manager *)
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];

@@ -1,0 +1,76 @@
+<|"Notebook" -> <|"Controller" -> "a39a2896-0493-4f33-9b4e-6032d88521f3", 
+   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
+     CoffeeLiqueur`Notebook`Cells`CellObj`$441], "FocusedCellSelection" -> 
+    {220, 219}, "HaveToSaveAs" -> False, "MessangerChannel" -> Messanger, 
+   "ModalsChannel" -> "f95eb768-411b-4bc7-b9fd-658aedcb42f2", 
+   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
+ules/wljs-snippets/library/mem.wln", "PublicFields" -> {"Properties"}, 
+   "Quick" -> True, "Symbols" -> <||>, 
+   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
+      "Optimize memory", CoffeeLiqueur`Notebook`Cells`CellObj[
+       CoffeeLiqueur`Notebook`Cells`CellObj`$440]]}|>, 
+ "Cells" -> {<|"Data" -> ".md\n# Optimize memory\nRuns internal optimization \
+process, collecting garbage and reduce fragmentation.", 
+    "Display" -> "codemirror", "Hash" -> 
+     "c01b0b0e-5856-4c40-a944-836d64a11f6f", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
+    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
+    "UID" -> Null, "Notebook" -> "91534678-6b26-4ecd-9b00-ffb6f195be50"|>, 
+   <|"Data" -> "# Optimize memory\nRuns internal optimization process, \
+collecting garbage and reduce fragmentation.", "Display" -> "markdown", 
+    "Hash" -> "1b8915c9-199a-4269-b256-3d14878c59bb", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
+    "Notebook" -> "91534678-6b26-4ecd-9b00-ffb6f195be50"|>, 
+   <|"Data" -> "With[{old = MemoryInUse[]},\n  Share[];\n  \
+FrontSubmit[\"server.io.fetch('Share', []);\"];\n  \
+EchoLabel[\"Notification\"][StringTemplate[\"Freed up > `` Mb\"][(*FB[*)((old \
+- MemoryInUse[])(*,*)/(*,*)(1024.0 1024.0))(*]FB*)]];\n];", 
+    "Display" -> "codemirror", "Hash" -> 
+     "4a414f78-e271-49f8-9a39-7f803b1e1d89", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "91534678-6b26-4ecd-9b00-ffb6f195be50"|>, 
+   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
+OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
+OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
+tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
+cursor-default select-none items-center rounded-md px-2 py-1 \
+focus:bg-sys-25\">\n              <svg class=\"h-5 w-5 flex-none \
+text-gray-900  dark:text-gray-400 text-opacity-40\" viewBox=\"0 0 24 24\" \
+fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<path d=\"M10 6V4M10 \
+20V18M14 6V4M14 20V18M18.2222 10H20M4 10H5.77778M18.2222 14H20M4 \
+14H5.77778M10 10H14V14H10V10ZM7.99998 18H16C17.1046 18 18 17.1046 18 16V8C18 \
+6.89543 17.1046 6 16 6H7.99998C6.89542 6 5.99998 6.89543 5.99998 8V16C5.99998 \
+17.1046 6.89542 18 7.99998 18Z\" stroke=\"currentColor\" stroke-width=\"2\" \
+stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</svg> \n              \
+<span class=\"ml-3 flex-auto truncate\"><Title/></span><span class=\"ml-3 \
+flex-none text-xs font-semibold text-gray-500\">\n                <kbd \
+class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
+rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
+             <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
+fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
+clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
+17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
+6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
+1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
+22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
+10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
+9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
+7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
+11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
+11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
+11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
+12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
+8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
+16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
+17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>         \n      \
+          </button>\n              </span>\n    </li>    \
+\n];\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
+\"Tag\"->\"generic\", \"Button\"->Null};\n\nComponent", 
+    "Display" -> "codemirror", "Hash" -> 
+     "75f7c743-71d2-48ef-bb32-0e5915a3a5cb", "Invisible" -> False, 
+    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
+    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
+    "Notebook" -> "91534678-6b26-4ecd-9b00-ffb6f195be50"|>}, 
+ "serializer" -> "jsfn4"|>
