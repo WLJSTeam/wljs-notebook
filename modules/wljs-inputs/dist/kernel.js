@@ -1318,7 +1318,7 @@ core.Dataset = async (args, env) => {
         //request new page
         block = true;
         //console.log();
-        server.kernel.emitt(env.local.event, currentPart + 1);
+        server.kernel.io.fire(env.local.event, currentPart + 1, 'Part');
 
         return;
       }
@@ -1357,7 +1357,7 @@ core.Dataset = async (args, env) => {
         //request new page
         block = true;
         //console.log();
-        server.kernel.emitt(env.local.event, currentPart + 1);
+        server.kernel.io.fire(env.local.event, currentPart + 1, 'Part');
 
         return;
       }
@@ -1747,7 +1747,7 @@ const tbView = async (args, env) => {
         //request new page
         block = true;
         //console.log();
-        server.kernel.io.fire(env.local.event, currentPart + 1);
+        server.kernel.io.fire(env.local.event, currentPart + 1, 'Part');
 
         return;
       }
@@ -1786,7 +1786,7 @@ const tbView = async (args, env) => {
         //request new page
         block = true;
         //console.log();
-        server.kernel.io.fire(env.local.event, currentPart + 1);
+        server.kernel.io.fire(env.local.event, currentPart + 1, 'Part');
 
         return;
       }

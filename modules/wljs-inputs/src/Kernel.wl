@@ -673,9 +673,9 @@ DatasetWrapperBox[ l: List[__List], form_ ] := With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
 
-				EventHandler[event, Function[part,
+				EventHandler[event, {"Part"->Function[part,
 					WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-				] ];
+				]} ];
 
 				With[{view = MakeBoxes[o, form]},
 					AppendTo[garbage, Hold[store ] ];
@@ -695,9 +695,9 @@ DatasetWrapperBox[ l: List[__List], StandardForm] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, Function[part,
+		EventHandler[event, {"Part"->Function[part,
 			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] ];
+		] } ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -719,9 +719,9 @@ DatasetWrapperBox[ l_List , form_ ] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, Function[part,
+		EventHandler[event, {"Part"-> Function[part,
 			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] ];
+		] } ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -743,9 +743,9 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, Function[part,
+		EventHandler[event, {"Part"->Function[part,
 			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] ];
+		] } ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -779,9 +779,9 @@ DatasetWrapperBox[ l : List[__Association] , form_] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, Function[part,
+		EventHandler[event, {"Part"-> Function[part,
 			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] ];
+		] } ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
@@ -848,9 +848,9 @@ TabularPreviewBox[t_Tabular] := With[{
 			props = Function[key, transformProp[schema["ColumnProperties"][key] ] ] /@ keys
 		},
 			With[{out = tbView[ transform /@ data, props, heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
-				EventHandler[event, Function[part,
+				EventHandler[event, {"Part"->Function[part,
 					WLJSTransportSend[req[takePart[t, reduced, transform][part] ], Global`$Client ] 
-				] ];
+				] } ];
 				out
 			]
 		]
@@ -859,9 +859,9 @@ TabularPreviewBox[t_Tabular] := With[{
 			heading = ToString /@ Range[ Length[data[[1]]] ]
 		},
 			With[{out = tbView[data, transformProp /@ schema["ColumnProperties"], heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
-				EventHandler[event, Function[part,
+				EventHandler[event, {"Part"-> Function[part,
 					WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], Global`$Client ] 
-				] ];				
+				] } ];				
 				out
 			]
 		]
@@ -876,9 +876,9 @@ DatasetWrapperBox[ l : List[__Association] ,  StandardForm] := With[{
 
 	LeakyModule[{store},
 
-		EventHandler[event, Function[part,
+		EventHandler[event, {"Part"-> Function[part,
 			WLJSTransportSend[req[store[[part]]], Global`$Client ] 
-		] ];
+		] } ];
 
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm],  "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
