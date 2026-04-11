@@ -484,7 +484,7 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
 Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   event = CreateUUID[],
   evaluated = expr,
-  diffTable = Unique["diffTable"]
+  diffTable = Unique["diffTable"],
   bypassJIT = TrueQ[OptionValue[Refresh, opts, "JIT"] === False || OptionValue[Refresh, opts, PerformanceGoal] === "Quality"]
 },
   LeakyModule[{
