@@ -64,10 +64,21 @@ function activate_wolframscript {
   fi
 
   if [ -f $LICENSE_DIR/mathpass ]; then
-    # Activation success. 
+    # Activation success.
     echo "Success!"
   else
-    echo "WARNING: License file missing after activation."
+    # WolframEngine 14.x writes to ~/.Wolfram/Licensing instead of ~/.WolframEngine/Licensing
+    ALT_MATHPASS="/home/wljs/.Wolfram/Licensing/mathpass"
+    if [ -f "$ALT_MATHPASS" ]; then
+      echo "Found mathpass at alternative path ($ALT_MATHPASS), copying to $LICENSE_DIR..."
+      cp "$ALT_MATHPASS" "$LICENSE_DIR/mathpass"
+      echo "Success!"
+    else
+      echo "WARNING: License file missing after activation. Searched:"
+      echo "  $LICENSE_DIR/mathpass"
+      echo "  $ALT_MATHPASS"
+      find /home/wljs -name mathpass 2>/dev/null || true
+    fi
   fi
 }
 
