@@ -773,8 +773,16 @@ Do[With[{a=a},
   |>
 ];*)
 
+textureLessQ[expr_] := MatchQ[
+  expr,
+  GraphicsComplex[_, _] |
+  GraphicsComplex[_, _, Rule[VertexColors, _] ] |
+  GraphicsComplex[_, _, Rule[VertexNormals, _] ] |
+  GraphicsComplex[_, _, Rule[VertexColors, _], Rule[VertexNormals, _] |
+  GraphicsComplex[_, _, Rule[VertexNormals, _], Rule[VertexColors, _] ]
+] ];
 
-diff[GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] := With[{list1 = {args1}, list2 = {args2}}, 
+diff[g: GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] := If[textureLessQ[g], With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
     If[Lookup[attributes, "GraphicsQ", False],
       MapThread[Function[{a,b},
@@ -791,6 +799,9 @@ diff[GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] :=
    failureMessage["GraphicsComplex objects differs in args length", {list1, list2}];
    $Failed
  ]
+],
+   failureMessage["GraphicsComplex with textures are not supported", {None, None}];
+   $Failed  
 ]
 
 diff[Annotation[args1_, _], Annotation[args2_, _], level_, attributes_] := With[{}, 
