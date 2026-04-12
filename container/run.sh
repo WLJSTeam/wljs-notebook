@@ -32,12 +32,13 @@ chmod -R 777 $WL_DIR
 
 
 function activate_wolframscript {
+  local rc=0
   if [ -z ${WOLFRAMID_USERNAME+x} -o -z ${WOLFRAMID_PASSWORD+x} ]; then
     # Manual activation
-    su - wljs -c "wolframscript -activate"
+    su - wljs -c "wolframscript -activate" || rc=$?
     
-    if [ $? -ne 0 ]; then
-      echo "ERROR: Activation failed, exiting."
+    if [ $rc -ne 0 ]; then
+      echo "ERROR: Activation failed (exit code $rc)."
       echo "Giving a user an interactive shell"
       exec bash
     fi
@@ -51,10 +52,10 @@ function activate_wolframscript {
     lassign [wait] pid spawnpid os_error_flag value
     
     exit \$value
-    EOF"
+    EOF" || rc=$?
 
-    if [ $? -ne 0 ]; then
-      echo "ERROR: Activation with provided credentials failed."
+    if [ $rc -ne 0 ]; then
+      echo "ERROR: Activation with provided credentials failed (exit code $rc)."
       echo "Giving a user an interactive shell"
       exec bash
     fi
