@@ -63,8 +63,8 @@ function activate_wolframscript {
     fi
   fi
 
-  # Search broadly for the mathpass file — location varies by WolframEngine version
-  FOUND_MATHPASS=$(find /home /root /usr /opt -name mathpass 2>/dev/null | head -1)
+  # WolframEngine base image activates as 'ubuntu', so mathpass may land there
+  FOUND_MATHPASS=$(find /home /root -name mathpass 2>/dev/null | head -1)
 
   if [ -f "$LICENSE_DIR/mathpass" ]; then
     echo "Success!"
@@ -74,9 +74,7 @@ function activate_wolframscript {
     cp "$FOUND_MATHPASS" "$LICENSE_DIR/mathpass"
     echo "Success!"
   else
-    echo "ERROR: mathpass not found anywhere after activation. Full search:"
-    find /home /root /usr /opt -name "mathpass" -o -name "*.key" 2>/dev/null || true
-    echo "Dropping to interactive shell for manual debugging."
+    echo "ERROR: mathpass not found after activation."
     exec bash
   fi
 }
