@@ -30,9 +30,12 @@ else
   WL_DIR=/home/wljs/.WolframEngine
 fi
 
-mkdir -p $LICENSE_DIR
+mkdir -p "$LICENSE_DIR"
 
-chmod -R 777 $WL_DIR
+# Make sure the bind-mounted Licensing dir (owned by host root if auto-created
+# by Docker) is writable by the wljs user before we attempt activation.
+chmod -R 777 "$WL_DIR"
+chown -R wljs:wljs "$WL_DIR" 2>/dev/null || chmod -R a+rwX "$LICENSE_DIR"
 
 
 
@@ -66,8 +69,20 @@ function activate_wolframscript {
     fi
   fi
 
-  if [ -f $LICENSE_DIR/mathpass ]; then
-    # Activation success. 
+  # wolframscript may write the mathpass to a different path than $LICENSE_DIR
+  # (e.g. /home/wolframengine or /root if the base image env vars point there).
+  # Find it and relocate it so the rest of the script can find it.
+  if [ ! -f "$LICENSE_DIR/mathpass" ]; then
+    FOUND_PASS=$(find /home /root /tmp -name mathpass 2>/dev/null | head -1)
+    if [ -n "$FOUND_PASS" ]; then
+      echo "mathpass found at $FOUND_PASS, relocating to $LICENSE_DIR/mathpass"
+      mkdir -p "$LICENSE_DIR"
+      cp "$FOUND_PASS" "$LICENSE_DIR/mathpass"
+    fi
+  fi
+
+  if [ -f "$LICENSE_DIR/mathpass" ]; then
+    # Activation success.
     echo "Success!"
   else
     echo "ERROR: License file missing after activation."
