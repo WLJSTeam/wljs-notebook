@@ -8,6 +8,7 @@ PGID=${PGID:-1000}
 groupmod -o -g "$PGID" wljs
 usermod -o -u "$PUID" wljs
 
+
 if [ "$(getent passwd wljs | cut -d: -f6)" != "/home/wljs" ]; then
   mkdir -p /home/wljs
   usermod -d /home/wljs -m wljs
@@ -29,7 +30,8 @@ mkdir -p $LICENSE_DIR
 
 chmod -R 777 $WL_DIR
 
-
+chown -R wljs:wljs /wljs
+chown -R wljs:wljs /home/wljs
 
 function activate_wolframscript {
   local rc=0
@@ -65,16 +67,11 @@ function activate_wolframscript {
     # Activation success. 
     echo "Success!"
   else
-    echo "ERROR: License file missing after activation."
-    echo "Giving a user an interactive shell"
-    exec bash
+    echo "WARNING: License file missing after activation."
   fi
 }
 
-# Check if license exists else continue
-if [ ! -f $LICENSE_DIR/mathpass ]; then
-  activate_wolframscript
-fi
+activate_wolframscript
 
 chown -R wljs:wljs /wljs
 chown -R wljs:wljs /home/wljs
