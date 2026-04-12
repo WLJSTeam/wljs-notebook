@@ -42,5 +42,4 @@ COPY ./ /wljs/
 COPY container/run.sh /run.sh
 RUN chmod +x /run.sh
 
-ENTRYPOINT []
-CMD ["/run.sh"]
+CMD /run.sh

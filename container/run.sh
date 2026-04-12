@@ -5,11 +5,6 @@ set -eux -o pipefail
 PUID=${PUID:-1000}
 PGID=${PGID:-1000}
 
-# Remove the base-image user to avoid UID collision 
-if id wolframengine &>/dev/null; then
-  userdel wolframengine || true
-fi
-
 groupmod -o -g "$PGID" wljs
 usermod -o -u "$PUID" wljs
 
@@ -30,23 +25,19 @@ else
   WL_DIR=/home/wljs/.WolframEngine
 fi
 
-mkdir -p "$LICENSE_DIR"
+mkdir -p $LICENSE_DIR
 
-# Make sure the bind-mounted Licensing dir (owned by host root if auto-created
-# by Docker) is writable by the wljs user before we attempt activation.
-chmod -R 777 "$WL_DIR"
-chown -R wljs:wljs "$WL_DIR" 2>/dev/null || chmod -R a+rwX "$LICENSE_DIR"
+chmod -R 777 $WL_DIR
 
 
 
 function activate_wolframscript {
-  local rc=0
   if [ -z ${WOLFRAMID_USERNAME+x} -o -z ${WOLFRAMID_PASSWORD+x} ]; then
     # Manual activation
-    su - wljs -c "wolframscript -activate" || rc=$?
+    su - wljs -c "wolframscript -activate"
     
-    if [ $rc -ne 0 ]; then
-      echo "ERROR: Activation failed (exit code $rc)."
+    if [ $? -ne 0 ]; then
+      echo "ERROR: Activation failed, exiting."
       echo "Giving a user an interactive shell"
       exec bash
     fi
@@ -60,29 +51,17 @@ function activate_wolframscript {
     lassign [wait] pid spawnpid os_error_flag value
     
     exit \$value
-    EOF" || rc=$?
+    EOF"
 
-    if [ $rc -ne 0 ]; then
-      echo "ERROR: Activation with provided credentials failed (exit code $rc)."
+    if [ $? -ne 0 ]; then
+      echo "ERROR: Activation with provided credentials failed."
       echo "Giving a user an interactive shell"
       exec bash
     fi
   fi
 
-  # wolframscript may write the mathpass to a different path than $LICENSE_DIR
-  # (e.g. /home/wolframengine or /root if the base image env vars point there).
-  # Find it and relocate it so the rest of the script can find it.
-  if [ ! -f "$LICENSE_DIR/mathpass" ]; then
-    FOUND_PASS=$(find /home /root /tmp -name mathpass 2>/dev/null | head -1)
-    if [ -n "$FOUND_PASS" ]; then
-      echo "mathpass found at $FOUND_PASS, relocating to $LICENSE_DIR/mathpass"
-      mkdir -p "$LICENSE_DIR"
-      cp "$FOUND_PASS" "$LICENSE_DIR/mathpass"
-    fi
-  fi
-
-  if [ -f "$LICENSE_DIR/mathpass" ]; then
-    # Activation success.
+  if [ -f $LICENSE_DIR/mathpass ]; then
+    # Activation success. 
     echo "Success!"
   else
     echo "ERROR: License file missing after activation."
