@@ -2,8 +2,8 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
     s = StringTemplate["width:``px; height:``px; font-size:small"][ww, hh]
 },
 
-    <div>
-        <div id="#instanceId" class="rounded" style="{s}"></div>
+    <div class="rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300">
+        <div id="#instanceId" style="{s}"></div>
         <script type="module">
             /*credits: https://github.com/mkrl/ttty */
             var ttty = (function (f) {
@@ -192,7 +192,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                         });
                     },
                     A =
-                        '.terminal{border-radius:0.25rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color, black);padding:15px;box-sizing:border-box}.terminal *{color:var(--terminal-fg-color, white);font-family:var(--terminal-font, "Hasklig-Regular", monospace)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0}.terminal-type>input:focus{border-radius:0.25rem;box-shadow:none;border:none;outline:1px solid var(--system-accent-color, #ffff7d)}.terminal-container>p{margin:0;user-select:text}.terminal-container>p *::selection,.terminal-container>p::selection{background-color:var(--terminal-selection-color,#ffff7d);color:yellow}span.terminal-command{color:var(--terminal-accent-color, #ffff7d)}span.terminal-error{color:var(--terminal-error-color, #cc1010)}',
+                        '.terminal{border-radius:0.375rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color,#fff);padding:15px;box-sizing:border-box}.terminal *{color:var(--terminal-fg-color,#1a1a1a);font-family:var(--terminal-font,"Hasklig-Regular",monospace)}.terminal::-webkit-scrollbar{width:6px}.terminal::-webkit-scrollbar-track{background:var(--terminal-bg-color,#fff)}.terminal::-webkit-scrollbar-thumb{background:var(--terminal-accent-color,#2563eb);border-radius:3px}.terminal::-webkit-scrollbar-thumb:hover{background:var(--terminal-fg-color,#1a1a1a)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0;line-height:normal}.terminal-type>input:focus{border-radius:0.25rem;box-shadow:none;border:none;outline:none}.terminal-container>p{margin:0;user-select:text}.terminal-container>p *::selection,.terminal-container>p::selection{background-color:var(--terminal-selection-color,#bfdbfe);color:#1a1a1a}span.terminal-command{color:var(--terminal-accent-color,#2563eb)}span.terminal-error{color:var(--terminal-error-color,#cc1010)}',
                     M = () => {
                         if (document.head.querySelectorAll('style[data-type="terminal"]').length === 0) {
                             const t = c("style", void 0, A);
