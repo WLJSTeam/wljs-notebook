@@ -27,7 +27,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                             o.append(r),
                             t.append(e),
                             t.append(o),
-                            t.addEventListener("click", () => r.focus()),
+                            t.addEventListener("click", () => { if (!window.getSelection().toString()) r.focus(); }),
                             { commandContainer: e, input: r, inputContainer: o }
                         );
                     },
@@ -54,7 +54,8 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                             }
                         }
                     
-                        o.append(a), e;
+                        o.append(a);
+                        while (o.children.length > 1000) o.removeChild(o.firstChild);
                     };
                 
                 var p = ((t) => (
@@ -191,7 +192,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                         });
                     },
                     A =
-                        '.terminal{border-radius:0.25rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color, black);padding:15px;box-sizing:border-box}.terminal *{color:var(--terminal-fg-color, white);font-family:var(--terminal-font, "Hasklig-Regular", monospace)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0}.terminal-type>input:focus{border:none;outline:none}.terminal-container>p{margin:0}span.terminal-command{color:var(--terminal-accent-color, #ffff7d)}span.terminal-error{color:var(--terminal-error-color, #cc1010)}',
+                        '.terminal{border-radius:0.25rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color, black);padding:15px;box-sizing:border-box}.terminal *{color:var(--terminal-fg-color, white);font-family:var(--terminal-font, "Hasklig-Regular", monospace)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0}.terminal-type>input:focus{border-radius:0.25rem;box-shadow:none;border:none;outline:1px solid var(--system-accent-color, #ffff7d)}.terminal-container>p{margin:0;user-select:text}.terminal-container>p *::selection,.terminal-container>p::selection{background-color:var(--terminal-selection-color,#ffff7d);color:yellow}span.terminal-command{color:var(--terminal-accent-color, #ffff7d)}span.terminal-error{color:var(--terminal-error-color, #cc1010)}',
                     M = () => {
                         if (document.head.querySelectorAll('style[data-type="terminal"]').length === 0) {
                             const t = c("style", void 0, A);
