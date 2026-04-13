@@ -4204,28 +4204,30 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     if (opts.VertexColors) {
       let vertexColors = [];
+      let vc = opts.VertexColors;
+      if (vc instanceof NumericArrayObject) vc = vc.normal(); // convert back automatically
 
       copy.wgl.vertexColors = true;
-      copy.wgl.fallbackColors = opts.VertexColors;
+      copy.wgl.fallbackColors = vc;
 
-      switch(opts.VertexColors[0].length) {
+      switch(vc[0].length) {
         case 3:
-          for (let i=0; i<opts.VertexColors.length; ++i) { //[TODO] move to GPU!!!!!
-            const c = opts.VertexColors[i];
+          for (let i=0; i<vc.length; ++i) { //[TODO] move to GPU!!!!!
+            const c = vc[i];
             vertexColors.push(...c, opacity);
           }
         break;
 
         case 4:
-          vertexColors = opts.VertexColors.flat(Infinity);
+          vertexColors = vc.flat(Infinity);
         break;
 
         default:
-          if (typeof opts.VertexColors[0] == 'string') { //[TODO] move to GPU!!!!!
+          if (typeof vc[0] == 'string') { //[TODO] move to GPU!!!!!
             console.warn('FIXME: This is the worst case');
             
-            for (let i=0; i<opts.VertexColors.length; ++i) {
-              const c = d3.color(opts.VertexColors[i]);
+            for (let i=0; i<vc.length; ++i) {
+              const c = d3.color(vc[i]);
               vertexColors.push(c.r/255.0, c.g/255.0, c.b/255.0, opacity);
             }            
           }
@@ -4391,7 +4393,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       wgl.vertexColors = false;
     }
 
-    // Render to the detached canvas (gl context is still alive)
+    // Render directly to canvas
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -4404,13 +4406,25 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     const copy = {...env, context: [g2dComplex, g2d], wgl: wgl};
     await interpretate(args[1], copy);
 
-    // Update image from the rendered canvas
-    env.local.img.src = gl.canvas.toDataURL("image/png");
-    env.local.img.style.opacity = env.opacity;
+    // On first update, swap the static image for the live canvas so
+    // subsequent frames render directly to the DOM without toDataURL overhead.
+    if (!env.local.canvasMode) {
+      const canvasNode = gl.canvas;
+      canvasNode.style.padding = '0';
+      canvasNode.style.opacity = env.opacity;
+      env.local.img.replaceWith(canvasNode);
+      env.local.canvasMode = true;
+    } else {
+      gl.canvas.style.opacity = env.opacity;
+    }
   }
 
   g2d.GraphicsComplex.updateOpacity = (args, env) => {
-    env.local.img.style.opacity = env.opacity;
+    if (env.local.canvasMode) {
+      env.local.gl.canvas.style.opacity = env.opacity;
+    } else {
+      env.local.img.style.opacity = env.opacity;
+    }
   } 
 
   g2d.GraphicsComplex.destroy = (args, env) => {
