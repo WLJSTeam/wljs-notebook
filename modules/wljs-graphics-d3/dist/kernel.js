@@ -4138,6 +4138,29 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     copy.wgl.fallbackVertices = vertices;
 
+    // Shared vertex state (mirrors g3d.GraphicsComplex): children register their
+    // redraw/SVG-update fns here so vertex and index updates can be decoupled.
+    copy.vertices = env.local.vertices = {
+      drawFns:  [],  // per-child fn that re-issues its GL draw or SVG attribute update
+      handlers: [],  // post-vertex-update callbacks (e.g. recompute derived data)
+    };
+
+    // Fence mechanism — resolves once vertex data has been freshly written.
+    // Children that update their own indices call env.fence() to wait for the
+    // next vertex update before rendering (mirrors g3d.GraphicsComplex).
+    let fences = [];
+    env.local.fence = () => {
+      for (const p of fences) p.resolve();
+      fences = [];
+    };
+    if ('VertexFence' in opts) {
+      copy.fence = () => {
+        const d = new Deferred();
+        fences.push(d);
+        return d.promise;
+      };
+    }
+
     const opacity = env.opacity;
 
     const positionDataArray = vertices.flat(Infinity).map((e) => e*dpi);
@@ -4209,10 +4232,19 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     twgl.setBuffersAndAttributes(gl, programInfo, sharedBufferInfo);
 
-    
-
-
-    
+    // Render fn: clears the WebGL canvas and re-runs all registered child draw fns.
+    // Called by parent on vertex update and by children on index update (analogous
+    // to env.wake(true) in the 3D implementation).
+    env.local.render = () => {
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(programInfo.program);
+      gl.enable(gl.BLEND);
+      twgl.setBuffersAndAttributes(gl, programInfo, sharedBufferInfo);
+      for (const fn of env.local.vertices.drawFns) fn();
+    };
+    copy.render = env.local.render;
 
     await interpretate(args[1], copy);
 
@@ -4337,21 +4369,32 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       wgl.vertexColors = false;
     }
 
-    // Render directly to canvas
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(programInfo.program);
-    gl.enable(gl.BLEND);
+    // Call any post-vertex-update handlers (mirrors g3d.GraphicsComplex.update)
+    for (let i = 0; i < env.local.vertices.handlers.length; ++i) {
+      env.local.vertices.handlers[i]();
+    }
 
-    twgl.setBuffersAndAttributes(gl, programInfo, sharedBufferInfo);
+    // Render: re-runs registered child draw fns using the updated vertex buffer.
+    // Falls back to full re-evaluation when no children have registered yet
+    // (e.g. first call before children had a chance to register, or legacy content).
+    if (env.local.vertices.drawFns.length > 0) {
+      env.local.render();
+    } else {
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.useProgram(programInfo.program);
+      gl.enable(gl.BLEND);
+      twgl.setBuffersAndAttributes(gl, programInfo, sharedBufferInfo);
+      const copy = {...env, context: [g2dComplex, g2d], wgl: wgl};
+      await interpretate(args[1], copy);
+    }
 
-    // Re-render children (Polygon, Line, etc.)
-    const copy = {...env, context: [g2dComplex, g2d], wgl: wgl};
-    await interpretate(args[1], copy);
+    // Release fence: children that are awaiting a vertex update (e.g. Polygon
+    // whose indices also changed) can now proceed and call env.render() again.
+    env.local.fence();
 
-    // On first update, swap the static image for the live canvas so
-    // subsequent frames render directly to the DOM without toDataURL overhead.
+    // On first update, promote the live canvas to the DOM (eliminates toDataURL overhead).
     if (!env.local.canvasMode) {
       const canvasNode = gl.canvas;
       canvasNode.style.padding = '0';
@@ -4823,45 +4866,106 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         });
     }
     
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-
-    if (env.wgl.vertexTexture) {
-
-      if (!env.texture) throw 'Texture is not provided!';
-
-
-      const texture = env.texture.get(gl);
-
-      twgl.setUniforms(programInfo, {
-        u_resolution: [gl.canvas.width, gl.canvas.height],
-        u_texture: texture,
-        u_vertexTexture: true
-      });      
-
-      if (env.wgl.fallbackVertices.length > 65535) {
-        gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_INT, 0);
+    // Extract draw call into a reusable closure so both parent vertex updates
+    // and child index updates can trigger a re-render without re-evaluating WL.
+    // env.local.state holds the current bufferInfo so Polygon.update can swap it.
+    const myLocal = env.local;
+    myLocal.state = { bufferInfo };
+    const draw = () => {
+      const { bufferInfo: buf } = myLocal.state;
+      const wgl = env.wgl;
+      twgl.setBuffersAndAttributes(wgl.gl, wgl.programInfo, buf);
+      if (wgl.vertexTexture) {
+        if (!env.texture) throw 'Texture is not provided!';
+        const texture = env.texture.get(wgl.gl);
+        twgl.setUniforms(wgl.programInfo, {
+          u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
+          u_texture: texture,
+          u_vertexTexture: true
+        });
       } else {
-        gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
+        twgl.setUniforms(wgl.programInfo, {
+          u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
+          u_color: color,
+          u_vertexColor: Boolean(wgl.vertexColors)
+        });
       }
-      return;
-    }
-
-   
-
-    twgl.setUniforms(programInfo, {
-      u_resolution: [gl.canvas.width, gl.canvas.height],
-      u_color: color,
-      u_vertexColor: Boolean(env.wgl.vertexColors)
-    });
-
-    if (env.wgl.fallbackVertices.length > 65535) {
-      gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_INT, 0);
-    } else {
-      gl.drawElements(gl.TRIANGLES, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
-    }
-
-    return;
+      if (wgl.fallbackVertices.length > 65535) {
+        wgl.gl.drawElements(wgl.gl.TRIANGLES, buf.numElements, wgl.gl.UNSIGNED_INT, 0);
+      } else {
+        wgl.gl.drawElements(wgl.gl.TRIANGLES, buf.numElements, wgl.gl.UNSIGNED_SHORT, 0);
+      }
+    };
+    // Register for parent-triggered re-renders (vertex updates via GraphicsComplex.update)
+    if (env.vertices) env.vertices.drawFns.push(draw);
+    draw(); // initial draw during create
   };
+
+  g2dComplex.Polygon.update = async (args, env) => {
+    // Wait for the parent vertex update to land before using fresh positions.
+    // This mirrors g3dComplex.Polygon.update and handles the race where indices
+    // change at the same time as vertices (VertexFence option).
+    if (env.fence) await env.fence();
+
+    if (!twgl) twgl = (await import('./twgl.module-829cd4fc.js'));
+
+    let points = await interpretate(args[0], env);
+    if (points instanceof NumericArrayObject) points = points.normal();
+    if (!points[0][0]) points = [points];
+
+    const {gl, programInfo} = env.wgl;
+    let newBufInfo;
+
+    switch (points[0].length) {
+      case 3:
+        newBufInfo = twgl.createBufferInfoFromArrays(gl, {
+          indices: points.flat(Infinity).map(i => i - 1)
+        });
+        break;
+      case 4: {
+        const tb = [];
+        for (const p of points) tb.push(p[0]-1, p[1]-1, p[2]-1, p[0]-1, p[2]-1, p[3]-1);
+        newBufInfo = twgl.createBufferInfoFromArrays(gl, { indices: tb });
+        break;
+      }
+      case 5: {
+        const tb = [];
+        for (const p of points) tb.push(
+          p[0]-1, p[1]-1, p[2]-1,
+          p[0]-1, p[2]-1, p[3]-1,
+          p[0]-1, p[3]-1, p[4]-1
+        );
+        newBufInfo = twgl.createBufferInfoFromArrays(gl, { indices: tb });
+        break;
+      }
+      case 6: {
+        const tb = [];
+        for (const p of points) tb.push(
+          p[0]-1, p[1]-1, p[2]-1,
+          p[0]-1, p[2]-1, p[3]-1,
+          p[0]-1, p[3]-1, p[4]-1,
+          p[0]-1, p[4]-1, p[5]-1
+        );
+        newBufInfo = twgl.createBufferInfoFromArrays(gl, { indices: tb });
+        break;
+      }
+      default: {
+        const fallback = env.wgl.fallbackVertices;
+        if (!earcut) earcut = (await import('./earcut-09a28c82.js')).default;
+        const localIndices = [];
+        for (let poly of points) {
+          poly = poly.map(i => i - 1);
+          localIndices.push(earcut(poly.flatMap(i => fallback[i])).map(i => poly[i]));
+        }
+        newBufInfo = twgl.createBufferInfoFromArrays(gl, { indices: localIndices.flat() });
+      }
+    }
+
+    env.local.state.bufferInfo = newBufInfo;
+    if (env.render) env.render();
+  };
+
+  g2dComplex.Polygon.virtual = true;
 
   g2d.Deploy =  (args, env) => {
     return interpretate(args[0], env)
@@ -5093,7 +5197,20 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         
         if (env.dasharray) {
           object.attr('stroke-dasharray', env.dasharray.join());
-        } 
+        }
+
+      // Store for update access and register a drawFn so parent vertex updates
+      // redraw this SVG path in place (avoids accumulating duplicate elements).
+      env.local.data   = data;
+      env.local.object = object;
+      if (env.vertices) {
+        const myLocal = env.local;
+        env.vertices.drawFns.push(() => {
+          myLocal.object
+            .datum(myLocal.data.map(i => env.wgl.fallbackVertices[i - 1]))
+            .attr("d", d3.line().x(d => d[0]).y(d => d[1]));
+        });
+      }
   
       return object;
     } else {
@@ -5115,35 +5232,23 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   
       return gr;
     }
-
-    /*let points = await interpretate(args[0], env);
-    //console.log(points);
-    //if (!env.vertices) throw('No vertices provided!');
-
-    let color = d3.color(env.color);
-      color = [color.r/255.0, color.g/255.0, color.b/255.0, env.opacity];
-
-    //if this is a single line segment
-    if (points[0][0]) return;
-
-
-    const {gl, programInfo} = env.wgl;
-    let bufferInfo; 
-    
-    bufferInfo = twgl.createBufferInfoFromArrays(gl, { indices:  points.flat(Infinity).map((index) => index-1)});
-    
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-
-    twgl.setUniforms(programInfo, {
-      u_resolution: [gl.canvas.width, gl.canvas.height],
-      u_color: color,
-      u_vertexColor: Boolean(env.wgl.vertexColors)
-    });
-
-    gl.lineWidth(env.strokeWidth);
-
-    gl.drawElements(gl.LINE_STRIP, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);*/
   };
+
+  g2dComplex.Line.update = async (args, env) => {
+    // Wait for the parent vertex update before re-drawing the path.
+    if (env.fence) await env.fence();
+
+    const data = await interpretate(args[0], env);
+    if (!data[0][0]) {
+      env.local.data = data;
+      env.local.object
+        .datum(data.map(i => env.wgl.fallbackVertices[i - 1]))
+        .attr("d", d3.line().x(d => d[0]).y(d => d[1]));
+    }
+    if (env.render) env.render();
+  };
+
+  g2dComplex.Line.virtual = true;
 
   g2d.SplineKnots = () => "SplineKnots";
   g2d.SplineDegree = () => "SplineDegree";
@@ -5943,6 +6048,15 @@ return object;
         .style("fill", env.color)
         .style("opacity", env.opacity);
 
+      // Register update fn so parent vertex updates move the circle in place
+      if (env.vertices) {
+        const capturedData  = data;
+        const capturedObj   = object;
+        env.vertices.drawFns.push(() => {
+          const v = env.wgl.fallbackVertices[capturedData - 1];
+          capturedObj.attr("cx", v[0]).attr("cy", v[1]);
+        });
+      }
   
       return object;
 
@@ -5961,6 +6075,18 @@ return object;
           .style("fill", env.color)
           .style("opacity", env.opacity));
       });
+
+      // Register update fn so parent vertex updates move all circles in place
+      if (env.vertices) {
+        const capturedData    = data;
+        const capturedObjects = object.slice();
+        env.vertices.drawFns.push(() => {
+          capturedObjects.forEach((obj, i) => {
+            const v = env.wgl.fallbackVertices[capturedData[i] - 1];
+            obj.attr("cx", v[0]).attr("cy", v[1]);
+          });
+        });
+      }
 
       return object;
     }
@@ -6089,9 +6215,6 @@ return object;
       return;
     }
 
-    
-
-
     const {gl, programInfo} = env.wgl;
     let bufferInfo;
     
@@ -6108,22 +6231,50 @@ return object;
       });
     }
 
-    twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
-
-    twgl.setUniforms(programInfo, {
-      u_resolution: [gl.canvas.width, gl.canvas.height],
-      u_color: color,
-      u_pointSize: env.pointSize * window.devicePixelRatio * 100.0 * 2.0,
-      u_vertexColor: Boolean(env.wgl.vertexColors)
-    });
-
-    if (env.wgl.fallbackVertices.length > 65535) {
-      gl.drawElements(gl.POINTS, bufferInfo.numElements, gl.UNSIGNED_INT, 0);
-    } else {
-      gl.drawElements(gl.POINTS, bufferInfo.numElements, gl.UNSIGNED_SHORT, 0);
-    } 
-
+    const myLocal = env.local;
+    myLocal.state = { bufferInfo };
+    const capturedPointSize = env.pointSize;
+    const draw = () => {
+      const { bufferInfo: buf } = myLocal.state;
+      const wgl = env.wgl;
+      twgl.setBuffersAndAttributes(wgl.gl, wgl.programInfo, buf);
+      twgl.setUniforms(wgl.programInfo, {
+        u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
+        u_color: color,
+        u_pointSize: capturedPointSize * window.devicePixelRatio * 100.0 * 2.0,
+        u_vertexColor: Boolean(wgl.vertexColors)
+      });
+      if (wgl.fallbackVertices.length > 65535) {
+        wgl.gl.drawElements(wgl.gl.POINTS, buf.numElements, wgl.gl.UNSIGNED_INT, 0);
+      } else {
+        wgl.gl.drawElements(wgl.gl.POINTS, buf.numElements, wgl.gl.UNSIGNED_SHORT, 0);
+      }
+    };
+    if (env.vertices) env.vertices.drawFns.push(draw);
+    draw();
   };
+
+  g2dComplex.Point.update = async (args, env) => {
+    if (env.fence) await env.fence();
+
+    if (!twgl) twgl = (await import('./twgl.module-829cd4fc.js'));
+
+    let points = await interpretate(args[0], env);
+    if (points instanceof NumericArrayObject) points = points.normal();
+
+    if (!points[0][0]) {
+      const {gl} = env.wgl;
+      const indices = points.flat(Infinity).map(i => i - 1);
+      env.local.state.bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+        indices: env.wgl.fallbackVertices.length > 65535
+          ? new Uint32Array(indices)
+          : new Uint16Array(indices)
+      });
+    }
+    if (env.render) env.render();
+  };
+
+  g2dComplex.Point.virtual = true;
 
   g2d.Point = async (args, env) => {
     let data = await interpretate(args[0], env);
