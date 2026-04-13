@@ -2288,7 +2288,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     env.thickness = copy.thickness;
     env.width = copy.width;
-    //env.opacity = copy.opacity;
+    //env.opacity = copy.opacity; (* pale 2D plots *)
     env.color = copy.color;
 
   };
@@ -4019,6 +4019,17 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     }
   }
 
+  function updateGLBuffer(gl, buffer, newData, currentSize) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    if (newData.byteLength <= currentSize) {
+      gl.bufferSubData(gl.ARRAY_BUFFER, 0, newData);
+      return currentSize;
+    } else {
+      gl.bufferData(gl.ARRAY_BUFFER, newData, gl.DYNAMIC_DRAW);
+      return newData.byteLength;
+    }
+  }
+
   const vs = `
     attribute vec2 position;
     uniform vec2 u_resolution;
@@ -4105,7 +4116,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
 
-    const canvas = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight).append('xhtml:canvas');
+    env.local.foreignObject = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight);
+    const canvas = env.local.foreignObject.append('xhtml:canvas');
     canvas.attr('width', Math.round(env.clipWidth*dpi)).attr('height', Math.round(env.clipHeight*dpi));
     const gl = canvas.node().getContext('webgl', {
       premultipliedAlpha: false
@@ -4126,8 +4138,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     const opacity = env.opacity;
 
+    const positionDataArray = vertices.flat(Infinity).map((e) => e*dpi);
     const linearBuffers = {
-      position: { numComponents: 2, data: vertices.flat(Infinity).map((e) => e*dpi) },
+      position: { numComponents: 2, data: positionDataArray },
     };
 
 
@@ -4200,11 +4213,18 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     await interpretate(args[1], copy);
 
     const img = replaceCanvasWithImage(gl);
-    cleanupWebGL(gl);
+    // Keep WebGL context alive for updates (don't call cleanupWebGL)
 
     img.style.opacity = env.opacity;
 
     env.local.img = img;
+    env.local.gl = gl;
+    env.local.programInfo = programInfo;
+    env.local.sharedBufferInfo = sharedBufferInfo;
+    env.local.dpi = dpi;
+    env.local.wgl = copy.wgl;
+    env.local.positionBufferSize = positionDataArray.length * 4;
+    env.local.colorBufferSize = linearBuffers.color ? linearBuffers.color.data.length * 4 : 0;
 
     if (env.opacityRefs) {
         env.opacityRefs[env.root.uid] = env.root;
@@ -4213,8 +4233,118 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     return img;
   };
 
-  g2d.GraphicsComplex.update = () => {
-    throw('Updates of GraphicsComplex are not supported!');
+  g2d.GraphicsComplex.update = async (args, env) => {
+    if (!twgl) twgl = (await import('./twgl.module-829cd4fc.js'));
+
+    const gl = env.local.gl;
+    const dpi = env.local.dpi;
+    const programInfo = env.local.programInfo;
+    const sharedBufferInfo = env.local.sharedBufferInfo;
+    const wgl = env.local.wgl;
+
+    // Re-interpret vertices
+    const vertices = (await interpretate(args[0], env)).map((p) => {
+      return [env.xAxis(p[0]), env.yAxis(p[1])];
+    });
+
+    // Update bounding box rect
+    let minX = Infinity, minY = Infinity;
+    let maxX = -Infinity, maxY = -Infinity;
+    for (const [x, y] of vertices) {
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+    env.local.rect
+      .attr('x', minX).attr('y', minY)
+      .attr('width', maxX - minX).attr('height', maxY - minY);
+
+    // Get options (VertexColors)
+    const opts = await core._getRules(args, env);
+
+    // Update wgl state
+    wgl.fallbackVertices = vertices;
+
+    const opacity = env.opacity;
+
+    // Update position buffer (reuse existing, resize only if larger)
+    const posData = new Float32Array(vertices.flat(Infinity).map((e) => e * dpi));
+    env.local.positionBufferSize = updateGLBuffer(
+      gl, sharedBufferInfo.attribs.position.buffer,
+      posData, env.local.positionBufferSize
+    );
+    sharedBufferInfo.numElements = vertices.length;
+
+    // Update vertex colors if present
+    if (opts.VertexColors) {
+      let vertexColors = [];
+      wgl.vertexColors = true;
+      wgl.fallbackColors = opts.VertexColors;
+
+      switch(opts.VertexColors[0].length) {
+        case 3:
+          for (let i = 0; i < opts.VertexColors.length; ++i) {
+            const c = opts.VertexColors[i];
+            vertexColors.push(...c, opacity);
+          }
+          break;
+        case 4:
+          vertexColors = opts.VertexColors.flat(Infinity);
+          break;
+        default:
+          if (typeof opts.VertexColors[0] == 'string') {
+            for (let i = 0; i < opts.VertexColors.length; ++i) {
+              const c = d3.color(opts.VertexColors[i]);
+              vertexColors.push(c.r / 255.0, c.g / 255.0, c.b / 255.0, opacity);
+            }
+          }
+      }
+
+      const colorData = new Float32Array(vertexColors);
+
+      if (sharedBufferInfo.attribs.color) {
+        // Reuse existing color buffer
+        env.local.colorBufferSize = updateGLBuffer(
+          gl, sharedBufferInfo.attribs.color.buffer,
+          colorData, env.local.colorBufferSize
+        );
+      } else {
+        // Create new color buffer
+        const buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, colorData, gl.DYNAMIC_DRAW);
+        env.local.colorBufferSize = colorData.byteLength;
+
+        sharedBufferInfo.attribs.color = {
+          buffer: buffer,
+          numComponents: 4,
+          type: gl.FLOAT,
+          normalize: false,
+          stride: 0,
+          offset: 0
+        };
+      }
+    } else {
+      wgl.vertexColors = false;
+    }
+
+    // Render to the detached canvas (gl context is still alive)
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(programInfo.program);
+    gl.enable(gl.BLEND);
+
+    twgl.setBuffersAndAttributes(gl, programInfo, sharedBufferInfo);
+
+    // Re-render children (Polygon, Line, etc.)
+    const copy = {...env, context: [g2dComplex, g2d], wgl: wgl};
+    await interpretate(args[1], copy);
+
+    // Update image from the rendered canvas
+    env.local.img.src = gl.canvas.toDataURL("image/png");
+    env.local.img.style.opacity = env.opacity;
   };
 
   g2d.GraphicsComplex.updateOpacity = (args, env) => {
@@ -4226,7 +4356,17 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       delete env.opacityRefs[env.root.uid];
     }
 
-    env.local.img.remove();
+    // Cleanup WebGL context
+    if (env.local.gl) {
+      cleanupWebGL(env.local.gl);
+      env.local.gl = null;
+    }
+
+    if (env.local.foreignObject) {
+      env.local.foreignObject.remove();
+    } else if (env.local.img) {
+      env.local.img.remove();
+    }
     env.local.rect.remove();
   };
 
