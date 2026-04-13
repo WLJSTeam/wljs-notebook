@@ -4141,7 +4141,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     const dpi = 1.0 ///window.devicePixelRatio; (*no idea how to handle upscalling *)
 
-    const vertices = (await interpretate(args[0], env)).map((p) => {
+    let rawVerticesCreate = await interpretate(args[0], env);
+    if (rawVerticesCreate instanceof NumericArrayObject) rawVerticesCreate = rawVerticesCreate.normal(); // convert back automatically
+    const vertices = rawVerticesCreate.map((p) => {
       return [env.xAxis(p[0]), env.yAxis(p[1])]; //[TODO] move to GPU!!!!!
     });
 
@@ -4299,7 +4301,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     const wgl = env.local.wgl;
 
     // Re-interpret vertices
-    const vertices = (await interpretate(args[0], env)).map((p) => {
+    let rawVertices = await interpretate(args[0], env);
+    if (rawVertices instanceof NumericArrayObject) rawVertices = rawVertices.normal(); // convert back automatically
+    const vertices = rawVertices.map((p) => {
       return [env.xAxis(p[0]), env.yAxis(p[1])];
     });
 
@@ -4335,23 +4339,25 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     // Update vertex colors if present
     if (opts.VertexColors) {
       let vertexColors = [];
+      let vc = opts.VertexColors;
+      if (vc instanceof NumericArrayObject) vc = vc.normal(); // convert back automatically
       wgl.vertexColors = true;
-      wgl.fallbackColors = opts.VertexColors;
+      wgl.fallbackColors = vc;
 
-      switch(opts.VertexColors[0].length) {
+      switch(vc[0].length) {
         case 3:
-          for (let i = 0; i < opts.VertexColors.length; ++i) {
-            const c = opts.VertexColors[i];
+          for (let i = 0; i < vc.length; ++i) {
+            const c = vc[i];
             vertexColors.push(...c, opacity);
           }
           break;
         case 4:
-          vertexColors = opts.VertexColors.flat(Infinity);
+          vertexColors = vc.flat(Infinity);
           break;
         default:
-          if (typeof opts.VertexColors[0] == 'string') {
-            for (let i = 0; i < opts.VertexColors.length; ++i) {
-              const c = d3.color(opts.VertexColors[i]);
+          if (typeof vc[0] == 'string') {
+            for (let i = 0; i < vc.length; ++i) {
+              const c = d3.color(vc[i]);
               vertexColors.push(c.r / 255.0, c.g / 255.0, c.b / 255.0, opacity);
             }
           }
