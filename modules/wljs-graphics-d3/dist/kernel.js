@@ -4085,9 +4085,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     const dpi = 1.0; ///window.devicePixelRatio; (*no idea how to handle upscalling *)
 
-    let rawVerticesCreate = await interpretate(args[0], env);
-    if (rawVerticesCreate instanceof NumericArrayObject) rawVerticesCreate = rawVerticesCreate.normal(); // convert back automatically
-    const vertices = rawVerticesCreate.map((p) => {
+    let rawVertices = await interpretate(args[0], env);
+    if (rawVertices instanceof NumericArrayObject) rawVertices = rawVertices.normal(); // convert back automatically
+    const vertices = rawVertices.map((p) => {
       return [env.xAxis(p[0]), env.yAxis(p[1])]; //[TODO] move to GPU!!!!!
     });
 
