@@ -4838,6 +4838,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   //not an instance. Just a plain object. Symbols must be bounded to GraphicsComplex
   g2dComplex.Polygon = async (args, env) => {
     let points = await interpretate(args[0], env);
+    if (points instanceof NumericArrayObject) points = points.normal();
     //console.log(points);
     //if (!env.vertices) throw('No vertices provided!');
 
@@ -4946,7 +4947,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     // env.local.state holds the current bufferInfo so Polygon.update can swap it.
     const myLocal = env.local;
     myLocal.state = { bufferInfo };
+    myLocal.gl = gl;
     const draw = () => {
+      if (myLocal.destroyed) return;
       const { bufferInfo: buf } = myLocal.state;
       const wgl = env.wgl;
       twgl.setBuffersAndAttributes(wgl.gl, wgl.programInfo, buf);
@@ -4975,6 +4978,15 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (env.vertices) env.vertices.drawFns.push(draw);
     draw(); // initial draw during create
   }
+
+  g2dComplex.Polygon.destroy = (args, env) => {
+    env.local.destroyed = true;
+    const buf = env.local.state && env.local.state.bufferInfo;
+    if (buf && buf.indices && env.local.gl) {
+      env.local.gl.deleteBuffer(buf.indices);
+    }
+    env.local.state = null;
+  };
 
   g2dComplex.Polygon.update = async (args, env) => {
     // Wait for the parent vertex update to land before using fresh positions.
@@ -5254,7 +5266,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   g2dComplex.Line = async (args, env) => {
     //[TODO] fallback
 
-    const data = await interpretate(args[0], env);
+    let data = await interpretate(args[0], env);
+    if (data instanceof NumericArrayObject) data = data.normal();
         //difference case for verices
     if (!data[0][0]) {
 
@@ -5281,6 +5294,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       if (env.vertices) {
         const myLocal = env.local;
         env.vertices.drawFns.push(() => {
+          if (myLocal.destroyed) return;
           myLocal.object
             .datum(myLocal.data.map(i => env.wgl.fallbackVertices[i - 1]))
             .attr("d", d3.line().x(d => d[0]).y(d => d[1]));
@@ -5304,10 +5318,24 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           .y(function(d) { return d[1] })
           ); 
       });
+
+      env.local.group = gr;
   
       return gr;
     }
   }
+
+  g2dComplex.Line.destroy = (args, env) => {
+    env.local.destroyed = true;
+    if (env.local.object) {
+      env.local.object.remove();
+      env.local.object = null;
+    }
+    if (env.local.group) {
+      env.local.group.remove();
+      env.local.group = null;
+    }
+  };
 
   g2dComplex.Line.update = async (args, env) => {
     // Wait for the parent vertex update before re-drawing the path.
@@ -6098,6 +6126,7 @@ return object;
     }
 
     let data = await interpretate(args[0], env);
+    if (data instanceof NumericArrayObject) data = data.normal();
     let radius = 1; 
 
     if (args.length > 1) {
@@ -6109,6 +6138,7 @@ return object;
 
     const x = env.xAxis;
     const y = env.yAxis;
+    const myLocal = env.local;
 
     if (!data[0]) {
       //single vertice
@@ -6126,11 +6156,14 @@ return object;
         .style("fill", env.color)
         .style("opacity", env.opacity);
 
+      myLocal.object = object;
+
       // Register update fn so parent vertex updates move the circle in place
       if (env.vertices) {
         const capturedData  = data;
         const capturedObj   = object;
         env.vertices.drawFns.push(() => {
+          if (myLocal.destroyed) return;
           const v = env.wgl.fallbackVertices[capturedData - 1];
           capturedObj.attr("cx", v[0]).attr("cy", v[1]);
         });
@@ -6154,11 +6187,14 @@ return object;
           .style("opacity", env.opacity));
       });
 
+      myLocal.objects = object;
+
       // Register update fn so parent vertex updates move all circles in place
       if (env.vertices) {
         const capturedData    = data;
         const capturedObjects = object.slice();
         env.vertices.drawFns.push(() => {
+          if (myLocal.destroyed) return;
           capturedObjects.forEach((obj, i) => {
             const v = env.wgl.fallbackVertices[capturedData[i] - 1];
             obj.attr("cx", v[0]).attr("cy", v[1]);
@@ -6170,6 +6206,20 @@ return object;
     }
 
   }
+
+  g2dComplex.Disk.destroy = (args, env) => {
+    env.local.destroyed = true;
+    if (env.local.object) {
+      env.local.object.remove();
+      env.local.object = null;
+    }
+    if (env.local.objects) {
+      env.local.objects.forEach(obj => obj.remove());
+      env.local.objects = null;
+    }
+  };
+
+  g2dComplex.Disk.virtual = true;
 
 
   g2d.Disk = async (args, env) => {
@@ -6282,6 +6332,7 @@ return object;
   
   g2dComplex.Point = async (args, env) => {
     let points = await interpretate(args[0], env);
+    if (points instanceof NumericArrayObject) points = points.normal();
     //console.log(points);
     //if (!env.vertices) throw('No vertices provided!');
 
@@ -6311,8 +6362,10 @@ return object;
 
     const myLocal = env.local;
     myLocal.state = { bufferInfo };
+    myLocal.gl = gl;
     const capturedPointSize = env.pointSize;
     const draw = () => {
+      if (myLocal.destroyed) return;
       const { bufferInfo: buf } = myLocal.state;
       const wgl = env.wgl;
       twgl.setBuffersAndAttributes(wgl.gl, wgl.programInfo, buf);
@@ -6331,6 +6384,15 @@ return object;
     if (env.vertices) env.vertices.drawFns.push(draw);
     draw();
   }
+
+  g2dComplex.Point.destroy = (args, env) => {
+    env.local.destroyed = true;
+    const buf = env.local.state && env.local.state.bufferInfo;
+    if (buf && buf.indices && env.local.gl) {
+      env.local.gl.deleteBuffer(buf.indices);
+    }
+    env.local.state = null;
+  };
 
   g2dComplex.Point.update = async (args, env) => {
     if (env.fence) await env.fence();
