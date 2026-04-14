@@ -2830,7 +2830,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
  //[FIXME] curves are not supported!
  g2dComplex.BezierCurve = async (args, env) => {
-  const data  = await interpretate(args[0], env);
+  let data  = await interpretate(args[0], env);
+      if (data instanceof NumericArrayObject) { // convert back automatically
+      data = data.normal();
+    }
   return data.filter((el) => !Array.isArray(el));
  };
 
@@ -2840,6 +2843,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   if (!arrow1) arrow1 = (await interpretate.shared.d3['d3-arrow']).arrow1;
 
   let data = await interpretate(args[0], env);
+      if (data instanceof NumericArrayObject) { // convert back automatically
+      data = data.normal();
+    }
 
 
   if (!Array.isArray(data)) {
@@ -5266,7 +5272,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     // Wait for the parent vertex update before re-drawing the path.
     if (env.fence) await env.fence();
 
-    const data = await interpretate(args[0], env);
+    let data = await interpretate(args[0], env);
+    if (data instanceof NumericArrayObject) { // convert back automatically
+      data = data.normal();
+    }
+
     if (!data[0][0]) {
       env.local.data = data;
       env.local.object
