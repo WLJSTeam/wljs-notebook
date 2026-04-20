@@ -25,6 +25,7 @@ jobs:
         shell: pwsh
         run: |
           echo "SIGNED_OUT_DIR=$env:RUNNER_TEMP\signed-artifacts" >> $env:GITHUB_ENV
+          echo "SIGNED_EXE_DIR=$env:RUNNER_TEMP\signed-exe" >> $env:GITHUB_ENV
 
       - name: Check out repository
         uses: actions/checkout@v4
@@ -225,11 +226,58 @@ jobs:
           Write-Host "All signed DLLs restored to their original folders."
 
 
-      - name: Build Electron (no publish)
+      - name: Build Electron unpacked (no publish)
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          npx electron-builder --win --x64 --publish never
+          npx electron-builder --win --x64 --dir --publish never
+
+      - name: Find Electron exe for signing
+        id: stage-app-exe
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem -Path "dist\win-unpacked" -Filter *.exe -File | Select-Object -First 1
+          if (-not $exe) { throw "No .exe found in dist\win-unpacked" }
+          Write-Host "Found exe: $($exe.FullName)"
+          "EXE_NAME=$($exe.Name)" >> $env:GITHUB_OUTPUT
+
+      - name: Upload unsigned Electron exe (for SignPath)
+        id: upload-unsigned-exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-electron-exe
+          path: dist/win-unpacked/${{ steps.stage-app-exe.outputs.EXE_NAME }}
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Submit Electron exe signing request to SignPath
+        id: sign-app-exe
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: 'a11e9ec9-516b-42a1-97d7-8a62e7508a48'
+          project-slug: 'wolfram-js-frontend'
+          signing-policy-slug: 'release-signing'
+          artifact-configuration-slug: 'exe'
+          github-artifact-id: '${{ steps.upload-unsigned-exe.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: '${{ env.SIGNED_EXE_DIR }}'
+
+      - name: Restore signed Electron exe
+        shell: pwsh
+        run: |
+          $exeName = "${{ steps.stage-app-exe.outputs.EXE_NAME }}"
+          $signed = Get-ChildItem -Path "$env:SIGNED_EXE_DIR" -Recurse -Filter $exeName -File | Select-Object -First 1
+          if (-not $signed) { throw "Signed exe '$exeName' not found under $env:SIGNED_EXE_DIR" }
+          $dest = "dist\win-unpacked\$exeName"
+          Copy-Item $signed.FullName -Destination $dest -Force
+          Write-Host "Signed exe restored: $dest ($((Get-Item $dest).Length) bytes)"
+
+      - name: Build installer from pre-packaged signed app
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          npx electron-builder --win --x64 --prepackaged dist/win-unpacked --publish never
       
       # ─────────────────────────────
       # SignPath integration
