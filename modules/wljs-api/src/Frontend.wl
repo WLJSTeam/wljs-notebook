@@ -160,7 +160,7 @@ apiCall[request_, "/api/ready/"] := <|"ReadyQ" -> True|>
 
 apiCall[request_, "/api/notebook/"] := {
     "/api/notebook/list/",
-    "/api/notebook/create/",
+    "/api/notebook/focused/",
     "/api/notebook/cells/"
 }
 
@@ -202,55 +202,21 @@ apiCall[request_, "/api/notebook/list/"] := With[{},
     |> &/@ Select[Values[nb`HashMap], (Complement[{"Opened", "Path", "Hash"}, #["Properties"] ] === {}) &]
 ]
 
-$pullQue = {};
-$stack[_] := False;
-$activeSocket = Null;
-$activeControls = Null;
-
-
-
-EventHandler[EventClone[AppExtensions`AppEvents], {
-    "Loader:NewNotebook" -> Function[notebook,
-        If[Length[$pullQue] > 0, 
-            $pullQue[[1]][ notebook["Hash"] ];
-            $pullQue = Drop[$pullQue, 1]
-        ];
-    ],
-    (* WARNING: this requires WLJS >= 2.8.4*)
-    "AfterUILoad" -> Function[payload,
-        $activeSocket = payload["Client"];
-        $activeControls = payload["Controls"];
-    ]
-}]
-
 (* 
-   /api/notebook/create/ - Create a new empty notebook
-   
-   Opens a new notebook window in the application.
-   Returns a Promise that resolves to the notebook ID.
+   /api/notebook/focused/ - Return the hash/ID of the currently focused notebook
    
    Request: {} (empty body)
-   Response: {"Promise": "promise-id"} - poll /api/promise/ for result
-   Final result: "notebook-hash-id"
-   Error: "All windows are closed"
+   Response: "notebook-hash"
+   Failure: failure["No focused notebook found"]
 *)
-apiCall[request_, "/api/notebook/create/"] := Module[{},
-    If[$activeControls === Null, Return[failure["All windows are closed"], Module] ];
-    With[{},
-        With[{uid = CreateUUID[], promise = Promise[]},
-            (*fixme*)
-            $pullQue = Append[$pullQue, Function[n, 
-                EventFire[promise, Resolve, n];
-            ] ];
-
-            Block[{Global`$Client = $activeSocket},
-                EventFire[$activeControls, "_NewQuickNotebook", True];
-                promise
-            ]
-        ]        
-    ]
+apiCall[request_, "/api/notebook/focused/"] := With[
+   {nb = AppExtensions`AppGlobals["CurrentNotebook"]},
+   If[
+      TrueQ[nb["Opened"]],
+      nb["Hash"],
+      failure["No focused notebook found"]
+   ]
 ]
-
 
 
 apiCall[request_, "/api/notebook/cells/"] := {
