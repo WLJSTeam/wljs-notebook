@@ -369,7 +369,6 @@ pluginsMenu.fetch = () => {
             }
 
             try {
-                require(resolvedPath);
                 loadedElectronExtensions.add(resolvedPath);
             } catch (err) {
                 console.error(`Failed to load electron extension "${resolvedPath}"`, err);
@@ -3127,6 +3126,12 @@ function create_first_window() {
     console.log('Regular start. Open default url');
     create_window({url: server.url.default(), title: 'Notebook', show: true, focus: false});
     server.wasUpdated = false;
+
+    
+    loadedElectronExtensions.forEach(fn => {
+        console.log('loading ...', fn);
+        require(fn)();
+    });
 }
 
 

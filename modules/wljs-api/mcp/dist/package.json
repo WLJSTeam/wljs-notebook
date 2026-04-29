@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "type": "module",
+  "main": "./electron-extension.cjs",
+  "exports": {
+    ".": {
+      "import": "./wljs-mcp.mjs",
+      "require": "./electron-extension.cjs"
+    },
+    "./extension": "./electron-extension.cjs",
+    "./wljs-mcp.mjs": "./wljs-mcp.mjs"
+  }
+}

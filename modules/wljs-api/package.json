@@ -10,6 +10,7 @@
         "frontend": [
             "src/Frontend.wl"
         ],
+        "electron": "mcp/dist/",
         "priority": 6000,
         "category": "Notebook Extensions"
     },

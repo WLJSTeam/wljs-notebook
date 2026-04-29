@@ -1,0 +1,41 @@
+{
+  "name": "wljs-notebook-mcp-electron",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "description": "Importable/bundled WLJS notebook MCP server for Electron main process with require() wrapper.",
+  "exports": {
+    ".": {
+      "import": "./wljs-mcp.mjs",
+      "require": "./electron-extension.cjs"
+    },
+    "./extension": "./electron-extension.cjs",
+    "./wljs-mcp.mjs": "./wljs-mcp.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "express": "^4.19.2",
+    "zod": "^3.25.0"
+  },
+  "main": "./electron-extension.cjs",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "check:source": "node --check wljs-mcp.mjs",
+    "check:dist": "node --check dist/wljs-mcp.mjs && node --check dist/electron-extension.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "files": [
+    "README.md",
+    "dist/",
+    "electron-extension.cjs",
+    "scripts/build.mjs",
+    "skills/",
+    "wljs-mcp.mjs"
+  ]
+}
