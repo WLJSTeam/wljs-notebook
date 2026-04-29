@@ -120,6 +120,54 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## MCP Server
+We added a background MCP server to interact with notebook in the same way as our copilot. You can add it to your favourite coding tool as
+
+### Claude
+
+```bash
+claude mcp add --transport http --scope user wljs-notebook http://127.0.0.1:20564/
+```
+
+### Codex
+
+```bash
+codex mcp add wljs-notebook --url http://127.0.0.1:20564/
+```
+
+:::note
+This feature is only available for WLJS desktop application
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## MCP Server
+We added a background MCP server to interact with notebook in the same way as our copilot. You can add it to your favourite coding tool as
+
+### Claude
+
+```bash
+claude mcp add --transport http --scope user wljs-notebook http://127.0.0.1:20564/
+```
+
+### Codex
+
+```bash
+codex mcp add wljs-notebook --url http://127.0.0.1:20564/
+```
+
+:::note
+This feature is only available for WLJS desktop application
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## InputColor element
 We added new input element to the standard library:
 
