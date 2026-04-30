@@ -21,16 +21,6 @@ set "exePath=%~2"
     echo     goto :eof
     echo ^)
 
-    echo rem Handle version flag
-    echo if "%%~1"=="-v" ^(
-    echo     echo v0.1
-    echo     goto :eof
-    echo ^)
-    echo if "%%~1"=="--version" ^(
-    echo     echo v0.1
-    echo     goto :eof
-    echo ^)
-
     echo rem Handle current directory call
     echo if "%%~1"=="." ^(
     echo     set "TARGET_PATH=!CD!"
@@ -39,7 +29,7 @@ set "exePath=%~2"
     echo ^)    
 
     echo rem Passthrough
-    echo call "%%APP_PATH%%" %%*
+    echo call "%%APP_PATH%%" --cli %%*
 ) > "%targetFile%"
 
 :: Confirm file creation

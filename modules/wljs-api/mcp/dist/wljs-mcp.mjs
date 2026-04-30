@@ -45994,6 +45994,13 @@ function assertNonOverlappingLineChanges(changes) {
     }
   }
 }
+function parsePositiveIntParam(value, name) {
+  const n = Number(value);
+  if (!Number.isInteger(n) || n <= 0) {
+    throw new Error(`${name} must be a positive integer.`);
+  }
+  return n;
+}
 function resolveRuntimeConfig(options = {}) {
   return {
     WL_API_BASE: "http://127.0.0.1:20560",
@@ -46792,6 +46799,351 @@ function rejectJsonRpc(res, status, message) {
     error: { code: -32e3, message },
     id: null
   });
+}
+startWljsNotebookMcp.cli = async (app, args = [], io = {}) => {
+  const stdout = io.stdout ?? process.stdout;
+  const stderr = io.stderr ?? process.stderr;
+  try {
+    const code = await runWljsCli(args, { stdout, stderr });
+    app.exit(code);
+    return code;
+  } catch (error2) {
+    stderr.write(`${error2?.message ?? String(error2)}
+`);
+    app.exit(1);
+    return 1;
+  }
+};
+async function runWljsCli(args, { stdout, stderr }) {
+  const command = args.shift();
+  if (!command || command === "help" || command === "--help" || command === "-h") {
+    writeCli(stdout, cliHelpText());
+    return 0;
+  }
+  if (command === "version" || command === "-v" || command === "--version") {
+    writeCli(stdout, "v0.1");
+    return 0;
+  }
+  switch (command) {
+    case "config":
+      writeJson(stdout, getWlMcpConfig());
+      return 0;
+    case "notebooks":
+      writeJson(stdout, await wlCall("/api/notebook/list/", {}));
+      return 0;
+    case "focused":
+      writeJson(stdout, await wlCall("/api/notebook/focused/", {}));
+      return 0;
+    case "context": {
+      const opts = parseCliOptions(args);
+      const Notebook = opts.Notebook ?? opts.notebook;
+      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
+      const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
+      let focusedCell = null;
+      try {
+        focusedCell = await wlCall("/api/notebook/cells/focused/", { Notebook: notebookId });
+      } catch (error2) {
+        focusedCell = { Error: error2?.message ?? String(error2) };
+      }
+      writeJson(stdout, {
+        Notebook: notebookId,
+        Cells: cells,
+        FocusedCell: focusedCell
+      });
+      return 0;
+    }
+    case "cells": {
+      const Notebook = requireCliArg(args.shift(), "Usage: wljs cells <notebook>");
+      writeJson(stdout, await wlCall("/api/notebook/cells/list/", { Notebook }));
+      return 0;
+    }
+    case "focused-cell": {
+      const Notebook = requireCliArg(args.shift(), "Usage: wljs focused-cell <notebook>");
+      writeJson(stdout, await wlCall("/api/notebook/cells/focused/", { Notebook }));
+      return 0;
+    }
+    case "lines": {
+      const Cell = requireCliArg(args.shift(), "Usage: wljs lines <cell> <from> <to>");
+      const From = parsePositiveIntParam(args.shift(), "From");
+      const To = parsePositiveIntParam(args.shift(), "To");
+      assertLineRange({ From, To });
+      writeJson(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      return 0;
+    }
+    case "docs": {
+      const Query = requireCliArg(args.join(" "), "Usage: wljs docs <query>");
+      writeJson(stdout, await cliConsultDocs(Query));
+      return 0;
+    }
+    case "wl": {
+      const Expression = requireCliArg(args.join(" "), "Usage: wljs wl '<expression>'");
+      writeJson(
+        stdout,
+        await wlCall(
+          "/api/kernel/evaluate/",
+          { Expression },
+          {
+            wait: true,
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+          }
+        )
+      );
+      return 0;
+    }
+    case "eval": {
+      const Cell = requireCliArg(args.shift(), "Usage: wljs eval <cell>");
+      writeJson(
+        stdout,
+        await wlCall(
+          "/api/notebook/cells/evaluate/",
+          { Cell },
+          {
+            wait: true,
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+          }
+        )
+      );
+      return 0;
+    }
+    case "project": {
+      const Cell = requireCliArg(args.shift(), "Usage: wljs project <cell>");
+      writeJson(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
+      return 0;
+    }
+    case "add": {
+      ensureWritableCli();
+      const Notebook = requireCliArg(
+        args.shift(),
+        "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]"
+      );
+      const opts = parseCliOptions(args);
+      const Content = readCliContent(opts);
+      const payload = compact({
+        Notebook,
+        Content,
+        After: opts.after ?? opts.After,
+        Before: opts.before ?? opts.Before
+      });
+      assertSingleAnchor(payload);
+      const added = await wlCall("/api/notebook/cells/add/", payload);
+      if (opts.eval === true) {
+        const Cell = extractCliCellId(added);
+        if (!Cell) {
+          writeJson(stdout, {
+            Added: added,
+            Warning: "Cell was added, but CLI could not infer the new cell id for evaluation."
+          });
+          return 0;
+        }
+        const evaluated = await wlCall(
+          "/api/notebook/cells/evaluate/",
+          { Cell },
+          {
+            wait: true,
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+          }
+        );
+        writeJson(stdout, {
+          Added: added,
+          Evaluated: evaluated
+        });
+        return 0;
+      }
+      writeJson(stdout, added);
+      return 0;
+    }
+    case "set-lines": {
+      ensureWritableCli();
+      const Cell = requireCliArg(
+        args.shift(),
+        "Usage: wljs set-lines <cell> <from> <to> --content <text|@file|->"
+      );
+      const From = parsePositiveIntParam(args.shift(), "From");
+      const To = parsePositiveIntParam(args.shift(), "To");
+      assertLineRange({ From, To });
+      const opts = parseCliOptions(args);
+      const Content = readCliContent(opts);
+      writeJson(
+        stdout,
+        await wlCall("/api/notebook/cells/setlines/", {
+          Cell,
+          From,
+          To,
+          Content
+        })
+      );
+      return 0;
+    }
+    case "insert-lines": {
+      ensureWritableCli();
+      const Cell = requireCliArg(
+        args.shift(),
+        "Usage: wljs insert-lines <cell> <after> --content <text|@file|->"
+      );
+      const After = parseNonNegativeCliInt(args.shift(), "After");
+      const opts = parseCliOptions(args);
+      const Content = readCliContent(opts);
+      writeJson(
+        stdout,
+        await wlCall("/api/notebook/cells/insertlines/", {
+          Cell,
+          After,
+          Content
+        })
+      );
+      return 0;
+    }
+    case "delete-cell": {
+      ensureWritableCli();
+      const Cell = requireCliArg(args.shift(), "Usage: wljs delete-cell <cell>");
+      writeJson(stdout, await wlCall("/api/notebook/cells/delete/", { Cell }));
+      return 0;
+    }
+    default:
+      throw new Error(`Unknown command: ${command}
+
+Run: wljs help`);
+  }
+}
+function writeCli(stdout, text) {
+  stdout.write(`${text}
+`);
+}
+function writeJson(stdout, value) {
+  stdout.write(`${JSON.stringify(value, null, 2)}
+`);
+}
+function requireCliArg(value, usage) {
+  if (value === void 0 || value === "") {
+    throw new Error(usage);
+  }
+  return value;
+}
+function parseNonNegativeCliInt(value, name) {
+  const n = Number(value);
+  if (!Number.isInteger(n) || n < 0) {
+    throw new Error(`${name} must be a non-negative integer.`);
+  }
+  return n;
+}
+function parseCliOptions(args) {
+  const out = {};
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    if (!arg.startsWith("--")) {
+      throw new Error(`Unexpected argument: ${arg}`);
+    }
+    const key = arg.slice(2);
+    if (key === "eval") {
+      out.eval = true;
+      continue;
+    }
+    const value = args[i + 1];
+    if (value === void 0 || value.startsWith("--")) {
+      out[key] = true;
+      continue;
+    }
+    out[key] = value;
+    i += 1;
+  }
+  return out;
+}
+function readCliContent(opts) {
+  const value = opts.content ?? opts.Content;
+  if (value === void 0) {
+    throw new Error("Missing --content <text|@file|->");
+  }
+  if (value === "-") {
+    return readFileSync(0, "utf8");
+  }
+  if (typeof value === "string" && value.startsWith("@")) {
+    return readFileSync(value.slice(1), "utf8");
+  }
+  return String(value);
+}
+function ensureWritableCli() {
+  if (runtimeConfig.READ_ONLY) {
+    throw new Error("WL_READ_ONLY is enabled; mutating CLI commands are unavailable.");
+  }
+}
+function extractCliCellId(value) {
+  if (typeof value === "string") return value;
+  if (value && typeof value === "object") {
+    return value.Cell ?? value.cell ?? value.ID ?? value.Id ?? value.id ?? value.Hash ?? value.hash ?? null;
+  }
+  return null;
+}
+async function cliConsultDocs(Query, LinesCount = 60) {
+  const localMatches = findSkillDocs(Query);
+  if (localMatches.length > 0) {
+    return {
+      Source: "bundled-wljs-skills",
+      Query,
+      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+        key,
+        title,
+        uri
+      })),
+      Documents: localMatches.map(({ key, title, uri, text }) => ({
+        key,
+        title,
+        uri,
+        text
+      }))
+    };
+  }
+  try {
+    return {
+      Source: "wolfram-language-llm-docs",
+      Query,
+      Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
+      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+        key,
+        title,
+        uri
+      }))
+    };
+  } catch (error2) {
+    return {
+      Source: "not-found",
+      Query,
+      Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${error2?.message ?? String(error2)}`,
+      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({
+        key,
+        title,
+        uri,
+        aliases
+      }))
+    };
+  }
+}
+function cliHelpText() {
+  return `WLJS Notebook CLI
+
+Usage:
+  wljs help
+  wljs version
+  wljs config
+
+Notebook:
+  wljs notebooks
+  wljs focused
+  wljs context [--Notebook <id>]
+  wljs cells <notebook>
+  wljs focused-cell <notebook>
+  wljs lines <cell> <from> <to>
+
+Editing:
+  wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]
+  wljs set-lines <cell> <from> <to> --content <text|@file|->
+  wljs insert-lines <cell> <after> --content <text|@file|->
+  wljs delete-cell <cell>
+
+Evaluation:
+  wljs eval <cell>
+  wljs project <cell>
+  wljs wl 'Range[10]^2'
+  wljs docs <query>`;
 }
 var wljs_mcp_default = startWljsNotebookMcp;
 export {

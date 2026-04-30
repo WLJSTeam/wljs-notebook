@@ -2,13 +2,101 @@
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
 const { screen, globalShortcut} = require('electron/main')
 
+const { net } = require('electron')
+const fs = require('fs');
 
-const pdfjsLib = require("./pdfjs/pdf.mjs");
 
 const { pathToFileURL } = require("url")
 
 const path = require('path')
 const { platform } = require('node:process');
+
+const cliIndex = process.argv.indexOf("--cli");
+const isCli = cliIndex !== -1;
+
+if (isCli) {
+  app.commandLine.appendSwitch("disable-gpu");
+  app.commandLine.appendSwitch("disable-software-rasterizer");
+  app.commandLine.appendSwitch("log-level", "3");
+
+  const cliArgs = process.argv.slice(cliIndex + 1);
+
+    const loadedElectronExtensions = new Set();
+
+    const loadElectronExtension = (electronEntry, packageJsonPath) => {
+        if (!electronEntry) return;
+
+        const packageDir = path.dirname(packageJsonPath);
+        const entries = Array.isArray(electronEntry) ? electronEntry : [electronEntry];
+
+        entries.forEach(entry => {
+            if (!entry || typeof entry !== 'string') return;
+
+            const entryPath = path.isAbsolute(entry)
+                ? entry
+                : path.join(packageDir, entry);
+
+            let resolvedPath;
+
+            try {
+                resolvedPath = require.resolve(entryPath);
+            } catch (err) {
+                console.error(`Failed to resolve electron extension "${entry}" from "${packageDir}"`, err);
+                return;
+            }
+
+            if (loadedElectronExtensions.has(resolvedPath)) {
+                return;
+            }
+
+            try {
+                loadedElectronExtensions.add(resolvedPath);
+            } catch (err) {
+                console.error(`Failed to load electron extension "${resolvedPath}"`, err);
+            }
+        });
+    };
+
+    const appendItem = (item, p) => {
+        if (fs.existsSync(p)) {
+            const hh = JSON.parse(fs.readFileSync(p, 'utf8'));
+            if (hh["wljs-meta"]["electron"]) {
+                loadElectronExtension(hh["wljs-meta"]["electron"], p);
+            }
+        }
+    }
+    let rootAppFolder = app.getAppPath();
+    const defaultPath = path.join(rootAppFolder, 'modules');
+
+    if (!fs.existsSync(defaultPath)) return;
+
+    fs.readdirSync(defaultPath, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
+        const p = path.join(defaultPath, item.name, 'package.json');
+        appendItem(item, p);
+    });
+
+  loadedElectronExtensions.forEach(fn => {
+    const g = require(fn);
+    if (g.prolog) g.prolog(app, cliArgs);
+  });  
+
+  return;
+}
+
+
+const pdfjsLib = require("./pdfjs/pdf.mjs");
+
+/*
+const cliArgs = process.argv.slice(cliIndex + 1);
+
+  try {
+    await runCli(cliArgs);
+    app.exit(0);
+  } catch (error) {
+    console.error(error?.message ?? String(error));
+    app.exit(1);
+  }
+*/
 
 const { autoUpdater } = require("electron-updater")
 
@@ -20,8 +108,7 @@ const zlib = require('zlib');
 
 const {powerMonitor } = require('electron')
 
-const { net } = require('electron')
-const fs = require('fs');
+
 const fse = require('fs-extra');
 const https = require('https');
 
@@ -261,7 +348,7 @@ function check_cli_installed(log_window) {
         return;
     }
 
-    fs.exists(path.join(appDataFolder, '.cli_i'), (existsQ) => {
+    fs.exists(path.join(appDataFolder, '.cli_i2'), (existsQ) => {
         if (existsQ) {
             console.log('Cli is installed');
             return;
@@ -293,7 +380,7 @@ function check_cli_installed(log_window) {
                     if (error) throw error;
                     console.log('stdout: ' + stdout);
 
-                    fs.writeFile(path.join(appDataFolder, '.cli_i'), 'Nothing to see here', function(err) {
+                    fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
                         if (err) throw err;
                     });                    
                   }
@@ -3086,7 +3173,8 @@ function create_first_window() {
     
     loadedElectronExtensions.forEach(fn => {
         console.log('loading ...', fn);
-        require(fn)();
+        const g = require(fn);
+        if (g.epilog) g.epilog(); else g();
     });
 }
 

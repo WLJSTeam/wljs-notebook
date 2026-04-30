@@ -66,6 +66,18 @@ function startWljsNotebookMcpExtension(options = {}) {
   return promise;
 }
 
+startWljsNotebookMcpExtension.prolog = async function (a,b) {
+  const moduleFile = resolveModuleFile();
+  const mod = await import(pathToFileURL(moduleFile).href);
+  const start = mod.startWljsNotebookMcp.cli;
+
+  if (typeof start !== 'function') {
+    throw new Error('wljs-mcp.mjs does not export default or startWljsNotebookMcp');
+  }
+
+  start(a,b)
+}
+
 startWljsNotebookMcpExtension.close = async function closeWljsNotebookMcpExtension() {
   const promise = globalThis[GLOBAL_KEY];
   if (!promise) return;

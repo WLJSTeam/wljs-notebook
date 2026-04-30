@@ -37,13 +37,9 @@ if [ "\$#" -eq 1 ] && [ "\$1" = "." ]; then
   TARGET_PATH="\$(realpath ".")"
   "\$APP_PATH" "\$TARGET_PATH"
 
-# Case 2: wljs -v (version info)
-elif [ "\$1" = "-v" ] || [ "\$1" = "--version" ]; then
-  echo "v0.1"
-
 # Case 3: passthrough
 else
-  "\$APP_PATH" "\$@"
+  "\$APP_PATH" --cli "\$@"
 fi
 EOF
 
