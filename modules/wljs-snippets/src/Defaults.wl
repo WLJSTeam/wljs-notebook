@@ -3,7 +3,7 @@ SnippetsCreateItem[
     "InvokeAI", 
 
     "Template"->ImportComponent[FileNameJoin[{iTemplate, "Magic.wlx"}] ], 
-    "Title"->"Ask AI"
+    "Title"->"Ask Community"
 ];
 
 SnippetsCreateItem[
@@ -59,6 +59,29 @@ EventHandler[SnippetsEvents, {
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             
         ];
+    ] ],
+    "InvokeAI" -> Function[assoc, With[{
+        notebook = (EventFire[assoc["Controls"], "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n})}, {
+        cell = notebook["FocusedCell"]
+    },
+        If[MatchQ[cell, _cell`CellObj],
+            With[{group = If[cell`InputCellQ[cell],
+                cell`SelectCells[notebook["Cells"], Sequence[cell, ___?cell`OutputCellQ] ]
+            ,
+                cell`SelectCells[notebook["Cells"], Sequence[_?cell`InputCellQ, ___?cell`OutputCellQ, cell] ]
+            ]},
+                With[{string = StringRiffle[ Map[Function[c, 
+                    StringJoin["\n%---------%\n", "T: ", c["Type"], "\n%---------%\n", c["Data"], "\n"]
+                ], group], "\n%---------%\n"]},
+                    With[{urlEncoded = StringJoin["https://github.com/WLJSTeam/wljs-notebook/discussions/new?category=help&title=Need%20help%20with%20WLJS%20Notebook&body=", URLEncode[StringJoin["Hi there!\n", assoc["Promt"], "\n\n```wolfram", string, "\n```\n\n "] ] ]},
+                        
+                        WebUILocation[urlEncoded, assoc["Client"], "Target"->_];
+                    ]
+                ]
+            ]
+        ,
+            EventFire[assoc["Messanger"], "Warning", "There is no input cell focused" ];
+        ]
     ] ]
 }];
 

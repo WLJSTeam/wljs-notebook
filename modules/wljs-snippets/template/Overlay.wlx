@@ -425,12 +425,7 @@ With[{
     EventHandler[LocalControls, {"Open" -> (open[#, "Palette", cachedClient, quickTags, ClickActions, Path, Controls, Modals, Messanger, LocalControls, typeWritter, keyListener, CancelListener, emptyPanel, aiPanel, searchPanel, fieldState, PlaceholderData, ulStyles]&)}];
 
     <div style="-webkit-app-region: no-drag" class="relative grow rounded-md bg-gray-100 dark:bg-gray-700 win:mt-1 linux:mt-1">
-        <style>
-            #canvas-palette-back > canvas {
-                filter: blur(15px);
-            }
-        </style>
-        <div class="absolute w-full h-full rounded-md overflow-hidden" id="canvas-palette-back">
+        <div class="absolute w-full h-full rounded-md overflow-hidden">
         </div>
         <div id="palette" class="grow relative p-1 items-center flex rounded-md 0 h-7 owin:h-6 win:h-6 linux:h-6 pl-3  pr-2 text-left text-gray-500  ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-xs sm:leading-6 dark:ring-gray-600 ">
             <svg id="palette-ico" class="pointer-events-none h-4 w-6 text-gray-900 dark:text-gray-400 text-opacity-40" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

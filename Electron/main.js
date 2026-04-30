@@ -1750,13 +1750,6 @@ function create_window(opts, cbk = () => {}) {
             
         }
 
-        if ((new RegExp(/gptchat/)).exec(options.url)) {
-            options.minWidth = 200;
-            options.linuxMenuBar = false;
-            options.contextMenu = false;
-            options.override.maximizable = false;
-        }
-
         if ((new RegExp(/docFind/)).exec(options.url)) {
             options.width = options.minWidth;
             options.linuxMenuBar = false;
@@ -2180,43 +2173,6 @@ function create_window(opts, cbk = () => {}) {
 
             return { action: 'deny' };
         });
-
-        if ((new RegExp(/gptchat/)).exec(options.url)) {
-            if (options.parent) {
-
-
-                if (options.parent.isMaximized()) options.parent.unmaximize();
-
-                const pos = options.parent.getPosition();
-                const dims = options.parent.getSize();
-
-                const primaryDisplay = screen.getPrimaryDisplay();
-                const { width, height } = primaryDisplay.workAreaSize;
-                console.warn({screen: width, parentPos: pos, parentdims:dims});
-
-
-                if (pos[0]+dims[0] + 310 > width) {
-                    console.warn('Contaner Overflow!');
-                    if (dims[0] + 310 + 50 > width) {
-                        console.warn('Resize parent');
-                        options.parent.setPosition(50, pos[1], true);
-                        const newwidth = width - 310 - 50;
-                        options.parent.setBounds({ width: newwidth, animate: true}, true);
-                        win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                        win.setPosition( newwidth + 10 + 50, pos[1], true);
-                    } else {
-                        options.parent.setPosition(50, pos[1], true);
-                        win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                        win.setPosition(dims[0] + 50 + 10, pos[1], true);
-                    }
-                } else {
-                    win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                    win.setPosition(pos[0]+dims[0] + 10, pos[1], true);
-                }
-            } else {
-                win.setBounds({ width: 300, animate: true}, true);
-            }
-        }
 
         win.loadURL(options.url);
 
