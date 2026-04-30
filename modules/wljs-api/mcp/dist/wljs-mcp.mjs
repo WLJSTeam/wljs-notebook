@@ -45950,6 +45950,50 @@ var EMPTY_COMPLETION_RESULT = {
 };
 
 // wljs-mcp.mjs
+var idSchema = external_exports.string().min(1);
+var lineNumberSchema = external_exports.number().int().positive();
+var cellIdShape = {
+  Cell: idSchema.describe("Cell hash/id.")
+};
+var notebookIdShape = {
+  Notebook: idSchema.describe("Notebook hash/id.")
+};
+var lineRangeShape = {
+  From: lineNumberSchema.describe("1-indexed start line, inclusive."),
+  To: lineNumberSchema.describe("1-indexed end line, inclusive.")
+};
+var optionalAnchorShape = {
+  After: idSchema.optional().describe("Optional anchor cell id to insert after."),
+  Before: idSchema.optional().describe("Optional anchor cell id to insert before.")
+};
+function assertLineRange({ From, To }, label = "line range") {
+  if (From > To) {
+    throw new Error(`Invalid ${label}: From (${From}) must be <= To (${To}).`);
+  }
+}
+function assertSingleAnchor({ After, Before }) {
+  if (After !== void 0 && Before !== void 0) {
+    throw new Error("Specify only one of After or Before, not both.");
+  }
+}
+function assertNonOverlappingLineChanges(changes) {
+  if (!Array.isArray(changes) || changes.length === 0) {
+    throw new Error("Changes must contain at least one edit.");
+  }
+  for (const [index, change] of changes.entries()) {
+    assertLineRange(change, `Changes[${index}]`);
+  }
+  const sorted = changes.map((change, index) => ({ ...change, index })).sort((a, b) => a.From - b.From || a.To - b.To);
+  for (let i = 1; i < sorted.length; i += 1) {
+    const previous = sorted[i - 1];
+    const current = sorted[i];
+    if (current.From <= previous.To) {
+      throw new Error(
+        `Overlapping edits: Changes[${previous.index}] (${previous.From}-${previous.To}) overlaps Changes[${current.index}] (${current.From}-${current.To}).`
+      );
+    }
+  }
+}
 function resolveRuntimeConfig(options = {}) {
   return {
     WL_API_BASE: "http://127.0.0.1:20560",
@@ -46029,57 +46073,29 @@ var SKILL_DOCS = [
   }
 ];
 var SKILL_INDEX = SKILL_DOCS.map((doc) => `- ${doc.title}: ${doc.uri} (aliases: ${doc.aliases.slice(0, 8).join(", ")})`).join("\n");
-var NOTEBOOK_ASSISTANT_INSTRUCTIONS = `You are operating inside a WLJS/Wolfram notebook environment with an ordered list of cells from top to bottom.
+var NOTEBOOK_ASSISTANT_INSTRUCTIONS = `Operate on a local sandboxed WLJS/Wolfram notebook.
 
-Notebook model:
-- Each INPUT cell may have zero or more OUTPUT cells directly following it.
-- OUTPUT cells are read-only and are created by evaluating an INPUT cell.
-- Deleting an input deletes its outputs. Do not delete cells unless explicitly asked.
-- Never create OUTPUT cells directly. Only create or edit INPUT cells, then evaluate them when output is needed.
-
-Cell type rules, determined only by the first line of an INPUT cell:
-- ".md\\n" means Markdown.
-- ".html\\n" means HTML.
-- ".js\\n" means JavaScript.
-- ".mermaid\\n" means Mermaid.
-- ".slide\\n" means RevealJS slides.
-- "*.*\\n" means a user custom type.
-- Otherwise the cell is Wolfram Language.
-- Do not set Display to choose these types; use the first-line marker pattern.
-
-Example Markdown input cell:
+Workflow:
+1. Inspect before acting: use notebook_context, get_focused_cell, or list_cells.
+2. Before editing a cell, read nearby context with get_cell_lines.
+3. Edit only INPUT cells. 
+4. Outputs are produced by evaluate_cell.
+5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
+6. Use consult_docs before creating or editing .js, .html, .md, .mermaid, .slide, or WLJS dynamic/interactivity cells. For example:
+\`\`\`
 .md
-# Hello World
-This is **markdown** cell.
+This will output **markdown**.
+\`\`\`
 
-Markdown, HTML, JavaScript, Mermaid, and slide cells are evaluated in the same way as code cells; they are not rendered automatically when inserted. Consult docs for JavaScript, HTML, slides, and Wolfram dynamics/interactivity.
+Bundled resources are available at: wljs://skills/*
 
-Core workflow:
-- Line numbers are 1-indexed and inclusive for both From and To.
-- Always inspect the current notebook/cell first using notebook_context, get_focused_cell, or list_cells.
-- Before editing/commenting a cell, read relevant lines with get_cell_lines; include a little above and below any selection for context.
-- When making multiple edits in one cell, prefer set_cell_lines_batch.
-- When adding multiple related cells, prefer add_cells_batch.
-- To produce output, create or edit an INPUT cell, then evaluate it.
-- If asked to "show" or "print" something, insert a new INPUT cell in the notebook and evaluate it, rather than only answering in chat.
-- If asked for code examples, add a new INPUT cell containing the code.
-- If asked to modify something, apply changes directly with editing tools.
-- Avoid using Print or Abort in Wolfram cells.
+Cell rules:
+- Cell type is determined only by the first line of input cell: .md, .html, .js, .mermaid, .slide, *.*, or not --- this is plain Wolfram Language.
+- Line numbers are 1-indexed and inclusive.
+- Deleting an input also deletes its outputs; do not delete unless explicitly asked.
+- Avoid Print and Abort in Wolfram cells.
 
-Documentation:
-- Use consult_docs when unsure about a Wolfram feature, cell type, JavaScript/HTML/Markdown/slide cells, Mermaid, or WLJS dynamics/interactivity.
-- Bundled skill resources are available at wljs://skills/index, wljs://skills/javascript, wljs://skills/html, wljs://skills/markdown, wljs://skills/mermaid, wljs://skills/slides, and wljs://skills/dynamics.
-
-Tool intent guide:
-- consult_docs: consult local library docs when unsure about a feature or cell type.
-- list_cells: notebook overview.
-- get_focused_cell: current target and selected lines.
-- get_cell_lines: read cell content.
-- set_cell_lines, set_cell_lines_batch, insert_cell_lines: edit input cells.
-- add_cell, add_cells_batch, delete_cell: manage input cells.
-- evaluate_cell, project_cell: run or project an input cell.
-- kernel_evaluate: run Wolfram Language without a notebook cell.
-- wolfram_alpha: factual Wolfram Alpha short-answer queries.`;
+When asked to show, print, demonstrate, or create notebook content, add or edit an INPUT cell and evaluate it when output is needed.`;
 function textResourceResult(uri, text) {
   return {
     contents: [
@@ -46225,12 +46241,17 @@ async function pollPromise(id, { wait = true, timeoutMs = runtimeConfig.PROMISE_
       return Object.prototype.hasOwnProperty.call(status, "Result") ? status.Result : status;
     }
     if (Date.now() - startedAt >= timeoutMs) {
-      return {
-        Promise: id,
-        ReadyQ: false,
-        TimedOut: true,
-        Message: `Operation is still pending after ${timeoutMs} ms. Call wl_poll_promise with this Promise id to continue polling.`
-      };
+      throw new WlApiError(
+        `WLJS operation is still pending after ${timeoutMs} ms. The sandbox will keep running it; if it fails, WLJS will resolve it with $Failed. Increase WL_PROMISE_TIMEOUT_MS or use a shorter evaluation if the MCP client needs the result.`,
+        {
+          path: "/api/promise/",
+          payload: {
+            Promise: id,
+            ReadyQ: false,
+            TimedOut: true
+          }
+        }
+      );
     }
     await sleep(runtimeConfig.POLL_INTERVAL_MS);
   }
@@ -46323,10 +46344,54 @@ ${skillIndexText()}`
       ]
     })
   );
-  function register(name, description, inputSchema, handler) {
+  const READ_ONLY_LOCAL = {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false
+  };
+  const READ_ONLY_OPEN_WORLD = {
+    readOnlyHint: true,
+    destructiveHint: false,
+    idempotentHint: false,
+    openWorldHint: true
+  };
+  const MUTATING_ADDITIVE_LOCAL = {
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: false,
+    openWorldHint: false
+  };
+  const MUTATING_DESTRUCTIVE_LOCAL = {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: false
+  };
+  const EXECUTES_CODE_LOCAL = {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: false,
+    openWorldHint: true
+  };
+  function humanTitle(name) {
+    return name.split("_").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+  }
+  function register(name, description, inputSchema, handler, options2 = {}) {
+    const title = options2.title ?? humanTitle(name);
     server.registerTool(
       name,
-      { description, inputSchema },
+      {
+        title,
+        description,
+        inputSchema,
+        ...options2.outputSchema ? { outputSchema: options2.outputSchema } : {},
+        annotations: {
+          title,
+          openWorldHint: false,
+          ...options2.annotations ?? {}
+        }
+      },
       async (args) => {
         try {
           return toMcpResult(await handler(args ?? {}));
@@ -46424,7 +46489,11 @@ ${skillIndexText()}`
     "list_notebooks",
     "List notebooks known to the application.",
     {},
-    () => wlCall("/api/notebook/list/", {})
+    () => wlCall("/api/notebook/list/", {}),
+    {
+      title: "List Notebooks",
+      annotations: READ_ONLY_LOCAL
+    }
   );
   register(
     "get_focused_notebook",
@@ -46436,9 +46505,13 @@ ${skillIndexText()}`
     "list_cells",
     "List all cells in a notebook with id, type, display mode, line count, and first line.",
     {
-      Notebook: external_exports.string().min(1).describe("Notebook hash/id.")
+      ...notebookIdShape
     },
-    ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook })
+    ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook }),
+    {
+      title: "List Cells",
+      annotations: READ_ONLY_LOCAL
+    }
   );
   register(
     "get_focused_cell",
@@ -46452,11 +46525,14 @@ ${skillIndexText()}`
     "get_cell_lines",
     "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing.",
     {
-      Cell: external_exports.string().min(1).describe("Cell hash/id."),
-      From: external_exports.number().int().positive().describe("1-indexed start line, inclusive."),
-      To: external_exports.number().int().positive().describe("1-indexed end line, inclusive.")
+      ...cellIdShape,
+      ...lineRangeShape
     },
-    ({ Cell, From, To }) => wlCall("/api/notebook/cells/getlines/", { Cell, From, To })
+    ({ Cell, From, To }) => {
+      assertLineRange({ From, To });
+      return wlCall("/api/notebook/cells/getlines/", { Cell, From, To });
+    },
+    { title: "Get Cell Lines", annotations: READ_ONLY_LOCAL }
   );
   register(
     "wolfram_alpha",
@@ -46464,7 +46540,11 @@ ${skillIndexText()}`
     {
       Query: external_exports.string().min(1).describe("Natural-language Wolfram Alpha query.")
     },
-    ({ Query }) => wlCall("/api/alphaRequest/", { Query })
+    ({ Query }) => wlCall("/api/alphaRequest/", { Query }),
+    {
+      title: "Ask Wolfram Alpha",
+      annotations: READ_ONLY_OPEN_WORLD
+    }
   );
   if (!runtimeConfig.READ_ONLY) {
     register(
@@ -46481,25 +46561,30 @@ ${skillIndexText()}`
         From,
         To,
         Content
-      })
+      }),
+      {
+        title: "Replace Cell Lines",
+        annotations: MUTATING_DESTRUCTIVE_LOCAL
+      }
     );
     register(
       "set_cell_lines_batch",
       "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive.",
       {
-        Cell: external_exports.string().min(1).describe("Cell hash/id."),
+        ...cellIdShape,
         Changes: external_exports.array(
           external_exports.object({
-            From: external_exports.number().int().positive(),
-            To: external_exports.number().int().positive(),
+            From: lineNumberSchema,
+            To: lineNumberSchema,
             Content: external_exports.string()
           })
-        ).describe("Non-overlapping line replacements.")
+        ).min(1).describe("Non-overlapping line replacements.")
       },
-      ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", {
-        Cell,
-        Changes
-      })
+      ({ Cell, Changes }) => {
+        assertNonOverlappingLineChanges(Changes);
+        return wlCall("/api/notebook/cells/setlines/batch/", { Cell, Changes });
+      },
+      { title: "Batch Replace Cell Lines", annotations: MUTATING_DESTRUCTIVE_LOCAL }
     );
     register(
       "insert_cell_lines",
@@ -46513,7 +46598,11 @@ ${skillIndexText()}`
         Cell,
         After,
         Content
-      })
+      }),
+      {
+        title: "Insert Cell Lines",
+        annotations: MUTATING_ADDITIVE_LOCAL
+      }
     );
     register(
       "delete_cell",
@@ -46521,7 +46610,11 @@ ${skillIndexText()}`
       {
         Cell: external_exports.string().min(1).describe("Cell hash/id.")
       },
-      ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell })
+      ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell }),
+      {
+        title: "Delete Cell",
+        annotations: MUTATING_DESTRUCTIVE_LOCAL
+      }
     );
     register(
       "add_cell",
@@ -46532,7 +46625,14 @@ ${skillIndexText()}`
         After: external_exports.string().optional().describe("Optional cell id to insert after."),
         Before: external_exports.string().optional().describe("Optional cell id to insert before.")
       },
-      (args) => wlCall("/api/notebook/cells/add/", compact(args))
+      (args) => {
+        assertSingleAnchor(args);
+        return wlCall("/api/notebook/cells/add/", compact(args));
+      },
+      {
+        title: "Add Cell",
+        annotations: MUTATING_ADDITIVE_LOCAL
+      }
     );
     register(
       "add_cells_batch",
@@ -46547,7 +46647,10 @@ ${skillIndexText()}`
           })
         ).min(1)
       },
-      (args) => wlCall("/api/notebook/cells/add/batch/", compact(args))
+      (args) => {
+        assertSingleAnchor(args);
+        return wlCall("/api/notebook/cells/add/batch/", compact(args));
+      }
     );
     register(
       "evaluate_cell",
@@ -46562,7 +46665,11 @@ ${skillIndexText()}`
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
         }
-      )
+      ),
+      {
+        title: "Evaluate Cell",
+        annotations: EXECUTES_CODE_LOCAL
+      }
     );
     register(
       "project_cell",
@@ -46586,7 +46693,11 @@ ${skillIndexText()}`
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
         }
-      )
+      ),
+      {
+        title: "Evaluate Wolfram Kernel Expression",
+        annotations: EXECUTES_CODE_LOCAL
+      }
     );
   } else {
     console.error(

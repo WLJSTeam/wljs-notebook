@@ -1,23 +1,6 @@
 let siri;
 let siriInstance  = false;
-let party;
 
-core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'] = async (args, env) => {
-  const uid = interpretate(args[0], env);
-  let doc = document.getElementById(uid);
-  if (!doc) doc = document.getElementsByTagName(uid)[0];
-  if (!doc) return;
-
-  if (!party) party = (await import('./index-8b2a62df.js').then(function (n) { return n.i; })).default;
-
-  party.sparkles(doc, {
-    // Specify further (optional) configuration here.
-    count: party.variation.range(10, 60),
-    speed: party.variation.range(50, 300),
-  });
-};
-
-core['MagicWand'] = core['CoffeeLiqueur`Extensions`CommandPalette`VFX`MagicWand'];
 
 core['CoffeeLiqueur`Extensions`CommandPalette`AI`Private`Siriwave'] = async (args, env) => {
   const op = await interpretate(args[0], env);
@@ -25,7 +8,7 @@ core['CoffeeLiqueur`Extensions`CommandPalette`AI`Private`Siriwave'] = async (arg
   const doc = document.getElementById(id);
 
   if (!siri) siri = (await import('./siriwave.esm-80419990.js')).default;
-  if (!party) party = (await import('./index-8b2a62df.js').then(function (n) { return n.i; })).default;
+
 
   switch(op) {
     case 'Start':

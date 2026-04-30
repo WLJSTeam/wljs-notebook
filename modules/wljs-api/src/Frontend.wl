@@ -5,6 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`API`", {
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`WLX`Importer`",
+    "CoffeeLiqueur`WLX`WebUI`",     
     "CoffeeLiqueur`HTTPHandler`",
     "CoffeeLiqueur`HTTPHandler`Extensions`",
     "CoffeeLiqueur`Internal`",
@@ -22,6 +23,10 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`Evaluator`" -> "StandardEvaluator`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
+
+
+Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`" -> "vfx`", FileNameJoin[{DirectoryName[$InputFileName], "VFX.wl"}] ];
+
 
 failure;
 
@@ -354,6 +359,14 @@ updateCellContent[cell_, newData_] :=  If[TrueQ[cell["Notebook"]["Opened"] ],
                 cell["Data"] = newData;
             ];
 
+
+makeMagic[cell_] := With[{notebook = cell["Notebook"]},
+    If[TrueQ[notebook["Opened"] ],
+        WebUISubmit[vfx`MagicWand[ "frame-"<>cell["Hash"] ], notebook["Socket"] ];
+    ];
+]
+
+
 (* 
    /api/notebook/cells/setlines/ - Replace a range of lines in a cell
    
@@ -389,8 +402,9 @@ apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Bo
         {
             newData = StringRiffle[Flatten[{before, content, after}], "\n"]   
         },
-
+            
             updateCellContent[cell, newData];
+            makeMagic[cell];
             
             "Lines were set"
         ] ]
@@ -432,6 +446,8 @@ apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request[
                 newData = StringRiffle[Flatten[{before, content, afterLines}], "\n"]
             },
                 updateCellContent[cell, newData];
+                makeMagic[cell];
+
                 "Lines were inserted"
             ] ]
         ]
@@ -503,6 +519,8 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
                     sortedChanges
                 ]},
                     updateCellContent[cell, StringRiffle[newLines, "\n"]];
+                    makeMagic[cell];
+
                     <|"Applied" -> Length[changes], "Message" -> "Batch lines were set"|>
                 ]
             ]
@@ -568,15 +586,18 @@ apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"],
             If[!MatchQ[after, _cell`CellObj], 
                 If[!MatchQ[before, _cell`CellObj],
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid ]},
+                        makeMagic[new];
                         uuid
                     ]                
                 ,
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "Before"->before]},
+                         makeMagic[new];
                         uuid
                     ] 
                 ]                                        
             ,
                 With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "After"->after]},
+                     makeMagic[new];
                     uuid
                 ] 
             ]
@@ -651,12 +672,14 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                                 With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid]},
                                     AppendTo[createdIds, uuid];
                                     currentAnchor = new;
+                                     makeMagic[new];
                                     insertMode = "after";
                                 ]
                             ,
                                 If[insertMode === "after",
                                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid, "After"->currentAnchor]},
                                         AppendTo[createdIds, uuid];
+                                         makeMagic[new];
                                         currentAnchor = new;
                                     ]
                                 ,
@@ -664,6 +687,7 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid, "Before"->currentAnchor]},
                                         AppendTo[createdIds, uuid];
                                         currentAnchor = new;
+                                         makeMagic[new];
                                         insertMode = "after"; (* subsequent cells go after the first *)
                                     ]
                                 ]

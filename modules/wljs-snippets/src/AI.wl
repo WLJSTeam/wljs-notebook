@@ -23,8 +23,6 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
 Needs["CoffeeLiqueur`GPTLink`", FileNameJoin[{ParentDirectory[DirectoryName[$InputFileName] ], "packages", "GPTLink.wl"}] ];
 
-Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`" -> "vfx`", FileNameJoin[{DirectoryName[$InputFileName], "VFX.wl"}] ];
-
 
 
 GPTUChatObject /: EventHandler[o_GPTUChatObject, opts_] := EventHandler[o["Hash"], opts]
@@ -34,7 +32,6 @@ GPTUChatObject /: EventRemove[o_GPTUChatObject, opts_] := EventRemove[o["Hash"],
 
 
 AIChatRenderer;
-vfx`MagicWand;
 
 AIChat`HashMap;
 
@@ -471,7 +468,7 @@ tool["set_cell_lines"] = <|
             |>, Function[result,
                 toolResults[[myIndex]] = If[StringQ[result], result, exportString[result, "JSON"]];
                 EventFire[p, Resolve, True];
-                WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket];
+                (* WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket]; *)
             ] ];
             p
         ] ] ];
@@ -520,7 +517,7 @@ tool["set_cell_lines_batch"] = <|
                 "Changes" -> Map[<|"From" -> #["from"], "To" -> #["to"], "Content" -> #["content"]|> &, args["changes"]]
             |>, Function[result,
                 toolResults[[myIndex]] = exportString[result, "JSON"];
-                WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket];
+                (* WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket]; *)
                 EventFire[p, Resolve, True];
             ] ];
             p
@@ -566,7 +563,7 @@ tool["insert_cell_lines"] = <|
                 "Content" -> args["content"]
             |>, Function[result,
                 toolResults[[myIndex]] = If[StringQ[result], result, exportString[result, "JSON"] ];
-                WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket];
+                (* WebUISubmit[vfx`MagicWand[removeQuotes @ args["cell"] ], socket]; *)
                 EventFire[p, Resolve, True];
             ] ];
             p
@@ -619,7 +616,7 @@ tool["add_cell"] = <|
             |>},
                 makeAPIRequest["/api/notebook/cells/add/", body, Function[result,
                     toolResults[[myIndex]] = If[StringQ[result], result, exportString[result, "JSON"]];
-                    WebUISubmit[vfx`MagicWand[ result ], socket];
+                    (* WebUISubmit[vfx`MagicWand[ result ], socket]; *)
                     EventFire[p, Resolve, True];
                 ] ];
             ];
@@ -679,7 +676,7 @@ tool["add_cells_batch"] = <|
             |>},
                 makeAPIRequest["/api/notebook/cells/add/batch/", body, Function[result,
                     toolResults[[myIndex]] = exportString[result, "JSON"];
-                    WebUISubmit[vfx`MagicWand[ # ]&/@ result, socket];
+                    (* WebUISubmit[vfx`MagicWand[ # ]&/@ result, socket]; *)
                     EventFire[p, Resolve, True];
                 ] ];
             ];
