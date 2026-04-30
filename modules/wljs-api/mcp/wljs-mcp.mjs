@@ -429,91 +429,36 @@ function register(name, description, inputSchema, handler) {
   );
 }
 
-const JsonBody = z.any().describe("JSON body to send to the WL API route.");
-const waitFields = {
-  wait: z
-    .boolean()
-    .optional()
-    .default(true)
-    .describe("When the WL API returns {Promise: id}, poll /api/promise/ until it resolves or times out."),
-  timeoutMs: z
-    .number()
-    .int()
-    .positive()
-    .optional()
-    .describe(`Maximum time to poll promises in ms. Default: ${runtimeConfig.PROMISE_TIMEOUT_MS}.`),
-};
-
-register(
-  "wl_api_raw",
-  "Call any WL HTTP API route directly. Use this as an escape hatch for routes not wrapped by a dedicated MCP tool.",
-  {
-    path: z.string().describe("WL API route, for example /api/notebook/list/."),
-    body: JsonBody.optional().default({}),
-    ...waitFields,
-  },
-  ({ path, body, wait, timeoutMs }) => wlCall(path, body ?? {}, { wait, timeoutMs }),
-);
-
-register(
-  "wl_api_routes",
-  "List top-level WL API routes exposed by /api/.",
-  {},
-  () => wlCall("/api/", {}),
-);
-
-register(
-  "wl_api_ready",
-  "Check whether the WL notebook HTTP API is alive and ready.",
-  {},
-  () => wlCall("/api/ready/", {}),
-);
-
-register(
-  "wl_poll_promise",
-  "Poll a WL promise id returned by a previous tool call. By default, waits until the promise resolves or times out.",
-  {
-    Promise: z.string().describe("Promise id returned by the WL API."),
-    ...waitFields,
-  },
-  ({ Promise, wait, timeoutMs }) => pollPromise(Promise, { wait, timeoutMs }),
-);
-
-register(
-  "wolfram_alpha_request",
-  "Ask Wolfram Alpha for a short answer through /api/alphaRequest/.",
-  {
-    Query: z.string().min(1).describe("Natural-language Wolfram Alpha query."),
-  },
-  ({ Query }) => wlCall("/api/alphaRequest/", { Query }),
-);
-
-register(
-  "wl_docs_find",
-  "Find Wolfram Language documentation snippets from the local llm.txt file by heading.",
-  {
-    Query: z.string().min(1).describe("Documentation heading/query, for example Plot or Association."),
-    LinesCount: z.number().int().positive().optional().default(40),
-  },
-  ({ Query, LinesCount }) => wlCall("/api/docs/find/", { Query, LinesCount }),
-);
-
-
 register(
   "consult_docs",
   "Consult bundled WLJS skill docs first, then fallback to Wolfram Language documentation from the local llm.txt. Use this when unsure about JS/HTML/Markdown/Mermaid/slide cells or dynamics/interactivity.",
   {
-    Query: z.string().min(1).describe("Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot."),
+    Query: z
+      .string()
+      .min(1)
+      .describe(
+        "Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot.",
+      ),
     LinesCount: z.number().int().positive().optional().default(60),
   },
   async ({ Query, LinesCount }) => {
     const localMatches = findSkillDocs(Query);
+
     if (localMatches.length > 0) {
       return {
         Source: "bundled-wljs-skills",
         Query,
-        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({ key, title, uri })),
-        Documents: localMatches.map(({ key, title, uri, text }) => ({ key, title, uri, text })),
+        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+          key,
+          title,
+          uri,
+        })),
+        Documents: localMatches.map(({ key, title, uri, text }) => ({
+          key,
+          title,
+          uri,
+          text,
+        })),
       };
     }
 
@@ -522,116 +467,96 @@ register(
         Source: "wolfram-language-llm-docs",
         Query,
         Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({ key, title, uri })),
+        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+          key,
+          title,
+          uri,
+        })),
       };
     } catch (error) {
       return {
         Source: "not-found",
         Query,
-        Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${error?.message ?? String(error)}`,
-        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({ key, title, uri, aliases })),
+        Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${
+          error?.message ?? String(error)
+        }`,
+        AvailableSkillDocs: SKILL_DOCS.map(
+          ({ key, title, uri, aliases }) => ({
+            key,
+            title,
+            uri,
+            aliases,
+          }),
+        ),
       };
     }
   },
 );
 
 register(
-  "wl_notebooks_list",
-  "List notebooks known to the application, including notebook ids, open state, and file paths.",
+  "notebook_context",
+  "Agent workflow helper: get the focused notebook if needed, list its cells, and include the focused cell/selection when available. Prefer this before notebook edits.",
+  {
+    Notebook: z
+      .string()
+      .optional()
+      .describe("Optional notebook hash/id. If omitted, uses the focused notebook."),
+  },
+  async ({ Notebook }) => {
+    const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {}));
+    const cells = await wlCall("/api/notebook/cells/list/", {
+      Notebook: notebookId,
+    });
+
+    let focusedCell = null;
+
+    try {
+      focusedCell = await wlCall("/api/notebook/cells/focused/", {
+        Notebook: notebookId,
+      });
+    } catch (error) {
+      focusedCell = {
+        Error: error?.message ?? String(error),
+      };
+    }
+
+    return {
+      Notebook: notebookId,
+      Cells: cells,
+      FocusedCell: focusedCell,
+    };
+  },
+);
+
+register(
+  "list_notebooks",
+  "List notebooks known to the application.",
   {},
   () => wlCall("/api/notebook/list/", {}),
 );
 
 register(
-  "wl_notebook_focused",
+  "get_focused_notebook",
   "Return the id/hash of the currently focused notebook.",
   {},
   () => wlCall("/api/notebook/focused/", {}),
 );
 
 register(
-  "wl_notebook_cells_list",
-  "List all cells in a notebook with id, type, display mode, line count, and first line.",
-  {
-    Notebook: z.string().min(1).describe("Notebook hash/id."),
-  },
-  ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook }),
-);
-
-register(
-  "wl_notebook_cell_focused",
-  "Get the currently focused cell in a notebook and its selected line range, if any. Lines are 1-indexed.",
-  {
-    Notebook: z.string().min(1).describe("Notebook hash/id."),
-  },
-  ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook }),
-);
-
-register(
-  "wl_cell_get_lines",
-  "Read an inclusive, 1-indexed line range from a cell.",
-  {
-    Cell: z.string().min(1).describe("Cell hash/id."),
-    From: z.number().int().positive().describe("1-indexed start line, inclusive."),
-    To: z.number().int().positive().describe("1-indexed end line, inclusive."),
-  },
-  ({ Cell, From, To }) => wlCall("/api/notebook/cells/getlines/", { Cell, From, To }),
-);
-
-register(
-  "wl_notebook_context",
-  "Convenience read-only context: focused notebook if Notebook is omitted, notebook cells, and focused cell if available.",
-  {
-    Notebook: z.string().optional().describe("Optional notebook hash/id. If omitted, uses the focused notebook."),
-  },
-  async ({ Notebook }) => {
-    const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {}));
-    const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
-    let focusedCell = null;
-    try {
-      focusedCell = await wlCall("/api/notebook/cells/focused/", { Notebook: notebookId });
-    } catch (error) {
-      focusedCell = { Error: error?.message ?? String(error) };
-    }
-    return { Notebook: notebookId, Cells: cells, FocusedCell: focusedCell };
-  },
-);
-
-
-register(
-  "notebook_context",
-  "Agent workflow helper: get the focused notebook if needed, list its cells, and include the focused cell/selection when available. Prefer this before notebook edits.",
-  {
-    Notebook: z.string().optional().describe("Optional notebook hash/id. If omitted, uses the focused notebook."),
-  },
-  async ({ Notebook }) => {
-    const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {}));
-    const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
-    let focusedCell = null;
-    try {
-      focusedCell = await wlCall("/api/notebook/cells/focused/", { Notebook: notebookId });
-    } catch (error) {
-      focusedCell = { Error: error?.message ?? String(error) };
-    }
-    return { Notebook: notebookId, Cells: cells, FocusedCell: focusedCell };
-  },
-);
-
-register("list_notebooks", "List notebooks known to the application.", {}, () => wlCall("/api/notebook/list/", {}));
-
-register("get_focused_notebook", "Return the id/hash of the currently focused notebook.", {}, () => wlCall("/api/notebook/focused/", {}));
-
-register(
   "list_cells",
   "List all cells in a notebook with id, type, display mode, line count, and first line.",
-  { Notebook: z.string().min(1).describe("Notebook hash/id.") },
+  {
+    Notebook: z.string().min(1).describe("Notebook hash/id."),
+  },
   ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook }),
 );
 
 register(
   "get_focused_cell",
   "Get the currently focused cell in a notebook and its selected line range, if any. Lines are 1-indexed.",
-  { Notebook: z.string().min(1).describe("Notebook hash/id.") },
+  {
+    Notebook: z.string().min(1).describe("Notebook hash/id."),
+  },
   ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook }),
 );
 
@@ -640,35 +565,62 @@ register(
   "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing.",
   {
     Cell: z.string().min(1).describe("Cell hash/id."),
-    From: z.number().int().positive().describe("1-indexed start line, inclusive."),
-    To: z.number().int().positive().describe("1-indexed end line, inclusive."),
+    From: z
+      .number()
+      .int()
+      .positive()
+      .describe("1-indexed start line, inclusive."),
+    To: z
+      .number()
+      .int()
+      .positive()
+      .describe("1-indexed end line, inclusive."),
   },
-  ({ Cell, From, To }) => wlCall("/api/notebook/cells/getlines/", { Cell, From, To }),
+  ({ Cell, From, To }) =>
+    wlCall("/api/notebook/cells/getlines/", { Cell, From, To }),
 );
 
 register(
   "wolfram_alpha",
   "Ask Wolfram Alpha for a short factual answer.",
-  { Query: z.string().min(1).describe("Natural-language Wolfram Alpha query.") },
+  {
+    Query: z.string().min(1).describe("Natural-language Wolfram Alpha query."),
+  },
   ({ Query }) => wlCall("/api/alphaRequest/", { Query }),
 );
 
 if (!runtimeConfig.READ_ONLY) {
   register(
-    "wl_cell_set_lines",
-    "Replace an inclusive, 1-indexed line range in an input cell. This mutates notebook content.",
+    "set_cell_lines",
+    "Replace an inclusive, 1-indexed line range in an input cell. Prefer set_cell_lines_batch for multiple edits in one cell.",
     {
       Cell: z.string().min(1).describe("Cell hash/id."),
-      From: z.number().int().positive().describe("1-indexed start line, inclusive."),
-      To: z.number().int().positive().describe("1-indexed end line, inclusive."),
-      Content: z.string().describe("Replacement text. May contain one or more lines."),
+      From: z
+        .number()
+        .int()
+        .positive()
+        .describe("1-indexed start line, inclusive."),
+      To: z
+        .number()
+        .int()
+        .positive()
+        .describe("1-indexed end line, inclusive."),
+      Content: z
+        .string()
+        .describe("Replacement text. May contain one or more lines."),
     },
-    ({ Cell, From, To, Content }) => wlCall("/api/notebook/cells/setlines/", { Cell, From, To, Content }),
+    ({ Cell, From, To, Content }) =>
+      wlCall("/api/notebook/cells/setlines/", {
+        Cell,
+        From,
+        To,
+        Content,
+      }),
   );
 
   register(
-    "wl_cell_set_lines_batch",
-    "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive. This mutates notebook content.",
+    "set_cell_lines_batch",
+    "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive.",
     {
       Cell: z.string().min(1).describe("Cell hash/id."),
       Changes: z
@@ -681,132 +633,11 @@ if (!runtimeConfig.READ_ONLY) {
         )
         .describe("Non-overlapping line replacements."),
     },
-    ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", { Cell, Changes }),
-  );
-
-  register(
-    "wl_cell_insert_lines",
-    "Insert text after a 1-indexed line number in an input cell. After=0 inserts at the beginning. This mutates notebook content.",
-    {
-      Cell: z.string().min(1).describe("Cell hash/id."),
-      After: z.number().int().min(0).describe("Insert after this line. Use 0 to insert at the beginning."),
-      Content: z.string().describe("Text to insert. May contain one or more lines."),
-    },
-    ({ Cell, After, Content }) => wlCall("/api/notebook/cells/insertlines/", { Cell, After, Content }),
-  );
-
-  register(
-    "wl_cell_delete",
-    "Delete an input cell. Output cells cannot be deleted directly. This mutates notebook content.",
-    {
-      Cell: z.string().min(1).describe("Cell hash/id."),
-    },
-    ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell }),
-  );
-
-  register(
-    "wl_cell_add",
-    "Add a new cell to a notebook. If After/Before are omitted, the cell is appended. This mutates notebook content.",
-    {
-      Notebook: z.string().min(1).describe("Notebook hash/id."),
-      Content: z.string().describe("Cell content."),
-      After: z.string().optional().describe("Optional cell id to insert after."),
-      Before: z.string().optional().describe("Optional cell id to insert before."),
-      Type: z.string().optional().default("Input").describe("Cell type, default Input."),
-      Display: z.string().optional().default("codemirror").describe("Display mode, default codemirror."),
-      Hidden: z.boolean().optional().default(false),
-      Id: z.string().optional().describe("Optional custom cell id."),
-    },
-    (args) => wlCall("/api/notebook/cells/add/", compact(args)),
-  );
-
-  register(
-    "wl_cell_add_batch",
-    "Add multiple cells to a notebook in sequence. This mutates notebook content.",
-    {
-      Notebook: z.string().min(1).describe("Notebook hash/id."),
-      After: z.string().optional().describe("Optional anchor cell id to insert after."),
-      Before: z.string().optional().describe("Optional anchor cell id to insert before."),
-      Cells: z
-        .array(
-          z.object({
-            Content: z.string(),
-            Type: z.string().optional(),
-            Display: z.string().optional(),
-            Hidden: z.boolean().optional(),
-            Id: z.string().optional(),
-          }),
-        )
-        .min(1),
-    },
-    (args) => wlCall("/api/notebook/cells/add/batch/", compact(args)),
-  );
-
-  register(
-    "wl_cell_add_rich_output",
-    "Create a hidden input cell plus rendered output cell for markdown, JavaScript, or HTML. This mutates notebook content.",
-    {
-      Notebook: z.string().min(1).describe("Notebook hash/id."),
-      Kind: z.enum(["markdown", "js", "html"]).describe("Rendered output type."),
-      Content: z.string().describe("Rendered content."),
-      After: z.string().optional().describe("Optional cell id to insert after."),
-      Before: z.string().optional().describe("Optional cell id to insert before."),
-      Id: z.string().optional().describe("Optional custom id for the hidden input cell."),
-    },
-    ({ Kind, ...rest }) => wlCall(`/api/notebook/cells/add/${Kind}/`, compact(rest)),
-  );
-
-  register(
-    "wl_cell_evaluate",
-    "Evaluate an input cell in its open notebook. The WL API returns a Promise; this tool polls it by default.",
-    {
-      Cell: z.string().min(1).describe("Input cell hash/id."),
-      ...waitFields,
-    },
-    ({ Cell, wait, timeoutMs }) => wlCall("/api/notebook/cells/evaluate/", { Cell }, { wait, timeoutMs }),
-  );
-
-  register(
-    "wl_cell_project",
-    "Project an input cell into a standalone window. Requires the notebook to be open.",
-    {
-      Cell: z.string().min(1).describe("Input cell hash/id."),
-    },
-    ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell }),
-  );
-
-  register(
-    "wl_kernel_evaluate",
-    "Evaluate a Wolfram Language expression directly in a ready kernel. The WL API returns a Promise; this tool polls it by default. This can execute arbitrary WL code.",
-    {
-      Expression: z.string().min(1).describe("Wolfram Language expression to evaluate."),
-      Kernel: z.string().optional().describe("Optional kernel hash/id."),
-      ...waitFields,
-    },
-    ({ Expression, Kernel, wait, timeoutMs }) =>
-      wlCall("/api/kernel/evaluate/", compact({ Expression, Kernel }), { wait, timeoutMs }),
-  );
-
-  register(
-    "set_cell_lines",
-    "Replace an inclusive, 1-indexed line range in an input cell. Prefer set_cell_lines_batch for multiple edits in one cell.",
-    {
-      Cell: z.string().min(1).describe("Cell hash/id."),
-      From: z.number().int().positive().describe("1-indexed start line, inclusive."),
-      To: z.number().int().positive().describe("1-indexed end line, inclusive."),
-      Content: z.string().describe("Replacement text. May contain one or more lines."),
-    },
-    ({ Cell, From, To, Content }) => wlCall("/api/notebook/cells/setlines/", { Cell, From, To, Content }),
-  );
-
-  register(
-    "set_cell_lines_batch",
-    "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive.",
-    {
-      Cell: z.string().min(1).describe("Cell hash/id."),
-      Changes: z.array(z.object({ From: z.number().int().positive(), To: z.number().int().positive(), Content: z.string() })).describe("Non-overlapping line replacements."),
-    },
-    ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", { Cell, Changes }),
+    ({ Cell, Changes }) =>
+      wlCall("/api/notebook/cells/setlines/batch/", {
+        Cell,
+        Changes,
+      }),
   );
 
   register(
@@ -814,16 +645,29 @@ if (!runtimeConfig.READ_ONLY) {
     "Insert text after a 1-indexed line number in an input cell. After=0 inserts at the beginning.",
     {
       Cell: z.string().min(1).describe("Cell hash/id."),
-      After: z.number().int().min(0).describe("Insert after this line. Use 0 to insert at the beginning."),
-      Content: z.string().describe("Text to insert. May contain one or more lines."),
+      After: z
+        .number()
+        .int()
+        .min(0)
+        .describe("Insert after this line. Use 0 to insert at the beginning."),
+      Content: z
+        .string()
+        .describe("Text to insert. May contain one or more lines."),
     },
-    ({ Cell, After, Content }) => wlCall("/api/notebook/cells/insertlines/", { Cell, After, Content }),
+    ({ Cell, After, Content }) =>
+      wlCall("/api/notebook/cells/insertlines/", {
+        Cell,
+        After,
+        Content,
+      }),
   );
 
   register(
     "delete_cell",
     "Delete an input cell. Output cells cannot be deleted directly. Do not use unless the user explicitly asks to delete.",
-    { Cell: z.string().min(1).describe("Cell hash/id.") },
+    {
+      Cell: z.string().min(1).describe("Cell hash/id."),
+    },
     ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell }),
   );
 
@@ -835,10 +679,6 @@ if (!runtimeConfig.READ_ONLY) {
       Content: z.string().describe("Cell content."),
       After: z.string().optional().describe("Optional cell id to insert after."),
       Before: z.string().optional().describe("Optional cell id to insert before."),
-      Type: z.string().optional().default("Input").describe("Cell type, default Input."),
-      Display: z.string().optional().default("codemirror").describe("Display mode, default codemirror."),
-      Hidden: z.boolean().optional().default(false),
-      Id: z.string().optional().describe("Optional custom cell id."),
     },
     (args) => wlCall("/api/notebook/cells/add/", compact(args)),
   );
@@ -850,39 +690,71 @@ if (!runtimeConfig.READ_ONLY) {
       Notebook: z.string().min(1).describe("Notebook hash/id."),
       After: z.string().optional().describe("Optional anchor cell id to insert after."),
       Before: z.string().optional().describe("Optional anchor cell id to insert before."),
-      Cells: z.array(z.object({ Content: z.string(), Type: z.string().optional(), Display: z.string().optional(), Hidden: z.boolean().optional(), Id: z.string().optional() })).min(1),
+      Cells: z
+        .array(
+          z.object({
+            Content: z.string(),
+          }),
+        )
+        .min(1),
     },
     (args) => wlCall("/api/notebook/cells/add/batch/", compact(args)),
   );
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell. Output cells are created by evaluation. Polls WL promises by default.",
-    { Cell: z.string().min(1).describe("Input cell hash/id."), ...waitFields },
-    ({ Cell, wait, timeoutMs }) => wlCall("/api/notebook/cells/evaluate/", { Cell }, { wait, timeoutMs }),
+    "Evaluate an input cell. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes.",
+    {
+      Cell: z.string().min(1).describe("Input cell hash/id."),
+    },
+    ({ Cell }) =>
+      wlCall(
+        "/api/notebook/cells/evaluate/",
+        { Cell },
+        {
+          wait: true,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
+        },
+      ),
   );
 
   register(
     "project_cell",
     "Project an input cell into a standalone window. Requires the notebook to be open.",
-    { Cell: z.string().min(1).describe("Input cell hash/id.") },
+    {
+      Cell: z.string().min(1).describe("Input cell hash/id."),
+    },
     ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell }),
   );
 
   register(
     "kernel_evaluate",
     "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code.",
-    { Expression: z.string().min(1).describe("Wolfram Language expression to evaluate."), Kernel: z.string().optional().describe("Optional kernel hash/id."), ...waitFields },
-    ({ Expression, Kernel, wait, timeoutMs }) => wlCall("/api/kernel/evaluate/", compact({ Expression, Kernel }), { wait, timeoutMs }),
+    {
+      Expression: z
+        .string()
+        .min(1)
+        .describe("Wolfram Language expression to evaluate."),
+      Kernel: z.string().optional().describe("Optional kernel hash/id."),
+    },
+    ({ Expression, Kernel }) =>
+      wlCall(
+        "/api/kernel/evaluate/",
+        compact({ Expression, Kernel }),
+        {
+          wait: true,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
+        },
+      ),
   );
 } else {
-  console.error("WL_READ_ONLY is enabled; mutating and evaluation tools are not registered.");
+  console.error(
+    "WL_READ_ONLY is enabled; mutating and evaluation tools are not registered.",
+  );
 }
 
-
-  return server;
+return server;
 }
-
 
 /**
  * Start a local Streamable HTTP MCP endpoint inside the current Node/Electron process.

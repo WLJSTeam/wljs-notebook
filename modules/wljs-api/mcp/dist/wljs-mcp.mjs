@@ -46336,64 +46336,13 @@ ${skillIndexText()}`
       }
     );
   }
-  const JsonBody = external_exports.any().describe("JSON body to send to the WL API route.");
-  const waitFields = {
-    wait: external_exports.boolean().optional().default(true).describe("When the WL API returns {Promise: id}, poll /api/promise/ until it resolves or times out."),
-    timeoutMs: external_exports.number().int().positive().optional().describe(`Maximum time to poll promises in ms. Default: ${runtimeConfig.PROMISE_TIMEOUT_MS}.`)
-  };
-  register(
-    "wl_api_raw",
-    "Call any WL HTTP API route directly. Use this as an escape hatch for routes not wrapped by a dedicated MCP tool.",
-    {
-      path: external_exports.string().describe("WL API route, for example /api/notebook/list/."),
-      body: JsonBody.optional().default({}),
-      ...waitFields
-    },
-    ({ path, body, wait, timeoutMs }) => wlCall(path, body ?? {}, { wait, timeoutMs })
-  );
-  register(
-    "wl_api_routes",
-    "List top-level WL API routes exposed by /api/.",
-    {},
-    () => wlCall("/api/", {})
-  );
-  register(
-    "wl_api_ready",
-    "Check whether the WL notebook HTTP API is alive and ready.",
-    {},
-    () => wlCall("/api/ready/", {})
-  );
-  register(
-    "wl_poll_promise",
-    "Poll a WL promise id returned by a previous tool call. By default, waits until the promise resolves or times out.",
-    {
-      Promise: external_exports.string().describe("Promise id returned by the WL API."),
-      ...waitFields
-    },
-    ({ Promise: Promise2, wait, timeoutMs }) => pollPromise(Promise2, { wait, timeoutMs })
-  );
-  register(
-    "wolfram_alpha_request",
-    "Ask Wolfram Alpha for a short answer through /api/alphaRequest/.",
-    {
-      Query: external_exports.string().min(1).describe("Natural-language Wolfram Alpha query.")
-    },
-    ({ Query }) => wlCall("/api/alphaRequest/", { Query })
-  );
-  register(
-    "wl_docs_find",
-    "Find Wolfram Language documentation snippets from the local llm.txt file by heading.",
-    {
-      Query: external_exports.string().min(1).describe("Documentation heading/query, for example Plot or Association."),
-      LinesCount: external_exports.number().int().positive().optional().default(40)
-    },
-    ({ Query, LinesCount }) => wlCall("/api/docs/find/", { Query, LinesCount })
-  );
   register(
     "consult_docs",
     "Consult bundled WLJS skill docs first, then fallback to Wolfram Language documentation from the local llm.txt. Use this when unsure about JS/HTML/Markdown/Mermaid/slide cells or dynamics/interactivity.",
     {
-      Query: external_exports.string().min(1).describe("Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot."),
+      Query: external_exports.string().min(1).describe(
+        "Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot."
+      ),
       LinesCount: external_exports.number().int().positive().optional().default(60)
     },
     async ({ Query, LinesCount }) => {
@@ -46402,8 +46351,17 @@ ${skillIndexText()}`
         return {
           Source: "bundled-wljs-skills",
           Query,
-          AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({ key, title, uri })),
-          Documents: localMatches.map(({ key, title, uri, text }) => ({ key, title, uri, text }))
+          AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+            key,
+            title,
+            uri
+          })),
+          Documents: localMatches.map(({ key, title, uri, text }) => ({
+            key,
+            title,
+            uri,
+            text
+          }))
         };
       }
       try {
@@ -46411,72 +46369,27 @@ ${skillIndexText()}`
           Source: "wolfram-language-llm-docs",
           Query,
           Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-          AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({ key, title, uri }))
+          AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
+            key,
+            title,
+            uri
+          }))
         };
       } catch (error2) {
         return {
           Source: "not-found",
           Query,
           Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${error2?.message ?? String(error2)}`,
-          AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({ key, title, uri, aliases }))
+          AvailableSkillDocs: SKILL_DOCS.map(
+            ({ key, title, uri, aliases }) => ({
+              key,
+              title,
+              uri,
+              aliases
+            })
+          )
         };
       }
-    }
-  );
-  register(
-    "wl_notebooks_list",
-    "List notebooks known to the application, including notebook ids, open state, and file paths.",
-    {},
-    () => wlCall("/api/notebook/list/", {})
-  );
-  register(
-    "wl_notebook_focused",
-    "Return the id/hash of the currently focused notebook.",
-    {},
-    () => wlCall("/api/notebook/focused/", {})
-  );
-  register(
-    "wl_notebook_cells_list",
-    "List all cells in a notebook with id, type, display mode, line count, and first line.",
-    {
-      Notebook: external_exports.string().min(1).describe("Notebook hash/id.")
-    },
-    ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook })
-  );
-  register(
-    "wl_notebook_cell_focused",
-    "Get the currently focused cell in a notebook and its selected line range, if any. Lines are 1-indexed.",
-    {
-      Notebook: external_exports.string().min(1).describe("Notebook hash/id.")
-    },
-    ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook })
-  );
-  register(
-    "wl_cell_get_lines",
-    "Read an inclusive, 1-indexed line range from a cell.",
-    {
-      Cell: external_exports.string().min(1).describe("Cell hash/id."),
-      From: external_exports.number().int().positive().describe("1-indexed start line, inclusive."),
-      To: external_exports.number().int().positive().describe("1-indexed end line, inclusive.")
-    },
-    ({ Cell, From, To }) => wlCall("/api/notebook/cells/getlines/", { Cell, From, To })
-  );
-  register(
-    "wl_notebook_context",
-    "Convenience read-only context: focused notebook if Notebook is omitted, notebook cells, and focused cell if available.",
-    {
-      Notebook: external_exports.string().optional().describe("Optional notebook hash/id. If omitted, uses the focused notebook.")
-    },
-    async ({ Notebook }) => {
-      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
-      const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
-      let focusedCell = null;
-      try {
-        focusedCell = await wlCall("/api/notebook/cells/focused/", { Notebook: notebookId });
-      } catch (error2) {
-        focusedCell = { Error: error2?.message ?? String(error2) };
-      }
-      return { Notebook: notebookId, Cells: cells, FocusedCell: focusedCell };
     }
   );
   register(
@@ -46487,28 +46400,52 @@ ${skillIndexText()}`
     },
     async ({ Notebook }) => {
       const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
-      const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
+      const cells = await wlCall("/api/notebook/cells/list/", {
+        Notebook: notebookId
+      });
       let focusedCell = null;
       try {
-        focusedCell = await wlCall("/api/notebook/cells/focused/", { Notebook: notebookId });
+        focusedCell = await wlCall("/api/notebook/cells/focused/", {
+          Notebook: notebookId
+        });
       } catch (error2) {
-        focusedCell = { Error: error2?.message ?? String(error2) };
+        focusedCell = {
+          Error: error2?.message ?? String(error2)
+        };
       }
-      return { Notebook: notebookId, Cells: cells, FocusedCell: focusedCell };
+      return {
+        Notebook: notebookId,
+        Cells: cells,
+        FocusedCell: focusedCell
+      };
     }
   );
-  register("list_notebooks", "List notebooks known to the application.", {}, () => wlCall("/api/notebook/list/", {}));
-  register("get_focused_notebook", "Return the id/hash of the currently focused notebook.", {}, () => wlCall("/api/notebook/focused/", {}));
+  register(
+    "list_notebooks",
+    "List notebooks known to the application.",
+    {},
+    () => wlCall("/api/notebook/list/", {})
+  );
+  register(
+    "get_focused_notebook",
+    "Return the id/hash of the currently focused notebook.",
+    {},
+    () => wlCall("/api/notebook/focused/", {})
+  );
   register(
     "list_cells",
     "List all cells in a notebook with id, type, display mode, line count, and first line.",
-    { Notebook: external_exports.string().min(1).describe("Notebook hash/id.") },
+    {
+      Notebook: external_exports.string().min(1).describe("Notebook hash/id.")
+    },
     ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook })
   );
   register(
     "get_focused_cell",
     "Get the currently focused cell in a notebook and its selected line range, if any. Lines are 1-indexed.",
-    { Notebook: external_exports.string().min(1).describe("Notebook hash/id.") },
+    {
+      Notebook: external_exports.string().min(1).describe("Notebook hash/id.")
+    },
     ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook })
   );
   register(
@@ -46524,24 +46461,31 @@ ${skillIndexText()}`
   register(
     "wolfram_alpha",
     "Ask Wolfram Alpha for a short factual answer.",
-    { Query: external_exports.string().min(1).describe("Natural-language Wolfram Alpha query.") },
+    {
+      Query: external_exports.string().min(1).describe("Natural-language Wolfram Alpha query.")
+    },
     ({ Query }) => wlCall("/api/alphaRequest/", { Query })
   );
   if (!runtimeConfig.READ_ONLY) {
     register(
-      "wl_cell_set_lines",
-      "Replace an inclusive, 1-indexed line range in an input cell. This mutates notebook content.",
+      "set_cell_lines",
+      "Replace an inclusive, 1-indexed line range in an input cell. Prefer set_cell_lines_batch for multiple edits in one cell.",
       {
         Cell: external_exports.string().min(1).describe("Cell hash/id."),
         From: external_exports.number().int().positive().describe("1-indexed start line, inclusive."),
         To: external_exports.number().int().positive().describe("1-indexed end line, inclusive."),
         Content: external_exports.string().describe("Replacement text. May contain one or more lines.")
       },
-      ({ Cell, From, To, Content }) => wlCall("/api/notebook/cells/setlines/", { Cell, From, To, Content })
+      ({ Cell, From, To, Content }) => wlCall("/api/notebook/cells/setlines/", {
+        Cell,
+        From,
+        To,
+        Content
+      })
     );
     register(
-      "wl_cell_set_lines_batch",
-      "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive. This mutates notebook content.",
+      "set_cell_lines_batch",
+      "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive.",
       {
         Cell: external_exports.string().min(1).describe("Cell hash/id."),
         Changes: external_exports.array(
@@ -46552,119 +46496,10 @@ ${skillIndexText()}`
           })
         ).describe("Non-overlapping line replacements.")
       },
-      ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", { Cell, Changes })
-    );
-    register(
-      "wl_cell_insert_lines",
-      "Insert text after a 1-indexed line number in an input cell. After=0 inserts at the beginning. This mutates notebook content.",
-      {
-        Cell: external_exports.string().min(1).describe("Cell hash/id."),
-        After: external_exports.number().int().min(0).describe("Insert after this line. Use 0 to insert at the beginning."),
-        Content: external_exports.string().describe("Text to insert. May contain one or more lines.")
-      },
-      ({ Cell, After, Content }) => wlCall("/api/notebook/cells/insertlines/", { Cell, After, Content })
-    );
-    register(
-      "wl_cell_delete",
-      "Delete an input cell. Output cells cannot be deleted directly. This mutates notebook content.",
-      {
-        Cell: external_exports.string().min(1).describe("Cell hash/id.")
-      },
-      ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell })
-    );
-    register(
-      "wl_cell_add",
-      "Add a new cell to a notebook. If After/Before are omitted, the cell is appended. This mutates notebook content.",
-      {
-        Notebook: external_exports.string().min(1).describe("Notebook hash/id."),
-        Content: external_exports.string().describe("Cell content."),
-        After: external_exports.string().optional().describe("Optional cell id to insert after."),
-        Before: external_exports.string().optional().describe("Optional cell id to insert before."),
-        Type: external_exports.string().optional().default("Input").describe("Cell type, default Input."),
-        Display: external_exports.string().optional().default("codemirror").describe("Display mode, default codemirror."),
-        Hidden: external_exports.boolean().optional().default(false),
-        Id: external_exports.string().optional().describe("Optional custom cell id.")
-      },
-      (args) => wlCall("/api/notebook/cells/add/", compact(args))
-    );
-    register(
-      "wl_cell_add_batch",
-      "Add multiple cells to a notebook in sequence. This mutates notebook content.",
-      {
-        Notebook: external_exports.string().min(1).describe("Notebook hash/id."),
-        After: external_exports.string().optional().describe("Optional anchor cell id to insert after."),
-        Before: external_exports.string().optional().describe("Optional anchor cell id to insert before."),
-        Cells: external_exports.array(
-          external_exports.object({
-            Content: external_exports.string(),
-            Type: external_exports.string().optional(),
-            Display: external_exports.string().optional(),
-            Hidden: external_exports.boolean().optional(),
-            Id: external_exports.string().optional()
-          })
-        ).min(1)
-      },
-      (args) => wlCall("/api/notebook/cells/add/batch/", compact(args))
-    );
-    register(
-      "wl_cell_add_rich_output",
-      "Create a hidden input cell plus rendered output cell for markdown, JavaScript, or HTML. This mutates notebook content.",
-      {
-        Notebook: external_exports.string().min(1).describe("Notebook hash/id."),
-        Kind: external_exports.enum(["markdown", "js", "html"]).describe("Rendered output type."),
-        Content: external_exports.string().describe("Rendered content."),
-        After: external_exports.string().optional().describe("Optional cell id to insert after."),
-        Before: external_exports.string().optional().describe("Optional cell id to insert before."),
-        Id: external_exports.string().optional().describe("Optional custom id for the hidden input cell.")
-      },
-      ({ Kind, ...rest }) => wlCall(`/api/notebook/cells/add/${Kind}/`, compact(rest))
-    );
-    register(
-      "wl_cell_evaluate",
-      "Evaluate an input cell in its open notebook. The WL API returns a Promise; this tool polls it by default.",
-      {
-        Cell: external_exports.string().min(1).describe("Input cell hash/id."),
-        ...waitFields
-      },
-      ({ Cell, wait, timeoutMs }) => wlCall("/api/notebook/cells/evaluate/", { Cell }, { wait, timeoutMs })
-    );
-    register(
-      "wl_cell_project",
-      "Project an input cell into a standalone window. Requires the notebook to be open.",
-      {
-        Cell: external_exports.string().min(1).describe("Input cell hash/id.")
-      },
-      ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell })
-    );
-    register(
-      "wl_kernel_evaluate",
-      "Evaluate a Wolfram Language expression directly in a ready kernel. The WL API returns a Promise; this tool polls it by default. This can execute arbitrary WL code.",
-      {
-        Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
-        Kernel: external_exports.string().optional().describe("Optional kernel hash/id."),
-        ...waitFields
-      },
-      ({ Expression, Kernel, wait, timeoutMs }) => wlCall("/api/kernel/evaluate/", compact({ Expression, Kernel }), { wait, timeoutMs })
-    );
-    register(
-      "set_cell_lines",
-      "Replace an inclusive, 1-indexed line range in an input cell. Prefer set_cell_lines_batch for multiple edits in one cell.",
-      {
-        Cell: external_exports.string().min(1).describe("Cell hash/id."),
-        From: external_exports.number().int().positive().describe("1-indexed start line, inclusive."),
-        To: external_exports.number().int().positive().describe("1-indexed end line, inclusive."),
-        Content: external_exports.string().describe("Replacement text. May contain one or more lines.")
-      },
-      ({ Cell, From, To, Content }) => wlCall("/api/notebook/cells/setlines/", { Cell, From, To, Content })
-    );
-    register(
-      "set_cell_lines_batch",
-      "Apply multiple non-overlapping line replacements to one input cell. Changes are 1-indexed and inclusive.",
-      {
-        Cell: external_exports.string().min(1).describe("Cell hash/id."),
-        Changes: external_exports.array(external_exports.object({ From: external_exports.number().int().positive(), To: external_exports.number().int().positive(), Content: external_exports.string() })).describe("Non-overlapping line replacements.")
-      },
-      ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", { Cell, Changes })
+      ({ Cell, Changes }) => wlCall("/api/notebook/cells/setlines/batch/", {
+        Cell,
+        Changes
+      })
     );
     register(
       "insert_cell_lines",
@@ -46674,12 +46509,18 @@ ${skillIndexText()}`
         After: external_exports.number().int().min(0).describe("Insert after this line. Use 0 to insert at the beginning."),
         Content: external_exports.string().describe("Text to insert. May contain one or more lines.")
       },
-      ({ Cell, After, Content }) => wlCall("/api/notebook/cells/insertlines/", { Cell, After, Content })
+      ({ Cell, After, Content }) => wlCall("/api/notebook/cells/insertlines/", {
+        Cell,
+        After,
+        Content
+      })
     );
     register(
       "delete_cell",
       "Delete an input cell. Output cells cannot be deleted directly. Do not use unless the user explicitly asks to delete.",
-      { Cell: external_exports.string().min(1).describe("Cell hash/id.") },
+      {
+        Cell: external_exports.string().min(1).describe("Cell hash/id.")
+      },
       ({ Cell }) => wlCall("/api/notebook/cells/delete/", { Cell })
     );
     register(
@@ -46689,11 +46530,7 @@ ${skillIndexText()}`
         Notebook: external_exports.string().min(1).describe("Notebook hash/id."),
         Content: external_exports.string().describe("Cell content."),
         After: external_exports.string().optional().describe("Optional cell id to insert after."),
-        Before: external_exports.string().optional().describe("Optional cell id to insert before."),
-        Type: external_exports.string().optional().default("Input").describe("Cell type, default Input."),
-        Display: external_exports.string().optional().default("codemirror").describe("Display mode, default codemirror."),
-        Hidden: external_exports.boolean().optional().default(false),
-        Id: external_exports.string().optional().describe("Optional custom cell id.")
+        Before: external_exports.string().optional().describe("Optional cell id to insert before.")
       },
       (args) => wlCall("/api/notebook/cells/add/", compact(args))
     );
@@ -46704,30 +46541,57 @@ ${skillIndexText()}`
         Notebook: external_exports.string().min(1).describe("Notebook hash/id."),
         After: external_exports.string().optional().describe("Optional anchor cell id to insert after."),
         Before: external_exports.string().optional().describe("Optional anchor cell id to insert before."),
-        Cells: external_exports.array(external_exports.object({ Content: external_exports.string(), Type: external_exports.string().optional(), Display: external_exports.string().optional(), Hidden: external_exports.boolean().optional(), Id: external_exports.string().optional() })).min(1)
+        Cells: external_exports.array(
+          external_exports.object({
+            Content: external_exports.string()
+          })
+        ).min(1)
       },
       (args) => wlCall("/api/notebook/cells/add/batch/", compact(args))
     );
     register(
       "evaluate_cell",
-      "Evaluate an input cell. Output cells are created by evaluation. Polls WL promises by default.",
-      { Cell: external_exports.string().min(1).describe("Input cell hash/id."), ...waitFields },
-      ({ Cell, wait, timeoutMs }) => wlCall("/api/notebook/cells/evaluate/", { Cell }, { wait, timeoutMs })
+      "Evaluate an input cell. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes.",
+      {
+        Cell: external_exports.string().min(1).describe("Input cell hash/id.")
+      },
+      ({ Cell }) => wlCall(
+        "/api/notebook/cells/evaluate/",
+        { Cell },
+        {
+          wait: true,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+        }
+      )
     );
     register(
       "project_cell",
       "Project an input cell into a standalone window. Requires the notebook to be open.",
-      { Cell: external_exports.string().min(1).describe("Input cell hash/id.") },
+      {
+        Cell: external_exports.string().min(1).describe("Input cell hash/id.")
+      },
       ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell })
     );
     register(
       "kernel_evaluate",
       "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code.",
-      { Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."), Kernel: external_exports.string().optional().describe("Optional kernel hash/id."), ...waitFields },
-      ({ Expression, Kernel, wait, timeoutMs }) => wlCall("/api/kernel/evaluate/", compact({ Expression, Kernel }), { wait, timeoutMs })
+      {
+        Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
+        Kernel: external_exports.string().optional().describe("Optional kernel hash/id.")
+      },
+      ({ Expression, Kernel }) => wlCall(
+        "/api/kernel/evaluate/",
+        compact({ Expression, Kernel }),
+        {
+          wait: true,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+        }
+      )
     );
   } else {
-    console.error("WL_READ_ONLY is enabled; mutating and evaluation tools are not registered.");
+    console.error(
+      "WL_READ_ONLY is enabled; mutating and evaluation tools are not registered."
+    );
   }
   return server;
 }
