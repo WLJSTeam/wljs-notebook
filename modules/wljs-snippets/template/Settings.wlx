@@ -143,15 +143,7 @@ generator[opts_Association] := With[{library = opts["Library"], defaultSystemPro
             ]
         }];
 
-      With[{
-        LibraryTemplate = Table[With[{
-            item = ReleaseHold[library][key]
-        },
-            <StringRiffle>
-                <Checkbox Label={item["title"]} Event={libChange} Topic={key} Description={StringJoin["Word count ", item["words"]]} Checked={item["enabled"]}/>
-            </StringRiffle>
-        ] , {key, Keys[ReleaseHold @ library]}]
-      },
+      With[{},
 
         <li class="list-none px-0 py-4 sm:px-0">
             <div class="px-4 sm:px-0 pb-3 border-b border-gray-100">
@@ -160,26 +152,11 @@ generator[opts_Association] := With[{library = opts["Library"], defaultSystemPro
             </div>
             <div class="mt-4">   
                 <span class="dark:text-gray-400">AI Assistant</span>
-                <div class="block my-2 py-2">
-                    <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-                        <label for="llm-prompt-assistant" class="block text-xs font-medium text-gray-900 dark:text-gray-400">System prompt</label>
-                        <textarea type="text" id="llm-prompt-assistant" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6">
-                            <LLMAssistantPromptInitial/>
-                        </textarea>
-                        <WebUIEventListener Id={"llm-prompt-assistant"} Pattern={"SystemAssistantPrompt"} Type={"blur"} Event={update}/>
-                    </div>  
-                </div> 
                 <span class="dark:text-gray-400">API Keys</span>           
                 <div class="block my-2 py-2"> 
                     <Knob Label={"Reset OpenAI API key"} Topic={"ResetKeyO"} Event={update} Class={"w15"}/>   
                     <Knob Label={"Reset Anthropic API key"} Topic={"ResetKeyA"} Event={update} Class={"w15"}/>    
                     <Knob Label={"Reset API key for custom model"} Topic={"ResetKeyC"} Event={update} Class={"w15"}/>
-                </div>
-                <div class="pb-2 mt-2 gap-y-2 flex flex-col">
-                    <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-                        <label class="block text-xs font-medium text-gray-900 dark:text-gray-400">AI Library</label>
-                        <LibraryTemplate/>
-                    </div>
                 </div>
                 <span class="dark:text-gray-400 mt-2">Custom model</span>  
                 <div class="pb-2 mt-2 gap-y-2 flex flex-col">
@@ -194,20 +171,6 @@ generator[opts_Association] := With[{library = opts["Library"], defaultSystemPro
                         <label for="Model" class="block text-xs font-medium text-gray-900 dark:text-gray-400">Model</label>
                         <input type="text" id="Model" value="{initialValues[[2]]}" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" value="" placeholder="qwen3:8b"/>
                         <WebUIEventListener Id={"Model"} Type={"blur"} Event={update} Pattern={"Model"}/>
-                    </div> 
-                </div> 
-                <div class="pb-2 mt-2 mt-5 gap-y-2 flex flex-col">
-                    <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-                        <label for="MaxTokens" class="block text-xs font-medium text-gray-900 dark:text-gray-400">Max tokens</label>
-                        <input type="number" value="{initialValues[[3]]}" min="1000" max="500000" step="1000" id="MaxTokens" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
-                        <WebUIEventListener Id={"MaxTokens"} Type={"blur"} Event={update} Pattern={"MaxTokens"}/>
-                    </div> 
-                </div> 
-                <div class="pb-10 pb-10 mt-5 gap-y-2 flex flex-col">
-                    <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-                        <label for="Temperature" class="block text-xs font-medium text-gray-900 dark:text-gray-400">Temperature</label>
-                        <input type="range" min="0.1" max="0.9" step="0.1" value="{initialValues[[4]]}" id="Temperature" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
-                        <WebUIEventListener Id={"Temperature"} Type={"blur"} Event={update} Pattern={"Temperature"}/>
                     </div> 
                 </div>                      
             </div> 
