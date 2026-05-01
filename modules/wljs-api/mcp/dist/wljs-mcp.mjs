@@ -46814,10 +46814,345 @@ startWljsNotebookMcp.cli = async (app, args = [], io = {}) => {
     return 1;
   }
 };
+function cliManifest() {
+  return {
+    name: "wljs",
+    title: "WLJS Notebook CLI",
+    version: "v0.1",
+    description: "Command-line interface for controlling a local sandboxed WLJS/Wolfram notebook application. Commands inspect notebooks, read and edit input cells, evaluate cells, project cells, and consult bundled WLJS/Wolfram documentation.",
+    intended_for: [
+      "human terminal users",
+      "LLM coding agents",
+      "Claude Code",
+      "Codex",
+      "local automation scripts"
+    ],
+    environment: {
+      local_only: true,
+      sandbox_expected: true,
+      requires_running_app: true,
+      backend: "WLJS Notebook local API",
+      default_backend_url: getWlMcpConfig().WL_API_BASE,
+      output_channel: {
+        stdout: "command results, usually JSON",
+        stderr: "errors and debug messages"
+      }
+    },
+    global_rules: [
+      "All normal command results are written to stdout.",
+      "Errors are written to stderr and should produce a non-zero exit code.",
+      "Most commands return JSON.",
+      "Line numbers are 1-indexed and inclusive.",
+      "Only INPUT cells should be edited.",
+      "OUTPUT cells are created by evaluating INPUT cells.",
+      "Do not delete cells unless the user explicitly requested deletion.",
+      "Before editing a cell, inspect the notebook and read the relevant cell lines.",
+      "Use docs before creating or editing .js, .html, .md, .mermaid, .slide, or interactive WLJS cells."
+    ],
+    content_argument_syntax: {
+      recommended_for_multiline: "--content -",
+      file: "--content @path/to/file",
+      inline_literal: "--content 'one line'",
+      inline_escaped: "--content-escaped '.md\\nHello World'",
+      note: "Normal --content is literal. It does not decode \\n. Use --content - or --content-escaped for multiline inline content."
+    },
+    cell_type_markers: {
+      markdown: ".md",
+      html: ".html",
+      javascript: ".js",
+      mermaid: ".mermaid",
+      slide: ".slide",
+      custom: "*.*",
+      wolfram_language: "no marker"
+    },
+    recommended_agent_workflows: {
+      inspect_before_editing: [
+        "wljs focused",
+        "wljs context",
+        "wljs cells <notebook>",
+        "wljs lines <cell> <from> <to>"
+      ],
+      add_and_render_markdown: [
+        "wljs focused",
+        "wljs add <notebook> --content '.md\\n# Title\\nBody text' --eval"
+      ],
+      modify_existing_cell: [
+        "wljs lines <cell> <from> <to>",
+        "wljs set-lines <cell> <from> <to> --content '<replacement>'",
+        "wljs eval <cell>"
+      ],
+      consult_docs_before_rich_cells: [
+        "wljs docs javascript",
+        "wljs docs html",
+        "wljs docs dynamics",
+        "wljs docs slides"
+      ]
+    },
+    commands: [
+      {
+        name: "help",
+        category: "meta",
+        usage: "wljs help [--json|--llm]",
+        description: "Show human help or, with --json/--llm, print the LLM-readable CLI manifest.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "text or JSON",
+        examples: ["wljs help", "wljs help --json"]
+      },
+      {
+        name: "describe",
+        aliases: ["llm-help", "commands"],
+        category: "meta",
+        usage: "wljs describe",
+        description: "Print a stable machine-readable description of the CLI for LLM agents.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs describe"]
+      },
+      {
+        name: "version",
+        aliases: ["-v", "--version"],
+        category: "meta",
+        usage: "wljs version",
+        description: "Print the CLI version.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "text",
+        examples: ["wljs version", "wljs -v"]
+      },
+      {
+        name: "config",
+        category: "meta",
+        usage: "wljs config",
+        description: "Print runtime configuration such as local WL API base URL and timeouts.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs config"]
+      },
+      {
+        name: "notebooks",
+        category: "inspection",
+        usage: "wljs notebooks",
+        description: "List notebooks known to the WLJS application.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs notebooks"]
+      },
+      {
+        name: "focused",
+        category: "inspection",
+        usage: "wljs focused",
+        description: "Return the id/hash of the currently focused notebook.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON string or JSON value",
+        examples: ["wljs focused"]
+      },
+      {
+        name: "context",
+        category: "inspection",
+        usage: "wljs context [--Notebook <notebook>]",
+        description: "Return notebook context: notebook id, cell list, and focused cell/selection when available. If no notebook is provided, uses the focused notebook.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs context", "wljs context --Notebook abc123"]
+      },
+      {
+        name: "cells",
+        category: "inspection",
+        usage: "wljs cells <notebook>",
+        description: "List cells in a notebook, including metadata such as id/hash, type/display info, line count, and first line when available.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs cells abc123"]
+      },
+      {
+        name: "focused-cell",
+        category: "inspection",
+        usage: "wljs focused-cell <notebook>",
+        description: "Return the currently focused cell and selected line range, if any.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs focused-cell abc123"]
+      },
+      {
+        name: "lines",
+        category: "inspection",
+        usage: "wljs lines <cell> <from> <to>",
+        description: "Read an inclusive 1-indexed line range from a cell. Agents should use this before editing a cell.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        argument_rules: [
+          "<from> and <to> must be positive integers.",
+          "<from> must be less than or equal to <to>."
+        ],
+        examples: ["wljs lines cell123 1 40"]
+      },
+      {
+        name: "docs",
+        category: "documentation",
+        usage: "wljs docs <query>",
+        description: "Consult bundled WLJS skill docs first, then local Wolfram Language docs if no bundled skill matches.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        recommended_queries: [
+          "javascript",
+          "html",
+          "markdown",
+          "mermaid",
+          "slides",
+          "dynamics",
+          "Manipulate",
+          "EventHandler",
+          "Offload"
+        ],
+        examples: ["wljs docs javascript", "wljs docs dynamics", "wljs docs Plot"]
+      },
+      {
+        name: "add",
+        category: "editing",
+        usage: "wljs add <notebook> --content <text|@file|-> [--after <cell>] [--before <cell>] [--eval]",
+        description: "Add a new INPUT cell to a notebook. Use first-line markers such as .md, .html, .js, .mermaid, or .slide to choose special cell types.",
+        mutates_notebook: true,
+        executes_code: "only when --eval is provided",
+        output: "JSON",
+        argument_rules: [
+          "--after and --before are mutually exclusive.",
+          "--content is required.",
+          "--content @file reads from a file.",
+          "--content - reads from stdin.",
+          "--eval evaluates the newly added cell if the cell id can be inferred."
+        ],
+        examples: [
+          "wljs add abc123 --content '.md\\n# Hello' --eval",
+          "wljs add abc123 --content @example.wl",
+          "cat example.wl | wljs add abc123 --content - --eval"
+        ]
+      },
+      {
+        name: "set-lines",
+        category: "editing",
+        usage: "wljs set-lines <cell> <from> <to> --content <text|@file|->",
+        description: "Replace an inclusive 1-indexed line range in an existing input cell. Agents should read the target range first with wljs lines.",
+        mutates_notebook: true,
+        executes_code: false,
+        output: "JSON",
+        argument_rules: [
+          "<from> and <to> must be positive integers.",
+          "<from> must be less than or equal to <to>.",
+          "--content is required."
+        ],
+        examples: [
+          "wljs lines cell123 1 20",
+          "wljs set-lines cell123 3 5 --content 'replacement text'"
+        ]
+      },
+      {
+        name: "insert-lines",
+        category: "editing",
+        usage: "wljs insert-lines <cell> <after> --content <text|@file|->",
+        description: "Insert content after a 1-indexed line number in an input cell. Use after=0 to insert at the beginning.",
+        mutates_notebook: true,
+        executes_code: false,
+        output: "JSON",
+        argument_rules: [
+          "<after> must be a non-negative integer.",
+          "--content is required."
+        ],
+        examples: [
+          "wljs insert-lines cell123 0 --content '.md'",
+          "wljs insert-lines cell123 10 --content @snippet.wl"
+        ]
+      },
+      {
+        name: "delete-cell",
+        category: "editing",
+        usage: "wljs delete-cell <cell>",
+        description: "Delete an input cell. Deleting an input cell also deletes its outputs. Use only when explicitly requested.",
+        mutates_notebook: true,
+        destructive: true,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs delete-cell cell123"]
+      },
+      {
+        name: "eval",
+        category: "evaluation",
+        usage: "wljs eval <cell>",
+        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code.",
+        mutates_notebook: true,
+        executes_code: true,
+        output: "JSON",
+        safety_notes: [
+          "Only evaluate code that the user requested or that the agent intentionally created.",
+          "Long-running evaluations may time out from the CLI perspective while continuing in the sandbox."
+        ],
+        examples: ["wljs eval cell123"]
+      },
+      {
+        name: "project",
+        category: "ui",
+        usage: "wljs project <cell>",
+        description: "Project an input cell into a standalone window. Requires the notebook to be open.",
+        mutates_notebook: false,
+        mutates_ui: true,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs project cell123"]
+      },
+      {
+        name: "wl",
+        category: "evaluation",
+        usage: "wljs wl '<wolfram-expression>'",
+        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell.",
+        mutates_notebook: false,
+        executes_code: true,
+        output: "JSON",
+        safety_notes: [
+          "This can execute arbitrary Wolfram Language code.",
+          "Prefer notebook cells when the user expects visible notebook output."
+        ],
+        examples: [
+          "wljs wl 'Total[Range[100]]'",
+          "wljs wl 'Plot[Sin[x], {x, 0, 10}]'"
+        ]
+      }
+    ],
+    exit_codes: {
+      0: "success",
+      1: "error"
+    },
+    llm_usage_advice: [
+      "Start with `wljs describe` if command syntax is unknown.",
+      "Use `wljs focused` or `wljs context` to find the active notebook.",
+      "Use `wljs lines` before `wljs set-lines`.",
+      "Use `wljs docs <topic>` before writing rich WLJS cell types.",
+      "Use `wljs add ... --eval` when the user asks to show/render/create visible notebook output.",
+      "Avoid `delete-cell` unless deletion was explicitly requested.",
+      "Avoid `wl` for visible notebook output; use `add` plus `eval` instead."
+    ]
+  };
+}
 async function runWljsCli(args, { stdout, stderr }) {
   const command = args.shift();
-  if (!command || command === "help" || command === "--help" || command === "-h") {
-    writeCli(stdout, cliHelpText());
+  if (command === "describe" || command === "llm-help" || command === "commands") {
+    writeJson(stdout, cliManifest());
+    return 0;
+  }
+  if (command === "help") {
+    if (args.includes("--json") || args.includes("--llm")) {
+      writeJson(stdout, cliManifest());
+    } else {
+      writeCli(stdout, cliHelpText());
+    }
     return 0;
   }
   if (command === "version" || command === "-v" || command === "--version") {
@@ -47049,17 +47384,27 @@ function parseCliOptions(args) {
   return out;
 }
 function readCliContent(opts) {
-  const value = opts.content ?? opts.Content;
-  if (value === void 0) {
-    throw new Error("Missing --content <text|@file|->");
+  const literal2 = opts.content ?? opts.Content;
+  const escaped = opts["content-escaped"] ?? opts.contentEscaped;
+  if (literal2 !== void 0 && escaped !== void 0) {
+    throw new Error("Use only one of --content or --content-escaped.");
   }
-  if (value === "-") {
+  if (escaped !== void 0) {
+    return decodeCliEscapes(String(escaped));
+  }
+  if (literal2 === void 0) {
+    throw new Error("Missing --content <text|@file|-> or --content-escaped <text>");
+  }
+  if (literal2 === "-") {
     return readFileSync(0, "utf8");
   }
-  if (typeof value === "string" && value.startsWith("@")) {
-    return readFileSync(value.slice(1), "utf8");
+  if (typeof literal2 === "string" && literal2.startsWith("@")) {
+    return readFileSync(literal2.slice(1), "utf8");
   }
-  return String(value);
+  return String(literal2);
+}
+function decodeCliEscapes(text) {
+  return text.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\\t/g, "	").replace(/\\\\/g, "\\");
 }
 function ensureWritableCli() {
   if (runtimeConfig.READ_ONLY) {

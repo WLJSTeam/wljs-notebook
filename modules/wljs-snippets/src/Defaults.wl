@@ -72,7 +72,7 @@ EventHandler[SnippetsEvents, {
             ]},
                 With[{string = StringRiffle[ Map[Function[c, 
                     StringJoin["\n%---------%\n", "T: ", c["Type"], "\n%---------%\n", c["Data"], "\n"]
-                ], group], "\n%---------%\n"]},
+                ], If[Length[group]==0, {cell}, group] ], "\n%---------%\n"]},
                     With[{urlEncoded = StringJoin["https://github.com/WLJSTeam/wljs-notebook/discussions/new?category=help&title=Need%20help%20with%20WLJS%20Notebook&body=", URLEncode[StringJoin["Hi there!\n", assoc["Promt"], "\n\n```wolfram", string, "\n```\n\n "] ] ]},
                         
                         WebUILocation[urlEncoded, assoc["Client"], "Target"->_];

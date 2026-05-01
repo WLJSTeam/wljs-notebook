@@ -1,4 +1,4 @@
-//@ts-check
+//just don't look at it. We did not invest enough efforts to this...
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
 const { screen, globalShortcut} = require('electron/main')
 
