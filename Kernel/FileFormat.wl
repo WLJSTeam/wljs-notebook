@@ -9,6 +9,48 @@ newLine[2] = "\n\n" | "\r\n\r\n";
 
 Begin["`Private`"];
 
+(* Unicode workarounds *)
+(* keep special MMA symbols, but convert all unicode *)
+
+hexDigit[c_] := Which[
+  48 <= c <= 57, c - 48,      (* 0-9 *)
+  65 <= c <= 70, c - 55,      (* A-F *)
+  97 <= c <= 102, c - 87      (* a-f *)
+]
+
+convertCp[list_] := Fold[16 #1 + #2 &, 0, hexDigit /@ list]
+
+utf8[n_] := Which[
+  n <= 16^^7F,
+    {n},
+
+  n <= 16^^7FF,
+    {
+      16^^C0 + Quotient[n, 64],
+      16^^80 + Mod[n, 64]
+    },
+
+  n <= 16^^FFFF,
+    {
+      16^^E0 + Quotient[n, 4096],
+      16^^80 + Mod[Quotient[n, 64], 64],
+      16^^80 + Mod[n, 64]
+    },
+
+  n <= 16^^10FFFF,
+    {
+      16^^F0 + Quotient[n, 262144],
+      16^^80 + Mod[Quotient[n, 4096], 64],
+      16^^80 + Mod[Quotient[n, 64], 64],
+      16^^80 + Mod[n, 64]
+    }
+]
+
+toMMAUTF8[str_String] := FromCharacterCode[SequenceReplace[ExportString[str, "String"]//ToCharacterCode, {92,58,a_,b_,c_,d_} :> Sequence@@utf8[convertCp[{a,b,c,d}]]]]
+fromUTF8MMA[str_String] := FromCharacterCode[ToCharacterCode[str], "UTF8"]
+
+(* end of workarounds *)
+
 takeKeys[nb_, keys_] := Association@Map[(# -> nb[#])&, keys]
 
 genSeparator[size_, name_] := Module[{fill, left, right},
@@ -232,7 +274,7 @@ writeNotebook[stream_, nb_] := With[
             WriteString[file, "\n"];
             WriteString[file, genSeparator[75]];
             WriteString[file, "\n"];
-            WriteString[file, cell["Data"]];
+            WriteString[file, cell["Data"] // toMMAUTF8 ];
             WriteString[file, "\n\n"];
             If[cell =!= nb["Cells"][[-1]],
                 WriteString[file, genSeparator[75]]; WriteString[file, "\n"];
@@ -372,7 +414,7 @@ readNotebook[stream_, timeout_:10] := Module[
         If[FailureQ[buffer],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse first cell"|>] ]
         ];
-        AppendTo[list, Append[temp, "Data" -> buffer]];
+        AppendTo[list, Append[temp, "Data" -> fromUTF8MMA[buffer] ]];
         While[
             !testIfEnd["EndOfCells"]
             ,
@@ -395,7 +437,7 @@ readNotebook[stream_, timeout_:10] := Module[
             If[FailureQ[buffer],
                 Return[ Failure["InvalidWLN", <|"Message" -> "Could not find separator for the next cell"|>] ]
             ];
-            AppendTo[list, Append[temp, "Data" -> buffer]];
+            AppendTo[list, Append[temp, "Data" -> fromUTF8MMA[buffer] ]];
         ];
         If[FailureQ[temp] || FailureQ[buffer],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse any next cells"|>] ]
