@@ -96,6 +96,26 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+### Unicode support
+We did some hard work to keep all special symbols of Wolfram intact, while exporting and importing unicode characters. For example, this one will be written as a normal UTF8 string to a file
+
+Куры 🐔
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Unicode support
+We did some hard work to keep all special symbols of Wolfram intact, while exporting and importing unicode characters. For example, this one will be written as a normal UTF8 string to a file
+
+Куры 🐔
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Content hot-reloading support
 In addition to a new format we enabled hot-reloading of a notebook content if it was modified outside WLJS Notebook. You will be prompted to approve changes or decline them.
 
@@ -120,47 +140,132 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-## MCP Server
-We added a background MCP server to interact with the notebook in the same way as our copilot. You can add it to your favourite coding tool as follows:
+## Farewell to AI Copilot 🪦
+We decided to discontinue our built-in AI copilot in favour of support for external tools like coding agents Claude, Codex and others. Our custom copilot was too expensive in terms of tokens and not quite reliable. This also saves a lot of resources for our team, since we provide notebook tools as a service for other apps and do not have to update the providers manually, tweak system prompts and so on.
 
-### Claude
+However, we prepared something better instead...
 
-```bash
+<br/>
+
+## MCP Server ✨
+We added a background MCP server to interact with the notebook in the same way as our copilot. It can run cells, edit, create and do all autonomous tasks.
+
+It also includes skills, documentation and consumes ~4-5 times fewer tokens compared to our former copilot.
+
+You can add it to your favourite coding tool as follows:
+
+__Claude__
+
+<code>
 claude mcp add --transport http --scope user wljs-notebook http://127.0.0.1:20564/
-```
+</code>
 
-### Codex
+__Codex__
 
-```bash
+<code>
 codex mcp add wljs-notebook --url http://127.0.0.1:20564/
-```
+</code>
 
-:::note
-This feature is only available for WLJS desktop application
-:::
+<br/>
+<br/>
+
+## CLI ✨
+We updated our *wljs* cli, that acts like a proxy to our API exposed via MCP server. You can do things like:
+
+<code>
+wljs focused
+</code>
+
+*returns focused notebook ID*
+
+then add a new cell
+
+<code>
+wljs add 'notebookId' --content 'text'|@file|-> [--after 'cell'] [--before 'cell'] [--eval]
+</code>
+
+It is also LLM-friendly, use `help` command for more.
+
+
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-## MCP Server
-We added a background MCP server to interact with the notebook in the same way as our copilot. You can add it to your favourite coding tool as follows:
+## Farewell to AI Copilot 🪦
+We decided to discontinue our built-in AI copilot in favour of support for external tools like coding agents Claude, Codex and others. Our custom copilot was too expensive in terms of tokens and not quite reliable. This also saves a lot of resources for our team, since we provide notebook tools as a service for other apps and do not have to update the providers manually, tweak system prompts and so on.
 
-### Claude
+However, we prepared something better instead...
 
-```bash
+<br />
+
+## MCP Server ✨
+We added a background MCP server to interact with the notebook in the same way as our copilot. It can run cells, edit, create and do all autonomous tasks.
+
+It also includes skills, documentation and consumes ~4-5 times fewer tokens compared to our former copilot.
+
+You can add it to your favourite coding tool as follows:
+
+__Claude__
+
+<code >
 claude mcp add --transport http --scope user wljs-notebook http://127.0.0.1:20564/
-```
+</code>
 
-### Codex
+__Codex__
 
-```bash
+<code >
 codex mcp add wljs-notebook --url http://127.0.0.1:20564/
-```
+</code><br /><br />
 
-:::note
-This feature is only available for WLJS desktop application
-:::
+## CLI ✨
+We updated our *wljs* cli, that acts like a proxy to our API exposed via MCP server. You can do things like:
+
+<code >
+wljs focused
+</code>
+
+*returns focused notebook ID*
+
+then add a new cell
+
+<code >
+wljs add 'notebookId' --content 'text'|@file|-> [--after 'cell'] [--before 'cell'] [--eval]
+</code>
+
+It is also LLM-friendly, use `help` command for more.
+
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+## Ask community
+Something isn't working? Try this command
+
+
+![](/attachments/Screenshot-2026-05-01-at-12.36.24-881.png)
+
+
+This will automatically copy your cell and create a post on Github Discussions.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+## Ask community
+Something isn't working? Try this command
+
+
+![](/attachments/Screenshot-2026-05-01-at-12.36.24-881.png)
+
+
+This will automatically copy your cell and create a post on Github Discussions.
 
 %-------------------------------------------------------------------------%
 Props:

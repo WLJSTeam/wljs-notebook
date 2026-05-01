@@ -46,7 +46,19 @@ utf8[n_] := Which[
     }
 ]
 
-toMMAUTF8[str_String] := FromCharacterCode[SequenceReplace[ExportString[str, "String"]//ToCharacterCode, {92,58,a_,b_,c_,d_} :> Sequence@@utf8[convertCp[{a,b,c,d}]]]]
+toMMAUTF8[str_String] := FromCharacterCode[
+  SequenceReplace[
+    ExportString[str, "String"] // ToCharacterCode,
+    {
+      {92, 124, a_, b_, c_, d_, e_, f_} :>
+        Sequence @@ utf8[convertCp[{a, b, c, d, e, f}]],
+
+      {92, 58, a_, b_, c_, d_} :>
+        Sequence @@ utf8[convertCp[{a, b, c, d}]]
+    }
+  ]
+]
+
 fromUTF8MMA[str_String] := FromCharacterCode[ToCharacterCode[str], "UTF8"]
 
 (* end of workarounds *)
