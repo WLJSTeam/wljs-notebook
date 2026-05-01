@@ -20,6 +20,9 @@ hexDigit[c_] := Which[
 
 convertCp[list_] := Fold[16 #1 + #2 &, 0, hexDigit /@ list]
 
+hexDigitCodeQ[c_Integer] :=
+  48 <= c <= 57 || 65 <= c <= 70 || 97 <= c <= 102
+
 utf8[n_] := Which[
   n <= 16^^7F,
     {n},
@@ -50,10 +53,22 @@ toMMAUTF8[str_String] := FromCharacterCode[
   SequenceReplace[
     ExportString[str, "String"] // ToCharacterCode,
     {
-      {92, 124, a_, b_, c_, d_, e_, f_} :>
+      {92, 124,
+        a_?hexDigitCodeQ,
+        b_?hexDigitCodeQ,
+        c_?hexDigitCodeQ,
+        d_?hexDigitCodeQ,
+        e_?hexDigitCodeQ,
+        f_?hexDigitCodeQ
+      } :>
         Sequence @@ utf8[convertCp[{a, b, c, d, e, f}]],
 
-      {92, 58, a_, b_, c_, d_} :>
+      {92, 58,
+        a_?hexDigitCodeQ,
+        b_?hexDigitCodeQ,
+        c_?hexDigitCodeQ,
+        d_?hexDigitCodeQ
+      } :>
         Sequence @@ utf8[convertCp[{a, b, c, d}]]
     }
   ]
