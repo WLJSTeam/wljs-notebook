@@ -7535,8 +7535,43 @@ functions derived from the input are evaluated numerically. "|>,
   "info" -> "EvaluationObject[<i>expr</i>,\[Ellipsis]] represents an \
 expression submitted for evaluation on any available parallel kernel."|>
 , <|"label" -> "EvenQ", "type" -> "keyword", "info" -> "EvenQ[<i>expr</i>] \
-gives True if <i>expr</i> is an even integer, and False otherwise. "|>, 
- <|"label" -> "EventSeries", "type" -> "keyword", 
+gives True if <i>expr</i> is an even integer, and False otherwise. "|>,
+ <|"label" -> "EventClone", "type" -> "keyword",
+  "info" -> "EventClone[<i>ev</i>] returns a new EventObject that receives \
+every future firing of <i>ev</i>. Both the original and the clone receive \
+events via an internal EventRouter fan-out. The clone inherits the source \
+event's metadata Association."|>,
+ <|"label" -> "EventFire", "type" -> "keyword",
+  "info" -> "EventFire[<i>ev</i>] fires <i>ev</i> with Null data, or with \
+the stored \"Initial\" value if one is present.\n\nEventFire[<i>ev</i>,<i>\
+data</i>] dispatches <i>data</i> to all registered catch-all handlers.\n\n\
+EventFire[<i>ev</i>,<i>pattern</i>,<i>data</i>] dispatches only to handlers \
+whose key matches <i>pattern</i>. Accepts an EventObject or a plain string \
+ID."|>,
+ <|"label" -> "EventJoin", "type" -> "keyword",
+  "info" -> "EventJoin[<i>ev</i><sub>1</sub>,<i>ev</i><sub>2</sub>,\
+\[Ellipsis]] returns a new EventObject that fires whenever any source event \
+fires, forwarding the pattern and data unchanged. Association-valued \
+\"Initial\" fields from all sources are merged. Also available as \
+Join[<i>ev</i><sub>1</sub>,<i>ev</i><sub>2</sub>,\[Ellipsis]]."|>,
+ <|"label" -> "EventListener", "type" -> "keyword",
+  "info" -> "EventListener[<i>source</i>,<i>rules</i>] is an object \
+representing a listener created by EventHandler[Null,<i>rules</i>]. <i>\
+source</i> is the originating event ID or Null; <i>rules</i> map each fired \
+pattern to the internal handler UUID registered for it."|>,
+ <|"label" -> "EventObject", "type" -> "keyword",
+  "info" -> "EventObject[] creates a new event with an auto-generated \
+UUID.\n\nEventObject[<i>uid</i>] wraps an existing string ID.\n\nEventObject\
+[<i>assoc</i>] stores metadata directly; fields are accessible via \
+EventObject[\[Ellipsis]][\"<i>key</i>\"]. Use EventHandler to attach handlers \
+and EventFire to dispatch data. Delete and DeleteObject are aliases for \
+EventRemove."|>,
+ <|"label" -> "EventRemove", "type" -> "keyword",
+  "info" -> "EventRemove[<i>ev</i>] removes all handlers attached to <i>ev\
+</i>.\n\nEventRemove[<i>ev</i>,<i>pattern</i>] removes only the handler \
+whose key matches <i>pattern</i>. Accepts an EventObject or a plain string \
+ID."|>,
+ <|"label" -> "EventSeries", "type" -> "keyword",
   "info" -> "EventSeries[{{<i>t</i><sub>1</sub>,<i>v</i><sub>1</sub>},{<i>t</\
 i><sub>2</sub>,<i>v</i><sub>2</sub>}\[Ellipsis]}] represents a series of \
 events given as time-value pairs \

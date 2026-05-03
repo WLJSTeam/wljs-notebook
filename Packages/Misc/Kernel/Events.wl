@@ -1,49 +1,44 @@
 BeginPackage["CoffeeLiqueur`Misc`Events`"]; 
 
 (* 
-    A kernel event system package 
+    An event system package 
     following KISS principle 
 
-   can be patterns as well and delayed as well
-
-
+    This package replaces EventHandler of WL Standard Library
+    used in communication with Frontend. Therefore all symbols
+    are available in System context.
 *)
 
+System`EventObject;
+System`EventJoin;
+System`EventClone;
+System`EventRemove;
+System`EventFire;
+System`EventHandler;
+System`EventListener;
 
-EventObject::usage = "a representation of a simple event. can hold an extra information"
+EventObject::usage = "EventObject[] creates a new event object with an auto-generated UUID. EventObject[uid_String] wraps an existing string ID. EventObject[assoc_Association] stores metadata directly; fields are accessible via EventObject[...][\"key\"]. Use EventHandler to attach handlers and EventFire to dispatch data. Delete[ev] and DeleteObject[ev] are aliases for EventRemove[ev]."
 
-EventJoin::usage = "join sequence of many EventObjects to a new one"
-EventClone::usage = "dublicate an event object keeping all handlers"
+EventJoin::usage = "EventJoin[ev1, ev2, ...] returns a new EventObject that fires whenever any of the source events fires, forwarding the original pattern and data unchanged. Association-valued \"Initial\" fields from all sources are merged into the resulting event's own \"Initial\" data. Also available as Join[ev1, ev2, ...]."
 
-EventRemove::usage = "remove the bond from EventObject"
+EventClone::usage = "EventClone[ev] returns a new EventObject that receives every future firing of ev. Both the original and the clone share all existing handlers via an internal EventRouter fan-out. The clone inherits ev's metadata Association."
 
-EventFire::usage = "manually fire an event object"
+EventRemove::usage = "EventRemove[ev] removes all handlers attached to ev. EventRemove[ev, pattern] removes only the handler whose key matches pattern. Accepts an EventObject or a plain string ID."
 
-EventBind::usage = "legacy method to bind events"
-
-EventsRack::usage = "depricated!"
-
-EmittedEvent::usage = "internal function called by the frontend to fire an event on a kernel"
-EventHandlers::usage = "internal function, which hold the binded function"
+EventFire::usage = "EventFire[ev] fires ev with Null data, or with the event's stored \"Initial\" value if one is present. EventFire[ev, data] dispatches data to all registered catch-all handlers. EventFire[ev, pattern, data] dispatches data only to handlers whose key matches pattern. Accepts an EventObject or a plain string ID."
 
 Unprotect[EventHandler]
 ClearAll[EventHandler]
 
-EventHandler::usage = "EventHandler[ev_String | _EventObject, {handlers___Rule | handlers___RuleDelayed}] ev_ binds an event object represented as a string or EventObject or anything compatible with this type to a single or multiple handling functions (multiple - only if patterns do not intersect). Returns an original event-object ev"
+EventHandler::usage = "EventHandler[ev, {pat1 -> f1, pat2 :> f2, ...}] attaches handler functions to ev, where ev is a String ID, EventObject, or Null. Each rule maps a fired pattern to a handler f called as f[data]. EventHandler[ev, f] attaches f as a catch-all handler (equivalent to {_String -> f}). EventHandler[Null, rules] creates a standalone EventListener instead of binding to an existing event. Returns ev unchanged."
 
-
-EventListener::usage = "Listener Object"
-
-EventPacket::usage = "just handy wrapper"
+EventListener::usage = "EventListener[source, rules] is an object representing a listener created by EventHandler[Null, rules]. source is the originating event ID or Null; rules map each fired pattern to the internal handler UUID registered for it."
 
 Begin["`Private`"]; 
 
 EventObject[] := EventObject[<|"Id" -> CreateUUID[]|>]
 EventObject[uid_String] := EventObject[<|"Id" -> uid|>]
 EventObject[a_Association][field_] := a[field]
-
-(* old alias *)
-EventBind[any_, handler_Function] := EventHandler[any, handler]
 
 
 listener[p_, list_] := With[{uid = CreateUUID[]}, With[{
