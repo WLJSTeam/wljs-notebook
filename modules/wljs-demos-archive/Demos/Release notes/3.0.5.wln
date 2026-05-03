@@ -27,7 +27,7 @@ Type: Output
 %-------------------------------------------------------------------------%
 # Release notes *3.0.5*
 
-Fri 24 Apr 2026 17:54:13
+Sun 3 May 2026 20:02:12
 
 %-------------------------------------------------------------------------%
 Props:
@@ -418,6 +418,36 @@ Plot[x, {x,0,1}, Epilog->{
 Type: Output
 %-------------------------------------------------------------------------%
 (*VB[*)(FrontEndRef["3ccdd674-35d2-46ce-bb61-b2bccad5a6dd"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKGycnp6SYmZvoGpumGOmamCWn6iYlmRnqJhklJScnppgmmqWkAACRHBa1"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Project cells to a window (Update)
+
+We improved this feature: <kbd>Ctrl-Shift-Enter</kbd>. It now automatically copies all output HTML or JavaScript cells to a new window as well.
+
+Why?
+
+Imagine you have created a presentation with custom styles defined in separate HTML cells, along with some components, and you do not want to present it directly from the same notebook. You could still package all scripts using WLX cells and embed them into one of the slides, but this may not be ideal for every case.
+
+Now, you can simply project your slides as usual, and everything else happens in the background.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Project cells to a window (Update)
+
+We improved this feature: <kbd >Ctrl-Shift-Enter</kbd>. It now automatically copies all output HTML or JavaScript cells to a new window as well.
+
+Why?
+
+Imagine you have created a presentation with custom styles defined in separate HTML cells, along with some components, and you do not want to present it directly from the same notebook. You could still package all scripts using WLX cells and embed them into one of the slides, but this may not be ideal for every case.
+
+Now, you can simply project your slides as usual, and everything else happens in the background.
 
 %-------------------------------------------------------------------------%
 Props:
