@@ -47231,7 +47231,6 @@ async function openNotebookFile(app, filePath) {
     stdio: "ignore"
   });
   child.unref();
-  console.log(filePath);
 }
 async function runWljsCli(app, args, { stdout, stderr }) {
   const command = args.shift();

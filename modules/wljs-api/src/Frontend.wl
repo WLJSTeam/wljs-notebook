@@ -213,7 +213,7 @@ apiCall[request_, "/api/notebook/list/"] := With[{},
 ]
 
 apiCall[request_, "/api/notebook/new/"] := With[{body = request["Body"], nb = nb`NotebookObj["Quick"->True, "HaveToSaveAs"->True]},
-    If[!TrueQ[body]["NoCells"],
+    If[!TrueQ[body["NoCells"] ],
         cell`CellObj["Data"->"", "Notebook"->nb];
     ];
 

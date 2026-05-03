@@ -1466,7 +1466,6 @@ async function openNotebookFile(app, filePath) {
   });
 
   child.unref();  
-  console.log(filePath);
 }
 
 async function runWljsCli(app, args, { stdout, stderr }) {
