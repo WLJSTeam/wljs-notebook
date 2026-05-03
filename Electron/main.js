@@ -77,7 +77,7 @@ if (isCli) {
 
   loadedElectronExtensions.forEach(fn => {
     const g = require(fn);
-    if (g.prolog) g.prolog(app, cliArgs);
+    if (g.prolog) g.prolog(app, {}, cliArgs);
   });  
 
   return;
@@ -3174,7 +3174,7 @@ function create_first_window() {
     loadedElectronExtensions.forEach(fn => {
         console.log('loading ...', fn);
         const g = require(fn);
-        if (g.epilog) g.epilog(); else g();
+        if (g.epilog) g.epilog(app, {}, []); else g(app, {}, []);
     });
 }
 

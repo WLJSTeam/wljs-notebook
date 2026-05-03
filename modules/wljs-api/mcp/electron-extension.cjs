@@ -33,7 +33,7 @@ function defaultOptions() {
   };
 }
 
-function startWljsNotebookMcpExtension(options = {}) {
+function startWljsNotebookMcpExtension(a,b,c, options = {}) {
   if (globalThis[GLOBAL_KEY]) return globalThis[GLOBAL_KEY];
 
   const promise = (async () => {
@@ -45,7 +45,7 @@ function startWljsNotebookMcpExtension(options = {}) {
       throw new Error('wljs-mcp.mjs does not export default or startWljsNotebookMcp');
     }
 
-    const server = await start({
+    const server = await start(a,b,c,{
       ...defaultOptions(),
       ...options,
     });
@@ -66,7 +66,7 @@ function startWljsNotebookMcpExtension(options = {}) {
   return promise;
 }
 
-startWljsNotebookMcpExtension.prolog = async function (a,b) {
+startWljsNotebookMcpExtension.prolog = async function (a,b,c, options = {}) {
   const moduleFile = resolveModuleFile();
   const mod = await import(pathToFileURL(moduleFile).href);
   const start = mod.startWljsNotebookMcp.cli;
@@ -75,7 +75,7 @@ startWljsNotebookMcpExtension.prolog = async function (a,b) {
     throw new Error('wljs-mcp.mjs does not export default or startWljsNotebookMcp');
   }
 
-  start(a,b)
+  start(a,b,c, options)
 }
 
 startWljsNotebookMcpExtension.close = async function closeWljsNotebookMcpExtension() {

@@ -27,6 +27,10 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`" -> "vfx`", FileNameJoin[{DirectoryName[$InputFileName], "VFX.wl"}] ];
 
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+
 
 failure;
 
@@ -166,7 +170,8 @@ apiCall[request_, "/api/ready/"] := <|"ReadyQ" -> True|>
 apiCall[request_, "/api/notebook/"] := {
     "/api/notebook/list/",
     "/api/notebook/focused/",
-    "/api/notebook/cells/"
+    "/api/notebook/cells/",
+    "/api/notebook/new/"
 }
 
 apiCall[request_, "/api/docs/"] := {
@@ -205,6 +210,25 @@ apiCall[request_, "/api/notebook/list/"] := With[{},
         "Opened" -> #["Opened"],
         "Path" -> #["Path"]
     |> &/@ Select[Values[nb`HashMap], (Complement[{"Opened", "Path", "Hash"}, #["Properties"] ] === {}) &]
+]
+
+apiCall[request_, "/api/notebook/new/"] := With[{body = request["Body"], nb = nb`NotebookObj["Quick"->True, "HaveToSaveAs"->True]},
+    If[!TrueQ[body]["NoCells"],
+        cell`CellObj["Data"->"", "Notebook"->nb];
+    ];
+
+    nb["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, "llm-"<>StringTake[CreateUUID[], 3]<>".wln"}];
+    Then[saveNotebook[nb], Echo];
+    <|"Id"->nb["Hash"], "PathEncoded"->URLEncode[nb["Path"] ]|>
+]
+
+
+apiCall[request_, "/api/notebook/readyQ/"] := With[{body = request["Body"]},
+    If[TrueQ[nb`HashMap[body["Id"] ]["Opened"] ],
+        <|"ReadyQ"->True, "Path"->URLEncode[nb`HashMap[body["Id"] ]["Path"] ], "Name"->FileNameTake[nb`HashMap[body["Id"] ]["Path"] ]|>
+    ,
+        False
+    ]
 ]
 
 (* 

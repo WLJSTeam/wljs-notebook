@@ -1,6 +1,10 @@
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { resolve } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+
+import fs from "node:fs/promises"
 
 const idSchema = z.string().min(1);
 const lineNumberSchema = z.number().int().positive();
@@ -375,7 +379,42 @@ async function wlCall(path, body = {}, { wait = true, timeoutMs = runtimeConfig.
   return initial;
 }
 
-export function createWlMcpServer(options = {}) {
+async function createAndWaitForNotebook(app, nocells=true, timeoutMs = runtimeConfig.PROMISE_TIMEOUT_MS) {
+  const created = await wlPost("/api/notebook/new/", {NoCells: nocells});
+  const id = created?.Id;
+  const pathEncoded = created?.PathEncoded;
+
+  if (!id || !pathEncoded) {
+    throw new WlApiError("Notebook creation returned an unexpected response; could not extract notebook id.", {
+      path: "/api/notebook/new/",
+      payload: created,
+    });
+  }
+
+  await sleep(450);
+  await openNotebookFile(app, decodeURIComponent(pathEncoded));
+
+  const startedAt = Date.now();
+  while (true) {
+    const status = await wlPost("/api/notebook/readyQ/", { Id: id });
+
+    if (status === true || status?.ReadyQ === true || status?.Result === true) {
+      //main.create_window({url: main.server.url.default('local') + `/` + status.PathEncoded, title: status.Name});
+      return id;
+    }
+
+    if (Date.now() - startedAt >= timeoutMs) {
+      throw new WlApiError(
+        `Notebook ${id} was created but did not become ready within ${timeoutMs} ms.`,
+        { path: "/api/notebook/readyQ/", payload: { Id: id, ReadyQ: false, TimedOut: true } },
+      );
+    }
+
+    await sleep(runtimeConfig.POLL_INTERVAL_MS);
+  }
+}
+
+export function createWlMcpServer(app, options = {}) {
   if (options && Object.keys(options).length > 0) configureWlMcp(options);
 
   const server = new McpServer(
@@ -640,6 +679,17 @@ register(
 );
 
 register(
+  "new_notebook",
+  "Create a new empty notebook and wait until it is ready. Returns the notebook id/hash.",
+  {},
+  () => createAndWaitForNotebook(app),
+  {
+    title: "New Notebook",
+    annotations: MUTATING_ADDITIVE_LOCAL,
+  },
+);
+
+register(
   "get_focused_notebook",
   "Return the id/hash of the currently focused notebook.",
   {},
@@ -895,7 +945,7 @@ return server;
  * This is not a separate daemon. Call it once from Electron main and close it
  * when the app quits.
  */
-export async function startWljsNotebookMcp(options = {}) {
+export async function startWljsNotebookMcp(a,b,c,options = {}) {
   configureWlMcp(options);
 
   const host = options.host ?? options.mcpHost ?? process.env.WL_MCP_HOST ?? "127.0.0.1";
@@ -921,7 +971,7 @@ export async function startWljsNotebookMcp(options = {}) {
   });
 
   app.post(path, async (req, res) => {
-    const server = createWlMcpServer();
+    const server = createWlMcpServer(a);
     const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
 
     res.on("close", () => {
@@ -1000,12 +1050,12 @@ function rejectJsonRpc(res, status, message) {
   });
 }
 
-startWljsNotebookMcp.cli = async (app, args = [], io = {}) => {
-  const stdout = io.stdout ?? process.stdout;
-  const stderr = io.stderr ?? process.stderr;
+startWljsNotebookMcp.cli = async (app, _main, args, opts = {}) => {
+  const stdout = process.stdout;
+  const stderr = process.stderr;
 
   try {
-    const code = await runWljsCli(args, { stdout, stderr });
+    const code = await runWljsCli(app, args, { stdout, stderr });
     app.exit(code);
     return code;
   } catch (error) {
@@ -1089,7 +1139,7 @@ function cliManifest() {
         "wljs docs html",
         "wljs docs dynamics",
         "wljs docs slides",
-      ],
+      ]
     },
     commands: [
       {
@@ -1143,6 +1193,16 @@ function cliManifest() {
         executes_code: false,
         output: "JSON",
         examples: ["wljs notebooks"],
+      },
+      {
+        name: "new",
+        category: "notebook",
+        usage: "wljs new [--nocells]",
+        description: "Create a new notebook and wait until it is ready. Prints the notebook id/hash. By default creates a notebook with a single empty input cell. Pass --nocells to create a fully empty notebook with no cells.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON string",
+        examples: ["wljs new", "wljs new --nocells"],
       },
       {
         name: "focused",
@@ -1322,6 +1382,16 @@ function cliManifest() {
         examples: ["wljs project cell123"],
       },
       {
+        name: "<file path>",
+        category: "notebook",
+        usage: "wljs path/to/notebook.wln",
+        description: "Open a notebook by file path. Any argument that looks like a path (contains /, or starts with ./ or ../) is treated as a file to open.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs path/to/notebook.wln", "wljs ./notebooks/demo.wln", "wljs /home/user/work.wln"],
+      },
+      {
         name: "wl",
         category: "evaluation",
         usage: "wljs wl '<wolfram-expression>'",
@@ -1356,7 +1426,50 @@ function cliManifest() {
   };
 }
 
-async function runWljsCli(args, { stdout, stderr }) {
+function normalizeFilePath(arg) {
+  let p = String(arg);
+  if ((p.startsWith("'") && p.endsWith("'")) || (p.startsWith('"') && p.endsWith('"'))) {
+    p = p.slice(1, -1);
+  }
+  if (p === "~" || p.startsWith("~/")) {
+    p = homedir() + p.slice(1);
+  }
+  return resolve(p);
+}
+
+function looksLikeFilePath(arg) {
+  return (
+    typeof arg === "string" &&
+    (arg.startsWith("/") || arg.startsWith("./") || arg.startsWith("../") || arg.includes("/"))
+  );
+}
+
+async function fileExists(path) {
+  try {
+    await fs.access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+import { spawn } from "node:child_process";
+
+
+// eslint-disable-next-line no-unused-vars
+async function openNotebookFile(app, filePath) {
+  if (! (await fileExists(filePath))) throw 'File does not exist!';
+  const exePath = app.getPath('exe');
+  const child = spawn(exePath, [filePath], {
+    detached: true,
+    stdio: "ignore",
+  });
+
+  child.unref();  
+  console.log(filePath);
+}
+
+async function runWljsCli(app, args, { stdout, stderr }) {
   const command = args.shift();
 
   if (command === "describe" || command === "llm-help" || command === "commands") {
@@ -1385,6 +1498,15 @@ async function runWljsCli(args, { stdout, stderr }) {
 
     case "notebooks":
       writeJson(stdout, await wlCall("/api/notebook/list/", {}));
+      return 0;
+
+    case "new":
+      const opts = parseCliOptions(args);
+      if (opts.Nocells || opts.NoCells) 
+        writeJson(stdout, await createAndWaitForNotebook(app, true));
+      else
+        writeJson(stdout, await createAndWaitForNotebook(app, false));
+      
       return 0;
 
     case "focused":
@@ -1593,8 +1715,13 @@ async function runWljsCli(args, { stdout, stderr }) {
       return 0;
     }
 
-    default:
+    default: {
+      if (looksLikeFilePath(command)) {
+        await openNotebookFile(app, normalizeFilePath(command), { stdout, stderr });
+        return 0;
+      }
       throw new Error(`Unknown command: ${command}\n\nRun: wljs help`);
+    }
   }
 }
 
@@ -1771,6 +1898,7 @@ Usage:
 
 Notebook:
   wljs notebooks
+  wljs new [--nocells]
   wljs focused
   wljs context [--Notebook <id>]
   wljs cells <notebook>
@@ -1787,7 +1915,10 @@ Evaluation:
   wljs eval <cell>
   wljs project <cell>
   wljs wl 'Range[10]^2'
-  wljs docs <query>`;
+  wljs docs <query>
+
+Open by path:
+  wljs path/to/notebook.wln`;
 }
 
 export default startWljsNotebookMcp;

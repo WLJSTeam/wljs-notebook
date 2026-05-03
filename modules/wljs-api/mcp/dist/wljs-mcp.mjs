@@ -9232,7 +9232,7 @@ var require_compile = __commonJS({
       const schOrFunc = root.refs[ref];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve.call(this, root, ref);
+      let _sch = resolve2.call(this, root, ref);
       if (_sch === void 0) {
         const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
         const { schemaId } = this.opts;
@@ -9259,7 +9259,7 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve(root, ref) {
+    function resolve2(root, ref) {
       let sch;
       while (typeof (sch = this.refs[ref]) == "string")
         ref = sch;
@@ -9834,7 +9834,7 @@ var require_fast_uri = __commonJS({
       }
       return uri;
     }
-    function resolve(baseURI, relativeURI, options) {
+    function resolve2(baseURI, relativeURI, options) {
       const schemelessOptions = options ? Object.assign({ scheme: "null" }, options) : { scheme: "null" };
       const resolved = resolveComponent(parse3(baseURI, schemelessOptions), parse3(relativeURI, schemelessOptions), schemelessOptions, true);
       schemelessOptions.skipEscape = true;
@@ -10061,7 +10061,7 @@ var require_fast_uri = __commonJS({
     var fastUri = {
       SCHEMES,
       normalize,
-      resolve,
+      resolve: resolve2,
       resolveComponent,
       equal,
       serialize,
@@ -13037,12 +13037,12 @@ var require_dist = __commonJS({
         throw new Error(`Unknown format "${name}"`);
       return f;
     };
-    function addFormats(ajv, list, fs, exportName) {
+    function addFormats(ajv, list, fs2, exportName) {
       var _a;
       var _b;
       (_a = (_b = ajv.opts.code).formats) !== null && _a !== void 0 ? _a : _b.formats = (0, codegen_1._)`require("ajv-formats/dist/formats").${exportName}`;
       for (const f of list)
-        ajv.addFormat(f, fs[f]);
+        ajv.addFormat(f, fs2[f]);
     }
     module.exports = exports = formatsPlugin;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -14310,8 +14310,8 @@ var require_node = __commonJS({
           }
           break;
         case "FILE":
-          var fs = __require("fs");
-          stream2 = new fs.SyncWriteStream(fd2, { autoClose: false });
+          var fs2 = __require("fs");
+          stream2 = new fs2.SyncWriteStream(fd2, { autoClose: false });
           stream2._type = "fs";
           break;
         case "PIPE":
@@ -17963,10 +17963,10 @@ var require_raw_body = __commonJS({
       if (done) {
         return readStream(stream, encoding, length, limit, wrap(done));
       }
-      return new Promise(function executor(resolve, reject) {
+      return new Promise(function executor(resolve2, reject) {
         readStream(stream, encoding, length, limit, function onRead(err, buf) {
           if (err) return reject(err);
-          resolve(buf);
+          resolve2(buf);
         });
       });
     }
@@ -32306,12 +32306,12 @@ var require_view = __commonJS({
     "use strict";
     var debug2 = require_src()("express:view");
     var path = __require("path");
-    var fs = __require("fs");
+    var fs2 = __require("fs");
     var dirname = path.dirname;
     var basename = path.basename;
     var extname = path.extname;
     var join = path.join;
-    var resolve = path.resolve;
+    var resolve2 = path.resolve;
     module.exports = View;
     function View(name, options) {
       var opts = options || {};
@@ -32345,7 +32345,7 @@ var require_view = __commonJS({
       debug2('lookup "%s"', name);
       for (var i = 0; i < roots.length && !path2; i++) {
         var root = roots[i];
-        var loc = resolve(root, name);
+        var loc = resolve2(root, name);
         var dir = dirname(loc);
         var file = basename(loc);
         path2 = this.resolve(dir, file);
@@ -32356,7 +32356,7 @@ var require_view = __commonJS({
       debug2('render "%s"', this.path);
       this.engine(this.path, options, callback);
     };
-    View.prototype.resolve = function resolve2(dir, file) {
+    View.prototype.resolve = function resolve3(dir, file) {
       var ext = this.ext;
       var path2 = join(dir, file);
       var stat = tryStat(path2);
@@ -32372,7 +32372,7 @@ var require_view = __commonJS({
     function tryStat(path2) {
       debug2('stat "%s"', path2);
       try {
-        return fs.statSync(path2);
+        return fs2.statSync(path2);
       } catch (e) {
         return void 0;
       }
@@ -32727,7 +32727,7 @@ var require_types2 = __commonJS({
 var require_mime = __commonJS({
   "node_modules/mime/mime.js"(exports, module) {
     var path = __require("path");
-    var fs = __require("fs");
+    var fs2 = __require("fs");
     function Mime() {
       this.types = /* @__PURE__ */ Object.create(null);
       this.extensions = /* @__PURE__ */ Object.create(null);
@@ -32748,7 +32748,7 @@ var require_mime = __commonJS({
     };
     Mime.prototype.load = function(file) {
       this._loading = file;
-      var map = {}, content = fs.readFileSync(file, "ascii"), lines = content.split(/[\r\n]+/);
+      var map = {}, content = fs2.readFileSync(file, "ascii"), lines = content.split(/[\r\n]+/);
       lines.forEach(function(line) {
         var fields = line.replace(/\s*#.*|^\s*|\s*$/g, "").split(/\s+/);
         map[fields.shift()] = fields;
@@ -32986,7 +32986,7 @@ var require_send = __commonJS({
     var escapeHtml = require_escape_html();
     var etag = require_etag();
     var fresh = require_fresh();
-    var fs = __require("fs");
+    var fs2 = __require("fs");
     var mime = require_mime();
     var ms = require_ms2();
     var onFinished = require_on_finished();
@@ -32998,7 +32998,7 @@ var require_send = __commonJS({
     var extname = path.extname;
     var join = path.join;
     var normalize = path.normalize;
-    var resolve = path.resolve;
+    var resolve2 = path.resolve;
     var sep = path.sep;
     var BYTES_RANGE_REGEXP = /^ *bytes=/;
     var MAX_MAXAGE = 60 * 60 * 24 * 365 * 1e3;
@@ -33035,7 +33035,7 @@ var require_send = __commonJS({
       this._maxage = opts.maxAge || opts.maxage;
       this._maxage = typeof this._maxage === "string" ? ms(this._maxage) : Number(this._maxage);
       this._maxage = !isNaN(this._maxage) ? Math.min(Math.max(0, this._maxage), MAX_MAXAGE) : 0;
-      this._root = opts.root ? resolve(opts.root) : null;
+      this._root = opts.root ? resolve2(opts.root) : null;
       if (!this._root && opts.from) {
         this.from(opts.from);
       }
@@ -33059,7 +33059,7 @@ var require_send = __commonJS({
       return this;
     }, "send.index: pass index as option");
     SendStream.prototype.root = function root(path2) {
-      this._root = resolve(String(path2));
+      this._root = resolve2(String(path2));
       debug2("root %s", this._root);
       return this;
     };
@@ -33223,7 +33223,7 @@ var require_send = __commonJS({
           return res;
         }
         parts = normalize(path2).split(sep);
-        path2 = resolve(path2);
+        path2 = resolve2(path2);
       }
       if (containsDotFile(parts)) {
         var access = this._dotfiles;
@@ -33319,7 +33319,7 @@ var require_send = __commonJS({
       var i = 0;
       var self = this;
       debug2('stat "%s"', path2);
-      fs.stat(path2, function onstat(err, stat) {
+      fs2.stat(path2, function onstat(err, stat) {
         if (err && err.code === "ENOENT" && !extname(path2) && path2[path2.length - 1] !== sep) {
           return next(err);
         }
@@ -33334,7 +33334,7 @@ var require_send = __commonJS({
         }
         var p = path2 + "." + self._extensions[i++];
         debug2('stat "%s"', p);
-        fs.stat(p, function(err2, stat) {
+        fs2.stat(p, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self.emit("file", p, stat);
@@ -33352,7 +33352,7 @@ var require_send = __commonJS({
         }
         var p = join(path2, self._index[i]);
         debug2('stat "%s"', p);
-        fs.stat(p, function(err2, stat) {
+        fs2.stat(p, function(err2, stat) {
           if (err2) return next(err2);
           if (stat.isDirectory()) return next();
           self.emit("file", p, stat);
@@ -33364,7 +33364,7 @@ var require_send = __commonJS({
     SendStream.prototype.stream = function stream(path2, options) {
       var self = this;
       var res = this.res;
-      var stream2 = fs.createReadStream(path2, options);
+      var stream2 = fs2.createReadStream(path2, options);
       this.emit("stream", stream2);
       stream2.pipe(res);
       function cleanup() {
@@ -34502,7 +34502,7 @@ var require_application = __commonJS({
     var deprecate = require_depd()("express");
     var flatten = require_array_flatten();
     var merge2 = require_utils_merge();
-    var resolve = __require("path").resolve;
+    var resolve2 = __require("path").resolve;
     var setPrototypeOf = require_setprototypeof();
     var hasOwnProperty = Object.prototype.hasOwnProperty;
     var slice = Array.prototype.slice;
@@ -34541,7 +34541,7 @@ var require_application = __commonJS({
       this.mountpath = "/";
       this.locals.settings = this.settings;
       this.set("view", View);
-      this.set("views", resolve("views"));
+      this.set("views", resolve2("views"));
       this.set("jsonp callback name", "callback");
       if (env === "production") {
         this.enable("view cache");
@@ -35786,7 +35786,7 @@ var require_response = __commonJS({
     var send = require_send();
     var extname = path.extname;
     var mime = send.mime;
-    var resolve = path.resolve;
+    var resolve2 = path.resolve;
     var vary = require_vary();
     var res = Object.create(http.ServerResponse.prototype);
     module.exports = res;
@@ -36045,7 +36045,7 @@ var require_response = __commonJS({
       }
       opts = Object.create(opts);
       opts.headers = headers;
-      var fullPath = !opts.root ? resolve(path2) : path2;
+      var fullPath = !opts.root ? resolve2(path2) : path2;
       return this.sendFile(fullPath, opts, done);
     };
     res.contentType = res.type = function contentType(type) {
@@ -36311,7 +36311,7 @@ var require_serve_static = __commonJS({
     var encodeUrl = require_encodeurl();
     var escapeHtml = require_escape_html();
     var parseUrl = require_parseurl();
-    var resolve = __require("path").resolve;
+    var resolve2 = __require("path").resolve;
     var send = require_send();
     var url = __require("url");
     module.exports = serveStatic;
@@ -36331,7 +36331,7 @@ var require_serve_static = __commonJS({
         throw new TypeError("option setHeaders must be function");
       }
       opts.maxage = opts.maxage || opts.maxAge || 0;
-      opts.root = resolve(root);
+      opts.root = resolve2(root);
       var onDirectory = redirect ? createRedirectDirectoryListener() : createNotFoundDirectoryListener();
       return function serveStatic2(req, res, next) {
         if (req.method !== "GET" && req.method !== "HEAD") {
@@ -36982,7 +36982,7 @@ var init_dist = __esm({
             });
             if (!chunk) {
               if (i === 1) {
-                await new Promise((resolve) => setTimeout(resolve));
+                await new Promise((resolve2) => setTimeout(resolve2));
                 maxReadCount = 3;
                 continue;
               }
@@ -37488,9 +37488,9 @@ data:
           const initRequest = messages.find((m) => isInitializeRequest(m));
           const clientProtocolVersion = initRequest ? initRequest.params.protocolVersion : req.headers.get("mcp-protocol-version") ?? DEFAULT_NEGOTIATED_PROTOCOL_VERSION;
           if (this._enableJsonResponse) {
-            return new Promise((resolve) => {
+            return new Promise((resolve2) => {
               this._streamMapping.set(streamId, {
-                resolveJson: resolve,
+                resolveJson: resolve2,
                 cleanup: () => {
                   this._streamMapping.delete(streamId);
                 }
@@ -37835,6 +37835,8 @@ var init_streamableHttp = __esm({
 
 // wljs-mcp.mjs
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { resolve } from "node:path";
 
 // node_modules/zod/v3/external.js
 var external_exports = {};
@@ -43913,7 +43915,7 @@ var Protocol = class {
           return;
         }
         const pollInterval = task2.pollInterval ?? this._options?.defaultTaskPollInterval ?? 1e3;
-        await new Promise((resolve) => setTimeout(resolve, pollInterval));
+        await new Promise((resolve2) => setTimeout(resolve2, pollInterval));
         options?.signal?.throwIfAborted();
       }
     } catch (error2) {
@@ -43930,7 +43932,7 @@ var Protocol = class {
    */
   request(request, resultSchema, options) {
     const { relatedRequestId, resumptionToken, onresumptiontoken, task, relatedTask } = options ?? {};
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       const earlyReject = (error2) => {
         reject(error2);
       };
@@ -44008,7 +44010,7 @@ var Protocol = class {
           if (!parseResult.success) {
             reject(parseResult.error);
           } else {
-            resolve(parseResult.data);
+            resolve2(parseResult.data);
           }
         } catch (error2) {
           reject(error2);
@@ -44269,12 +44271,12 @@ var Protocol = class {
       }
     } catch {
     }
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve2, reject) => {
       if (signal.aborted) {
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
         return;
       }
-      const timeoutId = setTimeout(resolve, interval);
+      const timeoutId = setTimeout(resolve2, interval);
       signal.addEventListener("abort", () => {
         clearTimeout(timeoutId);
         reject(new McpError(ErrorCode.InvalidRequest, "Request cancelled"));
@@ -45381,7 +45383,7 @@ var McpServer = class {
     let task = createTaskResult.task;
     const pollInterval = task.pollInterval ?? 5e3;
     while (task.status !== "completed" && task.status !== "failed" && task.status !== "cancelled") {
-      await new Promise((resolve) => setTimeout(resolve, pollInterval));
+      await new Promise((resolve2) => setTimeout(resolve2, pollInterval));
       const updatedTask = await extra.taskStore.getTask(taskId);
       if (!updatedTask) {
         throw new McpError(ErrorCode.InternalError, `Task ${taskId} not found during polling`);
@@ -45950,6 +45952,8 @@ var EMPTY_COMPLETION_RESULT = {
 };
 
 // wljs-mcp.mjs
+import fs from "node:fs/promises";
+import { spawn } from "node:child_process";
 var idSchema = external_exports.string().min(1);
 var lineNumberSchema = external_exports.number().int().positive();
 var cellIdShape = {
@@ -46150,7 +46154,7 @@ function debug(...args) {
   if (runtimeConfig.DEBUG) console.error("[wljs-mcp]", ...args);
 }
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve2) => setTimeout(resolve2, ms));
 }
 function normalizePath(path) {
   if (typeof path !== "string" || path.trim() === "") {
@@ -46270,7 +46274,34 @@ async function wlCall(path, body = {}, { wait = true, timeoutMs = runtimeConfig.
   }
   return initial;
 }
-function createWlMcpServer(options = {}) {
+async function createAndWaitForNotebook(app, nocells = true, timeoutMs = runtimeConfig.PROMISE_TIMEOUT_MS) {
+  const created = await wlPost("/api/notebook/new/", { NoCells: nocells });
+  const id = created?.Id;
+  const pathEncoded = created?.PathEncoded;
+  if (!id || !pathEncoded) {
+    throw new WlApiError("Notebook creation returned an unexpected response; could not extract notebook id.", {
+      path: "/api/notebook/new/",
+      payload: created
+    });
+  }
+  await sleep(450);
+  await openNotebookFile(app, decodeURIComponent(pathEncoded));
+  const startedAt = Date.now();
+  while (true) {
+    const status = await wlPost("/api/notebook/readyQ/", { Id: id });
+    if (status === true || status?.ReadyQ === true || status?.Result === true) {
+      return id;
+    }
+    if (Date.now() - startedAt >= timeoutMs) {
+      throw new WlApiError(
+        `Notebook ${id} was created but did not become ready within ${timeoutMs} ms.`,
+        { path: "/api/notebook/readyQ/", payload: { Id: id, ReadyQ: false, TimedOut: true } }
+      );
+    }
+    await sleep(runtimeConfig.POLL_INTERVAL_MS);
+  }
+}
+function createWlMcpServer(app, options = {}) {
   if (options && Object.keys(options).length > 0) configureWlMcp(options);
   const server = new McpServer(
     {
@@ -46503,6 +46534,16 @@ ${skillIndexText()}`
     }
   );
   register(
+    "new_notebook",
+    "Create a new empty notebook and wait until it is ready. Returns the notebook id/hash.",
+    {},
+    () => createAndWaitForNotebook(app),
+    {
+      title: "New Notebook",
+      annotations: MUTATING_ADDITIVE_LOCAL
+    }
+  );
+  register(
     "get_focused_notebook",
     "Return the id/hash of the currently focused notebook.",
     {},
@@ -46713,7 +46754,7 @@ ${skillIndexText()}`
   }
   return server;
 }
-async function startWljsNotebookMcp(options = {}) {
+async function startWljsNotebookMcp(a, b, c, options = {}) {
   configureWlMcp(options);
   const host = options.host ?? options.mcpHost ?? process.env.WL_MCP_HOST ?? "127.0.0.1";
   const port = positiveInt(options.port ?? options.mcpPort ?? process.env.WL_MCP_PORT, 20564);
@@ -46734,7 +46775,7 @@ async function startWljsNotebookMcp(options = {}) {
     next();
   });
   app.post(path, async (req, res) => {
-    const server = createWlMcpServer();
+    const server = createWlMcpServer(a);
     const transport = new StreamableHTTPServerTransport2({ sessionIdGenerator: void 0 });
     res.on("close", () => {
       Promise.resolve(transport.close()).catch(() => {
@@ -46759,13 +46800,13 @@ async function startWljsNotebookMcp(options = {}) {
   app.use((req, res) => {
     rejectJsonRpc(res, 404, `Not found: ${req.method} ${req.path}. This server exposes MCP only at ${path}`);
   });
-  const listener = await new Promise((resolve, reject) => {
-    const instance = app.listen(port, host, () => resolve(instance));
+  const listener = await new Promise((resolve2, reject) => {
+    const instance = app.listen(port, host, () => resolve2(instance));
     instance.once("error", reject);
   });
   const url = `http://${host}:${port}${path}`;
-  const close = () => new Promise((resolve, reject) => {
-    listener.close((error2) => error2 ? reject(error2) : resolve());
+  const close = () => new Promise((resolve2, reject) => {
+    listener.close((error2) => error2 ? reject(error2) : resolve2());
   });
   return {
     app,
@@ -46800,11 +46841,11 @@ function rejectJsonRpc(res, status, message) {
     id: null
   });
 }
-startWljsNotebookMcp.cli = async (app, args = [], io = {}) => {
-  const stdout = io.stdout ?? process.stdout;
-  const stderr = io.stderr ?? process.stderr;
+startWljsNotebookMcp.cli = async (app, _main, args, opts = {}) => {
+  const stdout = process.stdout;
+  const stderr = process.stderr;
   try {
-    const code = await runWljsCli(args, { stdout, stderr });
+    const code = await runWljsCli(app, args, { stdout, stderr });
     app.exit(code);
     return code;
   } catch (error2) {
@@ -46940,6 +46981,16 @@ function cliManifest() {
         executes_code: false,
         output: "JSON",
         examples: ["wljs notebooks"]
+      },
+      {
+        name: "new",
+        category: "notebook",
+        usage: "wljs new [--nocells]",
+        description: "Create a new notebook and wait until it is ready. Prints the notebook id/hash. By default creates a notebook with a single empty input cell. Pass --nocells to create a fully empty notebook with no cells.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON string",
+        examples: ["wljs new", "wljs new --nocells"]
       },
       {
         name: "focused",
@@ -47109,6 +47160,16 @@ function cliManifest() {
         examples: ["wljs project cell123"]
       },
       {
+        name: "<file path>",
+        category: "notebook",
+        usage: "wljs path/to/notebook.wln",
+        description: "Open a notebook by file path. Any argument that looks like a path (contains /, or starts with ./ or ../) is treated as a file to open.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs path/to/notebook.wln", "wljs ./notebooks/demo.wln", "wljs /home/user/work.wln"]
+      },
+      {
         name: "wl",
         category: "evaluation",
         usage: "wljs wl '<wolfram-expression>'",
@@ -47141,7 +47202,38 @@ function cliManifest() {
     ]
   };
 }
-async function runWljsCli(args, { stdout, stderr }) {
+function normalizeFilePath(arg) {
+  let p = String(arg);
+  if (p.startsWith("'") && p.endsWith("'") || p.startsWith('"') && p.endsWith('"')) {
+    p = p.slice(1, -1);
+  }
+  if (p === "~" || p.startsWith("~/")) {
+    p = homedir() + p.slice(1);
+  }
+  return resolve(p);
+}
+function looksLikeFilePath(arg) {
+  return typeof arg === "string" && (arg.startsWith("/") || arg.startsWith("./") || arg.startsWith("../") || arg.includes("/"));
+}
+async function fileExists(path) {
+  try {
+    await fs.access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+async function openNotebookFile(app, filePath) {
+  if (!await fileExists(filePath)) throw "File does not exist!";
+  const exePath = app.getPath("exe");
+  const child = spawn(exePath, [filePath], {
+    detached: true,
+    stdio: "ignore"
+  });
+  child.unref();
+  console.log(filePath);
+}
+async function runWljsCli(app, args, { stdout, stderr }) {
   const command = args.shift();
   if (command === "describe" || command === "llm-help" || command === "commands") {
     writeJson(stdout, cliManifest());
@@ -47166,12 +47258,19 @@ async function runWljsCli(args, { stdout, stderr }) {
     case "notebooks":
       writeJson(stdout, await wlCall("/api/notebook/list/", {}));
       return 0;
+    case "new":
+      const opts = parseCliOptions(args);
+      if (opts.Nocells || opts.NoCells)
+        writeJson(stdout, await createAndWaitForNotebook(app, true));
+      else
+        writeJson(stdout, await createAndWaitForNotebook(app, false));
+      return 0;
     case "focused":
       writeJson(stdout, await wlCall("/api/notebook/focused/", {}));
       return 0;
     case "context": {
-      const opts = parseCliOptions(args);
-      const Notebook = opts.Notebook ?? opts.notebook;
+      const opts2 = parseCliOptions(args);
+      const Notebook = opts2.Notebook ?? opts2.notebook;
       const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
       const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
       let focusedCell = null;
@@ -47251,17 +47350,17 @@ async function runWljsCli(args, { stdout, stderr }) {
         args.shift(),
         "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]"
       );
-      const opts = parseCliOptions(args);
-      const Content = readCliContent(opts);
+      const opts2 = parseCliOptions(args);
+      const Content = readCliContent(opts2);
       const payload = compact({
         Notebook,
         Content,
-        After: opts.after ?? opts.After,
-        Before: opts.before ?? opts.Before
+        After: opts2.after ?? opts2.After,
+        Before: opts2.before ?? opts2.Before
       });
       assertSingleAnchor(payload);
       const added = await wlCall("/api/notebook/cells/add/", payload);
-      if (opts.eval === true) {
+      if (opts2.eval === true) {
         const Cell = extractCliCellId(added);
         if (!Cell) {
           writeJson(stdout, {
@@ -47296,8 +47395,8 @@ async function runWljsCli(args, { stdout, stderr }) {
       const From = parsePositiveIntParam(args.shift(), "From");
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
-      const opts = parseCliOptions(args);
-      const Content = readCliContent(opts);
+      const opts2 = parseCliOptions(args);
+      const Content = readCliContent(opts2);
       writeJson(
         stdout,
         await wlCall("/api/notebook/cells/setlines/", {
@@ -47316,8 +47415,8 @@ async function runWljsCli(args, { stdout, stderr }) {
         "Usage: wljs insert-lines <cell> <after> --content <text|@file|->"
       );
       const After = parseNonNegativeCliInt(args.shift(), "After");
-      const opts = parseCliOptions(args);
-      const Content = readCliContent(opts);
+      const opts2 = parseCliOptions(args);
+      const Content = readCliContent(opts2);
       writeJson(
         stdout,
         await wlCall("/api/notebook/cells/insertlines/", {
@@ -47334,10 +47433,15 @@ async function runWljsCli(args, { stdout, stderr }) {
       writeJson(stdout, await wlCall("/api/notebook/cells/delete/", { Cell }));
       return 0;
     }
-    default:
+    default: {
+      if (looksLikeFilePath(command)) {
+        await openNotebookFile(app, normalizeFilePath(command), { stdout, stderr });
+        return 0;
+      }
       throw new Error(`Unknown command: ${command}
 
 Run: wljs help`);
+    }
   }
 }
 function writeCli(stdout, text) {
@@ -47472,6 +47576,7 @@ Usage:
 
 Notebook:
   wljs notebooks
+  wljs new [--nocells]
   wljs focused
   wljs context [--Notebook <id>]
   wljs cells <notebook>
@@ -47488,7 +47593,10 @@ Evaluation:
   wljs eval <cell>
   wljs project <cell>
   wljs wl 'Range[10]^2'
-  wljs docs <query>`;
+  wljs docs <query>
+
+Open by path:
+  wljs path/to/notebook.wln`;
 }
 var wljs_mcp_default = startWljsNotebookMcp;
 export {
