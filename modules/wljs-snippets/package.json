@@ -9,7 +9,6 @@
   "defaultPackage": true,
   "wljs-meta": {
     "frontend": "src/Frontend.wl",
-    "js": "dist/kernel.js",
     "priority": 4998,
     "category": "Notebook Extensions",
     "menu": [

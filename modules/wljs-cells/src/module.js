@@ -784,6 +784,20 @@ window.CellWrapper = class {
 
 };;
 
+window.WindowWrapperSupplimentary = class {
+  dispose() {
+    this?.display?.dispose();
+    this.element.remove();
+  }
+
+  constructor(input) {
+    this.element = document.createElement('div');
+    this.element.classList.add('hidden');
+    document.body.appendChild(this.element);
+
+    this.display = new window.SupportedCells[input["Display"]].view(this, input["Data"]);  
+  }
+}
 
 window.WindowWrapper = class {
   uid = ''
@@ -821,6 +835,8 @@ window.WindowWrapper = class {
     this.throttledSave = throttle((content) => {
       console.warn('editing inside window is not permitted');
     }, 150);
+
+    this.updateSelection = () => {};
 
     notebook.element.innerHTML = "";
     notebook.element.insertAdjacentHTML('beforeend', template);
