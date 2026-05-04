@@ -11,16 +11,24 @@ ipcRenderer.on('zoomOut', () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() / 1.5)
 })
 
+let loadingstyle = null;
+
 ipcRenderer.on('will-navigate', () => {
-  const style = document.createElement('style');
-  style.id = 'global-wait-cursor';
-  style.textContent = `
+  if (loadingstyle != null) return;
+  loadingstyle = document.createElement('style');
+  loadingstyle.textContent = `
     * {
       cursor: wait !important;
     }
   `;
-  
-  document.head.appendChild(style);
+
+  document.head.appendChild(loadingstyle);
+});
+
+ipcRenderer.on('did-finish-load', () => {
+  if (loadingstyle == null) return;
+  loadingstyle.remove();
+  loadingstyle = null;
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {
