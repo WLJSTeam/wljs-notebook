@@ -235,8 +235,8 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
     ];
 
     Options[load] = {"Events"->"Blackhole"}
-    Options[save] = {"Events"->"Blackhole", "NoCache"->False, "Temporal"->False, "Modals"->"Nulll", "Props"->Null}
-    Options[loadToCache] = {"Events"->"Blackhole", "Temporal"->False, "Modals"->"Nulll"}
+    Options[save] = {"Events"->"Blackhole", "NoCache"->False, "Temporal"->False, "Modals"->"Null", "Props"->Null}
+    Options[loadToCache] = {"Events"->"Blackhole", "Temporal"->False, "Modals"->"Null"}
 
     loadToCache[path_String, pathcache_String, pathnotebook_String, OptionsPattern[] ] := Module[{notebook},
         Echo["Loading to cache..."];

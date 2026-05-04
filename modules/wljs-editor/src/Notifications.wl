@@ -106,18 +106,7 @@ EventHandler[NotebookEditorChannel // EventClone,
     }
 ]
 
-(*Notify`CreateModal[name_String, data_Association, OptionsPattern[] ] := With[{p = Promise[]},
-    EventFire[Internal`Kernel`CommunicationChannel, "CreateModal", <|
-            "Notebook"->OptionValue["Notebook"], 
-            "Ref"->System`$EvaluationContext["Ref"], 
-            "Promise" -> (promise), 
-            "Kernel"->Internal`Kernel`Hash,
-            "Modal"->name,
-            "Data"->data
-    |>];
-    
-    p
-]*)
+
 
 End[]
 EndPackage[]

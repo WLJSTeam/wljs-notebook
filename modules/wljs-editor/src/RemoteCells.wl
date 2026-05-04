@@ -229,7 +229,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
 
       
             GenericKernel`Init[kernel,
-                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0 = CoffeeLiqueur`Extensions`Notifications`Notify["Evaluating cells in the generated context", "Topic"->"Notebook", "Type"->"Spinner"];
+                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0 = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                 CoffeeLiqueur`Extensions`RemoteCells`Private`SavedDir = Directory[];
                 CoffeeLiqueur`Extensions`RemoteCells`Private`SavedCharLim = Internal`Kernel`$OutputCharactersLimit;
                 Internal`Kernel`$OutputCharactersLimit = Infinity;
@@ -245,7 +245,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             cell`EvaluateCellObj[#, "Evaluator"->kernel["Container"], "EvaluationContext"->evalContext ] &/@ initCells;
 
             GenericKernel`Init[kernel,
-                Delete[CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0];
+                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0["Cancel"];
                 If[ContextIsolation,
                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                     $Context = "Global`";

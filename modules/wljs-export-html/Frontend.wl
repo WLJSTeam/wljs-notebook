@@ -39,7 +39,7 @@ EventHandler[AppExtensions`AppEvents// EventClone, {
 Needs["CoffeeLiqueur`Extensions`ExportImport`HTML`" -> "html`", FileNameJoin[{rootFolder, "Formats", "HTML", "HTML.wl"}] ];
 
 HTMLFileQ[path_] := If[FileExtension[path] === "html", html`Static`check[path], False ];
-CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->html`Static`decode], ""}&
 ]
 
@@ -47,21 +47,21 @@ CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String] := With[{}
 Needs["CoffeeLiqueur`Extensions`ExportImport`Markdown`" -> "markdown`", FileNameJoin[{rootFolder, "Formats", "Markdown", "Markdown.wl"}] ];
 
 MDFileQ[path_] := FileExtension[path] === "md"
-CoffeeLiqueur`Notebook`Views`Router[any_?MDFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?MDFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->markdown`decode], ""}&
 ]
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`Mathematica`" -> "mathematica`", FileNameJoin[{rootFolder, "Formats", "Mathematica", "Mathematica.wl"}] ];
 
 NBFileQ[path_] := FileExtension[path] === "nb"
-CoffeeLiqueur`Notebook`Views`Router[any_?NBFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?NBFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->mathematica`decode[##] ], ""}
 ]&
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`WLW`" -> "wlw`", FileNameJoin[{rootFolder, "Formats", "WLW.wl"}] ];
 
 WLEFileQ[path_] := FileExtension[path] === "wlw"
-CoffeeLiqueur`Notebook`Views`Router[any_?WLEFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?WLEFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->wlw`execute[##] ], ""}
 ]&
 

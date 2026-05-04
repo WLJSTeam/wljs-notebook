@@ -2126,6 +2126,10 @@ function create_window(opts, cbk = () => {}) {
             win.once('blur', () => {
                 win.close();
             })
+        } else {
+            win.webContents.on('will-navigate', () => {
+                win.webContents.send('will-navigate');
+            })
         }
 
         if (options.features ) {

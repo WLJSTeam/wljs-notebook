@@ -4,9 +4,6 @@ BeginPackage["CoffeeLiqueur`Extensions`Notifications`", {"CoffeeLiqueur`Misc`Eve
 HapticFeedback::usage = "HapticFeedback[] make a haptic feedback on MacOS devices (Desktop App only)"
 
 
-Notify::usage = "Deprecated. Consider to use Echo or EchoLabel"
-
-
 Begin["`Private`"]
 
 notRule[_Rule] = False
@@ -76,55 +73,6 @@ EchoLabel["ProgressBar"][expr_] := With[{p = Unique[], uid = CreateUUID[]},
 Protect[EchoLabel];
 
 
-(* LEGACY!!! Only for the compatibillity with outdated modules *)
-(* LEGACY!!! Only for the compatibillity with outdated modules *)
-(* LEGACY!!! Only for the compatibillity with outdated modules *)
-(* LEGACY!!! Only for the compatibillity with outdated modules *)
-
-Notify[template_String, args__?notRule, OptionsPattern[] ] := With[{
-    message = StringTemplate[template][args]
-},
-    EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], Notifications`NotificationMessage[OptionValue["Topic"] ], message]; 
-]
-
-Notify[template_String, OptionsPattern[] ] := With[{
-    message = template
-},
-    Switch[OptionValue["Type"],
-        "Spinner",
-            With[{p = Unique["spinner"], uid = CreateUUID[]},
-                EventFire[Internal`Kernel`CommunicationChannel, "CreateSpinner", <|
-                    "UId" -> uid,
-                    "Kernel"->Internal`Kernel`Hash,
-                    "Topic"->OptionValue["Topic"],
-                    "Data"->message
-                |>];
-
-                p /: Delete[p] := (EventFire[Internal`Kernel`CommunicationChannel, "RemoveSpinner", uid ]; ClearAll[p]);
-
-                p
-            ]
-        ,
-        
-        "Warning",
-            EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], "Warning", message];
-        ,
-
-        _,
-            EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], Notifications`NotificationMessage[OptionValue["Topic"] ], message];
-            Null
-    ]
-    
-]
-
-Notify[template_, OptionsPattern[] ] := With[{
-    message = ToString[template]
-},
-    EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], Notifications`NotificationMessage[OptionValue["Topic"] ], message]; 
-]
-
-
-Options[Notify] = {"Topic" -> "Kernel", "Type"->"Message"}
 
 End[]
 EndPackage[]

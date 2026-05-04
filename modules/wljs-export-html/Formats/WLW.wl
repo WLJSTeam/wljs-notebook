@@ -118,7 +118,7 @@ With[{
                 EventFire[spinner["Promise"], Resolve, True];
 
                 GenericKernel`Init[kernel,
-                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = CoffeeLiqueur`Extensions`Notifications`Notify["Evaluating cells in the generated context", "Topic"->"Notebook", "Type"->"Spinner"];
+                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
                     $Context = generated;
                     Internal`Kernel`$savedDirectory = Directory[];
@@ -175,7 +175,7 @@ With[{
                     ] ];
 
                     GenericKernel`Init[kernel,
-                        Delete[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
+                        CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated]["Cancel"];
                         Unset[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
                         EventFire[Internal`Kernel`Stdout[ s ], Resolve, True ]; 
                     ];

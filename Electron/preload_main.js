@@ -11,6 +11,17 @@ ipcRenderer.on('zoomOut', () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() / 1.5)
 })
 
+ipcRenderer.on('will-navigate', () => {
+  const style = document.createElement('style');
+  style.id = 'global-wait-cursor';
+  style.textContent = `
+    * {
+      cursor: wait !important;
+    }
+  `;
+  
+  document.head.appendChild(style);
+});
 
 contextBridge.exposeInMainWorld('electronAPI', {
   startDrag: (fileName) => ipcRenderer.send('ondragstart', fileName),
