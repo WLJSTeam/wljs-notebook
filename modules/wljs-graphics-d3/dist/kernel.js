@@ -2550,26 +2550,40 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     env.local.box = box;
 
  
-    if (!opos || typeof opos == 'string') {
-      switch(opos) {
-        case 'Top':
-          opos = [box.width/2, box.height];
-        break;
+    if (!opos || typeof opos == 'string' || Array.isArray(opos)) {
+      if (Array.isArray(opos)) {
+        let x = box.width / 2;
+        let y = box.height / 2;
+        for (const dir of opos) {
+          switch(dir) {
+            case 'Left':   x = 0;             break;
+            case 'Right':  x = box.width;     break;
+            case 'Top':    y = box.height;    break;
+            case 'Bottom': y = 0;             break;
+          }
+        }
+        opos = [x, y];
+      } else {
+        switch(opos) {
+          case 'Top':
+            opos = [box.width/2, box.height];
+          break;
 
-        case 'Bottom':
-          opos = [box.width/2, 0];
-        break;
+          case 'Bottom':
+            opos = [box.width/2, 0];
+          break;
 
-        case 'Left':
-          opos = [0, box.height/2];
-        break;
+          case 'Left':
+            opos = [0, box.height/2];
+          break;
 
-        case 'Right':
-          opos = [box.width, box.height/2];
-        break;
+          case 'Right':
+            opos = [box.width, box.height/2];
+          break;
 
-        default:
-          opos = [box.width/2, box.height/2];
+          default:
+            opos = [box.width/2, box.height/2];
+        }
       }
       
       if (!pos) pos = [0,0];

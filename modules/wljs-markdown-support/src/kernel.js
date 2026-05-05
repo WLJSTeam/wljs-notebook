@@ -577,9 +577,17 @@ const applyAnchorPoint = (el, anchor = 'Center') => {
     'center';
 };
 
+const texContext = {};
+texContext.Left = () => "Left"
+texContext.Right = () => "Right"
+texContext.Center = () => "Center"
+texContext.Top = () => "Top"
+texContext.Bottom = () => "Bottom"
+texContext.Alignment = () => "AnchorPoint"
+
 const tex = async (args, env) => {
   const data = await interpretate(args[0], env);
-  const opts = await core._getRules(args, env);
+  const opts = await core._getRules(args, {...env, context: texContext});
 
   env.local.el = document.createElement('div');
   env.local.el.style.display = 'flex';
