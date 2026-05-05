@@ -1,4 +1,6 @@
-BeginPackage["CoffeeLiqueur`CSockets`Interface`Windows`"]
+BeginPackage["CoffeeLiqueur`CSockets`Interface`Windows`", {
+    "LibraryLink`"
+}]
 
 createAsynchronousTask;
 socketOpen;
