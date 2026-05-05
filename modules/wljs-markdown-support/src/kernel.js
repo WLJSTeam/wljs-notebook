@@ -584,6 +584,7 @@ texContext.Center = () => "Center"
 texContext.Top = () => "Top"
 texContext.Bottom = () => "Bottom"
 texContext.Alignment = () => "AnchorPoint"
+texContext.AlignmentPoint = () => "AnchorPoint"
 
 const tex = async (args, env) => {
   const data = await interpretate(args[0], env);
