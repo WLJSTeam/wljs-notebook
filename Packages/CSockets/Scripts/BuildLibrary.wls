@@ -2,7 +2,7 @@
 (* ::Package:: *)
 
 Get["CCompilerDriver`"]; 
-
+Get["LibraryLink`"];
 
 getLibraryLinkVersion[] := 
 Which[
