@@ -19,12 +19,6 @@ AnimationFrameListener::usage = "AnimationFrameListener[symbol // Offload, \"Eve
 
 SVGGroup::usage = "SVGGroup[g_] represents an isolated SVG group of graphics primitives"
 
-Graphics`Canvas;
-Graphics`Canvas::usage = ""
-
-Graphics`Serialize;
-
-Graphics`CaptureImage64 = ""
 
 Graphics`DPR;
 Graphics`DPR::usage = "Returns the client's device pixel ratio. Use inside FrontFetch"
@@ -69,6 +63,7 @@ Polygon  /: EventHandler[p_Polygon, list_List] := listener[p, list]
 Text       /: EventHandler[p_Text, list_List] := listener[p, list]
 Disk       /: EventHandler[p_Disk, list_List] := listener[p, list]
 
+(* depricated!!! only is used for backward compatibillity *)
 Graphics`Canvas  /: EventHandler[p_Graphics`Canvas, list_List] := listener[p, list]
 
 Protect[Point, Rectangle, Text, Disk, Polygon];
