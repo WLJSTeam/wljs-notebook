@@ -11,7 +11,7 @@ Controls::usage = "Controls -> True, False is an option for Graphics to use zoom
 TransitionType::usage = "TransitionType -> \"Linear\", \"CubicInOut\" is an option for Graphics to use smoothening filter for the transitions"
 TransitionDuration::usage = "TransitionDuration -> 300 is an option for Graphics to set the duration of the transitions"
 
-ZoomAt::usage = "ZoomAt[k_, {x_,y_}:{0,0}] zooms and pans plot to a given point. Can be used together with FrontSubmit and MetaMarker"
+ZoomAt::usage = "ZoomAt[k_, {x_,y_}:{0,0}] zooms and pans plot to a given point. Can be used together with FrontSubmit and FrontInstanceReference"
 
 SVGAttribute::usage = "SVGAttribute[GraphicsObject_, \"Attrname\" -> \"Value\"] where AttrName is an d3-svg attribute of the object. Supports dynamic updates"
 

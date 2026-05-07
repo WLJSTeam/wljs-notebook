@@ -14,7 +14,6 @@
       "dist/kernel.min.js",
       "src/boxes.js",
       "src/objects.js",
-      "src/metamarkers.js",
       "src/frontsubmit.js"
     ],
     "js": [
@@ -24,7 +23,6 @@
       "src/autocomplete.js",
       "src/frontsubmit.js",
       "src/dir.js",
-      "src/metamarkers.js",
       "src/misc.js"
     ],
     "frontend": [
@@ -56,7 +54,6 @@
       "src/FrontendObjectMissingFetch.wl",
       "src/StoreKernel.wl",
       "src/NotificationsKernel.wl",
-      "src/MetaMarkersKernel.wl",
       "src/AutocompleteKernel.wl",
       "src/System.wl",
       "src/RasterizeKernel.wl",
