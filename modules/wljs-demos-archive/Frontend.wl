@@ -64,14 +64,15 @@ syncDemoFolder := With[{},
   ];
 
   Echo["Purge the original Demos dir"];
-  If[FailureQ[DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True] ] && FileExistsQ[AppExtensions`DemosDir],
+  If[FileExistsQ[AppExtensions`DemosDir],
     Echo["File IO is blocked for some reason... Waiting"];
     Pause[10];
     DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
-    If[FailureQ[DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True] ] && FileExistsQ[AppExtensions`DemosDir] ,
+    If[FileExistsQ[AppExtensions`DemosDir] ,
       Echo["File IO is blocked for some reason... it could be OneDrive or something"];
       Pause[10];
-      If[FailureQ[DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True] ] && FileExistsQ[AppExtensions`DemosDir] ,
+      DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
+      If[FileExistsQ[AppExtensions`DemosDir] ,
         Echo["File IO is blocked for some reason... it could be OneDrive or something. Last try"];
         Pause[10];
         DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
@@ -85,7 +86,8 @@ syncDemoFolder := With[{},
   If[FailureQ[CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir] ],
     Echo["File IO is blocked for some reason... it could be OneDrive or something"];
     Pause[10];
-    Echo["trying again"];
+    Echo["trying again (1 trial)"];
+    DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
     CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir] // Echo;
   ]; 
 ];
