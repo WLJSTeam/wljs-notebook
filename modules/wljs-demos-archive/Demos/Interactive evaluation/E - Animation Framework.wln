@@ -1,160 +1,179 @@
-<|"Notebook" -> <|"Controller" -> "ae7d48e4-cc39-4322-8785-49abe8bf7a16", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$121], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "30d311dc-5a0b-4fba-b40d-c54e692c1ea1", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Animation/C - \
-Animation Framework.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <|"$19" -> 0, "$25" -> 0, "$30" -> 6.017394, "$59" -> 1.4, 
-     "$63" -> JSObject[0.12093301879864478[0.3797296790277446, 0[0]]]|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Animation Framework", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$103]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Timeline", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$124]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n\n# Animation Framework\n\n__AF__ is a \
-build-in library for creating complex event-driven 2D animations in a \
-functional style. You create all necessary primitives by yourself  combining \
-well-known expressions of Wolfram Language.\n\n> In general, you do not need \
-it for animating things in WLJS Notebook, __AF__ only provides a set of \
-helper tools to organize your workflow. \n", "Display" -> "codemirror", 
-    "Hash" -> "5b9192b4-11e0-4acd-b59f-271c1cce5813", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "\n# Animation Framework\n\n__AF__ is a build-in library for \
-creating complex event-driven 2D animations in a functional style. You create \
-all necessary primitives by yourself  combining well-known expressions of \
-Wolfram Language.\n\n> In general, you do not need it for animating things in \
-WLJS Notebook, __AF__ only provides a set of helper tools to organize your \
-workflow. \n", "Display" -> "markdown", 
-    "Hash" -> "09241df5-21ce-4255-8c50-6faaba71e0e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\nLoad this library to `af` context:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3556a9f9-906e-47dc-82b6-8e32e73fa465", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "Load this library to `af` context:", "Display" -> "markdown", 
-    "Hash" -> "3d1a6727-4ff0-4f4e-ae2c-cf19e5abcbe5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "Needs[\"AnimationFramework`\" -> \"af`\"] // Quiet", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1e35a2a4-52de-44eb-8117-d924d8ce529f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\nCreate a scene", "Display" -> "codemirror", 
-    "Hash" -> "6e713e9c-6a10-46b6-85ce-3ff6dfa39014", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "Create a scene", "Display" -> "markdown", 
-    "Hash" -> "6503ec99-3ba2-4e21-9c91-e7ff93ac0a07", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "scene = af`Scene[];\nscene // Framed", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c070ecdf-d58c-475d-ac0c-0fc2c34b9c9e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\nLet's describe what should happen each frame:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d86428aa-6412-4551-9fc3-e1f12fef0308", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "Let's describe what should happen each frame:", 
-    "Display" -> "markdown", "Hash" -> 
-     "c911c79b-a970-4b5d-be66-a41d04f486cd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "AsyncFunction[scene, Module[{d},\n  d = af`AddTo[scene, {\n   \
- Opacity[#o], \n    Translate[\n      Rotate[\n        Rectangle[{-0.5,-0.1}, \
-{0.5,0.1}]\n      , #r]\n    , #c]\n  }, {\n    \"o\" -> 0.,\n    \"r\" -> \
-0.,\n    \"c\" -> {0,0}\n  }];\n\n  af`Animate[scene, d, {\"o\" -> 1.0,\"r\" \
--> 3.14}, \"Ease\", 1.0] // Await;\n\n  PauseAsync[scene, 0.4] // Await;\n\n  \
-af`Animate[scene, d, {\"c\"->{0.5,0.5}}, \"Ease\", 1.0] // Await;\n  \
-af`Animate[scene, d, {\"c\"->{-0.5,0.5}, \"r\"->4.2}, \"Ease\", 1.0] // \
-Await;\n  af`Animate[scene, d, {\"c\"->{0.5,-0.5}}, \"Ease\", 1.0] // \
-Await;\n\n  af`Animate[scene, d, {\"c\"->{0.,0.}, \"o\"->0., \"r\"->0}, \
-\"Ease\", 1.0] // Await;\n\n  af`Remove[d];\n]][scene];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2f9da80d-e957-4553-a25d-3f5c9aaca4d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\n:::tip\nSee `Advanced` section in the documentation for \
-more examples and references\n\n:::", "Display" -> "codemirror", 
-    "Hash" -> "6dc8fe7d-32b2-4866-8c87-240f03578d14", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ":::tip\nSee `Advanced` section in the documentation for more \
-examples and references\n\n:::", "Display" -> "markdown", 
-    "Hash" -> "6767e5fb-92eb-4ebd-b207-d1bc6d40a237", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\n## Timeline\nHere is a version with a timeline:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "627e0855-3d60-4c65-8ae4-e9371ec3c6dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "## Timeline\nHere is a version with a timeline:", 
-    "Display" -> "markdown", "Hash" -> 
-     "3eb41bb6-0ae4-4e6a-bd40-65f957a31a37", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "t = af`TimelinedAnimation[animationFunction, \
-\"TimeMarkers\"->(*VB[*)(Get[FileNameJoin[{\".iconized\", \
-\"None-072.wl\"}]])(*,*)(*\"1:eJxTTMoPSmNhYGAo5gUSYZmp5S6pyflFiSX5RcEcQBHP5Py\
-8zKrUlEwJQQaGNCaQQpDqoNKc1GBWIMMnMSk1Jxgk5Jefl4qmAMRwy8xJBYuEFJWmAgB+oRiK\"*)\
-(*]VB*), \"Controls\"->False];\nt", "Display" -> "codemirror", 
-    "Hash" -> "66262440-0bcd-4353-acb5-5cb0914dde30", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> ".md\nAnd our new animation function", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1bc493e9-a9d7-4dd3-b2b4-2167a9867b00", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "And our new animation function", "Display" -> "markdown", 
-    "Hash" -> "cbb8b057-99fb-4dfd-9f11-250e6b55893b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>, 
-   <|"Data" -> "animationFunction = AsyncFunction[scene, Module[{d, u},\n  d \
-= af`AddTo[scene, {\n    Opacity[#o], \n    Translate[\n      Rotate[\n       \
- Rectangle[{-0.5,-0.1}, {0.5,0.1}]\n      , #r]\n    , #c]\n  }, {\n    \"o\" \
--> 0.,\n    \"r\" -> 0.,\n    \"c\" -> {0,0}\n  }];\n\n  af`Marker[scene, \
-\"appear\"] // Await;\n  af`Animate[scene, d, {\"o\" -> 1.0,\"r\" -> 3.14}, \
-\"Ease\", af`Marker[scene, \"appear\", \"Duration\"]] // Await;\n\n  \
-af`Marker[scene, \"move1\"] // Await;\n  af`Animate[scene, d, \
-{\"c\"->{0.5,0.5}}, \"Ease\", af`Marker[scene, \"move1\", \"Duration\"]] // \
-Await;\n  \n  af`Marker[scene, \"move2\"] // Await;\n  af`Animate[scene, d, \
-{\"c\"->{-0.5,0.5}, \"r\"->4.2}, \"Ease\", af`Marker[scene, \"move2\", \
-\"Duration\"]] // Await;\n  \n  af`Marker[scene, \"move3\"] // Await;\n  \
-af`Animate[scene, d, {\"c\"->{0.5,-0.5}}, \"Ease\", af`Marker[scene, \
-\"move3\", \"Duration\"]] // Await;\n\n  af`Marker[scene, \
-\"remove\"]//Await;\n  af`Animate[scene, d, {\"c\"->{0.,0.}, \"o\"->0., \
-\"r\"->0}, \"Ease\", af`Marker[scene, \"remove\", \"Duration\"]] // \
-Await;\n\n  af`Remove[d];\n]];", "Display" -> "codemirror", 
-    "Hash" -> "4f3bd0ce-e944-4e9a-835c-be9787c90017", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dfe9aaad-aab7-41a7-8b2c-b3950e8a19e3"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+# Animation Framework
+
+__AF__ is a build-in library for creating complex event-driven 2D animations in a functional style. You create all necessary primitives by yourself  combining well-known expressions of Wolfram Language.
+
+> In general, you do not need it for animating things in WLJS Notebook, __AF__ only provides a set of helper tools to organize your workflow. 
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+# Animation Framework
+
+__AF__ is a build-in library for creating complex event-driven 2D animations in a functional style. You create all necessary primitives by yourself  combining well-known expressions of Wolfram Language.
+
+> In general, you do not need it for animating things in WLJS Notebook, __AF__ only provides a set of helper tools to organize your workflow. 
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Load this library to `af` context:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Load this library to `af` context:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+Needs["AnimationFramework`" -> "af`"] // Quiet
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Create a scene
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Create a scene
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+scene = af`Scene[];
+scene // Framed
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's describe what should happen each frame:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's describe what should happen each frame:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+AsyncFunction[scene, Module[{d},
+  d = af`AddTo[scene, {
+    Opacity[#o], 
+    Translate[
+      Rotate[
+        Rectangle[{-0.5,-0.1}, {0.5,0.1}]
+      , #r]
+    , #c]
+  }, {
+    "o" -> 0.,
+    "r" -> 0.,
+    "c" -> {0,0}
+  }];
+
+  af`Animate[scene, d, {"o" -> 1.0,"r" -> 3.14}, "Ease", 1.0] // Await;
+
+  PauseAsync[scene, 0.4] // Await;
+
+  af`Animate[scene, d, {"c"->{0.5,0.5}}, "Ease", 1.0] // Await;
+  af`Animate[scene, d, {"c"->{-0.5,0.5}, "r"->4.2}, "Ease", 1.0] // Await;
+  af`Animate[scene, d, {"c"->{0.5,-0.5}}, "Ease", 1.0] // Await;
+
+  af`Animate[scene, d, {"c"->{0.,0.}, "o"->0., "r"->0}, "Ease", 1.0] // Await;
+
+  af`Remove[d];
+]][scene];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::tip
+See `Advanced` section in the documentation for more examples and references
+
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::tip
+See `Advanced` section in the documentation for more examples and references
+
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
