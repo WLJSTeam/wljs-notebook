@@ -455,6 +455,32 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## Context menu Iconize
+A little helper available from the command palette as well as from the context menu now can "iconize" sequences as well:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Context menu Iconize
+A little helper available from the command palette as well as from the context menu now can "iconize" sequences as well:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+a[1, (*VB[*)(Sequence@@Uncompress["1:eJxTTMoPSmNiYGAoZgESPpnFJZkgRiYrkAAATiEEmw=="])(*,*)(*"1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcEcQBHP5Py8zKrUlEwPICeNCaSQBUgEleakBrMCGT6JSak5YJaenp6CDgD0PBGK"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+a[1,4,5]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Image3D Update
 We added support for colors (in RGB format) in `Image3D`!
 

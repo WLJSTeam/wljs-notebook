@@ -709,6 +709,31 @@ Iconize /: MakeBoxes[Iconize[path_, 1, title_ ], StandardForm] := With[{},
   RowBox[{"(*VB[*)(Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->title, "File"->True] ], InputForm], "*)(*]VB*)"}]
 ]
 
+Iconize /: MakeBoxes[Iconize[compressed_, 2, title_ ], StandardForm] := With[{c = compressed, b = ByteCount[compressed]},
+      RowBox[{"(*VB[*)(Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
+]
+
+Iconize /: MakeBoxes[Iconize[path_, 3, title_ ], StandardForm] := With[{},
+  RowBox[{"(*VB[*)(Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
+]
+
+
+BoxForm`IconizeSequence[expr_, opts: OptionsPattern[] ] := With[{
+  title = OptionValue["Label"],
+  location = OptionValue[GeneratedAssetLocation]
+},
+{
+  file = FileNameJoin[{location, title<>".wl"}]
+},
+  If[ByteCount[expr] > 5000,
+    If[!DirectoryQ[location],  CreateDirectory[ location ]  ];
+    Put[expr // Compress, file ];
+    Iconize[FileNameSplit[file], 3, title]
+  ,
+    Iconize[Compress[expr], 2, title]
+  ]
+]
+
 
 Iconize[expr_, opts: OptionsPattern[] ] := With[{
   title = OptionValue["Label"],
@@ -729,7 +754,7 @@ Iconize[expr_, opts: OptionsPattern[] ] := With[{
 Iconize[expr_, title_String, opts: OptionsPattern[] ] := Iconize[expr, "Label" -> title, opts]
 
 Options[Iconize] = {"Label":>StringReplace[(Internal`NoWR`RandomWord[]), {"-"->"_"}], GeneratedAssetLocation :> FileNameJoin[{".iconized"}]}
-
+Options[BoxForm`IconizeSequence] = Options[Iconize];
 
 (* :: Pane Boxes :: *)
 (*  ignore them, show the first item only  *)
