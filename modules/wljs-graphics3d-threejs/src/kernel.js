@@ -7605,8 +7605,8 @@ core.Image3D = async (args, env) => {
   volumeTexture.internalFormat = converted.internalFormat;
   volumeTexture.type = THREE.UnsignedByteType;
 
-  volumeTexture.minFilter = THREE.LinearFilter;
-  volumeTexture.magFilter = THREE.LinearFilter;
+  volumeTexture.minFilter = THREE.NearestFilter;
+  volumeTexture.magFilter = THREE.NearestFilter;
 
   volumeTexture.wrapS = THREE.ClampToEdgeWrapping;
   volumeTexture.wrapT = THREE.ClampToEdgeWrapping;
