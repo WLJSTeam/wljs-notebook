@@ -7618,6 +7618,7 @@ core.Image3D = async (args, env) => {
   volumeTexture.needsUpdate = true;
 
   env.local.volumeTexture = volumeTexture;
+  env.local.typeName = typeName;
 
   let colorTexture;
 
@@ -7850,6 +7851,13 @@ core.Image3D = async (args, env) => {
   };
 
   controls.addEventListener('change', wakeFunction);
+  env.local.wakeFunction = wakeFunction;
+  const Handlers = [];
+  env.Handlers = Handlers;
+
+  if ('Epilog' in options) {
+    interpretate(options.Epilog, {...env, context:g3d});
+  }
 
   animationLoop = () => {
     if (material) {
@@ -7864,12 +7872,35 @@ core.Image3D = async (args, env) => {
     } else {
       env.local.animation = requestAnimationFrame(animationLoop);
     }
+    for (let i=0; i<Handlers.length; ++i) {
+      //if (Handlers[i].sleep) continue;
+      Handlers[i].eval();
+    }
   };
 
   animationLoop();
 };
 
 core.Image3D.virtual = true;
+
+core.Image3D.update = async (args, env) => {
+  let data = await interpretate(args[0], {
+    ...env,
+    context: [numericAccelerator, g3d]
+  });
+
+  if (Array.isArray(data)) {
+    data = {
+      buffer: data.flat(Infinity),
+      dims: checkdims(data)
+    };
+  }
+
+  const converted = imageTypes[env.local.typeName].convert(data);
+  env.local.volumeTexture.image.data.set(converted.data);
+  env.local.volumeTexture.needsUpdate = true;
+  env.local.wakeFunction();
+};
 
 core.Image3D.destroy = (args, env) => {
   console.warn('Dispose');

@@ -481,6 +481,34 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+And it also supports updates using `Offload` directive. Here is a rotating human brain (voxelized) 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And it also supports updates using `Offload` directive. Here is a rotating human brain (voxelized)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+img3d = ImageResize[Image3D[ExampleData[{"TestImage3D","MRbrain"}]], 4 {15,15,15}];
+buf3d = ImageData[img3d, "Real32"];
+angle = 0.0;
+
+Image3D[buf3d//Offload, "Real32", BoxRatios->{1,1,1/1.65}, ColorFunction->"XRay", Epilog->{
+  EventHandler[AnimationFrameListener[buf3d//Offload], Function[Null,
+    buf3d = ImageData[ImageRotate[img3d, {angle, {1,1,1}}, ImageDimensions[img3d]], "Real32"];
+    angle+=0.1;
+  ]]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Codebase Refactor
 Another refactoring sweep has happened, unifying the architecture and modules structure.
 
@@ -590,10 +618,6 @@ Key: fa08d54d-b490-4862-a2f2-792cc0c50448
 
 
 %--------------------------------%Symbols%--------------------------------%
-Key: str
-%-------------------------------------------------------------------------%
-"\\int f(x) \\, dx"
-
 %-----------------------------%EndOfSymbols%------------------------------%
 
 

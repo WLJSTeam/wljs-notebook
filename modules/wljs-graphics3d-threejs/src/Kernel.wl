@@ -1,13 +1,14 @@
 BeginPackage["CoffeeLiqueur`Extensions`Graphics3D`", {
   "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Extensions`Communication`",
   "CoffeeLiqueur`Extensions`FrontendObject`", 
-  "CoffeeLiqueur`Extensions`Boxes`"
+  "CoffeeLiqueur`Extensions`Boxes`",
+  "CoffeeLiqueur`Misc`WLJS`Transport`"
 }]
 
-Metalness::usage = "Specify metallness of the surface Metalness[1] used in Graphics3D"
-Emissive::usage = "Makes a surface emitt light Emissive[RGBColor[...], intensity_:1] used in Graphics3D"
-Roughness::usage = "Specify the roughness of the surface Roughness[1] used in Graphics3D"
-Shadows::usage = "used in Graphics3D. Decide if you need to cast shadows from objects. Shadows[True]"
+Metalness::usage = "depricated. Use Directive"
+Emissive::usage = "depricated. Use Directive"
+Roughness::usage = "depricated. Use Directive"
+Shadows::usage = "depricated. Use Directive"
 
 HemisphereLight::usage = "HemisphereLight[skyColor_RGBColor, groundColor_RGBColor, intensity_] used in Graphics3D"
 
@@ -115,6 +116,9 @@ dump = {};
 
 CoffeeLiqueur`Extensions`Graphics3D`Private`SampledColorFunction;
 
+Off[Image3D::imgarray];
+Off[Image3D::optx];
+
 Image3D /: MakeBoxes[Image`ImageDump`img:Image3D[_,Image`ImageDump`type_,Image`ImageDump`info___], Image`ImageDump`fmt_]/;Image`ValidImage3DQHold[Image`ImageDump`img] := With[{i=Information[Image`ImageDump`img]},
 If[ByteCount[Image`ImageDump`img] > Internal`Kernel`$FrontEndObjectSizeLimit 1024 1024,
   BoxForm`ArrangeSummaryBox[Image3D, Image`ImageDump`img, None, {
@@ -152,6 +156,29 @@ If[ByteCount[Image`ImageDump`img] > Internal`Kernel`$FrontEndObjectSizeLimit 102
   ]
 ]
 ]
+
+Image3D /: MakeBoxes[Image`ImageDump`img:Image3D[o_Offload, Image`ImageDump`type_, Image`ImageDump`info___], Image`ImageDump`fmt_] := With[{colorFunction = Lookup[Association[ Options[Image`ImageDump`img] ], ColorFunction, Automatic]}, With[{fe = CreateFrontEndObject[         If[colorFunction === Automatic, Image`ImageDump`img,
+          If[StringQ[colorFunction],
+            Image`ImageDump`img
+          ,
+            With[{sampled = Table[List @@ ColorConvert[colorFunction[i/255.0], "RGB"], {i,0,255}]},
+              Image3D[o, Image`ImageDump`type, ColorFunction -> CoffeeLiqueur`Extensions`Graphics3D`Private`SampledColorFunction[sampled], Image`ImageDump`info ]
+            ]
+          ]
+        ] ]},
+
+  
+                If[Image`ImageDump`fmt === WLXForm,
+                    MakeBoxes[fe, Image`ImageDump`fmt]
+                ,
+                    With[{
+                        out = MakeBoxes[fe, StandardForm]
+                    },
+                        ViewBox[out, fe]
+                    ]
+                ]
+
+] ]
 
 End[]
 EndPackage[]
