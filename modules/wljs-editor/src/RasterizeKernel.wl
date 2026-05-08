@@ -179,11 +179,11 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], chann
   ]
 ]
 
-Options[Rasterize] = {"Window" :> CurrentWindow[], "ExposureTime" -> 1.75, "ImageUpscaling"->1}
+Options[Rasterize] = {"Window" :> CurrentWindow[], "ExposureTime" -> 2.0, "ImageUpscaling"->1}
 
 Options[RasterizeAsync] = Options[Rasterize]
 
-Options[producePDF] = {"Crop"->True, "Window" :> CurrentWindow[], "ExposureTime" -> 2.5, "ImageUpscaling"->1, "Landscape"->True}
+Options[producePDF] = {"Crop"->True, "Window" :> CurrentWindow[], "ExposureTime" -> 3.0, "ImageUpscaling"->1, "Landscape"->True}
 Options[pdfEndpoint] = Options[producePDF];
 
 producePDF[any_, OptionsPattern[] ] := (
