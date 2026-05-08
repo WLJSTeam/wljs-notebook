@@ -89,6 +89,7 @@ jobs:
             "Packages\CSockets\Fallback",       
             "Packages\CSockets\LibraryResources\Windows-x86-64-v6",  
             "Packages\CSockets\LibraryResources\Windows-x86-64-v7",
+            "Packages\CSockets\LibraryResources\Windows-x86-64-v8",
             "Packages\CSockets\UV\Windows-x86-64"
           )
           # Persist for later steps (semicolon-separated)
