@@ -73,7 +73,9 @@ Begin["`Private`"]
 
 $ContextAliases["htmlTool`"] = "CoffeeLiqueur`Extensions`InputsOutputs`Tools`";
 
-$troot = FileNameJoin[{$RemotePackageDirectory, "templates"}];
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
+$troot = FileNameJoin[{$rootPackageDirectory, "templates"}];
 
 TerminalX = ImportComponent[FileNameJoin[{$troot, "Terminal.wlx"}] ];
 

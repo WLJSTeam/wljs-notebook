@@ -12,7 +12,8 @@ BeginPackage["CoffeeLiqueur`Extensions`NeuralNet`", {
 Begin["`Private`"]
 
 neuralNetLoadedQ;
-If[OwnValues[libPath] === {}, libPath = $RemotePackageDirectory];
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+If[OwnValues[libPath] === {}, libPath = $rootPackageDirectory];
 
 With[{file = FileNameJoin[{libPath, "src", "Kernel.wl"}]},
 (* deferred evaluation. Applies only when a package has been loaded *)

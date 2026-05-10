@@ -91,10 +91,10 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                         Then[promise, Function[resolve, 
                             ClearAll[proxy];
-                            GenericKernel`Async[kernel, EventFire[backpromise, Resolve, resolve] ];
+                            GenericKernel`SendAsync[kernel, EventFire[backpromise, Resolve, resolve] ];
                         ], Function[reject, 
                             ClearAll[proxy];
-                            GenericKernel`Async[kernel, EventFire[backpromise, Reject, reject] ];
+                            GenericKernel`SendAsync[kernel, EventFire[backpromise, Reject, reject] ];
                         ] ];
 
                     ]

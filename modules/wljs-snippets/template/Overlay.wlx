@@ -473,7 +473,20 @@ With[{
                 const field = document.getElementById("palette-field");
                 const palette = document.getElementById('palette');
                 const right = document.getElementById('palette-right');
+                const ul = document.getElementById("palette-ul");
+                let preventPaletteArrowScroll;
 
+                preventPaletteArrowScroll = (e) => {
+                    const isPaletteActive =
+                        document.activeElement === field ||
+                        palette.contains(document.activeElement);
+
+                    if (!isPaletteActive) return;
+
+                    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                        e.preventDefault();
+                    }
+                };
                 right.childNodes[1].addEventListener('click', (e) => {
                     server.io.fire('<KeyListener/>', 13, 'Pressed');//emulate Enter
                     e.preventDefault();
@@ -492,8 +505,13 @@ With[{
                 }
 
                 let storage;
+                let gload = false;
 
                 this.on('Load', async (data) => {
+                    if (!gload) {
+                        gload = true;
+                        document.addEventListener("keydown",preventPaletteArrowScroll,true);
+                    }
                     const d = await interpretate(data, {hold:true});
                     if (d.Text) {
                         field.value = await interpretate(d.Text, {});
@@ -510,6 +528,10 @@ With[{
                 let clickOutside;
 
                 this.on('Remove', () => {
+                    if (gload) {
+                        document.removeEventListener("keydown",preventPaletteArrowScroll,true);
+                        gload = false;
+                    }
                     ico.childNodes[0].classList.add('opacity-0');
                     //ico.childNodes[1].classList.add('opacity-0');
                     right.childNodes[0].classList.remove('hidden');

@@ -518,8 +518,8 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
 
 evaluateCellFull[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{p = Promise[]},
     Then[evaluateCell[cell, notebook, secret, log, kernels, cli, modals, parameters, extensions], Function[Null,
-        GenericKernel`Init[notebook["Evaluator"]["Kernel"],  (  
-            EventFire[Internal`Kernel`Stdout[ p[[1]] ], Resolve, True];
+        GenericKernel`Send[notebook["Evaluator"]["Kernel"],  (  
+            EventFire[Internal`Kernel`RemoteEvent[ p[[1]] ], Resolve, True];
         )];
     ]];
     p

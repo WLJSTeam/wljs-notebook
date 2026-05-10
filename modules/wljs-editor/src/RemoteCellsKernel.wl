@@ -250,7 +250,7 @@ NotebookSave[RemoteNotebook[uid_], path_String | File[path_String] ] := (
 
 NotebookClose[RemoteNotebook[uid_] ] := (
     EventFire[Internal`Kernel`CommunicationChannel, "CloseNotebook", <|"Hash"->uid|>];
-    RemoteNotebook[uid_]
+    RemoteNotebook[uid]
 )
 
 NotebookClose[r_RemoteCellObj ] := NotebookDelete[r]

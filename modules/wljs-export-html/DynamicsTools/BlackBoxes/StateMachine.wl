@@ -66,7 +66,7 @@ SubmitState;
 
 prepareFeedbackSignal[kernel_] := With[{},
     Echo["Prepare feedback loop handlers"];
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         Internal`Kernel`LoopBackTrueMessage = True;
     ), "Once"->True];
 ]

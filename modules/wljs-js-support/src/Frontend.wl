@@ -23,11 +23,11 @@ StandardEvaluator`ReadyQ[evaluator, k_] := (
         Print[evaluator, "Kernel is not ready"];
         False
     ,
-        GenericKernel`Init[k, 
+        GenericKernel`Send[k, 
                 Print["Init JS JS JS Kernel (Local)"];
                 Notebook`Kernel`JSEvaluator = Function[t, 
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> t["Data"], "Meta" -> Sequence["Display"->"js"] |> ];
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> t["Data"], "Meta" -> Sequence["Display"->"js"] |> ];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];
                 ];
         , "Once"->True];
 

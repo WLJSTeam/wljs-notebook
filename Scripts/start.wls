@@ -251,10 +251,10 @@ With[{now = Now},
 
 
 (* load stuff into frontend *)
-Echo["Loading packages: FRONTEND"];
+Echo["Loading core packages..."];
 
 If[FailureQ[
-    Echo[FileNameTake[#] <> ""];
+    Echo[StringJoin["Loading to Master Kernel... ", #] ];
     Get[
       UniversalPathConverter[#],
       Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}

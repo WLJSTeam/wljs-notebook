@@ -75,6 +75,8 @@ Rasterize[g_Graphics, any___] := With[{svg = FrontFetch[Graphics`Serialize[g, "T
 
 Unprotect[Image]
 
+Off[Image::imgdtype];
+
 Image /: EventHandler[Image[args__, opts:OptionsPattern[] ], list_List ] := With[{
     epilog = {OptionValue[Image, {opts}, Epilog]}
 },
@@ -226,8 +228,10 @@ FormatValues[Polygon] = {}
 (* It breaks ANY FormatValues *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
 
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
 If[Internal`Kernel`Watchdog["Enabled"],
-  With[{file = FileNameJoin[{$RemotePackageDirectory, "src", "Kernel.wl"}]},
+  With[{file = FileNameJoin[{$rootPackageDirectory, "src", "Kernel.wl"}]},
     Internal`Kernel`Watchdog["Assertion", "Graphics",
       FormatValues[Graphics]//Hash
     ,

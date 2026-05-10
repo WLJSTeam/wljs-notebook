@@ -1702,9 +1702,11 @@ makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
 (* It breaks ANY FormatValues (even for custom forms) and Downvalues ofc *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
 
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
 If[Internal`Kernel`Watchdog["Enabled"],
   With[{
-    file = FileNameJoin[{$RemotePackageDirectory, "src", "BoxesWorkarounds.wl"}],
+    file = FileNameJoin[{$rootPackageDirectory, "src", "BoxesWorkarounds.wl"}],
     tag = "Boxes Workarounds (Editor)"
   },
     Internal`Kernel`Watchdog["Assertion", "ArrangeSummaryBox",

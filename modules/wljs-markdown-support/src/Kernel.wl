@@ -49,12 +49,12 @@ Internal`Kernel`MarkdownEvaluator = Function[t, With[{hash = CreateUUID[]},
                 With[{string = If[ListQ[result], StringRiffle[Map[ToString, Select[result, (# =!= Null)&] ], ""], ToString[result] ]},
 
                     Then[postProcess[string], Function[processed,
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> StringDrop[StringDrop[processed,-8], 8], "Meta" -> Sequence["Display"->"markdown", "Hash"->hash] |> ];
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];                    
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringDrop[StringDrop[processed,-8], 8], "Meta" -> Sequence["Display"->"markdown", "Hash"->hash] |> ];
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];                    
                     ],
                     Function[processed,
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"markdown", "Hash"->hash] |> ];
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];                      
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"markdown", "Hash"->hash] |> ];
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];                      
                     ] ];
 
                 ];

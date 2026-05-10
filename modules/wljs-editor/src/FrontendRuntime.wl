@@ -150,7 +150,7 @@ EventHandler[NotebookEditorChannel // EventClone,
     {
         "RequestRuntimeExtensions" -> Function[assoc,
             With[{result = frontEndRuntime, kernel = GenericKernel`HashMap[assoc["Kernel"] ], promise = assoc["Promise"]},
-                 GenericKernel`Async[kernel, EventFire[promise, Resolve, result] ];
+                 GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
             ]
         ],
 
@@ -169,7 +169,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                 frontEndRuntime = Join[frontEndRuntime, assets];
 
                 rebuild;
-                GenericKernel`Async[kernel, EventFire[promise, Resolve, True] ];
+                GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, True] ];
 
                 setTimer;
             ]
@@ -220,7 +220,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[{kernel = GenericKernel`HashMap[assoc["Kernel"] ], promise = assoc["Promise"]},
                  Echo["Runtime >> added to HTTP path >> "<>ToString[assoc["Path"] ] ];
                  EventFire[AppExtensions`AppEvents, "App:ExtendPath", assoc["Path"] ];
-                 GenericKernel`Async[kernel, EventFire[promise, Resolve, True] ];
+                 GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, True] ];
             ]        
         ],
 
@@ -230,7 +230,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                  routes = Join[routes, assoc["Route"] ]; (* duplicate to save for later *)
 
                  EventFire[AppExtensions`AppEvents, "App:ExtendRoute", assoc["Route"] ];
-                 GenericKernel`Async[kernel, EventFire[promise, Resolve, True] ];
+                 GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, True] ];
             ]        
         ]
         

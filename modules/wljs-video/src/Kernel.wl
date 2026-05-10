@@ -306,9 +306,10 @@ With[{
 (* WL14 with no reason reloads the definitons of some symbols *)
 (* It breaks ANY FormatValues *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
 
 If[Internal`Kernel`Watchdog["Enabled"],
-  With[{file = FileNameJoin[{$RemotePackageDirectory, "src", "Kernel.wl"}]},
+  With[{file = FileNameJoin[{$rootPackageDirectory, "src", "Kernel.wl"}]},
     Internal`Kernel`Watchdog["Assertion", "Video",
       FormatValues[Video]//Hash
     ,

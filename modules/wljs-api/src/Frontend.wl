@@ -940,8 +940,8 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         If[MissingQ[k], Return[failure["No kernel is ready for evaluation"], Module] ];
 
-        GenericKernel`Async[k, 
-            EventFire[Internal`Kernel`Stdout[ promise // First ], Resolve, ToString[ToExpression[expr, InputForm], InputForm] ];
+        GenericKernel`SendAsync[k, 
+            EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[ToExpression[expr, InputForm], InputForm] ];
         ];
 
         promise

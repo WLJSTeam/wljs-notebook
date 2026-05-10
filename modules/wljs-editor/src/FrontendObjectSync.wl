@@ -30,7 +30,7 @@ EventHandler[NotebookEditorChannel // EventClone, {
                 (* we release any possible deferred compression wrappers *)
                 With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Public"]},
                     With[{c =  CoffeeLiqueur`Extensions`FrontendObject`Internal`releaseCompression[result]},
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, c ] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, c ] ];
                     ];
                 ];
            ];       

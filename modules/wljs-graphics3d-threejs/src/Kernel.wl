@@ -27,7 +27,7 @@ Begin["`Tools`"]
 WaterShader;
 Materials["Glass"] = Directive[White, "EmissiveIntensity"->0, "Ior"->1.51, "Transmission"->1.0, "Roughness"->0.13]
 Materials["Iridescent"] = Directive[RGBColor["#474747"], "Roughness"->0.25, "Metalness"->1.0, "Iridescence"->1.0, "IridescenceIOR"->2.2]
-Materials["Acrylic"] = Directive[White, "Roughness"->0, "Metalness"->0, "Transmission"->1.0, , "AttenuationDistance"->0.75, "AttenuationColor"->RGBColor["#2a6dc6"] ]
+Materials["Acrylic"] = Directive[White, "Roughness"->0, "Metalness"->0, "Transmission"->1.0, "AttenuationDistance"->0.75, "AttenuationColor"->RGBColor["#2a6dc6"] ]
 
 Serialize;
 

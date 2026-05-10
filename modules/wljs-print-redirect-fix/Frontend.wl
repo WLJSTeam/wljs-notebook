@@ -23,7 +23,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
     Echo["Attach event listeners to notebook from EXTENSION"];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
-            GenericKernel`Init[notebook["Evaluator"]["Kernel"], Unevaluated[
+            GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
                     CoffeeLiqueur`Extensions`PrintRedirect`Internal`OverrideListener;
             ], "Once"->True];
         ]

@@ -78,7 +78,7 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
           ,
               Echo["Context:"]; Echo[notebookContext];
 
-              GenericKernel`Init[notebook["Evaluator"]["Kernel"], 
+              GenericKernel`Send[notebook["Evaluator"]["Kernel"], 
                   Then[CoffeeLiqueur`Extensions`RemoteCells`NotebookEvaluateAsync[
                           CoffeeLiqueur`Extensions`RemoteCells`RemoteNotebook[notebookId]
                         , EvaluationElements->All, "EvaluationContext"->notebookContext,

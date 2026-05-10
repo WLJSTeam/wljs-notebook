@@ -458,9 +458,9 @@ convert[Cell[CellGroupData[list_List, ___], ___], notebook_, kernel_] := With[{p
 ]
 
 convertInPlace[expr_, k_] := With[{ p = Promise[]},
-    GenericKernel`Init[k,  (  
+    GenericKernel`Send[k,  (  
         Needs["BoxesConverter`"->None];
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, 
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, 
           With[{},
             TimeConstrained[BoxesConverter`WLJSDisplayForm[expr], 10, "$Failed"]
           ]

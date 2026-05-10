@@ -37,11 +37,11 @@ StandardEvaluator`EvaluateTransaction[evaluator, k_, t_] := Module[{list},
 
 init[k_] := Module[{},
     Print["Kernel init..."];
-    GenericKernel`Init[k, 
+    GenericKernel`Send[k, 
         Print["Init js Kernel (Local)"];
         Internal`Kernel`MermaidEvaluator = Function[t, 
-            EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> t["Data"], "Meta" -> Sequence["Display"->"mermaid"] |> ];
-            EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];
+            EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> t["Data"], "Meta" -> Sequence["Display"->"mermaid"] |> ];
+            EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];
         ];
     ]
 ]

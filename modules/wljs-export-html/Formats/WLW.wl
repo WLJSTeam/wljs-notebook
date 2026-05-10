@@ -117,7 +117,7 @@ With[{
             },
                 EventFire[spinner["Promise"], Resolve, True];
 
-                GenericKernel`Init[kernel,
+                GenericKernel`Send[kernel,
                     CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
                     $Context = generated;
@@ -158,7 +158,7 @@ With[{
                                 notebook["ModalsChannel"] = Null;
                                 Echo["Modals set to Null"];
 
-                                GenericKernel`Init[kernel,
+                                GenericKernel`Send[kernel,
 
                                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                                     $Context = "Global`";
@@ -174,10 +174,10 @@ With[{
                         ] ;                    
                     ] ];
 
-                    GenericKernel`Init[kernel,
+                    GenericKernel`Send[kernel,
                         CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated]["Cancel"];
                         Unset[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
-                        EventFire[Internal`Kernel`Stdout[ s ], Resolve, True ]; 
+                        EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, True ]; 
                     ];
 
 

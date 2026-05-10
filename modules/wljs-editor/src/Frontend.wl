@@ -142,14 +142,14 @@ init[k_] := Module[{},
     loadSettings[settings];
 
     With[{channel = NotebookEditorChannel, autocompleteRebuild = Lookup[settings, "EnableAutocompleteScan", False], tt = truncatedTemplate, charLim = Lookup[settings, "OutputCharactersLimit", 6000], summaryBox = Lookup[settings, "SummaryBoxSizeLimit", 2 8 2500], objectLimit = Lookup[settings, "FrontEndObjectSizeLimit", 8]},
-        GenericKernel`Init[k,
+        GenericKernel`Send[k,
             Print["Init internal communication"];
             Internal`Kernel`TruncatedOutputTemplate = tt;
             Internal`Kernel`$OutputCharactersLimit = charLim;
             Internal`Kernel`$FrontEndObjectSizeLimit = objectLimit;
             Internal`Kernel`AutocompleteRescan = autocompleteRebuild;
             BoxForm`$SummaryBoxSizeLimit = summaryBox;
-            Internal`Kernel`CommunicationChannel = Internal`Kernel`Stdout[channel];
+            Internal`Kernel`CommunicationChannel = Internal`Kernel`RemoteEvent[channel];
             Internal`Kernel`TruncatedOutputLastItem = Null;
             Internal`Kernel`TruncatedOutputReveal[_] := With[{o = Internal`Kernel`TruncatedOutputLastItem},
                 If[o === Null, Return[] ];
@@ -162,7 +162,7 @@ init[k_] := Module[{},
             ];
         ];
     ];
-    GenericKernel`Init[k, 
+    GenericKernel`Send[k, 
         Print["Init normal Kernel (Local)"];
         CoffeeLiqueur`Extensions`Editor`Internal`WolframEvaluator = Function[t, 
         With[{hash = CreateUUID[]},
@@ -173,18 +173,18 @@ init[k_] := Module[{},
           },
             With[{result = CheckAbort[(ToExpression[ t["Data"], InputForm, Hold] /. Out -> $PreviousOut) // ReleaseHold, $Aborted] },
                 If[KeyExistsQ[t, "Nohup"],
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> Null |> ];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> Null |> ];
                 ,   
                     (* check length *)
                     With[{string = ToString[result, StandardForm]},
                         If[StringLength[string] < Internal`Kernel`$OutputCharactersLimit || Lookup[t, "IgnoreOverflow", False],
-                            EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
+                            EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
                         ,
                             With[{truncated = ToString[result, InputForm], ref = CreateUUID[]},
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True] |> ];
                             ]
                         ]
                     ]

@@ -64,7 +64,7 @@ SubmitState;
 
 prepareFeedbackSignal[kernel_] := With[{},
     Echo["Prepare feedback loop handlers"];
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         Internal`Kernel`LoopBackTrueMessage = True;
     ), "Once"->True];
 ]
@@ -149,7 +149,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
       Return[promise];
     ];
 
-    GenericKernel`Init[machine["Kernel"],  wapi`Tools`SetFlag["PreserveSymbols"] ];
+    GenericKernel`Send[machine["Kernel"],  wapi`Tools`SetFlag["PreserveSymbols"] ];
 
     machine["Interpolation"] = widget["Interpolation"] && Lookup[settings, "HTMLExportStatesInterpolation", True];
 
@@ -176,7 +176,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
             KernelSniffer[machine["Kernel"], "Eject"];
             WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
             WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];            
-            GenericKernel`Init[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ];
+            GenericKernel`Send[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ];
             EventFire[promise, Reject, True];
             Delete[notification];
         ],
@@ -185,7 +185,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
             KernelSniffer[machine["Kernel"], "Eject"];
             WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
             WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
-            GenericKernel`Init[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ];
+            GenericKernel`Send[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ];
             Delete[notification];
 
             With[{reset = widget["ResetStateFunction"]},
@@ -204,7 +204,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
       EventHandler[socket, {"Closed" -> Function[Null,
         EventRemove[socket];
         KernelSniffer[machine["Kernel"], "Eject"];
-        GenericKernel`Init[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ]; 
+        GenericKernel`Send[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ]; 
         Echo["Unexpected abortion >> !!!"];       
       ]}];
     ];

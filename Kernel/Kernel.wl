@@ -4,7 +4,7 @@ Kernel;
 KernelQ;
 
 Start;
-Init;
+Send;
 SubmitTransaction;
 Async;
 Stdout;
@@ -33,21 +33,19 @@ Kernel /: EventRemove[n_Kernel, opts__] := EventRemove[n["Hash"], opts]
 
 SubmitTransaction[k_, t_] := Print["Dummy SubmitTransaction"]
 
-Async[k_, e_] := Print["Dummy Async"]
-SetAttributes[Async, HoldRest]
+SendAsync[k_, e_] := Print["Dummy Async"]
+SetAttributes[SendAsync, HoldRest]
 
-Stdout[k_][any_] := Print["Dummy Stdout"]
+Send[k_, expr_, OptionsPattern[] ] := Print["Dummy Send"]
 
-Init[k_, expr_, OptionsPattern[] ] := Print["Dummy Init"]
-
-Options[Init] = {"Once" -> False, "TrackingProgress"->Null}
-SetAttributes[Init, HoldRest]
+Options[Send] = {"Once" -> False, "TrackingProgress"->Null}
+SetAttributes[Send, HoldRest]
 
 Start[k_] := Print["Dummy start"];
 Restart[k_] := Print["Restart start"];
 Unlink[k_] := Print["Unlink start"];
 
-AbortEvaluation[k_] := Print["Dymmu abort"];
+AbortEvaluation[k_] := Print["Dummy abort"];
 
 End[]
 EndPackage[]
