@@ -42281,6 +42281,15 @@ class CodeMirrorCell {
       env.local.fullReset = options.FullReset;
     }
 
+    if (options.ImageSize) {
+      if (Array.isArray(options.ImageSize)) {
+        env.element.style.width = options.ImageSize[0] + 'px';
+        env.element.style.height = options.ImageSize[1] + 'px';
+      } else {
+        env.element.style.width = options.ImageSize + 'px';
+      }
+    }
+
     if (options.KeepMaxHeight) {
       env.local.height = 0;
       env.local.heightKeeper = setInterval(() => {

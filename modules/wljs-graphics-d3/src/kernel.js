@@ -2488,14 +2488,23 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     let possiblyNeedsScaling = false;
     if (size && !box) {
-      if (typeof size === 'number') size = [size, size/1.6];
-      if (Array.isArray(size)) {
+      if (typeof size === 'number') {
+        size = [Math.abs(env.xAxis(size) - env.xAxis(0)), 'Automatic'];
+        foreignObject.attr('width', size[0]);
+        foreignObject.attr('height', 2*size[0]); 
+        possiblyNeedsScaling = true;        
+      } else if (Array.isArray(size)) {
         if (typeof size[0] == 'number' && typeof size[1] == 'number') {
           size = [Math.abs(env.xAxis(size[0]) - env.xAxis(0)), Math.abs(env.yAxis(size[1]) - env.yAxis(0))];
           box = {width: size[0], height: size[1]};
           foreignObject.attr('width', size[0]);
           foreignObject.attr('height', size[1]); 
           possiblyNeedsScaling = true;
+        } else if (typeof size[0] == 'number') {
+          size = [Math.abs(env.xAxis(size[0]) - env.xAxis(0)), 'Automatic'];
+          foreignObject.attr('width', size[0]);
+          foreignObject.attr('height', 2*size[0]); 
+          possiblyNeedsScaling = true;             
         } else {
           size = undefined;
         }
@@ -2584,7 +2593,18 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         foreignObject.attr('width', box.width);
         foreignObject.attr('height', box.height); 
       } else {
-        if (Math.abs(box.width - size[0]) > 2 || Math.abs(box.height - size[1]) > 2) {
+        if (size[1] == 'Automatic') {
+          const aspect = box.height / box.width;
+          foreignObject.attr('height', aspect * size[0]); 
+          const scale = size[0] / box.width;
+          const inner = foreignObject.node().firstChild;
+          if (inner) {
+            inner.style.transformOrigin = '0 0';
+            inner.style.transform = `scale(${scale})`;
+          }
+          box = { width: size[0], height: aspect * size[0] };
+
+        } else if (Math.abs(box.width - size[0]) > 2 || Math.abs(box.height - size[1]) > 2) {
           const scaleX = size[0] / box.width;
           const scaleY = size[1] / box.height;
           const inner = foreignObject.node().firstChild;
