@@ -2432,6 +2432,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     const group = env.svg.append('g');
 
+    group.attr('opacity', env.opacity);
+    if (env.opacityRefs) {
+      env.opacityRefs[env.root.uid] = env.root;
+    }    
+
     const foreignObject = group.append('foreignObject');
 
 
@@ -2654,11 +2659,6 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     env.local.foreignObject = foreignObject;
 
     env.local.opos = opos;
-
-    group.attr('opacity', env.opacity);
-    if (env.opacityRefs) {
-      env.opacityRefs[env.root.uid] = env.root;
-    }
 
     env.local.group = group;
 
