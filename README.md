@@ -68,6 +68,9 @@ See how at [wljs.io](https://wljs.io/frontend/setup)
 ### Feels like Mathematica and Jupyter
 WLJS Notebook feels and works like Wolfram Mathematica (and it can open .nb files) and has a flat and minimal notebook structure like in Jupyter Lab.
 
+### Human-, LLM- and GIT-friendly Notebook Format
+The structure is minimal, and easy to read and parse by people and machines, but most importantly, it allows versioning systems correctly identify the differences.
+
 ### Interactive & Powerful
 Optimized for interactive computing and allows to make complex real-time visualizations. From the high-level `Manipulate` to low-level graphics primitives
 
@@ -90,8 +93,8 @@ Windows, GNU/Linux, MacOS or even a browser. We carefully designed the backend a
 ### Works fully offline
 No needs in the internet connection, no dependencies on external services. Yours forever
 
-### LLM agent included 
-An optional AI-assistant will see directly, edit, evalaute any cell in the notebook
+### MCP Ready
+MCP server runs in the background allowing agents directly see, edit and evalaute any cell in the notebook
 
 
 ## We need your support
