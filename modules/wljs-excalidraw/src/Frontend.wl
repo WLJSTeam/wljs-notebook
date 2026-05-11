@@ -58,7 +58,11 @@ dispose[uid_String, notebook_] := With[{n = findNotebook[notebook, uid]},
 upload[uid_String, file_String, notebook_String] := With[{n = findNotebook[notebook]},
     If[MissingQ[n], Echo["ExcalidrawStore >> Notebook is missing"]; Return[$Failed] ];
     Echo["ExcalidrawStore >> Uploaded"];
-    n["ExcalidrawImages"] = Join[If[!AssociationQ[n["ExcalidrawImages"] ], <||>, n["ExcalidrawImages"] ], <|uid -> file|> ];
+    If[!AssociationQ[n["ExcalidrawImages"] ], 
+        n["ExcalidrawImages"] = <||>;
+        n["ObjectFields"] = Join[n["ObjectFields"], {"ExcalidrawImages"}] // DeleteDuplicates;
+    ];
+    n["ExcalidrawImages"] = Join[n["ExcalidrawImages"] , <|uid -> file|> ];
 ];
 
 

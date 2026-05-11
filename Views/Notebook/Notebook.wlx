@@ -95,6 +95,7 @@ addListeners[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     (* /* don't clone Notebook event, must be one ! */ *)
     EventHandler[clonedEvent, {
         "New Cell" -> Function[cell,
+            Echo["New cell"];
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
                 WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions], cell`Serialize[cell] , list, secret], client]
             ];
@@ -146,13 +147,15 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
 
         If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized",
             With[{
-                notebookEvent = EventClone[notebook]
+                notebookEvent = EventClone[notebook],
+                spinner = Notifications`Spinner["Topic"->"Setting up", "Body"->"Please, wait"]
             },
                 Echo["checkWSLink >> Asking to connect"];
 
+                EventFire[log, spinner, True];
                 EventFire[log, "WebSocket:Kernel:RequestConnection", notebook];
 
-                WebUISubmit[UINotebook["WSConnect", notebook["Evaluator"]["Kernel"]["WebSocket"], event , "PrefixMode"->$Env["ws2prefix"]], client];
+                WebUISubmit[UINotebook["WSConnect", notebook["Evaluator"]["Kernel"]["WebSocket"], event , "PrefixMode"->$Env["ws2prefix"] ], client];
 
                 With[{},
                     EventHandler[notebookEvent, {
@@ -160,12 +163,14 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                             EventRemove[notebookEvent];
                             Echo["Resolved! Starting to evaluate!"];
                             EventFire[log, "WebSocket:Kernel:Connected", notebook];
+                            Delete[spinner];
                             EventFire[promise, Resolve, True];
                         ],
 
                         "WebSocketLost" -> Function[Null,
                             EventFire[log, "WebSocket:Kernel:Lost", notebook];
                             EventRemove[notebookEvent];
+                            Delete[spinner];
                         ]
                     }]
                 ];
@@ -190,13 +195,14 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                                 EventRemove[socket];
                                 EventRemove[cloned];
                                 EventRemove[notebookEvent];
-    
+
                                 Echo["checkWSLink >> Socket connection lost >> removing handlers"];
                                 EventRemove[promise // First];
                             ]
                         }];
                     ];
-                ];
+                ];                 
+
             ];
         ,
             (*/* subscribe when ready */*)
@@ -517,8 +523,8 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
 
 evaluateCellFull[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{p = Promise[]},
     Then[evaluateCell[cell, notebook, secret, log, kernels, cli, modals, parameters, extensions], Function[Null,
-        GenericKernel`Init[notebook["Evaluator"]["Kernel"],  (  
-            EventFire[Internal`Kernel`Stdout[ p[[1]] ], Resolve, True];
+        GenericKernel`Send[notebook["Evaluator"]["Kernel"],  (  
+            EventFire[Internal`Kernel`RemoteEvent[ p[[1]] ], Resolve, True];
         )];
     ]];
     p
@@ -534,7 +540,7 @@ Script[OptionsPattern[]] := With[{
 
             core.UINotebook = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                core.UINotebook[type](args.slice(1), env);
+                return await core.UINotebook[type](args.slice(1), env);
             }
 
             core.UINotebook.CreateServer = async (args, env) => {
@@ -551,7 +557,7 @@ Script[OptionsPattern[]] := With[{
                 console.warn('Trying to connect on port ' + port + ' to evaluation kernel');
                 if (server.kernel.connected) {
                     console.warn('A request to connect was rejected, since socket is still alive');
-                    return;
+                    return {Message:'Already connected'};
                 }
 
                 server.kernel.connected = true;
@@ -582,6 +588,7 @@ Script[OptionsPattern[]] := With[{
 
                   server.emitt(ev, 'True', 'WebSocketLost');
                 }; 
+                return {Connected:true};
             }
 
             core.UINotebook.Morph = async (args, env) => {
@@ -668,7 +675,35 @@ destructor[notebook_, secret_, __] := With[{},
     (* /* make sure that WebSocketQ flag is removed */ *)
     notebook["WebSocketQ"] = False;
     notebook["Opened"] = False;
+    notebook["AskedForReload"] = False;
+    notebook["HashCheckInProgress"] = False;
+    notebook["SavingInProgress"] = False;
 ];
+
+askForReload[notebook_, controller_, modals_, client_] := Module[{}, With[{promise = Promise[]},
+    If[TrueQ[notebook["AskedForReload"]], Return[]];
+
+    notebook["AskedForReload"] = True;
+    Then[promise, Function[result,
+        Echo[result];
+        If[TrueQ[result] || result["response"] === 0,
+                Echo["Restoring"];
+                Delete /@ (notebook["Cells"]//Reverse);
+                EventFire[controller, "DumpReloadCells", notebook];
+                notebook["AskedForReload"] = False;
+        ,
+            Echo["Cancelled"];
+                notebook["AskedForReload"] = False;
+        ];
+    ]];
+
+    EventFire[modals, "MessageBox", <|
+        "Promise"->promise, "message"->"File was changed outside", 
+        "type"->"question",
+        "buttons"->{"Reload", "Cancel"},
+        "title"->"File hash mismatch"
+    |>]; 
+] ]
 
 (* /*  Exstension API */  *)
 (* /*  Prolog, Epilog, Mesis, EventHandler */  *)
@@ -687,6 +722,8 @@ Component[OptionsPattern[]] := With[{
 
     appEvents = OptionValue["AppEvents"],
 
+    appGlobals = OptionValue["AppGlobals"],
+
     ExtensionTemplateWrapper = OptionValue["ExtensionTemplateWrapper"],  
     ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], 
     ExternalEventHandlers = OptionValue["ExternalEventHandlers"],
@@ -702,6 +739,7 @@ Component[OptionsPattern[]] := With[{
     EventHandler[controller // EventClone, {
         "Save" -> Function[Null,
             If[TrueQ[notebook["_suspendBackups"]], notebook["_suspendBackups"] = .];
+            notebook["SavingInProgress"] = True;
             EventFire[log, "Notebook:Sync:Started", True];
 
             With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $Client, "Log"->log|>]},
@@ -711,6 +749,7 @@ Component[OptionsPattern[]] := With[{
                     
                     Then[EventFire[controller, "DumpSave", notebook], Function[Null, 
                         EventFire[log, "Saved", ""];
+                        notebook["SavingInProgress"] = False;
                     ]];
                     
                 ]];
@@ -719,14 +758,17 @@ Component[OptionsPattern[]] := With[{
 
         "SaveAs" -> Function[path,
             If[TrueQ[notebook["_suspendBackups"]], notebook["_suspendBackups"] = .];
+            notebook["SavingInProgress"] = True;
             EventFire[log, "Notebook:Sync:Started", True];
+            
+
             With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $Client, "Log"->log|>], client = $Client},
 
                 Then[tt, Function[Null,
                     Echo["SAVEDAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!"];
                     EventFire[log, "Notebook:Sync:Finished", True];
                     Then[EventFire[controller, "DumpSaveAs", <|"Notebook" -> notebook, "Client"-> client, "Path" -> URLDecode[path]|>], Function[Null, 
-                        1+1
+                        notebook["SavingInProgress"] = False;
                     ]];
                 ]];
             ];
@@ -736,8 +778,21 @@ Component[OptionsPattern[]] := With[{
             EventFire[controller, "ReopenAsQuick", <|"Notebook" -> notebook, "Client"-> client, "Path" -> notebook["Path"]|>];
         ],
 
+        "CheckFileHash" -> Function[data, Module[{}, 
+            If[!TrueQ[notebook["ProbablyLoaded"]] || TrueQ[notebook["HashCheckInProgress"]] || TrueQ[notebook["SavingInProgress"]], Return[]];
+            Echo["Checking file hash"];
+            notebook["HashCheckInProgress"] = True;
+            Then[EventFire[controller, "DumpHashCheck", notebook], Function[results,
+                If[Length[Cases[results, "HashMismatchFound"]] > 0,
+                    Echo["Reloading is needed!"];
+                    askForReload[notebook, controller, modals, client];
+                ];
+                notebook["HashCheckInProgress"] = False;
+            ] ];
+        ] ],
+
         "Backup" -> Function[data, Module[{}, With[{timer = AbsoluteTime[]},
-            If[TrueQ[notebook["_suspendBackups"]], Return[Null, Module]];
+            If[TrueQ[notebook["_suspendBackups"]] || TrueQ[notebook["HashCheckInProgress"]] , Return[Null, Module]];
 
             EventFire[log, "Notebook:Sync:Started", True];
 
@@ -752,7 +807,11 @@ Component[OptionsPattern[]] := With[{
                     EventFire[controller, "DumpSaveTemporal", notebook];
                 ]];
             ];            
-        ]]],        
+        ]]],   
+        
+        "WindowFocus" -> Function[Null,
+            appGlobals["CurrentNotebook"] = notebook;
+        ],
 
         "ChangeKernel" -> Function[p, Module[{kernel, client, payload = <||>},
             If[AssociationQ[p], payload = p];
@@ -896,6 +955,8 @@ Component[OptionsPattern[]] := With[{
             notebook["MessangerChannel"] = Messanger;
             notebook["Controller"] = controller;
 
+            appGlobals["CurrentNotebook"] = notebook;
+
             (* /* Destructor */ *)
             With[{socket = EventClone[Global`$Client(*`*)]},
                 EventHandler[socket, {"Closed" -> Function[Null,
@@ -917,7 +978,7 @@ Component[OptionsPattern[]] := With[{
                 WebUISubmit[UINotebook["CreateServer"], $Client];
     
                 (* /* Establish WS Connection to a Kernel (if available) */ *)
-                checkWSLink[notebook, $Client, secret, log];
+                If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized", Then[checkWSLink[notebook, $Client, secret, log], Echo] ];
     
                 (* /* Restore cells */ *)
                 If[Length[notebook["Cells"]] > 0, With[{n = notebook}, n["FocusedCell"] = n["Cells"][[1]]] ];
@@ -926,6 +987,7 @@ Component[OptionsPattern[]] := With[{
                 (*/* finish */*)
                 EventFire[event, "Loaded", notebook];
                 EventFire[controller, "NotebookShown", <|"Client"->$Client, "Notebook"->notebook|>];
+                notebook["ProbablyLoaded"] = True;
 
                 If[MemberQ[notebook["Properties"], "AutoconnectKernel"],
                     Echo["Autoconnecting provided kernel"];
@@ -942,7 +1004,7 @@ Component[OptionsPattern[]] := With[{
             notebook["WebSocketQ"] = True;
             Then[EventFire[notebook, "OnWebSocketConnected", <|"Client" -> $Client|>], Function[Null,
                 EventFire[notebook, "AfterWebSocketConnected", <|"Client" -> $Client|>]
-            ]];
+            ] ];
         ],
 
         "WebSocketLost" -> Function[Null,
@@ -1112,7 +1174,7 @@ Component[OptionsPattern[]] := With[{
     ]
 ]
 
-Options[Component] = {"Parameters"->Null, "ElectronQ" -> False, "IframeQ"->False, "AppEvents"->"blacksheep", "Kernels"->{}, "Modals"->"", "Controls" ->"", "ControlsPort"->"", "Notebook"->Null, "Event"->"blackhole", "Messager"->"blackout", "Secret" :> CreateUUID[], "ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "ExternalEventHandlers" -> Null}
+Options[Component] = {"AppGlobals"->Null, "Parameters"->Null, "ElectronQ" -> False, "IframeQ"->False, "AppEvents"->"blacksheep", "Kernels"->{}, "Modals"->"", "Controls" ->"", "ControlsPort"->"", "Notebook"->Null, "Event"->"blackhole", "Messager"->"blackout", "Secret" :> CreateUUID[], "ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "ExternalEventHandlers" -> Null}
 Options[Script] = {"Parameters"->Null, "ExtensionTemplateInjection" -> emptyStringFunction}
 
 emptyStringFunction[x__] := ""

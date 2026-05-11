@@ -28,7 +28,7 @@ Component[OptionsPattern[]] := With[{
         <li class="list-none"><Dir ElectronQ={electronQ} Icons={Icons} Port={Port} Parameters={Parameters} ListComponent={Component} Level={Level+1} File={i} Selected={SameQ[Current, i]}/></li>,
         <li class="list-none"><Fl  ElectronQ={electronQ} Icons={Icons} Port={Port} Parameters={Parameters} File={i} Selected={SameQ[Current, i]}/></li>
       ]
-    , {i, Select[FileNames["*", Path], !StringMatchQ[#, ___~~".DS_Store"]&]}],
+    , {i, SortBy[Select[FileNames["*", Path], !StringMatchQ[#, ___~~".DS_Store"]&], Not@*DirectoryQ]}],
 
     Extra =   
      With[{

@@ -30,7 +30,7 @@ evaluator  = StandardEvaluator`StandardEvaluator["Name" -> "HTML/WSP Evaluator",
             With[{p = Import[FileNameJoin[{rootFolder, "Preload.wl"}], "String"]},
                 Module[{},
 
-                    GenericKernel`Init[k,   ToExpression[p, InputForm]; , "Once"->True];
+                    GenericKernel`Send[k,   ToExpression[p, InputForm]; , "Once"->True];
                 ];
             ];
 

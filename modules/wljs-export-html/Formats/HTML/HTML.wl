@@ -25,8 +25,9 @@ rootFolder = folder // ParentDirectory // ParentDirectory;
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`" -> "wapi`", FileNameJoin[{rootFolder, "DynamicsTools", "ESP.wl"}] ];
 
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 Begin["`Static`"]
 
@@ -138,23 +139,37 @@ With[{
         compressedFields = <||>
     ];
 
-    notebook = <|
-        "Notebook" -> Join[<|
-            "Objects" -> (<|"Public"->#|>&/@ objects), 
-            "Storage" -> store,
-            "Symbols" -> symbols,
-            "HaveToSaveAs" -> True,
-            "Quick" -> True
-        |>, compressedFields], 
-        "Cells" -> (#["Data"] &/@cells["Cells"]),
-        "serializer" -> "jsfn4" 
-    |>;
+    notebook = nb`NotebookObj[];
+    With[{n = notebook}, 
+        n["Objects"] = (<|"Public"->#|>&/@ objects);
+        n["Storage"] = store;
+        n["Symbols"] = symbols;
+        n["HaveToSaveAs"] = True;
+        n["Quick"] = True;
+        n["Cells"] = Function[cell, 
+            cell`CellObj["Notebook"->n, "Data"->cell["Data"], "Display"->Lookup[cell, "Display", "codemirror"], "Type"->cell["Type"], "Props"->Lookup[cell, "Props", <||>], "Invisible"->Lookup[cell, "Invisible", False] ]
+        ]/@ (cells["Cells"][[All,"Data"]]);
+
+        Map[(
+            n[#] = compressedFields[#]
+        )&, Keys[compressedFields] ];
+
+        n["ObjectFields"] = {"Objects", "Symbols", "Storage", "ExcalidrawImages", "RuntimeCache", "ZIPArchive"};
+        n["PublicFields"] = {"HaveToSaveAs", "WorkingDirectory", "Quick", "AutoconnectKernel", "ObjectFields"};
+    ];
 
     place = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
-    Put[notebook,  place];
+
+
+    Echo["SAVING////////"];
+    Then[saveNotebook[place, notebook, "NoCache"->True], Function[Null,
+      EventFire[spinner["Promise"], Resolve, True];
+      EventFire[promise, Resolve,  place];
+      Delete /@ notebook["Cells"];
+      Delete[notebook];
+    ] ];
     
-    EventFire[spinner["Promise"], Resolve, True];
-    EventFire[promise, Resolve,  place];
+    
     promise
 ] ]
 
@@ -218,8 +233,8 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
     syncPromise = Promise[],
     notebookHash = notebookOnLine["Hash"]
 },
-    GenericKernel`Init[notebookOnLine["Evaluator"]["Kernel"],  (
-        EventFire[Internal`Kernel`Stdout[ syncPromise // First ], Resolve, wapi`Tools`Serialize[] ]; 
+    GenericKernel`Send[notebookOnLine["Evaluator"]["Kernel"],  (
+        EventFire[Internal`Kernel`RemoteEvent[ syncPromise // First ], Resolve, wapi`Tools`Serialize[] ]; 
     )];
 
     Then[syncPromise, Function[values,

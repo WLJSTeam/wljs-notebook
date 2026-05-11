@@ -1,650 +1,408 @@
-<|"Notebook" -> <|"Controller" -> "a12ecf18-8098-4395-a032-1dca34ddfe48", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1838], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "f58dfad9-379b-4eba-bcfb-0b115bcdbcde", 
-   "Objects" -> <|"b89e821b-86d6-4b7c-8eeb-e19b634765fe" -> 
-      <|"Public" -> Hold[Graphics[{Annotation[
-            {{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[
-                   2], RGBColor[Rational[1, 2], Rational[1, 2], 1]], 
-                 Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, 
-                   {0.00030671792055962676, 0.00030671792055962676}, 
-                   {0.0006134154329559882, 0.0006134154329559882}, 
-                   {0.0012268104577487112, 0.0012268104577487112}, 
-                   {0.002453600507334157, 0.002453600507334157}, 
-                   {0.004907180606505049, 0.004907180606505049}, 
-                   {0.009814340804846833, 0.009814340804846833}, 
-                   {0.0196286612015304, 0.0196286612015304}, 
-                   {0.040908357085458646, 0.040908357085458646}, 
-                   {0.06077788357015209, 0.06077788357015209}, 
-                   {0.08025764881887605, 0.08025764881887605}, 
-                   {0.10138846915816112, 0.10138846915816112}, 
-                   {0.12110912009821138, 0.12110912009821138}, 
-                   {0.1424808261288228, 0.1424808261288228}, 
-                   {0.16346277092346467, 0.16346277092346467}, 
-                   {0.18303454631887175, 0.18303454631887175}, 
-                   {0.20425737680483996, 0.20425737680483996}, 
-                   {0.22407003789157337, 0.22407003789157337}, 
-                   {0.24349293774233727, 0.24349293774233727}, 
-                   {0.26456689268366235, 0.26456689268366235}, 
-                   {0.2842306782257526, 0.2842306782257526}, 
-                   {0.305545518858404, 0.305545518858404}, 
-                   {0.32647059825508584, 0.32647059825508584}, 
-                   {0.34598550825253294, 0.34598550825253294}, 
-                   {0.3671514733405411, 0.3671514733405411}, 
-                   {0.3869072690293145, 0.3869072690293145}, 
-                   {0.408314119808649, 0.408314119808649}, 
-                   {0.429331209352014, 0.429331209352014}, 
-                   {0.44893812949614426, 0.44893812949614426}, 
-                   {0.47019610473083556, 0.47019610473083556}, 
-                   {0.4900439105662921, 0.4900439105662921}, 
-                   {0.5095019551657791, 0.5095019551657791}, 
-                   {0.5306110548558273, 0.5306110548558273}, 
-                   {0.5503099851466406, 0.5503099851466406}, 
-                   {0.5716599705280151, 0.5716599705280151}, 
-                   {0.5926201946734201, 0.5926201946734201}, 
-                   {0.6121702494195903, 0.6121702494195903}, 
-                   {0.6333713592563216, 0.6333713592563216}, 
-                   {0.6531622996938181, 0.6531622996938181}, 
-                   {0.6725634788953451, 0.6725634788953451}, 
-                   {0.6936157131874332, 0.6936157131874332}, 
-                   {0.7132577780802865, 0.7132577780802865}, 
-                   {0.7345508980637009, 0.7345508980637009}, 
-                   {0.7544338486478805, 0.7544338486478805}, 
-                   {0.7739270379960906, 0.7739270379960906}, 
-                   {0.7950712824348619, 0.7950712824348619}, 
-                   {0.8148053574743983, 0.8148053574743983}, 
-                   {0.8361904876044959, 0.8361904876044959}, 
-                   {0.857185856498624, 0.857185856498624}, 
-                   {0.8767710559935172, 0.8767710559935172}, 
-                   {0.8980073105789717, 0.8980073105789717}, 
-                   {0.9178333957651912, 0.9178333957651912}, 
-                   {0.9372697197154413, 0.9372697197154413}, 
-                   {0.9583570987562524, 0.9583570987562524}, 
-                   {0.9780343083978288, 0.9780343083978288}, 
-                   {0.9783775220102351, 0.9783775220102351}, 
-                   {0.9787207356226415, 0.9787207356226415}, 
-                   {0.9794071628474543, 0.9794071628474543}, 
-                   {0.9807800172970798, 0.9807800172970798}, 
-                   {0.9835257261963308, 0.9835257261963308}, 
-                   {0.9890171439948328, 0.9890171439948328}, 
-                   {0.9893603576072392, 0.9893603576072392}, 
-                   {0.9897035712196455, 0.9897035712196455}, 
-                   {0.9903899984444582, 0.9903899984444582}, 
-                   {0.9917628528940837, 0.9917628528940837}, 
-                   {0.9945085617933347, 0.9945085617933347}, 
-                   {0.9948517754057411, 0.9948517754057411}, 
-                   {0.9951949890181475, 0.9951949890181475}, 
-                   {0.9958814162429602, 0.9958814162429602}, 
-                   {0.9972542706925858, 0.9972542706925858}, 
-                   {0.9975974843049922, 0.9975974843049922}, 
-                   {0.9979406979173985, 0.9979406979173985}, 
-                   {0.9986271251422112, 0.9986271251422112}, 
-                   {0.9989703387546176, 0.9989703387546176}, 
-                   {0.999313552367024, 0.999313552367024}, 
-                   {0.9996567659794304, 0.9996567659794304}, 
-                   {0.9999999795918367, 0.9999999795918367}}]}, 
-                "Charting`Private`Tag#1"]}}, {}}, Association[
-             "HighlightElements" -> Association["Label" -> {"XYLabel"}, 
-               "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> 
-              Association["PanelPlotLayout" -> Association[], "PlotRange" -> 
-                {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> 
-                {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, 
-               "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], 
-                  RGBColor[Rational[1, 2], Rational[1, 2], 1]]}, 
-               "HighlightLabelingFunctions" -> Association[
-                 "CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], 
-                    (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> 
-                  {{Identity, Identity}, {Identity, Identity}}], 
-               "Primitives" -> {}, "GCFlag" -> False], "Meta" -> 
-              Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> 
-                {}, "Function" -> Plot, "GroupHighlight" -> False]], 
-            "DynamicHighlight"]}, {DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999795918367}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>, "50a822fb-a4b9-4e97-95cd-5ab935120d87" -> 
-      <|"Public" -> Hold[Graphics[{Annotation[
-            {{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[
-                   2], RGBColor[1, 0, 0]], Line[{{2.040816326530612*^-8, 
-                    2.040816326530612*^-8}, {0.00030671792055962676, 
-                    0.00030671792055962676}, {0.0006134154329559882, 
-                    0.0006134154329559882}, {0.0012268104577487112, 
-                    0.0012268104577487112}, {0.002453600507334157, 
-                    0.002453600507334157}, {0.004907180606505049, 
-                    0.004907180606505049}, {0.009814340804846833, 
-                    0.009814340804846833}, {0.0196286612015304, 
-                    0.0196286612015304}, {0.040908357085458646, 
-                    0.040908357085458646}, {0.06077788357015209, 
-                    0.06077788357015209}, {0.08025764881887605, 
-                    0.08025764881887605}, {0.10138846915816112, 
-                    0.10138846915816112}, {0.12110912009821138, 
-                    0.12110912009821138}, {0.1424808261288228, 
-                    0.1424808261288228}, {0.16346277092346467, 
-                    0.16346277092346467}, {0.18303454631887175, 
-                    0.18303454631887175}, {0.20425737680483996, 
-                    0.20425737680483996}, {0.22407003789157337, 
-                    0.22407003789157337}, {0.24349293774233727, 
-                    0.24349293774233727}, {0.26456689268366235, 
-                    0.26456689268366235}, {0.2842306782257526, 
-                    0.2842306782257526}, {0.305545518858404, 
-                    0.305545518858404}, {0.32647059825508584, 
-                    0.32647059825508584}, {0.34598550825253294, 
-                    0.34598550825253294}, {0.3671514733405411, 
-                    0.3671514733405411}, {0.3869072690293145, 
-                    0.3869072690293145}, {0.408314119808649, 
-                    0.408314119808649}, {0.429331209352014, 
-                    0.429331209352014}, {0.44893812949614426, 
-                    0.44893812949614426}, {0.47019610473083556, 
-                    0.47019610473083556}, {0.4900439105662921, 
-                    0.4900439105662921}, {0.5095019551657791, 
-                    0.5095019551657791}, {0.5306110548558273, 
-                    0.5306110548558273}, {0.5503099851466406, 
-                    0.5503099851466406}, {0.5716599705280151, 
-                    0.5716599705280151}, {0.5926201946734201, 
-                    0.5926201946734201}, {0.6121702494195903, 
-                    0.6121702494195903}, {0.6333713592563216, 
-                    0.6333713592563216}, {0.6531622996938181, 
-                    0.6531622996938181}, {0.6725634788953451, 
-                    0.6725634788953451}, {0.6936157131874332, 
-                    0.6936157131874332}, {0.7132577780802865, 
-                    0.7132577780802865}, {0.7345508980637009, 
-                    0.7345508980637009}, {0.7544338486478805, 
-                    0.7544338486478805}, {0.7739270379960906, 
-                    0.7739270379960906}, {0.7950712824348619, 
-                    0.7950712824348619}, {0.8148053574743983, 
-                    0.8148053574743983}, {0.8361904876044959, 
-                    0.8361904876044959}, {0.857185856498624, 
-                    0.857185856498624}, {0.8767710559935172, 
-                    0.8767710559935172}, {0.8980073105789717, 
-                    0.8980073105789717}, {0.9178333957651912, 
-                    0.9178333957651912}, {0.9372697197154413, 
-                    0.9372697197154413}, {0.9583570987562524, 
-                    0.9583570987562524}, {0.9780343083978288, 
-                    0.9780343083978288}, {0.9783775220102351, 
-                    0.9783775220102351}, {0.9787207356226415, 
-                    0.9787207356226415}, {0.9794071628474543, 
-                    0.9794071628474543}, {0.9807800172970798, 
-                    0.9807800172970798}, {0.9835257261963308, 
-                    0.9835257261963308}, {0.9890171439948328, 
-                    0.9890171439948328}, {0.9893603576072392, 
-                    0.9893603576072392}, {0.9897035712196455, 
-                    0.9897035712196455}, {0.9903899984444582, 
-                    0.9903899984444582}, {0.9917628528940837, 
-                    0.9917628528940837}, {0.9945085617933347, 
-                    0.9945085617933347}, {0.9948517754057411, 
-                    0.9948517754057411}, {0.9951949890181475, 
-                    0.9951949890181475}, {0.9958814162429602, 
-                    0.9958814162429602}, {0.9972542706925858, 
-                    0.9972542706925858}, {0.9975974843049922, 
-                    0.9975974843049922}, {0.9979406979173985, 
-                    0.9979406979173985}, {0.9986271251422112, 
-                    0.9986271251422112}, {0.9989703387546176, 
-                    0.9989703387546176}, {0.999313552367024, 
-                    0.999313552367024}, {0.9996567659794304, 
-                    0.9996567659794304}, {0.9999999795918367, 
-                    0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, 
-            Association["HighlightElements" -> Association["Label" -> 
-                {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], 
-             "LayoutOptions" -> Association["PanelPlotLayout" -> 
-                Association[], "PlotRange" -> {{0, 1}, {0, 
-                  0.9999999795918367}}, "Frame" -> {{False, False}, 
-                 {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> 
-                {360, 360/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], 
-                  RGBColor[1, 0, 0]]}, "HighlightLabelingFunctions" -> 
-                Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[
-                     #1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), 
-                 "ScalingFunctions" -> {{Identity, Identity}, {Identity, 
-                    Identity}}], "Primitives" -> {}, "GCFlag" -> False], 
-             "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, 
-               "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> 
-                False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999795918367}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>|>, "Path" -> "/users/kirill/Github/wolfram-js-fr\
-ontend/modules/wljs-demos-archive/Demos/Introduction/B - Data Structures.wln"\
-, "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Nested Structures and List Manipulation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1771]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Association (Key-Value Pairs)", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1807]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "String Manipulation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1837]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Data Visualization", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1851]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Graphics as Expressions", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1917]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Nested Structures and List \
-Manipulation\nWolfram Language excels at manipulating nested structures:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cef066f1-47c8-40ae-8f91-0bde00cc3c6b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "## Nested Structures and List Manipulation\nWolfram Language \
-excels at manipulating nested structures:", "Display" -> "markdown", 
-    "Hash" -> "ee6d19a2-ffc5-47fd-8830-a5f23bcad916", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(* Create nested data *)\ndata = Table[{i, \
-(*SpB[*)Power[i(*|*),(*|*)2](*]SpB*), (*SpB[*)Power[i(*|*),(*|*)3](*]SpB*)}, \
-{i, 5}]\n\n(* Extract parts *)\ndata[[All, 2]]\n\n(* Apply function at \
-specific level *)\nMap[Total, data, {1}]", "Display" -> "codemirror", 
-    "Hash" -> "181918ad-f3e7-42ea-9491-18be2291a3c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{{1,1,1},{2,4,8},{3,9,27},{4,16,64},{5,25,125}}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "59c09dda-550f-407b-88ca-a1a28a237a87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{1,4,9,16,25}", "Display" -> "codemirror", 
-    "Hash" -> "710be0ee-99dd-4034-9e83-60ba191f9303", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{3,14,39,84,155}", "Display" -> "codemirror", 
-    "Hash" -> "95270289-e5d4-4611-b5c4-03622d82132b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nThread operations across lists:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4c9c57fa-b9a5-431b-a1fe-e38b7c009065", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Thread operations across lists:", "Display" -> "markdown", 
-    "Hash" -> "6ce5a90d-01b5-47ad-a86c-20fcb88bc5ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(* Thread operations *)\nThread[f[{a, b, c}, {x, y, \
-z}]]\n\n(* Partition data *)\nPartition[Range[12], 3]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "62cc0be9-5f2a-4a31-bfdd-1f1e9aed6a73", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{f[a,x],f[b,y],f[c,z]}", "Display" -> "codemirror", 
-    "Hash" -> "4518f01c-a75b-49de-a644-d8a3f6d6ace7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{{1,2,3},{4,5,6},{7,8,9},{10,11,12}}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "46630c06-ebf8-40af-a939-6f585b9fecff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nTranspose and reshape operations:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6cc19581-d674-406c-b997-a82c51e18d68", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Transpose and reshape operations:", "Display" -> "markdown", 
-    "Hash" -> "79ec2495-dada-4b64-82f9-1fe13e7343c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(* Transpose matrix *)\n{{1, 2, 3}, {4, 5, 6}} // \
-Transpose\n\n(* Flatten nested lists *)\nFlatten[{{1, 2}, {3, {4, 5}}}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4f6bf583-9515-41b8-b32b-b3e0dd33b5ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{{1,4},{2,5},{3,6}}", "Display" -> "codemirror", 
-    "Hash" -> "d062a24a-0115-40f9-8a8f-7d6a517d148b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{1,2,3,4,5}", "Display" -> "codemirror", 
-    "Hash" -> "66813b77-f670-4f97-9399-37b9cdcc5188", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\n## Association (Key-Value Pairs)\nModern dictionary-like \
-structures:", "Display" -> "codemirror", 
-    "Hash" -> "ec36c3a0-0003-4b09-8b76-d6321556f0de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> 
-     "## Association (Key-Value Pairs)\nModern dictionary-like structures:", 
-    "Display" -> "markdown", "Hash" -> 
-     "05dcfd73-487e-4e2d-9718-65e7dccdeddd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(* Create association *)\nperson = <|\"name\" -> \"Alice\", \
-\"age\" -> 30, \"city\" -> \"NYC\"|>\n\n(* Access values \
-*)\nperson[\"name\"]\n\n(* Map over associations *)\nperson // \
-Map[ToString]\n\n(* Merge multiple associations *)\nMerge[{<|\"a\" -> 1, \
-\"b\" -> 2|>, <|\"b\" -> 3, \"c\" -> 4|>}, Total]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "742841cd-3605-4fc8-877d-7f1a4b832f40", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> 
-     ".md\n## String Manipulation\nPowerful string processing with patterns:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "cf49ff03-6781-4a2e-a051-3bacb1aa4388", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> 
-     "## String Manipulation\nPowerful string processing with patterns:", 
-    "Display" -> "markdown", "Hash" -> 
-     "67c7ef57-0259-4a9f-9401-13c0e3fb4330", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(* String patterns *)\nStringCases[\"hello world 123\", \
-DigitCharacter..]\n\n(* String replacement *)\nStringReplace[\"hello world\", \
-\"world\" -> \"universe\"]\n\n(* String interpolation \
-*)\nTemplateApply[\"Hello `name`, you are `age` years old\", \n<|\"name\" -> \
-\"Bob\", \"age\" -> 25|>]\n\nStringTemplate[\"Hello `name`, you are `age` \
-years old\"][<|\"name\" -> \"Bob\", \"age\" -> 25|>]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d6a4aafb-c758-49a3-9224-f1b669f1e823", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{\"123\"}", "Display" -> "codemirror", 
-    "Hash" -> "c984a3e1-4979-4384-835e-5316885b27c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "\"hello universe\"", "Display" -> "codemirror", 
-    "Hash" -> "c129ffc9-da40-4edc-94cb-5fdda2e4f649", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "\"Hello Bob, you are 25 years old\"", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0fd3e980-8551-4b40-b81b-add980d303ba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "\"Hello Bob, you are 25 years old\"", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dc70b00e-767b-4edb-ae6a-48daefc01205", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\n## Data Visualization\nMore complex styling:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8603edab-af8a-4109-b422-fedc9d12345a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "## Data Visualization\nMore complex styling:", 
-    "Display" -> "markdown", "Hash" -> 
-     "19b4e041-1349-4375-b1ce-a22e7823fd59", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> 
-     "Table[If[PrimeQ[i], Framed[i, Background -> Yellow], i], {i, 1, 20}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d1de2393-7580-4b72-835c-8df856257c9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "{1,(*BB[*)(2)(*,*)(*\"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+\
-UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55h\
-WUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\"*)(*]BB*),(*BB[*)(3)(*,*)(*\"1:eJ\
-xTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2\
-dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\
-\"*)(*]BB*),4,(*BB[*)(5)(*,*)(*\"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTC\
-BxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhS\
-zAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\"*)(*]BB*),6,(*BB[*)(7)(*,*)(*\"1:eJxTT\
-MoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnP\
-Nz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\"*\
-)(*]BB*),8,9,10,(*BB[*)(11)(*,*)(*\"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UV\
-pTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWU\
-lhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\"*)(*]BB*),12,(*BB[*)(13)(*,*)(*\"1:\
-eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJ\
-N2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABi\
-Tb\"*)(*]BB*),14,15,16,(*BB[*)(17)(*,*)(*\"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5\
-RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+\
-Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb\"*)(*]BB*),18,(*BB[*)(19)(*,*\
-)(*\"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5q\
-VANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUW\
-lqQAABiTb\"*)(*]BB*),20}", "Display" -> "codemirror", 
-    "Hash" -> "e170b194-59ce-49ab-8c5a-db19e4fc8fca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nThis uses pattern matching with `If` and `PrimeQ` to \
-conditionally style elements.", "Display" -> "codemirror", 
-    "Hash" -> "fa0d8f49-5125-4ef1-a5be-8030cec92298", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "This uses pattern matching with `If` and `PrimeQ` to \
-conditionally style elements.", "Display" -> "markdown", 
-    "Hash" -> "a2045820-f791-460a-a996-ead62dbff8b1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> 
-     ".md\n## Graphics as Expressions\nLet's create a basic 2D plot:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dc2c0676-2898-4685-bbb4-2392f43826cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "## Graphics as Expressions\nLet's create a basic 2D plot:", 
-    "Display" -> "markdown", "Hash" -> 
-     "002bfa39-65ce-43ce-926a-3614caccb5a1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Plot[x, {x, 0, 1}, PlotStyle -> (*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*)]", "Display" -> "codemirror", 
-    "Hash" -> "3810d9d9-d10a-49e9-8322-86e110931a02", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"b89e821b-86d6-4b7c-8eeb-e19b634765fe\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ1lYp\
-loYGSbpWpilmOmaJJkn61qkpibpphpaJpkZm5ibmaalAgCI0hXv\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5d404ba8-9203-4fef-8024-c66ec7c47193", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "% /. {(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*) -> Red}", "Display" -> "codemirror", 
-    "Hash" -> "d09c2073-8ddc-410a-8ab9-2c8a99820a5e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"50a822fb-a4b9-4e97-95cd-5ab935120d87\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxokW\
-hgZpSXpJpokWeqapFqa61qaJqfomiYmWRqbGhoZpFiYAwCEdRV6\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b2bfaa84-8698-4a39-9064-f4e429f17c6a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nThis creates an interactive graphic that renders as a \
-line plot. It may look like an image, but it's not\[LongDash]it's a symbolic \
-expression that can be manipulated, styled, and transformed.\n\nHave a look \
-at 3D graphics:", "Display" -> "codemirror", 
-    "Hash" -> "ef398d92-9405-4fd7-9602-b2f6c9d78773", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "This creates an interactive graphic that renders as a line \
-plot. It may look like an image, but it's not\[LongDash]it's a symbolic \
-expression that can be manipulated, styled, and transformed.\n\nHave a look \
-at 3D graphics:", "Display" -> "markdown", 
-    "Hash" -> "ada5b7ff-6e35-4039-96c2-1119ad242ab5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Graphics3D[Sphere[], ImageSize->200]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a13e29e8-eadf-435a-b6d1-9c29c8d93b74", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(*VB[*)(Graphics3D[Sphere[{0, 0, 0}], ImageSize -> \
-200])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEsEFGalFq\
-WnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABbgFtc=\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f8031d22-0bad-4a66-a418-8f039663ee00", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nThis creates an interactive 3D sphere that you can \
-rotate, zoom, and manipulate in real-time. The output is not a static image \
-but a live 3D graphic object.\n\nIt\[CloseCurlyQuote]s all about \
-interpretation.\n\nLet's replace our 3D object with Cuboid inline:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "83f066b1-cbb5-431d-935b-cbe7c5b3c598", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "This creates an interactive 3D sphere that you can rotate, \
-zoom, and manipulate in real-time. The output is not a static image but a \
-live 3D graphic object.\n\nIt\[CloseCurlyQuote]s all about \
-interpretation.\n\nLet's replace our 3D object with Cuboid inline:", 
-    "Display" -> "markdown", "Hash" -> 
-     "fe2794ad-34b7-4204-84f8-e8127465e044", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(*VB[*)(Graphics3D[Sphere[{0, 0, 0}], ImageSize -> \
-200])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEsEFGalFq\
-WnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABbgFtc=\"*)(*]VB*)/. \
-{Sphere -> Cuboid}", "Display" -> "codemirror", 
-    "Hash" -> "1bb344cd-5764-4497-aab8-c30343cd50a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "(*VB[*)(Graphics3D[Cuboid[{0, 0, 0}], ImageSize -> \
-200])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEs6lSfmZK\
-WnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABJuFsY=\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b96bcdaf-806e-4841-93a1-9354f2cafd19", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> ".md\nNothing stops us from taking the same primitives and use \
-them in actual calculations:", "Display" -> "codemirror", 
-    "Hash" -> "d92c5efc-7714-417d-864c-8dc89b6fb55d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Nothing stops us from taking the same primitives and use them \
-in actual calculations:", "Display" -> "markdown", 
-    "Hash" -> "78a4a291-d249-4304-885a-ceac44fac52d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "Cuboid[{a,b,c}] // Volume \nSphere[{a,b,c}, R] // Area", 
-    "Display" -> "codemirror", "Hash" -> 
-     "300efc03-31fe-4de8-95f9-8ef51492e4bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "1", "Display" -> "codemirror", 
-    "Hash" -> "a075ff89-ed08-4752-bfa2-171869d560c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>, 
-   <|"Data" -> "4 \\[Pi] ((*SpB[*)Power[R(*|*),(*|*)2](*]SpB*))", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f6ec3f52-53ba-489f-943d-2e90a6d0092e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c8eb92e0-0f6c-4078-b787-877a069d1920"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Nested Structures and List Manipulation
+Wolfram Language excels at manipulating nested structures:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Nested Structures and List Manipulation
+Wolfram Language excels at manipulating nested structures:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Create nested data *)
+data = Table[{i, (*SpB[*)Power[i(*|*),(*|*)2](*]SpB*), (*SpB[*)Power[i(*|*),(*|*)3](*]SpB*)}, {i, 5}]
+
+(* Extract parts *)
+data[[All, 2]]
+
+(* Apply function at specific level *)
+Map[Total, data, {1}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{1,1,1},{2,4,8},{3,9,27},{4,16,64},{5,25,125}}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1,4,9,16,25}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{3,14,39,84,155}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Thread operations across lists:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Thread operations across lists:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Thread operations *)
+Thread[f[{a, b, c}, {x, y, z}]]
+
+(* Partition data *)
+Partition[Range[12], 3]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{f[a,x],f[b,y],f[c,z]}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{1,2,3},{4,5,6},{7,8,9},{10,11,12}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Transpose and reshape operations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Transpose and reshape operations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Transpose matrix *)
+{{1, 2, 3}, {4, 5, 6}} // Transpose
+
+(* Flatten nested lists *)
+Flatten[{{1, 2}, {3, {4, 5}}}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{1,4},{2,5},{3,6}}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1,2,3,4,5}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Association (Key-Value Pairs)
+Modern dictionary-like structures:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Association (Key-Value Pairs)
+Modern dictionary-like structures:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Create association *)
+person = <|"name" -> "Alice", "age" -> 30, "city" -> "NYC"|>
+
+(* Access values *)
+person["name"]
+
+(* Map over associations *)
+person // Map[ToString]
+
+(* Merge multiple associations *)
+Merge[{<|"a" -> 1, "b" -> 2|>, <|"b" -> 3, "c" -> 4|>}, Total]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## String Manipulation
+Powerful string processing with patterns:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## String Manipulation
+Powerful string processing with patterns:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* String patterns *)
+StringCases["hello world 123", DigitCharacter..]
+
+(* String replacement *)
+StringReplace["hello world", "world" -> "universe"]
+
+(* String interpolation *)
+TemplateApply["Hello `name`, you are `age` years old", 
+<|"name" -> "Bob", "age" -> 25|>]
+
+StringTemplate["Hello `name`, you are `age` years old"][<|"name" -> "Bob", "age" -> 25|>]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{"123"}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"hello universe"
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"Hello Bob, you are 25 years old"
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"Hello Bob, you are 25 years old"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Data Visualization
+More complex styling:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Data Visualization
+More complex styling:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Table[If[PrimeQ[i], Framed[i, Background -> Yellow], i], {i, 1, 20}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1,(*BB[*)(2)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),(*BB[*)(3)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),4,(*BB[*)(5)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),6,(*BB[*)(7)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),8,9,10,(*BB[*)(11)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),12,(*BB[*)(13)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),14,15,16,(*BB[*)(17)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),18,(*BB[*)(19)(*,*)(*"1:eJxTTMoPSmNmYGAo5gMSwSWVOakuqcn5RYkl+UVpTCBxFiARVJqTWswFZDglJmenF+WX5qVANHGAJN2dnPNz8osyGYEcCAHEDGi6ecDGF2UW+Od55hWUlhSzAgXcEnOKU1EVBoPFixJzU8FCIUWlqQAABiTb"*)(*]BB*),20}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This uses pattern matching with `If` and `PrimeQ` to conditionally style elements.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This uses pattern matching with `If` and `PrimeQ` to conditionally style elements.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Graphics as Expressions
+Let's create a basic 2D plot:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Graphics as Expressions
+Let's create a basic 2D plot:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x, {x, 0, 1}, PlotStyle -> (*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["b89e821b-86d6-4b7c-8eeb-e19b634765fe"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ1lYploYGSbpWpilmOmaJJkn61qkpibpphpaJpkZm5ibmaalAgCI0hXv"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+% /. {(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*) -> Red}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["50a822fb-a4b9-4e97-95cd-5ab935120d87"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxokWhgZpSXpJpokWeqapFqa61qaJqfomiYmWRqbGhoZpFiYAwCEdRV6"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This creates an interactive graphic that renders as a line plot. It may look like an image, but it's not--it's a symbolic expression that can be manipulated, styled, and transformed.
+
+Have a look at 3D graphics:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This creates an interactive graphic that renders as a line plot. It may look like an image, but it's not--it's a symbolic expression that can be manipulated, styled, and transformed.
+
+Have a look at 3D graphics:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[Sphere[], ImageSize->200]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[Sphere[{0, 0, 0}], ImageSize -> 200])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEsEFGalFqWnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABbgFtc="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This creates an interactive 3D sphere that you can rotate, zoom, and manipulate in real-time. The output is not a static image but a live 3D graphic object.
+
+It\[CloseCurlyQuote]s all about interpretation.
+
+Let's replace our 3D object with Cuboid inline:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This creates an interactive 3D sphere that you can rotate, zoom, and manipulate in real-time. The output is not a static image but a live 3D graphic object.
+
+It\[CloseCurlyQuote]s all about interpretation.
+
+Let's replace our 3D object with Cuboid inline:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[Sphere[{0, 0, 0}], ImageSize -> 200])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEsEFGalFqWnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABbgFtc="*)(*]VB*)/. {Sphere -> Cuboid}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[Cuboid[{0, 0, 0}], ImageSize -> 200])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4XkHAvSizIyEwuNnaBqGADEs6lSfmZKWnMMB0+mcUlmUCaAUFADABJBpXmpBZzAhmeuYnpqcGZVamZJ4A8ABJuFsY="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Nothing stops us from taking the same primitives and use them in actual calculations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Nothing stops us from taking the same primitives and use them in actual calculations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Cuboid[{a,b,c}] // Volume 
+Sphere[{a,b,c}, R] // Area
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+1
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+4 \[Pi] ((*SpB[*)Power[R(*|*),(*|*)2](*]SpB*))
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: b89e821b-86d6-4b7c-8eeb-e19b634765fe
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[2], RGBColor[Rational[1, 2], Rational[1, 2], 1]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], RGBColor[Rational[1, 2], Rational[1, 2], 1]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 50a822fb-a4b9-4e97-95cd-5ab935120d87
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[2], RGBColor[1, 0, 0]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], RGBColor[1, 0, 0]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -5,8 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Plotly`", {
 }]
 
 Plotly::usage = "Plotly[expr_, {var_, min_, max_}] or Plotly[{a__Association}, opts] _PlotlyInstance plots an expr using Plotly.js library"
-PlotlyInstance::usage = "Internal representation of Plotly instance"
-PlotlyNewPlot;
+PlotlyInstance;
 
 PlotlyAddTraces::usage = "PlotlyAddTraces[p_PlotlyInstance, traces_List] appends new traces"
 PlotlyDeleteTraces::usage = ""
@@ -50,8 +49,16 @@ Plotly[a_List, layout_Association, opts: OptionsPattern[] ] := With[{uid = Creat
 
 Options[Plotly] = {"margin"->"autoexpand", ImageSize->500};
 
-PlotlyInstance /: MakeBoxes[PlotlyInstance[uid_String, data_, _] , StandardForm] := With[{o = CreateFrontEndObject[{PlotlyNewPlot[data["Data"], data["Layout"], "SystemEvent"->uid], FrontInstanceReference[uid]}]},
-    MakeBoxes[o, StandardForm]
+iPlotlyNewPlot;
+PlotlyInstance[i_iPlotlyNewPlot, w_] := PlotlyInstance[i[[3,2]], <|"Data"->i[[1]], "Layout"->i[[2]]|>, w]
+
+PlotlyInstance /: MakeBoxes[PlotlyInstance[uid_String, data_, w_] , StandardForm] := With[{o = CreateFrontEndObject[iPlotlyNewPlot[data["Data"], data["Layout"], "SystemEvent"->uid, Epilog->FrontInstanceReference[uid] ]]},
+    {out = MakeBoxes[o, StandardForm]},
+    ViewBox[RowBox[{ToString[PlotlyInstance, InputForm], "[", out, ",", ToString[w, InputForm], "]"}], o]
+]
+
+PlotlyInstance /: MakeBoxes[PlotlyInstance[uid_String, data_, _] , WLXForm] := With[{o = CreateFrontEndObject[iPlotlyNewPlot[data["Data"], data["Layout"], "SystemEvent"->uid,  Epilog->FrontInstanceReference[uid] ]]},
+    MakeBoxes[o, WLXForm]
 ]
 
 conditionalSend[option_, uid_, function_, args__] := If[option === Inherited, With[{state = windows["Lookup", uid]},
@@ -72,26 +79,44 @@ conditionalSend[option_, uid_, function_, args__] := If[option === Inherited, Wi
     function[args, "Window"->option]
 ]
 
-PlotlyInstance /: PlotlyAddTraces[ PlotlyInstance[uid_, _, win_], traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyAddTraces[traces], FrontInstanceReference[uid] ]
-PlotlyInstance /: PlotlyDeleteTraces[ PlotlyInstance[uid_, _, win_], traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyDeleteTraces[traces], FrontInstanceReference[uid] ]
-PlotlyInstance /: PlotlyExtendTraces[ PlotlyInstance[uid_, _, win_], traces_, arr_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyExtendTraces[traces, arr], FrontInstanceReference[uid] ]
-PlotlyInstance /: PlotlyPrependTraces[ PlotlyInstance[uid_, _, win_], traces_, arr_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyPrependTraces[traces, arr], FrontInstanceReference[uid] ]
+iPlotlyAddTraces;
+iPlotlyDeleteTraces;
+iPlotlyExtendTraces;
+iPlotlyPrependTraces;
+iPlotlyAnimate;
+iPlotlyReact;
+iPlotlyRestyle;
+iPlotlyRelayout;
 
-PlotlyInstance /: PlotlyAnimate[ PlotlyInstance[uid_, _, win_], traces_, arr_ , opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyAnimate[traces, arr], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyAddTraces[ PlotlyInstance[uid_, _, win_], traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyAddTraces[traces], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyDeleteTraces[ PlotlyInstance[uid_, _, win_], traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyDeleteTraces[traces], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyExtendTraces[ PlotlyInstance[uid_, _, win_], traces_, arr_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyExtendTraces[traces, arr], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyPrependTraces[ PlotlyInstance[uid_, _, win_], traces_, arr_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyPrependTraces[traces, arr], FrontInstanceReference[uid] ]
 
-PlotlyInstance /: PlotlyReact[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyReact[data, <||>], FrontInstanceReference[uid] ]
-PlotlyInstance /: PlotlyReact[ PlotlyInstance[uid_, _, win_], data_, lay_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyReact[data, lay], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyAnimate[ PlotlyInstance[uid_, _, win_], traces_, arr_ , opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyAnimate[traces, arr], FrontInstanceReference[uid] ]
 
-PlotlyInstance /: PlotlyRestyle[ PlotlyInstance[uid_, _, win_], data_, traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyRestyle[data, traces], FrontInstanceReference[uid] ]
-PlotlyInstance /: PlotlyRestyle[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyRestyle[data], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyReact[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyReact[data, <||>], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyReact[ PlotlyInstance[uid_, _, win_], data_, lay_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyReact[data, lay], FrontInstanceReference[uid] ]
 
-PlotlyInstance /: PlotlyRelayout[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, PlotlyRelayout[data], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyRestyle[ PlotlyInstance[uid_, _, win_], data_, traces_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyRestyle[data, traces], FrontInstanceReference[uid] ]
+PlotlyInstance /: PlotlyRestyle[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyRestyle[data], FrontInstanceReference[uid] ]
+
+PlotlyInstance /: PlotlyRelayout[ PlotlyInstance[uid_, _, win_], data_, opts: OptionsPattern[] ] := conditionalSend[OptionValue["Window"], uid, FrontSubmit, iPlotlyRelayout[data], FrontInstanceReference[uid] ]
 
 
 PlotlyInstance /: Delete[ PlotlyInstance[uid_, _, win_] ] := windows["KeyDrop", uid]
 
-ListLinePlotly /: MakeBoxes[ListLinePlotly[args__], StandardForm] := With[{o = CreateFrontEndObject[ListLinePlotly[args]]}, MakeBoxes[o, StandardForm]]
-ListPlotly /: MakeBoxes[ListPlotly[args__], StandardForm] := With[{o = CreateFrontEndObject[ListPlotly[args]]}, MakeBoxes[o, StandardForm]]
+iListLinePlotly;
+iListPlotly;
+
+ListPlotly[i_iListPlotly] := ListPlotly @@ i
+ListLinePlotly[i_iListLinePlotly] := ListLinePlotly @@ i
+
+ListLinePlotly /: MakeBoxes[ListLinePlotly[args__], StandardForm] := With[{o = CreateFrontEndObject[iListLinePlotly[args]]}, {out = MakeBoxes[o, StandardForm]}, ViewBox[RowBox[{ToString[ListLinePlotly, InputForm], "[", out, "]"}], o]  ]
+ListPlotly /: MakeBoxes[ListPlotly[args__], StandardForm] := With[{o = CreateFrontEndObject[iListPlotly[args]]}, {out = MakeBoxes[o, StandardForm]}, ViewBox[RowBox[{ToString[ListPlotly, InputForm], "[", out, "]"}], o] ]
+
+ListLinePlotly /: MakeBoxes[ListLinePlotly[args__], WLXForm] := With[{o = CreateFrontEndObject[iListLinePlotly[args]]}, MakeBoxes[o, WLXForm]]
+ListPlotly /: MakeBoxes[ListPlotly[args__], WLXForm] := With[{o = CreateFrontEndObject[iListPlotly[args]]}, MakeBoxes[o, WLXForm]]
 
 
 Options[PlotlyAddTraces] = {"Window" -> Inherited}
@@ -107,12 +132,8 @@ Options[PlotlyRelayout] = Options[PlotlyAddTraces]
 
 
 
-ListLinePlotly /: MakeBoxes[ListLinePlotly[args__], WLXForm] := With[{o = CreateFrontEndObject[ListLinePlotly[args]]}, MakeBoxes[o, WLXForm]]
-ListPlotly /: MakeBoxes[ListPlotly[args__], WLXForm] := With[{o = CreateFrontEndObject[ListPlotly[args]]}, MakeBoxes[o, WLXForm]]
 
-PlotlyInstance /: MakeBoxes[PlotlyInstance[uid_String, data_, _] , WLXForm] := With[{o = CreateFrontEndObject[{PlotlyNewPlot[data["Data"], data["Layout"], "SystemEvent"->uid ], FrontInstanceReference[uid]}]},
-    MakeBoxes[o, WLXForm]
-]
+
 
 End[]
 EndPackage[]

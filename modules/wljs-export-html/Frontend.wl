@@ -22,7 +22,8 @@ Begin["`Internal`"]
 rootFolder = $InputFileName // DirectoryName;
 AppExtensions`TemplateInjection["SettingsFooter"] = ImportComponent[FileNameJoin[{rootFolder, "Templates", "Settings.wlx"}] ];
 
-{loadSettings, storeSettings}        = ImportComponent["Frontend/Settings.wl"];
+Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 settings = <||>;
 
@@ -38,7 +39,7 @@ EventHandler[AppExtensions`AppEvents// EventClone, {
 Needs["CoffeeLiqueur`Extensions`ExportImport`HTML`" -> "html`", FileNameJoin[{rootFolder, "Formats", "HTML", "HTML.wl"}] ];
 
 HTMLFileQ[path_] := If[FileExtension[path] === "html", html`Static`check[path], False ];
-CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->html`Static`decode], ""}&
 ]
 
@@ -46,21 +47,21 @@ CoffeeLiqueur`Notebook`Views`Router[any_?HTMLFileQ, appevents_String] := With[{}
 Needs["CoffeeLiqueur`Extensions`ExportImport`Markdown`" -> "markdown`", FileNameJoin[{rootFolder, "Formats", "Markdown", "Markdown.wl"}] ];
 
 MDFileQ[path_] := FileExtension[path] === "md"
-CoffeeLiqueur`Notebook`Views`Router[any_?MDFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?MDFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->markdown`decode], ""}&
 ]
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`Mathematica`" -> "mathematica`", FileNameJoin[{rootFolder, "Formats", "Mathematica", "Mathematica.wl"}] ];
 
 NBFileQ[path_] := FileExtension[path] === "nb"
-CoffeeLiqueur`Notebook`Views`Router[any_?NBFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?NBFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->mathematica`decode[##] ], ""}
 ]&
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`WLW`" -> "wlw`", FileNameJoin[{rootFolder, "Formats", "WLW.wl"}] ];
 
 WLEFileQ[path_] := FileExtension[path] === "wlw"
-CoffeeLiqueur`Notebook`Views`Router[any_?WLEFileQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?WLEFileQ, appevents_String, _] := With[{},
     {LoaderComponent[##, "Path"->any, "Decoder"->wlw`execute[##] ], ""}
 ]&
 
@@ -229,75 +230,7 @@ EventHandler[AppExtensions`AppProtocol, {
                 ] ];
             ];
         ];
-    ],
-
-    "cmd_share" -> Function[assoc, Module[{settings = <||>}, 
-        loadSettings[settings];
-
-        Echo[">> Handling cmd share ! >>"];
-        Echo[">> default type: static html"];
-        With[{
-            input = Lookup[assoc, "input", assoc["i"] ] // URLDecode,
-            output = If[# === Null, Null, # // URLDecode] &@ Lookup[assoc, "output", Lookup[assoc, "o", Null] ]
-        },
-        
-            If[!FileExistsQ[input],
-                Return["Input file "<>ToString[input]<>" does not exist"];
-            ];
-
-            If[FileExtension[input] =!= "wln",
-                Return["Input file must be .wln"];
-            ];
-
-            With[{
-                notebook = nb`Deserialize[ Import[input, "WL"] ]
-            },
-                If[!MatchQ[notebook, _nb`NotebookObj],
-                    Return["Failed to import notebook"];                
-                ];
-
-                notebook["Path"] = input;
-
-                With[{
-                    path = DirectoryName[ notebook["Path"] ],
-                    name = FileBaseName[ notebook["Path"] ],
-                    ext  = AppExtensions`Templates
-                },  
-
-                    If[KeyExistsQ[assoc, "cdn"],
-                        settings["ExportHTMLUseCDN"] = True;
-                    ];
-
-                    With[{result = Switch[Lookup[assoc, "type", Lookup[assoc, "t", "html"] ],
-                        "html",
-                        html`Static`export[output, notebook, path, name, ext, settings, <||>],
-
-                        "md",
-                        markdown`export[output, notebook, path, name, ext, settings, <||>],
-
-                        "mdx",
-                        mdx`Static`export[output, notebook, path, name, ext, settings, <||>],
-
-                        "nb",
-                        mathematica`export[output, notebook, path, name, ext, settings, <||>],
-   
-                        _,
-                        html`Static`export[output, notebook, path, name, ext, settings, <||>]
-                    ]},
-                    
-
-                        Delete /@ notebook["Cells"];
-                        notebook["Cells"] = .;
-                        Delete[notebook];
-
-                        result
-                    ]
-
-                ]
-                
-            ]
-        ]
-    ] ]
+    ]
 }]
 
 universalStaticExport[as_Association] := universalStaticExport[as["Notebook"], as["Path"], as["Type"] ]

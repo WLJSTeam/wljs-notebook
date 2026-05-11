@@ -11,6 +11,25 @@ ipcRenderer.on('zoomOut', () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() / 1.5)
 })
 
+let loadingstyle = null;
+
+ipcRenderer.on('will-navigate', () => {
+  if (loadingstyle != null) return;
+  loadingstyle = document.createElement('style');
+  loadingstyle.textContent = `
+    * {
+      cursor: wait !important;
+    }
+  `;
+
+  document.head.appendChild(loadingstyle);
+});
+
+ipcRenderer.on('did-finish-load', () => {
+  if (loadingstyle == null) return;
+  loadingstyle.remove();
+  loadingstyle = null;
+});
 
 contextBridge.exposeInMainWorld('electronAPI', {
   startDrag: (fileName) => ipcRenderer.send('ondragstart', fileName),
@@ -19,6 +38,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     const path = webUtils.getPathForFile(file)
     return path
   },
+
+  onReloadFrame: (callback) => ipcRenderer.on('reload_iframe', callback),
 
   onfocus: (callback) =>  ipcRenderer.on('focus', callback),
   onblur: (callback) => ipcRenderer.on('blur', callback),

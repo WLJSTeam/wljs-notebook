@@ -18,7 +18,9 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 System`RowBoxFlatten; (* needed to fix Kernel and Master definitions *)
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 (*                                             ***                                                 *)
 (*                                         HTML Converter                                          *)

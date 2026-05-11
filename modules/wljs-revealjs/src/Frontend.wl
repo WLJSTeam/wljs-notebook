@@ -28,7 +28,7 @@ evaluator  = StandardEvaluator`StandardEvaluator["Name" -> "RevealJS Evaluator",
         ,
 
             With[{p = Import[FileNameJoin[{rootFolder, "Preload.wl"}], "String"]},
-                GenericKernel`Init[k,   ImportString[p, "WL"]; , "Once"->True];
+                GenericKernel`Send[k,   ImportString[p, "WL"]; , "Once"->True];
             ];
 
             True

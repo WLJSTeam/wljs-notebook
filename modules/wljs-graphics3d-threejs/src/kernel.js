@@ -4077,144 +4077,265 @@ g3dComplex.Arrow = async (args, env) => {
   }
 }
 
+const normalizeComplexLineIndices = (raw) => {
+  if (raw instanceof NumericArrayObject) {
+    raw = raw.buffer;
+  }
 
+  // Multiple lines: [[1,2,3], [4,5,6]]
+  if (
+    Array.isArray(raw) &&
+    raw.length > 0 &&
+    (Array.isArray(raw[0]) || raw[0] instanceof NumericArrayObject)
+  ) {
+    return raw.map(part => {
+      if (part instanceof NumericArrayObject) part = part.buffer;
+      return Array.from(part, i => i - 1);
+    });
+  }
+
+  // Single line: [1,2,3]
+  return [Array.from(raw, i => i - 1)];
+};
+
+const maxOfArray = (arr) => {
+  let m = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > m) m = arr[i];
+  }
+  return m;
+};
+
+const makeComplexLineIndexAttribute = (indices, env) => {
+  const vertexCount =
+    env.vertices.position.count ??
+    env.vertices.position.array.length / 3;
+
+  const use32 = vertexCount > 65535 || maxOfArray(indices) > 65535;
+
+  const array = use32
+    ? new Uint32Array(indices)
+    : new Uint16Array(indices);
+
+  const attr = use32
+    ? new THREE.Uint32BufferAttribute(array, 1)
+    : new THREE.Uint16BufferAttribute(array, 1);
+
+  attr.setUsage(THREE.StreamDrawUsage);
+  return attr;
+};
+
+const applyComplexLineVertexAttributes = (geometry, vertices) => {
+  geometry.setAttribute('position', vertices.position);
+
+  if (vertices.colored) {
+    geometry.setAttribute('color', vertices.colors);
+  } else {
+    geometry.deleteAttribute('color');
+  }
+};
+
+const makeComplexLineMaterial = (env) => {
+  return new THREE.LineBasicMaterial({
+    linewidth: env.thickness,
+    color: env.color,
+    opacity: env.opacity,
+    vertexColors: !!env?.vertices?.colored,
+    transparent: env.opacity < 1.0
+  });
+};
 
 g3dComplex.Line = async (args, env) => {
-    
+  const raw = await interpretate(args[0], env);
+  const indexParts = normalizeComplexLineIndices(raw);
 
-    //vertices = env.vertices;
-    let geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', env.vertices.position);
-    env.local.geometry = geometry;
+  const material = makeComplexLineMaterial(env);
 
-    env.vertices.onResize.push((v) => g3dComplex.Line.reassign(v, env.local));
+  env.local.parts = [];
+  env.local.material = material;
 
-    let a = await interpretate(args[0], env);
+  for (const indices of indexParts) {
+    const geometry = new THREE.BufferGeometry();
 
-    if (a instanceof NumericArrayObject) {
-      a = a.buffer;
-    }
+    applyComplexLineVertexAttributes(geometry, env.vertices);
 
-    let indexes;
+    const indexAttr = makeComplexLineIndexAttribute(indices, env);
 
-    if (env.vertices.position.array.length > 65535) {
-      indexes = new THREE.Uint32BufferAttribute( new Uint32Array(a.map((e)=>e-1)), 1 );
-    } else {
-      indexes = new THREE.BufferAttribute( new Uint16Array(a.map((e)=>e-1)), 1 );
-    }
+    geometry.setIndex(indexAttr);
+    geometry.setDrawRange(0, indices.length);
 
-    env.local.indexes = indexes;    
-
-
-    geometry.setIndex(indexes);
-    env.local.range = a.length;
-
-    //geometry.setAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
-
-    let material;
-    
-    if (env?.vertices?.colored) {
-      geometry.setAttribute( 'color', env.vertices.colors );
-      material = new THREE.LineBasicMaterial({
-        linewidth: env.thickness,
-        color: env.color,
-        opacity: env.opacity,
-        vertexColors:true,
-        transparent: env.opacity < 1.0 ? true : false
-      });
-    } else {
-      material = new THREE.LineBasicMaterial({
-        linewidth: env.thickness,
-        color: env.color,
-        opacity: env.opacity,
-        transparent: env.opacity < 1.0 ? true : false
-      });
-    }
     const line = new THREE.Line(geometry, material);
 
-    env.local.line = line;
-
     env.mesh.add(line);
-    env.local.material = material;
 
-    return line;
-}
+    env.local.parts.push({
+      line,
+      geometry,
+      indexes: indexAttr,
+      range: indices.length
+    });
+  }
 
-g3dComplex.Line.virtual = true
+  // Backwards compatibility for code that expects env.local.line / geometry / indexes.
+  if (env.local.parts.length === 1) {
+    const only = env.local.parts[0];
+
+    env.local.line = only.line;
+    env.local.geometry = only.geometry;
+    env.local.indexes = only.indexes;
+    env.local.range = only.range;
+  } else {
+    env.local.lines = env.local.parts.map(p => p.line);
+  }
+
+  env.vertices.onResize.push((v) => g3dComplex.Line.reassign(v, env.local));
+
+  return env.local.parts.length === 1
+    ? env.local.parts[0].line
+    : env.local.parts.map(p => p.line);
+};
+
+g3dComplex.Line.virtual = true;
 
 g3dComplex.Line.update = async (args, env) => {
-  // 1) get new index data (zero‑based)
   if (env.fence) await env.fence();
 
-  let newBuffer = await interpretate(args[0], env);
-  if (newBuffer instanceof NumericArrayObject) {
-    newBuffer = newBuffer.buffer;
+  const raw = await interpretate(args[0], env);
+  const indexParts = normalizeComplexLineIndices(raw);
+
+  if (!env.local.parts) {
+    env.local.parts = [{
+      line: env.local.line,
+      geometry: env.local.geometry,
+      indexes: env.local.indexes,
+      range: env.local.range
+    }];
   }
-  newBuffer = newBuffer.map(el => el - 1);
-  env.local.range = newBuffer.length;
 
-  const geom = env.local.geometry;
-  const oldIdx = env.local.indexes;
+  // Remove extra old lines if the new input has fewer parts.
+  while (env.local.parts.length > indexParts.length) {
+    const part = env.local.parts.pop();
 
-  // 2) do we need to grow the attribute?
-  if (oldIdx.count < newBuffer.length) {
-    console.warn("Resizing index buffer for Line…");
+    env.mesh.remove(part.line);
+    part.geometry.dispose();
+  }
 
-    // decide between 16‑bit and 32‑bit
-    const use32 = newBuffer.length > 30000;
-    const ArrayCtor  = use32 ? Uint32Array  : Uint16Array;
-    const AttrCtor   = use32 ? THREE.Uint32BufferAttribute : THREE.Uint16BufferAttribute;
+  // Add missing lines if the new input has more parts.
+  while (env.local.parts.length < indexParts.length) {
+    const geometry = new THREE.BufferGeometry();
 
-    // allocate double the length
-    const newCount = newBuffer.length * 2;
-    const newArr   = new ArrayCtor(newCount);
-    const newIdx   = new AttrCtor(newArr, 1);
+    applyComplexLineVertexAttributes(geometry, env.vertices);
 
-    newIdx.setUsage(THREE.StreamDrawUsage);
-    newIdx.set(newBuffer);      // copy your data in
-    newIdx.needsUpdate = true;
+    const line = new THREE.Line(geometry, env.local.material);
 
-    // swap it onto the geometry
-    geom.setIndex(newIdx);
+    env.mesh.add(line);
 
-    // remember for next time
-    env.local.indexes = newIdx;
+    env.local.parts.push({
+      line,
+      geometry,
+      indexes: null,
+      range: 0
+    });
+  }
 
+  for (let i = 0; i < indexParts.length; i++) {
+    const indices = indexParts[i];
+    const part = env.local.parts[i];
+
+    const oldIdx = part.indexes;
+    const vertexCount =
+      env.vertices.position.count ??
+      env.vertices.position.array.length / 3;
+
+    const needs32 = vertexCount > 65535 || maxOfArray(indices) > 65535;
+    const oldIs32 = oldIdx?.array instanceof Uint32Array;
+
+    const needsNewBuffer =
+      !oldIdx ||
+      oldIdx.count < indices.length ||
+      oldIs32 !== needs32;
+
+    if (needsNewBuffer) {
+      const newCapacity = oldIdx
+        ? Math.max(indices.length, oldIdx.count * 2)
+        : indices.length;
+
+      const array = needs32
+        ? new Uint32Array(newCapacity)
+        : new Uint16Array(newCapacity);
+
+      array.set(indices);
+
+      const newIdx = needs32
+        ? new THREE.Uint32BufferAttribute(array, 1)
+        : new THREE.Uint16BufferAttribute(array, 1);
+
+      newIdx.setUsage(THREE.StreamDrawUsage);
+      newIdx.needsUpdate = true;
+
+      part.geometry.setIndex(newIdx);
+
+      part.indexes = newIdx;
+    } else {
+      oldIdx.array.set(indices, 0);
+      oldIdx.needsUpdate = true;
+    }
+
+    part.range = indices.length;
+    part.geometry.setDrawRange(0, indices.length);
+  }
+
+  // Keep old single-line fields valid.
+  if (env.local.parts.length === 1) {
+    const only = env.local.parts[0];
+
+    env.local.line = only.line;
+    env.local.geometry = only.geometry;
+    env.local.indexes = only.indexes;
+    env.local.range = only.range;
+
+    delete env.local.lines;
   } else {
-    // 3) no resize needed, just overwrite existing buffer
-    oldIdx.set(newBuffer);
-    oldIdx.needsUpdate = true;
+    env.local.lines = env.local.parts.map(p => p.line);
   }
 
-  // 4) always update draw range
-  geom.setDrawRange(0, env.local.range);
-
-  // 5) trigger a render
   env.wake(true);
 };
 
 g3dComplex.Line.destroy = (args, env) => {
-  env.local.geometry.dispose();
-  env.local.material.dispose();
-}
+  if (env.local.parts) {
+    env.local.parts.forEach(part => {
+      part.geometry.dispose();
+    });
+  } else if (env.local.geometry) {
+    env.local.geometry.dispose();
+  }
+
+  if (env.local.material) {
+    env.local.material.dispose();
+  }
+};
 
 g3dComplex.Line.reassign = (v, local) => {
-      console.warn('Reassign geometry of Line');
-      //
-      const g = local.geometry;
+  console.warn('Reassign geometry of Line');
 
-      g.setAttribute('position', v.position);
-      if (v.colored)
-        g.setAttribute( 'color', v.colors );
+  if (local.parts) {
+    for (const part of local.parts) {
+      applyComplexLineVertexAttributes(part.geometry, v);
+      part.geometry.setIndex(part.indexes);
+      part.geometry.setDrawRange(0, part.range);
+    }
+    return;
+  }
 
-      g.setIndex(local.indexes);
-      g.setDrawRange(0, local.range);
+  // Fallback for old single-line state.
+  const g = local.geometry;
 
-      
-      //if (local.geometry) local.geometry.dispose();
-      //local.geometry = g;
-      //local.line.geometry = g;
-}
+  applyComplexLineVertexAttributes(g, v);
+
+  g.setIndex(local.indexes);
+  g.setDrawRange(0, local.range);
+};
 
 g3d.Line = async (args, env) => {
   
@@ -5329,9 +5450,7 @@ if ('RTX' in options) {
   }
 }
 
-if (!GUI && PathRendering) {
-  GUI           = (await import('dat.gui')).GUI;  
-}
+
 
 
 
@@ -5451,15 +5570,8 @@ if (options.SleepAfter) {
   params.sleepAfter = await interpretate(options.SleepAfter, env);
 }
 //Setting GUI
-let gui;
-let guiContainer;
 
 if (PathRendering) {
-  gui = new GUI({ autoPlace: false, name: '...', closed:true });
-
-  guiContainer = document.createElement('div');
-  guiContainer.classList.add('graphics3d-controller');
-  guiContainer.appendChild(gui.domElement);
 
   env.local.animateOnce = animateOnce;
 
@@ -5474,8 +5586,7 @@ if (PathRendering) {
     }, 'image/png', 1.0);
   }
 
-  const button = { Save:function(){ takeScheenshot() }};
-  gui.add(button, 'Save');
+
 }
 
 
@@ -5538,8 +5649,7 @@ if (env.element.classList.contains('slide-frontend-object')) {
 
 
 if (ImageSize[0] > 250 && ImageSize[1] > 150 && PathRendering) {
-  env.local.guiContainer = guiContainer;
-  container.appendChild( guiContainer );
+
 }
 
 const aspect = ImageSize[0]/ImageSize[1];
@@ -6482,30 +6592,12 @@ function hideShowOverlapping(arr, onlyHide = false) {
       //if (azimuth < 0.78 - 2*1.57  && azimuth > - 0.78 + 2*1.57 ) orthoCamera.layers.enable(13);
     };
 
-    if (!noGrid) setTimeout(calcGrid, 100);
+    if (!noGrid) setTimeout(calcGrid, 300);
 
     controls.addEventListener('end', calcGrid);
 
     //if (!noGrid) {
-      gui?.add({'Grid': !noGrid}, 'Grid').name('Grid').listen().onChange( (value) => {
-        if (!value) { 
-          orthoCamera.layers.disable(10);
-          orthoCamera.layers.disable(11);
-          orthoCamera.layers.disable(12);
-          orthoCamera.layers.disable(13);
-          orthoCamera.layers.disable(14);
-          orthoCamera.layers.disable(15);
-
-          //ticksLabels.x.forEach((el) => el.element.classList.add('opacity-0'));
-          //ticksLabels.y.forEach((el) => el.element.classList.add('opacity-0'));
-          //ticksLabels.z.forEach((el) => el.element.classList.add('opacity-0'));
-
-          noGrid = true;
-        } else {
-          noGrid = false;
-          calcGrid();
-        }
-      })
+    
     //}
   }
 }
@@ -6931,39 +7023,6 @@ updateCamera( params.cameraProjection );
 if (PathRendering) {
   scene.backgroundAlpha = params.backgroundAlpha;
 
-  const ptFolder = gui?.addFolder( 'Path Tracing' );
-
-ptFolder?.add( params, 'runInfinitely');  
-
-
-ptFolder?.add( params, 'samplesPerFrame', 1, 50, 1 );
-
-ptFolder?.add( params, 'multipleImportanceSampling').onChange(() => {
-
-  ptRenderer.multipleImportanceSampling = params.multipleImportanceSampling;
-  ptRenderer.updateLights();
-  ptRenderer.updateMaterials();
-
-}); 
-
-
-//const evFolder = gui.addFolder( 'Environment' );
-
-ptFolder?.add( params, 'environmentIntensity', 0, 3, 0.1).onChange( () => {
-
-  ptRenderer.reset();
-  updateSettings();
-  ptRenderer.updateEnvironment();
-
-} ); 
-
-ptFolder?.add( params, 'backgroundAlpha', 0, 1, 0.1).onChange( () => {
-
-  ptRenderer.reset();
-  updateSettings();
-  ptRenderer.updateEnvironment();
-
-} ); 
 
 
 
@@ -6992,34 +7051,7 @@ evFolder.addColor( params, 'bottomColor').onChange( () => {
 } );*/
 
 //evFolder.close();  
-
-
-ptFolder?.add( params, 'bounces', 1, 30, 1 ).onChange( () => {
-
-  ptRenderer.reset();
-  updateSettings();
-
-} );
-
 }
-
-const cameraFolder = gui?.addFolder( 'Camera' );
-cameraFolder?.add( params, 'sleepAfter', 1000, 30000, 10 );
-cameraFolder?.add( params, 'cameraProjection', [ 'Perspective', 'Orthographic' ] ).onChange( v => {
-
-  updateCamera( v );
-  updateSettings();
-
-} );
-
-cameraFolder?.add( params, 'acesToneMapping' ).onChange( value => {
-
-  renderer.toneMapping = value ? THREE.ACESFilmicToneMapping : THREE.NoToneMapping;
-  updateSettings();
-
-} );
-
-cameraFolder?.close();  
 
 animate();
 
@@ -7035,12 +7067,29 @@ core.Graphics3D.destroy = (args, env) => {
   env.local.renderer.forceContextLoss()
 
   if (env.local.labelContainer) env.local.labelContainer.remove();
-  if (env.local.guiContainer) env.local.guiContainer.remove();
   env.local.rendererContainer.remove();
   env.local.element.remove();
 }
 
 core.Graphics3D.virtual = true
+function isList(x) {
+  return Array.isArray(x) && x[0] === 'List';
+}
+
+function getDimsUpTo4(arr) {
+  const dims = [];
+
+  let current = arr;
+
+  while (isList(current) && dims.length < 4) {
+    dims.push(current.length - 1);
+
+    // descend into first element
+    current = current[1];
+  }
+
+  return dims;
+}
 
 const numericAccelerator = {};
   numericAccelerator.TypeReal    = {}
@@ -7136,68 +7185,171 @@ const numericAccelerator = {};
   }
 
   numericAccelerator.NumericArray = (args, env) => {
-    //console.log(args);
-    const type = types[interpretate(args[1])];
-    //console.log('ACCELERATOR!');
-    
-    
-    const dims = [];
-    let size = (args[0].length - 1);
-    dims.push(size);
+  const type = types[interpretate(args[1])];
 
-    if (args[0][1][0] === 'List') {
-      size = size * (args[0][1].length - 1);
-      dims.push((args[0][1].length - 1));
+  const dims = getDimsUpTo4(args[0]);
+  const size = dims.reduce((a, b) => a * b, 1);
 
-      if (args[0][1][1][0] === 'List') {
-        size = size * (args[0][1][1].length - 1);
-        dims.push((args[0][1][1].length - 1));
-      }
-    }
+  const array = new type.constructor(size);
 
-    //const time = performance.now();
-    //const benchmark = [];
-    
-    const array = new type.constructor(size);
-    //benchmark.push(performance.now() - time);
-    readArray(args[0], {index: 0, array: array});
-    //benchmark.push(performance.now() - time);
-    
-    //benchmark.push(performance.now() - time);
-    //console.warn(benchmark);
-    return {buffer: array, dims: dims};
-  }
+  readArray(args[0], { index: 0, array });
+
+  return {
+    buffer: array,
+    dims: dims
+  };
+};
 
 numericAccelerator.NumericArray.update = numericAccelerator.NumericArray;
+const getImageChannels = (array) => {
+  const dims = array?.dims;
 
- 
+  if (!Array.isArray(dims)) {
+    console.error("Image3D data has no dims:", array);
+    throw new Error("Image3D data must have dims");
+  }
+
+  // Grayscale volume: [depth, width, height]
+  if (dims.length === 3) return 1;
+
+  // Colored volume: [depth, width, height, channels]
+  if (dims.length === 4 && (dims[3] === 3 || dims[3] === 4)) {
+    return dims[3];
+  }
+
+  console.error("Unsupported Image3D dimensions:", dims);
+  throw new Error("Image3D expects dims [depth,width,height] or [depth,width,height,3/4]");
+};
+
+const getVoxelCount = (array) => {
+  return array.dims[0] * array.dims[1] * array.dims[2];
+};
+
+const toUint8 = (v) => {
+  return Math.max(0, Math.min(255, Math.round(v * 255)));
+};
+
+const getReal32Source = (array) => {
+  const src = array.buffer;
+
+  if (ArrayBuffer.isView(src)) return src;
+  if (src instanceof ArrayBuffer) return new Float32Array(src);
+  if (Array.isArray(src)) return src;
+
+  console.error("Unsupported Real32 buffer:", src);
+  throw new Error("Unsupported Real32 buffer");
+};
+
+const getByteSource = (array) => {
+  const src = array.buffer;
+
+  if (ArrayBuffer.isView(src)) return src;
+  if (src instanceof ArrayBuffer) return new Uint8ClampedArray(src);
+  if (Array.isArray(src)) return src;
+
+  console.error("Unsupported Byte buffer:", src);
+  throw new Error("Unsupported Byte buffer");
+};
+
 const imageTypes = {
   Real32: {
     constructor: Float32Array,
-    convert: (array) => {
-    
-        const size = array.dims[0] * array.dims[1] * array.dims[2];
-        const src = array.buffer;
-        const data = new Uint8ClampedArray(size);
-        let i;
-        for (i = 0; i < size; i++) {
-          const g = (src[i]*255) >>> 0;
-          data[i] = g;
-        } 
-        return data;          
 
-      console.error('This is not an image data!');
-      throw array;
-  }
+    convert: (array) => {
+      const channels = getImageChannels(array);
+      const voxelCount = getVoxelCount(array);
+      const src = getReal32Source(array);
+
+      if (channels === 1) {
+        const data = new Uint8ClampedArray(voxelCount);
+
+        for (let i = 0; i < voxelCount; i++) {
+          data[i] = toUint8(src[i]);
+        }
+
+        return {
+          data,
+          channels,
+          uploadChannels: 1,
+          formatName: "Red",
+          internalFormat: "R8"
+        };
+      }
+
+      // WebGL / Three.js Data3DTexture can be problematic with RGBFormat.
+      // So RGB is padded to RGBA and uploaded as RGBAFormat.
+      const data = new Uint8ClampedArray(voxelCount * 4);
+
+      for (let i = 0; i < voxelCount; i++) {
+        const srcStride = i * channels;
+        const dstStride = i * 4;
+
+        data[dstStride]     = toUint8(src[srcStride]);
+        data[dstStride + 1] = toUint8(src[srcStride + 1]);
+        data[dstStride + 2] = toUint8(src[srcStride + 2]);
+        data[dstStride + 3] = channels === 4 ? toUint8(src[srcStride + 3]) : 255;
+      }
+
+      return {
+        data,
+        channels,
+        uploadChannels: 4,
+        formatName: "RGBA",
+        internalFormat: "RGBA8"
+      };
+    }
   },
 
   Byte: {
     constructor: Uint8ClampedArray,
+
     convert: (array) => {
-        return array.buffer;
+      const channels = getImageChannels(array);
+      const voxelCount = getVoxelCount(array);
+      const src = getByteSource(array);
+
+      if (channels === 1) {
+        let data;
+
+        if (ArrayBuffer.isView(src)) {
+          data = src;
+        } else {
+          data = new Uint8ClampedArray(src);
+        }
+
+        return {
+          data,
+          channels,
+          uploadChannels: 1,
+          formatName: "Red",
+          internalFormat: "R8"
+        };
+      }
+
+      // RGB/RGBA data is uploaded as RGBA.
+      // For RGB input, alpha is filled with 255.
+      const data = new Uint8ClampedArray(voxelCount * 4);
+
+      for (let i = 0; i < voxelCount; i++) {
+        const srcStride = i * channels;
+        const dstStride = i * 4;
+
+        data[dstStride]     = src[srcStride];
+        data[dstStride + 1] = src[srcStride + 1];
+        data[dstStride + 2] = src[srcStride + 2];
+        data[dstStride + 3] = channels === 4 ? src[srcStride + 3] : 255;
+      }
+
+      return {
+        data,
+        channels,
+        uploadChannels: 4,
+        formatName: "RGBA",
+        internalFormat: "RGBA8"
+      };
+    }
   }
-  }  
-}
+};
 
 let chroma;
 
@@ -7217,12 +7369,13 @@ uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
 
 // Output.
-out vec3 vOrigin; // Output ray origin.
-out vec3 vDirection;  // Output ray direction.
+out vec3 vOrigin;
+out vec3 vDirection;
 
 void main() {
   // Compute the ray origin in model space.
   vOrigin = vec3(inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
+
   // Compute ray direction in model space.
   vDirection = position - vOrigin;
 
@@ -7231,36 +7384,83 @@ void main() {
 }
 `;
 
+const image3DComposeShader = `
+vec4 compose(vec4 color, vec3 entryPoint, vec3 rayDir, float samples, float tStart, float tEnd, float tIncr) {
+  float density = 0.0;
+  vec4 bestVoxelColor = vec4(0.0);
+
+  for (float i = 0.0; i < samples; i += 1.0) {
+    float t = tStart + tIncr * i;
+    vec3 p = entryPoint + rayDir * t;
+
+    if (hasVoxelColor) {
+      vec4 sampleValue = texture(dataTexture, p);
+
+      // Intensity used only for MIP selection.
+      float value = max(max(sampleValue.r, sampleValue.g), sampleValue.b);
+
+      if (value > density) {
+        density = value;
+        bestVoxelColor = sampleValue;
+      }
+    } else {
+      float value = sampleData(p);
+
+      if (value > density) {
+        density = value;
+      }
+    }
+
+    if (density >= 1.0 || t > tEnd) {
+      break;
+    }
+  }
+
+  if (hasVoxelColor) {
+    color.rgb = bestVoxelColor.rgb;
+
+    // For real RGBA volumes, use voxel alpha.
+    // For RGB volumes, use intensity as opacity.
+    color.a = alphaScale * (hasVoxelAlpha ? bestVoxelColor.a : density);
+  } else {
+    color.rgb = sampleColor(density).rgb;
+    color.a = alphaScale * (invertColor ? 1.0 - density : density);
+  }
+
+  return color;
+}
+`;
+
 const image3DFragmentShader = `
-precision highp sampler3D; // Precision for 3D texture sampling.
-precision highp float; // Precision for floating point numbers.
+precision highp sampler3D;
+precision highp float;
 
-uniform sampler3D dataTexture; // Sampler for the volume data texture.
-uniform sampler2D colorTexture; // Sampler for the color palette texture.
-uniform float samplingRate; // The sampling rate.
-uniform float threshold; // Threshold to use for isosurface-style rendering.
-uniform float alphaScale; // Scaling of the color alpha value.
-uniform bool invertColor; // Option to invert the color palette.
+uniform sampler3D dataTexture;
+uniform sampler2D colorTexture;
+uniform float samplingRate;
+uniform float threshold;
+uniform float alphaScale;
+uniform bool invertColor;
+uniform bool hasVoxelColor;
+uniform bool hasVoxelAlpha;
 
-in vec3 vOrigin; // The interpolated ray origin from the vertex shader.
-in vec3 vDirection; // The interpolated ray direction from the vertex shader.
+in vec3 vOrigin;
+in vec3 vDirection;
 
-out vec4 frag_color; // Output fragment color.
+out vec4 frag_color;
 
-// Sampling of the volume data texture.
+// Sampling of grayscale volume data.
 float sampleData(vec3 coord) {
   return texture(dataTexture, coord).x;
 }
 
 // Sampling of the color palette texture.
 vec4 sampleColor(float value) {
-  // In case the color palette should be inverted, invert the texture coordinate to sample the color texture.
   float x = invertColor ? 1.0 - value : value;
   return texture(colorTexture, vec2(x, 0.5));
 }
 
 // Intersection of a ray and an axis-aligned bounding box.
-// Returns the intersections as the minimum and maximum distance along the ray direction. 
 vec2 intersectAABB(vec3 rayOrigin, vec3 rayDir, vec3 boxMin, vec3 boxMax) {
   vec3 tMin = (boxMin - rayOrigin) / rayDir;
   vec3 tMax = (boxMax - rayOrigin) / rayDir;
@@ -7272,128 +7472,54 @@ vec2 intersectAABB(vec3 rayOrigin, vec3 rayDir, vec3 boxMin, vec3 boxMax) {
   return vec2(tNear, tFar);
 }
 
-// Volume sampling and composition.
-// Note that the code is inserted based on the selected algorithm in the user interface.
-vec4 compose(vec4 color, vec3 entryPoint, vec3 rayDir, float samples, float tStart, float tEnd, float tIncr) {
-  // Composition of samples using maximum intensity projection.
-  // Loop through all samples along the ray.
-  float density = 0.0;
-  for (float i = 0.0; i < samples; i += 1.0) {
-    // Determine the sampling position.
-    float t = tStart + tIncr * i; // Current distance along ray.
-    vec3 p = entryPoint + rayDir * t; // Current position.
-
-    // Sample the volume data at the current position. 
-    float value = sampleData(p);      
-
-    // Keep track of the maximum value.
-    if (value > density) {
-      // Store the value if it is greater than the previous values.
-      density = value;
-    }
-
-    // Early exit the loop when the maximum possible value is found or the exit point is reached. 
-    if (density >= 1.0 || t > tEnd) {
-      break;
-    }
-  }
-
-  // Convert the found value to a color by sampling the color palette texture.
-  color.rgb = sampleColor(density).rgb;
-  // Modify the alpha value of the color to make lower values more transparent.
-  color.a = alphaScale * (invertColor ? 1.0 - density : density);
-
-  // Return the color for the ray.
-  return color;
-}
+${image3DComposeShader}
 
 void main() {
-  // Determine the intersection of the ray and the box.
   vec3 rayDir = normalize(vDirection);
+
   vec3 aabbmin = vec3(-0.5);
   vec3 aabbmax = vec3(0.5);
+
   vec2 intersection = intersectAABB(vOrigin, rayDir, aabbmin, aabbmax);
 
-  // Initialize the fragment color.
   vec4 color = vec4(0.0);
 
-  // Check if the intersection is valid, i.e., if the near distance is smaller than the far distance.
   if (intersection.x <= intersection.y) {
-    // Clamp the near intersection distance when the camera is inside the box so we do not start sampling behind the camera.
     intersection.x = max(intersection.x, 0.0);
-    // Compute the entry and exit points for the ray.
+
     vec3 entryPoint = vOrigin + rayDir * intersection.x;
     vec3 exitPoint = vOrigin + rayDir * intersection.y;
 
-    // Determine the sampling rate and step size.
-    // Entry Exit Align Corner sampling as described in
-    // Volume Raycasting Sampling Revisited by Steneteg et al. 2019
     vec3 dimensions = vec3(textureSize(dataTexture, 0));
     vec3 entryToExit = exitPoint - entryPoint;
+
     float samples = ceil(samplingRate * length(entryToExit * (dimensions - vec3(1.0))));
     float tEnd = length(entryToExit);
     float tIncr = tEnd / samples;
     float tStart = 0.5 * tIncr;
 
-    // Determine the entry point in texture space to simplify texture sampling.
     vec3 texEntry = (entryPoint - aabbmin) / (aabbmax - aabbmin);
 
-    // Sample the volume along the ray and convert samples to color.
     color = compose(color, texEntry, rayDir, samples, tStart, tEnd, tIncr);
   }
 
-  // Return the fragment color.
   frag_color = color;
-}
-`;
-
-const image3DComposeShader = `
-vec4 compose(vec4 color, vec3 entryPoint, vec3 rayDir, float samples, float tStart, float tEnd, float tIncr) {
-  // Composition of samples using maximum intensity projection.
-  // Loop through all samples along the ray.
-  float density = 0.0;
-  for (float i = 0.0; i < samples; i += 1.0) {
-    // Determine the sampling position.
-    float t = tStart + tIncr * i; // Current distance along ray.
-    vec3 p = entryPoint + rayDir * t; // Current position.
-
-    // Sample the volume data at the current position. 
-    float value = sampleData(p);      
-
-    // Keep track of the maximum value.
-    if (value > density) {
-      // Store the value if it is greater than the previous values.
-      density = value;
-    }
-
-    // Early exit the loop when the maximum possible value is found or the exit point is reached. 
-    if (density >= 1.0 || t > tEnd) {
-      break;
-    }
-  }
-
-  // Convert the found value to a color by sampling the color palette texture.
-  color.rgb = sampleColor(density).rgb;
-  // Modify the alpha value of the color to make lower values more transparent.
-  color.a = alphaScale * (invertColor ? 1.0 - density : density);
-
-  // Return the color for the ray.
-  return color;
 }
 `;
 
 g3d['CoffeeLiqueur`Extensions`Graphics3D`Private`SampledColorFunction'] = async (args, env) => {
   const colors = await interpretate(args[0], env);
+
   let type = "RGB";
+
   if (colors[0].length > 3) {
     type = "RGBA";
   }
 
-  return {colors: colors, type: type};
-}
+  return { colors, type };
+};
 
 core.Image3D = async (args, env) => {
-
   await interpretate.shared.THREE.load();
 
   if (!THREE) {
@@ -7401,324 +7527,312 @@ core.Image3D = async (args, env) => {
     OrbitControls = interpretate.shared.THREE.OrbitControls;
     RGBELoader = interpretate.shared.THREE.RGBELoader;
     CSS2D = interpretate.shared.THREE.CSS2D;
+
     VariableTube = await import('./../libs/tubes/index.js');
     VariableTube = VariableTube.VariableTube;
   }
 
-  if (!GUI) {
-    GUI           = (await import('dat.gui')).GUI;  
-  }
+  const options = await core._getRules(args, {
+    ...env,
+    context: g3d,
+    hold: true
+  });
 
-  const gui = new GUI({ autoPlace: false, name: '...', closed:true });
+  let data = await interpretate(args[0], {
+    ...env,
+    context: [numericAccelerator, g3d]
+  });
 
-
-  if (!chroma) {
-    chroma = (await import('chroma-js')).default;
-  }
-
-  const options = await core._getRules(args, {...env, context: g3d, hold:true});
-
-
-  let data = await interpretate(args[0], {...env, context: [numericAccelerator, g3d]});
-
-
-
-  let type = 'Real32';
+  let typeName = "Real32";
 
   if (args.length - Object.keys(options).length > 1) {
-    type = interpretate(args[1]);
+    typeName = await interpretate(args[1], env);
   }
 
-  console.log(args);
+  if (!(typeName in imageTypes)) {
+    console.error("Unknown Image3D type:", typeName);
+    throw new Error(`Unknown Image3D type: ${typeName}`);
+  }
 
-  type = imageTypes[type];
-
-
-
-
-  let imageData;
-
-  //if not typed array
   if (Array.isArray(data)) {
-    console.warn('Will be slow. Not a typed array');
-    data = {buffer: data.flat(Infinity), dims: checkdims(data)};
+    console.warn("Will be slow. Not a typed array");
+    data = {
+      buffer: data.flat(Infinity),
+      dims: checkdims(data)
+    };
   }
 
-  imageData = type.convert(data);
-  
+  const converted = imageTypes[typeName].convert(data);
 
-  console.warn('ImageSize');
+  const imageData = converted.data;
+  const channels = converted.channels;
+  const hasVoxelColor = channels === 3 || channels === 4;
+  const hasVoxelAlpha = channels === 4;
+
+  console.warn("ImageSize");
   console.warn(data.dims);
+  console.warn("channels", channels);
+  console.warn("uploadChannels", converted.uploadChannels);
+  console.warn("imageData length", imageData.length);
+
   const height = data.dims[2];
   const width  = data.dims[1];
   const depth  = data.dims[0];
 
   const renderProps = {
-    //rotations: Array(1) ["y"]
     speed: 0.0001,
-    samplingRate: 1,
+    samplingRate: 2.0,
     threshold: 0.5054,
     palette: "Greys",
     invertColor: false,
-    alphaScale: 1.1916
+    alphaScale: 1.0
   };
 
-  if ('SamplingRate' in options) {
-    renderProps.samplingRate = await interpretate(options.SamplingRate, env);
-  }
-
-  if ('InvertColor' in options) {
-    renderProps.invertColor = await interpretate(options.InvertColor, env);
-  }
-
-  if ('AlphaScale' in options) {
-    renderProps.alphaScale = await interpretate(options.AlphaScale, env);
-  }  
-
-  if ('Palette' in options) {
-    renderProps.palette = await interpretate(options.Palette, env);
-  }   
-
-
-
   const volumeTexture = new THREE.Data3DTexture(
-    imageData, // The data values stored in the pixels of the texture.
-    height, // Width of texture.
-    width, // Height of texture.
-    depth // Depth of texture.
+    imageData,
+    height,
+    width,
+    depth
   );
-  
-  volumeTexture.format = THREE.RedFormat; // Our texture has only one channel (red).
-  volumeTexture.type = THREE.UnsignedByteType; // The data type is 8 bit unsighed integer.
-  volumeTexture.minFilter = THREE.LinearFilter; // Linear filter for minification.
-  volumeTexture.magFilter = THREE.LinearFilter; // Linear filter for maximization.
 
-   // Repeat edge values when sampling outside of texture boundaries.
+  if (converted.formatName === "Red") {
+    volumeTexture.format = THREE.RedFormat;
+  } else {
+    // Important: RGB input is padded to RGBA before upload.
+    volumeTexture.format = THREE.RGBAFormat;
+  }
+
+  volumeTexture.internalFormat = converted.internalFormat;
+  volumeTexture.type = THREE.UnsignedByteType;
+
+  volumeTexture.minFilter = THREE.NearestFilter;
+  volumeTexture.magFilter = THREE.NearestFilter;
+
   volumeTexture.wrapS = THREE.ClampToEdgeWrapping;
   volumeTexture.wrapT = THREE.ClampToEdgeWrapping;
-  volumeTexture.wrapR = THREE.ClampToEdgeWrapping;  
+  volumeTexture.wrapR = THREE.ClampToEdgeWrapping;
+
+  // Important for Red/RGB/RGBA byte data.
+  volumeTexture.unpackAlignment = 1;
 
   volumeTexture.needsUpdate = true;
 
   env.local.volumeTexture = volumeTexture;
+  env.local.typeName = typeName;
 
-  let colorScale = 'Spectral';
+  let colorTexture;
 
-  let colorFunction;
-
-  {
-    const scale = chroma.scale(colorScale);
-
-    colorFunction = (i, count) => {
-    
-      const colorvalue = scale(i / (count - 1.0)).rgb();
-      colorvalue.push(255);
-      return colorvalue;
+  if (!hasVoxelColor) {
+    if (!chroma) {
+      chroma = (await import('chroma-js')).default;
     }
-  }
 
-  if ('ColorFunction' in options) {
-    const c = await interpretate(options.ColorFunction, {...env, context:g3d});
-    console.warn(c);
-    if (typeof c == 'string') {
-      switch(c) {
-        case 'XRay':
-          renderProps.invertColor = true;
-          colorScale = 'Greys';
-        break;
+    let colorScale = 'Spectral';
 
-        case 'GrayLevelOpacity':
-          colorScale = 'Greys';
-        break;
+    let colorFunction;
 
-
-      
-        case 'Automatic':
-        break;
-
-        default:
-          colorScale = c;
-      }
-
+    {
       const scale = chroma.scale(colorScale);
 
       colorFunction = (i, count) => {
-        
         const colorvalue = scale(i / (count - 1.0)).rgb();
         colorvalue.push(255);
         return colorvalue;
-      }
-
-    } else if (c.type) {
-      //throw c.colors;
-      switch(c.type) {
-        case 'RGB':
-          colorFunction = (value, count) => {
-            
-            const colorvalue = c.colors[value].map((cl) => Math.floor(cl*255.0));
-            colorvalue.push(255);
-            return colorvalue;
-          }
-        break;
-
-        case 'RGBA':
-          colorFunction = (value, count) => {
-            //console.log(value);
-            return c.colors[value].map((cl) => Math.floor(cl*255.0));
-          }
-        break;
-
-        default:
-          console.error(c);
-          throw 'unknown color format';
-      }
-
+      };
     }
+
+    if ('ColorFunction' in options) {
+      const c = await interpretate(options.ColorFunction, {
+        ...env,
+        context: g3d
+      });
+
+      console.warn(c);
+
+      if (typeof c === 'string') {
+        switch (c) {
+          case 'XRay':
+            renderProps.invertColor = true;
+            colorScale = 'Greys';
+            break;
+
+          case 'GrayLevelOpacity':
+            colorScale = 'Greys';
+            break;
+
+          case 'Automatic':
+            break;
+
+          default:
+            colorScale = c;
+        }
+
+        const scale = chroma.scale(colorScale);
+
+        colorFunction = (i, count) => {
+          const colorvalue = scale(i / (count - 1.0)).rgb();
+          colorvalue.push(255);
+          return colorvalue;
+        };
+      } else if (c.type) {
+        switch (c.type) {
+          case 'RGB':
+            colorFunction = (value, count) => {
+              const colorvalue = c.colors[value].map((cl) => Math.floor(cl * 255.0));
+              colorvalue.push(255);
+              return colorvalue;
+            };
+            break;
+
+          case 'RGBA':
+            colorFunction = (value, count) => {
+              return c.colors[value].map((cl) => Math.floor(cl * 255.0));
+            };
+            break;
+
+          default:
+            console.error(c);
+            throw new Error('unknown color format');
+        }
+      }
+    }
+
+    const count = 256;
+    const colorData = new Uint8Array(count * 4);
+
+    for (let i = 0; i < count; ++i) {
+      const color = colorFunction(i, count);
+      const stride = i * 4;
+
+      colorData[stride]     = color[0];
+      colorData[stride + 1] = color[1];
+      colorData[stride + 2] = color[2];
+      colorData[stride + 3] = color[3];
+    }
+
+    colorTexture = new THREE.DataTexture(colorData, count, 1);
+
+    colorTexture.format = THREE.RGBAFormat;
+    colorTexture.type = THREE.UnsignedByteType;
+    colorTexture.minFilter = THREE.LinearFilter;
+    colorTexture.magFilter = THREE.LinearFilter;
+    colorTexture.wrapS = THREE.ClampToEdgeWrapping;
+    colorTexture.wrapT = THREE.ClampToEdgeWrapping;
+    colorTexture.needsUpdate = true;
+  } else {
+    // Dummy texture.
+    // The shader requires the uniform to exist, but RGB/RGBA volumes do not use it.
+    colorTexture = new THREE.DataTexture(
+      new Uint8Array([255, 255, 255, 255]),
+      1,
+      1
+    );
+
+    colorTexture.format = THREE.RGBAFormat;
+    colorTexture.type = THREE.UnsignedByteType;
+    colorTexture.minFilter = THREE.NearestFilter;
+    colorTexture.magFilter = THREE.NearestFilter;
+    colorTexture.wrapS = THREE.ClampToEdgeWrapping;
+    colorTexture.wrapT = THREE.ClampToEdgeWrapping;
+    colorTexture.needsUpdate = true;
   }
-
-  // Create an array to hold the color values.
-  const count = 256; // Number of colors in texture.
-  const colorData = new Uint8Array(count * 4); // 4 = 4 color channels.
-  
-  // Loop through all pixels and assign color values.
-  for (let i = 0; i < count; ++i) {
-    let value = count; // Index value between 0 and 1
-    let color = colorFunction(i, count);  // Index value to color conversion
-    
-    const stride = i * 4; // Array index
-    colorData[stride] = color[0]; // Red
-    colorData[stride + 1] = color[1]; // Green
-    colorData[stride + 2] = color[2]; // Blue
-    colorData[stride + 3] = color[3]; // Alpha
-  }
-
-  //console.warn(colorData);
-  // Create texture from color data with width = color count and height = 1.
-  const colorTexture = new THREE.DataTexture(colorData, count, 1);
-  // Specify the texture format to match the stored data.
-  colorTexture.format = THREE.RGBAFormat;
-  colorTexture.type = THREE.UnsignedByteType;
-  colorTexture.minFilter = THREE.LinearFilter; // Linear interpolation of colors.
-  colorTexture.magFilter = THREE.LinearFilter; // Linear interpolation of colors.
-  colorTexture.wrapS = THREE.ClampToEdgeWrapping;
-  colorTexture.wrapT = THREE.ClampToEdgeWrapping;
-
-  colorTexture.needsUpdate = true;
 
   env.local.colorTexture = colorTexture;
 
-
   const scene = new THREE.Scene();
-  // Set the background color of the visualization.
 
   if ('Background' in options) {
-    scene.background = await interpretate(options.Background, {...env, context: g3d});
+    scene.background = await interpretate(options.Background, {
+      ...env,
+      context: g3d
+    });
   }
-  
-
 
   const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-  // Create a mesh from the geometric description.
   const box = new THREE.Mesh(geometry);
-  // Scale the mesh to reflect the aspect ratio of the volume.
 
   if ('BoxRatios' in options) {
-
-    //const reciprocal = size.map((e) => 1.0/(e/max));
-  
     console.warn('Rescaling....');
-  
+
     let ratios = await interpretate(options.BoxRatios, env);
+
     if (Array.isArray(ratios)) {
       ratios = [-ratios[0], -ratios[1], ratios[2]];
-
       box.scale.set(...ratios);
     } else {
-      box.scale.set(-1,-1,1);
+      box.scale.set(-1, -1, 1);
     }
   } else {
-    box.scale.set(-1,-1,1);
+    box.scale.set(-1, -1, 1);
   }
 
-  box.applyMatrix4(new THREE.Matrix4().set( 
+  box.applyMatrix4(new THREE.Matrix4().set(
     1, 0, 0, 0,
     0, 0, -1, 0,
     0, 1, 0, 0,
-    0, 0, 0, 1));
-  
-  // Optionally, add an outline to the box.
-  /*const line = new THREE.LineSegments(
-    new THREE.EdgesGeometry(geometry),
-    new THREE.LineBasicMaterial({ color: 0x999999 })
-  );
-  box.add(line);*/
-
-
+    0, 0, 0, 1
+  ));
 
   const material = new THREE.RawShaderMaterial({
-    glslVersion: THREE.GLSL3, // Shader language version.
+    glslVersion: THREE.GLSL3,
+
     uniforms: {
-      dataTexture: { value: volumeTexture }, // Volume data texture.
-      colorTexture: { value: colorTexture }, // Color palette texture.
-      cameraPosition: { value: new THREE.Vector3() }, // Current camera position.
-      samplingRate: { value: renderProps.samplingRate }, // Sampling rate of the volume.
-      threshold: { value: renderProps.threshold }, // Threshold for adjusting volume rendering.
-      alphaScale: { value: renderProps.alphaScale }, // Alpha scale of volume rendering.
-      invertColor: { value: renderProps.invertColor } // Invert color palette.
+      dataTexture: { value: volumeTexture },
+      colorTexture: { value: colorTexture },
+      cameraPosition: { value: new THREE.Vector3() },
+      samplingRate: { value: renderProps.samplingRate },
+      threshold: { value: renderProps.threshold },
+      alphaScale: { value: renderProps.alphaScale },
+      invertColor: { value: renderProps.invertColor },
+      hasVoxelColor: { value: hasVoxelColor },
+      hasVoxelAlpha: { value: hasVoxelAlpha }
     },
-    vertexShader: image3DVertexShader, // Vertex shader code.
-    fragmentShader: image3DFragmentShader, // Fragment shader code.
-    side: THREE.BackSide, // Render only back-facing triangles of box geometry.
-    transparent: true, // Use alpha channel / alpha blending when rendering.
-  });  
+
+    vertexShader: image3DVertexShader,
+    fragmentShader: image3DFragmentShader,
+
+    side: THREE.BackSide,
+    transparent: true
+  });
 
   env.local.material = material;
 
   box.material = material;
-
-  
-
   scene.add(box);
 
-  let ImageSize = [core.DefaultWidth,  core.DefaultWidth];
+  let ImageSize = [core.DefaultWidth, core.DefaultWidth];
 
   if ('ImageSize' in options) {
     const size = await interpretate(options.ImageSize, env);
+
     if (Array.isArray(size)) {
       ImageSize = size;
-    } else if (typeof size == 'number') {
+    } else if (typeof size === 'number') {
       ImageSize = [size, size];
     }
   }
 
+  const fov = 45;
+  const aspect = ImageSize[0] / ImageSize[1];
+  const near = 0.1;
+  const far = 1000;
 
-  
-
-  const fov = 45; // Field of view.
-  const aspect = ImageSize[0] / ImageSize[1]; // Aspect ratio of viewport.
-  const near = 0.1; // Distance to near clip plane. 
-  const far = 1000; // Distance to far clip plane.
-
-  // Create the camera and set its position and orientation.
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(1, 1, -1); // Move to units back from origin in negative z direction. 
-  camera.lookAt(new THREE.Vector3(0, 0, 0)); // Orient camera to origin.
+  camera.position.set(1, 1, -1);
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-  
-  const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-  renderer.setSize(ImageSize[0], ImageSize[1]); // Set size of visualization.
-  renderer.setPixelRatio(devicePixelRatio); // Handle high resolution displays.
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true
+  });
+
+  renderer.setSize(ImageSize[0], ImageSize[1]);
+  renderer.setPixelRatio(devicePixelRatio);
 
   env.element.appendChild(renderer.domElement);
 
+  renderer.setClearColor(0x000000, 0);
 
-  renderer.setClearColor( 0x000000, 0 );
-
-  // Optionally, add a border arround the visualization.
-  //renderer.domElement.style.border = "1px solid black";
-
-  // Add mouse / touch control for zooming, panning and rotating the camera.
   const controls = new OrbitControls(camera, renderer.domElement);
 
   let timeout = performance.now();
@@ -7728,87 +7842,82 @@ core.Image3D = async (args, env) => {
 
   const wakeFunction = () => {
     timeout = performance.now();
+
     if (sleeping) {
       console.log('wake');
       sleeping = false;
       animationLoop();
     }
-  }
-
-  gui.add( renderProps, 'alphaScale', 0., 2.).onChange( () => {
-    material.uniforms.alphaScale.value = renderProps.alphaScale;
-    wakeFunction();
-  
-  } );
-
-  gui.add( renderProps, 'samplingRate', 0.1, 4.).onChange( () => {
-    material.uniforms.samplingRate.value = renderProps.samplingRate;
-    wakeFunction();
-  
-  } );
-
-  gui.add( renderProps, 'invertColor').onChange( () => {
-    material.uniforms.invertColor.value = renderProps.invertColor;
-    wakeFunction();
-  
-  } );
+  };
 
   controls.addEventListener('change', wakeFunction);
-  // Add an event listener to the controls to redisplay the visualization on user input.
-  //controls.addEventListener("change", () => renderer.render(scene, camera));
-  
+  env.local.wakeFunction = wakeFunction;
+  const Handlers = [];
+  env.Handlers = Handlers;
+
+  if ('Epilog' in options) {
+    interpretate(options.Epilog, {...env, context:g3d});
+  }
+
   animationLoop = () => {
     if (material) {
       box.material.uniforms.cameraPosition.value.copy(camera.position);
     }
 
-    // Re-render the scene with the camera.
     renderer.render(scene, camera);
-    if (performance.now() - timeout > 100) {
+
+    if (performance.now() - timeout > 200) {
       console.log('sleep');
       sleeping = true;
     } else {
       env.local.animation = requestAnimationFrame(animationLoop);
     }
-  }
+    for (let i=0; i<Handlers.length; ++i) {
+      //if (Handlers[i].sleep) continue;
+      Handlers[i].eval();
+    }
+  };
 
-  
-
-
-  const guiContainer = document.createElement('div');
-  guiContainer.classList.add('graphics3d-controller');
-  guiContainer.appendChild(gui.domElement);
-      
-  if (ImageSize[0] > 250 && ImageSize[1] > 150)
-    env.element.appendChild( guiContainer );
-  
-  function takeScheenshot() {
-    renderer.render(scene, camera);
-    renderer.domElement.toBlob(function(blob){
-      var a = document.createElement('a');
-      var url = URL.createObjectURL(blob);
-      a.href = url;
-      a.download = 'screenshot.png';
-      a.click();
-    }, 'image/png', 1.0);
-  }
-  
-  const button = { Save:function(){ takeScheenshot() }};
-  gui.add(button, 'Save');  
-
-  
   animationLoop();
-}
+};
 
 core.Image3D.virtual = true;
 
+core.Image3D.update = async (args, env) => {
+  let data = await interpretate(args[0], env);
+
+  if (Array.isArray(data)) {
+    data = {
+      buffer: data.flat(Infinity),
+      dims: checkdims(data)
+    };
+  }
+
+  const converted = imageTypes[env.local.typeName].convert(data);
+  env.local.volumeTexture.image.data.set(converted.data);
+  env.local.volumeTexture.needsUpdate = true;
+  env.local?.wakeFunction();
+};
+
 core.Image3D.destroy = (args, env) => {
   console.warn('Dispose');
-  cancelAnimationFrame(env.local.animation);
-  env.local.material.dispose();
-  env.local.colorTexture.dispose();
-  env.local.volumeTexture.dispose();
-}
+
+  if (env.local.animation) {
+    cancelAnimationFrame(env.local.animation);
+  }
+
+  if (env.local.material) {
+    env.local.material.dispose();
+  }
+
+  if (env.local.colorTexture) {
+    env.local.colorTexture.dispose();
+  }
+
+  if (env.local.volumeTexture) {
+    env.local.volumeTexture.dispose();
+  }
+};
 
 g3d.Ball = g3d.Sphere
 

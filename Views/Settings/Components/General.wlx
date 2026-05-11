@@ -187,14 +187,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
     <div class="px-4 sm:px-0 pb-3 border-b border-gray-100">
         <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-gray-300">General settings</h3>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-500"></p>
-    </div>
-,
-    <div class="mt-4 overflow-y-auto" style="max-height:60%">   
-        <span class="dark:text-gray-400">Kernel</span>
-        <StringRiffle>
-            <Checkbox Label={"Kernel autolaunch"} Event={controller} Topic={"Autostart"} Description={"Spawns local Wolfram Kernel on startup"} Checked={settings["Autostart"]}/>
-        </StringRiffle>
-    </div>  
+    </div> 
 ,
     <div class="mt-4 overflow-y-auto" style="max-height:60%">   
         <span class="dark:text-gray-400">Frontend</span>

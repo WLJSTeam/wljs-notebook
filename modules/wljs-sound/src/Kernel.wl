@@ -4,8 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Sound`", {
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
 	"CoffeeLiqueur`Extensions`Communication`",
-    "CoffeeLiqueur`Extensions`FrontendObject`",
-    "CoffeeLiqueur`Extensions`MetaMarkers`"    
+    "CoffeeLiqueur`Extensions`FrontendObject`"
 }]
 
 PCMPlayer::usage = "PCMPlayer[data_Offload, type_String, opts___] creates a streaming PCM player"
@@ -64,12 +63,18 @@ Sound`soundDisplay[s_] := $Failed
 Unprotect[Sound]
 
 Sound /: MakeBoxes[s_Sound, form: StandardForm] := With[{
-  o = CreateFrontEndObject[s]
+
 },
   If[ByteCount[s] < 1024,
-    ViewBox[s, o]
+    ViewBox[s, s]
   ,
-    MakeBoxes[o, form]
+    With[{
+        o = CreateFrontEndObject[s]
+    },{
+        out = MakeBoxes[o, StandardForm]
+    },
+        ViewBox[out,o]
+    ]
   ]
   
 ]
@@ -113,8 +118,8 @@ PCMPlayer[a_Audio, opts:OptionsPattern[] ] := With[{info = Information[a]},
     ]
 ]
 
-PCMPlayer /: MakeBoxes[p_PCMPlayer, StandardForm] := With[{o = CreateFrontEndObject[p]},
-    MakeBoxes[o, StandardForm]
+PCMPlayer /: MakeBoxes[p_PCMPlayer, StandardForm] := With[{o = CreateFrontEndObject[p]}, {out = MakeBoxes[o, StandardForm]},
+    ViewBox[out, o]
 ]
 
 PCMPlayer /: MakeBoxes[p_PCMPlayer, WLXForm] := With[{o = CreateFrontEndObject[p]},
@@ -311,9 +316,10 @@ AudioWrapperBox[a_Audio, WLXForm] := With[{
 (* WL14 with no reason reloads the definitons of some symbols *)
 (* It breaks ANY FormatValues *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
 
 If[Internal`Kernel`Watchdog["Enabled"],
-  With[{file = FileNameJoin[{$RemotePackageDirectory, "src", "Kernel.wl"}]},
+  With[{file = FileNameJoin[{$rootPackageDirectory, "src", "Kernel.wl"}]},
     Internal`Kernel`Watchdog["Assertion", "Audio",
       FormatValues[Audio]//Hash
     ,

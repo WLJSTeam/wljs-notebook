@@ -22,6 +22,10 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 Needs["CoffeeLiqueur`Notebook`Evaluator`" -> "StandardEvaluator`"];
 
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+
 
 truncatedTemplate = ImportComponent[ FileNameJoin[{$InputFileName // DirectoryName // ParentDirectory, "templates", "truncated.wlx"}] ];
 truncatedTemplate = truncatedTemplate["Data"->"``", "Size"->"``", "Ref"->"``"];
@@ -32,16 +36,15 @@ AppExtensions`TemplateInjection["CellDropdown"] = ImportComponent[ FileNameJoin[
 AppExtensions`TemplateInjection["CellDropdown"] = ImportComponent[ FileNameJoin[{$InputFileName // DirectoryName // ParentDirectory, "templates", "CopyTextDropdown.wlx"}] ];
 
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
-
 With[{
     t = ImportComponent[ FileNameJoin[{$InputFileName // DirectoryName // ParentDirectory, "templates", "SplitNotebook.wlx"}] ][<|"saveNotebook" -> saveNotebook|>]
 },
     AppExtensions`TemplateInjection["CellDropdown"] = t;
 ];
 
+Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
-{loadSettings, storeSettings}        = ImportComponent["Frontend/Settings.wl"];
 settings = <||>;
 
 NotebookEditorChannel = CreateUUID[];
@@ -139,14 +142,14 @@ init[k_] := Module[{},
     loadSettings[settings];
 
     With[{channel = NotebookEditorChannel, autocompleteRebuild = Lookup[settings, "EnableAutocompleteScan", False], tt = truncatedTemplate, charLim = Lookup[settings, "OutputCharactersLimit", 6000], summaryBox = Lookup[settings, "SummaryBoxSizeLimit", 2 8 2500], objectLimit = Lookup[settings, "FrontEndObjectSizeLimit", 8]},
-        GenericKernel`Init[k,
+        GenericKernel`Send[k,
             Print["Init internal communication"];
             Internal`Kernel`TruncatedOutputTemplate = tt;
             Internal`Kernel`$OutputCharactersLimit = charLim;
             Internal`Kernel`$FrontEndObjectSizeLimit = objectLimit;
             Internal`Kernel`AutocompleteRescan = autocompleteRebuild;
             BoxForm`$SummaryBoxSizeLimit = summaryBox;
-            Internal`Kernel`CommunicationChannel = Internal`Kernel`Stdout[channel];
+            Internal`Kernel`CommunicationChannel = Internal`Kernel`RemoteEvent[channel];
             Internal`Kernel`TruncatedOutputLastItem = Null;
             Internal`Kernel`TruncatedOutputReveal[_] := With[{o = Internal`Kernel`TruncatedOutputLastItem},
                 If[o === Null, Return[] ];
@@ -159,7 +162,7 @@ init[k_] := Module[{},
             ];
         ];
     ];
-    GenericKernel`Init[k, 
+    GenericKernel`Send[k, 
         Print["Init normal Kernel (Local)"];
         CoffeeLiqueur`Extensions`Editor`Internal`WolframEvaluator = Function[t, 
         With[{hash = CreateUUID[]},
@@ -170,18 +173,18 @@ init[k_] := Module[{},
           },
             With[{result = CheckAbort[(ToExpression[ t["Data"], InputForm, Hold] /. Out -> $PreviousOut) // ReleaseHold, $Aborted] },
                 If[KeyExistsQ[t, "Nohup"],
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> Null |> ];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> Null |> ];
                 ,   
                     (* check length *)
                     With[{string = ToString[result, StandardForm]},
                         If[StringLength[string] < Internal`Kernel`$OutputCharactersLimit || Lookup[t, "IgnoreOverflow", False],
-                            EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
+                            EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
                         ,
                             With[{truncated = ToString[result, InputForm], ref = CreateUUID[]},
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True] |> ];
                             ]
                         ]
                     ]
@@ -348,6 +351,7 @@ StandardEvaluator`EvaluateTransaction[frontendDev, k_, t_] := Module[{list},
             If[MatchQ[refCell, _cell`CellObj],
                 With[{notebook = refCell["Notebook"]},
                     notebook["AutorunScript"] = t["Data"];
+                    notebook["PublicFields"] = Join[notebook["PublicFields"], {"AutorunScript"}] // DeleteDuplicates;
                     ToExpression[t["Data"], InputForm ];   
 
                     EventFire[t, "Result", <|"Data" -> " ", "Meta" -> Sequence["Display"->"shell"] |> ];

@@ -38,8 +38,6 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
     t["Data"] = StringTrim[text];
 
     With[{check = CheckSyntax[t["Data"] ]},
-        Echo[check];
-        Echo[t["Data"] ];
 
         If[! TrueQ[check],
             EventFire[logs, "Warning", check];
@@ -85,6 +83,28 @@ processSelected[text_, notebook_, controls_, logs_, cli_, head_:""] := With[{},
     ];
 ]
 
+processSelected[text_, notebook_, controls_, logs_, cli_, "Iconize"] := With[{},
+    If[!checkLink[notebook, logs], Return[] ];
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+        Function[text,
+            With[{
+                payload = If[TrueQ[CheckSyntax[StringTrim[text] ] ], {"Iconize", text}, {"BoxForm`IconizeSequence", "{"<>StringTrim[text]<>"}"}]
+            },
+            
+                Then[evaluationInPlace[payload[[2]], notebook, controls, logs, cli, payload[[1]] ], 
+                    Function[result,
+                        WebUISubmit[FrontEditorSelected["Set", result["Data"] ], cli];
+                    ]
+                ,
+                    Function[result,
+                        Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    ]
+                ];
+            ]
+        ]
+    ];
+]
+
 processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
@@ -103,7 +123,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
     ];
 ]
 
-processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid = RandomWord[]<>"-"<>StringTake[CreateUUID[], 3]},
+processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid = (Internal`NoWR`RandomWord[])<>"-"<>StringTake[CreateUUID[], 3]},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],

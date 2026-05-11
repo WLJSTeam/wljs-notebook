@@ -538,7 +538,7 @@ Do[With[{pattern=pattern},
 
     <|
       "Priority"->1, "Rule" -> (l2 -> pattern[a1, 
-        With[{list = Table[With[{i=i}, TextView[symbol[[i]]//Offload, Appearance->None, "CSS"->"font-size:small; padding:0; background:transparent"]//CreateFrontEndObject ], {i, 1, Length[symbol]} ]},
+        With[{list = Table[With[{i=i}, TextView[symbol[[i]]//Offload, Appearance->None, "CSS"->"font-size:small; padding:0; background:transparent"] ], {i, 1, Length[symbol]} ]},
           Map[Function[item, item ], list]
         ]
       , rest ]),
@@ -559,7 +559,7 @@ Do[With[{pattern=pattern},
 
     <|
       "Priority"->1, "Rule" -> (l2 -> pattern[a1, 
-        With[{list = Table[With[{i=i}, EditorView[symbol[[i]]//Offload]//CreateFrontEndObject ], {i, 1, Length[symbol]} ]},
+        With[{list = Table[With[{i=i}, EditorView[symbol[[i]]//Offload] ], {i, 1, Length[symbol]} ]},
           Map[Function[item, item ], list]
         ]
       , rest ]),

@@ -12,6 +12,7 @@ BeginPackage["CoffeeLiqueur`Extensions`InputsOutputs`", {
 
 InputRange::usage = "InputRange[min, max, step:1, initial:(max+min)/2, \"Label\"->\"\", \"Topic\"->\"Default\"] _EventObject."
 InputCheckbox::usage = "InputCheckbox[state_Bool, \"Label\"->, \"Description\"->, , \"Topic\"->\"Default\"] _EventObject. A standard checkbox"
+InputColor::usage = "InputColor[initialColor, \"Label\"->\"Color\", \"ShowAlpha\"->False] _EventObject. A color picker that accepts {r,g,b}, RGBColor[r,g,b], or Hue[h] and returns {r,g,b} or {r,g,b,a}"
 InputButton::usage = "InputButton[label_String, \"Topic\"->\"Default\"] _EventObject. A standard button"
 
 InputRaster::usage = "InputRaster[opts] _EventObject. A raster input. InputRaster[img_Image, opts] "
@@ -72,7 +73,9 @@ Begin["`Private`"]
 
 $ContextAliases["htmlTool`"] = "CoffeeLiqueur`Extensions`InputsOutputs`Tools`";
 
-$troot = FileNameJoin[{$RemotePackageDirectory, "templates"}];
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
+$troot = FileNameJoin[{$rootPackageDirectory, "templates"}];
 
 TerminalX = ImportComponent[FileNameJoin[{$troot, "Terminal.wlx"}] ];
 
@@ -159,12 +162,24 @@ HTMLX = ImportComponent[FileNameJoin[{$troot, "HTML.wlx"}] ];
 HTMLView[expr_List, opts: OptionsPattern[] ] := HTMLView[StringRiffle[expr, "\n"], opts]
 Options[HTMLView] = {Epilog->Null, Prolog->Identity, "Style"->"", "Class"->""}
 
-HTMLView /: MakeBoxes[w_HTMLView, frmt_] := With[{o = CreateFrontEndObject[w]}, MakeBoxes[o, frmt] ]
+HTMLView /: MakeBoxes[w_HTMLView, WLXForm] := With[{o = CreateFrontEndObject[w]}, MakeBoxes[o, WLXForm] ]
+HTMLView /: MakeBoxes[w_HTMLView, StandardForm] := With[{o = CreateFrontEndObject[w]}, {out = MakeBoxes[o, StandardForm]}, ViewBox[out, o] ]
 
+iHTML /: MakeBoxes[iHTML[code_], StandardForm] := With[{o = HTMLView[code]}, MakeBoxes[o, StandardForm] ]
+iHTML /: MakeBoxes[iHTML[code_], WLXForm] := code
+
+HTMLView[i_Image, OptionsPattern[] ] := With[{
+	name = FileNameJoin[{"attachments", ToString[Hash[i] ]<>".jpg"}],
+	dims = ImageDimensions[i]
+},
+	Export[name, i,	"JPEG", "CompressionLevel"->0.1];
+	iHTML[StringTemplate["<img src=\"/``\" width=\"``\" height=\"``\"/>"][name, Round[dims[[1]]], Round[dims[[2]]] ] ]
+]
 
 
 notString[_String] := False
 notString[_List] := False
+notString[_Image] := False
 notString[_] := True
 
 HTMLView[value_?notString, opts: OptionsPattern[] ] := With[{},
@@ -309,6 +324,51 @@ InputCheckbox[EventObject[a_Association] ] := InputCheckbox["Event" -> a["Id"] ]
 
 Options[InputCheckbox] = {"Label"->"", "Description"->"", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "Topic"->"Default", "Event":>CreateUUID[]}
 
+ColorX = ImportComponent[FileNameJoin[{$troot, "Color.wlx"}] ];
+
+(* Helper function to normalize any color format to {r,g,b} or {r,g,b,a} *)
+ColorToRGB[RGBColor[r_?NumberQ, g_?NumberQ, b_?NumberQ]] := {r, g, b}
+ColorToRGB[RGBColor[r_?NumberQ, g_?NumberQ, b_?NumberQ, a_?NumberQ]] := {r, g, b, a}
+ColorToRGB[Hue[h_?NumberQ]] := Module[{rgb},
+	rgb = RGBColor[Hue[h]] // List;
+	Take[rgb, 3]
+]
+ColorToRGB[Hue[h_?NumberQ, s_?NumberQ, b_?NumberQ]] := Module[{rgb},
+	rgb = RGBColor[Hue[h, s, b]] // List;
+	Take[rgb, 3]
+]
+ColorToRGB[Hue[h_?NumberQ, s_?NumberQ, b_?NumberQ, a_?NumberQ]] := Module[{rgb},
+	rgb = RGBColor[Hue[h, s, b]] // List;
+	Join[Take[rgb, 3], {a}]
+]
+ColorToRGB[color_] := color
+
+InputColor[initialColor: (RGBColor[__] | Hue[__]), opts: OptionsPattern[] ] := InputColor[ColorToRGB[initialColor], opts]
+
+InputColor[initialColor_:{1,1,1}, opts: OptionsPattern[] ] := With[{id = OptionValue["Event"], showAlpha = OptionValue["ShowAlpha"]},
+	With[{hexColor = Module[{r,g,b,a},
+		If[Length[initialColor] >= 3,
+			{r,g,b} = Take[initialColor, 3];
+			a = If[Length[initialColor] === 4, initialColor[[4]], 1.0];
+			StringJoin["#", IntegerString[Round[r*255], 16, 2], IntegerString[Round[g*255], 16, 2], IntegerString[Round[b*255], 16, 2]]
+		,
+			"#FFFFFF"
+		]
+	],
+	initialAlpha = If[Length[initialColor] === 4, ToString[initialColor[[4]]], "1"]
+	},
+		EventObject[<|"Id"->id, "Initial"->initialColor, "View"->HTMLView[ColorX["InitialColor"->hexColor, "InitialAlpha"->initialAlpha, "ShowAlpha"->showAlpha, "Event"->id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+	]
+]
+
+InputColor[opts: OptionsPattern[] ] := InputColor[{1,1,1}, opts]
+
+InputColor[EventObject[a_Association], rest_]  := InputColor[rest, "Event" -> a["Id"] ]
+InputColor[EventObject[a_Association], rest__] := InputColor[rest, "Event" -> a["Id"] ]
+InputColor[EventObject[a_Association] ] := InputColor["Event" -> a["Id"] ]
+
+Options[InputColor] = {"Label"->"Color", "Description"->"", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "ShowAlpha"->False, "Topic"->"Default", "Event":>CreateUUID[]}
+
 TextX = ImportComponent[FileNameJoin[{$troot, "Text.wlx"}] ];
 
 InputText[initial_:"", opts: OptionsPattern[] ] := With[{id = OptionValue["Event"]},
@@ -338,8 +398,13 @@ InputJoystick[EventObject[a_Association] ] := InputJoystick["Event" -> a["Id"] ]
 Options[InputJoystick] = {"Topic"->"Default", "Event":>CreateUUID[]}
 
 
-TextView /: MakeBoxes[t_TextView, frmt_] := With[{o = CreateFrontEndObject[t]},
+TextView /: MakeBoxes[t_TextView, WLXForm] := With[{o = CreateFrontEndObject[t]},
 	MakeBoxes[o, frmt]
+]
+
+TextView /: MakeBoxes[t_TextView, StandardForm] := With[{o = CreateFrontEndObject[t]},
+	{out = MakeBoxes[o, StandardForm]},
+	ViewBox[out, o]
 ]
 
 Options[TextView] = {"CSS"->"", "Class"->"", "Style"->"", "Label"->"", "Description"->"", "Placeholder"->"", "Event"->Null, ImageSize->Automatic, Appearance->Automatic, "LabelClass"->"", "LabelStyle"->""}
@@ -540,8 +605,8 @@ applyPatch := (
 		DatasetWrapperBox[d   // Normal, StandardForm] (*FIXME do not use Normal*)
 	,
 
-		With[{o = CreateFrontEndObject[d   ]},
-			MakeBoxes[o, StandardForm]
+		With[{o = CreateFrontEndObject[d   ]}, {out = MakeBoxes[o, StandardForm]},
+			ViewBox[out, o]
 		]
 	] ];
 
@@ -687,12 +752,21 @@ DatasetWrapperBox[ l: List[__List], form_ ] := With[{
 					]
 				} ];
 
-				With[{view = MakeBoxes[o, form]},
-					AppendTo[garbage, Hold[store ] ];
-					store = parts;
+				If[form === WLXForm,
+					With[{view, MakeBoxes[o, StandardForm]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
+						view	
+					]			
+				,
+					With[{out = MakeBoxes[o, StandardForm]}, {view = ViewBox[out, o]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
 					
-					view
+						view
+					]				
 				]
+
 		]	
 	]
 ]
@@ -756,10 +830,18 @@ DatasetWrapperBox[ l_List , form_ ] := With[{
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
-				With[{view = MakeBoxes[o, form]},
-					AppendTo[garbage, Hold[store ] ];
-					store = parts;
-					view
+				If[form === WLXForm,
+					With[{view = MakeBoxes[o, form]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
+						view
+					]				
+				,
+					With[{out = MakeBoxes[o, StandardForm]}, {view = ViewBox[out, o]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
+						view
+					]				
 				]
 		]	
 	]
@@ -801,13 +883,26 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 
 DatasetWrapperBox[ a: Association[r: Rule[_, _List]..] , form_ ] := With[{d = Dataset[a]},
 	With[{o = CreateFrontEndObject[d]},
-		MakeBoxes[o, form]
+		If[form === WLXForm,
+			MakeBoxes[o, form]
+		,
+			With[{out = MakeBoxes[o, StandardForm]},
+				ViewBox[out, o]
+			]
+		]
+		
 	]
 ];
 
 DatasetWrapperBox[ a: Association[r: Rule[_, _Association]..] , form_ ] := With[{d = Dataset[a]},
 	With[{o = CreateFrontEndObject[d]},
-		MakeBoxes[o, form]
+		If[form === WLXForm,
+			MakeBoxes[o, form]
+		,
+			With[{out = MakeBoxes[o, StandardForm]},
+				ViewBox[out, o]
+			]
+		]
 	]
 ];
 
@@ -837,10 +932,18 @@ DatasetWrapperBox[ l : List[__Association] , form_] := With[{
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
-				With[{view = MakeBoxes[o, form]},
-					AppendTo[garbage, Hold[store ] ];
-					store = parts;
-					view
+				If[form === WLXForm,
+					With[{view = MakeBoxes[o, form]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
+						view
+					]				
+				,
+					With[{out = MakeBoxes[o, StandardForm]}, {view = ViewBox[out, o]},
+						AppendTo[garbage, Hold[store ] ];
+						store = parts;
+						view
+					]				
 				]
 		]	
 	]
@@ -1025,7 +1128,12 @@ WindowEventListener /: MakeBoxes[WindowEventListener[event_EventObject | event_S
 	] ]}];
 
 	With[{c = CreateFrontEndObject[ winScript[Id] ]},
-		MakeBoxes[c, form]
+		If[form === WLXForm,
+			MakeBoxes[c, form]
+		,
+			ViewBox[Null, c]
+		]
+		
 	]
 ] 
 

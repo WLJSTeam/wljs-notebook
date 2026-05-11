@@ -425,12 +425,7 @@ With[{
     EventHandler[LocalControls, {"Open" -> (open[#, "Palette", cachedClient, quickTags, ClickActions, Path, Controls, Modals, Messanger, LocalControls, typeWritter, keyListener, CancelListener, emptyPanel, aiPanel, searchPanel, fieldState, PlaceholderData, ulStyles]&)}];
 
     <div style="-webkit-app-region: no-drag" class="relative grow rounded-md bg-gray-100 dark:bg-gray-700 win:mt-1 linux:mt-1">
-        <style>
-            #canvas-palette-back > canvas {
-                filter: blur(15px);
-            }
-        </style>
-        <div class="absolute w-full h-full rounded-md overflow-hidden" id="canvas-palette-back">
+        <div class="absolute w-full h-full rounded-md overflow-hidden">
         </div>
         <div id="palette" class="grow relative p-1 items-center flex rounded-md 0 h-7 owin:h-6 win:h-6 linux:h-6 pl-3  pr-2 text-left text-gray-500  ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-xs sm:leading-6 dark:ring-gray-600 ">
             <svg id="palette-ico" class="pointer-events-none h-4 w-6 text-gray-900 dark:text-gray-400 text-opacity-40" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -478,7 +473,20 @@ With[{
                 const field = document.getElementById("palette-field");
                 const palette = document.getElementById('palette');
                 const right = document.getElementById('palette-right');
+                const ul = document.getElementById("palette-ul");
+                let preventPaletteArrowScroll;
 
+                preventPaletteArrowScroll = (e) => {
+                    const isPaletteActive =
+                        document.activeElement === field ||
+                        palette.contains(document.activeElement);
+
+                    if (!isPaletteActive) return;
+
+                    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                        e.preventDefault();
+                    }
+                };
                 right.childNodes[1].addEventListener('click', (e) => {
                     server.io.fire('<KeyListener/>', 13, 'Pressed');//emulate Enter
                     e.preventDefault();
@@ -497,8 +505,13 @@ With[{
                 }
 
                 let storage;
+                let gload = false;
 
                 this.on('Load', async (data) => {
+                    if (!gload) {
+                        gload = true;
+                        document.addEventListener("keydown",preventPaletteArrowScroll,true);
+                    }
                     const d = await interpretate(data, {hold:true});
                     if (d.Text) {
                         field.value = await interpretate(d.Text, {});
@@ -515,6 +528,10 @@ With[{
                 let clickOutside;
 
                 this.on('Remove', () => {
+                    if (gload) {
+                        document.removeEventListener("keydown",preventPaletteArrowScroll,true);
+                        gload = false;
+                    }
                     ico.childNodes[0].classList.add('opacity-0');
                     //ico.childNodes[1].classList.add('opacity-0');
                     right.childNodes[0].classList.remove('hidden');

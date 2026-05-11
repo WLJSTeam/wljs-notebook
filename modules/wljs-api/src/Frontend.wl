@@ -5,6 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`API`", {
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`WLX`Importer`",
+    "CoffeeLiqueur`WLX`WebUI`",     
     "CoffeeLiqueur`HTTPHandler`",
     "CoffeeLiqueur`HTTPHandler`Extensions`",
     "CoffeeLiqueur`Internal`",
@@ -22,6 +23,14 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`Evaluator`" -> "StandardEvaluator`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
+
+
+Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`" -> "vfx`", FileNameJoin[{DirectoryName[$InputFileName], "VFX.wl"}] ];
+
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+
 
 failure;
 
@@ -160,8 +169,9 @@ apiCall[request_, "/api/ready/"] := <|"ReadyQ" -> True|>
 
 apiCall[request_, "/api/notebook/"] := {
     "/api/notebook/list/",
-    "/api/notebook/create/",
-    "/api/notebook/cells/"
+    "/api/notebook/focused/",
+    "/api/notebook/cells/",
+    "/api/notebook/new/"
 }
 
 apiCall[request_, "/api/docs/"] := {
@@ -202,55 +212,40 @@ apiCall[request_, "/api/notebook/list/"] := With[{},
     |> &/@ Select[Values[nb`HashMap], (Complement[{"Opened", "Path", "Hash"}, #["Properties"] ] === {}) &]
 ]
 
-$pullQue = {};
-$stack[_] := False;
-$activeSocket = Null;
-$activeControls = Null;
+apiCall[request_, "/api/notebook/new/"] := With[{body = request["Body"], nb = nb`NotebookObj["Quick"->True, "HaveToSaveAs"->True]},
+    If[!TrueQ[body["NoCells"] ],
+        cell`CellObj["Data"->"", "Notebook"->nb];
+    ];
+
+    nb["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, "llm-"<>StringTake[CreateUUID[], 3]<>".wln"}];
+    Then[saveNotebook[nb], Echo];
+    <|"Id"->nb["Hash"], "PathEncoded"->URLEncode[nb["Path"] ]|>
+]
 
 
-
-EventHandler[EventClone[AppExtensions`AppEvents], {
-    "Loader:NewNotebook" -> Function[notebook,
-        If[Length[$pullQue] > 0, 
-            $pullQue[[1]][ notebook["Hash"] ];
-            $pullQue = Drop[$pullQue, 1]
-        ];
-    ],
-    (* WARNING: this requires WLJS >= 2.8.4*)
-    "AfterUILoad" -> Function[payload,
-        $activeSocket = payload["Client"];
-        $activeControls = payload["Controls"];
-    ]
-}]
-
-(* 
-   /api/notebook/create/ - Create a new empty notebook
-   
-   Opens a new notebook window in the application.
-   Returns a Promise that resolves to the notebook ID.
-   
-   Request: {} (empty body)
-   Response: {"Promise": "promise-id"} - poll /api/promise/ for result
-   Final result: "notebook-hash-id"
-   Error: "All windows are closed"
-*)
-apiCall[request_, "/api/notebook/create/"] := Module[{},
-    If[$activeControls === Null, Return[failure["All windows are closed"], Module] ];
-    With[{},
-        With[{uid = CreateUUID[], promise = Promise[]},
-            (*fixme*)
-            $pullQue = Append[$pullQue, Function[n, 
-                EventFire[promise, Resolve, n];
-            ] ];
-
-            Block[{Global`$Client = $activeSocket},
-                EventFire[$activeControls, "_NewQuickNotebook", True];
-                promise
-            ]
-        ]        
+apiCall[request_, "/api/notebook/readyQ/"] := With[{body = request["Body"]},
+    If[TrueQ[nb`HashMap[body["Id"] ]["Opened"] ],
+        <|"ReadyQ"->True, "Path"->URLEncode[nb`HashMap[body["Id"] ]["Path"] ], "Name"->FileNameTake[nb`HashMap[body["Id"] ]["Path"] ]|>
+    ,
+        False
     ]
 ]
 
+(* 
+   /api/notebook/focused/ - Return the hash/ID of the currently focused notebook
+   
+   Request: {} (empty body)
+   Response: "notebook-hash"
+   Failure: failure["No focused notebook found"]
+*)
+apiCall[request_, "/api/notebook/focused/"] := With[
+   {nb = AppExtensions`AppGlobals["CurrentNotebook"]},
+   If[
+      TrueQ[nb["Opened"]],
+      nb["Hash"],
+      failure["No focused notebook found"]
+   ]
+]
 
 
 apiCall[request_, "/api/notebook/cells/"] := {
@@ -388,6 +383,14 @@ updateCellContent[cell_, newData_] :=  If[TrueQ[cell["Notebook"]["Opened"] ],
                 cell["Data"] = newData;
             ];
 
+
+makeMagic[cell_] := With[{notebook = cell["Notebook"]},
+    If[TrueQ[notebook["Opened"] ],
+        WebUISubmit[vfx`MagicWand[ "frame-"<>cell["Hash"] ], notebook["Socket"] ];
+    ];
+]
+
+
 (* 
    /api/notebook/cells/setlines/ - Replace a range of lines in a cell
    
@@ -423,8 +426,9 @@ apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Bo
         {
             newData = StringRiffle[Flatten[{before, content, after}], "\n"]   
         },
-
+            
             updateCellContent[cell, newData];
+            makeMagic[cell];
             
             "Lines were set"
         ] ]
@@ -466,6 +470,8 @@ apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request[
                 newData = StringRiffle[Flatten[{before, content, afterLines}], "\n"]
             },
                 updateCellContent[cell, newData];
+                makeMagic[cell];
+
                 "Lines were inserted"
             ] ]
         ]
@@ -537,6 +543,8 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
                     sortedChanges
                 ]},
                     updateCellContent[cell, StringRiffle[newLines, "\n"]];
+                    makeMagic[cell];
+
                     <|"Applied" -> Length[changes], "Message" -> "Batch lines were set"|>
                 ]
             ]
@@ -602,15 +610,18 @@ apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"],
             If[!MatchQ[after, _cell`CellObj], 
                 If[!MatchQ[before, _cell`CellObj],
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid ]},
+                        makeMagic[new];
                         uuid
                     ]                
                 ,
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "Before"->before]},
+                         makeMagic[new];
                         uuid
                     ] 
                 ]                                        
             ,
                 With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "After"->after]},
+                     makeMagic[new];
                     uuid
                 ] 
             ]
@@ -685,12 +696,14 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                                 With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid]},
                                     AppendTo[createdIds, uuid];
                                     currentAnchor = new;
+                                     makeMagic[new];
                                     insertMode = "after";
                                 ]
                             ,
                                 If[insertMode === "after",
                                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid, "After"->currentAnchor]},
                                         AppendTo[createdIds, uuid];
+                                         makeMagic[new];
                                         currentAnchor = new;
                                     ]
                                 ,
@@ -698,6 +711,7 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->cellData["Content"], "Hash"->uuid, "Before"->currentAnchor]},
                                         AppendTo[createdIds, uuid];
                                         currentAnchor = new;
+                                         makeMagic[new];
                                         insertMode = "after"; (* subsequent cells go after the first *)
                                     ]
                                 ]
@@ -926,8 +940,8 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         If[MissingQ[k], Return[failure["No kernel is ready for evaluation"], Module] ];
 
-        GenericKernel`Async[k, 
-            EventFire[Internal`Kernel`Stdout[ promise // First ], Resolve, ToString[ToExpression[expr, InputForm], InputForm] ];
+        GenericKernel`SendAsync[k, 
+            EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[ToExpression[expr, InputForm], InputForm] ];
         ];
 
         promise

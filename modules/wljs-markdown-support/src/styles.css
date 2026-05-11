@@ -1204,16 +1204,20 @@
     list-style-type: disc !important;
     padding-left: 1rem;
     padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
 }
 
 .markdown img {
     border-radius: 0.375rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .markdown ol {
     padding-left: 1rem;
     list-style-type: auto;
     padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
 }
 
 .markdown ol > li {
@@ -1236,11 +1240,17 @@
   width: 100%;
   text-align: left;
   border-collapse: collapse;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .markdown thead {
   border-bottom: 1px solid #d1d5db; /* gray-300 */
-  background-color: #f9fafb; /* gray-50 */
+}
+
+.markdown hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .markdown th {
@@ -1307,8 +1317,8 @@ foreignObject .katex-display{
     border-radius: 0.15rem;
     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px; */
     padding: 0.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
     /* border-radius: 4px; */    
 }
 
@@ -1360,5 +1370,20 @@ foreignObject .katex-display{
     background: #eee;
     font-size: smaller;
     padding: 0.15rem 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.markdown pre code {
+    display: block;
+    background: #eee;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+mark {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
     border-radius: 0.25rem;
 }

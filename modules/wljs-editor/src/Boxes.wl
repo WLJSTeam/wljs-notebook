@@ -12,7 +12,7 @@ System`BoxBox;
 
 ViewBox::usage = "ViewBox[expr_, decorator_] low-level box used by InterpretationBox. It keeps `expr` in its original form, while visially covers it with DOM element to which `decorator` expression will be attached and executed"
 
-BoxBox::usage = "BoxBox[expr_Box | _String, decorator_, opts___] low-level box used by Style, Framed... It places a subeditor with `expr` inside and decorates the container using `decorator` expression will be attached and executed. \"Head\" is an option for inserting the head"
+BoxBox::usage = "DEPRICATED"
 
 Begin["`Tools`"]
 
@@ -37,11 +37,17 @@ ViewBox[expr_, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"
   RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
+ViewBox[rowbox_RowBox, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, If[event === Null,
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]VB*)"}]
+,
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
+] ]
+
 Options[ViewBox] = {"Event" -> Null}
 
 
 
-(*TODO: MAKE IT JUST OPTIONS REMOVE IFs !!! *)
+(* DEPRICATED *)
 BoxBox[expr_, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, 
   If[OptionValue[Head] =!= Null,
     With[{dp = ProvidedOptions[Hold[display], "Head"->ToString[OptionValue[Head], InputForm], "Event"->event]},

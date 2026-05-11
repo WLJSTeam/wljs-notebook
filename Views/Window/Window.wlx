@@ -9,6 +9,15 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
         "Ready" -> Function[Null,
             Echo["Window.wlx >> Ready to show!"];
             window["EvaluatedQ"] = True;
+
+            If[MatchQ[window["Notebook"], _nb`NotebookObj],
+                With[{htmlJsCells = Select[window["Notebook"]["Cells"], Function[c, MatchQ[c["Display"], "html" | "js" | "mjs" ] ] ]},
+                    (* /* This you might need to copy to the window, since they might contain scripts and styles */ *)
+                    Echo["Found JS and HTML cells, projecting too..."];
+                    WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                ]
+            ];
+
             WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client]
         ],
 
@@ -16,6 +25,7 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
             Echo["Window >> reevalaute!"];
             window["EvaluatedQ"] = False;
             evaluate[window, secret, client, modals, parameters, extensions]; 
+            WebUISubmit[Global`UIWindow["Unload" ], client]
         ]
     }];
 
@@ -59,6 +69,7 @@ evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] :=
 Script[OptionsPattern[]] := With[{ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
     <div>
         <script type="module">
+            let wrap, supp = [];
             core.UIWindow = async (args, env) => {
                 const type = await interpretate(args[0], env);
                 core.UIWindow[type](args.slice(1), env);
@@ -103,11 +114,19 @@ Script[OptionsPattern[]] := With[{ExtensionTemplateInjection = OptionValue["Exte
 
                   server.emitt(ev, 'True', 'WebSocketLost');
                 }; 
-            }       
+            }
+
+            core.UIWindow.Unload = async (args, env) => {
+                supp.forEach(el=>el.dispose());
+                wrap.dispose(); supp = [];
+            }
+
+            core.UIWindow.LoadSupplimentary = async (args, env) => {
+                const store    = await interpretate(args[0], env);
+                supp.push(new WindowWrapperSupplimentary(store));
+            }
 
             core.UIWindow.Load = async (args, env) => {
-                console.log(args);
-
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
 
@@ -115,7 +134,7 @@ Script[OptionsPattern[]] := With[{ExtensionTemplateInjection = OptionValue["Exte
 
                 const opts   = await core._getRules(args, env);
 
-                new WindowWrapper(template, store, ev, opts);
+                wrap = new WindowWrapper(template, store, ev, opts);
             };;
             <WindowGeneratorScript/>;;
         </script>

@@ -80,8 +80,8 @@ MergeDirectories[source_String, target_String] := (
   ];
 );
 
-extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"], With[{blob = n["ZIPArchive"], dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]},
-    n["ZIPArchive"] = .;
+extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"] && Length[ n["ZIPArchive"] ] > 0, With[{blob = n["ZIPArchive"]["Main"], dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]},
+    n["ZIPArchive"] = <||>;
     With[{arvx = FileNameJoin[{dir, "_wljs_arxv.zip"}]},
         BinaryWrite[arvx, BaseDecode[blob] ] // Close;
         CreateDirectory[FileNameJoin @ {dir, "__extracted"}];
@@ -101,7 +101,7 @@ embedArchive[n_nb`NotebookObj, files_List] := With[{
     dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]
 },
     With[{
-        intermediate = CreateDirectory[FileNameJoin @ {$TemporaryDirectory, "__selected_"<>RandomWord[]}]
+        intermediate = CreateDirectory[FileNameJoin @ {$TemporaryDirectory, "__selected_"<>(Internal`NoWR`RandomWord[])}]
     },
         If[FailureQ[intermediate],
             Echo["Failed to copy project files!!!"];
@@ -122,7 +122,8 @@ embedArchive[n_nb`NotebookObj, files_List] := With[{
             With[{encoded = ReadByteArray[p] // BaseEncode},
                 DeleteFile[p];
 
-                n["ZIPArchive"] = encoded;
+                n["ZIPArchive"] = <|"Default"->encoded|>;
+                n["ObjectFields"] = Join[n["ObjectFields"], {"ZIPArchive"}] // DeleteDuplicates;
             ]
         ]
     ]

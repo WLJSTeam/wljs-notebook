@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{Message = OptionValue["Data"][[1]]},
+Component[OptionsPattern[]] := With[{Message = OptionValue["Data"]["Message"]},
     <div class="block bg-white w-full h-full text-red-500">
         <div class="w-full h-full mt-auto mb-auto mr-auto ml-auto bg-red-50 p-4 dark:bg-gray-700">
           <div class="flex">

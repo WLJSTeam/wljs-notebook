@@ -1,14 +1,102 @@
-//@ts-check
+//just don't look at it. We did not invest enough efforts to this...
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
 const { screen, globalShortcut} = require('electron/main')
 
+const { net } = require('electron')
+const fs = require('fs');
 
-const pdfjsLib = require("./pdfjs/pdf.mjs");
 
 const { pathToFileURL } = require("url")
 
 const path = require('path')
 const { platform } = require('node:process');
+
+const cliIndex = process.argv.indexOf("--cli");
+const isCli = cliIndex !== -1;
+
+if (isCli) {
+  app.commandLine.appendSwitch("disable-gpu");
+  app.commandLine.appendSwitch("disable-software-rasterizer");
+  app.commandLine.appendSwitch("log-level", "3");
+
+  const cliArgs = process.argv.slice(cliIndex + 1);
+
+    const loadedElectronExtensions = new Set();
+
+    const loadElectronExtension = (electronEntry, packageJsonPath) => {
+        if (!electronEntry) return;
+
+        const packageDir = path.dirname(packageJsonPath);
+        const entries = Array.isArray(electronEntry) ? electronEntry : [electronEntry];
+
+        entries.forEach(entry => {
+            if (!entry || typeof entry !== 'string') return;
+
+            const entryPath = path.isAbsolute(entry)
+                ? entry
+                : path.join(packageDir, entry);
+
+            let resolvedPath;
+
+            try {
+                resolvedPath = require.resolve(entryPath);
+            } catch (err) {
+                console.error(`Failed to resolve electron extension "${entry}" from "${packageDir}"`, err);
+                return;
+            }
+
+            if (loadedElectronExtensions.has(resolvedPath)) {
+                return;
+            }
+
+            try {
+                loadedElectronExtensions.add(resolvedPath);
+            } catch (err) {
+                console.error(`Failed to load electron extension "${resolvedPath}"`, err);
+            }
+        });
+    };
+
+    const appendItem = (item, p) => {
+        if (fs.existsSync(p)) {
+            const hh = JSON.parse(fs.readFileSync(p, 'utf8'));
+            if (hh["wljs-meta"]["electron"]) {
+                loadElectronExtension(hh["wljs-meta"]["electron"], p);
+            }
+        }
+    }
+    let rootAppFolder = app.getAppPath();
+    const defaultPath = path.join(rootAppFolder, 'modules');
+
+    if (!fs.existsSync(defaultPath)) return;
+
+    fs.readdirSync(defaultPath, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
+        const p = path.join(defaultPath, item.name, 'package.json');
+        appendItem(item, p);
+    });
+
+  loadedElectronExtensions.forEach(fn => {
+    const g = require(fn);
+    if (g.prolog) g.prolog(app, {}, cliArgs);
+  });  
+
+  return;
+}
+
+
+const pdfjsLib = require("./pdfjs/pdf.mjs");
+
+/*
+const cliArgs = process.argv.slice(cliIndex + 1);
+
+  try {
+    await runCli(cliArgs);
+    app.exit(0);
+  } catch (error) {
+    console.error(error?.message ?? String(error));
+    app.exit(1);
+  }
+*/
 
 const { autoUpdater } = require("electron-updater")
 
@@ -20,9 +108,9 @@ const zlib = require('zlib');
 
 const {powerMonitor } = require('electron')
 
-const { net } = require('electron')
-const fs = require('fs');
+
 const fse = require('fs-extra');
+const https = require('https');
 
 const { powerSaveBlocker } = require('electron')
 
@@ -222,7 +310,7 @@ const cli_info = {
 }
 
 
-var sudo = require('sudo-prompt');
+var sudo = require('./sudo');
 
 function cli_uninstall() {
     if (!app.isPackaged) return;
@@ -260,7 +348,7 @@ function check_cli_installed(log_window) {
         return;
     }
 
-    fs.exists(path.join(appDataFolder, '.cli_i'), (existsQ) => {
+    fs.exists(path.join(appDataFolder, '.cli_i2'), (existsQ) => {
         if (existsQ) {
             console.log('Cli is installed');
             return;
@@ -292,7 +380,7 @@ function check_cli_installed(log_window) {
                     if (error) throw error;
                     console.log('stdout: ' + stdout);
 
-                    fs.writeFile(path.join(appDataFolder, '.cli_i'), 'Nothing to see here', function(err) {
+                    fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
                         if (err) throw err;
                     });                    
                   }
@@ -304,15 +392,7 @@ function check_cli_installed(log_window) {
             return;
         }
 
-        new promt('binary', 'Do you want to install CLI (wljs) as well?', (answer) => {
-            if (answer) {
-                install()
-            } else {
-                fs.writeFile(path.join(appDataFolder, '.nocli_i'), 'Nothing to see here', function(err) {
-                    if (err) throw err;
-                });
-            }
-        }, log_window);
+        install();
 
         
 
@@ -343,15 +423,50 @@ let tray;
 /* extesions for contex menu */
 const pluginsMenu = {};
 
+const loadedElectronExtensions = new Set();
+
 pluginsMenu.items = {};
 pluginsMenu.fetch = () => {
     pluginsMenu.items = {kernel: [], edit: [], view: [], file: [], misc: []}
 
-    
+    const loadElectronExtension = (electronEntry, packageJsonPath) => {
+        if (!electronEntry) return;
+
+        const packageDir = path.dirname(packageJsonPath);
+        const entries = Array.isArray(electronEntry) ? electronEntry : [electronEntry];
+
+        entries.forEach(entry => {
+            if (!entry || typeof entry !== 'string') return;
+
+            const entryPath = path.isAbsolute(entry)
+                ? entry
+                : path.join(packageDir, entry);
+
+            let resolvedPath;
+
+            try {
+                resolvedPath = require.resolve(entryPath);
+            } catch (err) {
+                console.error(`Failed to resolve electron extension "${entry}" from "${packageDir}"`, err);
+                return;
+            }
+
+            if (loadedElectronExtensions.has(resolvedPath)) {
+                return;
+            }
+
+            try {
+                loadedElectronExtensions.add(resolvedPath);
+            } catch (err) {
+                console.error(`Failed to load electron extension "${resolvedPath}"`, err);
+            }
+        });
+    };
 
     const appendItem = (item, p) => {
         if (fs.existsSync(p)) {
             const package = JSON.parse(fs.readFileSync(p, 'utf8'));
+
             if (package["wljs-meta"]["menu"]) {
                 package["wljs-meta"]["menu"].forEach(mi => {
                     const mitem = {
@@ -365,6 +480,7 @@ pluginsMenu.fetch = () => {
                     if (mi["accelerator"]) {
                         mitem.accelerator = isMac ? mi["accelerator"][0] : mi["accelerator"][1];
                     }
+
                     if (package["wljs-meta"]["priority"]) {
                         mitem.priority = package["wljs-meta"]["priority"];
                     } else {
@@ -372,9 +488,9 @@ pluginsMenu.fetch = () => {
                     }
 
                     let section = mi["section"];
-                    if (!section) section =  "misc";
+                    if (!section) section = "misc";
 
-                    if (!(pluginsMenu.items[section].find((el) => {return el.label == mitem.label})))
+                    if (!(pluginsMenu.items[section].find((el) => { return el.label == mitem.label })))
                         pluginsMenu.items[section].push(mitem);
                 });
             }
@@ -391,12 +507,17 @@ pluginsMenu.fetch = () => {
                         mitem.visible = mi["visible"];
                     }
 
-                    if (!(contextMenuExtensions.find((el) => {return el.label == mitem.label})))
+                    if (!(contextMenuExtensions.find((el) => { return el.label == mitem.label })))
                         contextMenuExtensions.push(mitem);
                 });
             }
-        }    
-    }    
+
+            if (package["wljs-meta"]["electron"]) {
+                loadElectronExtension(package["wljs-meta"]["electron"], p);
+            }
+        }
+    }
+
     const defaultPath = path.join(rootAppFolder, 'modules');
 
     if (!fs.existsSync(defaultPath)) return;
@@ -411,7 +532,7 @@ pluginsMenu.fetch = () => {
     fs.readdirSync(userExtensions, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
         const p = path.join(userExtensions, item.name, 'package.json');
         appendItem(item, p);
-    });    
+    });
 }
 
 
@@ -1294,6 +1415,29 @@ const windows = {
             this.win.webContents.send('version', data);
         },
 
+        news (items) {
+            if (!this.readyQ || !this.aliveQ) return;
+            this.win.webContents.send('news-items', items);
+        },
+
+        async fetchNews() {
+            try {
+                const items = await getLatestNews();
+                this.news(items);
+                console.log(items);
+            } catch (error) {
+                console.error('Failed to load WLJS news:', error);
+                this.news([{
+                    source: 'WLJS news',
+                    title: 'Unable to load latest news',
+                    url: 'https://wljs.io',
+                    summary: error.message,
+                    date: new Date(),
+                    dateText: ''
+                }]);
+            }
+        },
+
         construct(cbk = (...any) => {}) {
             let win;
 
@@ -1304,7 +1448,7 @@ const windows = {
                 
                 titleBarStyle: 'hiddenInset',
                 width: 600,
-                height: 400,
+                height: 660,
                 resizable: false,
                 title: 'Launcher',
                 contextMenu: true,
@@ -1332,7 +1476,7 @@ const windows = {
                     },
                     autoHideMenuBar: true,
                     width: 600,
-                    height: 400,
+                    height: 660,
                     resizable: false,
                     title: 'Launcher',
                     maximizable: false,
@@ -1361,7 +1505,7 @@ const windows = {
                     },
                     autoHideMenuBar: true,
                     width: 600,
-                    height: 400,
+                    height: 660,
                     resizable: false,
                     title: 'Launcher',
                     maximizable: false,
@@ -1428,6 +1572,7 @@ const windows = {
             win.once('ready-to-show', () => {
                 self.readyQ = true;
                 cbk(win);
+                self.fetchNews();
             });
 
             win.on('close', () => {
@@ -1493,6 +1638,86 @@ function ensureDirectoryExistence(filePath) {
     ensureDirectoryExistence(dirname);
     fs.mkdirSync(dirname);
   }
+
+function fetchUrlText(url) {
+    return new Promise((resolve, reject) => {
+        const request = https.get(url, (res) => {
+            if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                return resolve(fetchUrlText(new URL(res.headers.location, url).href));
+            }
+            if (res.statusCode < 200 || res.statusCode >= 300) {
+                return reject(new Error(`HTTP ${res.statusCode} fetching ${url}`));
+            }
+            let body = '';
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => body += chunk);
+            res.on('end', () => resolve(body));
+        });
+        request.on('error', reject);
+    });
+}
+
+function stripHtml(html) {
+    return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function parseNewsItems(html, source, pathPrefix) {
+    const regex = new RegExp(`<a[^>]+href="/${pathPrefix}/[^"]+"[^>]*>[\\s\\S]*?</a>`, 'gi');
+    const items = [];
+    let match;
+    let matchCount = 0;
+
+    while ((match = regex.exec(html))) {
+        matchCount++;
+        if (matchCount > 50) break; // safety limit
+        
+        const block = match[0];
+        const hrefMatch = block.match(/href="(\/[^\"]+)"/);
+        const titleMatch = block.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+        const summaryMatch = block.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+        const dateMatch = block.match(/([A-Z][a-z]{2,8}\s+\d{1,2},\s+\d{4})/);
+
+        const url = hrefMatch ? `https://wljs.io${hrefMatch[1]}` : 'https://wljs.io';
+        const title = titleMatch ? stripHtml(titleMatch[1]) : url;
+        const summary = summaryMatch ? stripHtml(summaryMatch[1]) : '';
+        const dateText = dateMatch ? dateMatch[1] : '';
+        const date = dateText ? new Date(dateText) : new Date(0);
+
+        if (title && title !== url && dateText) {
+            items.push({ source, title, url, summary, date, dateText });
+        }
+    }
+
+    console.log(`Parsed ${matchCount} matches for ${source}, extracted ${items.length} items`);
+    return items;
+}
+
+async function getLatestNews() {
+    try {
+        console.log('Fetching WLJS blog and releases...');
+        const [blogHtml, releasesHtml] = await Promise.all([
+            fetchUrlText('https://wljs.io/blog'),
+            fetchUrlText('https://wljs.io/releases')
+        ]);
+
+        console.log(`Blog HTML length: ${blogHtml.length}, Releases HTML length: ${releasesHtml.length}`);
+
+        const items = [
+            ...parseNewsItems(blogHtml, 'Blog', 'blog'),
+            ...parseNewsItems(releasesHtml, 'Releases', 'releases')
+        ];
+
+        console.log(`Total items collected: ${items.length}`);
+        items.sort((a, b) => b.date - a.date);
+        const result = items.slice(0, 8);
+        console.log(`Final result: ${result.length} items`);
+        result.forEach(item => console.log(`  - ${item.source}: ${item.title} (${item.dateText})`));
+        return result;
+    } catch (error) {
+        console.error('Error in getLatestNews:', error);
+        throw error;
+    }
+}
 
 const dumpLogs = (cbk) => {
     const p = path.join(appDataFolder, 'Debug', 'System.log');
@@ -1610,13 +1835,6 @@ function create_window(opts, cbk = () => {}) {
         if (isWindows) {
             options.disallowFullscreen = true;
             
-        }
-
-        if ((new RegExp(/gptchat/)).exec(options.url)) {
-            options.minWidth = 200;
-            options.linuxMenuBar = false;
-            options.contextMenu = false;
-            options.override.maximizable = false;
         }
 
         if ((new RegExp(/docFind/)).exec(options.url)) {
@@ -1908,6 +2126,10 @@ function create_window(opts, cbk = () => {}) {
             win.once('blur', () => {
                 win.close();
             })
+        } else {
+            win.webContents.on('will-navigate', () => {
+                win.webContents.send('will-navigate');
+            })
         }
 
         if (options.features ) {
@@ -2033,6 +2255,8 @@ function create_window(opts, cbk = () => {}) {
             if (u.hostname === (new URL(server.url.default())).hostname) {
                 create_window({url: url, show: true, parent: win, features:features});
 
+            } else if (u.hostname === "reference.wolfram.com") {
+                contents.send('reload_iframe', url);
             } else {
                 //open in the default user's browser
                 shell.openExternal(url);
@@ -2040,43 +2264,6 @@ function create_window(opts, cbk = () => {}) {
 
             return { action: 'deny' };
         });
-
-        if ((new RegExp(/gptchat/)).exec(options.url)) {
-            if (options.parent) {
-
-
-                if (options.parent.isMaximized()) options.parent.unmaximize();
-
-                const pos = options.parent.getPosition();
-                const dims = options.parent.getSize();
-
-                const primaryDisplay = screen.getPrimaryDisplay();
-                const { width, height } = primaryDisplay.workAreaSize;
-                console.warn({screen: width, parentPos: pos, parentdims:dims});
-
-
-                if (pos[0]+dims[0] + 310 > width) {
-                    console.warn('Contaner Overflow!');
-                    if (dims[0] + 310 + 50 > width) {
-                        console.warn('Resize parent');
-                        options.parent.setPosition(50, pos[1], true);
-                        const newwidth = width - 310 - 50;
-                        options.parent.setBounds({ width: newwidth, animate: true}, true);
-                        win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                        win.setPosition( newwidth + 10 + 50, pos[1], true);
-                    } else {
-                        options.parent.setPosition(50, pos[1], true);
-                        win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                        win.setPosition(dims[0] + 50 + 10, pos[1], true);
-                    }
-                } else {
-                    win.setBounds({ width: 300, height:dims[1], animate: true}, true);
-                    win.setPosition(pos[0]+dims[0] + 10, pos[1], true);
-                }
-            } else {
-                win.setBounds({ width: 300, animate: true}, true);
-            }
-        }
 
         win.loadURL(options.url);
 
@@ -2986,6 +3173,13 @@ function create_first_window() {
     console.log('Regular start. Open default url');
     create_window({url: server.url.default(), title: 'Notebook', show: true, focus: false});
     server.wasUpdated = false;
+
+    
+    loadedElectronExtensions.forEach(fn => {
+        console.log('loading ...', fn);
+        const g = require(fn);
+        if (g.epilog) g.epilog(app, {}, []); else g(app, {}, []);
+    });
 }
 
 

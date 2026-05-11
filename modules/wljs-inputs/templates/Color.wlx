@@ -1,0 +1,129 @@
+Component[OptionsPattern[]] := With[{
+    Event = OptionValue["Event"],
+    Topic = OptionValue["Topic"],
+    Uid = CreateUUID[],
+    Label = OptionValue["Label"],
+    Description = OptionValue["Description"],
+    InitialColor = OptionValue["InitialColor"],
+    class = OptionValue["Class"],
+    style = OptionValue["Style"],
+    labelClass = OptionValue["LabelClass"],
+    labelStyle = OptionValue["LabelStyle"],
+    ShowAlpha = OptionValue["ShowAlpha"]
+},
+{
+    PLabel = If[Label =!= "",
+        <div>
+                <label class="font-medium text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
+              </div>
+    ,
+        ""
+    ],
+    PAlpha = If[ShowAlpha === True,
+            <div class="flex items-center gap-2">
+                  <input id="alpha-#instanceId" type="range" min="0" max="100" value="100" class="w-24" style="cursor: pointer;"></input>
+            </div>
+    ,
+        ""
+    ],
+    PDesc = If[Description =!= "",
+        <p class="text-gray-500 text-sm"><Description/></p>
+    ,
+        ""
+    ]
+},
+
+        <div class="relative flex items-start sm-controls">
+            <div class="flex flex-col gap-2">
+              <PLabel/>
+              <div class="flex gap-3 flex-col gap-y-2">
+                <input id="color-#instanceId" type="color" class="{class}" style="cursor: pointer; width: 60px; height: 40px; border: 1px solid #ccc; border-radius: 4px; {style}"></input>
+                <PAlpha/>
+              </div>
+              <PDesc/>
+            </div>
+                   <script type="module">
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16) / 255.0,
+                    g: parseInt(result[2], 16) / 255.0,
+                    b: parseInt(result[3], 16) / 255.0
+                } : { r: 1, g: 1, b: 1 };
+            }
+
+            function rgbToHex(r, g, b) {
+                return "#" + [r, g, b].map(x => {
+                    const hex = Math.round(x * 255).toString(16);
+                    return hex.length === 1 ? "0" + hex : hex;
+                }).join('').toUpperCase();
+            }
+
+            function sendColorEvent() {
+                const colorEl = document.getElementById('color-#instanceId');
+                const rgb = hexToRgb(colorEl.value);
+                const showAlpha = '<ShowAlpha/>' === 'True';
+
+                if (showAlpha) {
+                    const alphaEl = document.getElementById('alpha-#instanceId');
+                    const alpha = parseInt(alphaEl.value) / 100.0;
+                    if (alpha < 1) {
+                        server.kernel.io.fire('<Event/>', [rgb.r, rgb.g, rgb.b, alpha], '<Topic/>');
+                    } else {
+                        server.kernel.io.fire('<Event/>', [rgb.r, rgb.g, rgb.b], '<Topic/>');
+                    }
+                } else {
+                    server.kernel.io.fire('<Event/>', [rgb.r, rgb.g, rgb.b], '<Topic/>');
+                }
+            }
+
+            const colorEl = document.getElementById('color-#instanceId');
+            const showAlpha = '<ShowAlpha/>' === 'True';
+
+            // Set initial color from InitialColor option
+            const initialColor = '<InitialColor/>';
+            if (initialColor && initialColor !== '') {
+                colorEl.value = initialColor;
+            }
+
+            colorEl.addEventListener('change', sendColorEvent);
+            colorEl.addEventListener('input', sendColorEvent);
+
+            if (showAlpha) {
+                const alphaEl = document.getElementById('alpha-#instanceId');
+               
+                // Parse initial color to extract alpha if provided in format "rgba(...)"
+                const initialAlpha = '<InitialAlpha/>';
+                if (initialAlpha && initialAlpha !== '') {
+                    const alpha = Math.round(parseFloat(initialAlpha) * 100);
+                    alphaEl.value = alpha;
+                 
+                }
+
+                alphaEl.addEventListener('input', (event) => {
+               
+                    sendColorEvent();
+                });
+
+                alphaEl.addEventListener('change', sendColorEvent);
+            }
+        </script>
+        </div>
+
+];
+
+Options[Component] = {
+    "Event" -> "blackhole",
+    "Label" -> "",
+    "Description" -> "",
+    "InitialColor" -> "#FFFFFF",
+    "InitialAlpha" -> "1",
+    "ShowAlpha" -> False,
+    "Topic" -> "Default",
+    "Class" -> "",
+    "Style" -> "",
+    "LabelClass" -> "",
+    "LabelStyle" -> ""
+};
+
+Component

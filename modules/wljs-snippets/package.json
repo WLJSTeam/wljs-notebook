@@ -9,8 +9,6 @@
   "defaultPackage": true,
   "wljs-meta": {
     "frontend": "src/Frontend.wl",
-    "js": "dist/kernel.js",
-    "deferred": "src/VFX.wl",
     "priority": 4998,
     "category": "Notebook Extensions",
     "menu": [

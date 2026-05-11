@@ -163,7 +163,7 @@ With[{
 
         ]];
 
-        EventFire[modals, "TextBox", <|"Promise"->promise, "title"->"Enter new name", "default"->RandomWord[]|>];
+        EventFire[modals, "TextBox", <|"Promise"->promise, "title"->"Enter new name", "default"->(Internal`NoWR`RandomWord[])|>];
       ];
     ];
   ]];
@@ -252,10 +252,10 @@ With[{
         const files = [...e.dataTransfer.items]
           .filter(item => item.kind === "file")
           .map(item => item.getAsFile());
-        const MAX_SIZE = 30 * 1024 * 1024;
+        const MAX_SIZE = 15 * 1024 * 1024;
         files.forEach(file => {
           if (file.size > MAX_SIZE) {
-            interpretate.alert(`"${file.name}" is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum allowed size is 30 MB.`);
+            interpretate.alert(`"${file.name}" is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum allowed size is 15 MB.`);
             return;
           }
           const reader = new FileReader();

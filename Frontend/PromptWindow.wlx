@@ -24,12 +24,12 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Loader.wl"];
-{deinitKernel, initKernel}           = ImportComponent["KernelUtils.wl"];
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
-{loadSettings, storeSettings}        = ImportComponent["Settings.wl"];
+{deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
 
-autolaunch                           = ImportComponent["Autolaunch.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
+
 
 serverParams = <|"env" -> env|>;
 settings = <||>;
@@ -79,7 +79,7 @@ temporalNotebook = Null;
 
 
 transformNotebook[n_, cli_] := With[{},
-  n["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir(*`*), StringJoin[RandomWord[], StringTake[CreateUUID[], 3], ".wln"]}];
+  n["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir(*`*), StringJoin[(Internal`NoWR`RandomWord[]), StringTake[CreateUUID[], 3], ".wln"]}];
   n["HaveToSaveAs"] = True;
   dumpNotebook[n, Null, Null, Null];
   

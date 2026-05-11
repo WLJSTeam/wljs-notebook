@@ -28,12 +28,12 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Loader.wl"];
-{deinitKernel, initKernel}           = ImportComponent["KernelUtils.wl"];
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook, reloadNotebook}         = {loader`save, loader`load, loader`rename, loader`clone, loader`reload};
 
-{loadSettings, storeSettings}        = ImportComponent["Settings.wl"];
+{deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
 
-autolaunch                           = ImportComponent["Autolaunch.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
+
 
 serverParams = <|"env" -> env|>;
 settings = <||>;
@@ -98,6 +98,28 @@ createNotebook[props_Association, assoc_Association, GlobalMessanger_, ModalCont
     EventFire[GlobalMessanger, "Error", "Failed to create a new notebook! Check if the working directory is writable"];
   ]]
 ]
+
+dumpHashCheckUpdate[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
+  If[!TrueQ[FileExistsQ[notebook["Path"]] || !NumberQ[notebook["FileHash"]]], 
+    Echo["File or notebook hash does not exists. Skipping"];
+    Return[];
+  ];
+
+  With[{hash = FileHash[notebook["Path"]]},
+   If[notebook["FileHash"] =!= hash,
+     notebook["FileHash"] = hash;
+     "HashMismatchFound"
+   ,
+     "It's okay"
+   ]
+  ]
+]
+
+dumpReloadNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
+  Then[reloadNotebook[notebook, "Events"->AppEvent], Function[Null,
+    Echo["Reloaded"];
+  ]];
+];
 
 backupNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := With[{},
   If[!TrueQ[notebook["ReadOnly?"]], 
@@ -259,6 +281,7 @@ App[request_] := With[{
         SidebarId = CreateUUID[],
         OnLoad =  CreateUUID[],
         cachedClient = Unique["cachedClient"],
+        appGlobals = AppExtensions`AppGlobals (*`*),
         kernels = Hold[AppExtensions`KernelList] (*`*),
         isElectron = ElectronQ[request],
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
@@ -380,6 +403,8 @@ App[request_] := With[{
       "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $Client]&),
       "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $Client]&),
       "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $Client]&),
+      "DumpHashCheck" -> (dumpHashCheckUpdate[#, GlobalMessanger, $Client]&),
+      "DumpReloadCells" -> (dumpReloadNotebook[#, GlobalMessanger, $Client]&),
       "SidebarToggle" -> (toggleWindowSize[#, $Client]&),
       "PrintPDF" -> (printPDF[$Client, ModalController, GlobalMessanger]&)
     }];
@@ -421,12 +446,12 @@ App[request_] := With[{
             <div class="h-full flex flex-col" style="-webkit-app-region: drag">
               <TopBar Menu={FakeMenu} CachedClient={cachedClient} ExtensionTemplates={ExtensionTemplates} AppEvents={AppEvent} Messanger={GlobalMessanger} Parameters={GlobalParameters} Controls={GlobalControls} Path={Path} Modals={ModalController}/>
               <Notifications CachedClient={cachedClient} ElectronQ={isElectron} Controls={GlobalControls} MessagePort={GlobalMessanger}/>
-              <Views Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Kernels={kernels} Path={Path} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates}/>
+              <Views Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Kernels={kernels} Path={Path} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates} AppGlobals={appGlobals}/>
               <ExtensionTemplates Template={"AppFooter"} Path={Path} AppEvents={AppEvent} MessagePort={GlobalMessanger}/>
             </div> 
           </div>
         </div>
-        <Script Secret={Secret}/>
+        <Script Secret={Secret} GlobalControls={GlobalControls}/>
         <ExtensionTemplates Template={"AppScripts"} />
         <ElectronBinds Controls={GlobalControls}/>
       </body>
@@ -434,7 +459,8 @@ App[request_] := With[{
   } // StringRiffle
 ] ];
 
-Script[Rule["Secret", Secret_]] := With[{},
+
+Script[OptionsPattern[]] := With[{Secret = OptionValue["Secret"], GlobalControls = OptionValue["GlobalControls"]},
   <script type="module">
     core.UIPrintPDF = async (args, env) => {
       if (!(window?.electronAPI?.toPDF)) {
@@ -463,17 +489,17 @@ Script[Rule["Secret", Secret_]] := With[{},
       
     }
 
-    if (window.electronAPI) {
+    {
       const sidebar = document.getElementById('sidebar');
-      if (window.electronAPI.onblur) {
-        window.electronAPI.onblur(() => {
+        window.addEventListener('blur', () => {
           sidebar.classList.add('grayscale');
+          server.io.fire('<GlobalControls/>', true, 'WindowBlur');
         });
       
-        window.electronAPI.onfocus(() => {
+        window.addEventListener('focus', () => {
           sidebar.classList.remove('grayscale');
+          server.io.fire('<GlobalControls/>', true, 'WindowFocus');
         });
-      }
     }
 
     const r = document.querySelector(':root'); //get root element
@@ -511,21 +537,11 @@ Script[Rule["Secret", Secret_]] := With[{},
   </script>
 ];
 
+Options[Script] = {"Secret" -> "", "GlobalControls" -> ""};
+
 
 http["MessageHandler", "Folder"] = AssocUMatchQ[<|"Method" -> "GET", "Path" -> "/folder/" ~~ ___|>] -> middleware[App];
 http["MessageHandler", "Index"] = AssocUMatchQ[<|"Method" -> "GET", "Path" -> "/"|>] -> middleware[App];
 
-
-
-(*/* TODO: Move it to Script.wls */*)
 Print["App Loaded!"];
-
-If[settings["Autostart"] && !TrueQ[$Env["noautolaunch"]],
-  Print["Autolaunch!"];
-  autolaunch[LocalKernel`LocalKernel["Name"->"Auto"], Hold[AppExtensions`KernelList], initKernel[serverParams], deinitKernel];
-];
-
-Print["Done?"];
-
-
 

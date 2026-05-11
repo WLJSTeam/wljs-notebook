@@ -24,6 +24,8 @@ ExtensionsDir;
 AppDataDir;
 AppConfig;
 
+AppGlobals;
+
 Templates;
 TemplateInjection;
 
@@ -32,6 +34,8 @@ Begin["`Internal`"];
 templates = <||>;
 
 emptyStringFunction[x__] := ""
+
+AppGlobals;
 
 WebServers = <||>;
 

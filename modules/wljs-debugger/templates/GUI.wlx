@@ -17,7 +17,7 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
 
-{loadSettings, storeSettings}        = ImportComponent["Frontend/Settings.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 settings = <||>;
 loadSettings[settings];

@@ -1,179 +1,92 @@
-<|"Notebook" -> <|"Controller" -> "5b080611-e4f1-4c27-9475-0cdeac2fcb13", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2187], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "958768c7-e12b-479f-ab18-0108a47d7879", 
-   "Objects" -> <|"9456a8f1-21bb-42b7-87bd-a0070b5ecae0" -> 
-      <|"Public" -> Hold[Graphics[Annotation[
-           {{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.368417, 
-                  0.506779, 0.709798], AbsoluteThickness[2]], 
-                Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, 
-                  {0.00030671792055962676, 0.00030671792055962676}, 
-                  {0.0006134154329559882, 0.0006134154329559882}, 
-                  {0.0012268104577487112, 0.0012268104577487112}, 
-                  {0.002453600507334157, 0.002453600507334157}, 
-                  {0.004907180606505049, 0.004907180606505049}, 
-                  {0.009814340804846833, 0.009814340804846833}, 
-                  {0.0196286612015304, 0.0196286612015304}, 
-                  {0.040908357085458646, 0.040908357085458646}, 
-                  {0.06077788357015209, 0.06077788357015209}, 
-                  {0.08025764881887605, 0.08025764881887605}, 
-                  {0.10138846915816112, 0.10138846915816112}, 
-                  {0.12110912009821138, 0.12110912009821138}, 
-                  {0.1424808261288228, 0.1424808261288228}, 
-                  {0.16346277092346467, 0.16346277092346467}, 
-                  {0.18303454631887175, 0.18303454631887175}, 
-                  {0.20425737680483996, 0.20425737680483996}, 
-                  {0.22407003789157337, 0.22407003789157337}, 
-                  {0.24349293774233727, 0.24349293774233727}, 
-                  {0.26456689268366235, 0.26456689268366235}, 
-                  {0.2842306782257526, 0.2842306782257526}, 
-                  {0.305545518858404, 0.305545518858404}, 
-                  {0.32647059825508584, 0.32647059825508584}, 
-                  {0.34598550825253294, 0.34598550825253294}, 
-                  {0.3671514733405411, 0.3671514733405411}, 
-                  {0.3869072690293145, 0.3869072690293145}, 
-                  {0.408314119808649, 0.408314119808649}, {0.429331209352014, 
-                   0.429331209352014}, {0.44893812949614426, 
-                   0.44893812949614426}, {0.47019610473083556, 
-                   0.47019610473083556}, {0.4900439105662921, 
-                   0.4900439105662921}, {0.5095019551657791, 
-                   0.5095019551657791}, {0.5306110548558273, 
-                   0.5306110548558273}, {0.5503099851466406, 
-                   0.5503099851466406}, {0.5716599705280151, 
-                   0.5716599705280151}, {0.5926201946734201, 
-                   0.5926201946734201}, {0.6121702494195903, 
-                   0.6121702494195903}, {0.6333713592563216, 
-                   0.6333713592563216}, {0.6531622996938181, 
-                   0.6531622996938181}, {0.6725634788953451, 
-                   0.6725634788953451}, {0.6936157131874332, 
-                   0.6936157131874332}, {0.7132577780802865, 
-                   0.7132577780802865}, {0.7345508980637009, 
-                   0.7345508980637009}, {0.7544338486478805, 
-                   0.7544338486478805}, {0.7739270379960906, 
-                   0.7739270379960906}, {0.7950712824348619, 
-                   0.7950712824348619}, {0.8148053574743983, 
-                   0.8148053574743983}, {0.8361904876044959, 
-                   0.8361904876044959}, {0.857185856498624, 
-                   0.857185856498624}, {0.8767710559935172, 
-                   0.8767710559935172}, {0.8980073105789717, 
-                   0.8980073105789717}, {0.9178333957651912, 
-                   0.9178333957651912}, {0.9372697197154413, 
-                   0.9372697197154413}, {0.9583570987562524, 
-                   0.9583570987562524}, {0.9780343083978288, 
-                   0.9780343083978288}, {0.9783775220102351, 
-                   0.9783775220102351}, {0.9787207356226415, 
-                   0.9787207356226415}, {0.9794071628474543, 
-                   0.9794071628474543}, {0.9807800172970798, 
-                   0.9807800172970798}, {0.9835257261963308, 
-                   0.9835257261963308}, {0.9890171439948328, 
-                   0.9890171439948328}, {0.9893603576072392, 
-                   0.9893603576072392}, {0.9897035712196455, 
-                   0.9897035712196455}, {0.9903899984444582, 
-                   0.9903899984444582}, {0.9917628528940837, 
-                   0.9917628528940837}, {0.9945085617933347, 
-                   0.9945085617933347}, {0.9948517754057411, 
-                   0.9948517754057411}, {0.9951949890181475, 
-                   0.9951949890181475}, {0.9958814162429602, 
-                   0.9958814162429602}, {0.9972542706925858, 
-                   0.9972542706925858}, {0.9975974843049922, 
-                   0.9975974843049922}, {0.9979406979173985, 
-                   0.9979406979173985}, {0.9986271251422112, 
-                   0.9986271251422112}, {0.9989703387546176, 
-                   0.9989703387546176}, {0.999313552367024, 
-                   0.999313552367024}, {0.9996567659794304, 
-                   0.9996567659794304}, {0.9999999795918367, 
-                   0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, 
-           Association["HighlightElements" -> Association["Label" -> {
-                "XYLabel"}, "Ball" -> {"InterpolatedBall"}], 
-            "LayoutOptions" -> Association["PanelPlotLayout" -> Association[
-                ], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, 
-              "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {
-                0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, 
-              "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> 
-               GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], 
-                 RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[
-                  2]]}, "HighlightLabelingFunctions" -> Association[
-                "CoordinatesToolOptions" -> ({Identity[#1[[1]]], Identity[
-                    #1[[2]]]} & ), "ScalingFunctions" -> {{Identity, 
-                   Identity}, {Identity, Identity}}], "Primitives" -> {}, 
-              "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> 
-               {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, 
-              "GroupHighlight" -> False]], "DynamicHighlight"], 
-          {DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           DisplayFunction -> Identity, PlotRangePadding -> 
-            {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, 
-           PlotRangeClipping -> True, ImagePadding -> All, 
-           AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, 
-           AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, 
-           DisplayFunction :> Identity, Epilog -> {FrontInstanceReference[
-              1810129442768195300]}, Frame -> {{False, False}, 
-             {False, False}}, FrameLabel -> {{None, None}, {None, None}}, 
-           FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999795918367}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>|>, "Path" -> "/Users/kirill/Github/wljs-demos-ar\
-chive/Demos/03 - Plotting/Programmatic Zoom.wln", "ReadOnly" -> True, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Zooming in/out", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2182]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Zooming in/out\nUsing `FrontSubmit`", 
-    "Display" -> "codemirror", "Hash" -> 
-     "42cc19f6-97e4-43aa-9a10-b3fc633f99c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> "## Zooming in/out\nUsing `FrontSubmit`", 
-    "Display" -> "markdown", "Hash" -> 
-     "6d44d70e-4d0c-4283-8e2c-f57325341959", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> 
-     "ref = FrontInstanceReference[];\nPlot[x, {x,0,1}, Epilog->{ref}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7f685158-2cef-4bd6-949d-59a342dadb5f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"9456a8f1-21bb-42b7-87bd-a0070b5ecae0\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW5qYm\
-iVapBnqGhkmJemaGCWZ61qYJ6XoJhoYmBskmaYmJ6YaAAB/XRXD\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "18813c5f-0a0f-4871-a185-a2289a3ed32f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> ".md\nNow we can do it from code", "Display" -> "codemirror", 
-    "Hash" -> "7547ff45-5385-4eea-b79f-3b2ee19a5c72", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> "Now we can do it from code", "Display" -> "markdown", 
-    "Hash" -> "b2329ef1-7a3c-4a7a-b12c-65ad9555e1e1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>, 
-   <|"Data" -> "FrontSubmit[ZoomAt[1.2, {0.6,0.6}], ref] ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "948fd94b-d77e-4541-b8ad-fbd490b311de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "cae4daf7-6d60-4828-94fd-1522b71d7e52"|>}, "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Zooming in/out
+Using `FrontSubmit`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Zooming in/out
+Using `FrontSubmit`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ref = FrontInstanceReference[];
+Plot[x, {x,0,1}, Epilog->{ref}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["9456a8f1-21bb-42b7-87bd-a0070b5ecae0"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW5qYmiVapBnqGhkmJemaGCWZ61qYJ6XoJhoYmBskmaYmJ6YaAAB/XRXD"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can do it from code
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can do it from code
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontSubmit[ZoomAt[1.2, {0.6,0.6}], ref] 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 9456a8f1-21bb-42b7-87bd-a0070b5ecae0
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.368417, 0.506779, 0.709798], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({Identity[#1[[1]]], Identity[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"], {DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Epilog -> {FrontInstanceReference[1810129442768195300]}, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

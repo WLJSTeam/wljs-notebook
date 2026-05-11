@@ -28,18 +28,18 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             With[{dir = If[MemberQ[notebook["Properties"], "WorkingDirectory"],
-                    FileNameSplit[ notebook["WorkingDirectory"] ]
+                    URLEncode[ notebook["WorkingDirectory"] ]
                 ,
-                    FileNameSplit[ notebook["Path"] // DirectoryName ]
+                    URLEncode[ notebook["Path"] // DirectoryName ]
                 ]
             },
                 Echo[">> set directory (forced)"];
-                GenericKernel`Init[notebook["Evaluator"]["Kernel"], Unevaluated[
+                GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
                         CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectorySet[dir];
                 ] ];
             ];
             (*With[{dir = FileNameSplit[ notebook["Path"] // DirectoryName ]},
-                GenericKernel`Init[notebook["Evaluator"]["Kernel"], Unevaluated[
+                GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
                     CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectoryAppend[dir];
                 ] ];
             ];*)
@@ -65,7 +65,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
         "OnClose" -> Function[payload,
             Print[""];
             (*With[{dir = FileNameSplit[ notebook["Path"] // DirectoryName ]},
-                GenericKernel`Init[notebook["Evaluator"]["Kernel"], Unevaluated[
+                GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
                     CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectoryRemove[dir];
                 ] ];
             ];*)            

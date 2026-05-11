@@ -24,10 +24,6 @@
     return newm;
   } 
   let plotly = {};
-  plotly.name = "WebObjects/Plotly";
-
-
-  interpretate.contextExpand(plotly);
 
   let Plotly = false;
 
@@ -53,7 +49,7 @@
     }
   } 
 
-  plotly["PlotlyNewPlot"] = async (args, env) => {
+  const iPlotlyNewPlot = async (args, env) => {
     if (!Plotly) Plotly = await import('plotly.js-dist-min');
 
     const options = await core._getRules(args, env);
@@ -94,33 +90,41 @@
 
   }
 
-  plotly["PlotlyNewPlot"].destroy = (args, env) => {
+  iPlotlyNewPlot.destroy = (args, env) => {
     Plotly.purge(env.local.instance);
     console.warn('Plotly destroyed!');
   }
 
-  plotly["Plotly`newPlot"] = plotly["PlotlyNewPlot"];
+  iPlotlyNewPlot.virtual = true;
+
+
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot"] = iPlotlyNewPlot
+
+  //legacy support
+  core["Plotly`newPlot"] = iPlotlyNewPlot;
+  core["PlotlyNewPlot"] = iPlotlyNewPlot;
 
 
 
-  plotly["PlotlyAddTraces"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyAddTraces"] = async (args, env) => {
+    console.warn(env.local);
     const traces = await interpretate(args[0], {...env, context: plotly});
     Plotly.addTraces(env.local.instance, traces);
   }
 
-  plotly["PlotlyRemoveTraces"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyRemoveTraces"] = async (args, env) => {
     const traces = await interpretate(args[0], env);
     Plotly.deleteTraces(env.local.instance, traces);
   }
 
-  plotly["PlotlyExtendTraces"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyExtendTraces"] = async (args, env) => {
     const copy = {...env, context: plotly};
     const traces = await interpretate(args[0], copy);
     const arr = await interpretate(args[1], copy);
     Plotly.extendTraces(env.local.instance, traces, arr);
   }
 
-  plotly["PlotlyReact"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyReact"] = async (args, env) => {
     const copy = {...env, context: plotly};
     let data = await interpretate(args[0], copy);
     if (data instanceof NumericArrayObject) {
@@ -131,7 +135,7 @@
     Plotly.react(env.local.instance, data, layout);
   }  
 
-  plotly["PlotlyRestyle"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyRestyle"] = async (args, env) => {
     const copy = {...env, context: plotly};
     let data = await interpretate(args[0], copy);
     if (data instanceof NumericArrayObject) {
@@ -147,29 +151,26 @@
     Plotly.restyle(env.local.instance, data, traces); 
   }  
   
-  plotly["PlotlyRelayout"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyRelayout"] = async (args, env) => {
     const lay = await interpretate(args[0], {...env, context: plotly});
     Plotly.relayout(env.local.instance, lay); 
   }   
 
-  plotly["PlotlyAnimate"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyAnimate"] = async (args, env) => {
     const copy = {...env, context: plotly};
     const traces = await interpretate(args[0], copy);
     const arr = await interpretate(args[1], copy);
     Plotly.animate(env.local.instance, traces, arr);
   }  
 
-  plotly["PlotlyPrependTraces"] = async (args, env) => {
+  core["CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyPrependTraces"] = async (args, env) => {
     const copy = {...env, context: plotly};
     const traces = await interpretate(args[0], copy);
     const arr = await interpretate(args[1], copy);
     Plotly.prependTraces(env.local.instance, traces, arr);
   }
   
-
-  plotly.ImageSize = () => 'ImageSize'
- 
-  plotly.ListPlotly = async function(args, env) {
+  const iListPlotly =  async function(args, env) {
       if (!Plotly) Plotly = await import('plotly.js-dist-min');
  
       env.numerical = true;
@@ -279,11 +280,17 @@
           request();
     }
 
-    plotly.ListPlotly.destroy = ()=>{};
 
-    plotly.ListPlotly.virtual = true;
+    iListPlotly.destroy = ()=>{};
+    iListPlotly.virtual = true;
+
+    core['CoffeeLiqueur`Extensions`Plotly`Private`iListPlotly'] = iListPlotly;
+
+    //legacy
+    core['ListPlotly'] = iListPlotly;
     
-    plotly.ListLinePlotly = async function(args, env) {
+
+    const iListLinePlotly = async function(args, env) {
       if (!Plotly) Plotly = await import('plotly.js-dist-min');
       console.log('listlineplot: getting the data...');
       let options = await core._getRules(args, env);
@@ -349,7 +356,7 @@
         env.local.element = env.element;
     }   
 
-    plotly.ListLinePlotly.update = async (args, env) => {
+    iListLinePlotly.update = async (args, env) => {
       env.numerical = true;
       console.log('listlineplot: update: ');
       console.log(args);
@@ -418,6 +425,11 @@
       });     
     }
     
-    plotly.ListLinePlotly.destroy = ()=>{};
+    iListLinePlotly.destroy = ()=>{};
 
-    plotly.ListLinePlotly.virtual = true
+    iListLinePlotly.virtual = true
+
+    core['CoffeeLiqueur`Extensions`Plotly`Private`iListLinePlotly'] = iListLinePlotly;
+
+    //legacy
+    core['ListLinePlotly'] = iListLinePlotly;

@@ -6,11 +6,9 @@ Begin["`Private`"]
 nouns = StringSplit[Import[FileNameJoin[{$InputFileName//DirectoryName, "Nouns.txt"}], "Text"], "\n"];
 nouns = Select[nouns, StringMatchQ[WordCharacter..] ];
 
-Unprotect[RandomWord];
 
-ClearAll[RandomWord];
-RandomWord[] := RandomChoice @ nouns;
-RandomWord[n_Integer] := RandomChoice[nouns, n];
+Internal`NoWR`RandomWord[] := RandomChoice @ nouns;
+Internal`NoWR`RandomWord[n_Integer] := RandomChoice[nouns, n];
 
 End[]
 

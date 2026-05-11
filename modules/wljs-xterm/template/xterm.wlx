@@ -8,7 +8,7 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
-{loadSettings, storeSettings}        = ImportComponent["Frontend/Settings.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 settings = <||>;
 loadSettings[settings];
@@ -20,8 +20,8 @@ addListeners[cli_, chat_] := With[{socket = EventClone[cli]},
 ]
 
 evaluateInPlace[expr_String, k_, p_] := With[{promiseId = p[[1]]},
-    GenericKernel`Async[k, With[{},
-            EventFire[Internal`Kernel`Stdout[promiseId], Resolve, <|"Data"->ExportString[ToString[ToExpression[expr, InputForm], InputForm], "Text"]|> ];
+    GenericKernel`SendAsync[k, With[{},
+            EventFire[Internal`Kernel`RemoteEvent[promiseId], Resolve, <|"Data"->ExportString[ToString[ToExpression[expr, InputForm], InputForm], "Text"]|> ];
         ]
     ];
 ];

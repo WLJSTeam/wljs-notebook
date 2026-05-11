@@ -99,7 +99,7 @@ reBuildVocabulary := With[{},
                     currentContextPath = $ContextPath;
                     
                     If[Length[contexts] > 0, 
-                        Module[{old = definitions, spinner = Notify["Rebuilding vocabulary", "Topic"->"Autocomplete", "Type"->"Spinner"]},
+                        Module[{old = definitions, spinner = EchoLabel["Spinner"]["Rebuilding vocabulary"]},
 
                             With[{r = Flatten[( ((*Echo[#]; *){#, Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
                                 definitions = Join[definitions, r] // DeleteDuplicates;
@@ -108,7 +108,7 @@ reBuildVocabulary := With[{},
 
 
                             extend[Complement[definitions, old] ];
-                            Delete[spinner];
+                            spinner["Cancel"];
                             timer = Null;
                         ];
                     ,

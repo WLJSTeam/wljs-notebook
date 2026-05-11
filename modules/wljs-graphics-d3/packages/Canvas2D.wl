@@ -363,7 +363,15 @@ ctx /: MakeBoxes[c_ctx, StandardForm] :=    Module[{above},
 
 Unprotect[Image]
 
-Image /: MakeBoxes[i: Image[_ctx, ___], form_] := With[{
+Image /: MakeBoxes[i: Image[_ctx, ___], StandardForm] := With[{
+  o = CreateFrontEndObject[i]
+},{
+  box = MakeBoxes[o, StandardForm]
+},
+  ViewBox[box, o]
+]
+
+Image /: MakeBoxes[i: Image[_ctx, ___], WLXForm] := With[{
   o = CreateFrontEndObject[i]
 },
   MakeBoxes[o, form]

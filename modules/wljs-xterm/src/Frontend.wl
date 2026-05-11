@@ -30,6 +30,8 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];
 
+Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
+
 CodeFormatter`$DefaultLineWidth = 120;
 SetOptions[CodeFormatter`CodeFormatCST, CodeFormatter`Airiness -> -0.75, CodeFormatter`BreakLinesMethod -> "LineBreakerV2"];
 

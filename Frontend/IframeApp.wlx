@@ -26,12 +26,12 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Loader.wl"];
-{deinitKernel, initKernel}           = ImportComponent["KernelUtils.wl"];
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
-{loadSettings, storeSettings}        = ImportComponent["Settings.wl"];
+{deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
 
-autolaunch                           = ImportComponent["Autolaunch.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
+
 
 serverParams = <|"env" -> env|>;
 settings = <||>;

@@ -46,12 +46,12 @@ Internal`Kernel`RevealEvaluator = Function[t, With[{hash = CreateUUID[]},
 
 
                     Then[postProcess[string], Function[processed,
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"slide", "Hash"->hash] |> ];
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];                  
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"slide", "Hash"->hash] |> ];
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];                  
                     ],
                     Function[processed,
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"slide", "Hash"->hash] |> ];
-                        EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];                     
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> processed, "Meta" -> Sequence["Display"->"slide", "Hash"->hash] |> ];
+                        EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];                     
                     ] ];
 
 

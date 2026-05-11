@@ -75,9 +75,9 @@ pasteCrappyContent2[cli_, controls_, data_, modals_, log_] := Module[{current}, 
             ],
             p = Promise[]
         },
-            GenericKernel`Init[notebook["Evaluator"]["Kernel"],  (  
+            GenericKernel`Send[notebook["Evaluator"]["Kernel"],  (  
                 Needs["BoxesConverter`"->None];
-                EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, 
+                EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, 
                   With[{},
                     TimeConstrained[BoxesConverter`WLJSDisplayForm[expr], 10, "$Failed"]
                   ]

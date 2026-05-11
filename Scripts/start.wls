@@ -90,6 +90,12 @@ Needs["CoffeeLiqueur`WLX`WebUI`"]
 Needs["CodeParser`"]
 
 
+(* Frontend Helper Tools *)
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+Needs["CoffeeLiqueur`Notebook`KernelUtils`"->"kernelUtils`", FileNameJoin[{ Directory[], "Frontend", "KernelUtils.wl"}] ];
+
+
 (* env parameters *)
 System`$Env;
 
@@ -197,19 +203,14 @@ Echo[">> Root: "<> Directory[] ];
 (* load users extensions *)
 WLJSPackages`Load[ AppExtensions`ExtensionsDir ];
 
-{loadSettings, storeSettings}        = Get[FileNameJoin[{"Frontend", "Settings.wl"}] ];
+Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
+
 
 Echo["\n\nWe are looking for funding ❤️  https://wljs.io/frontend/Support\n\n"];
 Echo["\n\n"];
 
-(* check if there is internet or connection to WR servers *)
-(* NetworkConnected is not robust enough *)
-Internal`$NoWRServices = !StringQ[TimeConstrained[RandomWord[], 10, $Failed] ];
 
-If[TrueQ @ Internal`$NoWRServices, 
-  Echo["No WR servers are reachable, we will apply patches to some system symbols..."];
-  Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ]
-];
+Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ]
 
 WLJSPackages`Includes["js"];
 WLJSPackages`Includes["frontend"];
@@ -250,10 +251,10 @@ With[{now = Now},
 
 
 (* load stuff into frontend *)
-Echo["Loading packages: FRONTEND"];
+Echo["Loading core packages..."];
 
 If[FailureQ[
-    Echo[FileNameTake[#] <> ""];
+    Echo[StringJoin["Loading to Master Kernel... ", #] ];
     Get[
       UniversalPathConverter[#],
       Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}
@@ -269,6 +270,7 @@ CoffeeLiqueur`WLX`Importer`Private`CacheControl["Hour"];
 AppExtensions`KernelList = {};
 
 
+
 (* Entrypoint of an app *)
 ServerError       := ImportComponent["Frontend/ServerError.wlx"];
 Protocol          := ImportComponent["Frontend/Protocol.wlx"];
@@ -278,7 +280,9 @@ App         := ImportComponent["Frontend/App.wlx"];
 PromptWindow         := ImportComponent["Frontend/PromptWindow.wlx"];
 Window      := ImportComponent["Frontend/Window.wlx"];
 Settings    := ImportComponent["Frontend/Settings.wlx"];
-Downloader   = ImportComponent["Frontend/Downloader.wl"];
+
+Needs["CoffeeLiqueur`Notebook`HTTPDownLoader`" -> "downloader`", FileNameJoin[{Directory[], "Frontend", "Downloader.wl"}] ];
+Downloader   = downloader`module;
 
 (* Global variables *)
 
@@ -341,7 +345,6 @@ http["MessageHandler", "File"]  = GetFileURequestQ[AppExtensions`HTTPFileExtensi
 
 SocketListen[USocketOpen[$Env["host"], $Env["http"]], tcp@#&]
 
-
 Print["Staring WS/HTTP server..."];
 
 wcp = TCPUServer[]
@@ -367,15 +370,22 @@ Map[Function[key,
 
 
 (* reseved keyword for WLJS interpreter *)
+(* What a heck does it do here?! *)
 SetAttributes[Offload, HoldFirst];
 
 middleware[app_][request_] := app[request]
 
 
+Downloader["HTTPUHandler"->http];
+
+(* Start evaluation kernel a bit earlier *)
+Needs["CoffeeLiqueur`Notebook`KernelAutolaunch`"->"kaf`", FileNameJoin[{Directory[], "Frontend", "Autolaunch.wl"}] ];
+kaf`autostart[LocalKernel`LocalKernel[ "Name"->Internal`NoWR`RandomWord[] ], Hold[AppExtensions`KernelList], kernelUtils`initializeKernel[<|"env" -> $Env|>], kernelUtils`deinitializeKernel];
+
+
 
 (* hook all routes handlers *)
-AutoTest["HTTPUHandler"->http];
-Downloader["HTTPUHandler"->http];
+
 Protocol["HTTPUHandler"->http, "AppProtocol" -> AppExtensions`AppProtocol, "Middleware"->Identity, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 Settings["HTTPUHandler"->http, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates]
 Window["HTTPUHandler"->http, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates];
@@ -383,7 +393,6 @@ PromptWindow["HTTPUHandler"->http, "AppEvent"->AppExtensions`AppEvents, "Extensi
 ExtendedApp["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 IframeApp["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 App["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
-
 
 SetTimeout[
   StringTemplate["Open http://``:`` in your browser"][$Env["host"], $Env["http"]] // Print;
@@ -406,7 +415,7 @@ SetTimeout[
 ];
 
 SetTimeout[
-  StringTemplate["Open http://``:`` in your browser"][$Env["host"], $Env["http"]] // Print;
+  StringTemplate["Open http://``:`` in your browser"][$Env["host"], $Env["http"] ] // Print;
 , 1000
 ];
 

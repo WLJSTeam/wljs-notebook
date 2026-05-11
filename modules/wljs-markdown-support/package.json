@@ -11,6 +11,7 @@
     "minjs": "src/kernel.js",
     "js": "src/kernel.js",
     "frontend": "src/Frontend.wl",
+    "kernel": "src/Kernel.wl",
     "styles": "src/styles.css",
     "exportStyles": "src/styles_for_export.css",
     "category": "Cell types",

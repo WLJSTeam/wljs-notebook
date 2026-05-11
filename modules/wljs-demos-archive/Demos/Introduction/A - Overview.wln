@@ -1,1036 +1,774 @@
-<|"Notebook" -> <|"Controller" -> "9ee6228d-ce2a-43d8-9dbb-3388317deac6", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$528], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "bc5b9d15-bb59-40e2-8a1e-577e1293ce03", 
-   "Objects" -> <|"eaf0e716-d7b5-4600-ab68-ac79e0887c15" -> 
-      <|"Public" -> Hold[Graphics[{Annotation[
-            {{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 
-                   0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 
-                    4.1649312786339017*^-16}, {0.00030671792055962676, 
-                    9.407588279242151*^-8}, {0.0006134154329559882, 
-                    3.7627849338858247*^-7}, {0.0009201129453523496, 
-                    8.466078322049759*^-7}, {0.0012268104577487112, 
-                    1.5050638992416022*^-6}, {0.0015335079701450727, 
-                    2.3516466944984614*^-6}, {0.001840205482541434, 
-                    3.386356217975552*^-6}, {0.0021469029949377954, 
-                    4.609192469672876*^-6}, {0.002453600507334157, 
-                    6.020155449590433*^-6}, {0.002760298019730519, 
-                    7.619245157728224*^-6}, {0.00306699553212688, 
-                    9.406461594086245*^-6}, {0.0033736930445232415, 
-                    0.000011381804758664498}, {0.003680390556919603, 
-                    0.000013545274651462985}, {0.003987088069315964, 
-                    0.0000158968712724817}, {0.0042937855817123255, 
-                    0.000018436594621720654}, {0.004907180606505049, 
-                    0.00002408042150485926}, {0.005213878118901411, 
-                    0.00002718452503875892}, {0.0055205756312977725, 
-                    0.0000304767553008788}, {0.006133970656090495, 
-                    0.00003762559600977926}, {0.0064406681684868565, 
-                    0.000041482206456559836}, {0.006747365680883218, 
-                    0.00004552694363156065}, {0.0073607607056759405, 
-                    0.00005418079816622297}, {0.007667458218072303, 
-                    0.00005878991552588449}, {0.007974155730468665, 
-                    0.00006358715961376624}, {0.008587550755261388, 
-                    0.00007374602797419042}, {0.009814340804846833, 
-                    0.00009632128543368157}, {0.010121038317243194, 
-                    0.00010243541661910494}, {0.010427735829639555, 
-                    0.00010873767453274854}, {0.011041130854432278, 
-                    0.00012190657054469644}, {0.012267920904017723, 
-                    0.00015050188330723504}, {0.012574618416414085, 
-                    0.00015812102831842025}, {0.012881315928810446, 
-                    0.00016592830005782573}, {0.013494710953603169, 
-                    0.00018210722372129733}, {0.014721501003188616, 
-                    0.00021672259178688342}, {0.015028198515584977, 
-                    0.0002258467506238305}, {0.01533489602798134, 
-                    0.00023515903618899787}, {0.015948291052774063, 
-                    0.0002543479875039932}, {0.017175081102359508, 
-                    0.0002949834108726267}, {0.0196286612015304, 
-                    0.0003852843405644648}, {0.01996115644971678, 
-                    0.0003984477668100697}, {0.020293651697903155, 
-                    0.00041183229923580757}, {0.020958642194275914, 
-                    0.0004392646826276827}, {0.022288623187021427, 
-                    0.0004967827235730292}, {0.024948585172512458, 
-                    0.0006224319021101085}, {0.025281080420698838, 
-                    0.0006391330272378421}, {0.025613575668885218, 
-                    0.0006560552585457088}, {0.026278566165257974, 
-                    0.0006905630397018411}, {0.02760854715800349, 
-                    0.0007622318761757026}, {0.03026850914349452, 
-                    0.0009161826457698114}, {0.0306010043916809, 
-                    0.0009364214697796738}, {0.03093349963986728, 
-                    0.0009568813999696692}, {0.03159849013624004, 
-                    0.000998464578890059}, {0.03292847112898555, 
-                    0.001084284210892435}, {0.035588433114476584, 
-                    0.0012665365715435735}, {0.040908357085458646, 
-                    0.0016734936794313947}, {0.04121881843678198, 
-                    0.0016989909933243983}, {0.04152927978810532, 
-                    0.001724681079718733}, {0.042150202490751985, 
-                    0.0017766395700113949}, {0.043392047896045324, 
-                    0.0018828698206126914}, {0.04587573870663201, 
-                    0.002104583401879174}, {0.05084312032780537, 
-                    0.0025850228846676956}, {0.05115358167912871, 
-                    0.0026166889186032922}, {0.051464043030452045, 
-                    0.0026485477250402195}, {0.05208496573309871, 
-                    0.002712843655418067}, {0.05332681113839205, 
-                    0.0028437487861897345}, {0.05581050194897873, 
-                    0.003114812127796958}, {0.06077788357015209, 
-                    0.0036939511312669635}, {0.0610822549021634, 
-                    0.003731041863932865}, {0.06138662623417471, 
-                    0.0037683178804142664}, {0.06199536889819733, 
-                    0.003843425764823573}, {0.06321285422624258, 
-                    0.003995864939428194}, {0.06564782488233308, 
-                    0.004309636911781469}, {0.07051776619451407, 
-                    0.0049727553490641506}, {0.07082213752652539, 
-                    0.005015775163826075}, {0.07112650885853669, 
-                    0.0050589802624034985}, {0.07173525152255932, 
-                    0.005145946311004849}, {0.07295273685060456, 
-                    0.005322101813993557}, {0.07538770750669506, 
-                    0.0056833064431150064}, {0.08025764881887605, 
-                    0.006441290193934036}, {0.08058781788667738, 
-                    0.006494396391736278}, {0.08091798695447872, 
-                    0.0065477206127651875}, {0.08157832509008137, 
-                    0.0066550231245029986}, {0.0828990013612867, 
-                    0.0068722444266986135}, {0.08554035390369732, 
-                    0.007317152145969786}, {0.09082305898851858, 
-                    0.008248828044031927}, {0.10138846915816112, 
-                    0.010279621678235389}, {0.10169660432909941, 
-                    0.010342199332069401}, {0.10200473950003769, 
-                    0.010404966880470549}, {0.10262100984191426, 
-                    0.010531071660974263}, {0.1038535505256674, 
-                    0.010785559956787353}, {0.10631863189317368, 
-                    0.011303651487636169}, {0.11124879462818625, 
-                    0.012376294306224361}, {0.12110912009821138, 
-                    0.014667418970962989}, {0.1424808261288228, 
-                    0.02030078581435183}, {0.16346277092346467, 
-                    0.026720077477977087}, {0.18303454631887175, 
-                    0.03350164514615521}, {0.20425737680483996, 
-                    0.041721075979194375}, {0.22407003789157337, 
-                    0.05020738188073113}, {0.24349293774233727, 
-                    0.059288810730393736}, {0.26456689268366235, 
-                    0.06999564070428851}, {0.2842306782257526, 
-                    0.08078707844467131}, {0.305545518858404, 
-                    0.0933580640944513}, {0.32647059825508584, 
-                    0.10658305152503365}, {0.34598550825253294, 
-                    0.11970597192076354}, {0.3671514733405411, 
-                    0.13480020437613005}, {0.3869072690293145, 
-                    0.14969723482772235}, {0.408314119808649, 
-                    0.1667204204351118}, {0.429331209352014, 
-                    0.18432528732366288}, {0.44893812949614426, 
-                    0.2015454441154968}, {0.47019610473083556, 
-                    0.2210843769040509}, {0.4900439105662921, 
-                    0.24014303428310407}, {0.5095019551657791, 
-                    0.2595922423177516}, {0.5306110548558273, 
-                    0.28154809153521376}, {0.5503099851466406, 
-                    0.30284107975209584}, {0.5716599705280151, 
-                    0.3267951219040911}, {0.5926201946734201, 
-                    0.3511986951347623}, {0.6121702494195903, 
-                    0.3747524142744434}, {0.6333713592563216, 
-                    0.4011592787262004}, {0.6531622996938181, 
-                    0.42662098974131707}, {0.6725634788953451, 
-                    0.45234163314380926}, {0.6936157131874332, 
-                    0.4811027575805116}, {0.7132577780802865, 
-                    0.5087366579920272}, {0.7345508980637009, 
-                    0.5395650218461895}, {0.7544338486478805, 
-                    0.5691704319856531}, {0.7739270379960906, 
-                    0.5989630601414023}, {0.7950712824348619, 
-                    0.6321383441526159}, {0.8148053574743983, 
-                    0.663907770568982}, {0.8361904876044959, 
-                    0.6992145315602446}, {0.857185856498624, 
-                    0.7347675925812797}, {0.8767710559935172, 
-                    0.7687274846279873}, {0.8980073105789717, 
-                    0.8064171298532776}, {0.9178333957651912, 
-                    0.8424181423818621}, {0.9372697197154413, 
-                    0.8784745274954618}, {0.9583570987562524, 
-                    0.9184483287365013}, {0.9780343083978288, 
-                    0.9565511084032192}, {0.9783775220102351, 
-                    0.9572225755748881}, {0.9787207356226415, 
-                    0.9578942783377246}, {0.9794071628474543, 
-                    0.9592383906369}, {0.9807800172970798, 0.96192944232926}, 
-                   {0.9835257261963308, 0.96732285409002}, 
-                   {0.9890171439948328, 0.9781549111156957}, 
-                   {0.9893603576072392, 0.9788339172047241}, 
-                   {0.9897035712196455, 0.9795131588849199}, 
-                   {0.9903899984444582, 0.9808723490188139}, 
-                   {0.9917628528940837, 0.983593556380612}, 
-                   {0.9945085617933347, 0.989047279480247}, 
-                   {0.9948517754057411, 0.9897300550279551}, 
-                   {0.9951949890181475, 0.9904130661668308}, 
-                   {0.9958814162429602, 0.9917797952180842}, 
-                   {0.9972542706925858, 0.9945160804146012}, 
-                   {0.9975974843049922, 0.9952007406916491}, 
-                   {0.9979406979173985, 0.9958856365598644}, 
-                   {0.9986271251422112, 0.9972561350697975}, 
-                   {0.9989703387546176, 0.9979417377115154}, 
-                   {0.999313552367024, 0.9986275759444009}, 
-                   {0.9996567659794304, 0.9993136497684537}, 
-                   {0.9999999795918367, 0.9999999591836739}}]}, 
-                "Charting`Private`Tag#1"]}}, {}}, Association[
-             "HighlightElements" -> Association["Label" -> {"XYLabel"}, 
-               "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> 
-              Association["PanelPlotLayout" -> Association[], "PlotRange" -> 
-                {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> 
-                {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, 
-               "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 
-                   0.8], AbsoluteThickness[2]]}, 
-               "HighlightLabelingFunctions" -> Association[
-                 "CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], 
-                    (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> 
-                  {{Identity, Identity}, {Identity, Identity}}], 
-               "Primitives" -> {}, "GCFlag" -> False], "Meta" -> 
-              Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> 
-                {}, "Function" -> Plot, "GroupHighlight" -> False]], 
-            "DynamicHighlight"]}, {DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999591836739}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>, "cf5b26d3-53f2-4802-a38b-e36a8c38c367" -> 
-      <|"Public" -> Hold[Sound[{SoundNote[{1, 5, 8}], SoundNote[{1, 5, 8}], 
-           SoundNote[{8, 12, 15}], SoundNote[{8, 12, 15}], 
-           SoundNote[{10, 13, 17}], SoundNote[{10, 13, 17}], 
-           SoundNote[{6, 10, 13}], SoundNote[{6, 10, 13}], 
-           SoundNote[{1, 5, 8}]}]]|>, 
-     "da77a9b9-e870-43c0-91df-bc389aa745f1" -> 
-      <|"Public" -> Hold[Graphics[{{{}, Annotation[{{{}, {}, Annotation[
-                {Hue[0.67, 0.6, 0.6], Directive[PointSize[Rational[1, 60]], 
-                  AbsoluteThickness[2], Hue[0.03561231666487014, 
-                   0.8918383801498982, 0.8795337025157177], Opacity[1]], 
-                 Line[{{1, 1}, {1.9999999999999778, 1}, {2, 1}, 
-                   {2.999999999999978, 1}, {3, 8}, {3.999999999999978, 8}, 
-                   {4, 8}, {4.999999999999978, 8}, {5, 10}, 
-                   {5.999999999999978, 10}, {6, 10}, {6.999999999999978, 10}, 
-                   {7, 6}, {7.999999999999978, 6}, {8, 6}, 
-                   {8.999999999999979, 6}, {9, 1}, {10, 1}}]}, 
-                "Charting`Private`Tag#1"], Annotation[
-                {Hue[0.9060679774997897, 0.6, 0.6], Directive[PointSize[
-                   Rational[1, 60]], AbsoluteThickness[2], 
-                  Hue[0.03561231666487014, 0.8918383801498982, 
-                   0.8795337025157177], Opacity[1]], Line[{{1, 5}, 
-                   {1.9999999999999778, 5}, {2, 5}, {2.999999999999978, 5}, 
-                   {3, 12}, {3.999999999999978, 12}, {4, 12}, 
-                   {4.999999999999978, 12}, {5, 13}, {5.999999999999978, 13}, 
-                   {6, 13}, {6.999999999999978, 13}, {7, 10}, 
-                   {7.999999999999978, 10}, {8, 10}, {8.999999999999979, 10}, 
-                   {9, 5}, {10, 5}}]}, "Charting`Private`Tag#2"], Annotation[
-                {Hue[0.1421359549995791, 0.6, 0.6], Directive[PointSize[
-                   Rational[1, 60]], AbsoluteThickness[2], 
-                  Hue[0.03561231666487014, 0.8918383801498982, 
-                   0.8795337025157177], Opacity[1]], Line[{{1, 8}, 
-                   {1.9999999999999778, 8}, {2, 8}, {2.999999999999978, 8}, 
-                   {3, 15}, {3.999999999999978, 15}, {4, 15}, 
-                   {4.999999999999978, 15}, {5, 17}, {5.999999999999978, 17}, 
-                   {6, 17}, {6.999999999999978, 17}, {7, 13}, 
-                   {7.999999999999978, 13}, {8, 13}, {8.999999999999979, 13}, 
-                   {9, 8}, {10, 8}}]}, "Charting`Private`Tag#3"]}}, 
-             Association["HighlightElements" -> Association["Label" -> 
-                 {"XYLabel"}, "Ball" -> {"IndicatedBall"}], 
-              "LayoutOptions" -> Association["PanelPlotLayout" -> 
-                 Association[], "PlotRange" -> {{0, 10}, {0, 17}}, 
-                "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> 
-                 {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> 
-                 {True, True}, "LabelStyle" -> {}, "AspectRatio" -> 
-                 GoldenRatio^(-1), "DefaultStyle" -> {Directive[PointSize[
-                    Rational[1, 60]], AbsoluteThickness[2], Hue[
-                    0.03561231666487014, 0.8918383801498982, 
-                    0.8795337025157177], Opacity[1]], Directive[PointSize[
-                    Rational[1, 60]], AbsoluteThickness[2], Hue[
-                    0.03561231666487014, 0.8918383801498982, 
-                    0.8795337025157177], Opacity[1]], Directive[PointSize[
-                    Rational[1, 60]], AbsoluteThickness[2], Hue[
-                    0.03561231666487014, 0.8918383801498982, 
-                    0.8795337025157177], Opacity[1]]}, 
-                "HighlightLabelingFunctions" -> Association[
-                  "CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], 
-                     (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> 
-                   {{Identity, Identity}, {Identity, Identity}}], 
-                "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association[
-                "DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, 
-                "Function" -> ListStepPlot, "GroupHighlight" -> False]], 
-             "DynamicHighlight"], {{}, {}}}, {}}, 
-          {DisplayFunction -> Identity, PlotRangePadding -> 
-            {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"AxisPadding" -> Scaled[0.02], "DefaultBoundaryStyle" -> 
-              Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 
-                 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 
-                 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.772079, 0.431554, 0.102387], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], 
-                AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 
-                 0.2125], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.40082222609352647, 0.5220066643438841, 0.85], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 
-                 0.621644452187053, 0.07336199581899142], AbsoluteThickness[
-                 2]], Directive[RGBColor[0.736782672705901, 0.358, 
-                 0.5030266573755369], AbsoluteThickness[2]], Directive[
-                RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], 
-                AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], 
-             "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> Automatic, "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "CoordinatesToolOptions" -> {"DisplayFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotInteractivity :> Association[
-             "SystemLimits" -> 3000, "UserLimits" -> 10000, 
-             "UserInteractivity" -> True], PlotRange -> {{0, 10}, {0, 17}}, 
-           PlotRangeClipping -> True, PlotRangePadding -> 
-            {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, 
-           Prolog -> {GrayLevel[0.95], Rectangle[{0.5, -0.5}, {9.5, 0.5}], 
-             GrayLevel[0], Line[{{0.5, -0.5}, {9.5, -0.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 0.5}, {9.5, 1.5}], GrayLevel[0], 
-             Line[{{0.5, 0.5}, {9.5, 0.5}}], RGBColor[0.5666666666666667, 
-              0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 1.5}, 
-              {9.5, 2.5}], GrayLevel[0], Line[{{0.5, 1.5}, {9.5, 1.5}}], 
-             GrayLevel[0.95], Rectangle[{0.5, 2.5}, {9.5, 3.5}], 
-             GrayLevel[0], Line[{{0.5, 2.5}, {9.5, 2.5}}], 
-             RGBColor[0.5666666666666667, 0.5666666666666667, 
-              0.5666666666666667], Rectangle[{0.5, 3.5}, {9.5, 4.5}], 
-             GrayLevel[0], Line[{{0.5, 3.5}, {9.5, 3.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 4.5}, {9.5, 5.5}], GrayLevel[0], 
-             Line[{{0.5, 4.5}, {9.5, 4.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 5.5}, {9.5, 6.5}], GrayLevel[0], 
-             Line[{{0.5, 5.5}, {9.5, 5.5}}], RGBColor[0.5666666666666667, 
-              0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 6.5}, 
-              {9.5, 7.5}], GrayLevel[0], Line[{{0.5, 6.5}, {9.5, 6.5}}], 
-             GrayLevel[0.95], Rectangle[{0.5, 7.5}, {9.5, 8.5}], 
-             GrayLevel[0], Line[{{0.5, 7.5}, {9.5, 7.5}}], 
-             RGBColor[0.5666666666666667, 0.5666666666666667, 
-              0.5666666666666667], Rectangle[{0.5, 8.5}, {9.5, 9.5}], 
-             GrayLevel[0], Line[{{0.5, 8.5}, {9.5, 8.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 9.5}, {9.5, 10.5}], GrayLevel[0], 
-             Line[{{0.5, 9.5}, {9.5, 9.5}}], RGBColor[0.5666666666666667, 
-              0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 10.5}, 
-              {9.5, 11.5}], GrayLevel[0], Line[{{0.5, 10.5}, {9.5, 10.5}}], 
-             GrayLevel[0.95], Rectangle[{0.5, 11.5}, {9.5, 12.5}], 
-             GrayLevel[0], Line[{{0.5, 11.5}, {9.5, 11.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 12.5}, {9.5, 13.5}], GrayLevel[0], 
-             Line[{{0.5, 12.5}, {9.5, 12.5}}], RGBColor[0.5666666666666667, 
-              0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 13.5}, 
-              {9.5, 14.5}], GrayLevel[0], Line[{{0.5, 13.5}, {9.5, 13.5}}], 
-             GrayLevel[0.95], Rectangle[{0.5, 14.5}, {9.5, 15.5}], 
-             GrayLevel[0], Line[{{0.5, 14.5}, {9.5, 14.5}}], 
-             RGBColor[0.5666666666666667, 0.5666666666666667, 
-              0.5666666666666667], Rectangle[{0.5, 15.5}, {9.5, 16.5}], 
-             GrayLevel[0], Line[{{0.5, 15.5}, {9.5, 15.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 16.5}, {9.5, 17.5}], GrayLevel[0], 
-             Line[{{0.5, 16.5}, {9.5, 16.5}}], GrayLevel[0.95], 
-             Rectangle[{0.5, 17.5}, {9.5, 18.5}], GrayLevel[0], 
-             Line[{{0.5, 17.5}, {9.5, 17.5}}]}, Ticks -> {Automatic, 
-             Automatic}, PlotInteractivity :> $PlotInteractivity}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Introduction/A - Overview.wln", "PublicFields" -> {"Properties"}, 
-   "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "The Notebook Interface", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$350]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, "Cells", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$366]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, "Evaluation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$366]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, "Notebook", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$366]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Text cells", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$384]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Heading 1", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$386]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Heading 2", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$386]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Javascript", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$398]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Mermaid", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$404]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Slides", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$410]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Dynamics and Interactivity", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$434]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Math typesetting", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$500]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Portability", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$530]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# The Notebook Interface\nThe notebook \
-interface (or IDE) combines live code in Wolfram, JavaScript, and other \
-languages. We provide GUI building blocks for user input/output, a subset of \
-LaTeX for equations, Markdown for narrative text, and data-driven \
-presentations", "Display" -> "codemirror", 
-    "Hash" -> "e3abc902-ed79-4e0c-ac65-8769f24ff72c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "# The Notebook Interface\nThe notebook interface (or IDE) \
-combines live code in Wolfram, JavaScript, and other languages. We provide \
-GUI building blocks for user input/output, a subset of LaTeX for equations, \
-Markdown for narrative text, and data-driven presentations", 
-    "Display" -> "markdown", "Hash" -> 
-     "4548a292-496a-48c8-aed5-001bc540551c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n---", "Display" -> "codemirror", 
-    "Hash" -> "ff489ca5-f739-443b-916c-63d9d7e6a887", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "---", "Display" -> "markdown", 
-    "Hash" -> "a383e681-f6c9-4df9-afd4-e3e049641e73", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n\n<img style=\"filter: saturate(1.7) contrast(0.8)\" \
-src=\"/attachments/image-59e.png\"/>\n", "Display" -> "codemirror", 
-    "Hash" -> "b963dc0e-3c71-406e-ac55-c825b148aa7d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "<img style=\"filter: saturate(1.7) contrast(0.8)\" \
-src=\"/attachments/image-59e.png\"/>", "Display" -> "markdown", 
-    "Hash" -> "58af1f6e-3d2e-4a08-b00b-be265175d7bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nThe notebook consits of cells or groups of \
-*input-output* cells. Input cell gives you a superpower to switch between \
-languages or type of produced content with a single line.\n\nBy the default \
-any text in a new cell is considered to be Wolfram Language:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6fe3dfae-2214-4d0e-aa9c-cb0d465672cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "The notebook consits of cells or groups of *input-output* \
-cells. Input cell gives you a superpower to switch between languages or type \
-of produced content with a single line.\n\nBy the default any text in a new \
-cell is considered to be Wolfram Language:", "Display" -> "markdown", 
-    "Hash" -> "43c8c748-fa4f-477b-801d-faeb48cf08be", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "1+1", "Display" -> "codemirror", 
-    "Hash" -> "d38e54b0-92e2-4a9c-be0e-01b91907cd92", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "2", "Display" -> "codemirror", 
-    "Hash" -> "4e1d0dd1-3d1c-4006-a15f-6c615899c788", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Plot[(*SpB[*)Power[x(*|*),(*|*)2](*]SpB*), {x,0,1}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fb0d3483-ec2f-4a2e-a4b1-75df4521627a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"eaf0e716-d7b5-4600-ab68-ac79e0887c15\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKpyamG\
-aSaG5rpppgnmeqamBkY6CYmmVnoJiabW6YaWFiYJxuaAgCLIRWo\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2c4655a4-14ac-4c43-b933-0952c2c90123", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Now", "Display" -> "codemirror", 
-    "Hash" -> "74bea5f2-0094-4518-8abd-5d09214b66d6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*VB[*)(DateObject[{2026,1,15,15,45,24.438412`8.1406479647881\
-74},\"Instant\",\"Gregorian\",1.`])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyfl\
-FiSX5RcEsQBGXxJLUYCkgQykko1TB0FTBKzFPwcjAyAzItjIxtTIyUQIAIRoPlA==\"*)(*]VB*)"\
-, "Display" -> "codemirror", "Hash" -> 
-     "a5bf3175-b800-42a6-a375-fa3924351b87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nTo evaluate an expression press a *play* icon or \
-<kbd>Shift+Enter</kbd>\n\n<details>\n  <summary>List of all \
-shortcuts:</summary>\n\n\n<div \
-style=\"display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem\
-;\">\n\n<div>\n\n#### Cells\n\n- <kbd>Ctrl-/</kbd>: Create fraction\n- \
-<kbd>Ctrl-6</kbd>: Power\n- <kbd>Ctrl-2</kbd>: Square root\n- \
-<kbd>Ctrl--</kbd>: Subscript\n- <kbd>Ctrl-=</kbd>: Semantic input\n- \
-<kbd>ESC</kbd>: Open suggestions for greek symbol\n- <kbd>Alt-/</kbd> or \
-<kbd>\[CloverLeaf]-/</kbd>: Comment a line\n- <kbd>Ctrl-F</kbd> or \
-<kbd>\[CloverLeaf]-F</kbd>: Search inside cell\n\n</div>\n\n<div>\n\n#### \
-Evaluation\n\n- <kbd>Shift-Enter</kbd>: Evaluate cell\n- \
-<kbd>Ctrl-Enter</kbd> or <kbd>\[CloverLeaf]-Enter</kbd>: Evaluate cell and \
-jump to the next\n- <kbd>Ctrl-Shift-Enter</kbd> or \
-<kbd>\[CloverLeaf]-Shift-Enter</kbd>: Project cell to a window\n- \
-<kbd>Alt-I</kbd> or <kbd>\[CloverLeaf]-I</kbd>: Evaluate initialization \
-cells\n\n</div>\n\n<div>\n\n#### Notebook\n\n- <kbd>Alt-2</kbd> or \
-<kbd>\[CloverLeaf]-2</kbd>: Hide/show input cell\n- <kbd>Ctrl-U</kbd> or \
-<kbd>\[CloverLeaf]-U</kbd>: Clear output cell\n- <kbd>Ctrl-N</kbd> or \
-<kbd>\[CloverLeaf]-N</kbd>: New notebook\n- <kbd>Ctrl-S</kbd> or \
-<kbd>\[CloverLeaf]-S</kbd>: Save notebook\n- <kbd>Ctrl-O</kbd> or \
-<kbd>\[CloverLeaf]-O</kbd>: Open notebook\n- <kbd>Ctrl-P</kbd> or \
-<kbd>\[CloverLeaf]-P</kbd>: Open command palette\n\n</div>\n\n</div>\n  \
-\n</details>\n\n<br/><hr/>", "Display" -> "codemirror", 
-    "Hash" -> "702ca494-a32f-438e-b281-0a99261f1349", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "To evaluate an expression press a *play* icon or <kbd \
->Shift+Enter</kbd><details ><summary >List of all shortcuts:</summary><div \
-style=\"display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem\
-;\"><div >\n\n#### Cells\n\n- <kbd >Ctrl-/</kbd>: Create fraction\n- <kbd \
->Ctrl-6</kbd>: Power\n- <kbd >Ctrl-2</kbd>: Square root\n- <kbd \
->Ctrl--</kbd>: Subscript\n- <kbd >Ctrl-=</kbd>: Semantic input\n- <kbd \
->ESC</kbd>: Open suggestions for greek symbol\n- <kbd >Alt-/</kbd> or <kbd \
->\[CloverLeaf]-/</kbd>: Comment a line\n- <kbd >Ctrl-F</kbd> or <kbd \
->\[CloverLeaf]-F</kbd>: Search inside cell\n\n</div><div >\n\n#### \
-Evaluation\n\n- <kbd >Shift-Enter</kbd>: Evaluate cell\n- <kbd \
->Ctrl-Enter</kbd> or <kbd >\[CloverLeaf]-Enter</kbd>: Evaluate cell and jump \
-to the next\n- <kbd >Ctrl-Shift-Enter</kbd> or <kbd \
->\[CloverLeaf]-Shift-Enter</kbd>: Project cell to a window\n- <kbd \
->Alt-I</kbd> or <kbd >\[CloverLeaf]-I</kbd>: Evaluate initialization \
-cells\n\n</div><div >\n\n#### Notebook\n\n- <kbd >Alt-2</kbd> or <kbd \
->\[CloverLeaf]-2</kbd>: Hide/show input cell\n- <kbd >Ctrl-U</kbd> or <kbd \
->\[CloverLeaf]-U</kbd>: Clear output cell\n- <kbd >Ctrl-N</kbd> or <kbd \
->\[CloverLeaf]-N</kbd>: New notebook\n- <kbd >Ctrl-S</kbd> or <kbd \
->\[CloverLeaf]-S</kbd>: Save notebook\n- <kbd >Ctrl-O</kbd> or <kbd \
->\[CloverLeaf]-O</kbd>: Open notebook\n- <kbd >Ctrl-P</kbd> or <kbd \
->\[CloverLeaf]-P</kbd>: Open command palette\n\n</div></div></details><br \
-/><hr />", "Display" -> "markdown", 
-    "Hash" -> "0632c9af-b9cc-484d-acdb-2b5e94ad3eb7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> 
-     ".md\nLet's write a function to generate notes in the given scale:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b64d9fa-4ff5-4da8-b585-de692216de28", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> 
-     "Let's write a function to generate notes in the given scale:", 
-    "Display" -> "markdown", "Hash" -> 
-     "18cefd5b-add4-474d-a1f6-db0f1c414009", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "scale[\"Major\"] = {2, 2, 1, 2, 2, 2, 1};\n\nmakeScale[root_, \
-sc_, pos_] := With[\n  {b = Accumulate @ Prepend[sc, root], n = Length[sc] + \
-1},\n  b[[Mod[pos - 1, n - 1] + 1]] + 12 Quotient[pos, n]\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "886a98e3-7b2e-492f-9e28-ad74186f6f56", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nNow we can generate any chord progressions in a major \
-scale, for ex. **I-V-VI-IV**", "Display" -> "codemirror", 
-    "Hash" -> "68a49766-f506-4bdc-95ad-e0f8a822429e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Now we can generate any chord progressions in a major scale, \
-for ex. **I-V-VI-IV**", "Display" -> "markdown", 
-    "Hash" -> "59c6b739-8296-4c73-a1df-ad64744d3cbb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "chords = makeScale[1, scale[\"Major\"], {#,2+#,4+#}] &/@ {\n  \
-  1, 1, 5, 5, 6, 6, 4, 4, 1 \n};\nSoundNote /@ chords // Sound", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c57f3014-4357-43bb-9a03-1949c9282e53", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"cf5b26d3-53f2-4802-a38b-e36a8c38c367\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6eZJ\
-hmZpRjrmhqnGemaWBgY6SYaWyTpphqbJVokGwORmTkAhK4Vdg==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "12cffd98-9939-4877-b53f-b3ea275a997a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nVisualize it on imaginary piano:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "42aa39f4-c8e6-4468-ae7e-bcae7e8cde69", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Visualize it on imaginary piano:", "Display" -> "markdown", 
-    "Hash" -> "d91ac640-91c3-49e1-a235-ab65bd140de6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "blackQ[y_] := MemberQ[{2,4,7,9,11}, \
-Mod[y-1,12]+1];\nListStepPlot[(*BB[*)(Transpose[chords])(*,*)(*\"1:eJxTTMoPSm\
-NmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh8QCJkKLEvOKC/OJUp/yKYJBoSBoTTGV\
-QaU5qMFhLamJKMCeyajRFrECGa1lqXglYyK80JwcAFSsgcg==\"*)(*]BB*), \
-PlotStyle->(*VB[*)(Hue[0.03561231666487014, 0.8918383801498982, \
-0.8795337025157177, \
-1.])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oe\
-fn5BcVicky3lVWfWNfpLliouDmCxfsi/5vOjStL2qHfREDGHywBwA7SBsq\"*)(*]VB*), \
-Prolog->Flatten@Table[{If[blackQ[y],(*VB[*)(RGBColor[0.5666666666666667, \
-0.5666666666666667, \
-0.5666666666666667])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4P\
-CQNGaQPAeQCHJ3cs7PyS8qUgKDR/aYDAAR9RPe\"*)(*]VB*),(*VB[*)(GrayLevel[0.95])(*,\
-*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qS\
-gODd/aYDABY1RjK\"*)(*]VB*)], Rectangle[{.5,y-.5},{9.5,y+.5}], \
-(*VB[*)(GrayLevel[0])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4\
-PCQNGaQPAeQCHJ3cs7PyS8qYoACTAYAyrgOFw==\"*)(*]VB*), \
-Line[{{.5,y-.5},{9.5,y-.5}}]}, {y, 0, 18}]]", "Display" -> "codemirror", 
-    "Hash" -> "f82f0811-1f1b-47cb-ae59-0e297417bb6d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"da77a9b9-e870-43c0-91df-bc389aa745f1\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKpySam\
-ydaJlnqplqYG+iaGCcb6FoapqTpJiUbW1gmJpqbmKYZAgCK0RXf\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ac6c1f62-a4b6-4ca0-a617-42e824a7654d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n<hr/>", "Display" -> "codemirror", 
-    "Hash" -> "6ce9ecb2-8089-4a80-9de3-415164b54d88", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "<hr />", "Display" -> "markdown", 
-    "Hash" -> "c51d71f7-d8cd-4fce-91c3-864c0f873b86", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n### Text cells\nFor typing regular text, embedding \
-pictures, making description we use Markdown language.\n\nTo make markdown \
-cell type __in the first line of a new cell__ `.md`, if it was an anonymous \
-file", "Display" -> "codemirror", "Hash" -> 
-     "5eb41fef-a163-4c67-9da7-81e960879fb4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "### Text cells\nFor typing regular text, embedding pictures, \
-making description we use Markdown language.\n\nTo make markdown cell type \
-__in the first line of a new cell__ `.md`, if it was an anonymous file", 
-    "Display" -> "markdown", "Hash" -> 
-     "af45f2f8-0a3d-417f-bf62-1cda4f9fdda3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n\n# Heading 1\n## Heading 2\n\nHere is a regular \
-paragraph, which can __be styled__ in a *different way*. Then press \
-`Shift+Enter` to make an output cell.\n\nYou can also hide an input cell \
-automatically by a shortcut <kbd>Alt-2</kbd> or \
-<kbd>\[CloverLeaf]-2</kbd>\n\n$\\\\LaTeX$ is also supported\n\nAs well as \
-plain HTML <span style=\"color:red\">language</span>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "da757ef6-81bb-48ee-ad9d-c33a59ac19a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "\n# Heading 1\n## Heading 2\n\nHere is a regular paragraph, \
-which can __be styled__ in a *different way*. Then press `Shift+Enter` to \
-make an output cell.\n\nYou can also hide an input cell automatically by a \
-shortcut <kbd >Alt-2</kbd> or <kbd >\[CloverLeaf]-2</kbd>\n\n$\\\\LaTeX$ is \
-also supported\n\nAs well as plain HTML <span \
-style=\"color:red\">language</span>", "Display" -> "markdown", 
-    "Hash" -> "98792aeb-e89a-4c7f-96f1-75a75c03b019", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n<hr/>", "Display" -> "codemirror", 
-    "Hash" -> "81e82f50-dae3-42ca-87d0-dfc6dfe7ee7d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "<hr />", "Display" -> "markdown", 
-    "Hash" -> "c6273274-aa8c-4f41-9a99-f10984d436e4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nTo embed a picture - \
-use:\n\n![alt](https://upload.wikimedia.org/wikipedia/commons/a/a0/Kilroy_was\
-_here_%28re-drawn%29.gif)", "Display" -> "codemirror", 
-    "Hash" -> "66e22059-e649-47b7-bbb4-7827f73966c4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "To embed a picture \
-type\n\n![alt](https://upload.wikimedia.org/wikipedia/commons/a/a0/Kilroy_was\
-_here_%28re-drawn%29.gif)", "Display" -> "markdown", 
-    "Hash" -> "eb22413e-ac7e-49a2-a77e-07591a80f479", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nOr __just drag and drop__ any image file to a cell", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d5c61d59-de4e-4ad0-abe8-fed17ce7aba5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Or __just drag and drop__ any image file to a cell", 
-    "Display" -> "markdown", "Hash" -> 
-     "4073ec00-8097-4df3-a16b-eabd15746987", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n<hr/>", "Display" -> "codemirror", 
-    "Hash" -> "67652e0d-b8bb-4c8a-9bf7-774b84878d1d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "<hr />", "Display" -> "markdown", 
-    "Hash" -> "50240707-2b60-42b7-9742-b7f42019f52e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n:::tip\nThere are many more cell types are available, \
-please, check [our documentation](https://wljs.io). \n:::\n\nFor example", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ecfbbfc1-3ee6-4e64-b580-976c69f21b94", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ":::tip\nThere are many more cell types are available, please, \
-check [our documentation](https://wljs.io). \n:::\n\nFor example", 
-    "Display" -> "markdown", "Hash" -> 
-     "1c6a3068-b7d2-4666-a77d-eb720ca7c90f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n### Javascript", "Display" -> "codemirror", 
-    "Hash" -> "9b424ad0-7a50-42da-85f5-acd4ea4a30d6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "### Javascript", "Display" -> "markdown", 
-    "Hash" -> "28071106-9646-46ae-a0d8-a722c32b9e28", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".js\n\nreturn 1+1;", "Display" -> "codemirror", 
-    "Hash" -> "1f53e759-245b-4bb0-bc9f-bf8b30930452", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "\nreturn 1+1;", "Display" -> "js", 
-    "Hash" -> "56ee365f-84c2-4eaa-972f-e701be6b0132", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n### Mermaid", "Display" -> "codemirror", 
-    "Hash" -> "ebad5c55-5935-4b79-b2b5-f5d0c9e46bce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "### Mermaid", "Display" -> "markdown", 
-    "Hash" -> "f434adc3-81e5-4c4c-ab7d-46b45ceb44c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".mermaid\n\ngraph LR\n    A[Square Rect] -- Link text --> \
-B((Circle))\n    A --> C(Round Rect)\n    B --> D{Rhombus}\n    C --> D", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fe5b16c8-32d6-47c1-9923-817a59dc722c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "\ngraph LR\n    A[Square Rect] -- Link text --> B((Circle))\n \
-   A --> C(Round Rect)\n    B --> D{Rhombus}\n    C --> D", 
-    "Display" -> "mermaid", "Hash" -> "3db9a2a5-c3c1-4fb1-b193-74bab3c5934c", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n### Slides", "Display" -> "codemirror", 
-    "Hash" -> "7ff8409d-69e8-4936-9a90-4e09172ee484", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "### Slides", "Display" -> "markdown", 
-    "Hash" -> "464d3dd8-280d-4137-a6f9-87026e834ebe", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".slide\n\n# Here is a title", "Display" -> "codemirror", 
-    "Hash" -> "9334bd76-20e7-46d6-b5af-ee701d5eb85f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "<dummy >\n# Here is a title</dummy>", "Display" -> "slide", 
-    "Hash" -> "3000794c-1033-46ae-8f01-d8b1dbf51a27", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n***and many more!***", "Display" -> "codemirror", 
-    "Hash" -> "937dad47-221e-4f65-a9e5-d951e14e3a62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "***and many more!***", "Display" -> "markdown", 
-    "Hash" -> "823fb8ce-cc57-40a9-931a-e532c25355eb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n---", "Display" -> "codemirror", 
-    "Hash" -> "fcd48091-3d42-47c5-b2e8-561fda68d4ca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "---", "Display" -> "markdown", 
-    "Hash" -> "bc8521c7-6e21-4960-a960-b31ac25574d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n\n## Dynamics and Interactivity\n\nWLJS is __more__ than \
-just a <abbr title=\"Read-Eval-Print-Loop\">REPL</abbr> or Jupyter clone \
-ducktaped on Wolfram Engine; it provides its own standard libraries, runtime, \
-UI kit and implements all manipulate features, graphics, sound from scratch:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "602a9441-39a9-4d74-ab03-1b29bbd8c4ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "\n## Dynamics and Interactivity\n\nWLJS is __more__ than just \
-a <abbr title=\"Read-Eval-Print-Loop\">REPL</abbr> or Jupyter clone ducktaped \
-on Wolfram Engine; it provides its own standard libraries, runtime, UI kit \
-and implements all manipulate features, graphics, sound from scratch:", 
-    "Display" -> "markdown", "Hash" -> 
-     "280d9436-f570-411e-8690-6b6ea4067728", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Manipulate[\n    ParametricPlot[{Sin[u x], Cos[u y]}, {u, 0, \
-20}, \n      Axes -> False, PlotStyle -> Thick\n    ],\n    {x, 1, 10, 1},\n  \
-  {y, 1, 10, 1},\n    ContinuousAction -> True\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d13df6fe-dc1f-4b35-ac79-e3456894d652", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nInteractive elements like `Manipulate`, `Animate`, \
-`ManipulatePlot`, and `AnimatePlot` optimize performance by using low-level, \
-fine-grained updates that avoid full re-evaluation of expressions. Here's an \
-example of this approach: ", "Display" -> "codemirror", 
-    "Hash" -> "6818c27e-66ee-435e-8555-d44e483e4a13", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "Interactive elements like `Manipulate`, `Animate`, \
-`ManipulatePlot`, and `AnimatePlot` optimize performance by using low-level, \
-fine-grained updates that avoid full re-evaluation of expressions. Here's an \
-example of this approach: ", "Display" -> "markdown", 
-    "Hash" -> "5a20ef2e-f27b-4010-9ab0-4ca3359b7ce4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "var = 1.0;\nGraphics[{\n    \
-(*VB[*)(RGBColor[0.9324328496246868, 0.4779810744981178, 0.2076180267119551, \
-1.])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oe\
-fn5BcVvQqJzqq99ta+iOnxkXe20+/ZF329mWJrNfmUfREDGHywBwB/2B0I\"*)(*]VB*), \
-Rectangle[{0,-.1}, {Offload[var], .1}], \n    \
-(*VB[*)(RGBColor[0.5767811690402207, 0.576646915402451, 0.5765764507985959, \
-1.])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oe\
-fn5BcVLbKzP/G35JF9keDReOsnxUDG++hfJQEgBgMYfLAHAHLqHLY=\"*)(*]VB*), \
-Text[var//Offload, {Offload[var + 0.05], 0}]\n}, AspectRatio->0.1]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f46d05d9-978b-4e14-9118-8aacf5b7133b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nThe nearest parent symbols (`Rectangle` and `Text`) \
-become dependent on the symbol `var` wrapped with `Offload`, though this \
-doesn't apply to simple math operations. Changing `var` will trigger an \
-update of only these dependent elements:", "Display" -> "codemirror", 
-    "Hash" -> "6321ece9-b8ac-4525-8ea5-e7642e4f12dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "The nearest parent symbols (`Rectangle` and `Text`) become \
-dependent on the symbol `var` wrapped with `Offload`, though this doesn't \
-apply to simple math operations. Changing `var` will trigger an update of \
-only these dependent elements:", "Display" -> "markdown", 
-    "Hash" -> "67adc4d7-1963-48b7-90b5-23a884da350f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "EventHandler[InputRange[0,1,0.1], Function[val, var=val]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6ac42bed-b879-4850-bc15-95800e9dbca9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n## Math typesetting\nTo be honest, typing mathicamtical \
-expressions in the most modern IDE for programming languages did not evolve \
-since 1964. Our goal is to change that in a similar way as Mathematica did \
-(over nearly 20 years), but in open-source.\n\nSo to style code expressions, \
-replace them, or add additional elements in between we use decorations. The \
-most common one for example:", "Display" -> "codemirror", 
-    "Hash" -> "36f41b2f-0dcb-430c-832e-48540b85f781", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "## Math typesetting\nTo be honest, typing mathicamtical \
-expressions in the most modern IDE for programming languages did not evolve \
-since 1964. Our goal is to change that in a similar way as Mathematica did \
-(over nearly 20 years), but in open-source.\n\nSo to style code expressions, \
-replace them, or add additional elements in between we use decorations. The \
-most common one for example:", "Display" -> "markdown", 
-    "Hash" -> "ac0e7b5f-6784-4c8e-b11a-8a5cfc2517d9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "94c829df-0759-4ba4-8403-3b6dba82f903", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nif you copy it to a text editor you will still see a \
-valid expression of `(1/2)`", "Display" -> "codemirror", 
-    "Hash" -> "f7694643-bbc5-4809-a33c-0bad6092c499", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "if you copy it to a text editor you will still see a valid \
-expression of `(1/2)`", "Display" -> "markdown", 
-    "Hash" -> "0a0c2ef9-2904-44b4-871c-401f48c39be6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "text.txt\n\n(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6c0d4f08-eecc-467a-85fc-8f9c8a930c1b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nthe meta information is stored safely in comments, the \
-same works with graphical, sound or any other non-textual output. In this \
-sense __the standard output form of WLJS is decorated `InputForm`__. Here is \
-more complex example:", "Display" -> "codemirror", 
-    "Hash" -> "8647a9de-c8c4-4991-9026-b2cf95289d4d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "the meta information is stored safely in comments, the same \
-works with graphical, sound or any other non-textual output. In this sense \
-__the standard output form of WLJS is decorated `InputForm`__. Here is more \
-complex example:", "Display" -> "markdown", 
-    "Hash" -> "1544d27d-bfe4-4db3-aa85-a5ed7eb217d6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "(*TB[*)Integrate[(*|*)f[x](*|*), \
-(*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMR\
-pIgVSLgl5hSnAgCQTg44*)(*]TB*)", "Display" -> "codemirror", 
-    "Hash" -> "953121b8-d820-4767-ac43-807314addf1f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "text.txt\n\n(*TB[*)Integrate[(*|*)f[x](*|*), \
-(*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMR\
-pIgVSLgl5hSnAgCQTg44*)(*]TB*)", "Display" -> "codemirror", 
-    "Hash" -> "f5ab3771-b238-4962-b973-f956c2af5641", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\nTo assist with writing basic mathematical expressions, \
-we provide special keyboard shortcuts to insert templates or apply formatting \
-to selected text as well a command palette with many useful tools.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1452f1b1-56b9-4de5-825c-0f862f627ecb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "To assist with writing basic mathematical expressions, we \
-provide special keyboard shortcuts to insert templates or apply formatting to \
-selected text as well a command palette with many useful tools.", 
-    "Display" -> "markdown", "Hash" -> 
-     "38572aaa-bede-4134-8326-693d752f05b1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> ".md\n## Portability\nWLJS Notebook offers multiple export \
-formats that <u>preserve interactivity</u>, allowing you to share your work \
-in the way that best suits your needs.\n\n:::note\nCheck [our \
-documentation](https://wljs.io) for more information\n:::", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5f2d4a95-c74b-4bda-9f75-dd41f2056c71", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>, 
-   <|"Data" -> "## Portability\nWLJS Notebook offers multiple export formats \
-that <u >preserve interactivity</u>, allowing you to share your work in the \
-way that best suits your needs.\n\n:::note\nCheck [our \
-documentation](https://wljs.io) for more information\n:::", 
-    "Display" -> "markdown", "Hash" -> 
-     "57ea4a84-d569-43de-81ac-5a639e54ae6b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "eb157a55-8131-4626-8042-8b9d88fe59dd"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# The Notebook Interface
+The notebook interface (or IDE) combines live code in Wolfram, JavaScript, and other languages. We provide GUI building blocks for user input/output, a subset of LaTeX for equations, Markdown for narrative text, and data-driven presentations
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# The Notebook Interface
+The notebook interface (or IDE) combines live code in Wolfram, JavaScript, and other languages. We provide GUI building blocks for user input/output, a subset of LaTeX for equations, Markdown for narrative text, and data-driven presentations
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+---
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+---
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+<img style="filter: saturate(1.7) contrast(0.8)" src="/attachments/image-59e.png"/>
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<img style="filter: saturate(1.7) contrast(0.8)" src="/attachments/image-59e.png"/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The notebook consits of cells or groups of *input-output* cells. Input cell gives you a superpower to switch between languages or type of produced content with a single line.
+
+By the default any text in a new cell is considered to be Wolfram Language:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The notebook consits of cells or groups of *input-output* cells. Input cell gives you a superpower to switch between languages or type of produced content with a single line.
+
+By the default any text in a new cell is considered to be Wolfram Language:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+1+1
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+2
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[(*SpB[*)Power[x(*|*),(*|*)2](*]SpB*), {x,0,1}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["eaf0e716-d7b5-4600-ab68-ac79e0887c15"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKpyamGaSaG5rpppgnmeqamBkY6CYmmVnoJiabW6YaWFiYJxuaAgCLIRWo"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Now
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(DateObject[{2026,1,15,15,45,24.438412`8.140647964788174},"Instant","Gregorian",1.`])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBGXxJLUYCkgQykko1TB0FTBKzFPwcjAyAzItjIxtTIyUQIAIRoPlA=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To evaluate an expression press a *play* icon or <kbd>Shift+Enter</kbd>
+
+<details>
+  <summary>List of all shortcuts:</summary>
+
+
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;">
+
+<div>
+
+#### Cells
+
+- <kbd>Ctrl-/</kbd>: Create fraction
+- <kbd>Ctrl-6</kbd>: Power
+- <kbd>Ctrl-2</kbd>: Square root
+- <kbd>Ctrl--</kbd>: Subscript
+- <kbd>Ctrl-=</kbd>: Semantic input
+- <kbd>ESC</kbd>: Open suggestions for greek symbol
+- <kbd>Alt-/</kbd> or <kbd>\[CloverLeaf]-/</kbd>: Comment a line
+- <kbd>Ctrl-F</kbd> or <kbd>\[CloverLeaf]-F</kbd>: Search inside cell
+
+</div>
+
+<div>
+
+#### Evaluation
+
+- <kbd>Shift-Enter</kbd>: Evaluate cell
+- <kbd>Ctrl-Enter</kbd> or <kbd>\[CloverLeaf]-Enter</kbd>: Evaluate cell and jump to the next
+- <kbd>Ctrl-Shift-Enter</kbd> or <kbd>\[CloverLeaf]-Shift-Enter</kbd>: Project cell to a window
+- <kbd>Alt-I</kbd> or <kbd>\[CloverLeaf]-I</kbd>: Evaluate initialization cells
+
+</div>
+
+<div>
+
+#### Notebook
+
+- <kbd>Alt-2</kbd> or <kbd>\[CloverLeaf]-2</kbd>: Hide/show input cell
+- <kbd>Ctrl-U</kbd> or <kbd>\[CloverLeaf]-U</kbd>: Clear output cell
+- <kbd>Ctrl-N</kbd> or <kbd>\[CloverLeaf]-N</kbd>: New notebook
+- <kbd>Ctrl-S</kbd> or <kbd>\[CloverLeaf]-S</kbd>: Save notebook
+- <kbd>Ctrl-O</kbd> or <kbd>\[CloverLeaf]-O</kbd>: Open notebook
+- <kbd>Ctrl-P</kbd> or <kbd>\[CloverLeaf]-P</kbd>: Open command palette
+
+</div>
+
+</div>
+  
+</details>
+
+<br/><hr/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To evaluate an expression press a *play* icon or <kbd >Shift+Enter</kbd><details ><summary >List of all shortcuts:</summary><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem;"><div >
+
+#### Cells
+
+- <kbd >Ctrl-/</kbd>: Create fraction
+- <kbd >Ctrl-6</kbd>: Power
+- <kbd >Ctrl-2</kbd>: Square root
+- <kbd >Ctrl--</kbd>: Subscript
+- <kbd >Ctrl-=</kbd>: Semantic input
+- <kbd >ESC</kbd>: Open suggestions for greek symbol
+- <kbd >Alt-/</kbd> or <kbd >\[CloverLeaf]-/</kbd>: Comment a line
+- <kbd >Ctrl-F</kbd> or <kbd >\[CloverLeaf]-F</kbd>: Search inside cell
+
+</div><div >
+
+#### Evaluation
+
+- <kbd >Shift-Enter</kbd>: Evaluate cell
+- <kbd >Ctrl-Enter</kbd> or <kbd >\[CloverLeaf]-Enter</kbd>: Evaluate cell and jump to the next
+- <kbd >Ctrl-Shift-Enter</kbd> or <kbd >\[CloverLeaf]-Shift-Enter</kbd>: Project cell to a window
+- <kbd >Alt-I</kbd> or <kbd >\[CloverLeaf]-I</kbd>: Evaluate initialization cells
+
+</div><div >
+
+#### Notebook
+
+- <kbd >Alt-2</kbd> or <kbd >\[CloverLeaf]-2</kbd>: Hide/show input cell
+- <kbd >Ctrl-U</kbd> or <kbd >\[CloverLeaf]-U</kbd>: Clear output cell
+- <kbd >Ctrl-N</kbd> or <kbd >\[CloverLeaf]-N</kbd>: New notebook
+- <kbd >Ctrl-S</kbd> or <kbd >\[CloverLeaf]-S</kbd>: Save notebook
+- <kbd >Ctrl-O</kbd> or <kbd >\[CloverLeaf]-O</kbd>: Open notebook
+- <kbd >Ctrl-P</kbd> or <kbd >\[CloverLeaf]-P</kbd>: Open command palette
+
+</div></div></details><br /><hr />
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's write a function to generate notes in the given scale:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's write a function to generate notes in the given scale:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+scale["Major"] = {2, 2, 1, 2, 2, 2, 1};
+
+makeScale[root_, sc_, pos_] := With[
+  {b = Accumulate @ Prepend[sc, root], n = Length[sc] + 1},
+  b[[Mod[pos - 1, n - 1] + 1]] + 12 Quotient[pos, n]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can generate any chord progressions in a major scale, for ex. **I-V-VI-IV**
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can generate any chord progressions in a major scale, for ex. **I-V-VI-IV**
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+chords = makeScale[1, scale["Major"], {#,2+#,4+#}] &/@ {
+    1, 1, 5, 5, 6, 6, 4, 4, 1 
+};
+SoundNote /@ chords // Sound
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["cf5b26d3-53f2-4802-a38b-e36a8c38c367"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6eZJhmZpRjrmhqnGemaWBgY6SYaWyTpphqbJVokGwORmTkAhK4Vdg=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Visualize it on imaginary piano:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Visualize it on imaginary piano:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+blackQ[y_] := MemberQ[{2,4,7,9,11}, Mod[y-1,12]+1];
+ListStepPlot[(*BB[*)(Transpose[chords])(*,*)(*"1:eJxTTMoPSmNmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh8QCJkKLEvOKC/OJUp/yKYJBoSBoTTGVQaU5qMFhLamJKMCeyajRFrECGa1lqXglYyK80JwcAFSsgcg=="*)(*]BB*), PlotStyle->(*VB[*)(Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177, 1.])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oefn5BcVicky3lVWfWNfpLliouDmCxfsi/5vOjStL2qHfREDGHywBwA7SBsq"*)(*]VB*), Prolog->Flatten@Table[{If[blackQ[y],(*VB[*)(RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qUgKDR/aYDAAR9RPe"*)(*]VB*),(*VB[*)(GrayLevel[0.95])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qSgODd/aYDABY1RjK"*)(*]VB*)], Rectangle[{.5,y-.5},{9.5,y+.5}], (*VB[*)(GrayLevel[0])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYoACTAYAyrgOFw=="*)(*]VB*), Line[{{.5,y-.5},{9.5,y-.5}}]}, {y, 0, 18}]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["da77a9b9-e870-43c0-91df-bc389aa745f1"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKpySamydaJlnqplqYG+iaGCcb6FoapqTpJiUbW1gmJpqbmKYZAgCK0RXf"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<hr/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<hr />
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Text cells
+For typing regular text, embedding pictures, making description we use Markdown language.
+
+To make markdown cell type __in the first line of a new cell__ `.md`, if it was an anonymous file
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Text cells
+For typing regular text, embedding pictures, making description we use Markdown language.
+
+To make markdown cell type __in the first line of a new cell__ `.md`, if it was an anonymous file
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+# Heading 1
+## Heading 2
+
+Here is a regular paragraph, which can __be styled__ in a *different way*. Then press `Shift+Enter` to make an output cell.
+
+You can also hide an input cell automatically by a shortcut <kbd>Alt-2</kbd> or <kbd>\[CloverLeaf]-2</kbd>
+
+$\\LaTeX$ is also supported
+
+As well as plain HTML <span style="color:red">language</span>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+# Heading 1
+## Heading 2
+
+Here is a regular paragraph, which can __be styled__ in a *different way*. Then press `Shift+Enter` to make an output cell.
+
+You can also hide an input cell automatically by a shortcut <kbd >Alt-2</kbd> or <kbd >\[CloverLeaf]-2</kbd>
+
+$\\LaTeX$ is also supported
+
+As well as plain HTML <span style="color:red">language</span>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<hr/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<hr />
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To embed a picture - use:
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/a/a0/Kilroy_was_here_%28re-drawn%29.gif)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To embed a picture type
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/a/a0/Kilroy_was_here_%28re-drawn%29.gif)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or __just drag and drop__ any image file to a cell
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or __just drag and drop__ any image file to a cell
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<hr/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<hr />
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::tip
+There are many more cell types are available, please, check [our documentation](https://wljs.io). 
+:::
+
+For example
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::tip
+There are many more cell types are available, please, check [our documentation](https://wljs.io). 
+:::
+
+For example
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Javascript
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Javascript
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+
+return 1+1;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+return 1+1;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Mermaid
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Mermaid
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.mermaid
+
+graph LR
+    A[Square Rect] -- Link text --> B((Circle))
+    A --> C(Round Rect)
+    B --> D{Rhombus}
+    C --> D
+
+%-------------------------------------------------------------------------%
+Display: mermaid
+Type: Output
+%-------------------------------------------------------------------------%
+
+graph LR
+    A[Square Rect] -- Link text --> B((Circle))
+    A --> C(Round Rect)
+    B --> D{Rhombus}
+    C --> D
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Slides
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Slides
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Here is a title
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+# Here is a title</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+***and many more!***
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+***and many more!***
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+---
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+---
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+## Dynamics and Interactivity
+
+WLJS is __more__ than just a <abbr title="Read-Eval-Print-Loop">REPL</abbr> or Jupyter clone ducktaped on Wolfram Engine; it provides its own standard libraries, runtime, UI kit and implements all manipulate features, graphics, sound from scratch:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+## Dynamics and Interactivity
+
+WLJS is __more__ than just a <abbr title="Read-Eval-Print-Loop">REPL</abbr> or Jupyter clone ducktaped on Wolfram Engine; it provides its own standard libraries, runtime, UI kit and implements all manipulate features, graphics, sound from scratch:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[
+    ParametricPlot[{Sin[u x], Cos[u y]}, {u, 0, 20}, 
+      Axes -> False, PlotStyle -> Thick
+    ],
+    {x, 1, 10, 1},
+    {y, 1, 10, 1},
+    ContinuousAction -> True
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Interactive elements like `Manipulate`, `Animate`, `ManipulatePlot`, and `AnimatePlot` optimize performance by using low-level, fine-grained updates that avoid full re-evaluation of expressions. Here's an example of this approach: 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Interactive elements like `Manipulate`, `Animate`, `ManipulatePlot`, and `AnimatePlot` optimize performance by using low-level, fine-grained updates that avoid full re-evaluation of expressions. Here's an example of this approach: 
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+var = 1.0;
+Graphics[{
+    (*VB[*)(RGBColor[0.9324328496246868, 0.4779810744981178, 0.2076180267119551, 1.])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oefn5BcVvQqJzqq99ta+iOnxkXe20+/ZF329mWJrNfmUfREDGHywBwB/2B0I"*)(*]VB*), Rectangle[{0,-.1}, {Offload[var], .1}], 
+    (*VB[*)(RGBColor[0.5767811690402207, 0.576646915402451, 0.5765764507985959, 1.])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNBCjmANIBLk7Oefn5BcVLbKzP/G35JF9keDReOsnxUDG++hfJQEgBgMYfLAHAHLqHLY="*)(*]VB*), Text[var//Offload, {Offload[var + 0.05], 0}]
+}, AspectRatio->0.1]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The nearest parent symbols (`Rectangle` and `Text`) become dependent on the symbol `var` wrapped with `Offload`, though this doesn't apply to simple math operations. Changing `var` will trigger an update of only these dependent elements:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The nearest parent symbols (`Rectangle` and `Text`) become dependent on the symbol `var` wrapped with `Offload`, though this doesn't apply to simple math operations. Changing `var` will trigger an update of only these dependent elements:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputRange[0,1,0.1], Function[val, var=val]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Math typesetting
+To be honest, typing mathicamtical expressions in the most modern IDE for programming languages did not evolve since 1964. Our goal is to change that in a similar way as Mathematica did (over nearly 20 years), but in open-source.
+
+So to style code expressions, replace them, or add additional elements in between we use decorations. The most common one for example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Math typesetting
+To be honest, typing mathicamtical expressions in the most modern IDE for programming languages did not evolve since 1964. Our goal is to change that in a similar way as Mathematica did (over nearly 20 years), but in open-source.
+
+So to style code expressions, replace them, or add additional elements in between we use decorations. The most common one for example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+if you copy it to a text editor you will still see a valid expression of `(1/2)`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+if you copy it to a text editor you will still see a valid expression of `(1/2)`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+text.txt
+
+(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+the meta information is stored safely in comments, the same works with graphical, sound or any other non-textual output. In this sense __the standard output form of WLJS is decorated `InputForm`__. Here is more complex example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+the meta information is stored safely in comments, the same works with graphical, sound or any other non-textual output. In this sense __the standard output form of WLJS is decorated `InputForm`__. Here is more complex example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*TB[*)Integrate[(*|*)f[x](*|*), (*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMRpIgVSLgl5hSnAgCQTg44*)(*]TB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+text.txt
+
+(*TB[*)Integrate[(*|*)f[x](*|*), (*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMRpIgVSLgl5hSnAgCQTg44*)(*]TB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To assist with writing basic mathematical expressions, we provide special keyboard shortcuts to insert templates or apply formatting to selected text as well a command palette with many useful tools.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To assist with writing basic mathematical expressions, we provide special keyboard shortcuts to insert templates or apply formatting to selected text as well a command palette with many useful tools.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Portability
+WLJS Notebook offers multiple export formats that <u>preserve interactivity</u>, allowing you to share your work in the way that best suits your needs.
+
+:::note
+Check [our documentation](https://wljs.io) for more information
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Portability
+WLJS Notebook offers multiple export formats that <u >preserve interactivity</u>, allowing you to share your work in the way that best suits your needs.
+
+:::note
+Check [our documentation](https://wljs.io) for more information
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: eaf0e716-d7b5-4600-ab68-ac79e0887c15
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cf5b26d3-53f2-4802-a38b-e36a8c38c367
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote[{1, 5, 8}], SoundNote[{1, 5, 8}], SoundNote[{8, 12, 15}], SoundNote[{8, 12, 15}], SoundNote[{10, 13, 17}], SoundNote[{10, 13, 17}], SoundNote[{6, 10, 13}], SoundNote[{6, 10, 13}], SoundNote[{1, 5, 8}]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: da77a9b9-e870-43c0-91df-bc389aa745f1
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{{{}, Annotation[{{{}, {}, Annotation[{Hue[0.67, 0.6, 0.6], Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]], Line[{{1, 1}, {1.9999999999999778, 1}, {2, 1}, {2.999999999999978, 1}, {3, 8}, {3.999999999999978, 8}, {4, 8}, {4.999999999999978, 8}, {5, 10}, {5.999999999999978, 10}, {6, 10}, {6.999999999999978, 10}, {7, 6}, {7.999999999999978, 6}, {8, 6}, {8.999999999999979, 6}, {9, 1}, {10, 1}}]}, "Charting`Private`Tag#1"], Annotation[{Hue[0.9060679774997897, 0.6, 0.6], Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]], Line[{{1, 5}, {1.9999999999999778, 5}, {2, 5}, {2.999999999999978, 5}, {3, 12}, {3.999999999999978, 12}, {4, 12}, {4.999999999999978, 12}, {5, 13}, {5.999999999999978, 13}, {6, 13}, {6.999999999999978, 13}, {7, 10}, {7.999999999999978, 10}, {8, 10}, {8.999999999999979, 10}, {9, 5}, {10, 5}}]}, "Charting`Private`Tag#2"], Annotation[{Hue[0.1421359549995791, 0.6, 0.6], Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]], Line[{{1, 8}, {1.9999999999999778, 8}, {2, 8}, {2.999999999999978, 8}, {3, 15}, {3.999999999999978, 15}, {4, 15}, {4.999999999999978, 15}, {5, 17}, {5.999999999999978, 17}, {6, 17}, {6.999999999999978, 17}, {7, 13}, {7.999999999999978, 13}, {8, 13}, {8.999999999999979, 13}, {9, 8}, {10, 8}}]}, "Charting`Private`Tag#3"]}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"IndicatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 10}, {0, 17}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]], Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]], Directive[PointSize[Rational[1, 60]], AbsoluteThickness[2], Hue[0.03561231666487014, 0.8918383801498982, 0.8795337025157177], Opacity[1]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> ListStepPlot, "GroupHighlight" -> False]], "DynamicHighlight"], {{}, {}}}, {}}, {DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"AxisPadding" -> Scaled[0.02], "DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.772079, 0.431554, 0.102387], AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 0.2125], AbsoluteThickness[2]], Directive[RGBColor[0.40082222609352647, 0.5220066643438841, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 0.621644452187053, 0.07336199581899142], AbsoluteThickness[2]], Directive[RGBColor[0.736782672705901, 0.358, 0.5030266573755369], AbsoluteThickness[2]], Directive[RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> Automatic, "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotInteractivity :> Association["SystemLimits" -> 3000, "UserLimits" -> 10000, "UserInteractivity" -> True], PlotRange -> {{0, 10}, {0, 17}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, Prolog -> {GrayLevel[0.95], Rectangle[{0.5, -0.5}, {9.5, 0.5}], GrayLevel[0], Line[{{0.5, -0.5}, {9.5, -0.5}}], GrayLevel[0.95], Rectangle[{0.5, 0.5}, {9.5, 1.5}], GrayLevel[0], Line[{{0.5, 0.5}, {9.5, 0.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 1.5}, {9.5, 2.5}], GrayLevel[0], Line[{{0.5, 1.5}, {9.5, 1.5}}], GrayLevel[0.95], Rectangle[{0.5, 2.5}, {9.5, 3.5}], GrayLevel[0], Line[{{0.5, 2.5}, {9.5, 2.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 3.5}, {9.5, 4.5}], GrayLevel[0], Line[{{0.5, 3.5}, {9.5, 3.5}}], GrayLevel[0.95], Rectangle[{0.5, 4.5}, {9.5, 5.5}], GrayLevel[0], Line[{{0.5, 4.5}, {9.5, 4.5}}], GrayLevel[0.95], Rectangle[{0.5, 5.5}, {9.5, 6.5}], GrayLevel[0], Line[{{0.5, 5.5}, {9.5, 5.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 6.5}, {9.5, 7.5}], GrayLevel[0], Line[{{0.5, 6.5}, {9.5, 6.5}}], GrayLevel[0.95], Rectangle[{0.5, 7.5}, {9.5, 8.5}], GrayLevel[0], Line[{{0.5, 7.5}, {9.5, 7.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 8.5}, {9.5, 9.5}], GrayLevel[0], Line[{{0.5, 8.5}, {9.5, 8.5}}], GrayLevel[0.95], Rectangle[{0.5, 9.5}, {9.5, 10.5}], GrayLevel[0], Line[{{0.5, 9.5}, {9.5, 9.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 10.5}, {9.5, 11.5}], GrayLevel[0], Line[{{0.5, 10.5}, {9.5, 10.5}}], GrayLevel[0.95], Rectangle[{0.5, 11.5}, {9.5, 12.5}], GrayLevel[0], Line[{{0.5, 11.5}, {9.5, 11.5}}], GrayLevel[0.95], Rectangle[{0.5, 12.5}, {9.5, 13.5}], GrayLevel[0], Line[{{0.5, 12.5}, {9.5, 12.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 13.5}, {9.5, 14.5}], GrayLevel[0], Line[{{0.5, 13.5}, {9.5, 13.5}}], GrayLevel[0.95], Rectangle[{0.5, 14.5}, {9.5, 15.5}], GrayLevel[0], Line[{{0.5, 14.5}, {9.5, 14.5}}], RGBColor[0.5666666666666667, 0.5666666666666667, 0.5666666666666667], Rectangle[{0.5, 15.5}, {9.5, 16.5}], GrayLevel[0], Line[{{0.5, 15.5}, {9.5, 15.5}}], GrayLevel[0.95], Rectangle[{0.5, 16.5}, {9.5, 17.5}], GrayLevel[0], Line[{{0.5, 16.5}, {9.5, 16.5}}], GrayLevel[0.95], Rectangle[{0.5, 17.5}, {9.5, 18.5}], GrayLevel[0], Line[{{0.5, 17.5}, {9.5, 17.5}}]}, Ticks -> {Automatic, Automatic}, PlotInteractivity :> $PlotInteractivity}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

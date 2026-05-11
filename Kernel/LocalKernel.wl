@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`Notebook`LocalKernel`", {"CoffeeLiqueur`Misc`Async`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`Objects`", "CoffeeLiqueur`Internal`",  "CoffeeLiqueur`LTP`", "CoffeeLiqueur`TCPServer`", "CoffeeLiqueur`CSockets`"}]
+BeginPackage["CoffeeLiqueur`Notebook`LocalKernel`", {"CoffeeLiqueur`Misc`Async`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`Objects`", "CoffeeLiqueur`Internal`",  "CoffeeLiqueur`TCPServer`", "CoffeeLiqueur`CSockets`"}]
 
 LocalKernel;
 
@@ -8,57 +8,15 @@ Begin["`Private`"]
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`ExtensionManager`" -> "af`"];
 
-CreateType[LocalKernelObject, GenericKernel`Kernel, {"RootDirectory"->Directory[], "CreatedQ"->False, "StandardOutput"->Null, "InitList"-> {}, "Host"->"127.0.0.1", "Port"->36808, "ReadyQ"->False, "State"->"Undefined", "wolframscript" -> ("\""<>First[$CommandLine]<>"\" -wstp")}]
+CreateType[LocalKernelObject, GenericKernel`Kernel, {"RootDirectory"->Directory[], "CreatedQ"->False, "StandardOutput"->Null, "InitList"-> {}, "Host"->"127.0.0.1",  "ReadyQ"->False, "State"->"Undefined", "wolframscript" -> ("\""<>First[$CommandLine]<>"\" -wstp")}]
 
 
 LocalKernel[opts___] := LocalKernelObject[opts]
 
-ltpRunning = False;
-LTPServerStart[port_:36800] := With[{},
-    If[ltpRunning, Return[] ];
-    ltpRunning = True;
-    Echo[">> Starting local LTP server ..."];
-
-    tcp = TCPUServer[];
-    tcp["CompleteHandler", "LTP"] = LTPQ -> LTPLength;
-    tcp["MessageHandler", "LTP"]  = LTPQ -> LTPHandler;
-
-    SocketListen[SocketOpen[ StringTemplate["127.0.0.1:``"][port] ], tcp@#&];
-    lkPort = port;
-]
-
-(*  internal function that will be called by other kernel remotely *)
-Internal`Kernel`LTPConnected[uid_String, pid_] := With[{o = GenericKernel`HashMap[uid]},
-    Echo["LocalKernel >> local kernel link connected!"];
-    Echo["LocalKernel >> PID: "<>ToString[pid] ];
-    o["LTPSocket"] = SocketConnect[ "127.0.0.1:"<>ToString[o["Port"] ] ] ;
-    Echo[o["LTPSocket"] ];
-
-    If[FailureQ[o["LTPSocket"] ],
-        Echo["Cound not connect to a local kernel!"];
-        Echo["PANIK"];
-        Exit[-1];
-    ];
-
-    o["LTPSocket"] = o["LTPSocket"] // LTPTransport;
-
-    o["ReadyQ"] = True;
-    o["PID"] = pid;
-    
-    o["State"]  = "Connected";
-
-    o["HeartBeat"] = heartBeat[o];
-
-    TaskRemove[o["WatchDog"] ];
-
-    EventFire[o, "State", o["State"] ];
-    EventFire[o, "Connected", "Please wait until initialization is complete!"];
-    Print["Ok!"];
-]
-
-
 heartBeat[k_] := Module[{ok = True, orig}, With[{secret = CreateUUID[]},
     EventHandler[secret, {_ -> Function[Null, ok = True]}];
+
+    (* SetInterval[MicrotaskSubmit[ Print@"Hey there! Microtasks are running!" ];, 3000]; *)
 
     SetInterval[
         If[!ok,
@@ -70,7 +28,7 @@ heartBeat[k_] := Module[{ok = True, orig}, With[{secret = CreateUUID[]},
             ];
         ];
         ok = False;
-        LTPEvaluate[k["LTPSocket"], Internal`Kernel`Ping[secret] ];
+        LinkWrite[k["Link"], EvaluatePacket[ Internal`Kernel`Ping[secret] ] ]
         
     , 8000]
 ] ]
@@ -82,22 +40,28 @@ HeldRemotePacket /: LinkWrite[lnk_, HeldRemotePacket[p_String] ] := With[{pp = p
 HoldRemotePacket[any_] := any // Hold // Compress // HeldRemotePacket
 SetAttributes[HoldRemotePacket, HoldFirst]
 
-tcpConnect[port_, o_LocalKernelObject] := With[{shared = af`SharedDir, host = o["Host"], uid = o["Hash"], p = o["Port"], addr = "127.0.0.1:"<>ToString[port], env = System`$Env, electronQ = (System`$Env["ElectronCode"] === 1)},
-    (  
-        Print["Establishing LTP link... using "<>addr];
+generateConnectFunction[o_LocalKernelObject] := With[{
+    shared = af`SharedDir, host = o["Host"], uid = o["Hash"], 
+    env = System`$Env, electronQ = (System`$Env["ElectronCode"] === 1),
+    promise = Promise[],
+    asyncLinkId = StringTake[StringReplace[CreateUUID[], "-"->""],4]
+}, {
+    expression = With[{},  
+        Print["Link to the host was established. Setting up async link..."];
+
+        With[{Internal`Kernel`AsyncLink = LinkCreate[asyncLinkId]},
+            SetInterval[If[ LinkReadyQ[Internal`Kernel`AsyncLink],
+                LinkRead[ Internal`Kernel`AsyncLink ];
+            ];, 150];
+        ];
+
         Internal`Kernel`Host = host;
         
-        Internal`Kernel`Stdout = USocketConnect[addr] // LTPTransport;
-        Print["Establishing starting LTP server for backlink... using "<>(StringTemplate["127.0.0.1:``"][p])];
-        Module[{Internal`Kernel`ltcp},
-            Internal`Kernel`ltcp = TCPUServer[];
-     
-            Internal`Kernel`ltcp["CompleteHandler", "LTP"] = LTPQ -> LTPLength;
-            Internal`Kernel`ltcp["MessageHandler", "LTP"]  = LTPQ -> LTPHandler;
+        (* Internal`Kernel`RemoteEvent = USocketConnect[addr] // LTPTransport; *)
 
-            SocketListen[USocketOpen["127.0.0.1:"<>ToString[p] ], Internal`Kernel`ltcp@#&];
-            
-        ];
+        Internal`Kernel`RemoteEvent /: EventFire[Internal`Kernel`RemoteEvent[ev_], topic_, payload_] := LinkWrite[$ParentLink, Internal`Kernel`EvaluationPacketAsync[ Hold[ EventFire[ev, topic, payload] ] ] ];
+        Internal`Kernel`RemoteEvent /: EventFire[Internal`Kernel`RemoteEvent[ev_], payload_] := LinkWrite[$ParentLink, Internal`Kernel`EvaluationPacketAsync[ Hold[ EventFire[ev, payload] ] ] ];
+        
 
         Internal`Kernel`Apply[e_, t_] := e[t];
         Internal`Kernel`Type = "LocalKernel";
@@ -105,7 +69,6 @@ tcpConnect[port_, o_LocalKernelObject] := With[{shared = af`SharedDir, host = o[
         Internal`Kernel`WLJSQ = True;
         Internal`Kernel`$Env = env;
         Internal`Kernel`ElectronQ = electronQ;
-        System`$FrontEndWLJSQ = True; (* DEPRICATED *)
 
         Off[Unset::norep];
         Off[TagUnset::norep];
@@ -120,7 +83,7 @@ tcpConnect[port_, o_LocalKernelObject] := With[{shared = af`SharedDir, host = o[
 
         Internal`Kernel`Ping[secret_] := (
             Internal`Kernel`Watchdog["Test"];
-            EventFire[Internal`Kernel`Stdout[secret], "Pong", True];
+            EventFire[Internal`Kernel`RemoteEvent[secret], "Pong", True];
         );
 
         Internal`Kernel`Watchdog["Assertion", name_String, test_, action_] := With[{uid = CreateUUID[]},
@@ -154,23 +117,37 @@ tcpConnect[port_, o_LocalKernelObject] := With[{shared = af`SharedDir, host = o[
 
         Internal`Kernel`Watchdog["QuickTest"] := Internal`Kernel`Watchdog["Test"];
 
-        Unprotect[FileNameJoin];
-        FileNameJoin[{Internal`RemoteFS[url_], any__}] := With[{parsed = URLParse[url]},
-          With[{r = Join[parsed, <|"Query" -> {"path" -> URLEncode[FileNameJoin[{URLDecode["path" /. parsed["Query"] ], any}] ]}|>] // URLBuild // Internal`RemoteFS},
-            r
-          ]
+        With[{pid = $ProcessID},  
+            EventFire[Internal`Kernel`RemoteEvent[promise], Resolve, pid];
         ];
 
-        Protect[FileNameJoin];   
+    ] // HoldRemotePacket},
+
+    Then[promise, Function[pid, 
+        Echo["Local kernel link connected!"];
+        Echo["Local kernel PID: "<>ToString[pid] ];
+
         
-           
+        o["PID"] = pid;
+        o["SecondaryLink"] = LinkConnect[asyncLinkId];
 
-        Internal`RemoteFS /: Get[Internal`RemoteFS[url_] ] := Get[url];   
-        Internal`RemoteFS /: StringTake[Internal`RemoteFS[url_], n_] := StringTake[url,n]; 
-        Internal`RemoteFS /: Import[Internal`RemoteFS[url_], w_] := Import[url, w];
+        If[FailureQ[LinkActivate[o["SecondaryLink"] ] ],
+            o["State"]  = "Problem";
+            Echo["LocalKernel 2nd link failed!!!"];
+            LinkClose[k["Link"] ];
+        ,
+            o["ReadyQ"] = True;
+            TaskRemove[o["WatchDog"] ];
+            o["HeartBeat"] = heartBeat[o];
 
-        With[{pid = $ProcessID}, LTPEvaluate[Internal`Kernel`Stdout, Internal`Kernel`LTPConnected[uid, pid] ] ];
-    ) // HoldRemotePacket
+            EventFire[o, "State", o["State"] ];
+            EventFire[o, "Connected", "Please wait until initialization is complete!"]; 
+            GenericKernel`SendAsync[o, 1+1]; (* there is a bug, that it gets frozen if no data is sent in the first place. 
+            Why?! [FIXME]*)
+        ];   
+    ] ];
+
+    expression
 ]
 
 
@@ -179,9 +156,9 @@ restart[k_LocalKernelObject] := With[{},
     k["InitList"] = {};
 
     LinkClose[k["Link"] ];
+    LinkClose[k["SecondaryLink"] ];
     TaskRemove[k["HeartBeat"] ];
     k["ReadyQ"] = False;
-    Close[k["LTPSocket"][[1]]];
 
     k["State"] = "Stopped";
     EventFire[k, "State", k["State"] ];
@@ -203,9 +180,9 @@ SetAttributes[setProp, HoldFirst];
 unlink[k_LocalKernelObject] := With[{},
     k["InitList"] = {};
     LinkClose[k["Link"] ];
+    LinkClose[k["SecondaryLink"] ];
     TaskRemove[k["HeartBeat"] ];
     k["ReadyQ"] = False;
-    Close[k["LTPSocket"][[1]]];
 
     k["State"] = "Stopped";
     k["Dead"] = True;
@@ -222,8 +199,6 @@ unlink[k_LocalKernelObject] := With[{},
 ]
 
 start[k_LocalKernelObject] := Module[{link},
-    LTPServerStart[];
-
     If[Length[Cases[$CommandLine, "-entitlement"] ] > 0 || Length[Cases[$CommandLine, "-tcplink"] ] > 0, Module[{addr = "36831"},
         Echo["LocalKernel >> WARNING: WSTP Link is TCPIP / Entitlement mode detected"];
         Echo["LocalKernel >> WARNING: WSTP Link is TCPIP / Entitlement mode detected"];
@@ -291,14 +266,11 @@ start[k_LocalKernelObject] := Module[{link},
         LinkWrite[link, Unevaluated[ PacletDirectoryLoad[Directory[] ] ] ];
         LinkWrite[link, Unevaluated[ PacletDirectoryLoad[FileNameJoin[{Directory[], "Packages"}] ] ] ];
 
-        If[TrueQ @ Internal`$NoWRServices, 
-             LinkWrite[link, Unevaluated[ Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ] ] ];
-        ];
+        LinkWrite[link, Unevaluated[ Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ] ] ];
 
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CSockets`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Objects`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Internal`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`LTP`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`TCPServer`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Events`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Async`"] ];
@@ -308,7 +280,6 @@ start[k_LocalKernelObject] := Module[{link},
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`WebSocketHandler`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`WLJS`Transport`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CSockets`EventsExtension`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`LTP`Events`"] ];
         LinkWrite[link, EnterTextPacket["<<LetWL`"] ];
         LinkWrite[link, EnterTextPacket["Off[Most::argx]"] ];
         LinkWrite[link, EnterTextPacket["$Inspector = Dialog[]&;"] ];
@@ -328,6 +299,12 @@ start[k_LocalKernelObject] := Module[{link},
         With[{stdout = EventClone[k["StandardOutput"] ]},
 
             EventHandler[stdout, {
+                Internal`Kernel`EvaluationPacketAsync[data_] :> Function[Null, With[{
+                    payload = data
+                }, 
+                        ReleaseHold[payload];
+                    ]
+                ],
                 TextPacket[s_] :> (EventFire[kernel, "Print", s]&),
                 MessagePacket[symbol_, type_] :> (EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]&),
                 any_ :> (Echo[any]&)
@@ -335,6 +312,7 @@ start[k_LocalKernelObject] := Module[{link},
 
             k["PrintTask"] = MicrotaskSubmit[
                 If[LinkReadyQ[kernel["Link"] ], EventFire[kernel["StandardOutput"], LinkRead[kernel["Link"] ], kernel] ];
+                If[LinkReadyQ[kernel["SecondaryLink"] ], Echo["2nd link >> ", LinkRead[kernel["SecondaryLink"] ] ] (* just flush the buffer *) ] // Quiet;
             , "Continuous" -> True];
         ];
     ] ];
@@ -342,7 +320,7 @@ start[k_LocalKernelObject] := Module[{link},
     kernel["CreatedQ"] = True;
 
 
-    LinkWrite[link, tcpConnect[ lkPort, k ]  ];
+    LinkWrite[link, generateConnectFunction[ k ]  ];
 
     k["WatchDog"] = SetTimeout[ checkState[k], 12 * 1000];
     k
@@ -353,63 +331,34 @@ checkState[k_LocalKernelObject] := Module[{},
     EventFire[k, "Error", "Kernel initialization timeout"];
 ]
 
-(* [NOTE] You may easily overload the evaluation que on Windows machines *)
-(* It will stall during LinkWrite *)
-(* Mostly affects the initial start, then works without issues *)
-
 LocalKernelObject /: GenericKernel`SubmitTransaction[k_LocalKernelObject, t_] := With[{ev = t["Evaluator"], s = Transaction`Serialize[t]},
     LinkWrite[k["Link"], EnterExpressionPacket[ Internal`Kernel`Apply[ ev, s ] ] // Unevaluated  ]
 ]
 
-LocalKernelObject /: GenericKernel`Async[k_LocalKernelObject, expr_] := With[{},
-    LTPEvaluate[k["LTPSocket"], expr]
+LocalKernelObject /: GenericKernel`SendAsync[k_LocalKernelObject, expr_] := With[{},
+    LinkWrite[k["SecondaryLink"],  expr // Unevaluated  ]
 ]
 
-GenericKernel`Stdout[k_LocalKernelObject][any_] := k["LTPSocket"][any]
 
-SetAttributes[GenericKernel`Async, HoldRest]
+SetAttributes[GenericKernel`SendAsync, HoldRest]
 
-(* [NOTE] You may easily overload the evaluation que on Windows machines *)
-(* It will stall during LinkWrite *)
-(* Mostly affects the initial start, then works without issues *)
-
-LocalKernelObject /: GenericKernel`Init[k_LocalKernelObject, expr_, OptionsPattern[] ] := With[{once = OptionValue["Once"], tracker = OptionValue["TrackingProgress"]},
+LocalKernelObject /: GenericKernel`Send[k_LocalKernelObject, expr_, OptionsPattern[] ] := With[{once = OptionValue["Once"], tracker = OptionValue["TrackingProgress"]},
     If[!once,
         With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
                 Echo["LocalKernel Init >> Normal"];
-                tracker["Start"];
-                LinkWrite[k["Link"], value];
-                With[{promise = Promise[]},
-                    Then[promise, Function[Null,
-                        tracker["End"];
-                    ] ];
-
-                    With[{s = promise // First},
-                        LinkWrite[k["Link"], Unevaluated[EventFire[Internal`Kernel`Stdout[ s ], Resolve, "Ok" ];] ];
-                    ];
-                ];
                 
+                LinkWrite[k["Link"], value];
         ];    
     , 
         If[!MemberQ[k["InitList"], Hash[expr // Hold] ] ,
             Echo["LocalKernel Init >> Once"];
-            EventFire[k, "Info", "Initialization has started. Please, wait a bit..."];
             With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
-                tracker["Start"];
+                
                 LinkWrite[k["Link"], value];
-                With[{promise = Promise[]},
-                    Then[promise, Function[Null,
-                        tracker["End"];
-                    ] ];
-
-                    With[{s = promise // First},
-                        LinkWrite[k["Link"], Unevaluated[EventFire[Internal`Kernel`Stdout[ s ], Resolve, "Ok" ];] ];
-                    ];
-                ];
             ];
 
             k["InitList"] = Append[k["InitList"], Hash[expr // Hold] ];
@@ -419,6 +368,7 @@ LocalKernelObject /: GenericKernel`Init[k_LocalKernelObject, expr_, OptionsPatte
     ];
 ]
 
+SetAttributes[GenericKernel`Send, HoldRest]
 
 
 LocalKernelObject /: GenericKernel`Start[k_LocalKernelObject] := start[k];

@@ -95,7 +95,7 @@ FrontEndRef[uid_String] := If[KeyExistsQ[Objects, uid],
     $MissingHandler[uid, "Private"] // ReleaseHold
 ]
 
-FrontEndExecutable /: MakeBoxes[FrontEndExecutable[uid_String], StandardForm] := RowBox[{"(*VB[*)(FrontEndRef[\"", uid, "\"])(*,*)(*", ToString[Compress[Hold[FrontEndExecutable[uid]]], InputForm], "*)(*]VB*)"}]
+FrontEndExecutable /: MakeBoxes[FrontEndExecutable[uid_String], StandardForm] := RowBox[{"FrontEndRef[\"", uid, "\"]"}]
 
 GetObject[uid_String] := With[{},
     (*Echo["Getting object >> "<>uid];*)

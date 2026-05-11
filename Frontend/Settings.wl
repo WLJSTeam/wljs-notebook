@@ -1,4 +1,8 @@
 BeginPackage["CoffeeLiqueur`Notebook`SettingsUtils`"];
+
+initialize;
+storeConfiguration;
+
 Begin["`Internal`"];
 
 loadConfiguration  := If[FileExistsQ[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Get[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Missing[] ];
@@ -14,5 +18,3 @@ Options[initialize] = {"Defaults" -> <|"Autostart" -> True|>}
 
 End[]
 EndPackage[]
-
-{CoffeeLiqueur`Notebook`SettingsUtils`Internal`initialize, CoffeeLiqueur`Notebook`SettingsUtils`Internal`storeConfiguration}

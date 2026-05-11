@@ -26,11 +26,6 @@ evaluator  = StandardEvaluator`StandardEvaluator["Name" -> "Markdown Evaluator",
             Print[evaluator, "Kernel is not ready"];
             False
         ,
-
-            With[{p = Import[FileNameJoin[{rootFolder, "Preload.wl"}], "String"]},
-                GenericKernel`Init[k,   ImportString[p, "WL"]; , "Once"->True];
-            ];
-
             True
         ]
     );

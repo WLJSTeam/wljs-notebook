@@ -890,6 +890,40 @@
     boxes.StyleDecorator(args, {...env, element: el});    
   }
 
+  boxes.ViewDecorator.Cross = async (args, env) => {
+    const outerDiv = document.createElement('div');
+    env.element.style.verticalAlign = 'baseline';
+
+    env.element.appendChild(outerDiv);
+    outerDiv.classList.add('flex', 'flex-row', 'items-center', 'gap-x-1');
+    const last =  env.children.length-1;
+    env.children.forEach((el, index) => {
+      outerDiv.appendChild(el);
+      if (index < last) {
+        const sep = document.createElement('span');
+        sep.innerHTML = '&#x2715;';
+        outerDiv.appendChild(sep);
+      }
+    });
+  }
+
+  boxes.ViewDecorator.Colon = async (args, env) => {
+    const outerDiv = document.createElement('div');
+    env.element.style.verticalAlign = 'baseline';
+
+    env.element.appendChild(outerDiv);
+    outerDiv.classList.add('flex', 'flex-row', 'items-center', 'gap-x-1');
+    const last =  env.children.length-1;
+    env.children.forEach((el, index) => {
+      outerDiv.appendChild(el);
+      if (index < last) {
+        const sep = document.createElement('span');
+        sep.innerHTML = '&colon;';
+        outerDiv.appendChild(sep);
+      }
+    });
+  }  
+
   boxes.ViewDecorator.Sum = async (args, env) => {
     let vars = await interpretate(args[0], env);
     let bonds = await interpretate(args[1], env);

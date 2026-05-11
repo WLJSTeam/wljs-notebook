@@ -12,7 +12,7 @@ EventHandler["KernelDir", Function[path,
 ] ];
 
 NotebookDirectorySet[dir_List] := (
-    SetDirectory[ dir // FileNameJoin ];
+    SetDirectory[ dir // URLDecode ];
 )
 
   (*NotebookDirectoryAppend[dir_List] := (

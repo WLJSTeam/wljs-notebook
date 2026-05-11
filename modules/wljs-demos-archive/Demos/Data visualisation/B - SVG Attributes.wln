@@ -1,74 +1,107 @@
-<|"Notebook" -> <|"Controller" -> "120db4cf-b2e5-46f8-b206-992bcd64edea", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$4990], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "b4b077cb-02b0-45ee-be44-f9b6eca54821", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Data visualisation/B - SVG Attributes.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "SVGAttribute", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$4998]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# SVGAttribute\n2D graphics primitives are \
-rendered using SVG elements. To apply raw SVG attributes to a primitive use \
-`SVGAttribute`:", "Display" -> "codemirror", 
-    "Hash" -> "a207094d-1996-44d9-bdb2-ec7d535fad62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "# SVGAttribute\n2D graphics primitives are rendered using SVG \
-elements. To apply raw SVG attributes to a primitive use `SVGAttribute`:", 
-    "Display" -> "markdown", "Hash" -> 
-     "27693490-a009-4360-a477-3dcd25687468", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "Graphics[{\n  Red, Disk[{-0.2,-0.2},0.4], \n  SVGAttribute[\n \
-   Disk[{0,0},0.3], \n    \"style\"->\"filter: drop-shadow(-3px 10px 4px \
-#4444dd); fill:blue;\"\n  ]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "adfa4844-fd24-46ff-ae02-a7d234a85640", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "(*VB[*)(Graphics[{RGBColor[1, 0, 0], Disk[{-0.2, -0.2}, 0.4], \
-SVGAttribute[Disk[{0, 0}, 0.3], \"style\" -> \"filter: drop-shadow(-3px 10px \
-4px #4444dd); \
-fill:blue;\"]}])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5BwL0osyMhMLk5jhsn7ZB\
-aXQHgg+SB3J+f8nPyiTJCOTAYYkcYEU+6SWZyN4IE0F82aCQIn96MzbtpDFPIAieAwd8eSkqLMpNK\
-SVHyGIawsMgaDy/YIBUGlOanBrCBeSSWQZQZyWGZOSWqRlUJKUX6BbnFGYkp+uYaucUGFgqEBkDAB\
-YmUTIEhJ0bRWAKrNsUrKKU21BgABNUlc\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "b27a8751-d856-4890-a5dc-8faacacb6fb6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> ".md\nUse can group multiple elements into a low-level SVG \
-group and apply a CSS filter:", "Display" -> "codemirror", 
-    "Hash" -> "a8f505b3-61a0-4603-915f-e62af4f423c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "Use can group multiple elements into a low-level SVG group \
-and apply a CSS filter:", "Display" -> "markdown", 
-    "Hash" -> "236f5b06-a5cb-4594-8fa9-398a8a9cdfed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "Graphics[\n\tSVGAttribute[\n\t\tSVGGroup[{\n\t\t\tRed, \
-Disk[{0,0}, 0.5],\n\t\t\tBlue, Line[{{-1,-1}, {1,1}}]\n\t\t}]\n\t, \
-\"style\"->\"filter: blur(10px)\"]\n]", "Display" -> "codemirror", 
-    "Hash" -> "4aea05ad-8f6f-47f0-86d1-e5cb9824adcf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>, 
-   <|"Data" -> "(*VB[*)(Graphics[SVGAttribute[SVGGroup[{RGBColor[1, 0, 0], \
-Disk[{0, 0}, 0.5], RGBColor[0, 0, 1], Line[{{-1, -1}, {1, 1}}]}], \"style\" \
--> \"filter: \
-blur(10px)\"]])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5BwL0osyMhMLk5jAonwAIn\
-gMHfHkpKizKTSklSEOqCoe1F+aUEaC8wcn8zikjRmmHyQu5Nzfk5+USZIRyYDjIAYC1LuklmcjeCB\
-NCNUFTGAwQN7LObBFYFNRnjDJzMvFdU8NNP/AwGYQBNnhJsFFw8qzUkNZgXxSiqBLCGQZGZOSWqRl\
-UJSTmmRhqFBQYUmAN6nQ+k=\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "3882b8c9-4b85-4dde-9299-f93c87c6cfb9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "60d2e9c0-ed08-4f80-8125-5d299d96d4cf"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# SVGAttribute
+2D graphics primitives are rendered using SVG elements. To apply raw SVG attributes to a primitive use `SVGAttribute`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# SVGAttribute
+2D graphics primitives are rendered using SVG elements. To apply raw SVG attributes to a primitive use `SVGAttribute`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{
+  Red, Disk[{-0.2,-0.2},0.4], 
+  SVGAttribute[
+    Disk[{0,0},0.3], 
+    "style"->"filter: drop-shadow(-3px 10px 4px #4444dd); fill:blue;"
+  ]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[{RGBColor[1, 0, 0], Disk[{-0.2, -0.2}, 0.4], SVGAttribute[Disk[{0, 0}, 0.3], "style" -> "filter: drop-shadow(-3px 10px 4px #4444dd); fill:blue;"]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5BwL0osyMhMLk5jhsn7ZBaXQHgg+SB3J+f8nPyiTJCOTAYYkcYEU+6SWZyN4IE0F82aCQIn96MzbtpDFPIAieAwd8eSkqLMpNKSVHyGIawsMgaDy/YIBUGlOanBrCBeSSWQZQZyWGZOSWqRlUJKUX6BbnFGYkp+uYaucUGFgqEBkDABYmUTIEhJ0bRWAKrNsUrKKU21BgABNUlc"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use can group multiple elements into a low-level SVG group and apply a CSS filter:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use can group multiple elements into a low-level SVG group and apply a CSS filter:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[
+	SVGAttribute[
+		SVGGroup[{
+			Red, Disk[{0,0}, 0.5],
+			Blue, Line[{{-1,-1}, {1,1}}]
+		}]
+	, "style"->"filter: blur(10px)"]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[SVGAttribute[SVGGroup[{RGBColor[1, 0, 0], Disk[{0, 0}, 0.5], RGBColor[0, 0, 1], Line[{{-1, -1}, {1, 1}}]}], "style" -> "filter: blur(10px)"]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5BwL0osyMhMLk5jAonwAIngMHfHkpKizKTSklSEOqCoe1F+aUEaC8wcn8zikjRmmHyQu5Nzfk5+USZIRyYDjIAYC1LuklmcjeCBNCNUFTGAwQN7LObBFYFNRnjDJzMvFdU8NNP/AwGYQBNnhJsFFw8qzUkNZgXxSiqBLCGQZGZOSWqRlUJSTmmRhqFBQYUmAN6nQ+k="*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

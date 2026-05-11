@@ -9,7 +9,7 @@ Notifications  = ImportComponent["Components/Notifications/Notifications.wlx"];
 Alert           = ImportComponent["Components/Alert.wlx"];
 Modals           = ImportComponent["Components/Modals/Modals.wlx"];
 
-{loadSettings, storeSettings}        = ImportComponent["Settings.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 settings = <||>;
 loadSettings[settings];

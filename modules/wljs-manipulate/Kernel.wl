@@ -388,7 +388,13 @@ Do[With[{p=p},
 
 
 ManipulateHelper /: MakeBoxes[a_ManipulateHelper, form: WLXForm | StandardForm] := With[{o = CreateFrontEndObject[a]},
-  MakeBoxes[o, form]
+  If[form === WLXForm,
+    MakeBoxes[o, form]
+  ,
+    With[{out = MakeBoxes[o, StandardForm]},
+      ViewBox[out, o]
+    ]
+  ]
 ]
 
 Off[Refresh::arg];
@@ -474,7 +480,14 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
 
           _,
           With[{f = CreateFrontEndObject[RefreshBox[editor, event, interval, trigger // Offload] ]},
-            MakeBoxes[f, form]
+            If[form === WLXForm,
+              MakeBoxes[f, form]
+            ,
+              With[{out = MakeBoxes[f, StandardForm]},
+                ViewBox[out, f]
+              ]
+            ]
+            
           ]
         ]
     ]
@@ -621,13 +634,25 @@ System`WLXForm;
 noJITEntry /: MakeBoxes[n_noJITEntry, form: StandardForm | WLXForm] := With[{
   object = CreateFrontEndObject[n]
 }, 
-  MakeBoxes[object, form]
+  If[form === WLXForm,
+    MakeBoxes[object, form]
+  ,
+    With[{out = MakeBoxes[object, StandardForm]},
+      ViewBox[out, object]
+    ]
+  ]
 ]
 
 packedAnimation /: MakeBoxes[n_packedAnimation, form: StandardForm | WLXForm] := With[{
   object = CreateFrontEndObject[n]
 }, 
-  MakeBoxes[object, form]
+  If[form === WLXForm,
+    MakeBoxes[object, form]
+  ,
+    With[{out = MakeBoxes[object, StandardForm]},
+      ViewBox[out, object]
+    ]
+  ]
 ]
 
 checkIfFunction[] := False
@@ -1712,7 +1737,13 @@ System`WLXForm;
 
 
 AnimationHelper /: MakeBoxes[a_AnimationHelper, form: WLXForm | StandardForm] := With[{o = CreateFrontEndObject[a]},
-  MakeBoxes[o, form]
+  If[form === WLXForm,
+    MakeBoxes[o, form]
+  ,
+    With[{out = MakeBoxes[o, StandardForm]},
+      ViewBox[out, o]
+    ]
+  ]
 ]
 
 SetAttributes[Animate, HoldAll]

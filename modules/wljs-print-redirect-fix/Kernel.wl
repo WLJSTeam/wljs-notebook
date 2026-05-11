@@ -41,7 +41,7 @@ DefineOutputStreamMethod["MasterEchoPrint",
 
                 If[cnt > 7,
                     cnt = -1;
-                    EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], Notifications`NotificationMessage["System"], "Too many print messages. The output is suppressed"]; 
+                    EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`NotificationMessage["System"], "Too many print messages. The output is suppressed"]; 
                 ,
 
                     If[AssociationQ[System`$EvaluationContext],
@@ -53,7 +53,7 @@ DefineOutputStreamMethod["MasterEchoPrint",
                             
                         ]
                     ,
-                        EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], Notifications`NotificationMessage["Print"], 
+                        EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`NotificationMessage["Print"], 
                             If[StringTake[str, Min[2, StringLength[str] ] ] == ">>",
                                 str
                             ,
@@ -105,7 +105,7 @@ DefineOutputStreamMethod["MasterEchoWarning",
      nBytes = Length[bytes];
      Block[{$Output = {}},
         With[{str = bytes // ByteArray // ByteArrayToString // StringTrim},
-            If[StringLength[str] > 0 && str =!= "Null", EventFire[Internal`Kernel`Stdout[ Internal`Kernel`Hash ], "Warning", str] ]; 
+            If[StringLength[str] > 0 && str =!= "Null", EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], "Warning", str] ]; 
         ];
      ];
      state["pos"] += nBytes;

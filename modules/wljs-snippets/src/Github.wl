@@ -19,9 +19,6 @@ Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
-Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`" -> "vfx`", FileNameJoin[{DirectoryName[$InputFileName], "VFX.wl"}] ];
-
-
 Begin["`Private`"]
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
@@ -48,7 +45,6 @@ getNotebook[assoc_Association] := With[{result = EventFire[assoc["Controls"], "N
 printCell[assoc_, content_String] := With[{
     new = cell`CellObj["Notebook"->assoc["Notebook"], "Type"->"Input", "Data"->content]
 },
-    WebUISubmit[vfx`MagicWand[ "frame-"<>new["Hash"] ], assoc["Client"] ];
     new
 ];
 

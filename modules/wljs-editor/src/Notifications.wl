@@ -91,10 +91,10 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                         Then[promise, Function[resolve, 
                             ClearAll[proxy];
-                            GenericKernel`Async[kernel, EventFire[backpromise, Resolve, resolve] ];
+                            GenericKernel`SendAsync[kernel, EventFire[backpromise, Resolve, resolve] ];
                         ], Function[reject, 
                             ClearAll[proxy];
-                            GenericKernel`Async[kernel, EventFire[backpromise, Reject, reject] ];
+                            GenericKernel`SendAsync[kernel, EventFire[backpromise, Reject, reject] ];
                         ] ];
 
                     ]
@@ -106,18 +106,7 @@ EventHandler[NotebookEditorChannel // EventClone,
     }
 ]
 
-(*Notify`CreateModal[name_String, data_Association, OptionsPattern[] ] := With[{p = Promise[]},
-    EventFire[Internal`Kernel`CommunicationChannel, "CreateModal", <|
-            "Notebook"->OptionValue["Notebook"], 
-            "Ref"->System`$EvaluationContext["Ref"], 
-            "Promise" -> (promise), 
-            "Kernel"->Internal`Kernel`Hash,
-            "Modal"->name,
-            "Data"->data
-    |>];
-    
-    p
-]*)
+
 
 End[]
 EndPackage[]

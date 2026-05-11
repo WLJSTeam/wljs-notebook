@@ -77,19 +77,19 @@ primitive  = StandardEvaluator["Name" -> "Primitive Static Evaluator", "InitKern
 
 initPrimitiveEvaluator[k_] := Module[{},
     Print["Kernel init..."];
-    GenericKernel`Init[k, 
+    GenericKernel`Send[k, 
         Print["Init primitive Kernel (Local)"];
         Internal`Kernel`Evaluator`Simple = Function[t, 
             With[{result = ToExpression[ t["Data"], InputForm ] },
-                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> ToString[result, InputForm] |> ];
-                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True ];
+                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> ToString[result, InputForm] |> ];
+                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True ];
                 result;
             ]
         ];
         Internal`Kernel`Evaluator`Held = Function[t, 
             With[{result = t["Data"] // ReleaseHold },
-                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> result |> ];
-                EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True ];
+                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> result |> ];
+                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True ];
                 result;
             ]
         ];        

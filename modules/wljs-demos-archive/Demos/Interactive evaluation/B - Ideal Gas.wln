@@ -1,0 +1,341 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# <span style="color:rgb(140, 43, 29)">Pressure from Particles: A Simple Gas Model</span>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# <span style="color:rgb(140, 43, 29)">Pressure from Particles: A Simple Gas Model</span>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+What does a pressure sensor actually measure?
+
+At the microscopic level, a gas does not push on a wall continuously. Instead, the wall receives a rapid sequence of tiny impacts from many moving molecules. Each collision transfers a small amount of momentum. When many of these impulses are averaged over time, they appear as a smooth macroscopic pressure.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+What does a pressure sensor actually measure?
+
+At the microscopic level, a gas does not push on a wall continuously. Instead, the wall receives a rapid sequence of tiny impacts from many moving molecules. Each collision transfers a small amount of momentum. When many of these impulses are averaged over time, they appear as a smooth macroscopic pressure.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In this notebook, we build a simple two-dimensional toy model of that idea. A collection of particles moves inside a square container, bounces elastically from the walls, and the simulation counts how often those wall collisions happen.
+
+The model is deliberately simple: particles do not collide with one another, and the temperature is represented by the step size of their motion. Even with these simplifications, the simulation is enough to show how a macroscopic pressure-like signal can emerge from many microscopic impacts.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In this notebook, we build a simple two-dimensional toy model of that idea. A collection of particles moves inside a square container, bounces elastically from the walls, and the simulation counts how often those wall collisions happen.
+
+The model is deliberately simple: particles do not collide with one another, and the temperature is represented by the step size of their motion. Even with these simplifications, the simulation is enough to show how a macroscopic pressure-like signal can emerge from many microscopic impacts.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For a real three-dimensional gas, pressure is defined as force per unit area:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For a real three-dimensional gas, pressure is defined as force per unit area:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+ $P = \frac{F}{A}$,
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+ $P = \frac{F}{A}$,
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+where  $P$  is the pressure,  $F$  is the force applied by the gas, and  $A$  is the surface area of the wall.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+where  $P$  is the pressure,  $F$  is the force applied by the gas, and  $A$  is the surface area of the wall.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we use a two-dimensional analogy. Since the walls are line segments rather than surfaces, the pressure-like quantity is proportional to force per unit length:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we use a two-dimensional analogy. Since the walls are line segments rather than surfaces, the pressure-like quantity is proportional to force per unit length:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+ $P_{\mathrm{2D}} \sim \frac{F}{L}$,
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+ $P_{\mathrm{2D}} \sim \frac{F}{L}$,
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+where  $L$  is the length of the wall. The value plotted in this simulation should therefore be read as a normalized pressure signal, not as pressure in physical units such as pascals.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+where  $L$  is the length of the wall. The value plotted in this simulation should therefore be read as a normalized pressure signal, not as pressure in physical units such as pascals.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The ideal gas law gives the macroscopic relation
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The ideal gas law gives the macroscopic relation
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+ $P V = n R T$,
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+ $P V = n R T$,
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+where  $P$  is pressure,  $V$  is volume,  $n$  is the amount of gas,  $R$  is the gas constant, and  $T$  is temperature.
+
+In this model, the number of particles plays the role of the amount of gas. The container size controls the available space, and the temperature slider changes how far particles move during each animation step. For a fixed number of particles, the expected trend is
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+where  $P$  is pressure,  $V$  is volume,  $n$  is the amount of gas,  $R$  is the gas constant, and  $T$  is temperature.
+
+In this model, the number of particles plays the role of the amount of gas. The container size controls the available space, and the temperature slider changes how far particles move during each animation step. For a fixed number of particles, the expected trend is
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+ $P_{\mathrm{model}} \propto \frac{N T}{\mathrm{size}^{2}}$.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+ $P_{\mathrm{model}} \propto \frac{N T}{\mathrm{size}^{2}}$.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The dashed red line in the plot shows this simple reference scaling. The numerical factor used in the code is a calibration constant for the chosen simulation units.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The dashed red line in the plot shows this simple reference scaling. The numerical factor used in the code is a calibration constant for the chosen simulation units.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Interactive experiment
+
+Use the sliders to explore the model:
+
+- **T** controls the effective temperature. Increasing it makes particles move faster, so they collide with the walls more often.
+- **Size** controls the size of the box. Increasing it gives the particles more room, so wall collisions become less frequent.
+
+The left panel shows the particles inside the container. Particles flash when they collide with a wall. The right panel shows the averaged pressure signal over time, together with the theoretical reference line.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Interactive experiment
+
+Use the sliders to explore the model:
+
+- **T** controls the effective temperature. Increasing it makes particles move faster, so they collide with the walls more often.
+- **Size** controls the size of the box. Increasing it gives the particles more room, so wall collisions become less frequent.
+
+The left panel shows the particles inside the container. Particles flash when they collide with a wall. The right panel shows the averaged pressure signal over time, together with the theoretical reference line.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+size = 0.7;
+molecules = 500;
+history = Table[{-50 + i, 0.0}, {i, 0, 50}];
+temperature = 0.05`;
+avgs = 0;
+theory = 0.634 molecules temperature / (*SpB[*)Power[size(*|*),(*|*)2](*]SpB*);
+
+EventHandler[
+  InputRange[0.01,0.1,0.01,0.05, "Label"->"T"], 
+  Function[s, temperature=s; theory = 0.634 molecules temperature / (*SpB[*)Power[size(*|*),(*|*)2](*]SpB*)]
+]
+EventHandler[
+  InputRange[0.4,2.0,0.1,size, "Label"->"Size"], 
+  Function[s, size=s; theory = 0.634 molecules temperature / (*SpB[*)Power[size(*|*),(*|*)2](*]SpB*)]
+]
+
+Row[{Module[{
+  contents = {
+    RandomReal[{-size,size},{molecules,2}],
+    {Cos[#1],Sin[#1]}& /@ RandomReal[{0,2 \[Pi]}, molecules], 
+    Table[{0.5,0.5,1.}, {molecules}]
+  } // Transpose, 
+  data = {Table[{0,0,0}, {molecules}], Table[{0,0,0}, {molecules}]}//N, 
+  indices = Range[molecules], collision = 0
+},
+  
+    
+    Graphics[
+        {
+            {EdgeForm[Black], GrayLevel[0.8], Rectangle[{-size, -size}//Offload, {size, size}//Offload]},
+            GraphicsComplex[Offload[data[[1]]], {
+                PointSize[0.01], Point[Offload[indices]]
+              }, VertexColors->Offload[data[[2]]]
+            ],
+            EventHandler[
+                AnimationFrameListener[Offload[data]],
+                Function[Null,
+                    
+                    
+                    collision = 0;
+                    contents = ({#1[[1]] + #1[[2]] temperature, #1[[2]], 0.1 {0.5,1.0,1.0} + 0.90 #1[[3]]}&) /@ contents;
+                    contents = (
+                        If[Abs[#1[[1, 2]]] > size,
+                            collision++;
+                            {{#1[[1, 1]], 2 size Sign[#1[[1, 2]]] - #1[[1, 2]]}, {1, -1} #1[[2]], {1.,0.,1.}}
+                            ,
+                            #1
+                        ]&
+                    ) /@ contents;
+                    
+                    contents = (
+                        If[Abs[#1[[1, 1]]] > size,
+                            collision++;
+                            {{2 size Sign[#1[[1, 1]]] - #1[[1, 1]], #1[[1, 2]]}, {-1, 1} #1[[2]], {1.,0.,1.}}
+                            ,
+                            #1
+                        ]&
+                    ) /@ contents;
+                    
+                    data = {First /@ contents, Last /@ contents};
+
+                    history[[1,2]] += collision/size;
+                    
+                    If[avgs > 20.0,  
+                      avgs=0;
+                      history[[1,2]] /= 20.0;
+                      history = Transpose[{history[[All,1]], RotateLeft[history[[All,2]], 1]}];
+                    ];
+
+                    avgs++;
+                ]
+            ]
+        }, PlotRange->{{-1,1}, {-1,1}}
+    ]
+], Graphics[{Line[history//Offload], Red, Dashed, Line[{{-50, theory}, {0, theory}}//Offload]}, PlotRange->{{-50,0}, {0,100.0}}, TransitionType->None, ImageSize->300,Frame->True, FrameLabel->{"time", "P"}, "Controls"->False]}]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

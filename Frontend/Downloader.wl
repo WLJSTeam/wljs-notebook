@@ -3,6 +3,7 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     "CoffeeLiqueur`HTTPHandler`Extensions`",
     "CoffeeLiqueur`Internal`"
 }]
+    module;
     
     Begin["`Internal`"]
 
@@ -139,5 +140,3 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     End[]
 
 EndPackage[]
-
-CoffeeLiqueur`Notebook`HTTPDownLoader`Internal`module

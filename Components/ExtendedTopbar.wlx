@@ -35,7 +35,7 @@ subscribeToNotebookSocketState[client_, messages_, localController_String] := Wi
 ]
 
 timedSaveButton[client_, localController_, controls_, parameters_] := With[{clonedControls = EventClone[controls], socket = EventClone[client]},
-  Module[{task, reset, alive = True},
+  Module[{task, reset, alive = True, taskFile},
     reset := With[{},
       If[MatchQ[task, _TaskObject], TaskRemove[task]];
       task = SetTimeout[(
@@ -47,6 +47,10 @@ timedSaveButton[client_, localController_, controls_, parameters_] := With[{clon
     ];
 
     reset;
+
+    taskFile = SetInterval[(
+      EventFire[controls, "CheckFileHash", <|"Client"->client|>];
+    ), 4000];
 
     EventHandler[clonedControls, {"Save" -> Function[Null,
       EventFire[localController, "Reset", <|"Client"->client|>];
@@ -60,6 +64,7 @@ timedSaveButton[client_, localController_, controls_, parameters_] := With[{clon
       EventRemove[clonedControls];
       EventRemove[localController];
       TaskRemove[task];
+      TaskRemove[taskFile];
       ClearAll[reset];
       EventRemove[socket];
     ]}];

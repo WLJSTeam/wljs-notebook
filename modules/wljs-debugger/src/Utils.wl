@@ -13,32 +13,32 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
 
 addBreak[kernel_, {"Assert", ev_String}, OptionsPattern[] ] := With[{echo = OptionValue["Logger"]},
-    GenericKernel`Async[kernel, ToExpression["On[Assert];"] ];
-    GenericKernel`Async[kernel, ToExpression[StringJoin["$AssertFunction = With[{msg = {##}}, EventFire[Internal`Kernel`Stdout[\"", ev, "\"], \"Assert\", ToString[msg, InputForm]]; Pause[4]; ]&;"] ] ];
+    GenericKernel`SendAsync[kernel, ToExpression["On[Assert];"] ];
+    GenericKernel`SendAsync[kernel, ToExpression[StringJoin["$AssertFunction = With[{msg = {##}}, EventFire[Internal`Kernel`RemoteEvent[\"", ev, "\"], \"Assert\", ToString[msg, InputForm]]; Pause[4]; ]&;"] ] ];
     echo["Assertions hook was enabled"];
 ];
 
 updateSymbols[kernel_, list_] := With[{},
     With[{query = StringRiffle[(StringTemplate["If[!SymbolQ[``], ``=``];"][#,#,#]) &/@ list, " "]},
-        GenericKernel`Async[kernel, ToExpression[query] ];
+        GenericKernel`SendAsync[kernel, ToExpression[query] ];
     ];
 ]
 
 removeBreak[kernel_, {"Assert", _} opts: OptionsPattern[] ] := removeBreak[kernel, "Assert", opts];
 removeBreak[kernel_, "Assert", OptionsPattern[] ] := With[{echo = OptionValue["Logger"]},
-    GenericKernel`Async[kernel, ToExpression["Off[Assert];"] ];
-    GenericKernel`Async[kernel, ToExpression["$AssertFunction = Automatic;"] ];
+    GenericKernel`SendAsync[kernel, ToExpression["Off[Assert];"] ];
+    GenericKernel`SendAsync[kernel, ToExpression["$AssertFunction = Automatic;"] ];
     echo["Assertions hook was disabled"];
 ]
 
 addBreak[kernel_, {"Symbol", name_String, ev_String}, OptionsPattern[] ] := With[{echo = OptionValue["Logger"], pause = OptionValue["Pause"]},
-    GenericKernel`Async[kernel, ToExpression[StringJoin["Experimental`ValueFunction[", name, "] = Function[{y,x}, EventFire[Internal`Kernel`Stdout[\"", ev, "\"], \"", name, "\", ToString[x//Short, StandardForm] ]; Pause[", ToString[pause, InputForm], "]; ];"] ] ];
+    GenericKernel`SendAsync[kernel, ToExpression[StringJoin["Experimental`ValueFunction[", name, "] = Function[{y,x}, EventFire[Internal`Kernel`RemoteEvent[\"", ev, "\"], \"", name, "\", ToString[x//Short, StandardForm] ]; Pause[", ToString[pause, InputForm], "]; ];"] ] ];
     echo[StringTemplate["A hook for symbol `` was added"][name] ];
 ];
 
 removeBreak[kernel_, {"Symbol", name_String, ev_String}, opts: OptionsPattern[]] := removeBreak[kernel, {"Symbol", name}, opts];
 removeBreak[kernel_, {"Symbol", name_String}, OptionsPattern[] ] := With[{},
-    GenericKernel`Async[kernel, ToExpression[StringJoin["Experimental`ValueFunction[\"", name, "\"] // Unset;"] ] ];
+    GenericKernel`SendAsync[kernel, ToExpression[StringJoin["Experimental`ValueFunction[\"", name, "\"] // Unset;"] ] ];
     echo[StringTemplate["A hook for symbol `` was removed"][name] ];
 ]
 

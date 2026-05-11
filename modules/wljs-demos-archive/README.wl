@@ -21,7 +21,7 @@ readmeView = ImportComponent[ FileNameJoin[{root, "README.wlx"}] ];
 
 ReadmeQ[path_] := FileNameTake[path] === "README.md"
 
-CoffeeLiqueur`Notebook`Views`Router[any_?ReadmeQ, appevents_String] := With[{},
+CoffeeLiqueur`Notebook`Views`Router[any_?ReadmeQ, appevents_String, _] := With[{},
     Echo["README File"];
     Echo[any];
 

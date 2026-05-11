@@ -8,3 +8,11 @@ node_modules
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/package-lock.json
+/.vscode/
+/.idea/
+.DS_Store
+*.log
+*.tmp
+routes_cache.wl
+runtime_cache.wl

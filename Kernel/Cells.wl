@@ -15,6 +15,7 @@ HashMap;
 FindCell;
 Serialize;
 Deserialize;
+DeserializeLive;
 
 SelectCells;
 EvaluateCellObj;
@@ -95,6 +96,10 @@ Deserialize[assoc_Association, opts___] := With[{cell = CellObj[], list = Associ
     (cell[#] = assoc[#]) &/@ Complement[Keys[assoc], {"Hash"}];
     (cell[#] = list[#])  &/@ Keys[list];
     cell
+]
+
+DeserializeLive[assoc_Association, opts___] := With[{},
+    CellObj[opts, "Data"->Lookup[assoc, "Data", "\n"], "Display"->Lookup[assoc, "Display", "codemirror"], "Props"->Lookup[assoc, "Props", <||>], "Type"->Lookup[assoc, "Type", "Input"] ]
 ]
 
 Options[Serialize] = {"MetaOnly" -> False}

@@ -3,7 +3,7 @@ Extensions := ImportComponent["Components/Extensions.wlx"];
 GeneralSettings := ImportComponent["Components/General.wlx"];
 DevSettings := ImportComponent["Components/Dev.wlx"];
 
-{loadSettings, storeSettings}        = ImportComponent["Frontend/Settings.wl"];
+{loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 settings = <||>;
 loadSettings[settings];

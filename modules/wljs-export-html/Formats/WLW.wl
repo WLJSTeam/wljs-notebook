@@ -21,7 +21,9 @@ Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, _, _] := With[{
 
@@ -76,11 +78,11 @@ With[{
     name = FileBaseName[path],
     promise = Promise[],
     
-    notebook = nb`Deserialize[ Import[path, "WL"] ],
+    notebook = nb`LoadFromFile[ path ],
 
     spinner = Notifications`Spinner["Topic"->"Initializing an App", "Body"->"Please, wait"](*`*),
     msg = OptionValue["Messager"],
-    generated = StringReplace[RandomWord[]<>StringTake[CreateUUID[], 3]<>"w`", {"-"->""}]
+    generated = StringReplace[(Internal`NoWR`RandomWord[])<>StringTake[CreateUUID[], 3]<>"w`", {"-"->""}]
 }, 
 
     windowTitle = "Application";
@@ -115,8 +117,8 @@ With[{
             },
                 EventFire[spinner["Promise"], Resolve, True];
 
-                GenericKernel`Init[kernel,
-                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = CoffeeLiqueur`Extensions`Notifications`Notify["Evaluating cells in the generated context", "Topic"->"Notebook", "Type"->"Spinner"];
+                GenericKernel`Send[kernel,
+                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
                     $Context = generated;
                     Internal`Kernel`$savedDirectory = Directory[];
@@ -156,7 +158,7 @@ With[{
                                 notebook["ModalsChannel"] = Null;
                                 Echo["Modals set to Null"];
 
-                                GenericKernel`Init[kernel,
+                                GenericKernel`Send[kernel,
 
                                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                                     $Context = "Global`";
@@ -172,10 +174,10 @@ With[{
                         ] ;                    
                     ] ];
 
-                    GenericKernel`Init[kernel,
-                        Delete[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
+                    GenericKernel`Send[kernel,
+                        CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated]["Cancel"];
                         Unset[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
-                        EventFire[Internal`Kernel`Stdout[ s ], Resolve, True ]; 
+                        EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, True ]; 
                     ];
 
 

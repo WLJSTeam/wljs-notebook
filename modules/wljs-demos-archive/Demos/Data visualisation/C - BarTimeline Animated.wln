@@ -1,92 +1,169 @@
-<|"Notebook" -> <|"Controller" -> "712d5455-84f8-4b0d-ac7e-36deeb190665", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$5088], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "0d238cfd-a905-4c13-af4f-3bbac55c0eac", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Data visualisation/C - BarTimeline Animated.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "BarTimeline Animated", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5084]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# BarTimeline Animated\nYou've likely seen \
-videos featuring animated bar charts with a timeline, where the bars \
-dynamically shift and overtake each other. These kinds of visuals are \
-eye-catching. \n\nBelow is an example of such a plot function, which takes a \
-list of `TimeSeries`, interpolates them, and turns them into an interactive \
-diagram. While this isn't a perfect implementation, it's good enough for \
-demonstration purposes.", "Display" -> "codemirror", 
-    "Hash" -> "c9ef8b07-dc1a-4755-aea7-c211e1534cea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>, 
-   <|"Data" -> "# BarTimeline Animated\nYou've likely seen videos featuring \
-animated bar charts with a timeline, where the bars dynamically shift and \
-overtake each other. These kinds of visuals are eye-catching. \n\nBelow is an \
-example of such a plot function, which takes a list of `TimeSeries`, \
-interpolates them, and turns them into an interactive diagram. While this \
-isn't a perfect implementation, it's good enough for demonstration purposes."\
-, "Display" -> "markdown", "Hash" -> "6742497a-744c-44ad-b33a-593cfdb18b6b", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>, 
-   <|"Data" -> "Options[barTimelineAnimated] = {PlotLegends -> \
-Automatic};\n\ngetMagnitude[e_Quantity] := \
-QuantityMagnitude[e];\ngetMagnitude[e_] := e;\n\ngetLevels = Function[{list}, \
-\n  SortBy[\n    MapIndexed[Function[{value, index}, {value, index // \
-First}], Ordering[list]], \n    First\n  ][[All, \
-2]]\n];\n\nbarTimelineAnimated[l_List, OptionsPattern[]] := With[{\n  \
-timeline = MinimalBy[(#[\"Times\"] & /@ l), Length] // First,\n  labels = \
-If[OptionValue[PlotLegends] === Automatic, Range[Length[l]], \
-OptionValue[PlotLegends]],\n  interpolated = TimeSeries[#, MissingDataMethod \
--> Automatic] & /@ l\n},\n\n  With[{\n    first = getMagnitude[#[timeline // \
-First]] & /@ interpolated\n  },\n\n    Module[{\n      levels = \
-getLevels[first] / Length[first] // N,\n      order = getLevels[first],\n     \
- rects,\n      date = timeline // First // DateObject // TextString,\n      \
-recalc\n    },\n\n      recalc[index_] := With[{values = \
-getMagnitude[#[timeline[[index]]]] & /@ interpolated},\n\n        \
-With[{newOrdering = getLevels[values]},\n          If[order != newOrdering,\n \
-           order = newOrdering;\n            levels = newOrdering / \
-Length[first] // N;\n          ];\n        ];\n\n        date = \
-timeline[[index]] // DateObject // TextString;\n\n        With[{min = \
-Min[values], max = Max[values]},\n          rects = ((values - min) / (max - \
-min) + 0.02) / 1.02;\n        ];\n      ];\n\n      recalc[1];\n\n      \
-Column[{\n        With[{spacing = 0.8 / Length[levels]}, \n          \
-Graphics[{\n            Text[date // Offload, {0.5, 0.}, {0, 0}],\n           \
- Directive[TransitionType -> \"CubicInOut\", TransitionDuration -> 500],\n    \
-        Table[\n              With[{i = i},\n                Translate[{\n    \
-              ColorData[97][i] // Lighter,\n                  {\n             \
-       Directive[TransitionType -> \"Linear\", TransitionDuration -> 20],\n   \
-                 Rectangle[{0, 0}, {Offload[rects[[i]]], spacing}]\n          \
-        },\n                  Black,\n                  \
-Text[Style[labels[[i]], FontSize -> 14], {-0.02, spacing / 3.0}, {1, 0}]\n    \
-            }, {0, Offload[levels[[i]]]}]\n              ], \n              \
-{i, 1, Length[rects]}\n            ]\n          }, PlotRange -> {{-0.4, 1}, \
-{-0.1, 1 + spacing}}, ImagePadding -> None]\n        ],\n        \n        \
-EventHandler[InputRange[1, Length[timeline], 1, 1], recalc]\n      }]\n    \
-]\n  ]\n];", "Display" -> "codemirror", 
-    "Hash" -> "9b3fa88f-899f-43fd-bbd1-06928716ff5d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>, 
-   <|"Data" -> ".md\nTry on some sample date lists", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bc5f8df1-89d8-46ef-909d-174d21420a0b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>, 
-   <|"Data" -> "Try on some sample date lists", "Display" -> "markdown", 
-    "Hash" -> "52c53fd9-4a71-4d52-a2bf-85884f3d3569", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>, 
-   <|"Data" -> "country = {\"Germany\", \"UK\", \"Switzerland\", \"Russia\", \
-\"China\"};\ngdp = CountryData[#, {\"GDP\", {1970, 2015}}] &/@ \
-country;\nDateListPlot[gdp, PlotLegends->country, \
-ImagePadding->60]\n\nbarTimelineAnimated[gdp, PlotLegends->country] ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f65f0cc5-99e0-493c-8f14-cdef37a85ff4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b6cec34d-2c61-42e5-b60c-65a0ab263149"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# BarTimeline Animated
+You've likely seen videos featuring animated bar charts with a timeline, where the bars dynamically shift and overtake each other. These kinds of visuals are eye-catching. 
+
+Below is an example of such a plot function, which takes a list of `TimeSeries`, interpolates them, and turns them into an interactive diagram. While this isn't a perfect implementation, it's good enough for demonstration purposes.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# BarTimeline Animated
+You've likely seen videos featuring animated bar charts with a timeline, where the bars dynamically shift and overtake each other. These kinds of visuals are eye-catching. 
+
+Below is an example of such a plot function, which takes a list of `TimeSeries`, interpolates them, and turns them into an interactive diagram. While this isn't a perfect implementation, it's good enough for demonstration purposes.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+Options[barTimelineAnimated] = {PlotLegends -> Automatic};
+
+getMagnitude[e_Quantity] := QuantityMagnitude[e];
+getMagnitude[e_] := e;
+
+getLevels = Function[{list}, 
+  SortBy[
+    MapIndexed[Function[{value, index}, {value, index // First}], Ordering[list]], 
+    First
+  ][[All, 2]]
+];
+
+barTimelineAnimated[l_List, OptionsPattern[]] := With[{
+  timeline = MinimalBy[(#["Times"] & /@ l), Length] // First,
+  labels = If[OptionValue[PlotLegends] === Automatic, Range[Length[l]], OptionValue[PlotLegends]],
+  interpolated = TimeSeries[#, MissingDataMethod -> Automatic] & /@ l
+},
+
+  With[{
+    first = getMagnitude[#[timeline // First]] & /@ interpolated
+  },
+
+    Module[{
+      levels = getLevels[first] / Length[first] // N,
+      order = getLevels[first],
+      rects,
+      date = timeline // First // DateObject // TextString,
+      recalc
+    },
+
+      recalc[index_] := With[{values = getMagnitude[#[timeline[[index]]]] & /@ interpolated},
+
+        With[{newOrdering = getLevels[values]},
+          If[order != newOrdering,
+            order = newOrdering;
+            levels = newOrdering / Length[first] // N;
+          ];
+        ];
+
+        date = timeline[[index]] // DateObject // TextString;
+
+        With[{min = Min[values], max = Max[values]},
+          rects = ((values - min) / (max - min) + 0.02) / 1.02;
+        ];
+      ];
+
+      recalc[1];
+
+      Column[{
+        With[{spacing = 0.8 / Length[levels]}, 
+          Graphics[{
+            Text[date // Offload, {0.5, 0.}, {0, 0}],
+            Directive[TransitionType -> "CubicInOut", TransitionDuration -> 500],
+            Table[
+              With[{i = i},
+                Translate[{
+                  ColorData[97][i] // Lighter,
+                  {
+                    Directive[TransitionType -> "Linear", TransitionDuration -> 20],
+                    Rectangle[{0, 0}, {Offload[rects[[i]]], spacing}]
+                  },
+                  Black,
+                  Text[Style[labels[[i]], FontSize -> 14], {-0.02, spacing / 3.0}, {1, 0}]
+                }, {0, Offload[levels[[i]]]}]
+              ], 
+              {i, 1, Length[rects]}
+            ]
+          }, PlotRange -> {{-0.4, 1}, {-0.1, 1 + spacing}}, ImagePadding -> None]
+        ],
+        
+        EventHandler[InputRange[1, Length[timeline], 1, 1], recalc]
+      }]
+    ]
+  ]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Try on some sample date lists
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Try on some sample date lists
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+country = {"Germany", "UK", "Switzerland", "Russia", "China"};
+gdp = CountryData[#, {"GDP", {1970, 2015}}] &/@ country;
+DateListPlot[gdp, PlotLegends->country, ImagePadding->60]
+
+barTimelineAnimated[gdp, PlotLegends->country] 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

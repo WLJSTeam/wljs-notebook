@@ -27,7 +27,7 @@ createNotebook[uid_] := With[{notebook = nb`NotebookObj["Hash" -> uid]},
 ]
 
 createNotebook[uid_, kernel_] := With[{notebook = nb`NotebookObj["Hash" -> uid]},
-    notebook["Evaluator"] = kernel["Container"];
+    notebook["AutoconnectKernel"] = kernel["Hash"];
     saveNotebook[Null, uid]
 ]
 
@@ -57,16 +57,35 @@ exportNotebook[notebook_, savingPath_, ext: ("md" | "mdx" | "html" | "nb")] := W
     |>];
 ]
 
-exportNotebook[notebook_, savingPath_, "wln"] := With[{},
+exportNotebook[notebook_, savingPath_, "wln"] := With[{stream = OpenWrite[savingPath, DOSTextFormat->False]},
     notebook["Path"] = savingPath;
     notebook["Directory"] = DirectoryName[savingPath];
 
-    Put[<| 
-        "Notebook" -> Join[nb`Serialize[notebook], <|"Evaluator" -> notebook["Evaluator"]|>], 
-        "Cells" -> ( cell`Serialize /@ notebook["Cells"]), 
-        "serializer" -> "jsfn4" 
-    |>, savingPath ]
+    nb`SerializeToStream[stream, notebook];
+    Close[stream];
 ]
+
+saveNotebook[path_, uid_, kernelDir_] := With[{
+    notebook = nb`HashMap[uid]
+},
+{
+    savingPath = If[path === Null,
+            If[StringQ[notebook["Path"] ], 
+                notebook["Path"], 
+                FileNameJoin[{$TemporaryDirectory, ((Internal`NoWR`RandomWord[])<>(Internal`NoWR`RandomWord[]))<>".wln"}]
+            ]
+        ,
+            path
+    ]
+},
+    SetDirectory[kernelDir];
+    With[{res = exportNotebook[notebook, savingPath, FileExtension[savingPath] ] },
+        ResetDirectory[];
+        res
+    ]
+]
+
+saveNotebook[path_, uid_, Null] := saveNotebook[path, uid]
 
 saveNotebook[path_, uid_] := With[{
     notebook = nb`HashMap[uid]
@@ -75,7 +94,7 @@ saveNotebook[path_, uid_] := With[{
     savingPath = If[path === Null,
             If[StringQ[notebook["Path"] ], 
                 notebook["Path"], 
-                FileNameJoin[{$TemporaryDirectory, (RandomWord[]<>RandomWord[])<>".wln"}]
+                FileNameJoin[{$TemporaryDirectory, ((Internal`NoWR`RandomWord[])<>(Internal`NoWR`RandomWord[]))<>".wln"}]
             ]
         ,
             path
@@ -86,10 +105,8 @@ saveNotebook[path_, uid_] := With[{
 ]
 
 importNotebook[content_, path_, fullpath_, uid_] := With[{
-    notebook = nb`NotebookObj["Hash" -> uid]
+    notebook = nb`LoadFromString[content, "Hash" -> uid]
 },
-    nb`Deserialize[content["serializer"], content, notebook];
-
     notebook["Path"] = fullpath;
     notebook["Directory"] = path;
     notebook["Hash"]
@@ -211,8 +228,8 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             ];
 
       
-            GenericKernel`Init[kernel,
-                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0 = CoffeeLiqueur`Extensions`Notifications`Notify["Evaluating cells in the generated context", "Topic"->"Notebook", "Type"->"Spinner"];
+            GenericKernel`Send[kernel,
+                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0 = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                 CoffeeLiqueur`Extensions`RemoteCells`Private`SavedDir = Directory[];
                 CoffeeLiqueur`Extensions`RemoteCells`Private`SavedCharLim = Internal`Kernel`$OutputCharactersLimit;
                 Internal`Kernel`$OutputCharactersLimit = Infinity;
@@ -227,8 +244,8 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             (* evaluate notebook in the context of a caller notebook if provided *)
             cell`EvaluateCellObj[#, "Evaluator"->kernel["Container"], "EvaluationContext"->evalContext ] &/@ initCells;
 
-            GenericKernel`Init[kernel,
-                Delete[CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0];
+            GenericKernel`Send[kernel,
+                CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0["Cancel"];
                 If[ContextIsolation,
                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                     $Context = "Global`";
@@ -285,9 +302,9 @@ EventHandler[NotebookEditorChannel // EventClone,
             
                             With[{},
                                 Then[evaluateNotebook[hash, kernel, Null, session, elements, Lookup[assoc, "EvaluationContext", <||>], ContextIsolation ], Function[result, 
-                                    GenericKernel`Async[kernel, EventFire[promise, Resolve, result] ];
+                                    GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
                                 ], Function[Null,
-                                    GenericKernel`Async[kernel, EventFire[promise, Resolve, $Failed] ];
+                                    GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, $Failed] ];
                                 ] ];
                             ];
 
@@ -298,10 +315,10 @@ EventHandler[NotebookEditorChannel // EventClone,
         ],
 
         "CreateNotebook" -> Function[assoc,
-           With[{  uid = assoc["Hash"]},
+           With[{  uid = assoc["Hash"], kernel = GenericKernel`HashMap[assoc["Kernel"] ]},
             Echo["Creating notebook..."];
                 With[{},
-                    createNotebook[uid];
+                    createNotebook[uid, kernel];
                     saveNotebook[Null, uid];
                 ]
  
@@ -325,17 +342,16 @@ EventHandler[NotebookEditorChannel // EventClone,
             Echo["writting notebook.with data .."];
                 With[{},
                     writeNotebook[uid, #[[1]], #[[2]]]& /@ Transpose[{list, uids}];
-                    saveNotebook[Null, uid];
                 ]
  
             ];             
         ],
 
         "SaveNotebook" -> Function[assoc,
-           With[{  uid = assoc["Hash"], path = assoc["Path"]},
+           With[{  uid = assoc["Hash"], path = assoc["Path"], kernelDir = Lookup[assoc, "KernelDirectory", Null]},
             Echo["Saving notebook..."];
                 With[{},
-                    saveNotebook[path, uid];
+                    saveNotebook[path, uid, kernelDir];
                 ]
  
             ];      
@@ -352,7 +368,7 @@ EventHandler[NotebookEditorChannel // EventClone,
         ],
 
         "ImportNotebook" -> Function[assoc,
-           With[{ kernel = GenericKernel`HashMap[ assoc["Kernel"] ], uid = assoc["Hash"], path = assoc["Path"], fullpath = assoc["FullPath"], content = ImportString[assoc["Data"], "WL"]},
+           With[{ kernel = GenericKernel`HashMap[ assoc["Kernel"] ], uid = assoc["Hash"], path = assoc["Path"], fullpath = assoc["FullPath"], content = assoc["Data"]},
             Echo["Importing notebook..."];
                 With[{},
                         importNotebook[content, path, fullpath, uid];
@@ -363,7 +379,8 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "AskNotebookDirectory" -> Function[data,
            With[{promise = data["Promise"], kernel = GenericKernel`HashMap[ data["Kernel"] ]},
-            
+                Echo["AskNotebookDirectory"];
+                
                 With[{ref = data["Notebook"]},
                         If[ !MissingQ[nb`HashMap[ref] ] ,
                             With[{dir = If[MemberQ[nb`HashMap[ref]["Properties"], "WorkingDirectory"],
@@ -373,7 +390,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                 ]
                             },
                                 If[StringQ[dir],
-                                    GenericKernel`Async[kernel, EventFire[promise, Resolve, dir] ];
+                                    GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, dir] ];
                                 ,
                                     Echo["RemoveCells >> Error. path is not a string! "];
                                     Echo[dir];
@@ -397,7 +414,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                     With[{ref = data["Ref"]},
                         If[ !MissingQ[cell`HashMap[ref] ] ,
                             Echo["RemoveCells >> "<>ToString[ref] ];
-                            GenericKernel`Async[kernel, EventFire[promise, Resolve, ref] ];
+                            GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, ref] ];
                         ,
                             Echo["RemoveCells >> Error. not found"];
                         ];
@@ -407,7 +424,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                         Echo["RemoteCells >> found parent"];
                         Echo[parent];
                         
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, parent] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, parent] ];
                     ]                 
                 ];
  
@@ -596,19 +613,22 @@ EventHandler[NotebookEditorChannel // EventClone,
         ],
 
         "CellUnsubscribe" -> Function[assoc,
-            Print["CellUnsubscribe!!!!!!"];
+            (*Print["CellUnsubscribe!!!!!!"];
             With[{hash = assoc["CellHash"], oldEvent = assoc["Event"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 EventRemove[ cellClonedEvents[oldEvent] ];
                 cellClonedEvents[oldEvent] = .; (* just to save some memory *)
-            ]
+            ]*)
         ],
 
         "CellSubscribe" -> Function[assoc,
             Print["CellSubscribe!!!!!!"];
             With[{hash = assoc["CellHash"], callback = assoc["Callback"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 
-                With[{w = EventClone[hash]},
-                    cellClonedEvents[callback] = w;
+                (* do not clone for cells, since it has to be unique. 
+                    It may cause issues with output cells, if they are not yet created.
+                    But for windows it is fine *)
+                With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], hash]},
+                    (* cellClonedEvents[callback] = w; *)
 
                     EventHandler[w, {
                         "OnWebSocketConnected" -> Function[assoc,
@@ -616,11 +636,11 @@ EventHandler[NotebookEditorChannel // EventClone,
                                 EventHandler[ev, {
                                     "Closed" -> Function[Null,
                                         EventRemove[ev];
-                                        GenericKernel`Async[kernel, EventFire[callback, "Closed", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
+                                        GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
                                     ]
                                 }];
 
-                                GenericKernel`Async[kernel, EventFire[callback, "Mounted", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
+                                GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
                             ];
                             
                         ],
@@ -629,10 +649,10 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                             If[any === "Ready" && KeyExistsQ[win`HashMap, hash], (* if this is a window and it is ready *)
                                 With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["EvaluationContext"]["KernelWebSocket"]|>]},
-                                    GenericKernel`Async[kernel, EventFire[callback, any, winO] ];
+                                    GenericKernel`SendAsync[kernel, EventFire[callback, any, winO] ];
                                 ]
                             ,
-                                GenericKernel`Async[kernel, EventFire[callback, any, data] ];
+                                GenericKernel`SendAsync[kernel, EventFire[callback, any, data] ];
                             ]
                         ]
                     }]
@@ -647,7 +667,8 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[{hash = assoc["NotebookHash"], callback = assoc["Callback"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 EventHandler[EventClone[hash], {
                     any_String :> Function[data,
-                        GenericKernel`Async[kernel, EventFire[callback, any, data] ];
+                        Echo["Forwarded notebook event: ", any];
+                        GenericKernel`SendAsync[kernel, EventFire[callback, any, data] ];
                     ]
                 }]
             ]
@@ -665,11 +686,11 @@ EventHandler[NotebookEditorChannel // EventClone,
                 {notebook = nb`HashMap[ assoc["NotebookHash"] ], f = assoc["Function"], prop = assoc["Tag"], promise = assoc["Promise"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 If[prop === Null,
                     With[{val = notebook // f},    
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, val] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, val] ];
                     ];                
                 ,
                     With[{val = notebook[prop] // f},    
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, val] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, val] ];
                     ];                
                 ]
             ]
@@ -679,7 +700,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[
                 {cell = cell`HashMap[ assoc["Hash"] ], f = assoc["Function"], prop = assoc["Tag"], promise = assoc["Promise"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 With[{val = cell[prop] // f},    
-                    GenericKernel`Async[kernel, EventFire[promise, Resolve, val] ];
+                    GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, val] ];
                 ];
             ]
         ],
@@ -688,7 +709,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[
                 {cells = (cell`HashMap /@ assoc["Cells"]),  promise = assoc["Promise"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 With[{data = Map[Function[cell, <|"Data"->cell["Data"], "Type"->cell["Type"], "Display"->cell["Display"], "Props"->cell["Props"]|>], cells]},    
-                    GenericKernel`Async[kernel, EventFire[promise, Resolve, data] ];
+                    GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, data] ];
                 ];
             ]
         ],
@@ -729,10 +750,10 @@ EventHandler[NotebookEditorChannel // EventClone,
                     ];
 
                     Then[p, Function[result, 
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, result] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
                     ],
                     Function[Null, 
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, False] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
                     ]
                     ];  
                 ];
@@ -774,10 +795,10 @@ EventHandler[NotebookEditorChannel // EventClone,
 
 
                     Then[p, Function[result, 
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, result] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
                     ],
                     Function[Null, 
-                        GenericKernel`Async[kernel, EventFire[promise, Resolve, False] ];
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
                     ]
                     ];  
                 ];

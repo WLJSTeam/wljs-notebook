@@ -64,7 +64,35 @@ debug.addEventListener('click', () => {
 
 
 const info = document.getElementById("modal_info");
+const newsFeed = document.getElementById("news_feed_items");
 
+const escapeHtml = (text) => {
+    if (!text) return '';
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+};
+
+const renderNewsItems = (items) => {
+    if (!newsFeed) return;
+    if (!Array.isArray(items) || items.length === 0) {
+        newsFeed.innerHTML = '<div style="font-size: 0.75rem; color: #94a3b8;">No WLJS news available.</div>';
+        return;
+    }
+
+    newsFeed.innerHTML = items.map((item) => {
+        const title = escapeHtml(item.title || 'Untitled');
+        const summary = escapeHtml(item.summary || '');
+        const dateText = escapeHtml(item.dateText || '');
+        const source = escapeHtml(item.source || 'News');
+        const url = item.url ? escapeHtml(item.url) : 'https://wljs.io';
+
+        return `
+            <a href="${url}" target="_blank" rel="noreferrer" class="news-item">
+              <div class="news-source">${source}</div>
+              <div class="news-title">${title}</div>
+              <div class="news-meta">${dateText}${summary ? ' · ' + summary : ''}</div>
+            </a>`;
+    }).join('');
+};
 
 window.electronAPI.updateInfo((event, info) => {
     document.getElementById("modal_info_state").innerText = info;
@@ -73,6 +101,10 @@ window.electronAPI.updateInfo((event, info) => {
 window.electronAPI.updateVersion((event, info) => {
     document.getElementById("modal_info_version").innerText = info;
 })
+
+window.electronAPI.handleNews((event, items) => {
+    renderNewsItems(items);
+});
 
 window.electronAPI.addPromt((event, id, title) => {
     //well. implement it in a way you like, this is just a simple form

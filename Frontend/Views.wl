@@ -1,6 +1,5 @@
 Begin["CoffeeLiqueur`Notebook`Views`"];
 
-{saveNotebook, loadNotebook, renameXXX, cloneXXX}               = ImportComponent["Loader.wl"];
 {EmptyComponent,       EmptyScript}        = ImportComponent["Views/Empty.wlx"];
 {NotebookComponent,    NotebookScript}     = ImportComponent["Views/Notebook/Notebook.wlx"];
 
@@ -9,27 +8,30 @@ Begin["CoffeeLiqueur`Notebook`Views`"];
 
 (* /* view router */ *)
 View[opts__] := With[{list = Association[ List[opts] ]},
-    Router[ list["Path"] , list["AppEvents"] ][opts]
+    Router[ list["Path"] , list["AppEvents"], list["Messanger"] ][opts]
 ];
 
 (* /* Default */ *)
-Router[any_, _] := With[{},
+Router[any_, _, _] := With[{},
     Print["Default router"];
     ({EmptyComponent[##], EmptyScript[##]} &)
 ];
 
 (* /* Notebook */ *)
 NotebookQ[path_] := FileExtension[path] === "wln";
-Router[any_?NotebookQ, appevents_String] := With[{n = loadNotebook[any, "Events"->appevents]},
-    Print["Notebook router"];
-    Switch[n
-        ,_nb`NotebookObj
-        ,    ({NotebookComponent[##, "Notebook"->n], NotebookScript[##]} &)
-        ,_Association
-        ,    ({NotebookMessage[##, "Data"->n], NotebookMessageScript[##]} &)
-        ,_
-        ,    (NotebookFailure[##, "Data"->n] &)
-    
+Router[any_?NotebookQ, appevents_String, logs_String] := With[{}, 
+    With[{n = loader`load[any, "Events"->appevents]},
+        Print["Notebook router"];
+
+        Switch[n
+            ,_nb`NotebookObj
+            ,    ({NotebookComponent[##, "Notebook"->n], NotebookScript[##]} &)
+            ,_Association
+            ,    ({NotebookMessage[##, "Data"->n], NotebookMessageScript[##]} &)
+            ,_
+            ,    (NotebookFailure[##, "Data"->n] &)
+
+        ] 
     ] 
 ];
 

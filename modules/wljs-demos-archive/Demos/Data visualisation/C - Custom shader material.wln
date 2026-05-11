@@ -1,160 +1,211 @@
-<|"Notebook" -> <|"Controller" -> "3708ee9e-98b3-46bb-bd4f-24a030a66491", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$5151], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "d53a640a-68df-4902-89c3-faaa307dc92f", 
-   "Objects" -> <|"6ad5b48f-9dc6-4904-80d0-a703e1fdfb22" -> 
-      <|"Public" -> Hold[Graphics3D[{MeshMaterial[MeshToonMaterial[]], 
-           Translate[GraphicsComplex[{{-1.3763819204711736, 0, 
-               0.2628655560595668}, {1.3763819204711736, 0, 
-               -0.26286555605956685}, {-0.42532540417601994, 
-               -1.3090169943749475, 0.2628655560595668}, 
-              {-0.42532540417601994, 1.3090169943749475, 0.2628655560595668}, 
-              {1.1135163644116066, -0.8090169943749475, 0.2628655560595668}, 
-              {1.1135163644116066, 0.8090169943749475, 0.2628655560595668}, 
-              {-0.26286555605956685, -0.8090169943749475, 
-               1.1135163644116066}, {-0.26286555605956685, 
-               0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, 
-               -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, 
-               -1.1135163644116066}, {0.6881909602355868, -0.5, 
-               1.1135163644116066}, {0.6881909602355868, 0.5, 
-               1.1135163644116066}, {0.85065080835204, 0, 
-               -1.1135163644116066}, {-1.1135163644116066, 
-               -0.8090169943749475, -0.26286555605956685}, 
-              {-1.1135163644116066, 0.8090169943749475, 
-               -0.26286555605956685}, {-0.8506508083520399, 0, 
-               1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, 
-               -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, 
-               -1.1135163644116066}, {0.42532540417601994, 
-               -1.3090169943749475, -0.26286555605956685}, 
-              {0.42532540417601994, 1.3090169943749475, 
-               -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 
-                12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 
-                20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 
-                18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 
-                16, 1, 14}, {16, 8, 4, 15, 1}}]], {-2, 0, 0}], 
-           MeshMaterial[CustomMaterial[]], Translate[GraphicsComplex[
-             {{-1.3763819204711736, 0, 0.2628655560595668}, 
-              {1.3763819204711736, 0, -0.26286555605956685}, 
-              {-0.42532540417601994, -1.3090169943749475, 
-               0.2628655560595668}, {-0.42532540417601994, 
-               1.3090169943749475, 0.2628655560595668}, {1.1135163644116066, 
-               -0.8090169943749475, 0.2628655560595668}, {1.1135163644116066, 
-               0.8090169943749475, 0.2628655560595668}, 
-              {-0.26286555605956685, -0.8090169943749475, 
-               1.1135163644116066}, {-0.26286555605956685, 
-               0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, 
-               -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, 
-               -1.1135163644116066}, {0.6881909602355868, -0.5, 
-               1.1135163644116066}, {0.6881909602355868, 0.5, 
-               1.1135163644116066}, {0.85065080835204, 0, 
-               -1.1135163644116066}, {-1.1135163644116066, 
-               -0.8090169943749475, -0.26286555605956685}, 
-              {-1.1135163644116066, 0.8090169943749475, 
-               -0.26286555605956685}, {-0.8506508083520399, 0, 
-               1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, 
-               -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, 
-               -1.1135163644116066}, {0.42532540417601994, 
-               -1.3090169943749475, -0.26286555605956685}, 
-              {0.42532540417601994, 1.3090169943749475, 
-               -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 
-                12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 
-                20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 
-                18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 
-                16, 1, 14}, {16, 8, 4, 15, 1}}]], {2, 0, 0}]}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Data visualisation/C - Custom shader material.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Custom shader material", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5144]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Custom shader material\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "505def0c-c969-42b1-9460-a3069522fa71", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "# Custom shader material\n", "Display" -> "markdown", 
-    "Hash" -> "e0fd22a0-282c-4558-ade7-5cb33024190f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> ".md\nDefine new material in Javascript", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d3d9d70a-7f52-4ac8-b71b-37ebe921e833", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "Define new material in Javascript", "Display" -> "markdown", 
-    "Hash" -> "b463a2e8-4b4a-41c1-9cd1-50c548d2c187", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> ".js\nfunction vertexShader() {\n  return `\n    varying vec3 \
-vUv; \n\n    void main() {\n      vUv = position; \n\n      vec4 \
-modelViewPosition = modelViewMatrix * vec4(position, 1.0);\n      gl_Position \
-= projectionMatrix * modelViewPosition; \n    }\n  `;\n}\n\nfunction \
-fragmentShader()  {\n  return `\n      uniform vec3 colorA; \n      uniform \
-vec3 colorB; \n      varying vec3 vUv;\n\n      void main() {\n        \
-gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);\n      }\n  \
-`;\n}\n\nlet THREE;\ninterpretate.shared.THREE.load().then(() => {\n  THREE = \
-interpretate.shared.THREE.THREE;\n})\n\ncore.CustomMaterial = async (args, \
-env) => {\n  let uniforms = {\n    colorB: {type: 'vec3', value: new \
-THREE.Color(0xACB6E5)},\n    colorA: {type: 'vec3', value: new \
-THREE.Color(0x74ebd5)}\n  }\n\n  return (function() {\n    return new \
-THREE.ShaderMaterial({\n      uniforms: uniforms,\n      fragmentShader: \
-fragmentShader(),\n      vertexShader: vertexShader(),\n    });\n  })\n}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9d846677-c2d5-46d6-8666-79ec95df948b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "\nfunction vertexShader() {\n  return `\n    varying vec3 \
-vUv; \n\n    void main() {\n      vUv = position; \n\n      vec4 \
-modelViewPosition = modelViewMatrix * vec4(position, 1.0);\n      gl_Position \
-= projectionMatrix * modelViewPosition; \n    }\n  `;\n}\n\nfunction \
-fragmentShader()  {\n  return `\n      uniform vec3 colorA; \n      uniform \
-vec3 colorB; \n      varying vec3 vUv;\n\n      void main() {\n        \
-gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);\n      }\n  \
-`;\n}\n\nlet THREE;\ninterpretate.shared.THREE.load().then(() => {\n  THREE = \
-interpretate.shared.THREE.THREE;\n})\n\ncore.CustomMaterial = async (args, \
-env) => {\n  let uniforms = {\n    colorB: {type: 'vec3', value: new \
-THREE.Color(0xACB6E5)},\n    colorA: {type: 'vec3', value: new \
-THREE.Color(0x74ebd5)}\n  }\n\n  return (function() {\n    return new \
-THREE.ShaderMaterial({\n      uniforms: uniforms,\n      fragmentShader: \
-fragmentShader(),\n      vertexShader: vertexShader(),\n    });\n  \
-})\n}\n\n\n", "Display" -> "js", "Hash" -> 
-     "87253850-4b7f-4e74-b7d0-406cf051dc4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> ".md\nNow use it as if it was a normal `MeshMaterial`", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8f5f8a52-9549-4538-8236-440191e0e67a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "Now use it as if it was a normal `MeshMaterial`", 
-    "Display" -> "markdown", "Hash" -> 
-     "37ea64dc-6e24-4785-acf0-0983050b87d0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "Graphics3D[{\n   MeshMaterial[MeshToonMaterial[]],\n  \
-Translate[PolyhedronData[\"Dodecahedron\"][[1]]//N , {-2,0,0}],\n  \
-MeshMaterial[CustomMaterial[]],\n  \
-Translate[PolyhedronData[\"Dodecahedron\"][[1]]//N , {2,0,0}]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6c92a8ab-5c64-4707-8ef9-8b9265928771", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"6ad5b48f-9dc6-4904-80d0-a703e1fdfb22\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmyWmm\
-CaZWKTpWqYkm+maWBqY6FoYpBjoJpobGKcapqWkJRkZAQCH6BXR\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d76331f3-ad8d-47bd-883d-6c4d61ea5e16", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "4a208e5f-7479-4517-afff-edb8f9a6f228"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Custom shader material
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Custom shader material
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Define new material in Javascript
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Define new material in Javascript
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+function vertexShader() {
+  return `
+    varying vec3 vUv; 
+
+    void main() {
+      vUv = position; 
+
+      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewPosition; 
+    }
+  `;
+}
+
+function fragmentShader()  {
+  return `
+      uniform vec3 colorA; 
+      uniform vec3 colorB; 
+      varying vec3 vUv;
+
+      void main() {
+        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+      }
+  `;
+}
+
+let THREE;
+interpretate.shared.THREE.load().then(() => {
+  THREE = interpretate.shared.THREE.THREE;
+})
+
+core.CustomMaterial = async (args, env) => {
+  let uniforms = {
+    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
+    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+  }
+
+  return (function() {
+    return new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      fragmentShader: fragmentShader(),
+      vertexShader: vertexShader(),
+    });
+  })
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+function vertexShader() {
+  return `
+    varying vec3 vUv; 
+
+    void main() {
+      vUv = position; 
+
+      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewPosition; 
+    }
+  `;
+}
+
+function fragmentShader()  {
+  return `
+      uniform vec3 colorA; 
+      uniform vec3 colorB; 
+      varying vec3 vUv;
+
+      void main() {
+        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+      }
+  `;
+}
+
+let THREE;
+interpretate.shared.THREE.load().then(() => {
+  THREE = interpretate.shared.THREE.THREE;
+})
+
+core.CustomMaterial = async (args, env) => {
+  let uniforms = {
+    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
+    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+  }
+
+  return (function() {
+    return new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      fragmentShader: fragmentShader(),
+      vertexShader: vertexShader(),
+    });
+  })
+}
+
+
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now use it as if it was a normal `MeshMaterial`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now use it as if it was a normal `MeshMaterial`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{
+   MeshMaterial[MeshToonMaterial[]],
+  Translate[PolyhedronData["Dodecahedron"][[1]]//N , {-2,0,0}],
+  MeshMaterial[CustomMaterial[]],
+  Translate[PolyhedronData["Dodecahedron"][[1]]//N , {2,0,0}]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["6ad5b48f-9dc6-4904-80d0-a703e1fdfb22"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmyWmmCaZWKTpWqYkm+maWBqY6FoYpBjoJpobGKcapqWkJRkZAQCH6BXR"*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 6ad5b48f-9dc6-4904-80d0-a703e1fdfb22
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics3D[{MeshMaterial[MeshToonMaterial[]], Translate[GraphicsComplex[{{-1.3763819204711736, 0, 0.2628655560595668}, {1.3763819204711736, 0, -0.26286555605956685}, {-0.42532540417601994, -1.3090169943749475, 0.2628655560595668}, {-0.42532540417601994, 1.3090169943749475, 0.2628655560595668}, {1.1135163644116066, -0.8090169943749475, 0.2628655560595668}, {1.1135163644116066, 0.8090169943749475, 0.2628655560595668}, {-0.26286555605956685, -0.8090169943749475, 1.1135163644116066}, {-0.26286555605956685, 0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, -1.1135163644116066}, {0.6881909602355868, -0.5, 1.1135163644116066}, {0.6881909602355868, 0.5, 1.1135163644116066}, {0.85065080835204, 0, -1.1135163644116066}, {-1.1135163644116066, -0.8090169943749475, -0.26286555605956685}, {-1.1135163644116066, 0.8090169943749475, -0.26286555605956685}, {-0.8506508083520399, 0, 1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, -1.1135163644116066}, {0.42532540417601994, -1.3090169943749475, -0.26286555605956685}, {0.42532540417601994, 1.3090169943749475, -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 16, 1, 14}, {16, 8, 4, 15, 1}}]], {-2, 0, 0}], MeshMaterial[CustomMaterial[]], Translate[GraphicsComplex[{{-1.3763819204711736, 0, 0.2628655560595668}, {1.3763819204711736, 0, -0.26286555605956685}, {-0.42532540417601994, -1.3090169943749475, 0.2628655560595668}, {-0.42532540417601994, 1.3090169943749475, 0.2628655560595668}, {1.1135163644116066, -0.8090169943749475, 0.2628655560595668}, {1.1135163644116066, 0.8090169943749475, 0.2628655560595668}, {-0.26286555605956685, -0.8090169943749475, 1.1135163644116066}, {-0.26286555605956685, 0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, -1.1135163644116066}, {0.6881909602355868, -0.5, 1.1135163644116066}, {0.6881909602355868, 0.5, 1.1135163644116066}, {0.85065080835204, 0, -1.1135163644116066}, {-1.1135163644116066, -0.8090169943749475, -0.26286555605956685}, {-1.1135163644116066, 0.8090169943749475, -0.26286555605956685}, {-0.8506508083520399, 0, 1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, -1.1135163644116066}, {0.42532540417601994, -1.3090169943749475, -0.26286555605956685}, {0.42532540417601994, 1.3090169943749475, -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 16, 1, 14}, {16, 8, 4, 15, 1}}]], {2, 0, 0}]}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

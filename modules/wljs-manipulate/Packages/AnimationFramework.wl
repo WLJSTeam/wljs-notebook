@@ -423,6 +423,7 @@ initScene[scene_] := Module[{opts},
   scene["Options"] = (#->scene[#]) &/@ Complement[scene["Properties"], {"Icon","Init","PublicFields", "Self", "Properties"}] // Association;
   scene["Children"] = {};
   scene["TimeMarkers"] = <||>;
+  scene["Logs"] = {};
 
   scene["AbsoluteTime"] = AbsoluteTime;
 
@@ -507,7 +508,8 @@ System`WLXForm;
 
 Scene /: MakeBoxes[s_Scene, form: StandardForm | WLXForm] := With[{w = CurrentWindow[], tick = Unique["af"], uid = CreateUUID[]},
   s["Window"] = w;
-  
+  s["MountedQ"] = False;
+
   With[{
     epilog = Join[s["Options"]["Epilog"], {
       AnimationFrameListener[tick // Offload, "Event"->uid, "Timeout"->300]
@@ -515,21 +517,25 @@ Scene /: MakeBoxes[s_Scene, form: StandardForm | WLXForm] := With[{w = CurrentWi
   },
 
     EventHandler[uid, Function[Null,
-      With[{w = CurrentWindow[]},
-        If[s["Window"] =!= w,
-          s["Window"] = w;
-        ];
-      ];
-      s["FrameHandler"][AbsoluteTime[]];
+      
+      If[!s["MountedQ"], With[{w = CurrentWindow[]},
+        s["Window"] = w;
+        s["MountedQ"] = True;
+        EventHandler[w, {"Closed" -> Function[Null,
+          s["MountedQ"] = False;
+        ]}];
+      ] ];
+
+      s["FrameHandler"][AbsoluteTime[] ];
       tick = 1;
-    ]];
+    ] ];
 
     tick = 1;
   
     With[{
       g = Graphics[{
         s["GlobalDirectives"], s["Ref"]
-      }, "TransitionType"->None, "GUI"->False, Epilog->epilog, Sequence @@ Normal[KeyDrop[s["Options"], {"Epilog"}]]]
+      }, "TransitionType"->None, "GUI"->False, Epilog->epilog, Sequence @@ Normal[KeyDrop[s["Options"], {"Epilog"}] ] ]
     },
       MakeBoxes[g, form]
     ]
@@ -795,7 +801,7 @@ AnimationFramework`AddTo[s_Scene, feature_, variables_] := With[{
 
     FrontSubmit[e["Group"][
       f
-    ], s["Ref"], "Window"->s["Window"]]
+    ], s["Ref"], "Window"->s["Window"] ]
   ];
   e
 ]

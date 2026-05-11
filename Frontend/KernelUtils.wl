@@ -9,6 +9,8 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelUtils`", {
   "CoffeeLiqueur`Misc`WLJS`Transport`"
 }];
 
+deinitializeKernel; 
+initializeKernel;
 
 
 Begin["`Internal`"];
@@ -22,32 +24,27 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 initializeKernel[parameters_][kernel_] := With[{
   wsPort = parameters["env", "ws2"], 
-  spinner = Notifications`Spinner["Topic"->"Initialization of the Kernel", "Body"->"Please, wait"]
+  hash = kernel["Hash"],
+  spinner = Notifications`Spinner["Topic"->"Initialization of the Kernel", "Body"->"Please, wait"],
+  paths = {FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}
 },
   Print["Init Kernel!!!"];
-  EventFire[kernel, spinner, Null];
+  EventFire[kernel, spinner, Null];  
 
-  
-
-  (* load kernels and provide remote path *)
-  With[{
-    path = ToString[URLBuild[<|"Scheme" -> "http", 	"Query"->{"path" -> URLEncode[ FileNameSplit[#][[1]] ]}, "Domain" -> (StringTemplate["``:``"][With[{h =  parameters["env", "host"]}, If[h === "0.0.0.0", "127.0.0.1", h] ], parameters["env", "http"] ]), "Path" -> "downloadFile/"|> ], InputForm],
-    p = Import[#, "String", Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}]
+  (* load to evaluation kernel *)
+  With[{files = With[{
+    filename = #
   },
-    Echo[StringJoin["Loading into Kernel... ", #] ];
+    Echo[StringJoin["Loading to Evaluation Kernel... ", #] ];
+    filename
+  ] &/@ WLJSPackages`Includes["kernel"]},
+    GenericKernel`Send[kernel, Get[#, Path->paths]&/@files // Quiet;];
+  ];
 
-
-    
-    With[{processed = StringReplace[p, "$RemotePackageDirectory" -> ("Internal`RemoteFS["<>path<>"]")]},
-      GenericKernel`Async[kernel,  ImportString[processed, "WL"] ](*`*);
-    ];
-
-  ] &/@ WLJSPackages`Includes["kernel"];
+  (* GenericKernel`SendAsync[kernel, 1]; *)
 
   Echo["Starting WS link"];
   wsStartListerning[kernel,  wsPort, parameters["env", "host"] ];
-
-  
 
   kernel["WebSocket"] = wsPort;
 
@@ -56,9 +53,9 @@ initializeKernel[parameters_][kernel_] := With[{
 
   kernel["State"] = "Initialized";
 
-  With[{hash = kernel["Hash"], s = spinner["Promise"] // First},
-    GenericKernel`Init[kernel,  EventFire[Internal`Kernel`Stdout[ hash ], "State", "Initialized" ]; ];
-    GenericKernel`Init[kernel,  EventFire[Internal`Kernel`Stdout[ s ], Resolve, True ]; ];
+  With[{s = spinner["Promise"] // First},
+    GenericKernel`Send[kernel,  EventFire[Internal`Kernel`RemoteEvent[ hash ], "State", "Initialized" ]; ];
+    GenericKernel`Send[kernel,  EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, True ]; ];
   ];
 ]
 
@@ -71,7 +68,7 @@ deinitializeKernel[kernel_] := With[{},
 
 wsStartListerning[kernel_, port_, host_] := With[{},
     
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
         System`$DefaultSerializer = ExportByteArray[#, "ExpressionJSON"]&;
         Module[{Internal`Kernel`wcp, Internal`Kernel`ws},
@@ -114,4 +111,3 @@ End[];
 
 EndPackage[];
 
-{CoffeeLiqueur`Notebook`KernelUtils`Internal`deinitializeKernel, CoffeeLiqueur`Notebook`KernelUtils`Internal`initializeKernel}

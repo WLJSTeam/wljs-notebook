@@ -77,6 +77,17 @@ App[request_] := Module[{client, channel, target}, With[{
             </div> 
           </div>
         </div>
+        <script type="module">
+            if (window.electronAPI) {
+                electronAPI.onReloadFrame((ev, url) => {
+                    const iframe = document.querySelector('iframe');
+
+                    if (iframe) {
+                      iframe.contentWindow.location.replace(url);
+                    }
+                })
+            }
+        </script>
         </body>
     </html>
 } // StringRiffle

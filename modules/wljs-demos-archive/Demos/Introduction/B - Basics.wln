@@ -1,628 +1,716 @@
-<|"Notebook" -> <|"Controller" -> "769f2b27-f70b-4cbc-87ba-8af8e7687105", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2220], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "9ab0c0f3-e3fd-4be1-840d-8ff1dcae0f17", "Objects" -> <||>, 
-   "Path" -> "/users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Introduction/B - Basics.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Introduction to Wolfram Language", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2221]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Pattern Matching and Transformation Rules", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2221]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Advanced Pattern Matching", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2229]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Assignment: Set vs SetDelayed", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2239]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Functions and Functional Programming", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2258]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Pure (anonymous) functions:", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2283]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Introduction to Wolfram Language\nLet's \
-explore the fundamental concepts with practical examples.\n\n<br/>\n\n## \
-Pattern Matching and Transformation Rules\nPattern matching is at the heart \
-of Wolfram Language. Let's start with a simple example:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "de08d580-a4f3-4895-a438-45e5535362b8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "# Introduction to Wolfram Language\nLet's explore the \
-fundamental concepts with practical examples.\n\n<br />\n\n## Pattern \
-Matching and Transformation Rules\nPattern matching is at the heart of \
-Wolfram Language. Let's start with a simple example:", 
-    "Display" -> "markdown", "Hash" -> 
-     "3de648f0-058d-4f5e-aaa8-53800f25fd96", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{1,1,2,2,2,2} /. {2 -> 1, 1 -> 0}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5f0937b7-e538-451a-ad54-2fa5caf1e505", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{0,0,1,1,1,1}", "Display" -> "codemirror", 
-    "Hash" -> "6a060499-193a-4bc9-a3e5-b065d4e114ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nInteger numbers are atoms of the language on which we \
-can apply transformation rules. We can also use more general patterns:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "210cca59-d3af-4cf7-b92a-8a2ba1b1beb4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Integer numbers are atoms of the language on which we can \
-apply transformation rules. We can also use more general patterns:", 
-    "Display" -> "markdown", "Hash" -> 
-     "e30e80c0-a824-4df4-a33f-dcf6d8ef724c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{0,0,1,1,1,1} /. {any_Integer :> any / 2}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7f0e7274-16c6-4529-9758-cf50538ab5d2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{0,0,(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)\
-(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB\
-*)}", "Display" -> "codemirror", "Hash" -> 
-     "fd0a7c2e-f38f-4903-b68d-872d32232580", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nAny output expression is editable and can be \
-reevaluated.\n\n## Advanced Pattern Matching\nPattern matching can use \
-conditions and more complex structures:", "Display" -> "codemirror", 
-    "Hash" -> "4c81a37a-1ecb-4ec0-8b23-033b1c98482d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Any output expression is editable and can be \
-reevaluated.\n\n## Advanced Pattern Matching\nPattern matching can use \
-conditions and more complex structures:", "Display" -> "markdown", 
-    "Hash" -> "e385cf0e-7eaf-464f-a33a-b1f82c9cf84c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{0,0,(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)\
-(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB\
-*)} /. {\n  any_?NumericQ :> {RGBColor[any, 1-any, 1], any}\n}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "86c130be-e6c4-4e90-99f8-a3edc9ed0a33", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{{(*VB[*)(RGBColor[0, 1, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYoACKOODPZwBANmdEHU=\"*)(*]VB*),0},{(*VB[*)(RGBColor[0, 1, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYoACKOODPZwBANmdEHU=\"*)(*]VB*),0},{(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB\
-[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB\
-[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB\
-[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)}}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "330d88e5-835a-4c94-acee-068c385073b6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nAs you can see, Wolfram Language does not distinguish \
-between data types. Colors, numbers, functions\[LongDash]they are all just \
-symbolic expressions.\n\nYou can also format output for readability:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ee649a44-20a1-42ee-96ac-fa11fbd746e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "As you can see, Wolfram Language does not distinguish between \
-data types. Colors, numbers, functions\[LongDash]they are all just symbolic \
-expressions.\n\nYou can also format output for readability:", 
-    "Display" -> "markdown", "Hash" -> 
-     "4c10d6a9-97d5-4330-8ef4-ff6a54a721e1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "% // Transpose // TableForm", "Display" -> "codemirror", 
-    "Hash" -> "cc11a2c9-5256-4a2e-9ac1-ddf57cb4f4e8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(*GB[*){{(*VB[*)(RGBColor[0, 1, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYoACKOODPZwBANmdEHU=\"*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[0, 1, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYoACKOODPZwBANmdEHU=\"*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, \
-1])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7\
-PyS8qYgCDB/bojA/2AO8aEYQ=\"*)(*]VB*)}(*||*),(*||*){0(*|*),(*|*)0(*|*),(*|*)(*\
-FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*\
-|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2\
-))(*]FB*)}}(*]GB*)", "Display" -> "codemirror", 
-    "Hash" -> "1d3bfd4a-dc15-43f1-a3f2-af0e13bc32e3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n:::tip\nUse `%` symbol to take the last evaluated \
-expression in the session\n:::", "Display" -> "codemirror", 
-    "Hash" -> "7ed22eed-6cce-4a51-9afc-a59d6db66dd8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ":::tip\nUse `%` symbol to take the last evaluated expression \
-in the session\n:::", "Display" -> "markdown", 
-    "Hash" -> "3d8d8dd7-33af-4a4e-b2da-48ab805199f2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n### Assignment: Set vs SetDelayed\nUnderstanding the \
-difference between immediate (`=`) and delayed (`:=`) assignment is crucial:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "ec880199-3227-4735-b0a8-9e83477e80de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "### Assignment: Set vs SetDelayed\nUnderstanding the \
-difference between immediate (`=`) and delayed (`:=`) assignment is crucial:"\
-, "Display" -> "markdown", "Hash" -> "49fb36cb-595d-478d-8b79-33c4eb37ee34", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(* Immediate assignment (Set) - evaluates right side \
-immediately *)\nx = RandomReal[];", "Display" -> "codemirror", 
-    "Hash" -> "99ea8973-4b76-45d2-9e6b-d6c53c6ec1c6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "x", "Display" -> "codemirror", 
-    "Hash" -> "af6b248e-347c-4fd9-af90-cd4fc9377914", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "0.8459659909775918`", "Display" -> "codemirror", 
-    "Hash" -> "8d4fa07e-567d-4645-bf98-2d8e866c3c09", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "x  (* Returns the same value every time *)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c3b7d355-faaa-47df-bc82-dcdfe86c760d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "0.8459659909775918`", "Display" -> "codemirror", 
-    "Hash" -> "8f918c55-56d3-4dc5-8f9d-4e57da1bcd25", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> 
-     ".md\nDelayed assignment (SetDelayed) - evaluates right side each time", 
-    "Display" -> "codemirror", "Hash" -> 
-     "19f52b22-a92a-4a86-b5b7-f9c198f66f6a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> 
-     "Delayed assignment (SetDelayed) - evaluates right side each time", 
-    "Display" -> "markdown", "Hash" -> 
-     "45c179ee-1ead-44f6-9f8e-678fa9b41d7c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "y := RandomReal[]", "Display" -> "codemirror", 
-    "Hash" -> "345b1a95-8849-4e0d-b87f-7ceb61af4879", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "y", "Display" -> "codemirror", 
-    "Hash" -> "4017c105-a613-42fe-9920-dc4739cc6340", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "0.47606362580960226`", "Display" -> "codemirror", 
-    "Hash" -> "06313a53-d562-4b70-837b-2fd9b1c6b7c7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "y", "Display" -> "codemirror", 
-    "Hash" -> "cdbb8c3b-6550-4ff5-956b-6baa062716a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "0.7745051982976601`", "Display" -> "codemirror", 
-    "Hash" -> "56daf15e-3221-4f89-9d1e-d22bbd819e87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nPractical example showing when to use each:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "85ecbeda-6005-495e-810d-666a0e76082a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Practical example showing when to use each:", 
-    "Display" -> "markdown", "Hash" -> 
-     "20b1b1f6-b0e5-46f9-8f5a-c77d05828067", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "expensiveResult = Factor[x^100 - 1]\n(* Result is computed \
-once and stored *)\n\n(* Use := when you want fresh evaluation each time \
-*)\ncurrentTime := Now\n(* Evaluates Now each time you call currentTime \
-*)\n\n(* Common pattern: memoization *)\nfib[n_] := fib[n] = fib[n-1] + \
-fib[n-2]\nfib[0] = 0\nfib[1] = 1", "Display" -> "codemirror", 
-    "Hash" -> "2a4e3e46-b6d2-477f-bc5e-546651a7a7a1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n:::warning\nUsing `=` instead of `:=` in function \
-definitions can lead to unexpected behavior:\n\n<br/>\n\n<pre>\n(* Wrong - \
-evaluates pattern immediately *)\nf[x_] = x^2  (\\* x_ is evaluated at \
-definition time! *)\n\n(* Correct - delays evaluation until function is \
-called *)\nf[x_] := x^2\n</pre>\n\n:::", "Display" -> "codemirror", 
-    "Hash" -> "db8e8eba-c7f8-4119-ac9a-e2232af450ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ":::warning\nUsing `=` instead of `:=` in function definitions \
-can lead to unexpected behavior:\n\n<br /><pre >(* Wrong - evaluates pattern \
-immediately *)\nf[x_] = x^2  (\\* x_ is evaluated at definition time! \
-*)\n\n(* Correct - delays evaluation until function is called *)\nf[x_] := \
-x^2\n</pre>\n\n:::", "Display" -> "markdown", 
-    "Hash" -> "1903e579-f089-47c3-ae41-5921b7a2406f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n### Functions and Functional Programming\nWolfram \
-Language treats functions as first-class citizens. There are several ways to \
-define functions:\n\n__Pattern-based functions__ (most common and powerful):"\
-, "Display" -> "codemirror", "Hash" -> 
-     "a740caef-2eb5-435f-9907-fd0debea8274", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "### Functions and Functional Programming\nWolfram Language \
-treats functions as first-class citizens. There are several ways to define \
-functions:\n\n__Pattern-based functions__ (most common and powerful):", 
-    "Display" -> "markdown", "Hash" -> 
-     "cc799a72-0942-49c0-b15c-40368036db75", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "f[x_] := x^2 + 2*x + 1\nf[2]", "Display" -> "codemirror", 
-    "Hash" -> "c0212748-eca3-4754-a28a-d1ac69b4d35a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "9", "Display" -> "codemirror", 
-    "Hash" -> "171be279-1be9-4427-b397-6592994b99aa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nMultiple arguments:", "Display" -> "codemirror", 
-    "Hash" -> "d262c6b0-97ab-4ecd-905d-68ec95e2814b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Multiple arguments:", "Display" -> "markdown", 
-    "Hash" -> "c1be0d72-11d6-4140-9b67-16bf07b015a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "area[width_, height_] := width * height\narea[2,3]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "adc4ac80-b0d0-4070-af64-499fd6516b22", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "6", "Display" -> "codemirror", 
-    "Hash" -> "02bef8a3-f6d0-45b7-836a-b7283fa05a5b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nPattern with type restriction:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "61750438-ada7-489e-9ed2-85a9409432bf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Pattern with type restriction:", "Display" -> "markdown", 
-    "Hash" -> "ddc45cad-d668-43a0-a118-4f6bed74a92c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "squareRoot[x_?Positive] := Sqrt[x]\nsquareRoot[x_?Negative] \
-:= I * Sqrt[-x]\n\nsquareRoot[2]\nsquareRoot[-2]", "Display" -> "codemirror", 
-    "Hash" -> "3f85087b-f750-47da-be99-4a8424914d24", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(*SqB[*)Sqrt[2](*]SqB*)", "Display" -> "codemirror", 
-    "Hash" -> "28597a38-726a-49f2-ad4e-e6f3474572b6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "I ((*SqB[*)Sqrt[2](*]SqB*))", "Display" -> "codemirror", 
-    "Hash" -> "0ccd91aa-874c-4d7a-913b-9765eb9af4d2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nMultiple definitions (pattern matching):", 
-    "Display" -> "codemirror", "Hash" -> 
-     "046e83de-e52e-445e-98d5-f8e26bf1a1d7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Multiple definitions (pattern matching):", 
-    "Display" -> "markdown", "Hash" -> 
-     "8795c5b8-56dd-4c01-9108-3b2adb3e179e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "factorial[0] = 1;\nfactorial[n_Integer?Positive] := n * \
-factorial[n - 1];\n\nfactorial[4]", "Display" -> "codemirror", 
-    "Hash" -> "f7f4912b-ea32-4e80-ad32-00f3d956cd0d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "24", "Display" -> "codemirror", 
-    "Hash" -> "d2c9366e-1ab8-414e-b6c1-26bdce3781f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nConditions with `/;`", "Display" -> "codemirror", 
-    "Hash" -> "c302436a-2291-4b2e-90c2-ab2f61fd9091", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Conditions with `/;`", "Display" -> "markdown", 
-    "Hash" -> "0ba7c2e5-9460-4d84-b82c-4172a27c7a85", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "absoluteValue[x_] := x /; x >= 0\nabsoluteValue[x_] := -x /; \
-x < 0\n\nabsoluteValue[-1]", "Display" -> "codemirror", 
-    "Hash" -> "0d38310e-b690-4afb-a950-13018302021d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "1", "Display" -> "codemirror", 
-    "Hash" -> "7c335a59-73a9-45cd-8b91-382264b90970", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nWrong pattern will return unevaluated expression:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6b0ee3de-9e8d-41d3-8f28-fef9ee20e679", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Wrong pattern will return unevaluated expression:", 
-    "Display" -> "markdown", "Hash" -> 
-     "e2bb87f2-47f1-4399-ba29-5ad8bd4e76da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "absoluteValue[-I]", "Display" -> "codemirror", 
-    "Hash" -> "bafc88dc-04e1-4034-a5a1-58580df14d85", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "absoluteValue[-I]", "Display" -> "codemirror", 
-    "Hash" -> "2874db7f-209d-4dec-9189-3bc0b8e149f6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n### Pure (anonymous) functions:\n\n> great for quick \
-operations, since it can take advantage of JIT when applied using `Map`, \
-`Table` and etc", "Display" -> "codemirror", 
-    "Hash" -> "c580e518-b881-40db-99a5-02d4c7c09cd4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "### Pure (anonymous) functions:\n\n> great for quick \
-operations, since it can take advantage of JIT when applied using `Map`, \
-`Table` and etc", "Display" -> "markdown", 
-    "Hash" -> "08a402bb-9cfa-4eb2-bffc-484a5493aa72", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nSingle and multiple argument:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6b48d664-54d7-4e8f-9616-e87a89df92d1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Single and multiple argument:", "Display" -> "markdown", 
-    "Hash" -> "c7d5d091-cba3-461a-8e04-704683a72484", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(* Single argument with # *)\n(#^2 + 2*# + 1 &)[2]\n\n(* \
-Multiple arguments with #1, #2, etc. *)\n((#1 + #2)/#3 &)[1,2,3]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "07d4ee76-cbdc-4e03-b241-a34c0612f2de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "9", "Display" -> "codemirror", 
-    "Hash" -> "804c9056-1d89-49ef-9d3b-353e11bb3de2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "1", "Display" -> "codemirror", 
-    "Hash" -> "7971c601-af65-41b8-b78b-568afb9e8d10", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nNamed slots:", "Display" -> "codemirror", 
-    "Hash" -> "01707519-8962-4294-aa4d-1b792d370ad6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Named slots:", "Display" -> "markdown", 
-    "Hash" -> "8800d5f2-3b55-4b5f-9e71-68c7d87bf1f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> 
-     "Function[{x}, x^2 + 2*x + 1][2]\nFunction[{x, y}, x^2 + y^2][1,2]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "89d98384-f0d1-4d18-82c5-e30a95b76a9b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "9", "Display" -> "codemirror", 
-    "Hash" -> "a7495491-d365-4263-8afa-593c4958668c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "5", "Display" -> "codemirror", 
-    "Hash" -> "c6c2571e-9711-4c76-b738-c3a698687496", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nApply it to a list (the fastest way):", 
-    "Display" -> "codemirror", "Hash" -> 
-     "481a988a-5883-42ca-abbf-14fd0cfb8f2d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Apply it to a list (the fastest way):", 
-    "Display" -> "markdown", "Hash" -> 
-     "690419a6-c8b7-478f-8350-b6fb97b6f12e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{1, 2, 3} // Map[#^2 &]", "Display" -> "codemirror", 
-    "Hash" -> "c22da7a1-8518-4387-9cda-afd5e5e63952", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{1,4,9}", "Display" -> "codemirror", 
-    "Hash" -> "6ae23a09-2c1f-4fc9-8018-c92d0322c6a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\n\n__When to use each:__\n\n- Pattern-based: Named \
-functions, recursion, multiple dispatch, complex conditions\n- Anonymous: \
-One-off transformations, quick and simple operations in `Map` / `Select` / \
-etc.", "Display" -> "codemirror", "Hash" -> 
-     "3baf697c-461d-4c3e-83a6-63ecbcdaab23", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "\n__When to use each:__\n\n- Pattern-based: Named functions, \
-recursion, multiple dispatch, complex conditions\n- Anonymous: One-off \
-transformations, quick and simple operations in `Map` / `Select` / etc.", 
-    "Display" -> "markdown", "Hash" -> 
-     "c113a6b4-77c0-4b94-8200-8c30aa9022f3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(* Pattern-based for named, reusable functions \
-*)\ndistance[{x1_, y1_}, {x2_, y2_}] := Sqrt[(x2-x1)^2 + (y2-y1)^2]\n\n(* \
-Anonymous for inline transformations *)\ndata = {{1, 2}, {3, 4}, {5, \
-6}}\ndata // Map[{#[[1]], #[[2]]^2} &]", "Display" -> "codemirror", 
-    "Hash" -> "e7ed92f1-fbec-4015-9c66-253cc09b89d2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{{1,2},{3,4},{5,6}}", "Display" -> "codemirror", 
-    "Hash" -> "cb26ad10-1144-473a-aa59-253bb26b00d1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{{1,4},{3,16},{5,36}}", "Display" -> "codemirror", 
-    "Hash" -> "b32e0109-0439-46cc-8a2f-8d484498f34e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nUse functional operators to process data elegantly:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c6fdb404-f229-4d1d-a431-f07f4b00c824", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Use functional operators to process data elegantly:", 
-    "Display" -> "markdown", "Hash" -> 
-     "1580c319-e849-4725-b8a9-cb852b448751", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(* Select even numbers *)\nRange[20] // Select[EvenQ]\n\n(* \
-Chain multiple operations *)\nRange[100] // Select[PrimeQ] // Take[#, 5] &", 
-    "Display" -> "codemirror", "Hash" -> 
-     "08ee8c98-0c81-4edc-ac14-a57c013686bf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{2,4,6,8,10,12,14,16,18,20}", "Display" -> "codemirror", 
-    "Hash" -> "cd632431-3f02-479a-8675-3eaf1544d13b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "{2,3,5,7,11}", "Display" -> "codemirror", 
-    "Hash" -> "5e7f2739-80e3-42a0-b21d-fbe058448f0a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nNest and fold operations for iterative computations:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9d427f12-4ca9-4976-8e09-a664e416d974", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Nest and fold operations for iterative computations:", 
-    "Display" -> "markdown", "Hash" -> 
-     "32cb2600-ddfa-48da-8193-755621c1f708", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "(* Apply function repeatedly *)\nNest[# + 1 &, 0, 5]\n\n(* \
-Accumulate results *)\nFoldList[Plus, 0, {1, 2, 3, 4, 5}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cbf38b96-fbe6-4347-ad7b-24e0bf70a584", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> ".md\nClear the assigned variables:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a0b3de3b-d4cc-4958-955f-d7d4ca304872", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "Clear the assigned variables:", "Display" -> "markdown", 
-    "Hash" -> "9908d4c1-3512-4e24-b279-dc107a591c24", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>, 
-   <|"Data" -> "ClearAll[x,y]", "Display" -> "codemirror", 
-    "Hash" -> "ccc3eda4-4efe-4431-a3ad-8bb9082d372e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c6aade21-5176-4e12-8a1b-afaf12840873"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Introduction to Wolfram Language
+Let's explore the fundamental concepts with practical examples.
+
+<br/>
+
+## Pattern Matching and Transformation Rules
+Pattern matching is at the heart of Wolfram Language. Let's start with a simple example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Introduction to Wolfram Language
+Let's explore the fundamental concepts with practical examples.
+
+<br />
+
+## Pattern Matching and Transformation Rules
+Pattern matching is at the heart of Wolfram Language. Let's start with a simple example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{1,1,2,2,2,2} /. {2 -> 1, 1 -> 0}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{0,0,1,1,1,1}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Integer numbers are atoms of the language on which we can apply transformation rules. We can also use more general patterns:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Integer numbers are atoms of the language on which we can apply transformation rules. We can also use more general patterns:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{0,0,1,1,1,1} /. {any_Integer :> any / 2}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{0,0,(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Any output expression is editable and can be reevaluated.
+
+## Advanced Pattern Matching
+Pattern matching can use conditions and more complex structures:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Any output expression is editable and can be reevaluated.
+
+## Advanced Pattern Matching
+Pattern matching can use conditions and more complex structures:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{0,0,(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)} /. {
+  any_?NumericQ :> {RGBColor[any, 1-any, 1], any}
+}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{(*VB[*)(RGBColor[0, 1, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYoACKOODPZwBANmdEHU="*)(*]VB*),0},{(*VB[*)(RGBColor[0, 1, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYoACKOODPZwBANmdEHU="*)(*]VB*),0},{(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)},{(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*),(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As you can see, Wolfram Language does not distinguish between data types. Colors, numbers, functions--they are all just symbolic expressions.
+
+You can also format output for readability:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As you can see, Wolfram Language does not distinguish between data types. Colors, numbers, functions--they are all just symbolic expressions.
+
+You can also format output for readability:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+% // Transpose // TableForm
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{(*VB[*)(RGBColor[0, 1, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYoACKOODPZwBANmdEHU="*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[0, 1, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYoACKOODPZwBANmdEHU="*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*)(*|*),(*|*)(*VB[*)(RGBColor[1/2, 1/2, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDB/bojA/2AO8aEYQ="*)(*]VB*)}(*||*),(*||*){0(*|*),(*|*)0(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)(*|*),(*|*)(*FB[*)((1)(*,*)/(*,*)(2))(*]FB*)}}(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::tip
+Use `%` symbol to take the last evaluated expression in the session
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::tip
+Use `%` symbol to take the last evaluated expression in the session
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Assignment: Set vs SetDelayed
+Understanding the difference between immediate (`=`) and delayed (`:=`) assignment is crucial:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Assignment: Set vs SetDelayed
+Understanding the difference between immediate (`=`) and delayed (`:=`) assignment is crucial:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Immediate assignment (Set) - evaluates right side immediately *)
+x = RandomReal[];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+x
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+0.8459659909775918`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+x  (* Returns the same value every time *)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+0.8459659909775918`
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Delayed assignment (SetDelayed) - evaluates right side each time
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Delayed assignment (SetDelayed) - evaluates right side each time
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+y := RandomReal[]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+y
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+0.47606362580960226`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+y
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+0.7745051982976601`
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Practical example showing when to use each:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Practical example showing when to use each:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+expensiveResult = Factor[x^100 - 1]
+(* Result is computed once and stored *)
+
+(* Use := when you want fresh evaluation each time *)
+currentTime := Now
+(* Evaluates Now each time you call currentTime *)
+
+(* Common pattern: memoization *)
+fib[n_] := fib[n] = fib[n-1] + fib[n-2]
+fib[0] = 0
+fib[1] = 1
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::warning
+Using `=` instead of `:=` in function definitions can lead to unexpected behavior:
+
+<br/>
+
+<pre>
+(* Wrong - evaluates pattern immediately *)
+f[x_] = x^2  (\* x_ is evaluated at definition time! *)
+
+(* Correct - delays evaluation until function is called *)
+f[x_] := x^2
+</pre>
+
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::warning
+Using `=` instead of `:=` in function definitions can lead to unexpected behavior:
+
+<br /><pre >(* Wrong - evaluates pattern immediately *)
+f[x_] = x^2  (\* x_ is evaluated at definition time! *)
+
+(* Correct - delays evaluation until function is called *)
+f[x_] := x^2
+</pre>
+
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Functions and Functional Programming
+Wolfram Language treats functions as first-class citizens. There are several ways to define functions:
+
+__Pattern-based functions__ (most common and powerful):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Functions and Functional Programming
+Wolfram Language treats functions as first-class citizens. There are several ways to define functions:
+
+__Pattern-based functions__ (most common and powerful):
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+f[x_] := x^2 + 2*x + 1
+f[2]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+9
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Multiple arguments:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Multiple arguments:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+area[width_, height_] := width * height
+area[2,3]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+6
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Pattern with type restriction:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Pattern with type restriction:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+squareRoot[x_?Positive] := Sqrt[x]
+squareRoot[x_?Negative] := I * Sqrt[-x]
+
+squareRoot[2]
+squareRoot[-2]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*SqB[*)Sqrt[2](*]SqB*)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+I ((*SqB[*)Sqrt[2](*]SqB*))
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Multiple definitions (pattern matching):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Multiple definitions (pattern matching):
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+factorial[0] = 1;
+factorial[n_Integer?Positive] := n * factorial[n - 1];
+
+factorial[4]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+24
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Conditions with `/;`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Conditions with `/;`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+absoluteValue[x_] := x /; x >= 0
+absoluteValue[x_] := -x /; x < 0
+
+absoluteValue[-1]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+1
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Wrong pattern will return unevaluated expression:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Wrong pattern will return unevaluated expression:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+absoluteValue[-I]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+absoluteValue[-I]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Pure (anonymous) functions:
+
+> great for quick operations, since it can take advantage of JIT when applied using `Map`, `Table` and etc
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Pure (anonymous) functions:
+
+> great for quick operations, since it can take advantage of JIT when applied using `Map`, `Table` and etc
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Single and multiple argument:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Single and multiple argument:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Single argument with # *)
+(#^2 + 2*# + 1 &)[2]
+
+(* Multiple arguments with #1, #2, etc. *)
+((#1 + #2)/#3 &)[1,2,3]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+9
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+1
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Named slots:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Named slots:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Function[{x}, x^2 + 2*x + 1][2]
+Function[{x, y}, x^2 + y^2][1,2]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+9
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+5
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Apply it to a list (the fastest way):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Apply it to a list (the fastest way):
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{1, 2, 3} // Map[#^2 &]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1,4,9}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+__When to use each:__
+
+- Pattern-based: Named functions, recursion, multiple dispatch, complex conditions
+- Anonymous: One-off transformations, quick and simple operations in `Map` / `Select` / etc.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+__When to use each:__
+
+- Pattern-based: Named functions, recursion, multiple dispatch, complex conditions
+- Anonymous: One-off transformations, quick and simple operations in `Map` / `Select` / etc.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Pattern-based for named, reusable functions *)
+distance[{x1_, y1_}, {x2_, y2_}] := Sqrt[(x2-x1)^2 + (y2-y1)^2]
+
+(* Anonymous for inline transformations *)
+data = {{1, 2}, {3, 4}, {5, 6}}
+data // Map[{#[[1]], #[[2]]^2} &]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{1,2},{3,4},{5,6}}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{1,4},{3,16},{5,36}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use functional operators to process data elegantly:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use functional operators to process data elegantly:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Select even numbers *)
+Range[20] // Select[EvenQ]
+
+(* Chain multiple operations *)
+Range[100] // Select[PrimeQ] // Take[#, 5] &
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{2,4,6,8,10,12,14,16,18,20}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{2,3,5,7,11}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Nest and fold operations for iterative computations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Nest and fold operations for iterative computations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Apply function repeatedly *)
+Nest[# + 1 &, 0, 5]
+
+(* Accumulate results *)
+FoldList[Plus, 0, {1, 2, 3, 4, 5}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Clear the assigned variables:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Clear the assigned variables:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[x,y]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

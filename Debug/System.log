@@ -1,0 +1,1073 @@
+WLJS Notebooks
+Copyright (c) 2026 Coffee liqueur
+Licensed under the AGPLv3. See /LICENSE.md.
+
+This product bundles third-party FOSS. 
+Wolfram Engine is proprietary and distributed by Wolfram Research.
+
+
+Starting wolframscript by path: wolframscript
+
+Wolfram Language 14.3.0 Engine for Mac OS X ARM (64-bit)
+Copyright 1988-2025 Wolfram Research, Inc.
+
+
+In[1]:= 
+This project is not affiliated with, endorsed by, or sponsored by Wolfram\
+ 
+>   Research, Inc. Wolfram and Wolfram Language are trademarks of Wolfram\
+ 
+>   Research, Inc.
+
+>> WLJS Extensions >> Loaded >> wljs-api
+
+>> WLJS Extensions >> Loaded >> wljs-cells
+
+>> WLJS Extensions >> Loaded >> wljs-debugger
+
+>> WLJS Extensions >> Loaded >> wljs-demos-archive
+
+>> WLJS Extensions >> Loaded >> wljs-docs-archive
+
+>> WLJS Extensions >> Loaded >> wljs-editor
+
+>> WLJS Extensions >> Loaded >> wljs-excalidraw
+
+>> WLJS Extensions >> Loaded >> wljs-export-html
+
+>> WLJS Extensions >> Loaded >> wljs-graphics3d-threejs
+
+>> WLJS Extensions >> Loaded >> wljs-graphics-d3
+
+>> WLJS Extensions >> Loaded >> wljs-html-support
+
+>> WLJS Extensions >> Loaded >> wljs-inputs
+
+>> WLJS Extensions >> Loaded >> wljs-interpreter
+
+>> WLJS Extensions >> Loaded >> wljs-js-support
+
+>> WLJS Extensions >> Loaded >> wljs-magic-support
+
+>> WLJS Extensions >> Loaded >> wljs-manipulate
+
+>> WLJS Extensions >> Loaded >> wljs-markdown-support
+
+>> WLJS Extensions >> Loaded >> wljs-mermaid-support
+
+>> WLJS Extensions >> Loaded >> wljs-neuralnet
+
+>> WLJS Extensions >> Loaded >> wljs-plotly
+
+>> WLJS Extensions >> Loaded >> wljs-print-redirect-fix
+
+>> WLJS Extensions >> Loaded >> wljs-revealjs
+
+>> WLJS Extensions >> Loaded >> wljs-sharedlib-d3
+
+>> WLJS Extensions >> Loaded >> wljs-sharedlib-mk
+
+>> WLJS Extensions >> Loaded >> wljs-sharedlib-three
+
+>> WLJS Extensions >> Loaded >> wljs-snippets
+
+>> WLJS Extensions >> Loaded >> wljs-sound
+
+>> WLJS Extensions >> Loaded >> wljs-templates
+
+>> WLJS Extensions >> Loaded >> wljs-toc
+
+>> WLJS Extensions >> Loaded >> wljs-video
+
+>> WLJS Extensions >> Loaded >> wljs-wlx-support
+
+>> WLJS Extensions >> Loaded >> wljs-wxf-accelerator
+
+>> WLJS Extensions >> Loaded >> wljs-xterm
+
+WLJS Notebook does not collect or transmit your data unless you explicitly\
+ 
+>   choose a feature that needs the network.
+
+>> CSockets >> Unix >> MacOSX-ARM64
+>> CSockets >> Unix >> Loading UV library...
+
+>> CSockets >> Unix >> Loading library... LLink 7
+
+>> CSockets >> Unix >> Succesfully loaded! LLink 
+
+Caching is enabled for 1 hour! Type\
+ 
+>   CoffeeLiqueur`WLX`Importer`Private`CacheControl[False] to disable it
+
+>> Checking version of WLJS Notebook ...
+>> 3.0.4
+>> Default paths:
+>> >> QuickNotesDir:\
+ 
+>    /private/var/folders/fs/ch7ddlhn7jz5vyg5k8bbrxyh0000gn/T/wljs_quicknotes
+>> >> BackupsDir:\
+ 
+>    /private/var/folders/fs/ch7ddlhn7jz5vyg5k8bbrxyh0000gn/T/wljs_backups
+>> >> DefaultDocumentsDir: /Users/kirill/Documents/WLJS Notebooks
+>> >> DemosDir: /Users/kirill/Documents/WLJS Notebooks/Demos
+>> >> ExtensionsDir: /Users/kirill/Documents/WLJS Notebooks/Extensions
+>> >> AppDataDir: /Users/kirill/Github/wolfram-js-frontend
+>> >> AppConfig: /Users/kirill/Github/wolfram-js-frontend/_settings.wl
+
+>> >> Root: /Users/kirill/Github/wolfram-js-frontend
+
+>> WLJS Extensions >> Loaded >> wljs-plugin-example-1
+
+>> 
+
+   We are looking for funding ❤️  https://wljs.io/frontend/Support
+
+
+>> 
+
+
+
+Initializing WordData indices ....
+
+>> WLJS Extensions >> Sync deferred packages >> FrontProxy.wl
+
+>> WLJS Extensions >> Sync deferred packages >> BoxesConverter.wl
+
+>> WLJS Extensions >> Sync deferred packages >> WSP.wl
+
+>> WLJS Extensions >> Sync deferred packages >> Canvas2D.wl
+
+>> WLJS Extensions >> Sync deferred packages >> VFX.wl
+
+>> WLJS Extensions >> Sync deferred packages >> AnimationFramework
+
+>> WLJS Extensions >> Sync deferred packages >> AnimationFramework.wl
+
+Staring HTTP server...
+
+>> Loading packages: FRONTEND
+>> Definitions.wl
+
+>> FrontendObject.wl
+
+>> Editor.wl
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> FrontendObjectSync.wl
+
+>> SetDirectory.wl
+
+>> RemoteCells.wl
+
+>> FrontSubmit.wl
+
+>> Store.wl
+
+>> Notifications.wl
+
+>> Autocomplete.wl
+
+>> ContextMenu.wl
+
+>> FileUpload.wl
+
+>> FrontendRuntime.wl
+
+>> FileEditor.wl
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Evaluator >> Added new
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+>> README.wl
+
+>> Frontend.wl
+
+>> Note: wljs-docs-archive only redirects to a web page since 2.8.1
+
+>> Frontend.wl
+
+>> Snippets >> Library loading...
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/b\
+ 
+>    eautify.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/b\
+ 
+>    ull.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/c\
+ 
+>    amera.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/c\
+ 
+>    opy.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/d\
+ 
+>    atascii.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/e\
+ 
+>    scape.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/f\
+ 
+>    indincells.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/f\
+ 
+>    ormatter.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/i\
+ 
+>    magecrop.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/m\
+ 
+>    atrix.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/m\
+ 
+>    em.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/n\
+ 
+>    otebookdir.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/p\
+ 
+>    lacement-joystick.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/p\
+ 
+>    lacement-slider.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/p\
+ 
+>    lacement.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/r\
+ 
+>    ecord.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/s\
+ 
+>    howopts.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/s\
+ 
+>    pecialchars.wln
+
+>> Snippets >> Deserialize notebook >>\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/library/t\
+ 
+>    extformat.wln
+
+>> Snippets >> Deserialize notebook >> /Users/kirill/Documents/WLJS\
+ 
+>    Notebooks/User palette/shortcuts.wln
+
+>> HTTPUHandler[CoffeeLiqueur`HTTPHandler`HTTPUHandler`$12]
+
+>> Snippets >> AI loading...
+
+
+StringRiffle::list: List expected at position 1 in StringRiffle[ulStyles].
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+>> Found black boxes: 
+
+>> {/Users/kirill/Github/wolfram-js-frontend/modules/wljs-export-html/Dynamic\
+ 
+>     sTools/BlackBoxes/AnimationMachine.wl, 
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-export-html/Dynami\
+ 
+>     csTools/BlackBoxes/PavlovMachine.wl, 
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-export-html/Dynami\
+ 
+>     csTools/BlackBoxes/StateMachine.wl, 
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-export-html/Dynami\
+ 
+>     csTools/BlackBoxes/WidgetStateMachine.wl}
+
+>> BlackBox :: AnimationMachine
+
+>> BlackBox :: PavlovMachine
+
+>> BlackBox :: StateMachine
+
+>> BlackBox :: WidgetStateMachine
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+>> Frontend.wl
+
+hash >> allocate 4781876288 with offset 0
+hash >> 16155
+hash >> ok!
+opened on socket 1
+LISTEN uintptr_t at 1
+server: 1
+creating async task...
+Staring WS/HTTP server...
+
+
+Hee uvTask: 1
+
+Event-Loop started! 
+hash >> allocate 5270577424 with offset 0
+hash >> 11027
+hash >> ok!
+opened on socket 2
+LISTEN uintptr_t at 2
+server: 2
+>> Downloads module was attached
+
+>> Notifications >> Created spinner notifications type
+
+>> Notifications >> Created custom notifications type
+
+Protocol Loaded!
+
+Settings Loaded!
+
+Window Loaded!
+
+Prompt window Loaded!
+
+App Loaded!
+Autolaunch!
+
+>> >> Starting local LTP server ...
+
+>> LocalKernel >> Starting using path: "/Applications/Wolfram\
+ 
+>    Engine.app/Contents/Resources/Wolfram\
+ 
+>    Player.app/Contents/MacOS/WolframKernel" -wstp
+
+CoffeeLiqueur`Notebook`LocalKernel`Private`LocalKernelObject[CoffeeLiqueur`No\
+ 
+>    tebook`LocalKernel`Private`LocalKernelObject`$315]
+
+Done?
+
+Iframe app Loaded!
+
+App Loaded!
+
+Open http://127.0.0.1:20560 in your browser
+
+New connection for 3
+hash >> allocate 5586853264 with offset 0
+hash >> 2742
+hash >> ok!
+uv start readingbroadcast NewClient state!
+# Loading by path : 
+/Users/kirill/Documents/WLJS Notebooks
+
+Load settings one more time
+
+>> SHORT!
+
+
+OptionValue::optnf: 
+   Option name AppEvent not found in defaults for Component$41880.
+
+Default router
+
+>> InputNamePacket[In[1]:= ]
+
+>> ReturnPacket[0]
+
+New connection for 4
+hash >> allocate 5241181440 with offset 0
+hash >> 13166
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> ReturnPacket[Null]
+
+>> ReturnPacket[/Users/kirill/Github/wolfram-js-frontend]
+
+>> ReturnPacket[/Users/kirill/Github/wolfram-js-frontend]
+
+>> ReturnPacket[{/Users/kirill/Github/wolfram-js-frontend}]
+
+>> ReturnPacket[{/Users/kirill/Github/wolfram-js-frontend, 
+ 
+>     /Users/kirill/Github/wolfram-js-frontend/Packages}]
+
+>> Demos >> nothing to do. Up to date
+
+>> InputNamePacket[In[2]:= ]
+
+>> InputNamePacket[In[3]:= ]
+
+>> InputNamePacket[In[4]:= ]
+
+>> InputNamePacket[In[5]:= ]
+
+>> InputNamePacket[In[6]:= ]
+
+>> InputNamePacket[In[7]:= ]
+
+>> InputNamePacket[In[8]:= ]
+
+>> InputNamePacket[In[9]:= ]
+
+>> InputNamePacket[In[10]:= ]
+
+>> InputNamePacket[In[11]:= ]
+
+
+Hee uvTask: 1
+
+>> InputNamePacket[In[12]:= ]
+
+>> InputNamePacket[In[13]:= ]
+
+>> InputNamePacket[In[14]:= ]
+
+>> InputNamePacket[In[15]:= ]
+
+>> InputNamePacket[In[16]:= ]
+
+>> InputNamePacket[In[17]:= ]
+
+>> InputNamePacket[In[18]:= ]
+
+>> OutputNamePacket[Out[18]= ]
+
+>> ReturnTextPacket[{Interpretation, InterpretationBox}]
+
+>> InputNamePacket[In[19]:= ]
+
+>> ReturnPacket[Null]
+
+>> Kernel output >> Print: Establishing LTP link... using 127.0.0.1:36800
+
+
+>> Kernel output >> Print: >> sid >> 1
+
+
+>> Kernel output >> Print: Establishing starting LTP server for backlink...\
+    
+   >   using 127.0.0.1:36808
+
+
+>> LocalKernel >> local kernel link connected!
+>> LocalKernel >> PID: 64287
+
+>> SocketObject[8f742ea6-a39e-4ab6-9b9a-093e42accd36]
+
+>> Kernel output >> State: Connected
+
+>> Created! Spinner
+
+Init Kernel!!!
+
+>> Kernel output >> Notifications`Spinner[Notifications`Spinner`$331]: Null
+
+>> Loading into Kernel... wljs-interpreter/src/Definitions.wl
+
+>> Loading into Kernel... wljs-editor/src/FrontendObject.wl
+
+>> Loading into Kernel... wljs-editor/src/EditorKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/StandardForm.wl
+
+>> Loading into Kernel... wljs-editor/src/Boxes.wl
+
+>> Loading into Kernel... wljs-editor/src/BoxesWorkarounds.wl
+
+>> Loading into Kernel... wljs-editor/src/OffloadExtension.wl
+
+>> Loading into Kernel... wljs-editor/src/SetDirectoryKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/FrontSubmitKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/RemoteCellsKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/FrontendObjectMissingFetch.wl
+
+>> Loading into Kernel... wljs-editor/src/StoreKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/NotificationsKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/MetaMarkersKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/AutocompleteKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/System.wl
+
+>> Loading into Kernel... wljs-editor/src/RasterizeKernel.wl
+
+>> Loading into Kernel... wljs-editor/src/FrontendRuntimeKernel.wl
+
+>> Loading into Kernel... wljs-graphics3d-threejs/src/Kernel.wl
+
+>> Loading into Kernel... wljs-plotly/src/Kernel.wl
+
+>> Loading into Kernel... wljs-graphics-d3/src/Kernel.wl
+
+>> Loading into Kernel... wljs-wlx-support/src/Kernel.wl
+
+>> Loading into Kernel... wljs-inputs/src/Kernel.wl
+
+>> Loading into Kernel... wljs-sound/src/Kernel.wl
+
+>> Loading into Kernel... wljs-revealjs/src/Kernel.wl
+
+>> Loading into Kernel... wljs-neuralnet/src/Kernel.wl
+
+>> Loading into Kernel... wljs-export-html/DynamicsTools/ESP.wl
+
+>> Loading into Kernel... wljs-manipulate/Diff.wl
+
+>> Loading into Kernel... wljs-manipulate/Kernel.wl
+
+>> Loading into Kernel... wljs-print-redirect-fix/Kernel.wl
+
+>> Loading into Kernel... wljs-video/src/Kernel.wl
+
+>> Loading into Kernel... wljs-wxf-accelerator/Override.wl
+
+>> Loading into Kernel... wljs-plugin-example-1/src/Kernel.wl
+
+>> Starting WS link
+
+>> LocalKernel Init >> Normal
+
+nothing to do...
+nothing to do...
+nothing to do...
+Kernel init...
+Kernel init...
+
+Kernel init...
+
+>> LocalKernel Init >> Normal
+
+nothing to do...
+Kernel init...
+
+>> LocalKernel Init >> Normal
+
+>> LocalKernel Init >> Normal
+
+>> LocalKernel Init >> Normal
+
+>> LocalKernel Init >> Normal
+
+>> Kernel output >> Connected: Please wait until initialization is complete!
+Ok!
+
+>> ReturnPacket[Null]
+
+Open http://127.0.0.1:20560 in your browser
+
+Open http://127.0.0.1:20560 in your browser
+
+New connection for 5
+hash >> allocate 5241185392 with offset 0
+hash >> 15608
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+>> Downloader >> Get request
+
+Open http://127.0.0.1:20560 in your browser
+
+>> Kernel output >> State: Initialized
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> Kernel output >> Print: Init js Kernel (Local)
+
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> Kernel output >> Print: Init internal communication
+
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> Kernel output >> Print: Init normal Kernel (Local)
+
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> ReturnPacket[Null]
+
+>> Kernel output >> State: Initialized
+
+New connection for 6
+hash >> allocate 5699116816 with offset 0
+hash >> 15577
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> Downloader >> Head request
+
+writeerror !
+making 6 closed by the reading thread!
+broadcast Closed state!
+New connection for 7
+hash >> allocate 5270357184 with offset 0
+hash >> 5983
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> USocketObject[6] was Closed
+
+>> Downloader >> Get request
+
+Open http://127.0.0.1:20560 in your browser
+
+>> Kernel output >> State: Initialized
+
+New connection for 8
+hash >> allocate 5699116368 with offset 0
+hash >> 15300
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> Downloader >> Head request
+
+writeerror !
+making 8 closed by the reading thread!
+broadcast Closed state!
+New connection for 9
+hash >> allocate 5699117088 with offset 0
+hash >> 15745
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> USocketObject[8] was Closed
+
+>> Downloader >> Get request
+
+>> Kernel output >> State: Initialized
+
+# Loading by path : 
+/Users/kirill/Documents/WLJS Notebooks/Demos old/Data visualisation/A - 1D\
+ 
+>   Plot.wln
+
+>> SHORT!
+
+
+OptionValue::optnf: 
+   Option name AppEvent not found in defaults for Component$41880.
+
+>> Loader >> loading...
+
+>> Loading to cache...
+
+>> Loader >> Done!
+
+>> Attach event listeners to notebook from EXTENSION
+
+>> Attach event listeners to notebook from EXTENSION
+
+>> Attach event listeners to notebook from EXTENSION FrontSubmit
+
+>> Attach event listeners to notebook from EXTENSION
+
+>> Attach event listeners to notebook from EXTENSION
+
+>> Attach event listeners to notebook from EXTENSION
+
+>> Attach event listeners to notebook from EXTENSION >> TOC
+
+>> Load notebook and adding it to the path! >>
+>> /Users/kirill/Documents/WLJS Notebooks/Demos old/Data visualisation/
+
+Notebook router
+
+
+OptionValue::optnf: 
+   Option name AppEvent not found in defaults for 
+    CoffeeLiqueur`Extensions`FileUploader`Private`controlsListener.
+
+
+General::stop: Further output of OptionValue::optnf
+     will be suppressed during this calculation.
+
+writeerror !
+making 4 closed by the reading thread!
+broadcast Closed state!
+>> ExtendedApp >> Destroy
+
+>> Kernel list holder >> destroyed!
+>> Kernel >> Item.wlx >> destroyed!
+
+New connection for 10
+hash >> allocate 5241184784 with offset 0
+hash >> 15233
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> Demos >> nothing to do. Up to date
+
+Notebook is about to be shown
+>> Connected using socket: USocketObject[10]
+
+>> FrontendObject`Sync >> restored!
+>> FrontendObject`Sync`Symbols >> restored!
+
+>> TOC: Build vocabulary...
+
+>> checkWSLink >> 
+>> checkWSLink >> no Kernel available... >> subscribing
+
+NotebookShown
+
+>> TOC Load widget!
+
+>> HTTPUHandler >> Checking\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-interpreter/dist/b\
+ 
+>    rowser-c853ecf2.js...
+
+>> HTTPUHandler >> Checking\
+ 
+>    /Users/kirill/Github/wolfram-js-frontend/modules/wljs-graphics-d3/dist/e\
+ 
+>    arcut-09a28c82.js...
+
+SidebarToggle
+
+>> Kernel output >> State: Initialized
+
+>> Kernel output >> State: Initialized
+
+SaveAs
+
+>> OnBefore Save!!!!!!!!
+
+>> uids resolved!
+>> {4edac659-60b6-458c-aba9-c7b7e0d5e37b, 
+ 
+>    aca19dd2-b629-452e-a7d5-2fcde35b391c, 
+ 
+>    752462e0-12e1-4f5d-91d5-77c377df96d9, 
+ 
+>    5518c131-c2c0-4e75-b82a-69012c05cfe7, 
+ 
+>    56072deb-b3c5-48cf-991d-2f6fa5133ccb, 
+ 
+>    368366ff-1c88-4000-ac64-bc3e5dc11a3d, 
+ 
+>    b0243190-add0-4c75-922e-df1f46abf316, 
+ 
+>    0cd4712d-7775-4cd4-95b8-24d0161e9cfe, 
+ 
+>    e2bbb1f8-61d6-40d5-8b1c-aa265dd363f8, 
+ 
+>    39460094-d500-4ea0-8442-8171a8016399, 
+ 
+>    8749f74a-d22d-4427-b620-59e61fe0875a, 
+ 
+>    c617a2ac-3ca3-45e4-8d95-fda79d281f02, 
+ 
+>    f1d6e798-f400-439f-96ea-c31d47c9e399, 
+ 
+>    abfcc743-87a0-41f6-b412-c545cf5a9d4d, 47605legend, 47607legend, 
+ 
+>    47610legend}
+
+>> Created! Spinner
+
+>> Number of requests to resolve: 17
+
+>> Promises: {Promise[33604346-369f-4646-96d0-da35d86478bc],\
+ 
+>    Promise[04524fa1-0228-48f9-bb04-dbf35e21cc9c],\
+ 
+>    Promise[e1762501-d5d5-4a7c-b617-9ce49cea46ae],\
+ 
+>    Promise[23d4f63c-1d1c-4b9a-bba5-7db9c1d43779],\
+ 
+>    Promise[31ad41dc-fddd-4b7d-8521-9ccc9a8c3891],\
+ 
+>    Promise[d2bae0f6-7f6f-4c27-8ab2-0fd7b6426232],\
+ 
+>    Promise[4eb164e7-ee95-481e-b2a9-685712e89914],\
+ 
+>    Promise[d0a2acdb-b569-4de0-a1e6-986d59bed447],\
+ 
+>    Promise[89ba4763-64b7-4cf1-a41a-e01ef1a88de2],\
+ 
+>    Promise[9a9a4410-62ba-4a55-9509-c494103fb9c3],\
+ 
+>    Promise[69e0ddb0-5554-460a-a5ea-8d4d9d6628cb],\
+ 
+>    Promise[27f6eb8b-e74a-4e24-aa8a-f39f4f486f39],\
+ 
+>    Promise[fc1f355c-6942-4328-b273-9ebced4eb31c],\
+ 
+>    Promise[c3caced1-6990-4fad-afae-baea5447c244],\
+ 
+>    Promise[a9091bba-1bf1-4294-81d0-d4b29cf5787a],\
+ 
+>    Promise[425dfb13-be28-4780-83cf-ea0a66c8232d],\
+ 
+>    Promise[38fa9962-8801-49a7-ae28-de7675fad1fd]}
+
+>> SyncMonitor >> Syncing 1 out of 17
+
+>> SyncMonitor >> Syncing 2 out of 17
+
+>> SyncMonitor >> Syncing 3 out of 17
+
+>> SyncMonitor >> Syncing 4 out of 17
+
+>> SyncMonitor >> Syncing 5 out of 17
+
+>> SyncMonitor >> Syncing 6 out of 17
+
+>> SyncMonitor >> Syncing 7 out of 17
+
+>> SyncMonitor >> Syncing 8 out of 17
+
+>> SyncMonitor >> Syncing 9 out of 17
+
+>> SyncMonitor >> Syncing 10 out of 17
+
+>> SyncMonitor >> Syncing 11 out of 17
+
+>> SyncMonitor >> Syncing 12 out of 17
+
+>> SyncMonitor >> Syncing 13 out of 17
+
+>> SyncMonitor >> Syncing 14 out of 17
+
+>> SyncMonitor >> Syncing 15 out of 17
+
+>> SyncMonitor >> Syncing 16 out of 17
+
+>> SyncMonitor >> Syncing 17 out of 17
+
+>> results resolved!
+
+>> SyncMonitor >> removed
+>> FrontendObject`Sync`Objects >> ok 
+
+>> symbols names resolved!
+>> {}
+
+>> SAVEDAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+DumpSaveAs
+
+filepath:
+/Users/kirill/Downloads/YAML.wln
+end
+
+
+WriteString::strml: 
+   CoffeeLiqueur`Notebook`Private`stream
+     is not a string, stream or list of strings and streams.
+
+
+WriteString::strml: 
+   CoffeeLiqueur`Notebook`Private`stream
+     is not a string, stream or list of strings and streams.
+
+
+KeyTake::invrl: 
+   The argument CoffeeLiqueur`Notebook`FileFormat`Private`dummyNotebook
+     is not a valid Association or a list of rules.
+
+
+WriteString::strml: 
+   CoffeeLiqueur`Notebook`Private`stream
+     is not a string, stream or list of strings and streams.
+
+General::stop: Further output of WriteString::strml
+     will be suppressed during this calculation.
+
+## Loading by path : 
+/users/kirill/Downloads/YAML.wln
+
+Load settings one more time
+
+>> Loader >> cached >> restoring
+
+>> ExtendedApp >> Destroy
+
+>> Kernel list holder >> destroyed!
+
+>> Kernel >> Item.wlx >> destroyed!
+
+>> Destroy save button...
+>> >> SOCKET CLOSED!!!
+
+Notebook was closed
+
+
+>> Notebook.wlx >> Destroy
+>> !!!!Our socket number!!!!
+>> Missing[KeyAbsent, KernelWebSocket]
+>> addListeners >> destroed listeners
+>> checkWSLink >> destroy
+>> TOK Widget was destroyed
+>> Context menu listener was destroyed
+
+Notebook router
+
+writeerror !
+making 10 closed by the reading thread!
+broadcast Closed state!
+New connection for 11
+hash >> allocate 5589975744 with offset 0
+hash >> 15613
+hash >> ok!
+uv start readingbroadcast NewClient state!
+>> Demos >> nothing to do. Up to date
+
+Notebook is about to be shown
+>> Connected using socket: USocketObject[11]
+
+>> FrontendObject`Sync >> restored!
+
+>> FrontendObject`Sync`Symbols >> restored!
+
+>> TOC: Build vocabulary...
+
+>> checkWSLink >> 
+>> checkWSLink >> no Kernel available... >> subscribing
+
+Focus!

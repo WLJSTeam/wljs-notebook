@@ -31,11 +31,11 @@ iTemplate  = FileNameJoin[{$InputFileName // DirectoryName // ParentDirectory, "
 If[!FileExistsQ[ $userLibraryPath ], CreateDirectory[$userLibraryPath] ];
 
 
-findCell[nb_, tag_String] := SelectFirst[nb["Cells"], ((StringSplit[#["Data"], "\n"] // First) === tag && #["Type"] === "Input")&]
+findCell[nb_, tag_String] := SelectFirst[nb["Cells"], ((StringSplit[#["Data"], "\n"] // First // StringTrim) === tag && #["Type"] === "Input")&]
 
 
 
-Parse[a_Association, path_] := With[{notebook = nb`Deserialize[ a ]}, With[{icon = findCell[notebook, "icon.wlx"]},
+Parse[a_Association, path_] := With[{notebook = nb`LoadFromFile[ path ]}, With[{icon = findCell[notebook, "icon.wlx"]},
     Echo["Snippets >> Deserialize notebook >> "<>path];
 
     notebook["Path"] = path;
@@ -43,11 +43,19 @@ Parse[a_Association, path_] := With[{notebook = nb`Deserialize[ a ]}, With[{icon
 
     Module[{title = "", decription = "", template = Automatic, action = {}},
         With[{t = findCell[notebook, ".md"]},
-            If[!StringMatchQ[t["Data"], ".md\n"~~__], Echo["Snippets >> Library >> Title is missing!"]; Return[$Failed] ];
-            {title, decription} = StringCases[t["Data"], RegularExpression[".md\n[#| ]*([^\n]*)\n?(.*)?"]:> {"$1", "$2"}] // First;
+  
+            If[!StringMatchQ[t["Data"], (".md\n"~~__) | (".md\r\n"~~__)], 
+                Echo["Snippets >> Library >> Title is missing!"]; Exit[-1]; 
+                
+            ];
+            
+            {title, decription} = StringCases[t["Data"], RegularExpression["\\.md(?:\\r\\n|\\n|\\r)[#| ]*([^\\r\\n]*)(?:\\r\\n|\\n|\\r)?(.*)?"] :> {"$1", "$2"}] // First;
         ] // Quiet;
 
         If[!MissingQ[icon], template = StringRiffle[Drop[StringSplit[icon["Data"], "\n"],1], "\n"] ];
+
+        Echo[title];
+        Echo[decription];
 
         {"Title" -> title, "Decription" -> decription, "Notebook" -> notebook, "RawTemplate" -> template, "Path" -> path}
     ]
@@ -78,7 +86,7 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
           ,
               Echo["Context:"]; Echo[notebookContext];
 
-              GenericKernel`Init[notebook["Evaluator"]["Kernel"], 
+              GenericKernel`Send[notebook["Evaluator"]["Kernel"], 
                   Then[CoffeeLiqueur`Extensions`RemoteCells`NotebookEvaluateAsync[
                           CoffeeLiqueur`Extensions`RemoteCells`RemoteNotebook[notebookId]
                         , EvaluationElements->All, "EvaluationContext"->notebookContext,
@@ -101,7 +109,7 @@ bookOpen[tag_String][assoc_] := Module[{},
   ]
 ]
 
-With[{book = Parse[Import[#, "WL"], #]},
+With[{book = Parse[<||>, #]},
   With[{temp = ("RawTemplate" /. book)},
    
     With[{

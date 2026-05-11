@@ -22,6 +22,8 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];
 
+Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
+
 
 root = $InputFileName // DirectoryName // ParentDirectory;
 

@@ -170,8 +170,8 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
     syncPromise = Promise[],
     notebookHash = notebookOnLine["Hash"]
 },
-    GenericKernel`Init[notebookOnLine["Evaluator"]["Kernel"],  (
-        EventFire[Internal`Kernel`Stdout[ syncPromise // First ], Resolve, wapi`Tools`Serialize[] ]; 
+    GenericKernel`Send[notebookOnLine["Evaluator"]["Kernel"],  (
+        EventFire[Internal`Kernel`RemoteEvent[ syncPromise // First ], Resolve, wapi`Tools`Serialize[] ]; 
     )];
 
     Then[syncPromise, Function[values,

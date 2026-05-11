@@ -180,6 +180,61 @@ Integrate /: MakeBoxes[Integrate[f_, bond__List], s: StandardForm ] := With[{lis
 ]
 
 
+Unprotect[Cross]
+FormatValues[Cross] = {};
+
+Cross /: MakeBoxes[Cross[a_,b_], StandardForm] := With[{
+  y1 = MakeBoxes[a, StandardForm],
+  y2 = MakeBoxes[b, StandardForm]
+},
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", Compress[ ViewDecorator["Cross"] ], "*)(*]TB*)"}]
+]
+
+Cross /: MakeBoxes[Cross[x1_, x2_, x3_], StandardForm] := With[{
+  y1 = MakeBoxes[x1, StandardForm],
+  y2 = MakeBoxes[x2, StandardForm],
+  y3 = MakeBoxes[x3, StandardForm]
+},
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", Compress[ViewDecorator["Cross"]], "*)(*]TB*)"}]
+]
+
+Cross /: MakeBoxes[Cross[x1_, x2_, x3_, x4_], StandardForm] := With[{
+  y1 = MakeBoxes[x1, StandardForm],
+  y2 = MakeBoxes[x2, StandardForm],
+  y3 = MakeBoxes[x3, StandardForm],
+  y4 = MakeBoxes[x4, StandardForm]
+},
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", Compress[ViewDecorator["Cross"]], "*)(*]TB*)"}]
+]
+
+Unprotect[Colon]
+FormatValues[Colon] = {};
+
+Colon /: MakeBoxes[Colon[a_, b_], StandardForm] := With[{
+  y1 = MakeBoxes[a, StandardForm],
+  y2 = MakeBoxes[b, StandardForm]
+},
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+]
+
+Colon /: MakeBoxes[Colon[x1_, x2_, x3_], StandardForm] := With[{
+  y1 = MakeBoxes[x1, StandardForm],
+  y2 = MakeBoxes[x2, StandardForm],
+  y3 = MakeBoxes[x3, StandardForm]
+},
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+]
+
+Colon /: MakeBoxes[Colon[x1_, x2_, x3_, x4_], StandardForm] := With[{
+  y1 = MakeBoxes[x1, StandardForm],
+  y2 = MakeBoxes[x2, StandardForm],
+  y3 = MakeBoxes[x3, StandardForm],
+  y4 = MakeBoxes[x4, StandardForm]
+},
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+]
+
+
 (* ::: Some convertions to simplify the output form ::: *)
 
 SuperscriptBox[a_, "\[Transpose]"] := RowBox[{"Transpose[", a, "]"}]
@@ -534,15 +589,18 @@ Labeled /: MakeBoxes[Labeled[expr_, label_], WLXForm] := With[{
   StringTemplate["<div class=\"inline-block\"><div>``</div><legend class=\"text-center\">``</legend></div>"][exprBox, labelBox]
 ]
 
-(* ::: WL14.2 - > Breaking change ::: *)
-(* FUCK U Wolfram *)
+BoxForm`ToViewBox /: MakeBoxes[BoxForm`ToViewBox[expr_], StandardForm] := With[{out = MakeBoxes[expr, StandardForm]},
+  ViewBox[out, expr]
+]
+
+BoxForm`ToViewBox /: MakeBoxes[BoxForm`ToViewBox[expr_],  WLXForm] := With[{out = MakeBoxes[expr, WLXForm]},
+  out
+]
 
 If[$VersionNumber > 14.1,
-  Labeled[i_Image | i_Graphics | i_Graphics3D | i_Image3D, rest___] := Labeled[CreateFrontEndObject[i], rest];
-  Labeled[style_[i_Image | i_Graphics | i_Graphics3D | i_Image3D, styleOpts___], rest___] := Labeled[style[CreateFrontEndObject[i], styleOpts], rest];
+  Labeled[i_Image | i_Graphics | i_Graphics3D | i_Image3D, rest___] := Labeled[CreateFrontEndObject[i]//BoxForm`ToViewBox, rest];
+  Labeled[style_[i_Image | i_Graphics | i_Graphics3D | i_Image3D, styleOpts___], rest___] := Labeled[style[CreateFrontEndObject[i]//BoxForm`ToViewBox, styleOpts], rest];
 ];
-
-
 
 
 (* :::Item Boxes convertion to ViewDecorators ::: *)
@@ -651,6 +709,31 @@ Iconize /: MakeBoxes[Iconize[path_, 1, title_ ], StandardForm] := With[{},
   RowBox[{"(*VB[*)(Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->title, "File"->True] ], InputForm], "*)(*]VB*)"}]
 ]
 
+Iconize /: MakeBoxes[Iconize[compressed_, 2, title_ ], StandardForm] := With[{c = compressed, b = ByteCount[compressed]},
+      RowBox[{"(*VB[*)(Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
+]
+
+Iconize /: MakeBoxes[Iconize[path_, 3, title_ ], StandardForm] := With[{},
+  RowBox[{"(*VB[*)(Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
+]
+
+
+BoxForm`IconizeSequence[expr_, opts: OptionsPattern[] ] := With[{
+  title = OptionValue["Label"],
+  location = OptionValue[GeneratedAssetLocation]
+},
+{
+  file = FileNameJoin[{location, title<>".wl"}]
+},
+  If[ByteCount[expr] > 5000,
+    If[!DirectoryQ[location],  CreateDirectory[ location ]  ];
+    Put[expr // Compress, file ];
+    Iconize[FileNameSplit[file], 3, title]
+  ,
+    Iconize[Compress[expr], 2, title]
+  ]
+]
+
 
 Iconize[expr_, opts: OptionsPattern[] ] := With[{
   title = OptionValue["Label"],
@@ -670,8 +753,8 @@ Iconize[expr_, opts: OptionsPattern[] ] := With[{
 
 Iconize[expr_, title_String, opts: OptionsPattern[] ] := Iconize[expr, "Label" -> title, opts]
 
-Options[Iconize] = {"Label":>StringReplace[RandomWord[], {"-"->"_"}], GeneratedAssetLocation :> FileNameJoin[{Directory[], ".iconized"}]}
-
+Options[Iconize] = {"Label":>StringReplace[(Internal`NoWR`RandomWord[]), {"-"->"_"}], GeneratedAssetLocation :> FileNameJoin[{".iconized"}]}
+Options[BoxForm`IconizeSequence] = Options[Iconize];
 
 (* :: Pane Boxes :: *)
 (*  ignore them, show the first item only  *)
@@ -792,8 +875,14 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
 Unprotect[BarLegend];
 FormatValues[BarLegend] = {};
 
-BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: (StandardForm | WLXForm)] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
   MakeBoxes[o, form]
+]
+
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+  With[{out = MakeBoxes[o, StandardForm]},
+    ViewBox[out, o]
+  ]
 ]
 
 BoxForm`makeBarLegend[uid_String, JSON_String] := (CreateFrontEndObject[BoxForm`makeBarLegend @@ ImportString[JSON, "ExpressionJSON"], uid]; uid)
@@ -1023,7 +1112,7 @@ Unprotect[BoundaryMeshRegion]
 FormatValues[BoundaryMeshRegion] = {}
 
 
-BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
@@ -1046,7 +1135,7 @@ Unprotect[MeshRegion]
 FormatValues[MeshRegion] = {}
 
 
-MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
@@ -1069,7 +1158,7 @@ Unprotect[Region]
 FormatValues[Region] = {}
 
 
-Region /: MakeBoxes[b_Region, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+Region /: MakeBoxes[b_Region, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[{v = ViewBox[temporal, r]},
@@ -1108,10 +1197,6 @@ EventObject /: Inset[EventObject[a_?BoxForm`EventObjectHasView], rest___ ] := If
     Inset[FrontEndExecutable[uid], rest]
   ] 
 ]
-
-
-(* :: LEgacy shit :: *)
-System`WLXEmbed /: MakeBoxes[w_System`WLXEmbed, StandardForm] := With[{o = CreateFrontEndObject[w]}, MakeBoxes[o, StandardForm] ]
 
 
 (* :: Row, Column adaptation for WLXForm :: *)
@@ -1169,7 +1254,15 @@ With[{ unsupported = {GraphicsRow, WordCloud, GraphicsColumn, ClockGauge, GeoLis
   ], {i, unsupported}]
 ];
 
-
+GraphicsRow /: MakeBoxes[GraphicsRow[list_, ___], any_] := With[{b = Row[list]},
+  MakeBoxes[b, any]
+]
+GraphicsColumn /: MakeBoxes[GraphicsColumn[list_, ___], any_ ] := With[{b = Column[list]},
+  MakeBoxes[b, any]
+]
+GraphicsGrid /: MakeBoxes[GraphicsGrid[list_, ___], any_] := With[{b = Grid[list]},
+  MakeBoxes[b, any]
+]
 
 
 HorizontalGauge[all__] := (
@@ -1609,9 +1702,11 @@ makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
 (* It breaks ANY FormatValues (even for custom forms) and Downvalues ofc *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
 
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
 If[Internal`Kernel`Watchdog["Enabled"],
   With[{
-    file = FileNameJoin[{$RemotePackageDirectory, "src", "BoxesWorkarounds.wl"}],
+    file = FileNameJoin[{$rootPackageDirectory, "src", "BoxesWorkarounds.wl"}],
     tag = "Boxes Workarounds (Editor)"
   },
     Internal`Kernel`Watchdog["Assertion", "ArrangeSummaryBox",

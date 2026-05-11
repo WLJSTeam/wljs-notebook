@@ -24,8 +24,9 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 System`RowBoxFlatten; (* needed to fix Kernel and Master definitions *)
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 (*cf`CodeFormatter`$DefaultLineWidth = 120;
 SetOptions[cf`CodeFormatter`CodeFormatCST, cf`CodeFormatter`Airiness -> -0.75, cf`CodeFormatter`BreakLinesMethod -> "LineBreakerV2"];
@@ -457,9 +458,9 @@ convert[Cell[CellGroupData[list_List, ___], ___], notebook_, kernel_] := With[{p
 ]
 
 convertInPlace[expr_, k_] := With[{ p = Promise[]},
-    GenericKernel`Init[k,  (  
+    GenericKernel`Send[k,  (  
         Needs["BoxesConverter`"->None];
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, 
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, 
           With[{},
             TimeConstrained[BoxesConverter`WLJSDisplayForm[expr], 10, "$Failed"]
           ]
@@ -476,7 +477,7 @@ decode[opts__][path_String, secondaryOpts___] := Module[{
   str, cells, objects, notebook, nb, store, options
 },
 With[{
-    dir = AppExtensions`QuickNotesDir,
+    dir = DirectoryName[path],
     name = FileBaseName[path],
     promise = Promise[],
     spinner = Notifications`Spinner["Topic"->"Converting to notebook", "Body"->"Please, wait"](*`*)
@@ -489,8 +490,7 @@ With[{
     With[{n = notebook},
         n["Quick"] = True;
         n["HaveToSaveAs"] = True;    
-        n["WorkingDirectory"] = DirectoryName[path];
-        n["Path"] = FileNameJoin[{dir, name<>"-"<>StringTake[CreateUUID[], 3]<>".wln"}];
+        n["Path"] = FileNameJoin[{dir, name<>".wln"}];
     ];
 
     
@@ -522,27 +522,27 @@ With[{
                       #, notebook, data
                     } &/@ nb[[1]], Function[Null,
       
-                      If[Length[notebook["Cells"] ] > 110, 
+                      If[Length[notebook["Cells"] ] > 170, 
                         Echo["Notebook is too long!"];
                         With[{cellList = Unique[], promiseList = Unique[], pathList = Unique[] },
                           cellList = notebook["Cells"];
                           promiseList = {}; pathList = {};
 
-                          While[Length[cellList] > 0,
+                          Module[{prtCount = 1}, While[Length[cellList] > 0,
                                 subnotebook = nb`NotebookObj[];
                                 With[{n = subnotebook, taken = Take[cellList, Min[65, Length[cellList] ] ]},
                                     cellList = Drop[cellList, Length[taken] ];
 
                                     n["Quick"] = True;
                                     n["HaveToSaveAs"] = True;    
-                                    n["WorkingDirectory"] = DirectoryName[path];
-                                    n["Path"] = FileNameJoin[{dir, name<>"-"<>StringTake[CreateUUID[], 3]<>".wln"}];
+                              
+                                    n["Path"] = FileNameJoin[{dir, name<>"-"<>ToString[prtCount]<>".wln"}];
                                     n["Evaluator"] = data["Container"];
                                     EventFire[n, "AquairedKernel", True];
                                     n["AutoconnectKernel"] = data["Hash"];
 
                                     If[taken[[1]]["Type"] === "Output",
-                                      cell`CellObj["Notebook" -> n, "Type" -> "Input", "Data" -> "(* content from the previous part *)"]
+                                      cell`CellObj["Notebook" -> n, "Type" -> "Input", "Data" -> "(* content from the part "<>ToString[prtCount-1]<>" *)"]
                                     ];
 
                                     Map[
@@ -560,8 +560,8 @@ With[{
                                     Delete[n];
                                 ];
 
-         
-                          ];
+                                prtCount++;
+                          ] ];
 
                                 Delete /@ notebook["Cells"];
                                 Delete[notebook];

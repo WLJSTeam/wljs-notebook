@@ -24,7 +24,10 @@ rootFolder = folder // ParentDirectory // ParentDirectory;
 
 localRoot = DirectoryName[$InputFileName];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = ImportComponent["Frontend/Loader.wl"];
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+
 
 generateMarkdown = ImportComponent[FileNameJoin[{localRoot, "Markdown.wlx"}] ];
 
@@ -158,7 +161,7 @@ fixImages[s_String, r_] := With[{},
 
 decode[path_String, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, root},
 With[{
-    dir = AppExtensions`QuickNotesDir,
+    dir = DirectoryName[path],
     name = FileBaseName[path],
     promise = Promise[],
     query = OptionValue["Query"],
@@ -190,8 +193,8 @@ With[{
     With[{n = notebook},
         n["Quick"] = True;
         n["HaveToSaveAs"] = True;
-        n["WorkingDirectory"] = DirectoryName[path];
-        n["Path"] = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
+        n["Path"] = FileNameJoin[{dir, name<>".wln"}];
+        n["ObjectFields"] = {"Objects", "Symbols", "Storage", "ExcalidrawImages", "RuntimeCache", "ZIPArchive"};
     ];
 
 

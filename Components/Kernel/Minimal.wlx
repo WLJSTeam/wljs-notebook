@@ -58,8 +58,8 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   EventHandler[ButtonId, {"New" -> Function[Type,
     Echo[Type];
     With[{client = $Client, m = Messager, kernel = Switch[Type,
-                                                    "Master", MasterKernel["Name"->RandomWord[]],
-                                                    _, LocalKernel`LocalKernel["Name"->RandomWord[]]
+                                                    "Master", MasterKernel["Name"->(Internal`NoWR`RandomWord[])],
+                                                    _, LocalKernel`LocalKernel["Name"->(Internal`NoWR`RandomWord[])]
                                                   ]
     },
         Print["Working!"];

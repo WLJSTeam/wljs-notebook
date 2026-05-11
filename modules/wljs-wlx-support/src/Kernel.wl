@@ -18,8 +18,8 @@ Internal`Kernel`WLXEvaluator = Function[t,  With[{hash = CreateUUID[]},
         Block[{System`$EvaluationContext = Join[t["EvaluationContext"], <|"ResultCellHash" -> hash|>]},
             With[{result = ProcessString[t["Data"], "Localize"->False]  // ReleaseHold},
                 With[{string = If[ListQ[result], StringRiffle[Map[ToString, Select[result, (# =!= Null)&]], ""], ToString[result] ]},
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Result", <|"Data" -> string, "Meta" -> Sequence["Display"->"wlx", "Hash"->hash] |> ];
-                    EventFire[Internal`Kernel`Stdout[ t["Hash"] ], "Finished", True];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> string, "Meta" -> Sequence["Display"->"wlx", "Hash"->hash] |> ];
+                    EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True];
                 ];
             ];
         ];

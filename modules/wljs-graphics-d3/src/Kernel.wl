@@ -11,7 +11,7 @@ Controls::usage = "Controls -> True, False is an option for Graphics to use zoom
 TransitionType::usage = "TransitionType -> \"Linear\", \"CubicInOut\" is an option for Graphics to use smoothening filter for the transitions"
 TransitionDuration::usage = "TransitionDuration -> 300 is an option for Graphics to set the duration of the transitions"
 
-ZoomAt::usage = "ZoomAt[k_, {x_,y_}:{0,0}] zooms and pans plot to a given point. Can be used together with FrontSubmit and MetaMarker"
+ZoomAt::usage = "ZoomAt[k_, {x_,y_}:{0,0}] zooms and pans plot to a given point. Can be used together with FrontSubmit and FrontInstanceReference"
 
 SVGAttribute::usage = "SVGAttribute[GraphicsObject_, \"Attrname\" -> \"Value\"] where AttrName is an d3-svg attribute of the object. Supports dynamic updates"
 
@@ -19,12 +19,6 @@ AnimationFrameListener::usage = "AnimationFrameListener[symbol // Offload, \"Eve
 
 SVGGroup::usage = "SVGGroup[g_] represents an isolated SVG group of graphics primitives"
 
-Graphics`Canvas;
-Graphics`Canvas::usage = ""
-
-Graphics`Serialize;
-
-Graphics`CaptureImage64 = ""
 
 Graphics`DPR;
 Graphics`DPR::usage = "Returns the client's device pixel ratio. Use inside FrontFetch"
@@ -69,6 +63,7 @@ Polygon  /: EventHandler[p_Polygon, list_List] := listener[p, list]
 Text       /: EventHandler[p_Text, list_List] := listener[p, list]
 Disk       /: EventHandler[p_Disk, list_List] := listener[p, list]
 
+(* depricated!!! only is used for backward compatibillity *)
 Graphics`Canvas  /: EventHandler[p_Graphics`Canvas, list_List] := listener[p, list]
 
 Protect[Point, Rectangle, Text, Disk, Polygon];
@@ -79,6 +74,8 @@ Rasterize[g_Graphics, any___] := With[{svg = FrontFetch[Graphics`Serialize[g, "T
 ]*)
 
 Unprotect[Image]
+
+Off[Image::imgdtype];
 
 Image /: EventHandler[Image[args__, opts:OptionsPattern[] ], list_List ] := With[{
     epilog = {OptionValue[Image, {opts}, Epilog]}
@@ -111,7 +108,8 @@ Graphics /: MakeBoxes[System`Dump`g_Graphics?System`Dump`vizGraphicsQ,System`Dum
     ViewBox[System`Dump`g, System`Dump`g]
 ,
     With[{fe = CreateFrontEndObject[System`Dump`g]},
-        MakeBoxes[fe, System`Dump`fmt]
+        {out = MakeBoxes[fe, StandardForm]},
+        ViewBox[out, fe]
     ]
 ]
 
@@ -119,7 +117,8 @@ Graphics /: MakeBoxes[System`Dump`g_Graphics,System`Dump`fmt:StandardForm|Tradit
     ViewBox[System`Dump`g, System`Dump`g]
 ,
     With[{fe = CreateFrontEndObject[System`Dump`g]},
-        MakeBoxes[fe, System`Dump`fmt]
+        {out = MakeBoxes[fe, StandardForm]},
+        ViewBox[out, fe]
     ]
 ]
 
@@ -150,11 +149,28 @@ Image /: MakeBoxes[Image`ImageDump`img:Image[_,Image`ImageDump`type_,Image`Image
     ,
         If[dataType === "Bit16",
             With[{fe = CreateFrontEndObject[Image[Image`ImageDump`img, "Byte", Interleaving->True, ImageResolution->Automatic] ]},
-                MakeBoxes[fe, Image`ImageDump`fmt]
+                If[Image`ImageDump`fmt === WLXForm,
+                    MakeBoxes[fe, Image`ImageDump`fmt]
+                ,
+                    With[{
+                        out = MakeBoxes[fe, StandardForm]
+                    },
+                        ViewBox[out, fe]
+                    ]                
+                ]
+                
             ]        
         ,
             With[{fe = CreateFrontEndObject[Image[Image`ImageDump`img, Interleaving->True, ImageResolution->Automatic] ]},
-                MakeBoxes[fe, Image`ImageDump`fmt]
+                If[Image`ImageDump`fmt === WLXForm,
+                    MakeBoxes[fe, Image`ImageDump`fmt]
+                ,
+                    With[{
+                        out = MakeBoxes[fe, StandardForm]
+                    },
+                        ViewBox[out, fe]
+                    ]                
+                ]
             ]        
         ]
     ]
@@ -162,7 +178,15 @@ Image /: MakeBoxes[Image`ImageDump`img:Image[_,Image`ImageDump`type_,Image`Image
 
 Image /: MakeBoxes[Image`ImageDump`img:Image[_Offload, Image`ImageDump`type_, Image`ImageDump`info___], Image`ImageDump`fmt_] := With[{fe = CreateFrontEndObject[Image`ImageDump`img]},
 
-    MakeBoxes[fe, Image`ImageDump`fmt]
+                If[Image`ImageDump`fmt === WLXForm,
+                    MakeBoxes[fe, Image`ImageDump`fmt]
+                ,
+                    With[{
+                        out = MakeBoxes[fe, StandardForm]
+                    },
+                        ViewBox[out, fe]
+                    ]
+                ]
 
 ]
 
@@ -204,8 +228,10 @@ FormatValues[Polygon] = {}
 (* It breaks ANY FormatValues *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
 
+$rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
+
 If[Internal`Kernel`Watchdog["Enabled"],
-  With[{file = FileNameJoin[{$RemotePackageDirectory, "src", "Kernel.wl"}]},
+  With[{file = FileNameJoin[{$rootPackageDirectory, "src", "Kernel.wl"}]},
     Internal`Kernel`Watchdog["Assertion", "Graphics",
       FormatValues[Graphics]//Hash
     ,

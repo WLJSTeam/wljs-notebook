@@ -19,9 +19,9 @@ KernelSniffer[kernel_, expr_, "EvaluateHeld"] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         Internal`Kernel`CaptureWrapperBlock[expr // ReleaseHold];
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, True];     
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, True];     
     )];
 
     p
@@ -35,7 +35,7 @@ KernelSniffer[kernel_, "Inject"] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         (* symbols tracking *)
         If[!(Internal`Kernel`oldWLJSTrackingHandlerQ === True),
             Internal`Kernel`oldWLJSTrackingHandler = WLJSTransportHandler["AddTracking"];
@@ -93,7 +93,7 @@ KernelSniffer[kernel_, "Inject"] := With[{
             Internal`Kernel`CaptureEventPool = {};
         ];
 
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, True];      
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, True];      
     )];
 
     p
@@ -107,9 +107,9 @@ KernelSniffer[kernel_, "Reset"] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         Internal`Kernel`CaptureEventPool = {};
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, True ];   
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, True ];   
     )];
 
     p
@@ -123,7 +123,7 @@ KernelSniffer[kernel_, "Eject"] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
+    GenericKernel`Send[kernel,  (  
         (* symbols tracking *)
         If[Internal`Kernel`oldWLJSTrackingHandlerQ === True,
             WLJSTransportHandler["AddTracking"] = Internal`Kernel`oldWLJSTrackingHandler;
@@ -133,7 +133,7 @@ KernelSniffer[kernel_, "Eject"] := With[{
             Internal`Kernel`CaptureEventPool = {};
         ];
 
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, True];      
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, True];      
     )];
 
     p
@@ -147,8 +147,8 @@ KernelSniffer[kernel_, "GetCompressed"] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, Compress[Internal`Kernel`CaptureEventPool] ];      
+    GenericKernel`Send[kernel,  (  
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, Compress[Internal`Kernel`CaptureEventPool] ];      
     )];
 
     p
@@ -162,8 +162,8 @@ KernelSniffer[kernel_, "SelectCompressed", function_] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, Compress[Select[Internal`Kernel`CaptureEventPool, function] ] ];      
+    GenericKernel`Send[kernel,  (  
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, Compress[Select[Internal`Kernel`CaptureEventPool, function] ] ];      
     )];
 
     p
@@ -177,8 +177,8 @@ KernelSniffer[kernel_, "SelectCompressed", function_, after_] := With[{
         Return[];
     ];
 
-    GenericKernel`Init[kernel,  (  
-        EventFire[Internal`Kernel`Stdout[ p // First ], Resolve, Compress[Map[after, Select[Internal`Kernel`CaptureEventPool, function] ] ] ];      
+    GenericKernel`Send[kernel,  (  
+        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, Compress[Map[after, Select[Internal`Kernel`CaptureEventPool, function] ] ] ];      
     )];
 
     p
@@ -188,7 +188,7 @@ KernelSniffer[kernel_, "FetchSymbol", symbol_String] := With[{
     promise = Promise[]
 },
     With[{s = promise // First},
-        GenericKernel`Async[kernel, EventFire[Internal`Kernel`Stdout[ s ], Resolve, ToExpression[symbol, InputForm] ] ];
+        GenericKernel`SendAsync[kernel, EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, ToExpression[symbol, InputForm] ] ];
     ];
 
     promise
@@ -198,7 +198,7 @@ KernelSniffer[kernel_, "ListSymbols"] := With[{
     promise = Promise[]
 },
     With[{s = promise // First},
-        GenericKernel`Async[kernel, EventFire[Internal`Kernel`Stdout[ s ], Resolve, Select[Internal`Kernel`CaptureEventPool, Function[item, item[[2,1]] === "Symbol"] ][[All,2,2]]//DeleteDuplicates
+        GenericKernel`SendAsync[kernel, EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, Select[Internal`Kernel`CaptureEventPool, Function[item, item[[2,1]] === "Symbol"] ][[All,2,2]]//DeleteDuplicates
  ] ];
     ];
 
@@ -209,7 +209,7 @@ KernelSniffer[kernel_, "FetchSymbols", symbols_List] := With[{
     promise = Promise[]
 },
     With[{s = promise // First},
-        GenericKernel`Async[kernel, EventFire[Internal`Kernel`Stdout[ s ], Resolve, Table[ToExpression[symbol, InputForm], {symbol, symbols}] ] ];
+        GenericKernel`SendAsync[kernel, EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, Table[ToExpression[symbol, InputForm], {symbol, symbols}] ] ];
     ];
 
     promise
