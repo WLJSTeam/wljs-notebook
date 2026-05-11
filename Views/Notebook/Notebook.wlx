@@ -147,60 +147,57 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
 
         If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized",
             With[{
+                notebookEvent = EventClone[notebook]
             },
                 Echo["checkWSLink >> Asking to connect"];
 
                 EventFire[log, "WebSocket:Kernel:RequestConnection", notebook];
 
-                Then[WebUIFetch[UINotebook["WSConnect", notebook["Evaluator"]["Kernel"]["WebSocket"], event , "PrefixMode"->$Env["ws2prefix"] ], client, "Format"->"RawJSON"], Function[result,
-                    If[result["Connected"] === True,
-                        With[{notebookEvent = EventClone[notebook]},
-                            EventHandler[notebookEvent, {
-                                "AfterWebSocketConnected" -> Function[Null,
-                                    EventRemove[notebookEvent];
-                                    Echo["Resolved! Starting to evaluate!"];
-                                    EventFire[log, "WebSocket:Kernel:Connected", notebook];
-                                ],
+                WebUISubmit[UINotebook["WSConnect", notebook["Evaluator"]["Kernel"]["WebSocket"], event , "PrefixMode"->$Env["ws2prefix"] ], client];
 
-                                "WebSocketLost" -> Function[Null,
-                                    EventFire[log, "WebSocket:Kernel:Lost", notebook];
-                                    EventRemove[notebookEvent];
-                                ]
-                            }]
-                        ];
+                With[{},
+                    EventHandler[notebookEvent, {
+                        "AfterWebSocketConnected" -> Function[Null,
+                            EventRemove[notebookEvent];
+                            Echo["Resolved! Starting to evaluate!"];
+                            EventFire[log, "WebSocket:Kernel:Connected", notebook];
+                            EventFire[promise, Resolve, True];
+                        ],
+
+                        "WebSocketLost" -> Function[Null,
+                            EventFire[log, "WebSocket:Kernel:Lost", notebook];
+                            EventRemove[notebookEvent];
+                        ]
+                    }]
+                ];
 
 
-                        (*/* subscribe to event when Kernel dies */*)
-                        With[{cloned = EventClone[notebook["Evaluator"]["Kernel"]]},
-                            EventHandler[cloned, {
-                                "Exit" -> Function[Null,
-                                    EventRemove[cloned];
-                                    EventRemove[notebookEvent];
-                                    EventFire[log, "WebSocket:Kernel:Lost", notebook];
-                                    Echo["checkWSLink >> Kernel connection lost >> removing..."];
-                                    notebook["WebSocketQ"] = False;
-                                ]
-                            }];
+                (*/* subscribe to event when Kernel dies */*)
+                With[{cloned = EventClone[notebook["Evaluator"]["Kernel"]]},
+                    EventHandler[cloned, {
+                        "Exit" -> Function[Null,
+                            EventRemove[cloned];
+                            EventRemove[notebookEvent];
+                            EventFire[log, "WebSocket:Kernel:Lost", notebook];
+                            Echo["checkWSLink >> Kernel connection lost >> removing..."];
+                            notebook["WebSocketQ"] = False;
+                        ]
+                    }];
 
-                            (*/* destructor if connection lost */*)
-                            With[{socket = EventClone[client]},
-                                EventHandler[socket, {
-                                    "Closed" -> Function[Null,
-                                        EventRemove[socket];
-                                        EventRemove[cloned];
-                                        EventRemove[notebookEvent];
+                    (*/* destructor if connection lost */*)
+                    With[{socket = EventClone[client]},
+                        EventHandler[socket, {
+                            "Closed" -> Function[Null,
+                                EventRemove[socket];
+                                EventRemove[cloned];
+                                EventRemove[notebookEvent];
 
-                                        Echo["checkWSLink >> Socket connection lost >> removing handlers"];
-                                        EventRemove[promise // First];
-                                    ]
-                                }];
-                            ];
-                        ];                    
-                    ,
-                        Echo[result];
-                        EventFire[promise, Resolve, True];
-                    ]
-                ] ];
+                                Echo["checkWSLink >> Socket connection lost >> removing handlers"];
+                                EventRemove[promise // First];
+                            ]
+                        }];
+                    ];
+                ];                 
 
             ];
         ,
@@ -977,7 +974,7 @@ Component[OptionsPattern[]] := With[{
                 WebUISubmit[UINotebook["CreateServer"], $Client];
     
                 (* /* Establish WS Connection to a Kernel (if available) */ *)
-                checkWSLink[notebook, $Client, secret, log];
+                If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized", Then[checkWSLink[notebook, $Client, secret, log], Echo] ];
     
                 (* /* Restore cells */ *)
                 If[Length[notebook["Cells"]] > 0, With[{n = notebook}, n["FocusedCell"] = n["Cells"][[1]]] ];
@@ -1003,7 +1000,7 @@ Component[OptionsPattern[]] := With[{
             notebook["WebSocketQ"] = True;
             Then[EventFire[notebook, "OnWebSocketConnected", <|"Client" -> $Client|>], Function[Null,
                 EventFire[notebook, "AfterWebSocketConnected", <|"Client" -> $Client|>]
-            ]];
+            ] ];
         ],
 
         "WebSocketLost" -> Function[Null,
