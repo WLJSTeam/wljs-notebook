@@ -147,10 +147,12 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
 
         If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized",
             With[{
-                notebookEvent = EventClone[notebook]
+                notebookEvent = EventClone[notebook],
+                spinner = Notifications`Spinner["Topic"->"Setting up", "Body"->"Please, wait"]
             },
                 Echo["checkWSLink >> Asking to connect"];
 
+                EventFire[log, spinner, True];
                 EventFire[log, "WebSocket:Kernel:RequestConnection", notebook];
 
                 WebUISubmit[UINotebook["WSConnect", notebook["Evaluator"]["Kernel"]["WebSocket"], event , "PrefixMode"->$Env["ws2prefix"] ], client];
@@ -161,12 +163,14 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                             EventRemove[notebookEvent];
                             Echo["Resolved! Starting to evaluate!"];
                             EventFire[log, "WebSocket:Kernel:Connected", notebook];
+                            Delete[spinner];
                             EventFire[promise, Resolve, True];
                         ],
 
                         "WebSocketLost" -> Function[Null,
                             EventFire[log, "WebSocket:Kernel:Lost", notebook];
                             EventRemove[notebookEvent];
+                            Delete[spinner];
                         ]
                     }]
                 ];
