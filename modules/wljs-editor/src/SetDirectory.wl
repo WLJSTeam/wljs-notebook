@@ -28,9 +28,9 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             With[{dir = If[MemberQ[notebook["Properties"], "WorkingDirectory"],
-                    FileNameSplit[ notebook["WorkingDirectory"] ]
+                    URLEncode[ notebook["WorkingDirectory"] ]
                 ,
-                    FileNameSplit[ notebook["Path"] // DirectoryName ]
+                    URLEncode[ notebook["Path"] // DirectoryName ]
                 ]
             },
                 Echo[">> set directory (forced)"];

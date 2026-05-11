@@ -7866,7 +7866,7 @@ core.Image3D = async (args, env) => {
 
     renderer.render(scene, camera);
 
-    if (performance.now() - timeout > 100) {
+    if (performance.now() - timeout > 200) {
       console.log('sleep');
       sleeping = true;
     } else {
@@ -7884,10 +7884,7 @@ core.Image3D = async (args, env) => {
 core.Image3D.virtual = true;
 
 core.Image3D.update = async (args, env) => {
-  let data = await interpretate(args[0], {
-    ...env,
-    context: [numericAccelerator, g3d]
-  });
+  let data = await interpretate(args[0], env);
 
   if (Array.isArray(data)) {
     data = {
@@ -7899,7 +7896,7 @@ core.Image3D.update = async (args, env) => {
   const converted = imageTypes[env.local.typeName].convert(data);
   env.local.volumeTexture.image.data.set(converted.data);
   env.local.volumeTexture.needsUpdate = true;
-  env.local.wakeFunction();
+  env.local?.wakeFunction();
 };
 
 core.Image3D.destroy = (args, env) => {
