@@ -2425,7 +2425,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (pos instanceof NumericArrayObject) pos = pos.buffer;
 
     if (args.length - oLength > 2) opos = await interpretate(args[2], env);
-    //if (args.length - oLength > 3) size = await interpretate(args[3], env);
+    if (args.length - oLength > 3) size = await interpretate(args[3], env);
 
     
 
@@ -2445,17 +2445,31 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       await interpretate(args[3], env);
     }
 
+    let box;
+
     if (opts.ImageSizeRaw) {
-      size = opts.ImageSizeRaw;
+      const dims = opts.ImageSizeRaw;
+      foreignObject.attr('width', dims[0]);
+      foreignObject.attr('height', dims[1]); 
+      box = {width: dims[0], height: dims[1]};
     }
 
-    if (size) {
-      //if (typeof size === 'number') size = [size, size/1.6];
-      //size = [Math.abs(env.xAxis(size[0]) - env.xAxis(0)), Math.abs(env.yAxis(size[1]) - env.yAxis(0))];
-
-      foreignObject.attr('width', size[0]);
-      foreignObject.attr('height', size[1]);      
-      //copy.imageSize = size;
+    let possiblyNeedsScaling = false;
+    if (size && !box) {
+      if (typeof size === 'number') size = [size, size/1.6];
+      if (Array.isArray(size)) {
+        if (typeof size[0] == 'number' && typeof size[1] == 'number') {
+          size = [Math.abs(env.xAxis(size[0]) - env.xAxis(0)), Math.abs(env.yAxis(size[1]) - env.yAxis(0))];
+          box = {width: size[0], height: size[1]};
+          foreignObject.attr('width', size[0]);
+          foreignObject.attr('height', size[1]); 
+          possiblyNeedsScaling = true;
+        } else {
+          size = undefined;
+        }
+      } else {
+        size = undefined;
+      }
     } 
    
     //const instance = new ExecutableObject('feinset-'+uuidv4(), copy, args[0]);
@@ -2488,36 +2502,37 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       await makeEditorView(args[0], copy);
     }
 
-    const child = foreignObject.node();
+    if (!box || possiblyNeedsScaling) {
+      const child = foreignObject.node();
 
-    await delay(100);
+      await delay(100);
 
-    
-    
-    const h = child.offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height;
+      
+      
+      const h = child.offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height;
 
-    if (h < 10) {
-      for (let u=0; u<20; ++u) {
-        await delay(300);
-        if ((child.offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height) > 30) break;
+      if (h < 10) {
+        for (let u=0; u<20; ++u) {
+          await delay(300);
+          if ((child.offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height) > 30) break;
+        }
       }
-    }
 
 
-    let box = {width: child.offsetWidth || child.firstChild?.offsetWidth || child.firstChild?.width, height: child.offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height};
-    
+      box = {width: child.offsetWidth || child.firstChild?.offsetWidth || child.firstChild?.width, height: child. offsetHeight || child.firstChild?.offsetHeight || child.firstChild?.height};
 
-    if (box.width instanceof SVGAnimatedLength) {
-      box.width = box.width.animVal.valueInSpecifiedUnits;
-    }
 
-    if (box.height instanceof SVGAnimatedLength) {
-      box.height = box.height.animVal.valueInSpecifiedUnits;
-    }
+      if (box.width instanceof SVGAnimatedLength) {
+        box.width = box.width.animVal.valueInSpecifiedUnits;
+      }
 
-    console.warn(box);
+      if (box.height instanceof SVGAnimatedLength) {
+        box.height = box.height.animVal.valueInSpecifiedUnits;
+      }
 
-    if ((box.width < 1 || !box.width) && box.height > 1) {
+      console.warn(box);
+
+      if ((box.width < 1 || !box.width) && box.height > 1) {
       //HACK: check if this is EditorView or similar
       console.warn('cm-scroller hack');
       await delay(100);
@@ -2529,21 +2544,24 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       } else {
         box.width = box.height * 1.66;
       }
-    }
+      }
 
-    if (!size) {
-      foreignObject.attr('width', box.width);
-      foreignObject.attr('height', box.height); 
-      //size = [box.width, box.height];     
-    }
-
-
-    if ('ViewMatrix' in opts) {
-      if (!opts.ViewMatrix) {
-        foreignObject.attr('x', 0);
-        foreignObject.attr('y', 0); 
-
-        return group;
+      if (!possiblyNeedsScaling) {
+        foreignObject.attr('width', box.width);
+        foreignObject.attr('height', box.height); 
+      } else {
+        if (Math.abs(box.width - size[0]) > 2 || Math.abs(box.height - size[1]) > 2) {
+          const scaleX = size[0] / box.width;
+          const scaleY = size[1] / box.height;
+          const inner = foreignObject.node().firstChild;
+          if (inner) {
+            inner.style.transformOrigin = '0 0';
+            inner.style.transform = `scale(${scaleX}, ${scaleY})`;
+          }
+          box = { width: size[0], height: size[1] };
+        } else {
+          console.log('size matches');
+        }
       }
     }
 
@@ -2562,7 +2580,12 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
             case 'Bottom': y = 0;             break;
           }
         }
-        opos = [x, y];
+        if (typeof opos[0] == 'number' && typeof opos[1] == 'number') {
+          opos = opos;
+        } else {
+          opos = [x,y];
+        }
+        //throw opos;
       } else {
         switch(opos) {
           case 'Top':
@@ -2586,12 +2609,20 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         }
       }
       
-      if (!pos) pos = [0,0];
+      if (!Array.isArray(pos)) {
+        pos = [((env.plotRange[0][0] + env.plotRange[0][1])*0.5),
+        ((env.plotRange[1][0] + env.plotRange[1][1])*0.5)];
+      }
 
       foreignObject.attr('x', env.xAxis(pos[0]) - opos[0])
                  .attr('y', env.yAxis(pos[1]) + opos[1] - box.height);
 
     } else {
+
+      if (!Array.isArray(pos)) {
+        pos = [((env.plotRange[0][0] + env.plotRange[0][1])*0.5),
+        ((env.plotRange[1][0] + env.plotRange[1][1])*0.5)];
+      }
 
       foreignObject.attr('x', env.xAxis(pos[0]) - opos[0])
                  .attr('y', env.yAxis(pos[1]) + opos[1] - box.height);
