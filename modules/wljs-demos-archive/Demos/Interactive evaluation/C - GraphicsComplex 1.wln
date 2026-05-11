@@ -18,7 +18,7 @@ Type: Input
 .md
 # GraphicsComplex: A Direct Pipeline to Your GPU
 
-Most high-level plotting functions hide the machinery behind a convenient interface. You call `ListPlot3D`, you get a surface -- magic. But what if you want to control every vertex, every triangle, every color? What if you need to push 10³ animated points at least at 30 fps?
+Most high-level plotting functions hide the machinery behind a convenient interface. You call `ListPlot3D`, you get a surface -- magic. But what if you want to control every vertex, every triangle, every color? What if you need to push 10ï¿½ animated points at least at 30 fps?
 
 This is where `GraphicsComplex` comes in...
 
@@ -38,7 +38,7 @@ Type: Output
 %-------------------------------------------------------------------------%
 # GraphicsComplex: A Direct Pipeline to Your GPU
 
-Most high-level plotting functions hide the machinery behind a convenient interface. You call `ListPlot3D`, you get a surface -- magic. But what if you want to control every vertex, every triangle, every color? What if you need to push 10³ animated points at least at 30 fps?
+Most high-level plotting functions hide the machinery behind a convenient interface. You call `ListPlot3D`, you get a surface -- magic. But what if you want to control every vertex, every triangle, every color? What if you need to push 10ï¿½ animated points at least at 30 fps?
 
 This is where `GraphicsComplex` comes in...
 
@@ -451,7 +451,12 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-<Callout type="info">
+For high polygon counts, always use the raw RGB form:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
 For high polygon counts, always use the raw RGB form:
 
 %-------------------------------------------------------------------------%
@@ -466,7 +471,16 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 This skips color expression evaluation and goes straight to the GPU buffer.
-</Callout>
+
+### Texture mapping
+
+You can map images onto geometry using `VertexTextureCoordinates` (UV coordinates):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This skips color expression evaluation and goes straight to the GPU buffer.
 
 ### Texture mapping
 
