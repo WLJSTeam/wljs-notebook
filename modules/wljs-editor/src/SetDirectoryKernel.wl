@@ -11,9 +11,9 @@ EventHandler["KernelDir", Function[path,
     ];    
 ] ];
 
-NotebookDirectorySet[dir_List] := (
-    SetDirectory[ dir // URLDecode ];
-)
+NotebookDirectorySet[dir_] := (
+    SetDirectory[ dir ];
+);
 
   (*NotebookDirectoryAppend[dir_List] := (
    skip this ...

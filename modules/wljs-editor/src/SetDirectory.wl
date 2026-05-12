@@ -27,16 +27,9 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
     Echo["Attach event listeners to notebook from EXTENSION"];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
-            With[{dir = If[MemberQ[notebook["Properties"], "WorkingDirectory"],
-                    URLEncode[ notebook["WorkingDirectory"] ]
-                ,
-                    URLEncode[ notebook["Path"] // DirectoryName ]
-                ]
-            },
+            With[{dir = notebook["Path"] // DirectoryName},
                 Echo[">> set directory (forced)"];
-                GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
-                        CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectorySet[dir];
-                ] ];
+                GenericKernel`Send[notebook["Evaluator"]["Kernel"], CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectorySet[dir]; ];
             ];
             (*With[{dir = FileNameSplit[ notebook["Path"] // DirectoryName ]},
                 GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
