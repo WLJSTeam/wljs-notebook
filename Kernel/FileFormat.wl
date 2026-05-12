@@ -51,7 +51,7 @@ utf8[n_] := Which[
 
 toMMAUTF8[str_String] := FromCharacterCode[
   SequenceReplace[
-    ExportString[str, "String"] // ToCharacterCode,
+    ExportString[str, "Text"] // ToCharacterCode,
     {
       {92, 124,
         a_?hexDigitCodeQ,
