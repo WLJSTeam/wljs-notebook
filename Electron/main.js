@@ -514,6 +514,7 @@ pluginsMenu.fetch = () => {
 
             if (package["wljs-meta"]["electron"]) {
                 loadElectronExtension(package["wljs-meta"]["electron"], p);
+                
             }
         }
     }
@@ -3090,6 +3091,12 @@ function start_server (window) {
 //applicable only to the first time!!!
 function create_first_window() {
     
+    loadedElectronExtensions.forEach(fn => {
+        console.log('loading ...', fn);
+        const g = require(fn);
+        if (g.epilog) g.epilog(app, {}, []); else g(app, {}, []);
+    });
+
 
     const parsedCommndLine = parseArgs(process.argv);
     const commandOnly = parsedCommndLine.a;
@@ -3174,12 +3181,6 @@ function create_first_window() {
     create_window({url: server.url.default(), title: 'Notebook', show: true, focus: false});
     server.wasUpdated = false;
 
-    
-    loadedElectronExtensions.forEach(fn => {
-        console.log('loading ...', fn);
-        const g = require(fn);
-        if (g.epilog) g.epilog(app, {}, []); else g(app, {}, []);
-    });
 }
 
 
