@@ -1,7 +1,7 @@
 <h1 align="center">WLJS Notebook</h1>
 <h2 align="center">Open-source Notebook interface for Wolfram Language</h2>
 
-Typeset math input, syntactic sugar, multiple languages, and a fast, granular evaluation engine
+Typeset math input, syntactic sugar and full interactivty
 
 ![Preview](imgs/Toster.png)
 
