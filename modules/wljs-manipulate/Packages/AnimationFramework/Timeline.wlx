@@ -283,7 +283,7 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
       const m = Math.floor((seconds / 60) % 60);
       const h = Math.floor(seconds / 3600);
       return h
-        ? `${h}:${m.toString().padStart(2, '0')}:{s.toString().padStart(2, '0')}`
+        ? `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
         : `${m}:${s.toString().padStart(2, '0')}`;
     }
 
@@ -497,7 +497,6 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
         markers.forEach(clip => {
           // audio
           if (clip._originalBlob) {
-            URL.revokeObjectURL(clip._originalBlob);
             clip._originalBlob = null;
           }
           // waveform image
@@ -785,8 +784,10 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
       if (idx !== -1) markers.splice(idx, 1);
     
       // 2) Revoke any blob URLs
-      if (clip._waveformURL) {
-        URL.revokeObjectURL(clip._waveformURL);
+      if (clip._waveformBg) {
+        const bgUrl = clip._waveformBg.style.backgroundImage.match(/url\((.+)\)/)?.[1];
+        if (bgUrl) URL.revokeObjectURL(bgUrl);
+        clip._waveformBg = null;
       }
     
       // 3) Dereference the AudioBuffer so it can be GC’d
