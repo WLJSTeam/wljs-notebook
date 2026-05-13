@@ -206,7 +206,14 @@ function findSkillDocs(query) {
   if (["all", "skills", "skill", "index", "docs"].includes(q.trim())) return SKILL_DOCS;
   return SKILL_DOCS.filter((doc) => {
     if (q.includes(doc.key.toLowerCase()) || doc.title.toLowerCase().includes(q)) return true;
-    return doc.aliases.some((alias) => q.includes(alias.toLowerCase()));
+    return doc.aliases.some((alias) => {
+      const a = alias.toLowerCase();
+      const idx = q.indexOf(a);
+      if (idx === -1) return false;
+      const before = idx === 0 || !/[a-z0-9]/.test(q[idx - 1]);
+      const after = idx + a.length === q.length || !/[a-z0-9]/.test(q[idx + a.length]);
+      return before && after;
+    });
   });
 }
 
@@ -579,9 +586,10 @@ register(
         "Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot.",
       ),
     LinesCount: z.number().int().positive().optional().default(60),
+    WolframOnly: z.boolean().optional().default(false).describe("Skip bundled WLJS skill docs and go directly to Wolfram Language documentation."),
   },
-  async ({ Query, LinesCount }) => {
-    const localMatches = findSkillDocs(Query);
+  async ({ Query, LinesCount, WolframOnly }) => {
+    const localMatches = WolframOnly ? [] : findSkillDocs(Query);
 
     if (localMatches.length > 0) {
       return {
@@ -1558,8 +1566,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
 
     case "docs": {
-      const Query = requireCliArg(args.join(" "), "Usage: wljs docs <query>");
-      writeJson(stdout, await cliConsultDocs(Query));
+      const opts = parseCliOptions(args.filter((a) => a.startsWith("--")));
+      const positional = args.filter((a) => !a.startsWith("--"));
+      const Query = requireCliArg(positional.join(" "), "Usage: wljs docs <query> [--wl-only]");
+      writeJson(stdout, await cliConsultDocs(Query, 60, !!(opts["wl-only"] ?? opts.wolframOnly)));
       return 0;
     }
 
@@ -1838,8 +1848,8 @@ function extractCliCellId(value) {
   return null;
 }
 
-async function cliConsultDocs(Query, LinesCount = 60) {
-  const localMatches = findSkillDocs(Query);
+async function cliConsultDocs(Query, LinesCount = 60, wolframOnly = false) {
+  const localMatches = wolframOnly ? [] : findSkillDocs(Query);
 
   if (localMatches.length > 0) {
     return {
