@@ -937,7 +937,7 @@ FormatValues[timelined] = {};
 
 fetchNext[f_, w_, cbk_] := Then[FrontFetchAsync[f, "Window"->w, "Format"->"RawJSON"], cbk ]
 
-timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime, delta, seekTime = 0, seekingTask = Null}, With[{
+timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime, delta, seekTime = 0, seekingTask = Null, seekTarget = 0}, With[{
   w = CurrentWindow[], tick = Unique["af"], uid = CreateUUID[], s = t["Scene"],
   timelineEvents = CreateUUID[],
   tickHandlerSymbol = Unique["af"],
@@ -1035,9 +1035,11 @@ timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime
       ],
 
       "seek" -> Function[pos,
+        seekTarget = pos;
         If[seekingTask =!= Null, Return[] ];
-        If[pos > delta && s["Paused"] == True,
+        If[seekTarget > delta && s["Paused"] == True,
           seekTime = delta;
+          s["Paused"] = False;
 
           FrontSubmit[timelineControls["SeekingBlock", True ], "Window"->s["Window"] ];
 
@@ -1050,7 +1052,7 @@ timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime
             seekTime += 1/15.0;
             tick = seekTime;
             If[seekingTask === Null, Return[] ];
-            If[seekTime > pos - 1/15.0 || s["Paused"] === True,
+            If[seekTime > seekTarget - 1/15.0 || s["Paused"] === True,
 
               FrontSubmit[timelineControls["SeekingBlock", False ], "Window"->s["Window"] ];
               If[seekingTask =!= Null, TaskRemove[seekingTask] ];
@@ -1062,11 +1064,11 @@ timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime
                 AbsoluteTime[] - startingTime + delta
               ];
             ];
-          , 4]; 
+          , 4];
         ,
           delta = 0;
-
-          
+          s["State"] = False;
+          s["Paused"] = False;
 
           AnimationFramework`Remove[s];
 
@@ -1079,26 +1081,21 @@ timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime
                 seekTime
           ];
 
-
           With[{r = ReleaseHold[t["Function"] ]},
-
             Then[r[s], Function[result,
               s["State"] = False;
               delta = 0;
               FrontSubmit[timelineControls["State", s["State"] ], "Window"->s["Window"] ];
               tick = 0;
-            ] ]; 
+            ] ];
           ];
-          
-
-
 
           seekingTask = SetInterval[
             s["FrameHandler"][seekTime];
             seekTime += 1/15.0;
             tick = seekTime;
             If[seekingTask === Null, Return[] ];
-            If[seekTime > pos - 1/15.0 || s["Paused"] === True,
+            If[seekTime > seekTarget - 1/15.0 || s["Paused"] === True,
               If[seekingTask =!= Null, TaskRemove[seekingTask] ];
               FrontSubmit[timelineControls["SeekingBlock", False ], "Window"->s["Window"] ];
               s["Paused"] = True;
@@ -1107,10 +1104,9 @@ timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime
 
               timer = Function[Null,
                 AbsoluteTime[] - startingTime + delta
-              ];              
+              ];
             ];
-          , 4];          
-        
+          , 4];
 
         ]
       ]

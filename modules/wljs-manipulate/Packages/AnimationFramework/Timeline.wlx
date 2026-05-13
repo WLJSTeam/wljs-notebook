@@ -271,6 +271,7 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
     const markers = [];
     let clickTimer = null;
     let ignoreClick = false; // to skip click after editing
+    let pointerSeekActive = false;
 
     function getSnapPixels() {
       const res = parseFloat(snapResolution?.value || 1);
@@ -1084,15 +1085,10 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
       timeline.appendChild(marker);
     }
 
-    timelineContainer.addEventListener('click', e => {
-      if (seekingInProgress || ignoreAllClicks) {
-        e.preventDefault();
-        e.stopPropagation();
-        return;
-      }
+    let seekClickTimer = null;
 
-      if (ignoreClick) { ignoreClick = false; return; }
-      if (timelineIsPlaying) return;
+    timelineContainer.addEventListener('mousedown', e => {
+      if (ignoreAllClicks) return;
       const target = e.target;
       if (
         target.closest('.mod-marker') ||
@@ -1101,27 +1097,60 @@ Component[TEvent_, HandlerSymbol1_, HandlerSymbol2_] := With[{UId = CreateUUID[]
         target.classList.contains('mod-marker-input') ||
         target.classList.contains('mod-marker-resize') ||
         target.classList.contains('handle')
-      ) {
+      ) return;
+      if (e.button !== 0) return;
+
+      pointerSeekActive = true;
+      let isDragging = false;
+      const downX = e.clientX;
+      let lastSeekFire = 0;
+
+      function doSeek(clientX) {
+        const now = performance.now();
+        if (now - lastSeekFire < 50) return;
+        lastSeekFire = now;
+        const rect = timelineContainer.getBoundingClientRect();
+        const x = Math.max(0, clientX - rect.left + timelineContainer.scrollLeft);
+        cursorTime = x / (baseScale * 100);
+        cursor.style.transform = `translateX(${x}px)`;
+        server.kernel.io.fire('<TEvent/>', cursorTime, 'seek');
+      }
+
+      function onSeekMove(ev) {
+        if (Math.abs(ev.clientX - downX) > 4) isDragging = true;
+        if (isDragging) doSeek(ev.clientX);
+      }
+      function onSeekUp(ev) {
+        pointerSeekActive = false;
+        document.removeEventListener('mousemove', onSeekMove);
+        document.removeEventListener('mouseup', onSeekUp);
+        if (!isDragging) {
+          // delay so dblclick can cancel before we seek
+          clearTimeout(seekClickTimer);
+          seekClickTimer = setTimeout(() => doSeek(ev.clientX), 220);
+        }
+      }
+      document.addEventListener('mousemove', onSeekMove);
+      document.addEventListener('mouseup', onSeekUp);
+    });
+
+    timelineContainer.addEventListener('click', e => {
+      if (seekingInProgress || ignoreAllClicks) {
+        e.preventDefault();
+        e.stopPropagation();
         return;
       }
-      clearTimeout(clickTimer);
-      clickTimer = setTimeout(() => {
-        const rect = timelineContainer.getBoundingClientRect();
-        const x = e.clientX - rect.left + timelineContainer.scrollLeft;
-        cursorTime = x / (baseScale * 100);
-        /*cursor.style.transform = `translateX(${x}px)`;
-        timelineContainer.scrollLeft = x - timelineContainer.clientWidth / 2;*/
-        server.kernel.io.fire('<TEvent/>', cursorTime, 'seek');
-      }, 200);
+      if (ignoreClick) { ignoreClick = false; return; }
     });
 
     timelineContainer.addEventListener('dblclick', e => {
       if (seekingInProgress || ignoreAllClicks) {
         e.preventDefault();
-        e.stopPropagation();        
+        e.stopPropagation();
         return;
       }
       clearTimeout(clickTimer);
+      clearTimeout(seekClickTimer);
       e.preventDefault();
       e.stopPropagation();
       
