@@ -2,7 +2,7 @@
 
 PacletObject[
   <|
-    "Name" -> "CoffeeLiqueur/CSockets",
+    "Name" -> "CoffeeLiqueur/CUSockets",
     "Description" -> "Sockets powered by C and UV",
     "Creator" -> "Kirill Belov",
     "License" -> "MIT",

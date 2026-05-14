@@ -13,7 +13,7 @@ PacletObject[
       {
         "Kernel",
         "Root" -> "Kernel",
-        "Context" -> {"CoffeeLiqueur`TCPUServer`"},
+        "Context" -> {{"CoffeeLiqueur`TCPUServer`", "TCPServer.wl"}},
         "Symbols" -> {}
       },
       {"Documentation", "Language" -> "English"},

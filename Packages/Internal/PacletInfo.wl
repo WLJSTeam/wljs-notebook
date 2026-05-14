@@ -2,7 +2,7 @@
 
 PacletObject[
 	<|
-		"Name" -> "CoffeeLiqueur/Internal", 
+		"Name" -> "CoffeeLiqueur/UInternal", 
 		"Description" -> "Internal", 
 		"Creator" -> "Kirill Belov", 
 		"License" -> "MIT", 
@@ -13,7 +13,7 @@ PacletObject[
 			{
 				"Kernel", 
 				"Root" -> "Kernel", 
-				"Context" -> {"CoffeeLiqueur`UInternal`"}, 
+				"Context" -> {{"CoffeeLiqueur`UInternal`", "Internal.wl"}}, 
 				"Symbols" -> {}
 			}, 
 			{
