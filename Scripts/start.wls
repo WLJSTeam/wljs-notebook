@@ -146,13 +146,15 @@ With[{appJSON = Import[FileNameJoin[{Directory[], "package.json"}], "RawJSON"]},
 ];
 
 
-versionToNumber[ver_String] := FromDigits[ToExpression@StringSplit[ver, "."], 1000];
+If[!NumberQ[$VersionNumber], 
+  Echo["Warning: your Wolfram Kernel version is unknown. We do not guarantee it will work"];
+];
 
-If[versionToNumber[$VersionNumber] > versionToNumber["14.2"],
+If[$VersionNumber > 14.3,
   Echo["Warning: your Wolfram Kernel version is higher, that tested with WLJS Notebook. We do not guarantee it will work"];
 ];
 
-If[versionToNumber[$VersionNumber] < versionToNumber["13.3"],
+If[$VersionNumber < 13.3,
   Echo["Error: your Wolfram Kernel version is older than 13.3. WLJS App won't work. We are sorry"];
   Echo["You can always download a freeware Wolfram Engine"];
   Exit[-1];
