@@ -19,7 +19,7 @@ Begin["`Private`"]
 
 definedBoxes = {};
 
-CreateType[BlackBox, init, {"Priority" -> 100}];
+CreateUType[BlackBox, init, {"Priority" -> 100}];
 init[box_] := With[{uid = CreateUUID[]},
   box["UId"] = uid;
   box

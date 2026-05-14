@@ -59,7 +59,7 @@ Begin["`Private`"];
 (*Cosntructor*)
 
 
-CreateType[TCPUServer, {
+CreateUType[TCPUServer, {
 	"Logger", 
 	"Buffer" -> <||>, 
 	"CompleteHandler" -> <||>, 

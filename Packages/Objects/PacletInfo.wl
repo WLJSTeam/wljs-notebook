@@ -18,10 +18,10 @@ PacletObject[
           {"CoffeeLiqueur`Objects`", "Objects.wl"}
         },
         "Symbols" -> {
-          "CoffeeLiqueur`Objects`CreateType",
-          "CoffeeLiqueur`Objects`Object",
-          "CoffeeLiqueur`Objects`ObjectQ",
-          "CoffeeLiqueur`Objects`TypeQ"
+          "CoffeeLiqueur`Objects`CreateUType",
+          "CoffeeLiqueur`Objects`UObject",
+          "CoffeeLiqueur`Objects`UObjectQ",
+          "CoffeeLiqueur`Objects`UTypeQ"
         }
       },
       {"Documentation", "Language" -> "English"},

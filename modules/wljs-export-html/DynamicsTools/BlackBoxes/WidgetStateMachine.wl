@@ -30,7 +30,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`" -> "dynamicAnalyz
 
 Echo["BlackBox :: WidgetStateMachine"];
 
-CreateType[stateMachine, blackBox`BlackBox];
+CreateUType[stateMachine, blackBox`BlackBox];
 
 blackBox`definedBoxes = Append[blackBox`definedBoxes, stateMachine];
 

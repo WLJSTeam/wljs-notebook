@@ -78,8 +78,8 @@
   "info" -> "EvaluationNotebook[] gives the notebook in which this function \
 is being evaluated. "|>, <|"label" -> "Let", "type" -> "keyword", 
   "info" -> "A With-like construction that allows recursive assignments, like \
-Let* in scheme"|>, <|"label" -> "CreateType", "type" -> "keyword", 
-  "info" -> "CreateType[type, parent, init, {fields}] create type"|>, 
+Let* in scheme"|>, <|"label" -> "CreateUType", "type" -> "keyword", 
+  "info" -> "CreateUType[type, parent, init, {fields}] create type"|>, 
  <|"label" -> "Button", "type" -> "keyword", "info" -> "Button[<i>label</i>,<\
 i>action</i>] represents a button that is labeled with <i>label</i>, and \
 evaluates <i>action</i> whenever it is clicked. "|>, 

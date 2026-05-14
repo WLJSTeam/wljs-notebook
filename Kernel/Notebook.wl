@@ -32,7 +32,7 @@ initNotebook[o_] := With[{uid = If[StringQ[o["Hash"] ] && o["Hash"] =!= Null, o[
 ]
 
 
-CreateType[NotebookObj, initNotebook, {"EvaluationContext"-><||>, "Cells"->{}, "ObjectFields"->{} }]
+CreateUType[NotebookObj, initNotebook, {"EvaluationContext"-><||>, "Cells"->{}, "ObjectFields"->{} }]
 
 NotebookObj /: EventHandler[n_NotebookObj, opts__] := EventHandler[n["Hash"], opts] 
 NotebookObj /: EventFire[n_NotebookObj, opts__] := EventFire[n["Hash"], opts]

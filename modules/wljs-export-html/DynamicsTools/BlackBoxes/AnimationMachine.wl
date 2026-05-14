@@ -28,7 +28,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
 Echo["BlackBox :: AnimationMachine"];
 
-CreateType[animationMachine, blackBox`BlackBox];
+CreateUType[animationMachine, blackBox`BlackBox];
 
 blackBox`definedBoxes = Append[blackBox`definedBoxes, animationMachine];
 

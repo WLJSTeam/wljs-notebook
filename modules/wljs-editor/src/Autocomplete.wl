@@ -90,7 +90,7 @@ initWindow[o_] := With[{uid = CreateUUID[]},
     o
 ];
 
-CreateType[DocWindow, initWindow, {}];
+CreateUType[DocWindow, initWindow, {}];
 
 DocWindow /: DeleteObject[d_DocWindow] := With[{uid = d["UId"]},
     DocWindowHashMap[uid] = .;

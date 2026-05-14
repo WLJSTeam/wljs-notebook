@@ -112,7 +112,7 @@ Module[{head},
 (*HTTPUHandler*)
 
 
-CreateType[HTTPUHandler, {
+CreateUType[HTTPUHandler, {
 	"MessageHandler" -> <||>, 
 	"DefaultMessageHandler" -> $messageHandler, 
 	"Deserializer" -> <||>, 

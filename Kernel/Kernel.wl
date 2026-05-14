@@ -22,7 +22,7 @@ init[o_] := With[{uid = CreateUUID[]},
     o
 ];
 
-CreateType[Kernel, init, {"Packages"->{}, "Name"->"Unknown Kernel", "Dead"->True}]
+CreateUType[Kernel, init, {"Packages"->{}, "Name"->"Unknown Kernel", "Dead"->True}]
 
 Kernel /: KernelQ[_Kernel] := True
 

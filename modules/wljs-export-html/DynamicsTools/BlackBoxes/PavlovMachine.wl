@@ -26,7 +26,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
 Echo["BlackBox :: PavlovMachine"];
 
-CreateType[pavlovMachine, blackBox`BlackBox];
+CreateUType[pavlovMachine, blackBox`BlackBox];
 
 blackBox`definedBoxes = Append[blackBox`definedBoxes, pavlovMachine];
 

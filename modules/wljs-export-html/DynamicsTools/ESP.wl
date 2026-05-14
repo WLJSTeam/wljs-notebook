@@ -8,7 +8,7 @@ Begin["`Tools`"]
 
 HashMap = <||>
 
-CreateType[WidgetLike, init, {"Online"->False, "Interpolation"->True, "Hash"->Null, "Notebook"->Null, "Meta"-><|"Description"->"Generic"|>, "Ranges"->{}, "ResetStateFunction"->(Null&)}]
+CreateUType[WidgetLike, init, {"Online"->False, "Interpolation"->True, "Hash"->Null, "Notebook"->Null, "Meta"-><|"Description"->"Generic"|>, "Ranges"->{}, "ResetStateFunction"->(Null&)}]
 
 ChangeState[w_WidgetLike, "Online"] := w["Online"] = True
 ChangeState[w_WidgetLike, "Offline"] := w["Online"] = False
@@ -77,7 +77,7 @@ Serialize[r_WidgetLike] := With[{
 ]
 
 
-CreateType[RangeSet, init, {
+CreateUType[RangeSet, init, {
     "Range"->{},
     "ReducedRange"->{},
     "Type"->"Range",

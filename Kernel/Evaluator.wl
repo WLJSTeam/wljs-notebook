@@ -19,7 +19,7 @@ init[o_] := With[{uid = CreateUUID[]},
     o
 ];
 
-CreateType[StandardEvaluator, init, {"Priority"->Infinity, "InitKernel"->Identity, "Pattern"->(_), "Name"->"Untitled Static Evaluator"}]
+CreateUType[StandardEvaluator, init, {"Priority"->Infinity, "InitKernel"->Identity, "Pattern"->(_), "Name"->"Untitled Static Evaluator"}]
 
 (* static structure with a single instance or??? *)
 Container[k_(*Kernel*)] := Module[{},

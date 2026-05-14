@@ -15,20 +15,20 @@ BeginPackage["CoffeeLiqueur`Objects`"];
 (*Names*)
 
 
-CreateType::usage = 
-"CreateType[type, parent, init, {fields}] create type"; 
+CreateUType::usage = 
+"CreateUType[type, parent, init, {fields}] create type"; 
 
 
-Object::usage = 
-"Object[] base mutable object."; 
+UObject::usage = 
+"UObject[] base mutable object."; 
 
 
-TypeQ::usage = 
-"TypeQ[name] check that name is type"; 
+UTypeQ::usage = 
+"UTypeQ[name] check that name is type"; 
 
 
-ObjectQ::usage = 
-"ObjectQ[expr] check that expr is mutable object"; 
+UObjectQ::usage = 
+"UObjectQ[expr] check that expr is mutable object"; 
 
 
 (* ::Section::Closed:: *)
@@ -39,26 +39,26 @@ Begin["`Private`"];
 
 
 (* ::Section:: *)
-(*Object constructor*)
+(*UObject constructor*)
 
 
-SetAttributes[Object, HoldFirst]; 
+SetAttributes[UObject, HoldFirst]; 
 
 
 $objectDefaultIcon = 
 Import[FileNameJoin[{DirectoryName[$InputFileName, 2], "Images", "ObjectIcon.png"}]]; 
 
 
-Options[Object] = {
+Options[UObject] = {
     "Icon" :> $objectDefaultIcon, 
     "Init" -> Identity, 
     "PublicFields" -> {"Properties"}
 }; 
 
 
-Object[opts: OptionsPattern[]] := 
-With[{symbol = Unique[Context[Object] <> SymbolName[Object] <> "`$"], 
-    fullOpts = Normal[Join[<|Options[Object]|>, <|Flatten[{opts}]|>]]}, 
+UObject[opts: OptionsPattern[]] := 
+With[{symbol = Unique[Context[UObject] <> SymbolName[UObject] <> "`$"], 
+    fullOpts = Normal[Join[<|Options[UObject]|>, <|Flatten[{opts}]|>]]}, 
     symbol = <||>; 
     Table[opt /. {
         _[k_String, v_] :> SetDelayed[symbol[k], v], 
@@ -66,34 +66,34 @@ With[{symbol = Unique[Context[Object] <> SymbolName[Object] <> "`$"],
     }, {opt, fullOpts}]; 
     symbol["Self"] := symbol; 
     symbol["Properties"] := Keys[symbol]; 
-    symbol["Init"] @ Object[symbol]; 
-    Return[Object[symbol]]
+    symbol["Init"] @ UObject[symbol]; 
+    Return[UObject[symbol]]
 ]; 
 
 
-Object[assoc_Association] := 
+UObject[assoc_Association] := 
 If[KeyExistsQ[assoc, "Self"], 
-    Object["Self"] /. assoc, 
+    UObject["Self"] /. assoc, 
 (*Else*)
-    With[{symbol = Unique[Context[Object] <> SymbolName[Object] <> "`$"]}, 
+    With[{symbol = Unique[Context[UObject] <> SymbolName[UObject] <> "`$"]}, 
         symbol = assoc; 
         symbol["Self"] := symbol; 
         symbol["Properties"] := Keys[symbol]; 
-        If[KeyExistsQ[symbol, "Init"], symbol["Init"] @ Object[symbol]]; 
-        Object[symbol]
+        If[KeyExistsQ[symbol, "Init"], symbol["Init"] @ UObject[symbol]]; 
+        UObject[symbol]
     ]
 ]; 
 
 
-Object[assoc: Except[_Symbol | _Association] ? AssociationQ] := 
-With[{a = assoc}, Object[a]]; 
+UObject[assoc: Except[_Symbol | _Association] ? AssociationQ] := 
+With[{a = assoc}, UObject[a]]; 
 
 
 (* ::Section::Closed:: *)
 (*DeleteObject*)
 
 
-Object /: DeleteObject[Object[symbol_Symbol]] := 
+UObject /: DeleteObject[UObject[symbol_Symbol]] := 
 Remove[symbol]; 
 
 
@@ -101,27 +101,27 @@ Remove[symbol];
 (* Normal*)
 
 
-Object /: Normal[Object[symbol_Symbol]] := 
+UObject /: Normal[UObject[symbol_Symbol]] := 
 symbol; 
 
 
 (* ::Section::Closed:: *)
-(*TypeQ Object*)
+(*UTypeQ UObject*)
 
 
-Object /: TypeQ[Object] = 
+UObject /: UTypeQ[UObject] = 
 True; 
 
 
 (* ::Section::Closed:: *)
-(*ObjectQ Object*)
+(*UObjectQ UObject*)
 
 
-ObjectQ[___] := 
+UObjectQ[___] := 
 False; 
 
 
-Object /: ObjectQ[Object[symbol_Symbol]] = 
+UObject /: UObjectQ[UObject[symbol_Symbol]] = 
 True; 
 
 
@@ -129,19 +129,19 @@ True;
 (*Get*)
 
 
-Object[symbol_Symbol][key_String] := 
+UObject[symbol_Symbol][key_String] := 
 symbol[key]; 
 
 
-Object[symbol_Symbol][key_Symbol] := 
+UObject[symbol_Symbol][key_Symbol] := 
 symbol[SymbolName[key]]; 
 
 
-Object[symbol_Symbol][key_String, keys__] := 
+UObject[symbol_Symbol][key_String, keys__] := 
 symbol[key][keys]; 
 
 
-Object[symbol_Symbol][key_Symbol, keys__] := 
+UObject[symbol_Symbol][key_Symbol, keys__] := 
 symbol[SymbolName[key]][keys]; 
 
 
@@ -149,27 +149,27 @@ symbol[SymbolName[key]][keys];
 (*Set*)
 
 
-Object /: Set[Object[symbol_Symbol][key_String], value_] := 
+UObject /: Set[UObject[symbol_Symbol][key_String], value_] := 
 symbol[key] = value; 
 
 
-Object /: SetDelayed[Object[symbol_Symbol][key_String], value_] := 
+UObject /: SetDelayed[UObject[symbol_Symbol][key_String], value_] := 
 symbol[key] := value; 
 
 
-Object /: Set[Object[symbol_Symbol][key_Symbol], value_] := 
+UObject /: Set[UObject[symbol_Symbol][key_Symbol], value_] := 
 With[{k = SymbolName[key]}, symbol[k] = value]; 
 
 
-Object /: SetDelayed[Object[symbol_Symbol][key_Symbol], value_] := 
+UObject /: SetDelayed[UObject[symbol_Symbol][key_Symbol], value_] := 
 With[{k = SymbolName[key]}, symbol[k] := value]; 
 
 
-Object /: Set[Object[symbol_Symbol][keys__, key_], value_] := 
-With[{part = Object[symbol][keys]}, 
+UObject /: Set[UObject[symbol_Symbol][keys__, key_], value_] := 
+With[{part = UObject[symbol][keys]}, 
     Which[
         AssociationQ[part], 
-            Object[symbol][keys] = Append[part, key -> value], 
+            UObject[symbol][keys] = Append[part, key -> value], 
         True, 
             part[key] = value
     ]; 
@@ -177,28 +177,28 @@ With[{part = Object[symbol][keys]},
 ]; 
 
 
-Object /: SetDelayed[Object[symbol_Symbol][keys__, key_], value_] := 
-With[{part = Object[symbol][keys]}, 
+UObject /: SetDelayed[UObject[symbol_Symbol][keys__, key_], value_] := 
+With[{part = UObject[symbol][keys]}, 
     Which[
         AssociationQ[part], 
-            Object[symbol][keys] = Append[part, key :> value], 
+            UObject[symbol][keys] = Append[part, key :> value], 
         True, 
             part[key] := value
     ]; 
 ]; 
 
 
-Object /: Set[Object[symbol_Symbol][keys__, key_Symbol], value_] := 
-With[{k = SymbolName[key]}, Object[symbol][keys, k] = value]; 
+UObject /: Set[UObject[symbol_Symbol][keys__, key_Symbol], value_] := 
+With[{k = SymbolName[key]}, UObject[symbol][keys, k] = value]; 
 
 
-Object /: SetDelayed[Object[symbol_Symbol][keys__, key_Symbol], value_] := 
-With[{k = SymbolName[key]}, Object[symbol][keys, k] := value]; 
+UObject /: SetDelayed[UObject[symbol_Symbol][keys__, key_Symbol], value_] := 
+With[{k = SymbolName[key]}, UObject[symbol][keys, k] := value]; 
 
 
-Object /: Set[name_Symbol, object_Object] := (
+UObject /: Set[name_Symbol, object_UObject] := (
     ClearAll[name]; 
-    Block[{Object}, SetAttributes[Object, HoldFirst]; name = object]; 
+    Block[{UObject}, SetAttributes[UObject, HoldFirst]; name = object]; 
     name /: Set[name[keys__], value_] := object[keys] = value; 
     name /: SetDelayed[name[keys__], value_] := object[keys] := value; 
     name /: Unset[name[key_String]] := Unset[object[key]]; 
@@ -210,7 +210,7 @@ Object /: Set[name_Symbol, object_Object] := (
 (*UnSet*)
 
 
-Object /: Unset[Object[symbol_Symbol][key_String]] := 
+UObject /: Unset[UObject[symbol_Symbol][key_String]] := 
 Unset[symbol[key]]; 
 
 
@@ -218,7 +218,7 @@ Unset[symbol[key]];
 (*Summary Box*)
 
 
-Object /: MakeBoxes[object: Object[symbol_Symbol?AssociationQ], form: (StandardForm | TraditionalForm)] := 
+UObject /: MakeBoxes[object: UObject[symbol_Symbol?AssociationQ], form: (StandardForm | TraditionalForm)] := 
 Module[{above, below}, 
     above = Join[
         {{BoxForm`SummaryItem[{"Self: ", Defer["Self"] /. symbol}], SpanFromLeft}}, 
@@ -233,10 +233,10 @@ Module[{above, below},
 
 
 (* ::Section::Closed:: *)
-(*TypeQ*)
+(*UTypeQ*)
 
 
-TypeQ[___] := 
+UTypeQ[___] := 
 False; 
 
 
@@ -244,7 +244,7 @@ False;
 (*Create type*)
 
 
-CreateType[type_Symbol, parent_Symbol?TypeQ, init: _Symbol | _Function, fields_Association] := 
+CreateUType[type_Symbol, parent_Symbol?UTypeQ, init: _Symbol | _Function, fields_Association] := 
 Module[{
     messages = Messages[type], 
     upValues = UpValues[type],
@@ -252,7 +252,7 @@ Module[{
     downValues = DownValues[type]
 }, 
     ClearAll[type]; 
-    type /: TypeQ[type] = True; 
+    type /: UTypeQ[type] = True; 
     Language`ExtendedFullDefinition[type] = Language`ExtendedFullDefinition[parent] /. parent -> type; 
     Messages[type] = Normal[<|Messages[type], messages|>];
     UpValues[type] = Normal[<|UpValues[type], upValues|>];
@@ -263,7 +263,7 @@ Module[{
 ]; 
 
 
-CreateType[type_Symbol, parent: _Symbol?TypeQ: Object, init: _Symbol | _Function: Automatic, fields_List: {}] := 
+CreateUType[type_Symbol, parent: _Symbol?UTypeQ: UObject, init: _Symbol | _Function: Automatic, fields_List: {}] := 
 Module[{assoc = Association[Map[
     Switch[#, 
         _String -> _, #, 
@@ -274,7 +274,7 @@ Module[{assoc = Association[Map[
         _String :> _, #
     ]&
 ] @ fields]}, 
-    CreateType[type, parent, init, assoc]
+    CreateUType[type, parent, init, assoc]
 ]; 
 
 

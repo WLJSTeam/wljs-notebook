@@ -106,7 +106,7 @@ Module[{serializer, message},
 ]; 
 
 
-CreateType[WebSocketUChannel, init, {
+CreateUType[WebSocketUChannel, init, {
 	"Name", 
 	"Serializer" -> $serializer, 
 	"Connections"
@@ -169,7 +169,7 @@ Module[{connections},
 ]; 
 
 
-CreateType[WebSocketUHandler, init, {
+CreateUType[WebSocketUHandler, init, {
 	"MessageHandler" -> <||>, 
 	"DefaultMessageHandler" -> $defaultMessageHandler, 	
 	"Deserializer" -> $deserializer, (*Input: <|.., "Data" -> ByteArray[]|>*)

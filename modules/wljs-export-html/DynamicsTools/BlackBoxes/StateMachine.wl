@@ -26,7 +26,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
 Echo["BlackBox :: StateMachine"];
 
-CreateType[stateMachine, blackBox`BlackBox];
+CreateUType[stateMachine, blackBox`BlackBox];
 
 blackBox`definedBoxes = Append[blackBox`definedBoxes, stateMachine];
 

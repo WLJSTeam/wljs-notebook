@@ -50,7 +50,7 @@ AudioFromClips;
 Begin["`Private`"]
 
 AnimationFramework`Proxy;
-CreateType[proxy, {}];
+CreateUType[proxy, {}];
 
 toStringSafe[s_String] := s
 toStringSafe[n_] := With[{s = ToString[n]},
@@ -132,7 +132,7 @@ AnimationFramework`Color[c_] := List @@ RGBColor[c]
 
 
 
-CreateType[animation, {}]
+CreateUType[animation, {}]
 
 AnimationFramework`Animate[scene_Scene, e_proxy, Rule[prop_String, target_], type_, duration_] := Null;
 
@@ -178,7 +178,7 @@ AnimationFramework`Animate[scene_Scene, Hold[symbol_], target_, type_, duration_
 
 AnimationFramework`Finish[p_] := p; 
 
-CreateType[runner, {}]
+CreateUType[runner, {}]
 
 AnimationFramework`Loop[scene_Scene, e_entity, prop_String, function_, duration_:1] := With[{
   r = runner[]
@@ -216,7 +216,7 @@ AnimationFramework`Animate[scene_Scene, e_entity, r: {__Rule}, type_, duration_]
 ]
 
 
-CreateType[worker, {}]
+CreateUType[worker, {}]
 
 Worker[s_Scene, function_] := With[{
   w = worker[]
@@ -308,7 +308,7 @@ AnimationFramework`Finish[r_worker] := With[{p = Promise[]},
   p
 ]
 
-CreateType[timer, {}];
+CreateUType[timer, {}];
 
 AnimationFramework`Delayed[scene_, duration_] := Function[function, With[{t = timer[], p = Promise[]},
   t["Promise"] = Promise[];
@@ -412,7 +412,7 @@ handleAnimation[a_, s_, time_] := With[{passed = time - a["Timestamp"], e = a["E
   ];
 ]
 
-CreateType[Scene, initScene, {
+CreateUType[Scene, initScene, {
   ImageSize -> {500,400},
   Magnification -> 1,
   Epilog -> {},
@@ -545,7 +545,7 @@ Scene /: MakeBoxes[s_Scene, form: StandardForm | WLXForm] := With[{w = CurrentWi
 
 AnimationFramework`Marker;
 
-CreateType[marker, {}];
+CreateUType[marker, {}];
 
 AnimationFramework`Marker[scene_Scene, id_String] := AnimationFramework`Marker[scene, id, "Start"];
 AnimationFramework`Marker[s_Scene, id_, "Duration"] := With[{},
@@ -588,7 +588,7 @@ AnimationFramework`AddTo[s_Scene, AnimationFramework`Proxy[feature_] ] := With[{
   p
 ]
 
-CreateType[entity, {}];
+CreateUType[entity, {}];
 
 AnimationFramework`AddTo[s_Scene, feature_] := With[{e = entity[]},
   s["Children"] = Append[s["Children"], e];
@@ -907,7 +907,7 @@ root = FileNameJoin[{DirectoryName[$InputFileName], "AnimationFramework"}];
 timelineLayout = ImportComponent[FileNameJoin[{root, "Timeline.wlx"}] ];
 
 
-CreateType[timelined, {}];
+CreateUType[timelined, {}];
 TimelinedAnimation;
 SetAttributes[TimelinedAnimation, HoldFirst]
 
@@ -1193,7 +1193,7 @@ filterRulesForScene[opts__] := With[{keys = Complement[Options[RecordAnimation][
   ]
 ]
 
-CreateType[recorder, {}];
+CreateUType[recorder, {}];
 
 RecordAnimation[timelineFunction_, opts___] := With[{
   rulesForScene = filterRulesForScene[opts],

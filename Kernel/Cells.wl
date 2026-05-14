@@ -62,7 +62,7 @@ initCell[o_] := Module[{uid = CreateUUID[]},
 ]
 
 HashMap = <||>;
-CreateType[CellObj, initCell, {"Notebook"->Null, "Hash"->Null, "UID"->Null, "Data"->"", "State"->"Idle", "Props"-><||>, "Display"->"codemirror", "Type"->"Input", "After"->Null, "Before"->Null, "MetaOnly"->False, "Invisible"->False}]
+CreateUType[CellObj, initCell, {"Notebook"->Null, "Hash"->Null, "UID"->Null, "Data"->"", "State"->"Idle", "Props"-><||>, "Display"->"codemirror", "Type"->"Input", "After"->Null, "Before"->Null, "MetaOnly"->False, "Invisible"->False}]
 
 CellObj /: EventHandler[n_CellObj, opts__] := EventHandler[n["Hash"], opts] 
 CellObj /: EventFire[n_CellObj, opts__] := EventFire[n["Hash"], opts]
