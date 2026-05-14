@@ -13,7 +13,7 @@ PacletObject[
 			{
 				"Kernel", 
 				"Root" -> "Kernel", 
-				"Context" -> {"CoffeeLiqueur`Internal`"}, 
+				"Context" -> {"CoffeeLiqueur`UInternal`"}, 
 				"Symbols" -> {}
 			}, 
 			{

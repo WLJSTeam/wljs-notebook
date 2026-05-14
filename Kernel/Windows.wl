@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`Notebook`Windows`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Objects`", "CoffeeLiqueur`Notebook`Transactions`"}]
+BeginPackage["CoffeeLiqueur`Notebook`Windows`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Notebook`Transactions`"}]
 
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];

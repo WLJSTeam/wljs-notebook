@@ -4,7 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ContextMenu`", {
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`WLX`WebUI`",
-    "CoffeeLiqueur`CSockets`EventsExtension`",
+    "CoffeeLiqueur`CUSockets`EventsExtension`",
     "CoffeeLiqueur`Extensions`EditorViewMinimal`",
     "CodeParser`"
 }]

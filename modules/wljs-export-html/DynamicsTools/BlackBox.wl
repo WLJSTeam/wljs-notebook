@@ -1,5 +1,5 @@
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`", {
-    "CoffeeLiqueur`Objects`",
+    "CoffeeLiqueur`UObjects`",
     "CoffeeLiqueur`Misc`Events`"
 }]
 

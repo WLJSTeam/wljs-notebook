@@ -6,7 +6,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`PavlovMachine`", {
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
     "CoffeeLiqueur`Misc`WLJS`Transport`",
-    "CoffeeLiqueur`Objects`"
+    "CoffeeLiqueur`UObjects`"
 }]
 
 

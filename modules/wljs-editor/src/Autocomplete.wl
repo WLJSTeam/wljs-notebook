@@ -6,10 +6,10 @@ BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
     "CoffeeLiqueur`WLX`WebUI`", 
     "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",    
-    "CoffeeLiqueur`HTTPHandler`",
-    "CoffeeLiqueur`HTTPHandler`Extensions`",
-    "CoffeeLiqueur`Internal`",
-    "CoffeeLiqueur`Objects`"
+    "CoffeeLiqueur`HTTPUHandler`",
+    "CoffeeLiqueur`HTTPUHandler`Extensions`",
+    "CoffeeLiqueur`UInternal`",
+    "CoffeeLiqueur`UObjects`"
 }]
 
 

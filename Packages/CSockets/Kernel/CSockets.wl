@@ -8,11 +8,11 @@
 (*Begin package*)
 
 
-BeginPackage["CoffeeLiqueur`CSockets`"]; 
+BeginPackage["CoffeeLiqueur`CUSockets`"]; 
 
 Needs @ If[$OperatingSystem === "Windows",  
-	"CoffeeLiqueur`CSockets`Interface`Windows`", 
-	"CoffeeLiqueur`CSockets`Interface`Unix`"
+	"CoffeeLiqueur`CUSockets`Interface`Windows`", 
+	"CoffeeLiqueur`CUSockets`Interface`Unix`"
 ];
 
 (* ::Section:: *)

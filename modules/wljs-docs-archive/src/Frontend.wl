@@ -1,6 +1,6 @@
 BeginPackage["CoffeeLiqueur`Extensions`DocsArchive`", {
     "CoffeeLiqueur`Misc`Events`",
-    "CoffeeLiqueur`Internal`",
+    "CoffeeLiqueur`UInternal`",
     "CoffeeLiqueur`WLX`WebUI`"
 }];
 

@@ -15,7 +15,7 @@ PacletObject[
         "Root" -> "Kernel",
         "Context" -> {
           {
-            "CoffeeLiqueur`WebSocketHandler`",
+            "CoffeeLiqueur`WebUSocketHandler`",
             "WebSocketHandler.wl"
           }
         },

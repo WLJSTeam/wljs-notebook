@@ -34,14 +34,14 @@ WLJSPackages`Load[FileNameJoin[{Directory[], "modules"}] ];
 "WLJS Notebook does not collect or transmit your data unless you explicitly choose a feature that needs the network." // Print;
 
 (* web-server *)
-Needs["CoffeeLiqueur`CSockets`"]
-Needs["CoffeeLiqueur`Objects`"]
-Needs["CoffeeLiqueur`Internal`"]
-Needs["CoffeeLiqueur`TCPServer`"]
+Needs["CoffeeLiqueur`CUSockets`"]
+Needs["CoffeeLiqueur`UObjects`"]
+Needs["CoffeeLiqueur`UInternal`"]
+Needs["CoffeeLiqueur`TCPUServer`"]
 
-Needs["CoffeeLiqueur`HTTPHandler`"]
-Needs["CoffeeLiqueur`HTTPHandler`Extensions`"]
-Needs["CoffeeLiqueur`WebSocketHandler`"]
+Needs["CoffeeLiqueur`HTTPUHandler`"]
+Needs["CoffeeLiqueur`HTTPUHandler`Extensions`"]
+Needs["CoffeeLiqueur`WebUSocketHandler`"]
 Needs["CoffeeLiqueur`LTP`"]
 
 Needs["LetWL`"]
@@ -77,7 +77,7 @@ Needs["CoffeeLiqueur`Notebook`LocalKernel`" -> "LocalKernel`"];
 Needs["CoffeeLiqueur`Notebook`Transactions`"]
 
 
-Needs["CoffeeLiqueur`CSockets`EventsExtension`"]
+Needs["CoffeeLiqueur`CUSockets`EventsExtension`"]
 
 (* WLX template engine *)
 Needs["CoffeeLiqueur`WLX`"]

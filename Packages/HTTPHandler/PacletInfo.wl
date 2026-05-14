@@ -15,11 +15,11 @@ PacletObject[
         "Root" -> "Kernel",
         "Context" -> {
           {
-            "CoffeeLiqueur`HTTPHandler`",
+            "CoffeeLiqueur`HTTPUHandler`",
             "HTTPHandler.wl"
           },
           {
-            "CoffeeLiqueur`HTTPHandler`Extensions`",
+            "CoffeeLiqueur`HTTPUHandler`Extensions`",
             "Extensions.wl"
           }
         },

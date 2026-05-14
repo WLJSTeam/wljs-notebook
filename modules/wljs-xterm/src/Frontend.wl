@@ -5,14 +5,14 @@ BeginPackage["CoffeeLiqueur`Extensions`Terminal`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`HTTPHandler`",
-    "CoffeeLiqueur`HTTPHandler`Extensions`",
-    "CoffeeLiqueur`Internal`",
+    "CoffeeLiqueur`HTTPUHandler`",
+    "CoffeeLiqueur`HTTPUHandler`Extensions`",
+    "CoffeeLiqueur`UInternal`",
     "CoffeeLiqueur`Extensions`CommandPalette`",
     "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CodeFormatter`",
-    "CoffeeLiqueur`Objects`"
+    "CoffeeLiqueur`UObjects`"
 }]
 
 

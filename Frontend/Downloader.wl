@@ -1,7 +1,7 @@
 BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
-    "CoffeeLiqueur`HTTPHandler`",
-    "CoffeeLiqueur`HTTPHandler`Extensions`",
-    "CoffeeLiqueur`Internal`"
+    "CoffeeLiqueur`HTTPUHandler`",
+    "CoffeeLiqueur`HTTPUHandler`Extensions`",
+    "CoffeeLiqueur`UInternal`"
 }]
     module;
     

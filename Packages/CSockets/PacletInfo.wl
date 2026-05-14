@@ -9,22 +9,22 @@ PacletObject[
     "PublisherID" -> "KirillBelov",
     "Version" -> "1.2.0",
     "WolframVersion" -> "13+",
-    "PrimaryContext" -> "CoffeeLiqueur`CSockets`",
+    "PrimaryContext" -> "CoffeeLiqueur`CUSockets`",
     "Extensions" -> {
       {
         "Kernel",
         "Root" -> "Kernel",
         "Context" -> {
-          {"CoffeeLiqueur`CSockets`", "CSockets.wl"}, 
-          {"CoffeeLiqueur`CSockets`EventsExtension`", "EventsExtension.wl"},
-          {"CoffeeLiqueur`CSockets`Interface`Windows`", "Windows.wl"},
-          {"CoffeeLiqueur`CSockets`Interface`Unix`", "Unix.wl"}
+          {"CoffeeLiqueur`CUSockets`", "CSockets.wl"}, 
+          {"CoffeeLiqueur`CUSockets`EventsExtension`", "EventsExtension.wl"},
+          {"CoffeeLiqueur`CUSockets`Interface`Windows`", "Windows.wl"},
+          {"CoffeeLiqueur`CUSockets`Interface`Unix`", "Unix.wl"}
         },
         "Symbols" -> {
-          "CoffeeLiqueur`CSockets`USocketObject",
-          "CoffeeLiqueur`CSockets`USocketListener",
-          "CoffeeLiqueur`CSockets`USocketOpen",
-          "CoffeeLiqueur`CSockets`USocketConnect"
+          "CoffeeLiqueur`CUSockets`USocketObject",
+          "CoffeeLiqueur`CUSockets`USocketListener",
+          "CoffeeLiqueur`CUSockets`USocketOpen",
+          "CoffeeLiqueur`CUSockets`USocketConnect"
         }
       },
       {"LibraryLink", "Root" -> "LibraryResources"},

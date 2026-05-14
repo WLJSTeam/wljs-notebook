@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`CSockets`Interface`Windows`", {
+BeginPackage["CoffeeLiqueur`CUSockets`Interface`Windows`", {
     "LibraryLink`"
 }]
 

@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`Notebook`Kernel`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Objects`"}]
+BeginPackage["CoffeeLiqueur`Notebook`Kernel`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`"}]
 
 Kernel;
 KernelQ;

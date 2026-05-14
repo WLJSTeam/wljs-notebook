@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`CSockets`Interface`Unix`"]
+BeginPackage["CoffeeLiqueur`CUSockets`Interface`Unix`"]
 
 createAsynchronousTask;
 socketOpen;

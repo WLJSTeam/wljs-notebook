@@ -1,6 +1,6 @@
 (*:Package:*)
 
-BeginPackage["CoffeeLiqueur`Internal`"]; 
+BeginPackage["CoffeeLiqueur`UInternal`"]; 
 
 
 ClearAll["`*"]; 

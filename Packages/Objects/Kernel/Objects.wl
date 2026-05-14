@@ -8,7 +8,7 @@
 (*Begin package*)
 
 
-BeginPackage["CoffeeLiqueur`Objects`"]; 
+BeginPackage["CoffeeLiqueur`UObjects`"]; 
 
 
 (* ::Section::Closed:: *)
@@ -289,4 +289,4 @@ End[]; (*`Private`*)
 (*End package*)
 
 
-EndPackage[]; (*CoffeeLiqueur`Objects`*)
+EndPackage[]; (*CoffeeLiqueur`UObjects`*)

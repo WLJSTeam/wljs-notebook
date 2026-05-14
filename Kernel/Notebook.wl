@@ -1,7 +1,7 @@
 BeginPackage["CoffeeLiqueur`Notebook`", {
     "CoffeeLiqueur`Notebook`FileFormat`",
     "CoffeeLiqueur`Misc`Events`", 
-    "CoffeeLiqueur`Objects`"
+    "CoffeeLiqueur`UObjects`"
 }]
 
 NotebookObj;

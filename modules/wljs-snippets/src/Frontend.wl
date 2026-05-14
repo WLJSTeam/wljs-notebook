@@ -6,7 +6,7 @@ BeginPackage["CoffeeLiqueur`Extensions`CommandPalette`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`CSockets`EventsExtension`"
+    "CoffeeLiqueur`CUSockets`EventsExtension`"
 }]
 
 

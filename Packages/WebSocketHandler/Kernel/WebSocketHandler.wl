@@ -34,7 +34,7 @@
 (*Begin package*)
 
 
-BeginPackage["CoffeeLiqueur`WebSocketHandler`", {"CoffeeLiqueur`Internal`", "CoffeeLiqueur`Objects`"}]; 
+BeginPackage["CoffeeLiqueur`WebUSocketHandler`", {"CoffeeLiqueur`UInternal`", "CoffeeLiqueur`UObjects`"}]; 
 
 
 (*::Section::Close::*)

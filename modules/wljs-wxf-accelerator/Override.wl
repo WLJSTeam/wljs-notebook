@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`Misc`WLJS`Transport`WXFAccelerator`", {"CoffeeLiqueur`WebSocketHandler`", "CoffeeLiqueur`Misc`WLJS`Transport`"}]; 
+BeginPackage["CoffeeLiqueur`Misc`WLJS`Transport`WXFAccelerator`", {"CoffeeLiqueur`WebUSocketHandler`", "CoffeeLiqueur`Misc`WLJS`Transport`"}]; 
 Begin["`Internal`"]
 
 System`WLJSIOAddTracking;

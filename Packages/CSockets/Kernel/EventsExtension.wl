@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`CSockets`EventsExtension`", {"CoffeeLiqueur`CSockets`", "CoffeeLiqueur`Misc`Events`"}]; 
+BeginPackage["CoffeeLiqueur`CUSockets`EventsExtension`", {"CoffeeLiqueur`CUSockets`", "CoffeeLiqueur`Misc`Events`"}]; 
 
 CSocketsClosingHandler = (EventFire["csocket-"<>ToString[#2 // First], #1, True])&
 

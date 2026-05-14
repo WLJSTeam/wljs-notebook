@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`CSockets`Interface`Windows`Fallback`"]
+BeginPackage["CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`"]
 
 Begin["`Private`"]
 
@@ -43,16 +43,16 @@ End[]
 EndPackage[]
 
 {
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`createAsynchronousTask,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketOpen,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketClose,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketBinaryWrite,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketWriteString,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`createAsynchronousTask,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketOpen,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketClose,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketBinaryWrite,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketWriteString,
 
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketConnect,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketConnect,
 
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketReadyQ,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketReadMessage,
-        CoffeeLiqueur`CSockets`Interface`Windows`Fallback`Private`socketPort    
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketReadyQ,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketReadMessage,
+        CoffeeLiqueur`CUSockets`Interface`Windows`Fallback`Private`socketPort    
 }
 

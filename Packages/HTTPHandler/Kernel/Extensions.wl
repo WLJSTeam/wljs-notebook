@@ -4,10 +4,10 @@
 (*Extensions*)
 
 
-BeginPackage["CoffeeLiqueur`HTTPHandler`Extensions`", {
-    "CoffeeLiqueur`Internal`", 
-    "CoffeeLiqueur`HTTPHandler`", 
-    "CoffeeLiqueur`TCPServer`"
+BeginPackage["CoffeeLiqueur`HTTPUHandler`Extensions`", {
+    "CoffeeLiqueur`UInternal`", 
+    "CoffeeLiqueur`HTTPUHandler`", 
+    "CoffeeLiqueur`TCPUServer`"
 }]; 
 
 

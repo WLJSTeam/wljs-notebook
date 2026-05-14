@@ -30,9 +30,9 @@
 (*Begin package*)
 
 
-BeginPackage["CoffeeLiqueur`TCPServer`", {
-	"CoffeeLiqueur`Objects`", 
-	"CoffeeLiqueur`Internal`"
+BeginPackage["CoffeeLiqueur`TCPUServer`", {
+	"CoffeeLiqueur`UObjects`", 
+	"CoffeeLiqueur`UInternal`"
 }]; 
 
 

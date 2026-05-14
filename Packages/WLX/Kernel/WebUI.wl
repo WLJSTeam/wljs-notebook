@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`WLX`WebUI`", {"CoffeeLiqueur`WLX`Importer`", "CoffeeLiqueur`WLX`", "CoffeeLiqueur`WebSocketHandler`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`"}]
+BeginPackage["CoffeeLiqueur`WLX`WebUI`", {"CoffeeLiqueur`WLX`Importer`", "CoffeeLiqueur`WLX`", "CoffeeLiqueur`WebUSocketHandler`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`"}]
 
 WebUILazyLoad;
 WebUISubmit;

@@ -38,9 +38,9 @@
 (*Begin packge*)
 
 
-BeginPackage["CoffeeLiqueur`HTTPHandler`", {
-	"CoffeeLiqueur`Objects`", 
-	"CoffeeLiqueur`Internal`"
+BeginPackage["CoffeeLiqueur`HTTPUHandler`", {
+	"CoffeeLiqueur`UObjects`", 
+	"CoffeeLiqueur`UInternal`"
 }]; 
 
 

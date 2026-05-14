@@ -1,5 +1,5 @@
 BeginPackage["CoffeeLiqueur`Misc`WLJS`Transport`", {
-    "CoffeeLiqueur`WebSocketHandler`",
+    "CoffeeLiqueur`WebUSocketHandler`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`Events`"
 }]; 

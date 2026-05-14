@@ -1,5 +1,5 @@
 BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
-    "CoffeeLiqueur`WebSocketHandler`",
+    "CoffeeLiqueur`WebUSocketHandler`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -50,7 +50,7 @@ extend[set_] := shareDefinitions[#, set] &/@ clients;
 (* a bug with a first defined symbol $InterfaceEnvironment that causes shutdown (BUT THIS IS A STRING!!!). No idea why *)
 skip = -1;
 
-blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`", "CoffeeLiqueur`LTP`Events`","CoffeeLiqueur`CSockets`EventsExtension`","CoffeeLiqueur`Misc`WLJS`Transport`","CoffeeLiqueur`WebSocketHandler`","CoffeeLiqueur`TCPServer`","CoffeeLiqueur`LTP`","CoffeeLiqueur`Internal`","CoffeeLiqueur`CSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
+blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`", "CoffeeLiqueur`LTP`Events`","CoffeeLiqueur`CUSockets`EventsExtension`","CoffeeLiqueur`Misc`WLJS`Transport`","CoffeeLiqueur`WebUSocketHandler`","CoffeeLiqueur`TCPUServer`","CoffeeLiqueur`LTP`","CoffeeLiqueur`UInternal`","CoffeeLiqueur`CUSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
 
 BuildVocabularAsync := With[{},
     BuildVocabularAsync = Null;

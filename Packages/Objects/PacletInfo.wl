@@ -9,19 +9,19 @@ PacletObject[
     "PublisherID" -> "KirillBelov",
     "Version" -> "1.0.30",
     "WolframVersion" -> "13+",
-    "PrimaryContext" -> "CoffeeLiqueur`Objects`",
+    "PrimaryContext" -> "CoffeeLiqueur`UObjects`",
     "Extensions" -> {
       {
         "Kernel",
         "Root" -> "Kernel",
         "Context" -> {
-          {"CoffeeLiqueur`Objects`", "Objects.wl"}
+          {"CoffeeLiqueur`UObjects`", "Objects.wl"}
         },
         "Symbols" -> {
-          "CoffeeLiqueur`Objects`CreateUType",
-          "CoffeeLiqueur`Objects`UObject",
-          "CoffeeLiqueur`Objects`UObjectQ",
-          "CoffeeLiqueur`Objects`UTypeQ"
+          "CoffeeLiqueur`UObjects`CreateUType",
+          "CoffeeLiqueur`UObjects`UObject",
+          "CoffeeLiqueur`UObjects`UObjectQ",
+          "CoffeeLiqueur`UObjects`UTypeQ"
         }
       },
       {"Documentation", "Language" -> "English"},
