@@ -119,6 +119,7 @@ Component[path_String, OptionsPattern[]] := With[{
                 const container = {
                   element: doc,
                   uid: uuidv4(),
+                  updateSelection = () => {},
                   save: (content) => {
                     if (blockUpdates) {
                         console.warn('update was blocked!');

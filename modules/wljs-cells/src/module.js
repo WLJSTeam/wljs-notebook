@@ -837,6 +837,7 @@ window.WindowWrapper = class {
     }, 150);
 
     this.updateSelection = () => {};
+    this.save = () => {};
 
     notebook.element.innerHTML = "";
     notebook.element.insertAdjacentHTML('beforeend', template);
