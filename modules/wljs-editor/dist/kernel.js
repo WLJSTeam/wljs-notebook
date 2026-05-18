@@ -39259,6 +39259,12 @@ Mma.Util.U8ArrayToString = function (array) {
     return substrings.join("");
 };
 
+Mma.Util.UnescapeMmaUnicode = function (str) {
+    return str.replace(/\\:([0-9A-Fa-f]{4})/g, function (_, hex) {
+        return String.fromCodePoint(parseInt(hex, 16));
+    });
+};
+
 // Delete a character at a specific position from a string.
 Mma.Util.DeleteCharAt = function (string, pos) {
     return string.substr(0, pos) + string.substr(pos + 1);
@@ -39497,7 +39503,7 @@ Mma.Decode.Any = function (bits, offset, maxParts) {
         // Symbols are also just strings.
         case SYMBOL:
             var se = Mma.Decode.StringEntry(bits, offset);
-            parts.push(new Mma.Symbol(se.string));
+            parts.push(new Mma.Symbol(Mma.Util.UnescapeMmaUnicode(se.string)));
             offset += se.bytesRead;
             state = READY;
             break;
@@ -39505,7 +39511,7 @@ Mma.Decode.Any = function (bits, offset, maxParts) {
         // Strings are, surprisingly, just strings.
         case STRING:
             var se = Mma.Decode.StringEntry(bits, offset);
-            parts.push(new Mma.String(se.string));
+            parts.push(new Mma.String(Mma.Util.UnescapeMmaUnicode(se.string)));
             offset += se.bytesRead;
             state = READY;
             break;
