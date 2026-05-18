@@ -2,7 +2,7 @@
 // Mathematica's core data types, a decoder for the internal "!boR" format
 // and an implementation of Mathematica's Decompress[] function.
 
-const pako = require('pako');
+const unzlibSync = interpretate.unzlibSync;
 
 export let Mma = {};
 Mma.Util = {};
@@ -393,7 +393,7 @@ Mma.Decompress = function (compressedString) {
     }
     var b64EncodedData = compressedString.trim().slice(2);
     var bitsCompressed = Mma.Util.Base64Decode(b64EncodedData);
-    var bits = pako.inflate(bitsCompressed);
+    var bits = unzlibSync(bitsCompressed);
     var headerString = Mma.Util.U8ArrayToString(bits.slice(0,4))
     if (headerString !== "!boR") {
         Mma.Warn("Decompress: unknown header string " + headerString +

@@ -125,6 +125,7 @@
     "@rollup/plugin-terser": "^0.4.4",
     "codemirror": "6.0.1",
     "crypto-js": "^4.1.1",
+    "fflate": "^0.8.3",
     "mma-uncompress": "^1.0.1",
     "node-balanced": "^0.0.14",
     "parcel-bundler": "1.12.5",

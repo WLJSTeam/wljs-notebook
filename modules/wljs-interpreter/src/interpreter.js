@@ -1,5 +1,8 @@
 const aflatten = (ary) => ary.flat(Infinity);
 
+import {unzlibSync, zlibSync} from 'fflate';
+
+
 class Deferred {
   promise = {}
   reject = {}
@@ -433,18 +436,14 @@ interpretate.handleMessage = (event) => {
   interpretate(JSON.parse(event.data), {global: global});
 }
 
-let unzlibSync;
-
+interpretate.unzlibSync = (args) => unzlibSync(args)
 interpretate.unzlib64String = async (input) => {
-    if (!unzlibSync) unzlibSync = (await import('fflate')).unzlibSync;
     const decoded = atob(input);
     return new TextDecoder().decode(unzlibSync(Uint8Array.from(decoded, c => c.charCodeAt(0))));
 }
 
-let zlibSync;
 
 interpretate.zlib64String = async (input) => {
-    if (!zlibSync) zlibSync = (await import('fflate')).zlibSync;
     const encoded = zlibSync(new TextEncoder().encode(input));
 
     // Convert Uint8Array to binary string without exceeding stack
