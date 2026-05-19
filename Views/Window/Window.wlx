@@ -72,7 +72,7 @@ evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] :=
     
 ];
 
-Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], Secret=},
+Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
     <div>
         <script type="module">
             let wrap, supp = [];
