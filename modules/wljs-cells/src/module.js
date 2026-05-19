@@ -813,6 +813,8 @@ window.WindowWrapper = class {
 
   dispose() {
     console.log('Window was disposed');
+    removeEventListener("beforeunload", this.unloader);
+    delete this.unloader;
     this?.display?.dispose();
   }
   
@@ -827,6 +829,12 @@ window.WindowWrapper = class {
     const self = this;
 
     const notebook = Notebook.add(input["Notebook"], {}); 
+
+    this.unloader = () => {
+      console.log('unloaded!'); self.dispose();
+    }
+
+    addEventListener("beforeunload", this.unloader);
 
     //dispose already existing cells
     notebook.Window?.dispose();
