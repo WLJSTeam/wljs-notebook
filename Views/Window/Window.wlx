@@ -25,6 +25,12 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
             Echo["Window >> reevalaute!"];
             window["EvaluatedQ"] = False;
             evaluate[window, secret, client, modals, parameters, extensions]; 
+            If[StringQ[window["GeneratedOutputCellHash"]], 
+                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
+                (* /* emulate cell's destroy event */ *)
+                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
+                EventRemove[window["GeneratedOutputCellHash"]];
+            ];
             WebUISubmit[Global`UIWindow["Unload" ], client]
         ]
     }];
@@ -66,10 +72,11 @@ evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] :=
     
 ];
 
-Script[OptionsPattern[]] := With[{ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
+Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], Secret=},
     <div>
         <script type="module">
             let wrap, supp = [];
+            addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
             core.UIWindow = async (args, env) => {
                 const type = await interpretate(args[0], env);
                 core.UIWindow[type](args.slice(1), env);
@@ -214,6 +221,17 @@ Component[OptionsPattern[]] := With[{
 
         ],
 
+        "ManuallyClosed" -> Function[Null,
+            If[StringQ[window["GeneratedOutputCellHash"]], 
+                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
+                (* /* emulate cell's destroy event */ *)
+                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
+                EventRemove[window["GeneratedOutputCellHash"]];
+            ];        
+            EventFire[window, "ManuallyClosed", True];
+            EventFire[appEvents, "Window:ManuallyClosed", window];
+        ],
+
         "WebSocketConnected" -> Function[Null, With[{cli = $Client},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
             window["WebSocketQ"] = True;
@@ -252,7 +270,7 @@ Component[OptionsPattern[]] := With[{
                     <span class="sr-only">Loading...</span>
                 </div>
             </Container>
-            <Script ExtensionTemplateInjection={ExtensionTemplateInjection}/>
+            <Script Event={secret} ExtensionTemplateInjection={ExtensionTemplateInjection}/>
             <WebUIOnLoad Event={secret} Pattern={"Load"}/>
         </main>
 
@@ -260,7 +278,7 @@ Component[OptionsPattern[]] := With[{
 ]
 
 Options[Component] = {"Parameters"->Null, "ElectronQ" -> False, "Window"->"", "AppEvents"->"blacksheep", "Kernels"->{}, "Modals"->"", "Controls" ->"", "ControlsPort"->"", "Notebook"->Null, "Event"->"blackhole", "Messager"->"blackout", "Secret" :> CreateUUID[], "ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "ExternalEventHandlers" -> Null}
-Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction}
+Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction, "Event"->""}
 
 emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 

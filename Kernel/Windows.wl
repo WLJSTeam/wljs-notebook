@@ -61,9 +61,10 @@ WindowObj /: EvaluateWindowObj[o_WindowObj, OptionsPattern[] ] := Module[{transa
 
                 If[result["Data"] != "Null",
                     Module[{default = <|"Data" -> result["Data"], "Display" ->"codemirror"|>},
-                        If[KeyExistsQ[result, "Meta"],
-                            default = Join[default, Association[List[result["Meta"] ] ], <|"Hash" -> o["Hash"]|> ];
-                        ];
+                        If[KeyExistsQ[result, "Meta"], With[{assoc = Association[List[result["Meta"] ] ]},
+                                                                    (* overwrite provided hash or id, but keep it for forwarding events *)
+                            default = Join[default, assoc, <|"Hash" -> o["Hash"], "GeneratedOutputCellHash" -> Lookup[assoc, "Hash", Null]|> ];
+                        ] ];
 
                         Echo["!!!Default"];
                     
