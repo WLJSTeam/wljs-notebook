@@ -1577,10 +1577,11 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
     case "wl":
     case "code":
+    case "-c":
     case "-code": {
       const Expression = requireCliArg(args.join(" "), "Usage: wljs wl '<expression>'");
 
-      writeJson(
+      writeText(
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
@@ -1745,6 +1746,10 @@ function writeCli(stdout, text) {
 
 function writeJson(stdout, value) {
   stdout.write(`${JSON.stringify(value, null, 2)}\n`);
+}
+
+function writeText(stdout, text) {
+  stdout.write(`${text}\n`);
 }
 
 function requireCliArg(value, usage) {
@@ -1925,21 +1930,28 @@ Editing:
   wljs insert-lines <cell> <after> --content <text|@file|->
   wljs delete-cell <cell>
 
-Evaluation:
+Evaluation in the notebook:
   wljs eval <cell>
   wljs project <cell>
+
+Direct evaluation:
   wljs wl 1+1
+  wljs wl 'Range[10]^2'  
   wljs code 1+1
-  wljs -code 1+1  
-  wljs wl 'Range[10]^2'
+  wljs -code 1+1
+  wljs -c 1+1  
+
+Documentation:  
   wljs docs <query>
 
-Open by path:
+Open notebook by path:
   wljs path/to/notebook.wln
   wljs 'path/to/notebook.wln'
   wljs ./notebook.wln
+  wljs ./notebook.md
+  wljs ./notebook.html
 
-Open folder:
+Open a folder:
   wljs path/to/folder
   wljs .`;
 }

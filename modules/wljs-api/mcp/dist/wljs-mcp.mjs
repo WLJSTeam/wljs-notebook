@@ -47320,9 +47320,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "wl":
     case "code":
+    case "-c":
     case "-code": {
       const Expression = requireCliArg(args.join(" "), "Usage: wljs wl '<expression>'");
-      writeJson(
+      writeText(
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
@@ -47461,6 +47462,10 @@ function writeCli(stdout, text) {
 }
 function writeJson(stdout, value) {
   stdout.write(`${JSON.stringify(value, null, 2)}
+`);
+}
+function writeText(stdout, text) {
+  stdout.write(`${text}
 `);
 }
 function requireCliArg(value, usage) {

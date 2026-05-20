@@ -262,6 +262,12 @@ cellClonedEvents = <||>;
 
 EventHandler[NotebookEditorChannel // EventClone,
     {
+        "GiveMeAnyWindow" -> Function[kernelId,
+            Echo["Render window request was made"];
+            Echo["Not implemented!"];
+            Echo["TODO: Call Electron somehow to create another window, or call Daemon.wln"];
+        ],
+
         "DeleteCellByHash" -> Function[uid,
             Echo["Delete object "<>uid];
             With[{target = Lookup[cell`HashMap, uid, win`HashMap[uid] ]},
