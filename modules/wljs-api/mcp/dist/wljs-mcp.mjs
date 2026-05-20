@@ -47255,7 +47255,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     return 0;
   }
   if (command === "version" || command === "-v" || command === "--version") {
-    writeCli(stdout, "v0.1");
+    writeCli(stdout, app.getVersion());
     return 0;
   }
   switch (command) {
@@ -47318,7 +47318,9 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       writeJson(stdout, await cliConsultDocs(Query, 60, !!(opts2["wl-only"] ?? opts2.wolframOnly)));
       return 0;
     }
-    case "wl": {
+    case "wl":
+    case "code":
+    case "-code": {
       const Expression = requireCliArg(args.join(" "), "Usage: wljs wl '<expression>'");
       writeJson(
         stdout,
@@ -47601,11 +47603,20 @@ Editing:
 Evaluation:
   wljs eval <cell>
   wljs project <cell>
+  wljs wl 1+1
+  wljs code 1+1
+  wljs -code 1+1  
   wljs wl 'Range[10]^2'
   wljs docs <query>
 
 Open by path:
-  wljs path/to/notebook.wln`;
+  wljs path/to/notebook.wln
+  wljs 'path/to/notebook.wln'
+  wljs ./notebook.wln
+
+Open folder:
+  wljs path/to/folder
+  wljs .`;
 }
 var wljs_mcp_default = startWljsNotebookMcp;
 export {
