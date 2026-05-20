@@ -1498,6 +1498,8 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     return 0;
   }
 
+  
+
   switch (command) {
     case "config":
       writeJson(stdout, getWlMcpConfig());
@@ -1582,7 +1584,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
-          { Expression },
+          { Expression, Directory: resolve() },
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
@@ -1728,6 +1730,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
     default: {
       if (looksLikeFilePath(command)) {
+        
         await openNotebookFile(app, normalizeFilePath(command), { stdout, stderr });
         return 0;
       }

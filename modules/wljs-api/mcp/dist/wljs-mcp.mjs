@@ -47326,7 +47326,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
-          { Expression },
+          { Expression, Directory: resolve() },
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS

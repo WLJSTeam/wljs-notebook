@@ -935,13 +935,25 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             SelectFirst[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]
         ],
             expr = body["Expression"],
-            promise = Promise[]
+            promise = Promise[],
+
+            dir = Lookup[body, "Directory", Null]
         },
 
         If[MissingQ[k], Return[failure["No kernel is ready for evaluation"], Module] ];
 
-        GenericKernel`SendAsync[k, 
-            EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[ToExpression[expr, InputForm], InputForm] ];
+        If[dir === Null,
+            GenericKernel`Send[k, 
+                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+            ];        
+        ,
+            GenericKernel`Send[k, 
+                With[{prev = Directory[]}, 
+                    SetDirectory[dir];
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+                    SetDirectory[prev];
+                ];
+            ];        
         ];
 
         promise
