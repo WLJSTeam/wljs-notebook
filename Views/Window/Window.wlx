@@ -13,8 +13,10 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
             If[MatchQ[window["Notebook"], _nb`NotebookObj],
                 With[{htmlJsCells = Select[window["Notebook"]["Cells"], Function[c, MatchQ[c["Display"], "html" | "js" | "mjs" ] ] ]},
                     (* /* This you might need to copy to the window, since they might contain scripts and styles */ *)
-                    Echo["Found JS and HTML cells, projecting too..."];
-                    WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                    If[Length[htmlJsCells] > 0, 
+                        Echo["Found JS and HTML cells, projecting too..."];
+                        WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                    ];
                 ]
             ];
 
@@ -56,10 +58,12 @@ checkWSLink[window_, client_, event_String] := Module[{},
         Echo["checkWSLink >> Already connected"];
         Return[];
     ];
-    Echo["Using port"];
-    Echo[window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"]];
 
-    WebUISubmit[Global`UIWindow["WSConnect", window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];
+    If[TrueQ[window["OrphanQ"]],
+        WebUISubmit[Global`UIWindow["WSConnect", GenericKernel`HashMap[window["KernelHash"]]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];    
+    ,
+        WebUISubmit[Global`UIWindow["WSConnect", window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];    
+    ];
 ];
 
 evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},

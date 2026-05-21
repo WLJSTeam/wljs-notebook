@@ -155,7 +155,7 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{attempt = OptionValu
   
   If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
     Message[Rasterize::nowindow ];
-    EventFire[Internal`Kernel`CommunicationChannel, "GiveMeAnyWindow", Internal`Kernel`Hash];
+    EventFire[Internal`Kernel`CommunicationChannel, "SpawnOffscreenWindow", Internal`Kernel`Hash];
     
     If[attempt > 3, 
       EventFire[p, Resolve, $Failed];
@@ -194,7 +194,7 @@ producePDF[any_, OptionsPattern[] ] := (
 producePDF[any_, opts: OptionsPattern[] ] := With[{attempt = OptionValue["Attempt"], p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
   If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
     Message[Rasterize::nowindow ];
-    EventFire[Internal`Kernel`CommunicationChannel, "GiveMeAnyWindow", Internal`Kernel`Hash];
+    EventFire[Internal`Kernel`CommunicationChannel, "SpawnOffscreenWindow", Internal`Kernel`Hash];
     
     If[attempt > 3, 
       EventFire[p, Resolve, $Failed];

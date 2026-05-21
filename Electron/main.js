@@ -3824,3 +3824,8 @@ var unshift = (array, value) => {
     array.length = Math.min(array.length, 5);
     return array;
 }
+
+let proto = {
+    create_window: create_window,
+    server: server
+}
