@@ -423,6 +423,18 @@ SetTimeout[
 
 ElectronIPCSend["runningAt", $Env["host"], $Env["http"] ];
 
+Echo["TODO: "];
+Echo["- [x] Electron IPC implementation"];
+Echo["- [x] Evaluation of normal cells in the notebook"];
+Echo["- [ ] Evaluation of projected cells in the notebook"];
+Echo["- [ ] OnWebSocketConnect and After for windows handling (add sockets to EvaluationContext). Needs to subscribe to app events too"];
+Echo["- [ ] Orphaned windows"];
+Echo["- [ ] Check CreateWindow"];
+Echo["- [ ] Check create window from the window"];
+Echo["- [ ] WLW check"];
+Echo["- [ ] Make Rasterize, Message work with orphaned windows (created via IPC)"];
+Echo["- [ ] Window reload/reevaluation"];
+
 (* Main sync thread *)
 
 While[True,

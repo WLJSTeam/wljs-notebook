@@ -169,6 +169,7 @@ makeTransaction[o_, context_] := Module[{},
     transaction
 ]
 
+Echo["Evaluation of cells as modules does not work."]
 Exit[-1];
 (* This does not work *)
 
