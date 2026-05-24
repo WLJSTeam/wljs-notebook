@@ -421,6 +421,8 @@ SetTimeout[
 , 1000
 ];
 
+ElectronIPCSend["runningAt", $Env["host"], $Env["http"] ];
+
 (* Main sync thread *)
 
 While[True,

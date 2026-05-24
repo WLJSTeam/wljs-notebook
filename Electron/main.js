@@ -3031,56 +3031,50 @@ function start_server (window) {
     server.wolfram.process.stdin.write('System`$Env = <|"AppData"->URLDecode["'+encodeURIComponent(appDataFolder)+'"], "ElectronCode"->'+server.electronCode+', "AccentColor"->"'+accentColor+'"|>;');
     server.wolfram.process.stdin.write(`Get[URLDecode["${encodeURIComponent(runPath)}"]]\n`);
 
-    const PACError = new RegExp(/Execution of PAC script at/);
+   
+    let buf = "";
 
-
-
-    let url_match;
-    const url_reg = new RegExp(/Open http:\/\/(?<ip>[0-9|.]*):(?<port>[0-9]*) in your browser/);
-
-    server.wolfram.streamer = (data) => {
-
-
-        const string = data.toString();
-        windows.log.print(string);
-
-        
-
-        //listerning for a specific line in output
-        url_match = url_reg.exec(string);
-        if (url_match && !server.running) {
-            //open a window, means server has started
-            server.url.local = `http://${url_match.groups.ip}:${url_match.groups.port}`;
-
-
-
+    const ipc = {
+        'runningAt': (ip, port) => {
+            server.url.local = `http://${ip}:${port}`;
             console.log('Open first window');
-
-            //open a first window. coudl be a file or second instance
+            //open a first window. could be a file or second instance
             create_first_window();
             server.running = true;
-
-            //reset to the default streamer
-            server.wolfram.streamer = (data) => {
-                const string = data.toString();
-                windows.log.print(string);
-            };
-
             if (!server.debug) setTimeout(() => {windows.log.destroy()}, 300);
+        },
+        'createWindow': (path, title) => {
+            create_window({url: server.url.default() + path, title: title});
         }
-
     };
+
+    server.wolfram.streamer = (chunk) => {
+        buf += chunk;
+  
+        let nl;
+        while ((nl = buf.indexOf("\n")) !== -1) {
+          const line = buf.slice(0, nl);
+          buf = buf.slice(nl + 1);
+  
+          if (line.startsWith("<<<IPC>>>")) {
+            try {
+                const payload = JSON.parse(line.slice("<<<IPC>>>".length));
+                ipc[payload[0]](...payload[1]);
+            } catch (err) {
+                console.error(err);
+            }
+          } else {
+            windows.log.print(line);
+          }
+        }
+    };
+
     server.wolfram.errors = (data) => {
         const string = data.toString();
-
-        //checking errors
-        if (PACError.exec(string)) {
-            new promt('binary', 'There might be an problem with Wolfram Engine (Execution of PAC script). If you face any further issues, try to restart frontend with no active internet connection', ()=>{}, window);
-        }
-
         windows.log.print(string, '\x1b[46m');
     };
 
+    server.wolfram.process.stdout.setEncoding("utf8");
     server.wolfram.process.stdout.on('data', server.wolfram.streamer);
     server.wolfram.process.stderr.on('data', server.wolfram.errors);
 }

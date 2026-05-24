@@ -13,8 +13,12 @@ AssociationToggle::usage = "mutable boolean assoc manipulator"
 HashString32::usage = "Hash the string using CRC32 and represent using Base64"
 
 UniversalPathConverter::usage = "converts UNIX to win and vise versa"
+ElectronIPCSend::usage = "send message to Electron process";
 
 Begin["`Private`"]; 
+
+ElectronIPCSend[name_String, args__] := WriteString[$StandardOutputStream, "<<<IPC>>>" <> ExportString[{name, {args} }, "RawJSON", "Compact" -> True] <> "\n"];
+
 
 NullQ[expr_] := expr===Null;
 

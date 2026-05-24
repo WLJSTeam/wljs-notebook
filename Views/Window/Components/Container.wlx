@@ -1,4 +1,4 @@
-id = $Options["Window"]["Notebook"]["Hash"];
+id = $Options["Window"]["Hash"];
 Color = If[StringQ[#], #, "teal"]& @ ($Options["Parameters"]["AccentColor"]);
 
 <div class="h-full overflow-hidden" id="container-{id}">

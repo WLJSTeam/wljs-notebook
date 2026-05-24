@@ -4,7 +4,8 @@ BeginPackage["CoffeeLiqueur`Extensions`RemoteCells`", {
     "CoffeeLiqueur`WLX`Importer`",  
     "CoffeeLiqueur`WLX`WebUI`",
     "CoffeeLiqueur`Misc`Events`",
-    "CoffeeLiqueur`Misc`Events`Promise`"
+    "CoffeeLiqueur`Misc`Events`Promise`",
+    "CoffeeLiqueur`Notebook`Utils`"
 }]
 
 Begin["`Internal`"]
@@ -516,13 +517,14 @@ EventHandler[NotebookEditorChannel // EventClone,
                                 ]
                             ];
 
-                            (* [TODO] Implement electron orphan window later *)
-                            Echo["No notebooks, no windows. This sucks, then we spawn our window using electron"];
+                          
+                            Echo["No notebooks, no windows. Let's ask Electron using stdout"];
                             With[{w = win`WindowObj["OrphanQ" -> True, "KernelHash" -> kernelHash,
                                 "EvaluatedQ" -> evaluatedQ, "Title" -> title, ImageSize -> imageSize,
-                                "Display" -> display, "Hash" -> t["Meta", "Hash"], "Data" -> t["Data"], "Notebook"->First[Values[nb`HashMap] ] ]},
+                                "Display" -> display, "Hash" -> t["Meta", "Hash"], "Data" -> t["Data"] ]},
                                 
-                                WriteString[$StandardErrorStream, "@Electron, "<>URLEncode[StringTemplate["proto.create_window({url: proto.server.url.default('local') + '/window?id=``'})"][w["Hash"] ] ]<>"\n"];
+                                ElectronIPCSend["createWindow", "/window?id="<>w["Hash"] ];
+
                             ];
 
                             Return[]
