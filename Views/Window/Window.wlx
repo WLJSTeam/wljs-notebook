@@ -4,11 +4,11 @@ Container := ImportComponent["Components/Container.wlx"];
 addListeners[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
     (* /* don't clone  event, must be one ! */ *)
     Echo["Add listeners::::"];
-    Echo[window["Hash"]];
+    Echo[window["Hash"] ];
+
     EventHandler[EventClone @ window , {
         "Ready" -> Function[Null,
-            Echo["Window.wlx >> Ready to show!"];
-            window["EvaluatedQ"] = True;
+            Echo["Window.wlx >> Loading content"];
 
             If[MatchQ[window["Notebook"], _nb`NotebookObj],
                 With[{htmlJsCells = Select[window["Notebook"]["Cells"], Function[c, MatchQ[c["Display"], "html" | "js" | "mjs" ] ] ]},
@@ -20,20 +20,16 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
                 ]
             ];
 
-            WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client]
+            WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client];
+            EventFire[window, "AfterLoad", window];
         ],
 
-        "Reevaluate" -> Function[Null,
-            Echo["Window >> reevalaute!"];
-            window["EvaluatedQ"] = False;
-            evaluate[window, secret, client, modals, parameters, extensions]; 
-            If[StringQ[window["GeneratedOutputCellHash"]], 
-                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
-                (* /* emulate cell's destroy event */ *)
-                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
-                EventRemove[window["GeneratedOutputCellHash"]];
-            ];
-            WebUISubmit[Global`UIWindow["Unload" ], client]
+        "OnReload" -> Function[Null,
+            Echo["Window >> reload!"];
+            WebUISubmit[Global`UIWindow["Unload" ], client];
+            Then[EventFire[window, "AfterReload", client], Function[Null,
+                EventFire[window, "Ready", Null];
+            ] ];
         ]
     }];
 
@@ -46,9 +42,6 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
     ];
 ];
 
-restoreCells[window_nb`NotebookObj, secret_String, client_, parameters_, extensions__] := Module[{},
-    Print["nothing to do"];
-];
 
 checkWSLink[window_, client_, event_String] := Module[{},
     (*/* check if connected already */*)
@@ -59,24 +52,11 @@ checkWSLink[window_, client_, event_String] := Module[{},
         Return[];
     ];
 
-    If[TrueQ[window["OrphanQ"]],
-        WebUISubmit[Global`UIWindow["WSConnect", GenericKernel`HashMap[window["KernelHash"]]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];    
-    ,
-        WebUISubmit[Global`UIWindow["WSConnect", window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];    
-    ];
+    WebUISubmit[Global`UIWindow["WSConnect", window["WebSocketPort"], event, "PrefixMode"->$Env["ws2prefix"] ] (*`*), client];    
 ];
 
-evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
-    checkWSLink[window, client, secret];
-    If[TrueQ[window["EvaluatedQ"]],
-        EventFire[window, "Ready", True];
-    ,
-        win`EvaluateWindowObj[window];(*`*)
-    ]
-    
-];
 
-Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
+Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
     <div>
         <script type="module">
             let wrap, supp = [];
@@ -166,7 +146,7 @@ destructor[window_, secret_, __] := With[{},
 (* /*  Exstension API */  *)
 (* /*  Prolog, Epilog, Mesis, EventHandler */  *)
 
-Component[OptionsPattern[]] := With[{
+Component[OptionsPattern[] ] := With[{
     secret = OptionValue["Secret"], 
     window = OptionValue["Window"], 
     event = OptionValue["Event"],
@@ -194,6 +174,8 @@ Component[OptionsPattern[]] := With[{
             Print["Window is about to be shown"];
             Echo[StringJoin["Connected using socket: ", $Client // ToString]];
 
+            EventFire[appEvents, "Window:Loaded", window];
+
             (* /* reset WS connection for sure, in a case of incorrect closed socket */*)
             window["WebSocketQ"] = False; 
             window["Opened"] = True;
@@ -219,19 +201,9 @@ Component[OptionsPattern[]] := With[{
     
             (* /* Establish WS Connection to a Kernel (if available) */ *)
             checkWSLink[window, $Client, secret];
-
-            (* /* Restore cells */ *)
-            restoreCells[window, secret, $Client, parameters, extensions];
-
         ],
 
-        "ManuallyClosed" -> Function[Null,
-            If[StringQ[window["GeneratedOutputCellHash"]], 
-                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
-                (* /* emulate cell's destroy event */ *)
-                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
-                EventRemove[window["GeneratedOutputCellHash"]];
-            ];        
+        "ManuallyClosed" -> Function[Null,      
             EventFire[window, "ManuallyClosed", True];
             EventFire[appEvents, "Window:ManuallyClosed", window];
         ],
@@ -239,17 +211,17 @@ Component[OptionsPattern[]] := With[{
         "WebSocketConnected" -> Function[Null, With[{cli = $Client},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
             window["WebSocketQ"] = True;
+            window["WebSocket"] = cli;
 
-            With[{x = EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>]},
-                Then[x,
+            Then[EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>], Function[Null,
+                Then[EventFire[window, "AfterWebSocketConnected", <|"Client" -> cli|>],
                     Function[Null,
                         Echo["Fired. then passed..."];
-                        (* /* start evluation */ *)
-                        evaluate[window, secret, cli, modals, parameters, extensions];                
+                        EventFire[window, "Ready", True];              
                     ]
                 ];
-            ];
-        ]],
+            ] ];
+        ] ],
 
         "WebSocketLost" -> Function[Null,
             Echo["window.wlx >> WebSocket link to evaluation Kernel was LOST"];

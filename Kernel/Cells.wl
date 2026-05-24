@@ -18,7 +18,6 @@ Deserialize;
 DeserializeLive;
 
 SelectCells;
-EvaluateCellObj;
 
 Begin["`Private`"]
 
@@ -115,112 +114,6 @@ SelectCells[list_List, pattern__] := With[{seq = SequencePosition[list, List[pat
     ]
 ];
 
-CellObj /: EvaluateCellObj[o_CellObj, OptionsPattern[] ] := Module[{transaction},
-    Print["Submit cellobj"];
-
-    (* [TODO] [REFACTOR] *)
-    (* Just accept options, do not check Notebook field *)
-    If[!NullQ[ o["Notebook"] ],
-
-        o["State"] = "Evaluation";
-        EventFire[o, "State", "Evaluation"];
-        EventFire[o, "Evaluate", True];
-
-        transaction = Transaction[];
-        transaction["Data"] = o["Data"];
-        transaction["EvaluationContext"] = Join[o["Notebook", "EvaluationContext"], <|"Ref" -> o["Hash"], "Notebook" -> o["Notebook"]["Hash"]|> ];
-
-        (* find any output cell after *)
-        With[{seq = SequencePosition[o["Notebook", "Cells"], {Sequence[o, __?OutputCellQ]}] // Flatten},
-            If[Length[seq] =!= 0,
-                Delete /@ (o["Notebook", "Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
-            ];
-        ];
-
-
-
-        EventHandler[transaction, {"Result" -> Function[data,
-            (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
-
-            If[data["Data"] != "Null",
-                If[KeyExistsQ[data, "Meta"],
-                    CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], data["Meta"], "After"->Sequence[o, ___?OutputCellQ], "Type"->"Output"(*"" data["Meta"]*)]
-                ,
-                    CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], "After"->Sequence[o, ___?OutputCellQ], "Display"->"codemirror", "Type"->"Output"(*"" data["Meta"]*)]
-                ]
-            ];
-        ],
-            "Finished" -> Function[Null,
-                o["State"] = "Idle";
-                Echo["Finished!"];
-                EventFire[o, "State", "Idle"];
-            ],
-
-            "Error" -> Function[error,
-                o["State"] = "Idle";
-                EventFire[o, "State", "Idle"];
-                Echo["Error in evalaution... check syntax"];
-                EventFire[o["Notebook"], "CellError", {o, error}];
-                EventFire[o, "Error", error];
-            ],
-
-            (*  any sideeffects *)
-            else_String -> Function[data,
-                (* extend objects space *)
-                EventFire[o["Notebook"], else, data];
-            ]
-        }];
-
-        (* submit *)
-        o["Notebook", "Evaluator"][transaction];
-
-    ,
-    
-        o["State"] = "Evaluation";
-        o["Result"] = {};
-        EventFire[o, "State", "Evaluation"];
-        EventFire[o, "Evaluate", True];
-
-        transaction = Transaction[];
-        transaction["Data"] = o["Data"];
-        transaction["EvaluationContext"] = Join[OptionValue["EvaluationContext"], <|"Ref" -> o["Hash"]|> ];
-
-        EventHandler[transaction, {"Result" -> Function[data,
-            (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
-
-            If[data["Data"] != "Null",
-                If[KeyExistsQ[data, "Meta"],
-                    o["Result"] = Append[o["Result"], CellObj["Data"->data["Data"], data["Meta"], "Type"->"Output"(*"" data["Meta"]*)] ]
-                    
-                ,
-                    o["Result"] = Append[o["Result"], CellObj["Data"->data["Data"], "Display"->"codemirror", "Type"->"Output"(*"" data["Meta"]*)] ]
-                    
-                ]
-            ];
-        ],
-            "Finished" -> Function[Null,
-                o["State"] = "Idle";
-                Echo["Finished!"];
-                EventFire[o, "State", "Idle"];
-                EventFire[o, "Finished", True];
-            ],
-
-            "Error" -> Function[error,
-                o["State"] = "Idle";
-                EventFire[o, "State", "Idle"];
-                Echo["Error in evalaution... check syntax"];
-                EventFire[o, "Error", error];
-            ]
-        }];
-
-        (* submit *)
-        OptionValue["Evaluator"][transaction];    
-    
-    ];
-    o
-]
-
-Options[EvaluateCellObj] = {"Evaluator" -> Echo, "EvaluationContext"-><||>}
 
 CellObj /: Delete[o_CellObj] := Module[{},
     Print[">> delete cell"];

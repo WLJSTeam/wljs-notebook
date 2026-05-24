@@ -5,7 +5,8 @@ BeginPackage["CoffeeLiqueur`Extensions`RemoteCells`", {
     "CoffeeLiqueur`WLX`WebUI`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Notebook`Utils`"
+    "CoffeeLiqueur`Notebook`Utils`",
+    "CoffeeLiqueur`Notebook`Transactions`"
 }]
 
 Begin["`Internal`"]
@@ -119,6 +120,57 @@ wolframCellQ[cell_] := (!StringMatchQ[cell["Data"], StartOfString~~(WordCharacte
 wlxCellQ[cell_] := StringMatchQ[cell["Data"], StartOfString~~".wlx"~~"\n"~~__];
 
 (* [TODO] [REFACTOR] *)
+autoTake[p_, b_] := If[!AssociationQ[p], b, p]
+
+makeTransaction[o_, context_] := Module[{},
+    transaction = Transaction[];
+    transaction["Data"] = o["Data"];
+    transaction["EvaluationContext"] = context;
+
+    (* find any output cell after *)
+    With[{seq = SequencePosition[o["Notebook", "Cells"], {Sequence[o, __?cell`OutputCellQ]}] // Flatten},
+        If[Length[seq] =!= 0,
+            Delete /@ (o["Notebook", "Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
+        ];
+    ];
+
+    EventHandler[transaction, {"Result" -> Function[data,
+        (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
+
+        If[data["Data"] != "Null",
+            If[KeyExistsQ[data, "Meta"],
+                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], data["Meta"], "After"->Sequence[o, ___?cell`OutputCellQ], "Type"->"Output"]
+            ,
+                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], "After"->Sequence[o, ___?cell`OutputCellQ], "Display"->"codemirror", "Type"->"Output"]
+            ]
+        ];
+    ],
+        "Finished" -> Function[Null,
+            o["State"] = "Idle";
+            Echo["Finished!"];
+            EventFire[o, "State", "Idle"];
+        ],
+
+        "Error" -> Function[error,
+            o["State"] = "Idle";
+            EventFire[o, "State", "Idle"];
+            Echo["Error in evalaution... check syntax"];
+            EventFire[o["Notebook"], "CellError", {o, error}];
+            EventFire[o, "Error", error];
+        ],
+
+        (*  any sideeffects *)
+        else_String -> Function[data,
+            (* extend objects space *)
+            EventFire[o["Notebook"], else, data];
+        ]
+    }];
+
+    transaction
+]
+
+Exit[-1];
+(* This does not work *)
 
 evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, ContextIsolation_] := With[{
     notebook = nb`HashMap[uid],
@@ -243,7 +295,8 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             ];
 
             (* evaluate notebook in the context of a caller notebook if provided *)
-            cell`EvaluateCellObj[#, "Evaluator"->kernel["Container"], "EvaluationContext"->evalContext ] &/@ initCells;
+
+            kernel["Container"][ makeTransaction[#, evalContext] ] &/@ initCells;
 
             GenericKernel`Send[kernel,
                 CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0["Cancel"];
@@ -607,13 +660,6 @@ EventHandler[NotebookEditorChannel // EventClone,
             ]
         ],
 
-        "CellUnsubscribe" -> Function[assoc,
-            (*Print["CellUnsubscribe!!!!!!"];
-            With[{hash = assoc["CellHash"], oldEvent = assoc["Event"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
-                EventRemove[ cellClonedEvents[oldEvent] ];
-                cellClonedEvents[oldEvent] = .; (* just to save some memory *)
-            ]*)
-        ],
 
         "CellSubscribe" -> Function[assoc,
             Print["CellSubscribe!!!!!!"];

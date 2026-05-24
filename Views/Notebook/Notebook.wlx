@@ -18,6 +18,59 @@ Global`UINotebook (*`*);
 ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final]]]
 ApplySync[f_, w_, {}, final_] := final[];
 
+autoTake[p_, b_] := If[!AssociationQ[p], b, p]
+
+makeTransaction[o_] := Module[{},
+    o["State"] = "Evaluation";
+    EventFire[o, "State", "Evaluation"];
+    EventFire[o, "Evaluate", True];
+
+    transaction = Transaction[];
+    transaction["Data"] = o["Data"];
+    transaction["EvaluationContext"] = Join[autoTake[o["Notebook", "EvaluationContext"], <||>], <|"Ref" -> o["Hash"], "Notebook" -> o["Notebook"]["Hash"]|> ];
+
+    (* find any output cell after *)
+    With[{seq = SequencePosition[o["Notebook", "Cells"], {Sequence[o, __?cell`OutputCellQ]}] // Flatten},
+        If[Length[seq] =!= 0,
+            Delete /@ (o["Notebook", "Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
+        ];
+    ];
+
+    EventHandler[transaction, {"Result" -> Function[data,
+        (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
+
+        If[data["Data"] != "Null",
+            If[KeyExistsQ[data, "Meta"],
+                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], data["Meta"], "After"->Sequence[o, ___?cell`OutputCellQ], "Type"->"Output"]
+            ,
+                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], "After"->Sequence[o, ___?cell`OutputCellQ], "Display"->"codemirror", "Type"->"Output"]
+            ]
+        ];
+    ],
+        "Finished" -> Function[Null,
+            o["State"] = "Idle";
+            Echo["Finished!"];
+            EventFire[o, "State", "Idle"];
+        ],
+
+        "Error" -> Function[error,
+            o["State"] = "Idle";
+            EventFire[o, "State", "Idle"];
+            Echo["Error in evalaution... check syntax"];
+            EventFire[o["Notebook"], "CellError", {o, error}];
+            EventFire[o, "Error", error];
+        ],
+
+        (*  any sideeffects *)
+        else_String -> Function[data,
+            (* extend objects space *)
+            EventFire[o["Notebook"], else, data];
+        ]
+    }];
+
+    transaction
+]
+
 trashCell[notebook_, cell_] := Module[{},
     If[!cell`InputCellQ[cell], Return[Null, Module]];
     If[TrueQ[cell["Props"]["Locked"]], Return[Null, Module]];
@@ -289,9 +342,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
     With[{project = Function[Null,
         With[{found = SelectFirst[Values[win`HashMap], Function[window, TrueQ[window["Single"] ] && window["Ref"] === cell["Hash"] && window["Opened"] === True ] ] },
             If[MissingQ[found],
-                With[{win = win`WindowObj["Single"->True, "Notebook" -> cell["Notebook"], "Data" -> cell["Data"], "Ref"     -> cell["Hash"] ]},
-                    Echo["project >> sending global event"];
-                    EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->client|>];
+                With[{win = win`WindowObj["Ref"->cell["Hash"], "Single"->True, "Data" -> cell["Data"] , "EvaluationContext"-><|"Notebook"->cell["Notebook"]["Hash"], "Ref"->cell["Hash"]|>, "Evaluator"->notebook["Evaluator"]]}, 
                     WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
                 ] 
             ,
@@ -341,9 +392,7 @@ projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_
 
     
     With[{project = Function[Null,
-        With[{win = win`WindowObj["Notebook" -> cell["Notebook"], "Data" -> cell["Data"], "Ref" -> cell["Hash"] ]},
-            Echo["project >> sending global event"];
-            EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->client|>];
+        With[{win = win`WindowObj["Cell"->cell, "Notebook"->notebook, "WebSocketPort"->notebook["Evaluator"]["Kernel"]["WebSocket"]]},
             WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
         ] ]
     },
@@ -388,9 +437,7 @@ projectCellData[cell_, evaluatedQ_, data_, display_, uid_,  imageSize_, offscree
 
 
     
-    With[{win = win`WindowObj["Notebook" -> notebook, "EvaluatedQ" -> evaluatedQ, "Display"->display, "Hash"->uid, "Data" -> data, "Ref" -> cell["Hash"] ]},
-            Echo["project >> sending global event"];
-            EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->client|>];
+    With[{win = win`WindowObj["EvaluatedQ" -> evaluatedQ, "Display"->display, "Hash"->uid, "Data" -> data, "Ref" -> cell["Hash"], "EvaluationContext"-><|"Notebook"->cell["Notebook"]["Hash"], "Ref"->cell["Hash"]|>, "Evaluator"->notebook["Evaluator"] ]},
 
             If[offscreen,
                 WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_, "Features"->"width=1,height=1"];
@@ -484,7 +531,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
             ,
                 Then[checkWSLink[notebook, client, secret, log], Function[Null,
                     Then[checkEvaluationCells[cell, notebook, secret, log, kernels, client, modals, parameters, extensions], Function[Null,
-                        cell // cell`EvaluateCellObj;
+                        cell // makeTransaction // cell["Notebook", "Evaluator"];
                         EventFire[promise, Resolve, True];
                     ],
                     Function[Null,
@@ -505,7 +552,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                             Echo["Success!"];
                             Then[checkWSLink[notebook, client, secret, log], Function[Null,
                                 Then[checkEvaluationCells[cell, notebook, secret, log, kernels, client, modals, parameters, extensions], Function[Null,
-                                    cell // cell`EvaluateCellObj;
+                                    cell // makeTransaction // cell["Notebook", "Evaluator"];
                                     EventFire[promise, Resolve, True];
                                 ],
                                 Function[Null,

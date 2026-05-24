@@ -4,8 +4,6 @@ Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
 WindowObj::usage = ""
-
-EvaluateWindowObj;
 Serialize;
 
 HashMap;
@@ -20,7 +18,7 @@ HashMap = <||>
 
 
 
-CreateUType[WindowObj, init, {"Notebook"->Null, "Title"->"Application", ImageSize->Automatic, "Display"->"codemirror", "EvaluatedQ"->False, "Hash"->Null, "Data"->"", "Ref"->""}]
+CreateUType[WindowObj, init, {"EvaluationContext"-><||>,"Title"->"Application", ImageSize->Automatic, "Display"->"codemirror", "EvaluatedQ"->False, "Hash"->Null, "Data"->"", "Notebook"->Null}]
 
 WindowObj /: EventHandler[n_WindowObj, opts__] := EventHandler[n["Hash"], opts] 
 WindowObj /: EventFire[n_WindowObj, opts__] := EventFire[n["Hash"], opts]
@@ -32,9 +30,7 @@ init[o_] := Module[{uid = If[o["Hash"] =!= Null, o["Hash"], CreateUUID[] ]},
 
     o["Hash"] = uid;
     HashMap[uid] = o;
-    If[!NullQ[ o["Notebook"] ],
-        o["EvaluationContext"] = Join[o["Notebook"]["EvaluationContext"], <|"Notebook"->o["Notebook"]["Hash"]|>];
-    ];
+
 
     o
 ]
@@ -107,7 +103,7 @@ WindowObj /: EvaluateWindowObj[o_WindowObj, OptionsPattern[] ] := Module[{transa
 Options[EvaluateWindowObj] = {"EvaluationContext" -> <||>}
 
 WindowObj /: Serialize[n_WindowObj, OptionsPattern[] ] := Module[{props},
-    props = {# -> n[#]} &/@ If[OptionValue["MetaOnly"], Complement[n["Properties"], {"EvaluationContext", "Format", "Socket","Properties","Icon","Self","Data", "Notebook", "Init", "After", "Before"}], Complement[n["Properties"], {"Socket", "Format", "EvaluationContext", "Properties","Icon","Self", "Notebook", "Init", "After", "Before"}] ];
+    props = {# -> n[#]} &/@ If[OptionValue["MetaOnly"], Complement[n["Properties"], {"WebSocket","Evaluator", "EvaluationContext", "Format", "Socket","Properties","Icon","Self","Data", "Notebook", "Init", "After", "Before"}], Complement[n["Properties"], {"Socket", "Format", "EvaluationContext", "Properties","Icon","Self", "Notebook", "Init", "After", "Before"}] ];
     props = Join[props, {"Notebook" -> n["Notebook", "Hash"]}];
     props // Flatten // Association
 ]

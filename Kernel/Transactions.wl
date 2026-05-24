@@ -10,7 +10,7 @@ initTransaction[t_] := With[{},
     t
 ]
 
-CreateUType[Transaction, initTransaction, {}]
+CreateUType[Transaction, initTransaction, {"EvaluationContext"-><||>, "Data"->""}]
 
 Transaction /: EventHandler[n_Transaction, opts__] := EventHandler[n["Hash"], opts] 
 Transaction /: EventFire[n_Transaction, opts__] := EventFire[n["Hash"], opts]

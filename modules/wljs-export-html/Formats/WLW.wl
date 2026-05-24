@@ -73,6 +73,16 @@ checkKernel[kernel_, cbk_] := (Echo["Checking kernel..."]; If[TrueQ[kernel["Cont
 
 (* [TODO] [REFACTOR] *)
 
+
+
+
+makeTransaction[o_, evContext_, notebook_] := Module[{},
+    transaction = Transaction[];
+    transaction["Data"] = o["Data"];
+    transaction["EvaluationContext"] = Join[evContext, <|"Ref" -> o["Hash"], "Notebook" -> notebook["Hash"]|> ];
+    transaction
+]
+
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
 With[{
     name = FileBaseName[path],
@@ -106,9 +116,6 @@ With[{
     With[{kernel = options["Kernels"] //ReleaseHold //First},
         checkKernel[kernel, Function[data,
 
-            notebook["Evaluator"] = data["Container"];
-            EventFire[notebook, "AquairedKernel", True];
-
             Echo["Starting evaluation", "WLE Decoder"];
             With[{
                 initCells = Select[Select[notebook["Cells"], cell`InputCellQ], (#["Props"]["InitGroup"] === True) &],
@@ -132,7 +139,7 @@ With[{
                     Print[#["Data"] ];
                 ) &/@ initCells;*)
 
-                cell`EvaluateCellObj[#] &/@ initCells;
+                data["Container"][ makeTransaction[#, <||>, notebook] ] &/@ initCells;
 
                 Module[{title = "", decription = ""},
                         With[{t = notebook["Cells"][[1]]},
