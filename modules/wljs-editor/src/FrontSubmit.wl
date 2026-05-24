@@ -19,8 +19,29 @@ rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
 EventHandler[AppExtensions`AppEvents// EventClone, {
     "Loader:NewNotebook" ->  (Once[ attachListeners[#] ] &),
-    "Loader:LoadNotebook" -> (Once[ attachListeners[#] ] &)
+    "Loader:LoadNotebook" -> (Once[ attachListeners[#] ] &),
+    "WindowObj::NewWindow" -> attachListeners
 }];
+
+
+
+attachListeners[win_win`WindowObj] := With[{},
+    Echo["Attach event listeners to window from EXTENSION FrontSubmit"];
+    EventHandler[win // EventClone, {
+        "OnWebSocketConnected" -> Function[data,
+            Echo["Requesting socket object for client window object..."];
+            With[{p = Promise[]},
+                Then[WebUIFetch[System`FSAskKernelSocket[], data["Client"] ], Function[dp,
+                    win["KernelWebSocket"] = dp;
+                    win["EvaluationContext"] = <|"KernelWebSocket"->dp, "OriginKernelWebSocket"->dp|>;
+                    Echo["Obtained!"];
+                    EventFire[p, Resolve, True];
+                ] ];
+                p
+            ]
+        ]
+    }];
+]
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
     Echo["Attach event listeners to notebook from EXTENSION FrontSubmit"];
@@ -29,32 +50,11 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             With[{p = Promise[]},
                 Echo["Requesting socket object for client..."];
                 Then[WebUIFetch[System`FSAskKernelSocket[], payload["Client"] ], Function[data,
-                    notebook["EvaluationContext", "KernelWebSocket"] = data;
-                    notebook["EvaluationContext", "OriginKernelWebSocket"] = data;
+                    notebook["EvaluationContext"] = Join[notebook["EvaluationContext"], <|"KernelWebSocket"->data, "OriginKernelWebSocket"->data|>];
                     EventFire[p, Resolve, True];
                 ] ];
                 p
             ]
-        ],
-
-        "OnWindowCreate" -> Function[payload,
-            Echo["Subscribe for an window events"];
-            With[{win = payload["Window"]},
-                EventHandler[win, {
-                    "OnWebSocketConnected" -> Function[data,
-                        Echo["Requesting socket object for client window object..."];
-                        With[{p = Promise[]},
-                            Then[WebUIFetch[System`FSAskKernelSocket[], data["Client"] ], Function[dp,
-                                win["EvaluationContext", "OriginKernelWebSocket"] = win["EvaluationContext", "KernelWebSocket"];
-                                win["EvaluationContext", "KernelWebSocket"] = dp;
-                                Echo["Obtained!"];
-                                EventFire[p, Resolve, True];
-                            ] ];
-                            p
-                        ]
-                    ]
-                }];
-            ];
         ]
     }]; 
 ]

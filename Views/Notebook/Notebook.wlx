@@ -18,58 +18,7 @@ Global`UINotebook (*`*);
 ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final]]]
 ApplySync[f_, w_, {}, final_] := final[];
 
-autoTake[p_, b_] := If[!AssociationQ[p], b, p]
 
-makeTransaction[o_] := Module[{},
-    o["State"] = "Evaluation";
-    EventFire[o, "State", "Evaluation"];
-    EventFire[o, "Evaluate", True];
-
-    transaction = Transaction[];
-    transaction["Data"] = o["Data"];
-    transaction["EvaluationContext"] = Join[autoTake[o["Notebook", "EvaluationContext"], <||>], <|"Ref" -> o["Hash"], "Notebook" -> o["Notebook"]["Hash"]|> ];
-
-    (* find any output cell after *)
-    With[{seq = SequencePosition[o["Notebook", "Cells"], {Sequence[o, __?cell`OutputCellQ]}] // Flatten},
-        If[Length[seq] =!= 0,
-            Delete /@ (o["Notebook", "Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
-        ];
-    ];
-
-    EventHandler[transaction, {"Result" -> Function[data,
-        (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
-
-        If[data["Data"] != "Null",
-            If[KeyExistsQ[data, "Meta"],
-                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], data["Meta"], "After"->Sequence[o, ___?cell`OutputCellQ], "Type"->"Output"]
-            ,
-                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], "After"->Sequence[o, ___?cell`OutputCellQ], "Display"->"codemirror", "Type"->"Output"]
-            ]
-        ];
-    ],
-        "Finished" -> Function[Null,
-            o["State"] = "Idle";
-            Echo["Finished!"];
-            EventFire[o, "State", "Idle"];
-        ],
-
-        "Error" -> Function[error,
-            o["State"] = "Idle";
-            EventFire[o, "State", "Idle"];
-            Echo["Error in evalaution... check syntax"];
-            EventFire[o["Notebook"], "CellError", {o, error}];
-            EventFire[o, "Error", error];
-        ],
-
-        (*  any sideeffects *)
-        else_String -> Function[data,
-            (* extend objects space *)
-            EventFire[o["Notebook"], else, data];
-        ]
-    }];
-
-    transaction
-]
 
 trashCell[notebook_, cell_] := Module[{},
     If[!cell`InputCellQ[cell], Return[Null, Module]];
@@ -334,7 +283,7 @@ requestKernel[notebook_, kernels_, modals_, client_, Success_] := With[{},
     ];
 ];
 
-projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
+(*projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
     client = If[MatchQ[cli, _Symbol], notebook["Socket"], cli]
 },
 
@@ -384,17 +333,71 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
             ] ];
         ];
     ];
-] 
+] *)
+
+projectCellOrUpdate = projectCell;
 
 projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
-    client = If[MatchQ[cli, _Symbol], notebook["Socket"], cli]
+    client = If[MatchQ[cli, _Symbol], notebook["Socket"], cli],
+    promise = Promise[]
 },
 
     
-    With[{project = Function[Null,
-        With[{win = win`WindowObj["Cell"->cell, "Notebook"->notebook, "WebSocketPort"->notebook["Evaluator"]["Kernel"]["WebSocket"]]},
-            WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
-        ] ]
+    With[{project = Function[Null, With[{
+        transaction = cell`ToTransaction[cell, "Notebook"->Null],
+        output = Unique["nbWinCellOut"],
+        win = win`WindowObj["Notebook"->notebook, "Display"->"codemirror", "WebSocketPort"->notebook["Evaluator"]["Kernel"]["WebSocket"] ]
+    },
+        output = Null;
+        
+
+
+        EventHandler[EventClone @ transaction, {
+            "Result" -> Function[data,
+                If[output === Null, data = output];
+                If[data["Data"] =!= "Null", output = data];
+            ],
+            
+            "Finished" -> Function[Null,
+                If[KeyExistsQ[output, "Meta"],
+                    win["Data"] = output["Data"];
+                    win["Display"] = Lookup[<|output["Meta"]|>, "Display", "codemirror"];
+                    With[{generatedHash = <|output["Meta"]|>["Hash"]}, If[StringQ[generatedHash], 
+                        EventHandler[EventClone[win], {
+                            (* forward all events *)
+                            any_ :> (EventFire[generatedHash, any, #]&)
+                        }];
+                    ] ];
+                ,
+                    win["Data"] = output["Data"];
+                ];
+                
+                ClearAll[output];
+                Delete[transaction];
+                Echo["Done! Resolving window promise"];
+                EventFire[promise, Resolve, True];
+                
+            ],
+
+            "Error" -> Function[Null,
+                ClearAll[output];
+                Delete[transaction];
+                win["Data"] = "$Failed"
+                EventFire[promise, Resolve, True];
+            ]
+        }];
+
+        WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
+
+        EventHandler[EventClone[win], {
+            "AfterWebSocketConnected" -> Function[Null,
+                notebook["Evaluator"][transaction, 
+                    Join[notebook["EvaluationContext"], <|"Notebook"->cell["Notebook"]["Hash"], "Ref"->cell["Hash"]|>, win["EvaluationContext"] ] 
+                ];
+                promise
+            ]   
+        }];
+      ] ]
     },
 
         (*/* Check kernel and evaluator */*)
@@ -531,7 +534,15 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
             ,
                 Then[checkWSLink[notebook, client, secret, log], Function[Null,
                     Then[checkEvaluationCells[cell, notebook, secret, log, kernels, client, modals, parameters, extensions], Function[Null,
-                        cell // makeTransaction // cell["Notebook", "Evaluator"];
+                        With[{transaction = cell // cell`ToTransaction},
+
+                            EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
+                                Delete[transaction];
+                                Echo["Finished evaluation"];
+                            ]}];
+
+                            notebook["Evaluator"][transaction, Join[notebook["EvaluationContext"], <|"Ref" -> cell["Hash"], "Notebook" -> cell["Notebook"]["Hash"]|>] ];
+                        ];
                         EventFire[promise, Resolve, True];
                     ],
                     Function[Null,
@@ -552,7 +563,16 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                             Echo["Success!"];
                             Then[checkWSLink[notebook, client, secret, log], Function[Null,
                                 Then[checkEvaluationCells[cell, notebook, secret, log, kernels, client, modals, parameters, extensions], Function[Null,
-                                    cell // makeTransaction // cell["Notebook", "Evaluator"];
+                                    With[{transaction = cell // cell`ToTransaction},
+
+                                        EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
+                                            Delete[transaction];
+                                            Echo["Finished evaluation"];
+                                        ]}];
+
+                                        notebook["Evaluator"][transaction, Join[notebook["EvaluationContext"], <|"Ref" -> cell["Hash"], "Notebook" -> cell["Notebook"]["Hash"]|>] ];
+                                    ];
+
                                     EventFire[promise, Resolve, True];
                                 ],
                                 Function[Null,

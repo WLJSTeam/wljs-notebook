@@ -74,15 +74,6 @@ checkKernel[kernel_, cbk_] := (Echo["Checking kernel..."]; If[TrueQ[kernel["Cont
 (* [TODO] [REFACTOR] *)
 
 
-
-
-makeTransaction[o_, evContext_, notebook_] := Module[{},
-    transaction = Transaction[];
-    transaction["Data"] = o["Data"];
-    transaction["EvaluationContext"] = Join[evContext, <|"Ref" -> o["Hash"], "Notebook" -> notebook["Hash"]|> ];
-    transaction
-]
-
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
 With[{
     name = FileBaseName[path],
@@ -139,7 +130,7 @@ With[{
                     Print[#["Data"] ];
                 ) &/@ initCells;*)
 
-                data["Container"][ makeTransaction[#, <||>, notebook] ] &/@ initCells;
+                data["Container"][ cell`ToTransaction[#, "Notebook"->Null],  Join[notebook["EvaluationContext"], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|>] ] &/@ initCells;
 
                 Module[{title = "", decription = ""},
                         With[{t = notebook["Cells"][[1]]},
@@ -153,7 +144,8 @@ With[{
                         ] // Quiet;   
                 ];
                 
-
+                Echo["Fixme!!! WLW.wl"];
+                Exit[-1];
 
                 With[{hash = kernel["Hash"], s = Promise[] // First},
                     Then[Promise[s], Function[Null,

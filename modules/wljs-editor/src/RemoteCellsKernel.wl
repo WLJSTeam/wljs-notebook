@@ -20,6 +20,8 @@ NotebookReadAsync::usage = "NotebookReadAsync[] async version of NotebookRead, w
 
 Begin["`Private`"]
 
+$cachedOutput;
+
 Unprotect[Cells]
 ClearAll[Cells]
 
@@ -270,11 +272,7 @@ NotebookEvaluateAsModuleAsync[RemoteNotebook[uid_] ] := Module[{}, With[{
         If[FailureQ[data],
             EventFire[backPromise, Resolve, $Failed];
         ,
-            If[data === Null,
-                EventFire[backPromise, Resolve, Null];
-            ,
-                EventFire[backPromise, Resolve, ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"] ];
-            ];
+            EventFire[backPromise, Resolve, $cachedOutput[uid] ];
         ]
     ] ];
 
@@ -299,18 +297,14 @@ NotebookEvaluateAsModule[RemoteNotebook[uid_] ] := Module[{}, With[{
         ];
 
 
-        EventFire[Internal`Kernel`CommunicationChannel, "EvaluateNotebook", <|"ContextIsolation"->True, "EvaluationContext"-><||>, "Session"->$SessionID, "Hash"->uid, "Elements"->"Module", "Ref"->System`$EvaluationContext["Notebook"],  "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
+        EventFire[Internal`Kernel`CommunicationChannel, "EvaluateNotebook", <|"ContextIsolation"->True, "EvaluationContext"->Automatic, "Session"->$SessionID, "Hash"->uid, "Elements"->"Module", "Ref"->System`$EvaluationContext["Notebook"],  "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
         
         Then[promise, Function[data,
             If[FailureQ[data],
                 pending[fullHash] = $Failed;
                 EvaluateCell[caller // RemoteCellObj];
             ,
-                If[data === Null,
-                    pending[fullHash] = Null;
-                ,
-                    pending[fullHash] = ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"];
-                ];
+                pending[fullHash] = $cachedOutput[uid];
                 
                 EvaluateCell[caller // RemoteCellObj];
             ]
@@ -337,11 +331,7 @@ NotebookEvaluateAsync[RemoteNotebook[uid_], OptionsPattern[] ] := Module[{}, Wit
         If[FailureQ[data],
             EventFire[backPromise, Resolve, $Failed];
         ,
-            If[data === Null,
-                EventFire[backPromise, Resolve, Null];
-            ,
-                EventFire[backPromise, Resolve, ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"] ];
-            ];
+            EventFire[backPromise, Resolve, $cachedOutput[uid] ];
         ]
     ] ];
 
@@ -351,7 +341,7 @@ NotebookEvaluateAsync[RemoteNotebook[uid_], OptionsPattern[] ] := Module[{}, Wit
 Options[NotebookEvaluateAsync] = {
     "ContextNotebook" :> RemoteNotebook[System`$EvaluationContext["Notebook"] ],
     EvaluationElements -> All,
-    "EvaluationContext" -> <||>,
+    "EvaluationContext" -> Automatic,
     "ContextIsolation" -> False
 }
 

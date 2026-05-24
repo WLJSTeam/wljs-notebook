@@ -30,9 +30,11 @@ Container[k_(*Kernel*)] := Module[{},
 
 InitializedContainer[k_]["Kernel"] := k;
 
-InitializedContainer[k_(*Kernel*)][t_Transaction] := Module[{evaluator, state},
+InitializedContainer[k_(*Kernel*)][t_Transaction] := InitializedContainer[k][t, <||>]
+InitializedContainer[k_(*Kernel*)][t_Transaction, context_Association] := Module[{evaluator, state},
     Print["Standard Eval"];
 
+    t["EvaluationContext"] = context;
     evaluator = t /. Flatten[{#["Pattern"] -> #} &/@ eList]; (* apply patterns like t /. {_ -> evaluator 1, _?watever -> evaluator 2} *)
 
     state = (ReadyQ[evaluator, k]);
@@ -41,6 +43,7 @@ InitializedContainer[k_(*Kernel*)][t_Transaction] := Module[{evaluator, state},
     EvaluateTransaction[evaluator, k, t];
     t 
 ]
+
 
 InitializedContainer[k_(*Kernel*)][$Aborted] := Module[{diposableToken},
     Print["Termination Eval"];

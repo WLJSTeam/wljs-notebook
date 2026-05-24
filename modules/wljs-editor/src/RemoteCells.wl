@@ -119,58 +119,7 @@ sessions[_, _] := False;
 wolframCellQ[cell_] := (!StringMatchQ[cell["Data"], StartOfString~~(WordCharacter.. | "")~~"."~~WordCharacter..~~"\n"~~___] && StringLength[StringTrim[cell["Data"] ] ] > 0)
 wlxCellQ[cell_] := StringMatchQ[cell["Data"], StartOfString~~".wlx"~~"\n"~~__];
 
-(* [TODO] [REFACTOR] *)
-autoTake[p_, b_] := If[!AssociationQ[p], b, p]
 
-makeTransaction[o_, context_] := Module[{},
-    transaction = Transaction[];
-    transaction["Data"] = o["Data"];
-    transaction["EvaluationContext"] = context;
-
-    (* find any output cell after *)
-    With[{seq = SequencePosition[o["Notebook", "Cells"], {Sequence[o, __?cell`OutputCellQ]}] // Flatten},
-        If[Length[seq] =!= 0,
-            Delete /@ (o["Notebook", "Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
-        ];
-    ];
-
-    EventHandler[transaction, {"Result" -> Function[data,
-        (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
-
-        If[data["Data"] != "Null",
-            If[KeyExistsQ[data, "Meta"],
-                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], data["Meta"], "After"->Sequence[o, ___?cell`OutputCellQ], "Type"->"Output"]
-            ,
-                cell`CellObj["Data"->data["Data"], "Notebook"->o["Notebook"], "After"->Sequence[o, ___?cell`OutputCellQ], "Display"->"codemirror", "Type"->"Output"]
-            ]
-        ];
-    ],
-        "Finished" -> Function[Null,
-            o["State"] = "Idle";
-            Echo["Finished!"];
-            EventFire[o, "State", "Idle"];
-        ],
-
-        "Error" -> Function[error,
-            o["State"] = "Idle";
-            EventFire[o, "State", "Idle"];
-            Echo["Error in evalaution... check syntax"];
-            EventFire[o["Notebook"], "CellError", {o, error}];
-            EventFire[o, "Error", error];
-        ],
-
-        (*  any sideeffects *)
-        else_String -> Function[data,
-            (* extend objects space *)
-            EventFire[o["Notebook"], else, data];
-        ]
-    }];
-
-    transaction
-]
-
-Echo["Evaluation of cells as modules does not work."]
-Exit[-1];
 (* This does not work *)
 
 evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, ContextIsolation_] := With[{
@@ -206,80 +155,11 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
         Echo["Mode:"];
         Echo[mode];
         
+        If[sessions[session, uid] === True,
+            Echo["Was already evaluated. Skipping init cells"];
+        ];
+
         sessions[session, uid] = True;
-
-        With[
-            {last = initCells//Last},
-            {
-                (* remove original notebook assigments *)
-                transform = Function[Null,
-                    Echo["RemoteCells >> Original cells were transformed"];
-
-                    If[mode === "Module",
-                        (* a hack to save the context *)
-                        last["_Data"] = last["Data"];
-                        (*[TODO] FIX ME. USE NORMAL SYMBOLS! *)
-                        last["Data"] = "BaseEncode[ExportByteArray["<>last["Data"]<>", \"WXF\"]]";  
-                    ];
-
-                    (* remove assigments *)
-                    Function[x, 
-                        x["Notebook"]=Null;
-                    , HoldFirst] /@ initCells;              
-                ],
-
-                (* restore original notebook assigments *)
-                restore = Function[Null,
-                    Echo["RemoteCells >> Original cells were restored"];
-                    If[mode === "Module", last["Data"] = last["_Data"] ]; 
-
-                    (* remove assigments *)
-                    Function[x, 
-                        x["Notebook"]=notebook;
-                    , HoldFirst] /@ initCells;                   
-                ]
-            },
-                transform[];
-
-
-                EventHandler[initCells // Last, {"Finished" -> Function[Null,
-                    With[{results = (initCells // Last)["Result"]},
-                        Echo[">> Finished!"];
-                        Echo["Result:"]; Echo[results];
-                        If[Length[results] > 0 && mode === "Module",
-                            If[Last[results]["Display"] === "codemirror",
-                                EventFire[promise, Resolve,  Last[results]["Data"] ];
-
-                                restore[];
-
-                            ,
-                                EventFire[promise, Resolve, Null];
-
-                                restore[];
-
-                                Echo[">> Last cell in the notebook must be Wolfram Language!"];
-                            ]
-
-                        ,
-                            Echo[">> No output!"];
-                            EventFire[promise, Resolve, Null];
-
-                            restore[];
-                        ]
-                    ];
-
-
-                ], "Error" -> Function[err,
-                    EventFire[promise, Resolve, $Failed ];
-                    Echo[">> Error during the evaluation"];
-                    Echo[err];
-                    restore[];
-
-                ], "State" -> Function[state,
-                    Echo["STATE UPDATE: "<>state];
-                ]}]; 
-
-            ];
 
       
             GenericKernel`Send[kernel,
@@ -296,8 +176,29 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             ];
 
             (* evaluate notebook in the context of a caller notebook if provided *)
+            With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ Drop[initCells,-1],
+                {Transaction[
+                    "Data"->"CoffeeLiqueur`Extensions`RemoteCells`Private`$cachedOutput[\""<>uid<>"\"] = "<>(initCells[[-1]]["Data"])<>";"
+                ]}
+            ] },
 
-            kernel["Container"][ makeTransaction[#, evalContext] ] &/@ initCells;
+                EventHandler[transactions//Last, {"Finished" -> Function[Null,
+                    Delete /@ transactions;
+                ], "Error" -> Function[err,
+                    EventFire[promise, Resolve, $Failed ];
+                    Echo[">> Error during the evaluation"];
+                    Echo[err];
+                    Delete /@ transactions;
+                ], "State" -> Function[state,
+                    Echo["STATE UPDATE: "<>state];
+                ]}]; 
+
+                kernel["Container"][#, If[evalContext===Automatic,
+                    <|"Ref" -> initCells[[1]]["Hash"], "Notebook" ->notebook |>
+                ,
+                    evalContext
+                ] ]&/@transactions;
+            ];
 
             GenericKernel`Send[kernel,
                 CoffeeLiqueur`Extensions`RemoteCells`Private`spinner0["Cancel"];
@@ -307,7 +208,10 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
                 ];
                 SetDirectory[CoffeeLiqueur`Extensions`RemoteCells`Private`SavedDir];
                 Internal`Kernel`$OutputCharactersLimit = CoffeeLiqueur`Extensions`RemoteCells`Private`SavedCharLim;
+                EventFire[Internal`Kernel`RemoteEvent[promise], Resolve, True];
             ];       
+
+            
     ];
 
     promise
@@ -380,7 +284,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
             
                             With[{},
-                                Then[evaluateNotebook[hash, kernel, Null, session, elements, Lookup[assoc, "EvaluationContext", <||>], ContextIsolation ], Function[result, 
+                                Then[evaluateNotebook[hash, kernel, Null, session, elements, Lookup[assoc, "EvaluationContext", Automatic], ContextIsolation ], Function[result, 
                                     GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
                                 ], Function[Null,
                                     GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, $Failed] ];

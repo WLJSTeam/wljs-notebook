@@ -1,4 +1,4 @@
-BeginPackage["CoffeeLiqueur`Notebook`Windows`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Notebook`Transactions`"}]
+BeginPackage["CoffeeLiqueur`Notebook`Windows`", {"CoffeeLiqueur`Notebook`AppExtensions`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Notebook`Transactions`"}]
 
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
@@ -31,6 +31,7 @@ init[o_] := Module[{uid = If[o["Hash"] =!= Null, o["Hash"], CreateUUID[] ]},
     o["Hash"] = uid;
     HashMap[uid] = o;
 
+    EventFire[AppEvents, "WindowObj::NewWindow", o];
 
     o
 ]
@@ -103,7 +104,7 @@ WindowObj /: EvaluateWindowObj[o_WindowObj, OptionsPattern[] ] := Module[{transa
 Options[EvaluateWindowObj] = {"EvaluationContext" -> <||>}
 
 WindowObj /: Serialize[n_WindowObj, OptionsPattern[] ] := Module[{props},
-    props = {# -> n[#]} &/@ If[OptionValue["MetaOnly"], Complement[n["Properties"], {"WebSocket","Evaluator", "EvaluationContext", "Format", "Socket","Properties","Icon","Self","Data", "Notebook", "Init", "After", "Before"}], Complement[n["Properties"], {"Socket", "Format", "EvaluationContext", "Properties","Icon","Self", "Notebook", "Init", "After", "Before"}] ];
+    props = {# -> n[#]} &/@ If[OptionValue["MetaOnly"], Complement[n["Properties"], {"KernelWebSocket", "WebSocket","Evaluator", "EvaluationContext", "Format", "Socket","Properties","Icon","Self","Data", "Notebook", "Init", "After", "Before"}], Complement[n["Properties"], {"Socket", "Format", "EvaluationContext", "Properties","Icon","Self", "Notebook", "Init", "After", "Before"}] ];
     props = Join[props, {"Notebook" -> n["Notebook", "Hash"]}];
     props // Flatten // Association
 ]

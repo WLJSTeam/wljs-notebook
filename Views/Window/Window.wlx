@@ -211,7 +211,6 @@ Component[OptionsPattern[] ] := With[{
         "WebSocketConnected" -> Function[Null, With[{cli = $Client},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
             window["WebSocketQ"] = True;
-            window["WebSocket"] = cli;
 
             Then[EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>], Function[Null,
                 Then[EventFire[window, "AfterWebSocketConnected", <|"Client" -> cli|>],

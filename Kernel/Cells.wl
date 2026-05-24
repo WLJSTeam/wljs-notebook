@@ -17,6 +17,8 @@ Serialize;
 Deserialize;
 DeserializeLive;
 
+ToTransaction;
+
 SelectCells;
 
 Begin["`Private`"]
@@ -143,6 +145,62 @@ CellObj /: Delete[o_CellObj] := Module[{},
         HashMap[o["Hash"] ] = .; 
         EventRemove[o["Hash"] ];
     ];
+    DeleteObject[o];
+]
+
+autoTake[p_, b_] := If[!AssociationQ[p], b, p]
+
+Options[ToTransaction] = {"Notebook" -> Automatic, AutoRemove->False};
+
+ToTransaction[o_, OptionsPattern[] ] := With[{rm = OptionValue[AutoRemove], nb = If[OptionValue["Notebook"]===Automatic, o["Notebook"], OptionValue["Notebook"] ]},
+    o["State"] = "Evaluation";
+    EventFire[o, "State", "Evaluation"];
+    EventFire[o, "Evaluate", True];
+
+    transaction = Transaction[];
+    transaction["Data"] = o["Data"];
+    (* transaction["EvaluationContext"] = Join[autoTake[o["Notebook", "EvaluationContext"], <||>], <|"Ref" -> o["Hash"], "Notebook" -> o["Notebook"]["Hash"]|> ]; *)
+
+    (* find any output cell after *)
+    If[!NullQ[ nb ], 
+        With[{seq = SequencePosition[nb["Cells"], {Sequence[o, __?OutputCellQ]}] // Flatten},
+            If[Length[seq] =!= 0,
+                Delete /@ (nb["Cells"][[ seq[[1]]+1 ;; seq[[2]] ]])
+            ];
+        ];
+    ];
+
+    EventHandler[transaction, {"Result" -> Function[data,
+        (* AFTER, BEFORE, TYPE, PROPS can be altered using provided meta-data from the transaction *)
+
+        If[data["Data"] != "Null" && !NullQ[nb],
+            If[KeyExistsQ[data, "Meta"],
+                CellObj["Data"->data["Data"], "Notebook"->nb, data["Meta"], "After"->Sequence[o, ___?OutputCellQ], "Type"->"Output"]
+            ,
+                CellObj["Data"->data["Data"], "Notebook"->nb, "After"->Sequence[o, ___?OutputCellQ], "Display"->"codemirror", "Type"->"Output"]
+            ]
+        ];
+    ],
+        "Finished" -> Function[Null,
+            o["State"] = "Idle";
+            Echo["Finished!"];
+            EventFire[o, "State", "Idle"];
+            If[rm, Delete[transaction] ];
+        ],
+
+        "Error" -> Function[error,
+            o["State"] = "Idle";
+            EventFire[o, "State", "Idle"];
+            Echo["Error in evalaution... check syntax"];
+            If[!NullQ[ nb ], 
+                EventFire[nb, "CellError", {o, error}];
+            ];
+            EventFire[o, "Error", error];
+            EventFire[transaction, "EndOfEvaluation", True];
+        ]
+    }];
+
+    transaction
 ]
 
 End[]
