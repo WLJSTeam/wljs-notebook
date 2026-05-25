@@ -853,7 +853,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                 Block[{Global`$Client = socket}, With[{
                     timer = SetTimeout[
                         EventFire[controller, "Abort", Null];
-                        EventFire[promise, Resolve, failure["ERROR: 20 sec timeout. Long evaluation was aborted"] ];                        
+                        EventFire[promise, Resolve, "$TimedOut" ];                        
                     , 20000]
                 },
   
