@@ -61,9 +61,10 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
         <script type="module">
             let wrap, supp = [];
             addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
+
             core.UIWindow = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                core.UIWindow[type](args.slice(1), env);
+                return await core.UIWindow[type](args.slice(1), env);
             }
 
             core.UIWindow.CreateServer = async (args, env) => {
@@ -115,6 +116,10 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             core.UIWindow.LoadSupplimentary = async (args, env) => {
                 const store    = await interpretate(args[0], env);
                 supp.push(new WindowWrapperSupplimentary(store));
+            }
+
+            core.UIWindow.KernelSocket = async (args, env) => {
+                return await server.kernel.ask('Global`$Client');
             }
 
             core.UIWindow.Load = async (args, env) => {
@@ -210,15 +215,18 @@ Component[OptionsPattern[] ] := With[{
 
         "WebSocketConnected" -> Function[Null, With[{cli = $Client},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
-            window["WebSocketQ"] = True;
+            Then[WebUIFetch[Global`UIWindow["KernelSocket"], $Client ], Function[data,
+                window["WebSocketQ"] = True;
+                window["KernelWebSocket"] = data;
 
-            Then[EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>], Function[Null,
-                Then[EventFire[window, "AfterWebSocketConnected", <|"Client" -> cli|>],
-                    Function[Null,
-                        Echo["Fired. then passed..."];
-                        EventFire[window, "Ready", True];              
-                    ]
-                ];
+                Then[EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>], Function[Null,
+                    Then[EventFire[window, "AfterWebSocketConnected", <|"Client" -> cli|>],
+                        Function[Null,
+                            Echo["Fired. then passed..."];
+                            EventFire[window, "Ready", True];              
+                        ]
+                    ];
+                ] ];
             ] ];
         ] ],
 

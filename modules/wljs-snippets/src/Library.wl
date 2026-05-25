@@ -80,7 +80,7 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
     ];
 
     With[{notebook = result, hash = Hash[book]},   
-         {notebookId = book["Notebook"]["Hash"], notebookContext = Join[notebook["EvaluationContext"], <|"Notebook"->notebook["Hash"]|>]}, 
+         {notebookId = book["Notebook"]["Hash"], notebookContext = <|"Ref"->notebook["FocusedCell"]["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|>}, 
           If[
               TrueQ[notebook["WebSocketQ"] ] && notebook["Evaluator"]["Kernel"]["State"] === "Initialized" && TrueQ[notebook["Evaluator"]["Kernel"]["ContainerReadyQ"] ]
           ,

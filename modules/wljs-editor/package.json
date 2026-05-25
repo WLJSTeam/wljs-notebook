@@ -32,7 +32,6 @@
       "src/FrontendObjectSync.wl",
       "src/SetDirectory.wl",
       "src/RemoteCells.wl",
-      "src/FrontSubmit.wl",
       "src/Store.wl",
       "src/Notifications.wl",
       "src/Autocomplete.wl",

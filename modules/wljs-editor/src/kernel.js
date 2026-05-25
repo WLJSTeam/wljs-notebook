@@ -50,7 +50,7 @@ import { syntaxHighlighting, indentOnInput, bracketMatching, HighlightStyle, fol
 import { history, historyKeymap } from "@codemirror/commands"
 import { highlightSelectionMatches } from "@codemirror/search"
 import { autocompletion, closeBrackets, acceptCompletion } from "@codemirror/autocomplete"
-
+import {tooltips} from "@codemirror/view";
 
 import {
   Decoration,
@@ -627,6 +627,7 @@ compactWLEditor = (args) => {
     args.extensions || [],   
     minimalSetup,
     editorCustomThemeCompact,  
+    tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
     wolframLanguage.of(EditorAutocomplete),
     FractionBoxWidget(compactWLEditor),
@@ -973,6 +974,7 @@ const EditorExtensionsMinimal = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
+  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches()
 ] 
@@ -999,6 +1001,7 @@ const EditorExtensions = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
+  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
