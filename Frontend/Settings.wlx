@@ -64,7 +64,7 @@ App[request_] := With[{
     }]; 
 
     <html class="h-full" os="{NavigatorOS}"> 
-        <Head AccentColor={accentColor} Title={"Settings"}>
+        <Head AccentColor={accentColor} Title={"Settings"} Settings={settings}>
             <meta charset="utf-8"/>
             <WLJSHeader List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
