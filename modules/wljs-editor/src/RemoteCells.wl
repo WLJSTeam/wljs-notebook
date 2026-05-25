@@ -4,6 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`RemoteCells`", {
     "CoffeeLiqueur`WLX`Importer`",  
     "CoffeeLiqueur`WLX`WebUI`",
     "CoffeeLiqueur`Misc`Events`",
+    "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Notebook`Utils`",
     "CoffeeLiqueur`Notebook`Transactions`"
@@ -219,29 +220,6 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
 
 cellClonedEvents = <||>;
 
-spawnWindowInNotebook[notebook_, cli_, t_, evaluatedQ_, title_, imageSize_, display_] :=
-    With[{w = win`WindowObj[
-        "Notebook" -> notebook, "EvaluatedQ" -> evaluatedQ, "Title" -> title,
-        ImageSize -> imageSize, "Display" -> display,
-        "Hash" -> t["Meta", "Hash"], "Data" -> t["Data"],
-        "Ref" -> First[notebook["Cells"]]["Hash"]
-    ]},
-        Echo["project >> sending global event"];
-        EventFire[notebook, "OnWindowCreate", <|"Window" -> w, "Client" -> cli|>];
-        Which[
-            TrueQ[t["Meta", "Offscreen"]],
-                WebUILocation[StringJoin["/window?id=", w["Hash"]], cli, "Target" -> _, "Features" -> "width=1,height=1"],
-            !NumberQ[imageSize] && !ListQ[imageSize],
-                WebUILocation[StringJoin["/window?id=", w["Hash"]], cli, "Target" -> _],
-            True,
-                With[{features = If[ListQ[imageSize],
-                        StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]]],
-                        StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round]
-                    ]},
-                    WebUILocation[StringJoin["/window?id=", w["Hash"]], cli, "Target" -> _, "Features" -> features]
-                ]
-        ]
-    ];
 
 EventHandler[NotebookEditorChannel // EventClone,
     {
@@ -431,143 +409,122 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "PrintNewCell" -> Function[t,
             Echo["Cell print options:"];
-            Echo[KeyDrop[t, "Data"]];
+            Echo[KeyDrop[t, "Data"] ];
 
             With[{
                 kernelHash = t["KernelId"],
-                reference  = cell`HashMap[t["Ref"]],
+                reference  = cell`HashMap[t["Ref"] ],
                 evaluatedQ = Lookup[t["Meta"], "EvaluatedQ", True],
+                notebook   = nb`HashMap[t["Notebook"] ],
                 title      = Lookup[t["Meta"], "Title", "Projector"],
                 imageSize  = Lookup[t["Meta"], ImageSize, Automatic],
                 display    = Lookup[t["Meta"], "Display", "codemirror"],
                 target     = Lookup[t["Meta"], "Target", "Notebook"]
             },
 
-                If[!MatchQ[reference, _cell`CellObj],
-
-                    (* ── No reference cell: try notebook, then windows, then orphan ── *)
-                    With[{notebook = nb`HashMap[t["Notebook"]]},
-
-                        If[!MatchQ[notebook, _nb`NotebookObj],
-
-                            (* Search opened windows by kernel *)
-                            Echo["Search for any opened window"];
-                            With[{fw = Select[Values[win`HashMap],
-                                    TrueQ[#["Opened"] &&
-                                          #["Notebook"]["Evaluator"]["Kernel"]["Hash"]  === kernelHash &&
-                                          #["Notebook"]["Evaluator"]["Kernel"]["State"] === "Initialized"]&]},
-                                If[Length[fw] > 0,
-                                    spawnWindowInNotebook[fw[[1]]["Notebook"], fw[[1]]["Socket"], t, evaluatedQ, title, imageSize, display];
-                                    Return[]
-                                ]
-                            ];
-
-                            (* Search opened notebooks by kernel *)
-                            Echo["Not found"];
-                            Echo["Search for any opened notebooks"];
-                            With[{fn = Select[Values[nb`HashMap],
-                                    TrueQ[#["Opened"] &&
-                                          #["Evaluator"]["Kernel"]["Hash"]  === kernelHash &&
-                                          #["Evaluator"]["Kernel"]["State"] === "Initialized"]&]},
-                                If[Length[fn] > 0,
-                                    spawnWindowInNotebook[fn[[1]], fn[[1]]["Socket"], t, evaluatedQ, title, imageSize, display];
-                                    Return[]
-                                ]
-                            ];
-
-                          
-                            Echo["No notebooks, no windows. Let's ask Electron using stdout"];
-                            With[{w = win`WindowObj["OrphanQ" -> True, "KernelHash" -> kernelHash,
-                                "EvaluatedQ" -> evaluatedQ, "Title" -> title, ImageSize -> imageSize,
-                                "Display" -> display, "Hash" -> t["Meta", "Hash"], "Data" -> t["Data"] ]},
-                                
-                                ElectronIPCSend["createWindow", "/window?id="<>w["Hash"] ];
-
-                            ];
-
-                            Return[]
-                        ];
-
-                        (* ── Notebook found: route by target ── *)
-                        If[MatchQ[target, "Notebook" | Null | Automatic],
-                            With[{c = cell`CellObj @@ Join[
-                                {"Notebook" -> notebook, "Data" -> t["Data"], "Display" -> display},
-                                ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window"}]],
-                                    {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
-                            ]},
-                                If[!evaluatedQ, EventFire[notebook["Controller"], "NotebookCellEvaluate", c]]
-                            ]
-                        ,
-                            If[TrueQ[notebook["Opened"]],
-                                EventFire[notebook["Controller"], "NotebookCellDataProject", <|
-                                    "Notebook"   -> notebook,
-                                    "Cell"       -> First[notebook["Cells"]],
-                                    "Hash"       -> t["Meta", "Hash"],
-                                    "Data"       -> t["Data"],
-                                    "EvaluatedQ" -> evaluatedQ,
-                                    "Display"    -> display,
-                                    "Title"      -> title,
-                                    ImageSize    -> imageSize,
-                                    "Offscreen"  -> TrueQ[t["Meta", "Offscreen"]]
-                                |>]
-                            ,
-                                Echo["Search for opened windows associated with a notebook"];
-                                With[{fw = Select[Values[win`HashMap], #["Notebook"] === notebook && TrueQ[#["Opened"]]&]},
-                                    If[Length[fw] > 0,
-                                        spawnWindowInNotebook[notebook, fw[[1]]["Socket"], t, evaluatedQ, title, imageSize, display]
-                                    ]
-                                ]
-                            ]
-                        ];
-
-                        Return[]
-                    ]
+                If[MatchQ[target, "Notebook" | Null | Automatic],
+                    (* Try to print as a new cell in the notebook *)
+                    If[MatchQ[reference["Notebook"], _nb`NotebookObj] || MatchQ[notebook, _nb`NotebookObj],
+                        Echo["Print a normal new cell"];
+                        Echo["Adding new cell after:"];
+                        Echo[cell`HashMap[t["Meta"]["After"][[1]]] ];
+                        cell`CellObj @@ Join[
+                            {
+                                "Notebook" -> If[MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
+                                    cell`HashMap[t["Meta"]["After"][[1]]]["Notebook"],
+                                    If[!MatchQ[reference["Notebook"], _nb`NotebookObj], notebook, reference["Notebook"] ]
+                                ],
+                                "Data"    -> t["Data"],
+                                "Display" -> display
+                            },
+                            ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window"}] ],
+                                {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
+                        ] // Echo;
+                        Return[];
+                    ,
+                        Echo["Failed to print a normal cell. Falling back to a new window..."];
+                    ];
                 ];
 
-                (* ── Reference cell found ── *)
-                If[MatchQ[target, "Notebook" | Null | Automatic],
-                    Echo[cell`HashMap[t["Meta"]["After"][[1]]] ];
-                    With[{c = cell`CellObj @@ Join[
-                        {
-                            "Notebook" -> If[MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
-                                cell`HashMap[t["Meta"]["After"][[1]]]["Notebook"],
-                                reference["Notebook"]
-                            ],
-                            "Data"    -> t["Data"],
-                            "Display" -> display
-                        },
-                        ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window"}]],
-                            {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
-                    ]},
-                        Echo[c];
-                        If[!evaluatedQ, EventFire[reference["Notebook"]["Controller"], "NotebookCellEvaluate", c]]
-                    ]
-                ,
-                    With[{controller = Which[
-                            MatchQ[nb`HashMap[t["Notebook"] ], _nb`NotebookObj],
-                                nb`HashMap[t["Notebook"] ]["Controller"],
-                            MatchQ[nb`HashMap[t["Meta"]["Notebook"][[1]]], _nb`NotebookObj],
-                                nb`HashMap[t["Meta"]["Notebook"][[1]]]["Controller"],
-                            True,
-                                reference["Notebook"]["Controller"]
-                        ]},
-                        EventFire[controller, "NotebookCellDataProject", <|
-                            "Cell"       -> reference,
-                            "Hash"       -> t["Meta", "Hash"],
-                            "Data"       -> t["Data"],
-                            "EvaluatedQ" -> evaluatedQ,
-                            "Display"    -> display,
-                            ImageSize    -> imageSize,
-                            "Offscreen"  -> TrueQ[t["Meta", "Offscreen"] ]
-                        |>]
-                    ]
-                ]
+                SetTimeout[
+                    (* Assuming that a user asked for printing to a new window *)
+                    With[{
+                        socketRef = Unique["uniqWinSock"],
+                        win = win`WindowObj["Title" -> title, "WebSocketPort" -> GenericKernel`HashMap[kernelHash]["WebSocket"], ImageSize -> imageSize, "Display" -> display, "Hash" -> t["Meta", "Hash"], "Data" -> t["Data"] ]
+                    },
+                        socketRef = Null;
+
+                        If[TrueQ[reference["Notebook"]["Opened"] ],
+                            Echo["Found reference socket from the cell reference"];
+                            socketRef = reference["Notebook"]["Socket"];
+                            win["CellHash"] =  reference["Hash"];
+                        ];
+
+                        If[socketRef === Null && TrueQ[notebook["Opened"] ],
+                            Echo["Found reference socket from the notebook reference"];
+                            socketRef = notebook["Socket"];
+                            win["NotebookHash"] =  notebook["Hash"];
+                        ];
+
+                        If[socketRef === Null,
+                            Echo["Trying to find any opened window"];
+                            With[{
+                                ws = SortBy[Select[Values[win`HashMap], TrueQ[#["Opened"] ]&], Function[w, -w["Date"] ] ]
+                            },   
+                                If[Length[ws] > 0,
+                                    socketRef = ws[[-1]]["Socket"];
+                                ]
+                            ];
+                        ];
+
+                        If[socketRef === Null,
+                            Echo["Trying to find any opened notebook"];
+                            With[{ws = Select[Values[nb`HashMap], TrueQ[#["Opened"] ]&]  },
+                                If[Length[ws] > 0,
+                                    socketRef = ws[[-1]]["Socket"];
+                                ]
+                            ];
+                        ]; 
+
+                        If[socketRef === Null,    
+                            Echo["This is really bad. We have to use Electron Magic. This will not work with docker/server env..."];
+
+                            Which[
+                                !NumberQ[imageSize] && !ListQ[imageSize],
+                                    ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title],
+                                True,
+                                    With[{features = If[ListQ[imageSize],
+                                            <|"width"->imageSize[[1]], "height"->imageSize[[2]]|>,
+                                            <|"width"->imageSize, "height"->(0.76 imageSize // Round)|>
+                                        ]},
+                                        ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title, features];
+                                    ]
+                            ];                        
+                        ,
+                            Echo["Creating a new window... Socket was found"];
+                            Which[
+                                TrueQ[t["Meta", "Offscreen"] ],
+                                    WebUILocation[StringJoin["/window?id=", win["Hash"] ], socketRef, "Target" -> _, "Features" -> "width=1,height=1"],
+                                !NumberQ[imageSize] && !ListQ[imageSize],
+                                    WebUILocation[StringJoin["/window?id=", win["Hash"] ], socketRef, "Target" -> _],
+                                True,
+                                    With[{features = If[ListQ[imageSize],
+                                            StringTemplate["width=``,height=``"][imageSize[[1]], imageSize[[2]]],
+                                            StringTemplate["width=``,height=``"][imageSize, 0.76 imageSize // Round]
+                                        ]},
+                                        WebUILocation[StringJoin["/window?id=", win["Hash"] ], socketRef, "Target" -> _, "Features" -> features]
+                                    ]
+                            ];
+                        ];  
+
+                    ];
+                , 10]; (* let it go to the que async. in a case if some windows have been just closed *)
             ]
         ],
 
 
         "CellSubscribe" -> Function[assoc,
-            Print["CellSubscribe!!!!!!"];
+            Print["CellSubscribe"];
             With[{hash = assoc["CellHash"], callback = assoc["Callback"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 
                 (* do not clone for cells, since it has to be unique. 
@@ -672,21 +629,44 @@ EventHandler[NotebookEditorChannel // EventClone,
                 With[{
                     p = Promise[]
                 },
-                    If[notebook["ModalsChannel"] === Null,
-                        Echo["Search for opened windows associated with a notebook"];
-                        With[{wins = Values[win`HashMap]},
-                            With[{filtered = Select[wins, (#["Notebook"] === notebook && TrueQ[#["Opened"] ])&]},
-                                If[Length[filtered] > 0,
-                                    With[{w = (filtered // First)},
-                                        EventFire[w["ModalsChannel"], "HTMLWindow", <|
-                                            "Promise"-> p,
-                                            "Data" -> payload,
-                                            "Content" -> messageDialog
-                                        |>];                                                                                        
+                    If[notebook["ModalsChannel"] === Null || !MatchQ[notebook, _nb`NotebookObj],
+                        Echo["Search for opened notebooks"];
+                        With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
+                            If[Length[nbs] > 0,
+                                EventFire[nbs[[1]]["ModalsChannel"], "HTMLWindow", <|
+                                    "Promise"-> p,
+                                    "Data" -> payload,
+                                    "Content" -> messageDialog
+                                |>];                             
+                            ,
+                                Echo["Search for opened windows associated with a notebook"];
+                                With[{wins = Values[win`HashMap]},
+                                    With[{filtered = Select[wins, (TrueQ[#["Opened"] ])&]},
+                                        If[Length[filtered] > 0,
+                                            With[{w = (filtered // First)},
+                                                EventFire[w["ModalsChannel"], "HTMLWindow", <|
+                                                    "Promise"-> p,
+                                                    "Data" -> payload,
+                                                    "Content" -> messageDialog
+                                                |>];                                                                                        
+                                            ]
+                                        ,
+                                            Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                            With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ]},
+                                                EventHandler[win // EventClone, {"Ready" -> Function[Null,
+                                                    EventFire[win["ModalsChannel"], "HTMLWindow", <|
+                                                        "Promise"-> p,
+                                                        "Data" -> payload,
+                                                        "Content" -> messageDialog
+                                                    |>];    
+                                                ]}];
+                                                ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message"];
+                                            ];
+                                        ]
                                     ]
-                                ]
+                                ]  
                             ]
-                        ]                        
+                        ]                      
                     ,
                         EventFire[notebook["ModalsChannel"], "HTMLWindow", <|
                             "Promise"-> p,
@@ -719,19 +699,38 @@ EventHandler[NotebookEditorChannel // EventClone,
                     p = Promise[]
                 },
 
-                    If[notebook["ModalsChannel"] === Null,
-                        Echo["Search for opened windows associated with a notebook"];
-                        With[{wins = Values[win`HashMap]},
-                            With[{filtered = Select[wins, (#["Notebook"] === notebook && TrueQ[#["Opened"] ])&]},
-                                If[Length[filtered] > 0,
-                                    With[{w = (filtered // First)},
-                                        EventFire[w["ModalsChannel"], type, Join[<|
-                                            "Promise"-> p
-                                        |>, payload] ];                                                                                        
+                    If[notebook["ModalsChannel"] === Null || !MatchQ[notebook, _nb`NotebookObj],
+                        Echo["Search for opened notebooks"];
+                        With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
+                            If[Length[nbs] > 0,
+                                EventFire[nbs[[1]]["ModalsChannel"], type, Join[<|
+                                    "Promise"-> p
+                                |>, payload] ]; 
+                            ,
+                                Echo["Search for opened windows associated with a notebook"];
+                                With[{wins = Values[win`HashMap]},
+                                    With[{filtered = Select[wins, ( TrueQ[#["Opened"] ])&]},
+                                        If[Length[filtered] > 0,
+                                            With[{w = (filtered // First)},
+                                                EventFire[w["ModalsChannel"], type, Join[<|
+                                                    "Promise"-> p
+                                                |>, payload] ];                                                                                        
+                                            ]
+                                        ,
+                                            Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                            With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ]},
+                                                EventHandler[win // EventClone, {"Ready" -> Function[Null,
+                                                    EventFire[win["ModalsChannel"], type, Join[<|
+                                                    "Promise"-> p
+                                                    |>, payload] ];    
+                                                ]}];
+                                                ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message"];
+                                            ];                                
+                                        ]
                                     ]
-                                ]
+                                ] 
                             ]
-                        ]                        
+                        ]                       
                     ,
                         EventFire[notebook["ModalsChannel"], type, Join[<|
                             "Promise"-> p

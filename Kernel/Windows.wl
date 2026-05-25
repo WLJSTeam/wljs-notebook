@@ -29,6 +29,7 @@ init[o_] := Module[{uid = If[o["Hash"] =!= Null, o["Hash"], CreateUUID[] ]},
     Print["Init WindowObj"];
 
     o["Hash"] = uid;
+    o["Date"] = AbsoluteTime[];
     HashMap[uid] = o;
 
     EventFire[AppEvents, "WindowObj::NewWindow", o];

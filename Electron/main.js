@@ -3043,8 +3043,8 @@ function start_server (window) {
             server.running = true;
             if (!server.debug) setTimeout(() => {windows.log.destroy()}, 300);
         },
-        'createWindow': (path, title) => {
-            create_window({url: server.url.default() + path, title: title});
+        'createWindow': (path, title, rest = {}) => {
+            create_window({url: server.url.default() + path, title: title, ...rest});
         }
     };
 

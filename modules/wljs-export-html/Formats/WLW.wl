@@ -68,7 +68,7 @@ checkKernel[kernel_, cbk_] := (Echo["Checking kernel..."]; If[TrueQ[kernel["Cont
     cbk[kernel];
 ,
     Echo["Not yet..."];
-    SetTimeout[checkKernel[kernel, cbk], 1000];
+    SetTimeout[checkKernel[kernel, cbk], 500];
 ])
 
 (* [TODO] [REFACTOR] *)
@@ -81,7 +81,7 @@ With[{
     
     notebook = nb`LoadFromFile[ path ],
 
-    spinner = Notifications`Spinner["Topic"->"Initializing an App", "Body"->"Please, wait"](*`*),
+    spinner = Notifications`Spinner["Topic"->"Initializing an app", "Body"->"Please, wait"](*`*),
     msg = OptionValue["Messager"],
     generated = StringReplace[(Internal`NoWR`RandomWord[])<>StringTake[CreateUUID[], 3]<>"w`", {"-"->""}]
 }, 
@@ -91,6 +91,7 @@ With[{
     options = Join[Association[List[opts] ], Association[ List[secondaryOpts] ] ]; 
 
     notebook["Path"] = path;
+    notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
 
     EventFire[msg, spinner, True];
 
@@ -113,10 +114,12 @@ With[{
                 last = FirstCase[notebook["Cells"] // Reverse, _?cell`InputCellQ],
                 dir = FileNameSplit[DirectoryName[ path ] ]
             },
-                EventFire[spinner["Promise"], Resolve, True];
+                
+                notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
+                
+                Echo["Switching the context to "<>generated];
 
                 GenericKernel`Send[kernel,
-                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
                     $Context = generated;
                     Internal`Kernel`$savedDirectory = Directory[];
@@ -124,13 +127,10 @@ With[{
                     $ContextPath = Append[$ContextPath, generated];
                 ];
 
-                (* FIXME!!! *)
-                (*(
-                    #["Data"] = StringReplace[#["Data"], {"NotebookDirectory[]" -> ToString[dir, InputForm] }];
-                    Print[#["Data"] ];
-                ) &/@ initCells;*)
+                Echo["Evaluating initialization cells"];
 
-                data["Container"][ cell`ToTransaction[#, "Notebook"->Null],  Join[notebook["EvaluationContext"], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|>] ] &/@ initCells;
+                data["Container"][ cell`ToTransaction[#, "Notebook"->Null], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|> ] &/@ initCells;
+
 
                 Module[{title = "", decription = ""},
                         With[{t = notebook["Cells"][[1]]},
@@ -144,41 +144,85 @@ With[{
                         ] // Quiet;   
                 ];
                 
-                Echo["Fixme!!! WLW.wl"];
-                Exit[-1];
+                
 
-                With[{hash = kernel["Hash"], s = Promise[] // First},
-                    Then[Promise[s], Function[Null,
-                        With[{win = win`WindowObj["Notebook" -> notebook, "Title"->windowTitle, ImageSize->windowSize, "Data" -> last["Data"], "Ref" -> last["Hash"] ]},
-                            win["FirstTime"] = True;
-                            Echo["project >> sending global event"];
-                            EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->options["Client"]|>];
-                            EventHandler[win["Hash"] // EventClone, {"Ready" -> Function[Null,
-                                notebook["ModalsChannel"] = Null;
-                                Echo["Modals set to Null"];
+                With[{hash = kernel["Hash"]},
+                    Echo["Evaluating the last cell"];
+                    
+                    With[{
+                        win = win`WindowObj["Title"->windowTitle, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"] ]
+                    }, {
+                        cloned = EventClone[win],
+                        readyPromise = Promise[],
+                        transaction = cell`ToTransaction[last, "Notebook"->Null]
+                    },
+
+                        EventHandler[EventClone @ transaction, {
+                            "Result" -> Function[output,
+                                Echo["Get the result... Submitting to a window"];
+                                If[KeyExistsQ[output, "Meta"],
+                                    win["Data"] = output["Data"];
+                                    win["Display"] = Lookup[<|output["Meta"]|>, "Display", "codemirror"];
+                                    With[{generatedHash = <|output["Meta"]|>["Hash"]}, If[StringQ[generatedHash], 
+                                        EventHandler[EventClone[win], {
+                                            (* forward all events *)
+                                            any_ :> (EventFire[generatedHash, any, #]&)
+                                        }];
+                                    ] ];
+                                ,
+                                    win["Data"] = output["Data"];
+                                ];
+                                EventFire[spinner["Promise"], Resolve, True];
+                                EventFire[readyPromise, Resolve, True];
+                                
+                            ],
+
+                            "Finished" -> Function[Null,
+                                Delete[transaction];
+                                Echo["Finished evaluation. Switching the context back..."];
 
                                 GenericKernel`Send[kernel,
-
                                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                                     $Context = "Global`";
                                     SetDirectory[Internal`Kernel`$savedDirectory];
-                         
-                                ];                            
+                                ]; 
+                            ],
+
+                            "Error" -> Function[Null,
+                                Delete[transaction];
+                                win["Data"] = "$Failed";
+                                Echo["Get the result... ERROR!"];
+                                
+                                
+                                Echo["Finished evaluation (failed). Switching the context back..."];
+                                GenericKernel`Send[kernel,
+                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
+                                    $Context = "Global`";
+                                    SetDirectory[Internal`Kernel`$savedDirectory];
+                                ];   
+
+                                EventFire[spinner["Promise"], Resolve, True];
+                                EventFire[readyPromise, Resolve, True];                              
                             ]
-                            }];
+                        }];
 
+                        EventHandler[cloned, {
+                            "AfterWebSocketConnected" -> Function[Null,
+                                EventRemove[cloned];
+                                Echo["Window was created, starting evaluation..."];
 
-                            EventFire[promise, Resolve, {StringJoin["/window?id=", win["Hash"] ], ""} ];
-                        
-                        ] ;                    
-                    ] ];
+                                data["Container"][transaction, 
+                                    <|"KernelWebSocket"->win["KernelWebSocket"], "Notebook"->notebook["Hash"], "Ref"->last["Hash"]|>
+                                ]; 
 
-                    GenericKernel`Send[kernel,
-                        CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated]["Cancel"];
-                        Unset[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
-                        EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, True ]; 
-                    ];
+                                readyPromise
+                            ]  
+                        }];
 
+                        Echo["Refresh the page"];
+                        EventFire[promise, Resolve, {StringJoin["/window?id=", win["Hash"] ], ""} ];
+                    
+                    ];                    
 
                 ];
             ];
