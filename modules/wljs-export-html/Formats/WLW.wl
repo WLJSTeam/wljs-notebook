@@ -172,20 +172,43 @@ With[{
                                 ,
                                     win["Data"] = output["Data"];
                                 ];
+                                
+                                If[win["Display"] =!= "wlx",
+                                    win["Display"] = "html";
+                                    win["Data"] = "<div class=\"px-4 py-2\"><small>Output window must be written in WLX. Plain Wolfram is not supported due to context switching issues</small></div>";
+                                ];
+
                                 EventFire[spinner["Promise"], Resolve, True];
                                 EventFire[readyPromise, Resolve, True];
-                                
+
+                                Echo["Restoring context"];
+                                (* This must be here. If you put it in Finished, then it outputs local variables
+                                   in Graphics-like objects without their context, assuming it is $Context, and
+                                   it can't fetch them once the context is switched back to Global.
+
+                                   I have no idea why it works when I place it here.
+
+                                   Generally speaking, this problem is related to how
+                                   ExportByteArray[..., "ExpressionJSON"] omits the explicit context prefix
+                                   when it is evaluated within $Context, though I am not sure. It may also have
+                                   something to do with how WLXForm outputs it.
+
+                                   Oh crap...
+
+                                   As a rule, use WLX cells as the main output for mini apps for the moment.
+                                *)
+                                GenericKernel`Send[kernel,
+                                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
+                                                    $Context = "Global`";
+                                                    SetDirectory[Internal`Kernel`$savedDirectory];
+                                ]; 
                             ],
 
                             "Finished" -> Function[Null,
                                 Delete[transaction];
-                                Echo["Finished evaluation. Switching the context back..."];
+                                
 
-                                GenericKernel`Send[kernel,
-                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
-                                    $Context = "Global`";
-                                    SetDirectory[Internal`Kernel`$savedDirectory];
-                                ]; 
+
                             ],
 
                             "Error" -> Function[Null,
@@ -193,16 +216,17 @@ With[{
                                 win["Data"] = "$Failed";
                                 Echo["Get the result... ERROR!"];
                                 
-                                
-                                Echo["Finished evaluation (failed). Switching the context back..."];
-                                GenericKernel`Send[kernel,
-                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
-                                    $Context = "Global`";
-                                    SetDirectory[Internal`Kernel`$savedDirectory];
-                                ];   
+                          
 
                                 EventFire[spinner["Promise"], Resolve, True];
-                                EventFire[readyPromise, Resolve, True];                              
+                                EventFire[readyPromise, Resolve, True]; 
+
+                                Echo["Restoring context"];
+                                GenericKernel`Send[kernel,
+                                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
+                                                    $Context = "Global`";
+                                                    SetDirectory[Internal`Kernel`$savedDirectory];
+                                ];                                                              
                             ]
                         }];
 
