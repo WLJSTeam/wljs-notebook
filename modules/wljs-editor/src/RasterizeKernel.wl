@@ -155,15 +155,16 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{attempt = OptionValu
   
   If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
     Message[Rasterize::nowindow ];
-    EventFire[Internal`Kernel`CommunicationChannel, "SpawnOffscreenWindow", Internal`Kernel`Hash];
     
-    If[attempt > 3, 
-      EventFire[p, Resolve, $Failed];
-    ,
-      SetTimeout[Then[RasterizeAsync[any, "Attempt"->attempt+1, opts], Function[res,
-        EventFire[p, Resolve, res];
-      ] ];, 3000];   
+    With[{win = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->2{800,600}]},
+      EventHandler[win, {"Ready" -> Function[wObject,
+          Then[RasterizeAsync[any, "Window"->wObject, opts], Function[res,
+              EventFire[p, Resolve, res];
+              NotebookClose[win];
+          ] ];
+      ]}];
     ];
+
     p    
   ,
     EventHandler[channel, Function[Null,
@@ -195,13 +196,14 @@ producePDF[any_, opts: OptionsPattern[] ] := With[{attempt = OptionValue["Attemp
   If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
     Message[Rasterize::nowindow ];
     EventFire[Internal`Kernel`CommunicationChannel, "SpawnOffscreenWindow", Internal`Kernel`Hash];
-    
-    If[attempt > 3, 
-      EventFire[p, Resolve, $Failed];
-    ,
-      SetTimeout[Then[producePDF[any, "Attempt"->attempt+1, opts], Function[res,
-        EventFire[p, Resolve, res];
-      ] ];, 3000];   
+
+    With[{win = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->2{800,600}]},
+      EventHandler[win, {"Ready" -> Function[wObject,
+          Then[producePDF[any, "Window"->wObject, opts], Function[res,
+              EventFire[p, Resolve, res];
+              NotebookClose[win];
+          ] ];
+      ]}];
     ];
     p
   ,

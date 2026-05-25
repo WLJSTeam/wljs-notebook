@@ -1828,6 +1828,8 @@ function create_window(opts, cbk = () => {}) {
 
 
         const options = Object.assign({}, defaults, opts);
+
+
         options.minWidth = 576;
         if (!isMac) {
             options.minWidth = 700;
@@ -3044,6 +3046,7 @@ function start_server (window) {
             if (!server.debug) setTimeout(() => {windows.log.destroy()}, 300);
         },
         'createWindow': (path, title, rest = {}) => {
+            console.log(rest);
             create_window({url: server.url.default() + path, title: title, ...rest});
         }
     };

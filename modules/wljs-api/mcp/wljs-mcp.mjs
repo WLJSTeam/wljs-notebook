@@ -887,7 +887,7 @@ register(
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes.",
+    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
     },
@@ -917,7 +917,7 @@ register(
 
   register(
     "kernel_evaluate",
-    "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code.",
+    "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code with 25 seconds timeout interval",
     {
       Expression: z
         .string()
@@ -1368,7 +1368,7 @@ function cliManifest() {
         category: "evaluation",
         usage: "wljs eval <cell>",
         description:
-          "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code.",
+          "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Execution time is limited by 20 seconds",
         mutates_notebook: true,
         executes_code: true,
         output: "JSON",
@@ -1404,12 +1404,13 @@ function cliManifest() {
         category: "evaluation",
         usage: "wljs wl '<wolfram-expression>'",
         description:
-          "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell.",
+          "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell (max 25 sec evaluation)",
         mutates_notebook: false,
         executes_code: true,
         output: "JSON",
         safety_notes: [
           "This can execute arbitrary Wolfram Language code.",
+          "Execution time is limited to 25 seconds max",
           "Prefer notebook cells when the user expects visible notebook output.",
         ],
         examples: [

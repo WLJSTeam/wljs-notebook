@@ -850,9 +850,16 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         If[TrueQ[notebook["Opened"] ], 
             With[{controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[]},
                 (*fixme*)
-                Block[{Global`$Client = socket},
+                Block[{Global`$Client = socket}, With[{
+                    timer = SetTimeout[
+                        EventFire[controller, "Abort", Null];
+                        EventFire[promise, Resolve, failure["ERROR: 20 sec timeout. Long evaluation was aborted"] ];                        
+                    , 20000]
+                },
   
                     Then[EventFire[controller, "NotebookCellEvaluateTemporal", cell], Function[Null,
+                        TaskRemove[timer];
+
                         With[{
                             out = Select[cell`SelectCells[notebook["Cells"], Sequence[cell, __?cell`OutputCellQ] ], cell`OutputCellQ]
                         },
@@ -868,7 +875,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                         ]
                     ] ];
                     promise
-                ]
+                ] ]
             ]
         ,
             (* Can't evaluate cell in a closed notebook *)
@@ -944,13 +951,13 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         If[dir === Null,
             GenericKernel`Send[k, 
-                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
             ];        
         ,
             GenericKernel`Send[k, 
                 With[{prev = Directory[]}, 
                     SetDirectory[dir];
-                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
                     SetDirectory[prev];
                 ];
             ];        

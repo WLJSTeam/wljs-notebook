@@ -46710,7 +46710,7 @@ ${skillIndexText()}`
     );
     register(
       "evaluate_cell",
-      "Evaluate an input cell. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes.",
+      "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes",
       {
         Cell: external_exports.string().min(1).describe("Input cell hash/id.")
       },
@@ -46737,7 +46737,7 @@ ${skillIndexText()}`
     );
     register(
       "kernel_evaluate",
-      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code.",
+      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code with 25 seconds timeout interval",
       {
         Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
         Kernel: external_exports.string().optional().describe("Optional kernel hash/id.")
@@ -47146,7 +47146,7 @@ function cliManifest() {
         name: "eval",
         category: "evaluation",
         usage: "wljs eval <cell>",
-        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code.",
+        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Execution time is limited by 20 seconds",
         mutates_notebook: true,
         executes_code: true,
         output: "JSON",
@@ -47181,12 +47181,13 @@ function cliManifest() {
         name: "wl",
         category: "evaluation",
         usage: "wljs wl '<wolfram-expression>'",
-        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell.",
+        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell (max 25 sec evaluation)",
         mutates_notebook: false,
         executes_code: true,
         output: "JSON",
         safety_notes: [
           "This can execute arbitrary Wolfram Language code.",
+          "Execution time is limited to 25 seconds max",
           "Prefer notebook cells when the user expects visible notebook output."
         ],
         examples: [
@@ -47605,21 +47606,28 @@ Editing:
   wljs insert-lines <cell> <after> --content <text|@file|->
   wljs delete-cell <cell>
 
-Evaluation:
+Evaluation in the notebook:
   wljs eval <cell>
   wljs project <cell>
+
+Direct evaluation:
   wljs wl 1+1
+  wljs wl 'Range[10]^2'  
   wljs code 1+1
-  wljs -code 1+1  
-  wljs wl 'Range[10]^2'
+  wljs -code 1+1
+  wljs -c 1+1  
+
+Documentation:  
   wljs docs <query>
 
-Open by path:
+Open notebook by path:
   wljs path/to/notebook.wln
   wljs 'path/to/notebook.wln'
   wljs ./notebook.wln
+  wljs ./notebook.md
+  wljs ./notebook.html
 
-Open folder:
+Open a folder:
   wljs path/to/folder
   wljs .`;
 }

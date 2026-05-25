@@ -494,8 +494,8 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title],
                                 True,
                                     With[{features = If[ListQ[imageSize],
-                                            <|"width"->imageSize[[1]], "height"->imageSize[[2]]|>,
-                                            <|"width"->imageSize, "height"->(0.76 imageSize // Round)|>
+                                            <|"override"-><|"width"->imageSize[[1]], "height"->imageSize[[2]]|>|>,
+                                            <|"override"-><|"width"->imageSize, "height"->(0.76 imageSize // Round)|>|>
                                         ]},
                                         ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title, features];
                                     ]

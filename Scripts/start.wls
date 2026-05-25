@@ -437,7 +437,7 @@ Echo["- [x] Check CreateWindow"];
 Echo["- [x] Check create window from the window"];
 Echo["- [x] WLW check"];
 Echo["- [ ] Check TK and TeraCafe"];
-Echo["- [ ] Make Rasterize, Message work with orphaned windows (created via IPC)"];
+Echo["- [x] Make Rasterize, Message work with orphaned windows (created via IPC)"];
 Echo["- [x] Window reload/reevaluation"];
 
 (* Main sync thread *)
