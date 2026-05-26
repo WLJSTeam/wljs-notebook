@@ -16,28 +16,28 @@ Unprotect[Short]
 ClearAll[Short]
 
 Short /: MakeBoxes[Short[expr_?AtomQ, ___], StandardForm | TraditionalForm] := (
-  If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[expr]];
+  If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[expr] ];
   
   RowBox[{"<<", ToString[Head[expr], InputForm], ">>"}]
 ) /; ByteCount[expr] > 1024
 
 Short /: MakeBoxes[Short[expr_?AtomQ, ___], StandardForm | TraditionalForm] := With[{boxes = MakeBoxes[expr, StandardForm]},
-    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes]];
+    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes] ];
   boxes
 ]
 
 Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := With[{boxes = MakeBoxes[expr, StandardForm]},
-    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes]];
+    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes] ];
   boxes
 ]
 
-BoxForm`shortenHeadAndBody[List, args_] := RowBox[Join[{"{"}, Riffle[args, ","], {"}"}]]
+BoxForm`shortenHeadAndBody[List, args_, sep_:""] := RowBox[Join[{"{"<>sep}, Riffle[args, ","<>sep], {StringReplace[sep, " "->""]<>"}"}] ]
 
-BoxForm`shortenHeadAndBody[Plus, args_] := RowBox[Riffle[args, "+"]]
+BoxForm`shortenHeadAndBody[Plus, args_, sep_:""] := RowBox[Riffle[args, "+"<>sep] ]
 
-BoxForm`shortenHeadAndBody[any_, args_] := RowBox[Join[{ToString[any, InputForm], "["}, Riffle[args, ","], {"]"}]]
+BoxForm`shortenHeadAndBody[any_, args_, sep_:""] := RowBox[Join[{ToString[any, InputForm], "["<>sep}, Riffle[args, ","<>sep], {StringReplace[sep, " "->""]<>"]"}] ]
 
-Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
+Short /: MakeBoxes[Short[expr_], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
   process :=   (While[BoxForm`$accumulatorSize < 1024 && index <= Length[expr],
     With[{element = Extract[expr, index]},
       With[{elementBox = MakeBoxes[Short[element, 1], StandardForm]},
@@ -51,9 +51,9 @@ Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := Module[
     BoxForm`shortenHeadAndBody[Head[expr], row]
   ,
     If[Length[row] == 0,
-    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}]]
+    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
     ,
-    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}]]
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}] ]
     ]
   ])
 }, 
@@ -65,7 +65,38 @@ If[NumericQ[BoxForm`$accumulatorSize],
   Block[{BoxForm`$accumulatorSize = 0},
     process
   ]
-]]
+] ]
+] /; ByteCount[expr] > 1024
+
+Short /: MakeBoxes[Short[expr_, lines_Integer], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
+  process :=   (While[(BoxForm`$accumulatorSize < 1024 || index < lines) && index <= Length[expr],
+    With[{element = Extract[expr, index]},
+      With[{elementBox = MakeBoxes[Short[element, 1], StandardForm]},
+        AppendTo[row, elementBox];
+        index++;
+      ]
+    ]
+  ];
+
+  If[index == Length[expr]+1,
+    BoxForm`shortenHeadAndBody[Head[expr], row, "\n "]
+  ,
+    If[Length[row] == 0,
+    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
+    ,
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}], "\n "]
+    ]
+  ])
+}, 
+
+If[NumericQ[BoxForm`$accumulatorSize],
+  process
+,
+
+  Block[{BoxForm`$accumulatorSize = 0},
+    process
+  ]
+] ]
 ] /; ByteCount[expr] > 1024
 
 (* ::: Commonly used Math symbols :::  *)
