@@ -9,8 +9,12 @@ wolframCellQ[str_String] := With[{head = StringSplit[str, "\n"][[1]]},
 wolframCellQ[_] := False
 
 strip[_] := "";
-strip[cell_cell`CellObj] := If[cell["Display"] === "codemirror" && (cell`OutputCellQ[cell] || (cell`InputCellQ[cell] && wolframCellQ[cell["Data"]])),
-    StringReplace[cell["Data"], Shortest["(*" ~~ __ ~~ "*)"] -> ""],
+strip[cell_cell`CellObj] := If[(cell["Display"] === "codemirror" || TrueQ[cell["Overflow"] ]) && (cell`OutputCellQ[cell] || (cell`InputCellQ[cell] && wolframCellQ[cell["Data"]])),
+    If[TrueQ[cell["Overflow"] ], 
+        StringReplace[cell["OverflowContent"], Shortest["(*" ~~ __ ~~ "*)"] -> ""]
+    ,
+        StringReplace[cell["Data"], Shortest["(*" ~~ __ ~~ "*)"] -> ""]
+    ],
     cell["Data"]
 ];
 

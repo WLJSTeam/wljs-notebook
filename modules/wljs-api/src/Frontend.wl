@@ -867,7 +867,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                 <|
                                     "Id"-> c["Hash"],
                                     "Type" -> c["Type"],
-                                    "Display" -> c["Display"],
+                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ],
                                     "Lines" -> StringCount[c["Data"], "\n"]+1,
                                     "FirstLine" -> If[TrueQ[c["Overflow"] ], "[TOO LONG TO BE RENDERED]", StringExtract[c["Data"], "\n"->1] ]
                                 |> 
@@ -966,7 +966,6 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
         promise
     ]
 ]
-
 
 existsOrEmpty[settings_, field_] := If[KeyExistsQ[settings, field], settings[field], {}]
 

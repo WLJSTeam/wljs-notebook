@@ -79,8 +79,8 @@ FindCell[n_notebook`NotebookObj, pattern__] := With[{
 Serialize[n_CellObj, OptionsPattern[] ] := Module[{props},
     props = {# -> n[#]} &/@ 
         If[OptionValue["MetaOnly"], 
-            Complement[n["Properties"], {"Properties", "Icon", "Format", "Self", "Data", "Notebook", "Init", "After", "Before"}], 
-            Complement[n["Properties"], {"Properties", "Icon", "Format", "Self", "Notebook", "Init", "After", "Before"}] 
+            Complement[n["Properties"], {"Properties", "OverflowContent", "Icon", "Format", "Self", "Data", "Notebook", "Init", "After", "Before"}], 
+            Complement[n["Properties"], {"Properties", "OverflowContent", "Icon", "Format", "Self", "Notebook", "Init", "After", "Before"}] 
         ];      
 
     props = Join[props, {"Notebook" -> n["Notebook", "Hash"]}];
