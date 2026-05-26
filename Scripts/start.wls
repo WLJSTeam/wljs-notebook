@@ -340,7 +340,7 @@ ElectronQ[request_] := (KeyExistsQ[request["Headers"], "Electron"]);
 ElectronGetVersion[request_] := If[KeyExistsQ[request["Headers"], "Electron"], request["Headers", "Electron"], "false"];
 
 (* serve static *)
-AppExtensions`HTTPFileExtensions = {"jpeg", "wlx", "ttf",  "otf", "woff", "woff2", "css", "js", "png", "jpg", "webp", "svg", "pdf", "gif", "dat"};
+AppExtensions`HTTPFileExtensions = {"jpeg", "jp2", "json", "wlx", "csv", "tsv", "ppt", "avi", "mp2", "pptx", "doc", "docx", "txt", "ttf", "mp4", "xls", "xlsx", "mov", "wav", "mp3", "ogg", "otf", "woff", "woff2", "css", "js", "png", "jpg", "webp", "svg", "pdf", "gif", "dat"};
 http["MessageHandler", "File"]  = GetFileURequestQ[AppExtensions`HTTPFileExtensions] -> (
   ImportUFile[#, "Base":>$ExposedDirectories, "Routes":>$ExposedRoutes] &
 )
@@ -422,23 +422,6 @@ SetTimeout[
 ];
 
 ElectronIPCSend["runningAt", $Env["host"], $Env["http"] ];
-
-Echo["TODO: "];
-Echo["- [x] Electron IPC implementation"];
-Echo["- [x] Evaluation of normal cells in the notebook"];
-Echo["- [x] Evaluation of projected cells in the notebook"];
-Echo["- [x] Evaluation of projected cells (projectData) in the notebook"];
-Echo["- [x] Evaluation of projected cells (projectOrUpdate) in the notebook"];
-Echo["- [x] Remove NotebookCellDataProject"];
-Echo["- [x] EvaluateAsModule"];
-Echo["- [x] OnWebSocketConnect and After for windows handling (add sockets to EvaluationContext). Needs to subscribe to app events too"];
-Echo["- [x] Orphaned windows"];
-Echo["- [x] Check CreateWindow"];
-Echo["- [x] Check create window from the window"];
-Echo["- [x] WLW check"];
-Echo["- [ ] Check TK and TeraCafe"];
-Echo["- [x] Make Rasterize, Message work with orphaned windows (created via IPC)"];
-Echo["- [x] Window reload/reevaluation"];
 
 (* Main sync thread *)
 

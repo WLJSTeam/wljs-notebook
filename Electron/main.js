@@ -1805,6 +1805,27 @@ function parseWindowFeatures(features) {
 }
 
 
+const overlayConfig =  {};
+
+
+
+overlayConfig.loadWindowState = (win) => {
+  try {
+    win.setBounds(JSON.parse(fs.readFileSync(path.join(appDataFolder, "window-overlay-state.json"))))
+  } catch {
+
+  }
+}
+
+overlayConfig.saveWindowState = (win) => {
+  const {x, y} = win.getBounds();
+
+  fs.writeFileSync(
+    path.join(appDataFolder, "window-overlay-state.json"),
+    JSON.stringify({x,y})
+  );
+}
+
 
 function create_window(opts, cbk = () => {}) {
     if (buildMenu.main) {
@@ -2127,8 +2148,10 @@ function create_window(opts, cbk = () => {}) {
 
         if (options.overlay) {
             win.once('blur', () => {
+                overlayConfig.saveWindowState(win);
                 win.close();
-            })
+            });
+            overlayConfig.loadWindowState(win);
         } else {
             win.webContents.on('will-navigate', () => {
                 win.webContents.send('will-navigate');

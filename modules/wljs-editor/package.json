@@ -29,6 +29,7 @@
       "src/FrontendObject.wl",
       "src/Editor.wl",
       "src/Frontend.wl",
+      "src/FrontSubmit.wl",
       "src/FrontendObjectSync.wl",
       "src/SetDirectory.wl",
       "src/RemoteCells.wl",
