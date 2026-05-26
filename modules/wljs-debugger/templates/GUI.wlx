@@ -342,7 +342,7 @@ App[request_] := Module[{
 
 }, With[{
     AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
-    accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c] ],
+    accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c] ],
     NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],
     Transparency = "true",
     state = BinaryDeserialize @ BaseDecode @ URLDecode @ StringDrop[request["Path"], 

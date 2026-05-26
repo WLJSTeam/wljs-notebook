@@ -52,7 +52,7 @@ App[request_] := Module[{client, channel, target}, With[{
         LocalControls   = CreateUUID[],
         ModalController = CreateUUID[],
         GlobalMessanger = CreateUUID[],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         cachedClient = Unique["xtermModal"],
         isElectron = ElectronQ[request],
         GlobalParameters = <|"ElectronQ" -> ElectronQ[request], "AccentColor"->"teal"|>

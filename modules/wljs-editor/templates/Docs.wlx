@@ -17,7 +17,7 @@ Options[Iframe] = {"Doc"->Null};
 App[request_] := Module[{client, channel, target}, With[{
         secret = CreateUUID[], 
         LocalControls   = CreateUUID[],
-        accentColor = "#008855",
+        accentColor = "#f67070",
         isElectron = ElectronQ[request],
         GlobalParameters = <|"ElectronQ" -> ElectronQ[request], "AccentColor"->"teal"|>,
         UId = If[StringTake[#, -1] == "/", StringDrop[#, -1], #] &@ (StringReplace[request["Path"], ___~~"/docFind/"~~(n:__)~~EndOfString :> n]),

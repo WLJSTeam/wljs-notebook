@@ -296,7 +296,7 @@ App[request_] := With[{
 
         appGlobals = AppExtensions`AppGlobals (*`*),
 
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[AppExtensions`FrontendEnv, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[AppExtensions`FrontendEnv, "AccentColor", "#f67070"], c]],
 
         kernels = Hold[AppExtensions`KernelList] (*`*),
 

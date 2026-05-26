@@ -37,6 +37,6 @@ Component[Children__, OptionsPattern[]] := With[{
     ]
 ];
 
-Options[Component] = {"Title"->"", "AccentColor" -> "#008855", "Settings"-><||>};
+Options[Component] = {"Title"->"", "AccentColor" -> "#f67070", "Settings"-><||>};
 
 Component
