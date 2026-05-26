@@ -3042,7 +3042,7 @@ function start_server (window) {
 
 
     if (!accentColor) {
-        accentColor = '#ff7214';  
+        accentColor = '#f67070'; 
     } else {
         if (accentColor.charAt(0) != '#') accentColor = '#'+accentColor;
         if (accentColor.length > 7) accentColor = accentColor.slice(0, 7);
