@@ -1,8 +1,8 @@
-<|"Notebook" -> <|"Controller" -> "ff97704f-78d3-4e87-830f-4f094d573d35", 
+<|"Notebook" -> <|"Controller" -> "f6dcd043-c927-4048-83c8-26e0d44dd07a", 
    "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$378], "FocusedCellSelection" -> 
-    {20, 19}, "HaveToSaveAs" -> False, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "ef7ed927-436f-4bfa-a603-6be0ff66cefe", 
+     CoffeeLiqueur`Notebook`Cells`CellObj`$344], "HaveToSaveAs" -> False, 
+   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
+    "0c2af9de-8ba1-40dd-a9e8-db09949d74ad", 
    "Objects" -> <|"17bf6fc8-a227-40d1-9e8f-c232e7246d02" -> 
       <|"Public" -> Hold[
          CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["eJyknUs\
@@ -1936,50 +1936,49 @@ WPMgrwHko4M8jEVyAk5ndNH1LECfWhGSEoTq7MrisVRMeiXw2AxUIWxtnqVVYqqNSuscvirWtZsWw\
 wWCi3ZgOaKqkSdolvQKwzaxSqDTRj/c251Z50MFLos4Zd0G5DVFxxm5F3KC9R3KW8Uei3lwGIOB23\
 LIdW+4n3ZbB2qDPzE7cMtK08t24W1W4VNyb4Mg+2Wmen9/cImdjxTuB+HjNjI+znVUzLp0DugQ4X7\
 1M7V1gXJxvqh5MmUS/zDxT+4QRnG", {"ExpressionJSON", "ZLIB"}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Mini apps/B - Band-stop filter.wln", 
+   "Path" -> "/users/kirill/Downloads/BandblockEQ.wln", 
    "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
    "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
       "3 Band-stop App", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$361]], 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$354]], 
      CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Source code", 
       CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$361]]}|>, 
+       CoffeeLiqueur`Notebook`Cells`CellObj`$354]]}|>, 
  "Cells" -> {<|"Data" -> ".md\n## 3 Band-stop App\nInteractive widget for \
 importing ASCII data and filtering in real or Fourier domain.\n\n### Source \
 code\nA helper function to resample a list of data", 
     "Display" -> "codemirror", "Hash" -> 
-     "f4aaec22-5de8-438f-bbe5-7dcf62ca470f", "Invisible" -> False, 
+     "70ee28fd-473d-415a-a7b0-4611e5fc10a9", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "## 3 Band-stop App\nInteractive widget for importing ASCII \
 data and filtering in real or Fourier domain.\n\n### Source code\nA helper \
 function to resample a list of data", "Display" -> "markdown", 
-    "Hash" -> "2788072f-cf69-430f-9713-5461ba288149", "Invisible" -> False, 
+    "Hash" -> "e7974ab4-5645-46ca-9ada-48e9386b2a50", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "resample[data_List] := With[{\n  int = \
 Interpolation[data]\n}, With[{\n  range = int[\"Domain\"]//First,\n  step = \
 Min[Abs[data[[All,1]] // Differences]]/2.0\n},\n  Table[{x, int[x]}, {x, \
 range[[1]], range[[2]], step}]\n] ]\n\nresample[data_List, target_List] := \
 With[{\n  int = Interpolation[data]\n}, With[{},\n  Map[{#, int[#]}&, \
 target[[All,1]]]\n] ]", "Display" -> "codemirror", 
-    "Hash" -> "04ca2efc-64c6-4aca-9fe2-44a8046258ed", "Invisible" -> False, 
+    "Hash" -> "3139cf36-b059-47f8-8e8e-eea75740cc38", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\nTools for Fourier-transform", "Display" -> "codemirror", 
-    "Hash" -> "995013b7-4d2d-4771-8719-7ac3f98c807b", "Invisible" -> False, 
+    "Hash" -> "22a971ad-f251-4c3a-8985-6195ff45942a", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "Tools for Fourier-transform", "Display" -> "markdown", 
-    "Hash" -> "0e34c628-9a4c-4494-84eb-77babc5614e4", "Invisible" -> False, 
+    "Hash" -> "0599db95-f9c9-481e-a829-2574c7491b4d", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "dropHalf[list_List] := Drop[list, \
 -Round[Length[list]/2]]\n\nskip10[list_List] := Drop[list, \
 Round[Length[list]/9]]\n\nkeepMiddle[list_List] := Drop[Drop[list, \
@@ -2019,50 +2018,50 @@ If[diff >= 0,\n    Drop[list, -diff],\n    lastDiff = list[[-1, 1]] - \
 list[[-2, 1]]; (* Difference in time *)\n    lastTime = list[[-1, 1]];\n    \
 lastY = list[[-1, 2]];\n    Join[list, Table[{lastTime + i*lastDiff, \
 lastY/(2^i)}, {i, 1, Abs[diff]}]]\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "cc861d13-4c88-47af-8259-716649bdefba", "Invisible" -> False, 
+    "Hash" -> "96ed7903-97c4-4328-a377-9b104ef9c3ac", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\nSome test run (direct and inverse Fourier)", 
     "Display" -> "codemirror", "Hash" -> 
-     "be7749be-46bf-4059-9ca2-9914df856f39", "Invisible" -> False, 
+     "3a1cb894-8613-4532-afac-505dc2ef4c63", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "Some test run (direct and inverse Fourier)", 
     "Display" -> "markdown", "Hash" -> 
-     "7a9183cb-0d4b-4b13-ada5-984b001b6a39", "Invisible" -> False, 
+     "8c24f00a-be2b-41b9-8d4b-732473054b50", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "{backSample[fourier2d[originalTimeTrace] // inverseFourier2d, \
 originalTimeTrace] -  \
 originalTimeTrace}[[1,All,2]];\nListLinePlot[{originalTimeTrace[[All,2]], %}, \
 PlotRange->Full]", "Display" -> "codemirror", 
-    "Hash" -> "1c73de91-6afb-4a8d-98c9-9fe290a2355f", "Invisible" -> False, 
+    "Hash" -> "3eeeaab9-328d-4ee4-a267-45158fe54bb4", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "(*VB[*)(FrontEndRef[\"17bf6fc8-a227-40d1-9e8f-c232e7246d02\"]\
 )(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5onp\
 ZmlJVvoJhoZmeuaGKQY6lqmWqTpJhsZG6WaG5mYpRgYAQCGbRVz\"*)(*]VB*)", 
     "Display" -> "codemirror", "Hash" -> 
-     "7e162fd4-a222-4bfb-8629-bb18a351f991", "Invisible" -> False, 
+     "005ab3aa-6b8e-476e-95f8-4c60d5763112", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\nCompile band envelope Gaussian functions", 
     "Display" -> "codemirror", "Hash" -> 
-     "3e37e331-bf9d-47d4-87b7-06db6c6167f8", "Invisible" -> False, 
+     "5d752f86-3e6a-4177-b5d5-c5c284a72936", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "Compile band envelope Gaussian functions", 
     "Display" -> "markdown", "Hash" -> 
-     "14a013f8-5136-4558-83fc-c8e06c1cdd80", "Invisible" -> False, 
+     "fe431900-efc1-4cc6-930f-806425dff0aa", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "compiledFbandsEval = Compile[\n  {{xlist, _Real, 1}, {data, \
 _Real, 2}},\n  Module[{x, i, j, tmp, res = ConstantArray[1., \
 Length[xlist]]},\n    For[i = 1, i <= Length[xlist], i++,\n      x = \
@@ -2074,20 +2073,20 @@ xlist[[i]];\n      tmp = 1.;\n      For[j = 1, j <= Length[data], j++,\n      \
 processedFbands = Map[{#[[1]], #[[2]], 1/(2 Max[#[[3]], 10^-10]^2)}&, \
 fbands];\n\n  compiledFbandsEval[newFourierAxis//N, processedFbands//N]\n];", 
     "Display" -> "codemirror", "Hash" -> 
-     "f792e9ae-faba-4495-8b19-39cfcbd7a101", "Invisible" -> False, 
+     "eeacb00c-80e3-4298-8e08-3d76eee104f0", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\n__Main filtering function__", "Display" -> "codemirror", 
-    "Hash" -> "d82d7452-d1c7-4c14-9699-3e74fb04c6f9", "Invisible" -> False, 
+    "Hash" -> "ddd77fba-fb22-487d-bb80-2738083231e3", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "__Main filtering function__", "Display" -> "markdown", 
-    "Hash" -> "c716ac01-05dd-4406-a773-3fd1df64b995", "Invisible" -> False, 
+    "Hash" -> "ae3532ac-2c4f-40f3-b7eb-44f070421a1a", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "filter[{tbands_, fbands_}, trace_] := With[{timeAxis = \
 trace[[All,1]]}, \n\n\n\n\nModule[{}, With[{\n    mod = \
 EvaluateFbandsProjection[tbands, timeAxis]\n  },\n    \n\n    \n    With[{ \
@@ -2102,78 +2101,49 @@ Transpose}, \n\n\n\n                  <|\n                    \
      \"Image\"->postFourier, \"TraceEnvelope\"->mod, \
 \"ImageEnvelope\"->modF\n                  |>\n\n              ]\n            \
   \n          \n            ]\n          ]\n      ]\n      \n    ]\n  ]\n\n   \
- \n  \n  ] ]\n\ntoLog[l_] := Map[Function[xy, {xy[[1]], Log[0.001 + \
-xy[[2]]]}], l]", "Display" -> "codemirror", 
-    "Hash" -> "c60df4bd-0cdf-4156-8433-8db818492954", "Invisible" -> False, 
+ \n  \n  ] ]", "Display" -> "codemirror", 
+    "Hash" -> "593086cb-64c3-441e-9483-4bcfc61ba317", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
-   <|"Data" -> ".md\nBatch processing", "Display" -> "codemirror", 
-    "Hash" -> "79b1e860-15d7-4b94-b559-81b31962f117", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
-   <|"Data" -> "Batch processing", "Display" -> "markdown", 
-    "Hash" -> "87dd14f6-abea-46dc-91b6-673b6962c49e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
-   <|"Data" -> "applyBatchAndExport[{}, _, _] := \
-Null;\napplyBatchAndExport[files_List, tbands_, fbands_] := Module[{\n  \
-imported = importToDataset[#, globalImportParameters[[1]], \
-globalImportParameters[[2]], Null] &/@ files\n},\n    With[{normalized = \
-Table[d[[All, Take[ToExpression/@Keys[Select[KeySortBy[globalHashMap, \
-ToExpression], #&]], 2] ]], {d, imported}]},\n      With[{filtered = \
-Table[Select[n // Normal, Function[item, NumericQ[item[[1]]] && \
-NumericQ[item[[2]]]]], {n, Select[normalized, Not@*FailureQ]}]},\n\n\n        \
-  Then[SystemDialogInputAsync[\"Directory\"], Function[path,\n            \
-If[StringQ[path],\n              Table[Export[FileNameJoin[{path, \
-FileBaseName[files[[index]]]<>\".dat\"}], filter[{tbands, fbands}, \
-filtered[[index]]][\"Trace\"]], {index,\n              Length[filtered]\n     \
-       }]\n          ]; Beep[];]];\n\n      ]\n\n      ]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "02ee9807-a3ef-47a0-9b1b-97e427cfbb3f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\n__Second window__ (interactive filtering)", 
     "Display" -> "codemirror", "Hash" -> 
-     "80d2ed3a-370c-4390-845d-1dcdc921ef69", "Invisible" -> False, 
+     "e262ae52-2892-4d4b-a774-7e91eb290a65", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "__Second window__ (interactive filtering)", 
     "Display" -> "markdown", "Hash" -> 
-     "55913e41-f23f-47c2-a321-df43012b35b3", "Invisible" -> False, 
+     "27982ff3-74c8-421f-bd97-47d2cf13b8c0", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "Widget[OptionsPattern[]] := Module[{\n  update, tbands, \
 fbands, envelope, envelopeF,\n  modifedTrace, modifedFourier\n}, With[{\n  \
-originalData = OptionValue[\"Data\"]\n},{\n  trace = originalData\n},{\n  \
-fourier = fourier2d[trace] // Abs // dropHalf // dropHalf\n}, With[{\n  \
-minMaxTimeY = MinMax[trace[[All,2]]],\n  minMaxTimeX = \
-MinMax[trace[[All,1]]],\n  minMaxFreqY = MinMax[(toLog @ \
-fourier)[[All,2]]],\n  minMaxFreqX = MinMax[fourier[[All,1]]],\n  \
-upperTimeBond = Total[MinMax[trace[[All,2]]] {0.1,0.9}],\n  lowerTimeBond = \
+originalData = OptionValue[\"Data\"],\n  trace = \
+OptionValue[\"Data\"][[;;;;2]],\n  fourier = \
+fourier2d[OptionValue[\"Data\"][[;;;;2]]] // Abs // dropHalf // dropHalf\n}, \
+With[{\n  minMaxTimeY = MinMax[trace[[All,2]]],\n  minMaxTimeX = \
+MinMax[trace[[All,1]]],\n  minMaxFreqY = MinMax[fourier[[All,2]]],\n  \
+minMaxFreqX = MinMax[fourier[[All,1]]],\n  upperTimeBond = \
+Total[MinMax[trace[[All,2]]] {0.1,0.9}],\n  lowerTimeBond = \
 Total[MinMax[trace[[All,2]]] {0.9,0.1}],\n  upperFreqBond = \
-Total[MinMax[(toLog @ fourier)[[All,2]]] {0.1,0.6}],\n  lowerFreqBond = \
-Total[MinMax[(toLog @ fourier)[[All,2]]] {0.9,0.1}],\n  timeAxis = \
-trace[[All,1]],\n  fourierAxis = fourier[[All,1]],\n  timeYAxis = \
-trace[[All,2]],\n\n  widthTime = With[{o = MinMax[trace[[All,1]]]}, 0.02 \
-(o[[2]] - o[[1]])],\n  widthFreq = With[{o = MinMax[fourier[[All,1]] // \
-dropHalf]}, 0.02 (o[[2]] - o[[1]])]\n},\n\n  modifedTrace = trace;\n  \
-modifedFourier = toLog @ fourier;\n\n  envelope = {{0,1}, {1,1}};\n  \
-envelopeF = envelope;\n\n  SetAttributes[update, HoldFirst];\n\n  update[] := \
-With[{result = filter[{tbands, fbands}, trace]},\n    envelope = {timeAxis, \
-(# upperTimeBond) &/@ result[\"TraceEnvelope\"]} // Transpose;\n    envelopeF \
-= {result[\"Image\"][[All,1]], (# upperFreqBond) &/@ \
-result[\"ImageEnvelope\"]} // Transpose;\n    modifedFourier = \
-result[\"Image\"] // Abs // dropHalf // toLog;\n    modifedTrace = \
-result[\"Trace\"];\n  ];\n\n  update[tbands, \"drag\", i_, xy_] := (\n    \
-tbands[[i]] = With[{old = tbands[[i]]}, \n      {(1 - (xy[[2]] - \
-0)/(upperTimeBond - 0)), xy[[1]], old[[3]]}\n    ];\n    update[];\n  );\n\n  \
-update[fbands, \"drag\", i_, xy_] := (\n    fbands[[i]] = With[{old = \
+Total[MinMax[fourier[[All,2]]] {0.1,0.6}],\n  lowerFreqBond = \
+Total[MinMax[fourier[[All,2]]] {0.9,0.1}],\n  timeAxis = trace[[All,1]],\n  \
+fourierAxis = fourier[[All,1]],\n  timeYAxis = trace[[All,2]],\n\n  widthTime \
+= With[{o = MinMax[trace[[All,1]]]}, 0.02 (o[[2]] - o[[1]])],\n  widthFreq = \
+With[{o = MinMax[fourier[[All,1]] // dropHalf]}, 0.02 (o[[2]] - \
+o[[1]])]\n},\n\n  modifedTrace = trace;\n  modifedFourier = fourier;\n\n  \
+envelope = {{0,1}, {1,1}};\n  envelopeF = envelope;\n\n  \
+SetAttributes[update, HoldFirst];\n\n  update[] := With[{result = \
+filter[{tbands, fbands}, trace]},\n    envelope = {timeAxis, (# \
+upperTimeBond) &/@ result[\"TraceEnvelope\"]} // Transpose;\n    envelopeF = \
+{result[\"Image\"][[All,1]], (# upperFreqBond) &/@ result[\"ImageEnvelope\"]} \
+// Transpose;\n    modifedFourier = result[\"Image\"] // Abs // dropHalf ;\n  \
+  modifedTrace = result[\"Trace\"];\n  ];\n\n  update[tbands, \"drag\", i_, \
+xy_] := (\n    tbands[[i]] = With[{old = tbands[[i]]}, \n      {(1 - (xy[[2]] \
+- 0)/(upperTimeBond - 0)), xy[[1]], old[[3]]}\n    ];\n    update[];\n  \
+);\n\n  update[fbands, \"drag\", i_, xy_] := (\n    fbands[[i]] = With[{old = \
 fbands[[i]]}, \n      {If[# < 0, - 10 #^2, #] &@ (1 - (xy[[2]] - \
 0)/(upperFreqBond - 0)), xy[[1]], old[[3]]}\n    ];\n    update[];\n  );\n\n  \
 update[tbands, \"zoom\", i_, k_] := (\n    tbands[[i]] = With[{old = \
@@ -2196,13 +2166,8 @@ Abs[point[[2]]], Arg[point[[2]]]}], result[\"Image\"]]];\n            ]\n     \
 Then[SystemDialogInputAsync[\"FileSave\", {Null, {\"Tabular Formats\" -> \
 {\"*.csv\", \"*.tsv\"}, \"ASCII Data\" -> {\"*.dat\"}}}],\n            \
 Function[path,\n              Export[path, result[\"Trace\"]];\n            \
-]\n          ]\n        ]\n      ],\n\n      \"UI4\" -> Button[\"Run \
-batch\",\n        With[{result = filter[{tbands, fbands}, originalData]},\n   \
-       Then[SystemDialogInputAsync[\"OpenList\", {Null, {\"Tabular Formats\" \
--> {\"*.csv\", \"*.tsv\"}, \"ASCII Data\" -> {\"*.dat\"}}}],\n            \
-Function[path,\n              applyBatchAndExport[path, tbands, fbands];\n    \
-        ]\n          ]\n        ]\n      ]      \n     ,\n    \n    \"Trace\" \
--> ListLinePlot[trace, \n      PlotRange->Full, Frame->True, \n      \
+]\n          ]\n        ]\n      ]      \n     ,\n    \n    \"Trace\" -> \
+ListLinePlot[trace, \n      PlotRange->Full, Frame->True, \n      \
 PlotStyle->Directive[(*VB[*)(RGBColor[0.24, 0.6, \
 0.8])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3c\
 s7PyS8q2iHX+jpwxzn7ImMweGxfNGsmCLy0BwBgKxmG\"*)(*]VB*), Opacity[0.3]], \n     \
@@ -2221,8 +2186,8 @@ Table[With[{i=i}, EventHandler[Point[{(Mean@minMaxTimeX) + \
 cs7PyS8qenpB6fbPukf2RUE75FpfBz6wLzIGg9f2AIG6GcU=\"*)(*]VB*), \
 Line[modifedTrace // Offload]\n      }\n    , ImageSize->Large, \
 PlotLabel->\"Real space\", FrameLabel->{\"real domain\", \"values\"}],\n    \
-\"Image\" -> ListLinePlot[toLog @ fourier, \n      PlotRange->Full, \
-Frame->True, \n      PlotStyle->Directive[(*VB[*)(RGBColor[0.95, 0.627, \
+\"Image\" -> ListLinePlot[fourier, \n      PlotRange->Full, Frame->True, \n   \
+   PlotStyle->Directive[(*VB[*)(RGBColor[0.95, 0.627, \
 0.1425])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCH\
 J3cs7PyS8qSgODd/ZFqz5e8k0SeGJfZMt1fXGB7SF7AGW1GWY=\"*)(*]VB*), \
 Opacity[0.3]],\n      Epilog->{\n      {Lighter[(*VB[*)(RGBColor[0.95, 0.627, \
@@ -2239,80 +2204,73 @@ J3cs7PyS8qSgODd/ZFqz5e8k0SeGJfZMt1fXGB7SF7AGW1GWY=\"*)(*]VB*), PointSize[2 \
 0.209179])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQ\
 CHJ3cs7PyS8qurL1m11o61v7ojv689dIrLthX6Thzrgo4dgpewB9bxpO\"*)(*]VB*), \
 Line[modifedFourier // Offload]\n      }\n    , ImageSize->Large, \
-PlotLabel->\"Fourier space\", FrameLabel->{\"frequency\", \"-log @ \
-amplitude\"}]\n  \n  |> \n] ] ]\n\nOptions[Widget] = {\"Data\"->{}}", 
+PlotLabel->\"Fourier space\", FrameLabel->{\"frequency\", \"amplitude\"}]\n  \
+\n  |> \n] ] ]\n\nOptions[Widget] = {\"Data\"->{}}", 
     "Display" -> "codemirror", "Hash" -> 
-     "897e3140-6752-4a5d-b50d-d7e58fa2f8e4", "Invisible" -> False, 
+     "669f4804-8ba6-40b2-b00e-8a0859f68fae", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "{\"Data\"->{}}", "Display" -> "codemirror", 
-    "Hash" -> "b33551a9-1976-4770-84b8-6eb3bb810827", "Invisible" -> False, 
+    "Hash" -> "c022d589-6b6b-4f5f-bfe6-77e71ba33e46", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\nWLX template for the layout", "Display" -> "codemirror", 
-    "Hash" -> "dd776b51-8a5d-432a-a8f6-da24cd8b3bf9", "Invisible" -> False, 
+    "Hash" -> "17630de6-2f7d-4a63-a3e1-c8544c95667f", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "WLX template for the layout", "Display" -> "markdown", 
-    "Hash" -> "4bea5062-a75e-45df-b467-260c2008d0ca", "Invisible" -> False, 
+    "Hash" -> "2f505e94-e86e-4b94-8802-f6e34f8e8881", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".wlx\n\nOperatingWindow[opts__] :=\nWith[{W = \
 Widget[opts]},\n\n  <div class=\"w-full h-full px-2 py-2 \
 overflow-hidden\">\n\n    <div class=\"flex flex-row gap-x-2\">\n      \
-<W>UI1</W>\n      <W>UI2</W>\n      <W>UI3</W>\n      <W>UI4</W>\n    \
-</div>\n    <div class=\"flex flex-row w-full justify-between\">\n      \
-<W>Trace</W>\n      <W>Image</W>\n    </div>\n    \n  </div>\n\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8d0aaec2-d636-4e3a-9015-2774511d357e", "Invisible" -> False, 
+<W>UI1</W>\n      <W>UI2</W>\n      <W>UI3</W>\n    </div>\n    <div \
+class=\"flex flex-row w-full justify-between\">\n      <W>Trace</W>\n      \
+<W>Image</W>\n    </div>\n    \n  </div>\n\n]", "Display" -> "codemirror", 
+    "Hash" -> "d3926af1-cb58-4354-a888-35810062f7e4", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\n__Input file window__ (the first one)", 
     "Display" -> "codemirror", "Hash" -> 
-     "2d6de657-f241-44b4-a60d-d7ccd10602af", "Invisible" -> False, 
+     "f60d5254-7bca-4faa-a571-93527a003824", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "__Input file window__ (the first one)", 
     "Display" -> "markdown", "Hash" -> 
-     "ae2fb904-3285-4027-98d2-65867a78f98d", "Invisible" -> False, 
+     "b08bec35-af1b-4191-aceb-e8c5eaae22ae", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".md\nHelper functions", "Display" -> "codemirror", 
-    "Hash" -> "b655b203-319f-428a-b84d-e9ebc1a8ae75", "Invisible" -> False, 
+    "Hash" -> "4d027419-b261-4795-8c98-65eb36bed521", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "Helper functions", "Display" -> "markdown", 
-    "Hash" -> "4eb77cf2-1f24-492b-92f4-aad453f6e12d", "Invisible" -> False, 
+    "Hash" -> "5fb59d9b-d02b-4171-b51f-b28f3055b80b", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> "importToDataset[path_, type_, lines_, router_] := With[{i = \
 Import[path, type, HeaderLines->lines]},\n  If[FailureQ[i],\n    \
-Dataset[{$Failed}]\n  ,\n    globalImportParameters = {type, lines};\n    \
-With[{\n      rowLength = Length[i[[1]]]\n    },\n      \
-Join[{Table[InputCheckbox[router, u<=2, \"Topic\"->ToString[u]], \
-{u,1,rowLength}]}, i] // Dataset\n    ]\n  ]\n]\n\nimportToDataset[path_, \
-type_, lines_, Null] := With[{i = Import[path, type, HeaderLines->lines]},\n  \
-If[FailureQ[i],\n    Dataset[{$Failed}]\n  ,\n    globalImportParameters = \
-{type, lines};\n    With[{\n      rowLength = Length[i[[1]]]\n    },\n      i \
-// Dataset\n    ]\n  ]\n]\n\nglobalImportParameters;\nglobalHashMap = \
-<|\"1\"->True, \"2\"->True|>;\n\nupdatePreview[group_, ref_, dataset_] := \
-With[{}, If[group =!= Null, Delete[group]];\n      group = \
+Dataset[{$Failed}]\n  ,\n    With[{\n      rowLength = Length[i[[1]]]\n    \
+},\n      Join[{Table[InputCheckbox[router, u<=2, \"Topic\"->ToString[u]], \
+{u,1,rowLength}]}, i] // Dataset\n    ]\n  ]\n]\n\nupdatePreview[group_, \
+ref_, dataset_] := With[{}, If[group =!= Null, Delete[group]];\n      group = \
 FrontInstanceGroup[];\n      FrontSubmit[group[dataset], \
 ref];\n];\n\nSetAttributes[updatePreview, HoldFirst]", 
     "Display" -> "codemirror", "Hash" -> 
-     "e81c761a-dd90-400b-9497-41c01f50ab7b", "Invisible" -> False, 
+     "161f715b-8159-4f04-bf3c-5d23de3a743a", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
     "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>, 
+    "UID" -> Null, "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>, 
    <|"Data" -> ".wlx\n\nModule[{\n DatasetObject,\n group = Null,\n path = \
 Null,\n header = 1,\n hashMap = <|\"1\"->True, \"2\"->True|>,\n type = \
 \"CSV\"\n}, With[{\n  FileInput = InputButton[\"Open file\"],\n  Process = \
@@ -2327,15 +2285,14 @@ Then[SystemDialogInputAsync[\"OpenList\", {Null, {\"Formats\" -> {\"*.csv\", \
 \"*.tsv\", \"*.xls\", \"*.txt\", \"*.dat\"}}}\n\n\n], Function[p,\n    path = \
 Flatten[{p}]//First;\n    dataset = importToDataset[path, type, header, \
 router];\n    updatePreview[group, ref, dataset];\n  ]]]];\n\n  \
-EventHandler[router, {q_String :> Function[state, (\n    hashMap[q] = \
-state;\n    globalHashMap = hashMap;\n  )]}];\n\n  EventHandler[UIGroup, \
-Function[assoc,\n    type = assoc[\"Type\"]; header = assoc[\"Header\"];\n    \
-dataset = importToDataset[path, type, header, router];\n    \
-updatePreview[group, ref, dataset];\n  ]];\n\n  EventHandler[Process, \
-Function[Null,\n    With[{normalized = Drop[dataset, 1][[All, \
-Take[ToExpression/@Keys[Select[KeySortBy[hashMap, ToExpression], #&]], 2] \
-]]},\n      If[FailureQ[normalized], \n        MessageDialog[\"Wrong input \
-data!\", \"Notebook\"->nb];\n        Return[];\n      ];\n      \
+EventHandler[router, {q_String :> Function[state, hashMap[q] = state]}];\n\n  \
+EventHandler[UIGroup, Function[assoc,\n    type = assoc[\"Type\"]; header = \
+assoc[\"Header\"];\n    dataset = importToDataset[path, type, header, \
+router];\n    updatePreview[group, ref, dataset];\n  ]];\n\n  \
+EventHandler[Process, Function[Null,\n    With[{normalized = Drop[dataset, \
+1][[All, Take[ToExpression/@Keys[Select[KeySortBy[hashMap, ToExpression], \
+#&]], 2] ]]},\n      If[FailureQ[normalized], \n        MessageDialog[\"Wrong \
+input data!\", \"Notebook\"->nb];\n        Return[];\n      ];\n      \
 With[{filtered = Select[normalized // Normal, Function[item, \
 NumericQ[item[[1]]] && NumericQ[item[[2]]]]]},\n          If[Length[filtered] \
 == 0,\n            MessageDialog[\"Wrong input data!\", \"Notebook\"->nb];\n  \
@@ -2349,8 +2306,8 @@ class=\"relative block\" style=\"max-width:80vw; max-height:600px;\">\n      \
  <div class=\"flex flex-row gap-x-2\">\n        <FileInput/>\n        \
 <Process/>\n      </div>\n      <UIGroup/>\n    </div>\n  </div>\n] ]", 
     "Display" -> "codemirror", "Hash" -> 
-     "f9d2888a-67d4-46ec-a5d2-b51ec9019965", "Invisible" -> False, 
+     "ab2e3693-9fe1-490c-8057-0696b4f0b32a", "Invisible" -> False, 
     "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
     "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "79993d0b-8c6a-4092-b3b2-d3eb897ddf01"|>}, 
+    "Notebook" -> "41702fef-bd13-413c-8e94-6824e9397a8b"|>}, 
  "serializer" -> "jsfn4"|>
