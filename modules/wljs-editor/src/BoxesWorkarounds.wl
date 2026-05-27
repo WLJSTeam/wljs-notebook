@@ -1729,6 +1729,36 @@ makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
   ]
 ]
 
+(* StandardForm and TranditionalForm *)
+
+Unprotect[StandardForm]
+DownValues[StandardForm] = {};
+StandardForm /: MakeBoxes[StandardForm[expr_], StandardForm] := With[{
+  e = EditorView[ToString[expr, StandardForm], "ReadOnly"->True]
+}, 
+  ViewBox[RowBox[{"StandardForm[", ToString[expr, InputForm], "]"}], e]
+]
+
+StandardForm /: MakeBoxes[StandardForm[expr_], WLXForm] := With[{
+  e = EditorView[ToString[expr, StandardForm], "ReadOnly"->True]
+}, 
+  CreateFrontEndObject[e]
+]
+
+Unprotect[TraditionalForm]
+DownValues[TraditionalForm] = {};
+TraditionalForm /: MakeBoxes[TraditionalForm[expr_], StandardForm] := With[{
+  view = TeXView[TeXForm[expr]]
+}, 
+  ViewBox[RowBox[{"TraditionalForm[", ToString[expr, InputForm], "]"}], view]
+]
+
+TraditionalForm /: MakeBoxes[TraditionalForm[expr_], WLXForm] := With[{
+  view = TeXView[TeXForm[expr]]
+}, 
+  CreateFrontEndObject[view]
+]
+
 (* WL14 with no reason reloads the definitons of some symbols *)
 (* It breaks ANY FormatValues (even for custom forms) and Downvalues ofc *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)

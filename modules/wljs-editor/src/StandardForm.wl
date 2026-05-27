@@ -5,10 +5,6 @@ System`ProvidedOptions;
 
 Begin["CoffeeLiqueur`Extensions`StandardForm`"]
 
-Unprotect[TraditionalForm]
-TraditionalForm::nspt = "TraditionalForm is not supported in WLJS. ToString is applied"
-TraditionalForm[expr_] := (Message[TraditionalForm::nspt]; ToString[expr])
-
 System`ByteArrayWrapper;
 System`TreeWrapper;
 
