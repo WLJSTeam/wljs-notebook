@@ -312,34 +312,6 @@ const cli_info = {
 
 var sudo = require('./sudo');
 
-function cli_uninstall() {
-    if (!app.isPackaged) return;
-    if (!cli_info[process.platform]) return;
-
-    fs.exists(cli_info[process.platform].cliLink, (existsQ) => {
-        if (!existsQ) {
-            console.log('Cli is not installed');
-            return;
-        }
-
-        const exePath = app.getPath('exe');
-        const cliPath = cli_info[process.platform].cliPath;
-
-        const options = {
-            name: 'WLJS Elevated module'
-          };
-          
-          sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script_uninstall)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-            function(error, stdout, stderr) {
-              if (error) throw error;
-              console.log('stdout: ' + stdout);
-            }
-          ); 
-    });
-
-   
-}
-
 function check_cli_installed(log_window) {
     if (!app.isPackaged) return;
 
@@ -358,42 +330,33 @@ function check_cli_installed(log_window) {
 
         console.log('Cli is not installed');
 
-        if (fs.existsSync(path.join(appDataFolder, '.nocli_i'))) {
-            console.log('skipped because of a user');
-            return;
-        }
 
-        const install = () => {
-            const exePath = app.getPath('exe');
+      try {
+        const exePath = app.getPath('exe');
 
-                console.log(exePath);
+        console.log(exePath);
+
+        console.log(path.resolve(cli_info[process.platform].script));
+
         
-                console.log(path.resolve(cli_info[process.platform].script));
+        const options = {
+          name: 'WLJS Elevated module'
+        };
         
-                
-                const options = {
-                  name: 'WLJS Elevated module'
-                };
-                
-                sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-                  function(error, stdout, stderr) {
-                    if (error) throw error;
-                    console.log('stdout: ' + stdout);
+        sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
+          function(error, stdout, stderr) {
+            if (error) throw error;
+            console.log('stdout: ' + stdout);
 
-                    fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
-                        if (err) throw err;
-                    });                    
-                  }
-                );
-        }
-
-        if (!log_window) {
-            install();
-            return;
-        }
-
-        install();
-
+            fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
+                if (err) throw err;
+            });                    
+          }
+        );
+      } catch (err) {
+        console.log('Failed to install CLI');
+        console.error(err);
+      }
         
 
     })
@@ -2695,16 +2658,6 @@ app.whenReady().then(() => {
 
         return await p.promise;
     })
-
-    ipcMain.on('install-cli', () => {
-        //trackpadUtils.triggerFeedback();
-        check_cli_installed();
-    });
-
-    ipcMain.on('uninstall-cli', () => {
-        //trackpadUtils.triggerFeedback();
-        cli_uninstall();
-    }); 
     
     const capturedBuffer = {};
 
