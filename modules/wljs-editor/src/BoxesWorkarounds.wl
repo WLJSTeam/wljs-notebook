@@ -68,6 +68,8 @@ If[NumericQ[BoxForm`$accumulatorSize],
 ] ]
 ] /; ByteCount[expr] > 1024
 
+Short /: MakeBoxes[Short[expr_, 1], form: StandardForm | TraditionalForm] := MakeBoxes[Short[expr], form]
+
 Short /: MakeBoxes[Short[expr_, lines_Integer], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
   process :=   (While[(BoxForm`$accumulatorSize < 1024 || index < lines) && index <= Length[expr],
     With[{element = Extract[expr, index]},
