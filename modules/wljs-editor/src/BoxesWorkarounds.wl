@@ -1299,41 +1299,31 @@ GraphicsGrid /: MakeBoxes[GraphicsGrid[list_, ___], any_] := With[{b = Grid[list
 HorizontalGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[HorizontalGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[HorizontalGauge[all] ]]//WaitAll
 );
 
 BulletGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[BulletGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[BulletGauge[all] ]]//WaitAll
 );
 
 AngularGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[AngularGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[AngularGauge[all] ]]//WaitAll
 );
 
 ThermometerGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[ThermometerGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[ThermometerGauge[all] ]]//WaitAll
 );
 
 ClockGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[ClockGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[ClockGauge[all] ]]//WaitAll
 );
 
 (* :: GeoGraphics :: *)
@@ -1342,17 +1332,13 @@ ClockGauge[all__] := (
 GeoGraphics[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[GeoGraphics @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[GeoGraphics[all] ]]//WaitAll
 )
 
 GeoListPlot[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[GeoListPlot @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[GeoListPlot[all] ]]//WaitAll
 )
 
 
@@ -1363,22 +1349,25 @@ GeoListPlot[all__] := (
 WordCloud[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[WordCloud @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[WordCloud[all] ]]//WaitAll
 )
 
 (* ::: TeX forms are currently not supported ;(  ::: *)
 
+
 Unprotect[TeXForm]
 ClearAll[TeXForm]
+Unprotect[MathMLForm]
+ClearAll[MathMLForm]
 
 TeXForm[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+  ParallelSubmit[ToString[TeXForm[all], InputForm]]//WaitAll
+)
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ ToString[TeXForm @@ args, InputForm]
-  ], {all}], 60 ]
+MathMLForm[all__] := (
+  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+  ParallelSubmit[ToString[MathMLForm[all], InputForm]]//WaitAll
 )
 
 
@@ -1462,7 +1451,6 @@ toStringOutputForm[any_List] := HoldForm[any];
 toStringOutputForm[any_Association] := HoldForm[any];
 
 MakeBoxes[d_InformationData, StandardForm] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
   
   With[{ i = Map[toStringOutputForm, d//Dataset ] },
@@ -1730,33 +1718,27 @@ makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
 ]
 
 (* StandardForm and TranditionalForm *)
-
+Unprotect[FormBox]
 Unprotect[StandardForm]
-DownValues[StandardForm] = {};
-StandardForm /: MakeBoxes[StandardForm[expr_], StandardForm] := With[{
-  e = EditorView[ToString[expr, StandardForm], "ReadOnly"->True]
-}, 
-  ViewBox[RowBox[{"StandardForm[", ToString[expr, InputForm], "]"}], e]
-]
 
+FormBox[expr_, StandardForm] := expr
+FormBox[expr_, TraditionalForm] := expr /. {RowBox->StringJoin}
+
+(* add missing for WLXForm *)
 StandardForm /: MakeBoxes[StandardForm[expr_], WLXForm] := With[{
-  e = EditorView[ToString[expr, StandardForm], "ReadOnly"->True]
-}, 
-  CreateFrontEndObject[e]
+    editor = EditorView[ToString[expr, StandardForm], "ReadOnly"->True, "Focusable"->False, "Selectable"->False] // CreateFrontEndObject
+},
+    MakeBoxes[editor, WLXForm]
 ]
 
 Unprotect[TraditionalForm]
 DownValues[TraditionalForm] = {};
-TraditionalForm /: MakeBoxes[TraditionalForm[expr_], StandardForm] := With[{
-  view = TeXView[TeXForm[expr]]
-}, 
-  ViewBox[RowBox[{"TraditionalForm[", ToString[expr, InputForm], "]"}], view]
-]
+
 
 TraditionalForm /: MakeBoxes[TraditionalForm[expr_], WLXForm] := With[{
-  view = TeXView[TeXForm[expr]]
-}, 
-  CreateFrontEndObject[view]
+    editor = EditorView[ToString[TraditionalForm[expr], StandardForm], "ReadOnly"->True, "Focusable"->False, "Selectable"->False] // CreateFrontEndObject
+},
+    MakeBoxes[editor, WLXForm]
 ]
 
 (* WL14 with no reason reloads the definitons of some symbols *)

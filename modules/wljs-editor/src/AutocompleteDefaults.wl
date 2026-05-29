@@ -15900,10 +15900,7 @@ function with characteristic value <i>a</i> and \
 parameter\[NonBreakingSpace]<i>q</i>. "|>, <|"label" -> "MathieuSPrime", 
   "type" -> "keyword", "info" -> "MathieuSPrime[<i>a</i>,<i>q</i>,<i>z</i>] \
 gives the derivative with respect to <i>z</i> of the odd Mathieu function \
-with characteristic value <i>a</i> and parameter <i>q</i>. "|>, 
- <|"label" -> "MathMLForm", "type" -> "keyword", 
-  "info" -> "MathMLForm[<i>expr</i>] prints as a MathML form of <i>expr</i>. \
-"|>, <|"label" -> "Matrices", "type" -> "keyword", 
+with characteristic value <i>a</i> and parameter <i>q</i>. "|>, <|"label" -> "Matrices", "type" -> "keyword", 
   "info" -> "Matrices[{<i>d</i><sub>1</sub>,<i>d</i><sub>2</sub>}] represents \
 the domain of matrices of dimensions \
 <i>d</i><sub>1</sub>\[Times]<i>d</i><sub>2</sub>.\n\nMatrices[{<i>d</i><sub>1\

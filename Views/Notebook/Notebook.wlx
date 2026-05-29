@@ -61,7 +61,7 @@ untrashCell[notebook_, log_, modals_] := Module[{},
         |>]; 
 ] ];
 
-getTopic = "1:eJw9j89KxEAMxqt4UBA9eNHbePBFVlAEd4WdJ5hO007YaVImqeLbm1j0EpLv++XfY8/H8bzrOrm08LJSVmSSCysOa63jmVvXFo6JBp6fC2OG8cpVZ95RNN5b8kYKrfGUFGkKWiAopIU13pm5a9j/ySXNYmh88g0wseLW8oVaQgpDW+kUGvesoV+1Gvlg5B5E/in5tglzGLGCRL9tj+RmZiSJN/5HTcuy8TRJ9NcOzEO16rfh4xNarpxPLtya8AoEbTukQNIfLI1Tdw=="//Uncompress;
+getTopic = "1:eJw9j91KA0EMhVfxQkQUEUTvpg/gS1TQG1ul8wSz0+xO6GyyTLIW397EojchOV9OflY974bzruvk0sLrQlmRSS6s2C61DmeOri3sEu15eimMGYYrV73nHUXjgyWfDZ6PqU1IY9ACQSHNrPHe0Lph/yeXNIlCi48+H0ZWTOrsiFpCCo17Mz0Z3IDIP5BvM01hwAoS/ZgNksPMSBJv/PCa5vnUT6NE/2XLvK9W/Ro+vqDlyvngwq0Jb0DQTrsLJI13PjU5Dn1dYG5IKj+XhlSG"//Uncompress;
 
 addAfterHelper[notebook_, uid_] := With[{},
     (*/* request from the client with event provided */*)
