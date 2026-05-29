@@ -56,7 +56,7 @@ checkWSLink[window_, client_, event_String] := Module[{},
 ];
 
 
-Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
+Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], RetryWebSocket = If[OptionValue["RetryWebSocket"], "true", "false"]},
     <div>
         <script type="module">
             let wrap, supp = [];
@@ -84,28 +84,35 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
 
                 server.kernel.connected = true;
                 let socket;
-                if (options.PrefixMode) {
-                    socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://")+window.location.hostname+':'+window.location.port+'/'+options.PrefixMode);
-                } else {
-                    socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://")+window.location.hostname+':'+port);
-                }                
-                socket.binaryType = "arraybuffer";
-                socket.onmessage = interpretate.handleMessage;
+                let connectNow;
+                connectNow = () => {
+                  if (options.PrefixMode) {
+                      socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://"   )+window.location.hostname+':'+window.location.port+'/'+options.PrefixMode);
+                  } else {
+                      socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://"   )+window.location.hostname+':'+port);
+                  }                
+                  socket.binaryType = "arraybuffer";
+                  socket.onmessage = interpretate.handleMessage;
                 
-                socket.onopen = function(e) {
-                  console.log("[open]");
-                  server.kernel.init({socket: socket});
-                  server.emitt(ev, 'True', 'WebSocketConnected');
-                }; 
+                  socket.onopen = function(e) {
+                    console.log("[open]");
+                    server.kernel.init({socket: socket});
+                    server.emitt(ev, 'True', 'WebSocketConnected');
+                  }; 
 
-                socket.onclose = function(event) {
-                  console.log(event);
-                  console.warn('Connection lost to a Evaluation Kernel');
-                  //server.kernel = undefined;
-                  server.kernel.connected = false;
+                  socket.onclose = function(event) {
+                    console.log(event);
+                    console.warn('Connection lost to a Evaluation Kernel');
+                    //server.kernel = undefined;
+                    server.kernel.connected = false;
+                    if (<RetryWebSocket/>) {
+                        console.warn('Retrying in 500 ms');
+                        setTimeout(() => connectNow(), 500);
+                    } else {server.emitt(ev, 'True', 'WebSocketLost');}
+                  }; 
 
-                  server.emitt(ev, 'True', 'WebSocketLost');
-                }; 
+                };
+                connectNow();
             }
 
             core.UIWindow.Unload = async (args, env) => {
@@ -170,6 +177,8 @@ Component[OptionsPattern[] ] := With[{
         "ExtensionTemplateWrapper" -> OptionValue["ExtensionTemplateWrapper"], 
         "ExtensionTemplateInjection" -> OptionValue["ExtensionTemplateInjection"]
     ]
+}, {
+    RetryWebSocket = TrueQ[win["RetryWebSocket"]]
 },
     
     EventHandler[secret, {
@@ -253,7 +262,7 @@ Component[OptionsPattern[] ] := With[{
                     <span class="sr-only">Loading...</span>
                 </div>
             </Container>
-            <Script Event={secret} ExtensionTemplateInjection={ExtensionTemplateInjection}/>
+            <Script Event={secret} ExtensionTemplateInjection={ExtensionTemplateInjection} RetryWebSocket={RetryWebSocket}/>
             <WebUIOnLoad Event={secret} Pattern={"Load"}/>
         </main>
 
@@ -261,7 +270,7 @@ Component[OptionsPattern[] ] := With[{
 ]
 
 Options[Component] = {"Parameters"->Null, "ElectronQ" -> False, "Window"->"", "AppEvents"->"blacksheep", "Kernels"->{}, "Modals"->"", "Controls" ->"", "ControlsPort"->"", "Notebook"->Null, "Event"->"blackhole", "Messager"->"blackout", "Secret" :> CreateUUID[], "ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "ExternalEventHandlers" -> Null}
-Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction, "Event"->""}
+Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction, "Event"->"", "RetryWebSocket"->False}
 
 emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 

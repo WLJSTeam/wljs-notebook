@@ -142,7 +142,7 @@ With[{
                     Echo["Evaluating the last cell"];
                     
                     With[{
-                        win = win`WindowObj["Title"->windowTitle, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"] ]
+                        win = win`WindowObj["Title"->windowTitle, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"], "RetryWebSocket"->True]
                     }, {
                         cloned = EventClone[win],
                         readyPromise = Promise[],
