@@ -68,7 +68,7 @@ checkKernel[getkernel_, cbk_] := With[{
 }, Echo["Checking kernel..."]; 
     If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
         Echo["Kernel is ready!"];
-        cbk[kernel];
+        cbk[kernel, kernel];
     ,
         Echo["Not yet..."];
         SetTimeout[checkKernel[getkernel, cbk], 500];
