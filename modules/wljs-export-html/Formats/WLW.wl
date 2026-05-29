@@ -63,15 +63,17 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 (*                                         WLE Decoder                                          *)
 (*                                             ***                                                 *)
 
-checkKernel[kernel_, cbk_] := (Echo["Checking kernel..."]; If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
-    Echo["Kernel is ready!"];
-    cbk[kernel];
-,
-    Echo["Not yet..."];
-    SetTimeout[checkKernel[kernel, cbk], 500];
-])
-
-(* [TODO] [REFACTOR] *)
+checkKernel[getkernel_, cbk_] := With[{
+    kernel = getkernel[]
+}, Echo["Checking kernel..."]; 
+    If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
+        Echo["Kernel is ready!"];
+        cbk[kernel];
+    ,
+        Echo["Not yet..."];
+        SetTimeout[checkKernel[getkernel, cbk], 500];
+    ]
+]
 
 
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
@@ -91,22 +93,12 @@ With[{
     options = Join[Association[List[opts] ], Association[ List[secondaryOpts] ] ]; 
 
     notebook["Path"] = path;
-    notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
+    notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere else *)
 
-    EventFire[msg, spinner, True];
+    EventFire[msg, spinner, True];    
 
-    If[Length[options["Kernels"] //ReleaseHold ] === 0,
-      EventFire[spinner["Promise"], Resolve, True];
-      EventFire[options["Messager"], "Error", "The process is not possible to start without working Kernels"];
-      Pause[2];
-
-      Return[promise];
-    ];
-
-    
-
-    With[{kernel = options["Kernels"] //ReleaseHold //First},
-        checkKernel[kernel, Function[data,
+    With[{},
+        checkKernel[Function[Null, options["Kernels"] //ReleaseHold //First], Function[{data, kernel},
 
             Echo["Starting evaluation", "WLE Decoder"];
             With[{
@@ -234,6 +226,15 @@ With[{
                             "AfterWebSocketConnected" -> Function[Null,
                                 EventRemove[cloned];
                                 Echo["Window was created, starting evaluation..."];
+
+                                (* just to populate last client, if there is no other source *)
+                                (* some WLW windows might have timers running, which has no access to evaluation context *)
+                                (* Consider to be fixed [TODO] *)
+                                With[{ws = win["KernelWebSocket"]},
+                                    GenericKernel`Send[kernel,
+                                        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = ws;
+                                    ];
+                                ];
 
                                 data["Container"][transaction, 
                                     <|"KernelWebSocket"->win["KernelWebSocket"], "Notebook"->notebook["Hash"], "Ref"->last["Hash"]|>

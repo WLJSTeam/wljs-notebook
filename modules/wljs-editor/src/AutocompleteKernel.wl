@@ -28,7 +28,7 @@ EventHandler["autocomplete", {
             clients = Append[clients, client];
             
             (* just to populate *)
-            CoffeeLiqueur`Extensions`Communication`$lastClient = client;
+            CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = client;
             
             If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; EventRemove["autocomplete"]; Return[$Failed]; ];
 

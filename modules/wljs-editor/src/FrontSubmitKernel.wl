@@ -24,11 +24,15 @@ WindowObj::usage = "Represenation of a current window"
 
 Begin["`Private`"]
 
-CoffeeLiqueur`Extensions`Communication`$lastClient;
+CoffeeLiqueur`Extensions`Communication`Internal`$lastClient;
 
-CurrentWindow[] := WindowObj[<|"Socket" -> If[AssociationQ[System`$EvaluationContext], System`$EvaluationContext["KernelWebSocket"], If[Head[Global`$Client] === Symbol, CoffeeLiqueur`Extensions`Communication`$lastClient, Global`$Client] ] |>]
-CurrentWindow["Origin"] := WindowObj[<|"Socket" -> System`$EvaluationContext["OriginKernelWebSocket"]|>]
-
+CurrentWindow[] := WindowObj[<|"Socket" -> If[AssociationQ[System`$EvaluationContext], 
+    System`$EvaluationContext["KernelWebSocket"], 
+    If[Head[Global`$Client] === Symbol, 
+        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient, 
+        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = Global`$Client
+    ] 
+] |>]
 
 WindowObj[data_][key_String] := data[key]
 
@@ -155,7 +159,7 @@ FrontSubmit[expr_, OptionsPattern[] ] := With[{win = OptionValue["Window"]},
     ,
         
         If[FailureQ[WLJSTransportSend[expr, win["Socket"] ] ], $Failed,
-            CoffeeLiqueur`Extensions`Communication`$lastClient = win["Socket"];
+            CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = win["Socket"];
             Null
         ]          
     ]
