@@ -454,6 +454,11 @@ EventHandler[NotebookEditorChannel // EventClone,
                     },
                         socketRef = Null;
 
+                        (* provide notebook ref if explicitly told by a user, then it will also copy all js and html outputs *)
+                        If[MatchQ[notebook, _nb`NotebookObj],
+                            win["Notebook"] = notebook;
+                        ];
+
                         If[TrueQ[reference["Notebook"]["Opened"] ],
                             Echo["Found reference socket from the cell reference"];
                             socketRef = reference["Notebook"]["Socket"];
@@ -491,11 +496,11 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                             Which[
                                 !NumberQ[imageSize] && !ListQ[imageSize],
-                                    ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title],
+                                    ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title, <|"offscreen"->TrueQ[t["Meta", "Offscreen"] ]|>],
                                 True,
                                     With[{features = If[ListQ[imageSize],
-                                            <|"override"-><|"width"->imageSize[[1]], "height"->imageSize[[2]]|>|>,
-                                            <|"override"-><|"width"->imageSize, "height"->(0.76 imageSize // Round)|>|>
+                                            <|"override"-><|"width"->imageSize[[1]], "height"->imageSize[[2]]|>, "offscreen"->TrueQ[t["Meta", "Offscreen"] ]|>,
+                                            <|"override"-><|"width"->imageSize, "height"->(0.76 imageSize // Round)|>, "offscreen"->TrueQ[t["Meta", "Offscreen"] ]|>
                                         ]},
                                         ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], title, features];
                                     ]

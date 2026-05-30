@@ -4,11 +4,98 @@ BeginPackage["CoffeeLiqueur`Extensions`Rasterize`", {
   "CoffeeLiqueur`Misc`Events`Promise`", 
   "CoffeeLiqueur`Extensions`EditorView`",
   "CoffeeLiqueur`Extensions`Communication`",
-  "CoffeeLiqueur`Extensions`System`"
+  "CoffeeLiqueur`Extensions`System`",
+  "CoffeeLiqueur`UObjects`"
 }]
 
 RasterizeAsync::usage = "Async version of Rasterize that returns Promise";
 
+Begin["`Helpers`"]
+
+UseTemporalWindow;
+
+Begin["`Private`"]
+
+window[_] := Null;
+windowObject[_] := Null;
+windowReadyQ[_] := False;
+lastTimeUsed[_] := Now;
+intervalTimer[_] := Null;
+que[_] := Null;
+
+CreateUType[qItem, {"State"->"Added", "Promise"->Promise[], "Date"->Now}];
+
+CoffeeLiqueur`Extensions`Rasterize`Helpers`UseTemporalWindow[opts___] := With[{hash = Hash[{opts}]}, With[{item = qItem[]}, 
+    If[que[hash] === Null, que[hash] = {}];
+    createWindow[hash, opts];
+    que[hash] = Append[que[hash], item];
+    item["Promise"]
+] ]
+
+checkQue[hash_] := Module[{q = que[hash]},
+    If[Length[q] === 0, Return[Null, Module]];
+    lastTimeUsed[hash] = Now;
+    Function[item,
+        Switch[item["State"],
+            "Added",
+                If[windowReadyQ[hash] === True,
+                    item["State"] = "Pending";
+                    item["Date"] = Now;
+                    With[{back = Promise[]}, 
+                        EventFire[item["Promise"], Resolve, <|"Window"->windowObject[hash], "Promise"->back|>];
+                        Then[back, Function[Null, item["State"] = "Finished"]];
+                    ];
+                ]
+            ,
+
+            "Pending",
+                If[Now - item["Date"] > Quantity[30, "Minutes"],
+                    item["State"] = "Finished";
+                ];
+            ,
+
+            _,
+                que[hash] = que[hash] /. {item -> Nothing};
+                DeleteObject[item];
+        ]
+    ][q[[1]]];
+];
+
+destroy[hash_] := With[{qq = que[hash]},
+    windowReadyQ[hash] = False;
+    window[hash] = Null;
+    TaskRemove[intervalTimer[hash]];
+    intervalTimer[hash] = Null;
+    que[hash] = {};
+];
+
+createWindow[hash_, opts___] := With[{}, If[window[hash] === Null,
+    window[hash] = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->{1920, 1280}, "Offscreen"->True, opts ];
+    
+    EventHandler[window[hash], {"Ready" -> Function[w,
+        windowObject[hash] = w;
+        windowReadyQ[hash] = True;
+        lastTimeUsed[hash] = Now;
+        checkQue[hash];
+        If[intervalTimer[hash] =!= Null, TaskRemove[intervalTimer[hash]]];
+        intervalTimer[hash] = SetInterval[
+            checkQue[hash];
+            If[Now - lastTimeUsed[hash] > Quantity[3, "Seconds"],
+                NotebookClose[window[hash]];
+            ];
+        , 500];        
+    ], "Closed" -> Function[Null,
+        If[window[hash] =!= Null,
+            destroy[hash];
+        ];
+    ]}];
+, 
+    lastTimeUsed[hash] = Now;
+]];
+
+End[]
+
+End[]
 
 Begin["`Internal`"]
 
@@ -23,7 +110,7 @@ ClearAll[CurrentScreenImage]
 CurrentNotebookImage::noelectron = "CurrentNotebookImage requires desktop application"
 
 CurrentNotebookImage[] := CurrentNotebookImage[1]
-CurrentNotebookImage[_] := With[{res = FrontFetch[ takeScreenshot[] ]},
+CurrentNotebookImage[_] := With[{res = FrontFetch[ takeScreenshot[], "Window"->OptionValue["Window"] ]},
   If[StringQ[res],
     ImportString[StringDrop[res, StringLength["data:image/png;base64,"] ], "Base64"]
   ,
@@ -31,6 +118,8 @@ CurrentNotebookImage[_] := With[{res = FrontFetch[ takeScreenshot[] ]},
     $Failed
   ]
 ]
+
+Options[CurrentNotebookImage] = {"Window":>CurrentWindow[]};
 
 Unprotect[Rasterize]
 ClearAll[Rasterize]
@@ -114,35 +203,8 @@ Rasterize[any_, ___, OptionsPattern[] ] := (
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-Rasterize[any_, ___, opts: OptionsPattern[] ] := With[{window = OptionValue["Window"], p = Promise[], channel = CreateUUID[], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
-  If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
-    EventFire[p, Resolve, True];
-    
-    With[{r = WaitAll[RasterizeAsync[any, "Window"->window, opts], 45 + exposure]},
-      If[FailureQ[r],
-        Message[Rasterize::frontget];
-      ];
-      r
-    ]
-  ,
-    EventHandler[channel, Function[Null,
-      Then[FrontFetchAsync[OverlayView["Capture", 1 ], "Window" -> window], Function[base,
-        EventFire[p, Resolve, ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
-        FrontSubmit[OverlayView["Dispose"], "Window" -> window];
-      ] ]
-    ] ];
-
-    FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
-
-    With[{r = WaitAll[p, 45 + exposure]},
-      If[FailureQ[r],
-        Message[Rasterize::frontget];
-      ];
-
-      r
-    ]
-
-  ]
+Rasterize[any_, ___, opts: OptionsPattern[] ] := With[{channel = CreateUUID[], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
+  WaitAll[RasterizeAsync[any,  opts], 25 + exposure]
 ] 
 
 
@@ -151,40 +213,29 @@ RasterizeAsync[any_, ___, OptionsPattern[] ] := (
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{attempt = OptionValue["Attempt"], p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
-  
-  If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
-    Message[Rasterize::nowindow ];
-    
-    With[{win = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->2{800,600}]},
-      EventHandler[win, {"Ready" -> Function[wObject,
-          Then[RasterizeAsync[any, "Window"->wObject, opts], Function[res,
-              EventFire[p, Resolve, res];
-              NotebookClose[win];
-          ] ];
-      ]}];
-    ];
+RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
+    Then[CoffeeLiqueur`Extensions`Rasterize`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{
+        window = assoc["Window"],
+        back = assoc["Promise"]
+    },
+      EventHandler[channel, Function[Null,
+        Then[FrontFetchAsync[OverlayView["Capture", 1 ], "Window" -> window], Function[base,
+          FrontSubmit[OverlayView["Dispose"], "Window" -> window];
+          EventFire[back, Resolve, True];
+          EventFire[p, Resolve, ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
+        ] ]
+      ] ];
 
-    p    
-  ,
-    EventHandler[channel, Function[Null,
-      Then[FrontFetchAsync[OverlayView["Capture", 1 ], "Window" -> window], Function[base,
-        EventFire[p, Resolve, ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
-        FrontSubmit[OverlayView["Dispose"], "Window" -> window];
-      ] ]
-    ] ];
-
-    FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
-
+      FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
+    ]]];
     p
-  ]
 ]
 
-Options[Rasterize] = {"Attempt"->0, "Window" :> CurrentWindow[], "ExposureTime" -> 2.0, "ImageUpscaling"->1}
+Options[Rasterize] = {"ExposureTime" -> 2.0, "ImageUpscaling"->1, "Notebook" :> EvaluationNotebook[]}
 
 Options[RasterizeAsync] = Options[Rasterize]
 
-Options[producePDF] = {"Crop"->True, "Attempt"->0, "Window" :> CurrentWindow[], "ExposureTime" -> 3.0, "ImageUpscaling"->1, "Landscape"->True}
+Options[producePDF] = {"Crop"->True,   "Notebook" :> EvaluationNotebook[], "ExposureTime" -> 3.0, "ImageUpscaling"->1, "Landscape"->True}
 Options[pdfEndpoint] = Options[producePDF];
 
 producePDF[any_, OptionsPattern[] ] := (
@@ -192,32 +243,21 @@ producePDF[any_, OptionsPattern[] ] := (
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-producePDF[any_, opts: OptionsPattern[] ] := With[{attempt = OptionValue["Attempt"], p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  If[FailureQ[Check[FrontSubmit[1+1, "Window"->window], $Failed] ],
-    Message[Rasterize::nowindow ];
-    EventFire[Internal`Kernel`CommunicationChannel, "SpawnOffscreenWindow", Internal`Kernel`Hash];
+producePDF[any_, opts: OptionsPattern[] ] := With[{ p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
+    Then[CoffeeLiqueur`Extensions`Rasterize`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{window = assoc["Window"], promise = assoc["Promise"]},
+      EventHandler[channel, Function[Null,
+        Then[FrontFetchAsync[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], "Window" -> window], Function[payload,
+          
+          FrontSubmit[OverlayView["Dispose"], "Window" -> window];
+          EventFire[promise, Resolve, True];
+          EventFire[p, Resolve,  ByteArray[payload] ];
+        ] ]
+      ] ];
 
-    With[{win = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->2{800,600}]},
-      EventHandler[win, {"Ready" -> Function[wObject,
-          Then[producePDF[any, "Window"->wObject, opts], Function[res,
-              EventFire[p, Resolve, res];
-              NotebookClose[win];
-          ] ];
-      ]}];
-    ];
-    p
-  ,
-    EventHandler[channel, Function[Null,
-      Then[FrontFetchAsync[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], "Window" -> window], Function[payload,
-        EventFire[p, Resolve,  ByteArray[payload] ];
-        FrontSubmit[OverlayView["Dispose"], "Window" -> window];
-      ] ]
-    ] ];
-
-    FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
+      FrontSubmit[OverlayView["Create", EditorView[ToString[any, StandardForm] ], channel, exposure, If[NumberQ[oversampling], oversampling, 1] ], "Window" -> window];
+    ]]];
 
     p
-  ]
 ]
 
 
@@ -225,6 +265,7 @@ ImportExport`RegisterExport["PDF", exportPDF, "Options" -> (Options[producePDF][
 
 Options[ExportAsync] = Join[Options[ExportAsync], {Options[producePDF]}]//DeleteDuplicates;
 
+(* [TODO] implement better async IO *)
 
 ExportAsync[out_String | File[out_String], content_, maybe___, opts: OptionsPattern[producePDF] ] := Module[{p = Promise[], char, strm},
   Then[producePDF[content, Sequence @@ Flatten[{opts}] ], Function[char,
@@ -240,7 +281,7 @@ ExportAsync[out_String | File[out_String], content_, maybe___, opts: OptionsPatt
 
   p
 
-] /; (ToLowerCase[ FileExtension[out] ] === "pdf") (* FIXIT FIXIT FIXIT FIXIT *)
+] /; (ToLowerCase[ FileExtension[out] ] === "pdf") (* [FIXME] [TODO] *)
 
 exportPDF[filename_, data_, opts___] :=
  Module[{char, strm},

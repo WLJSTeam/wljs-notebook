@@ -1895,6 +1895,13 @@ function create_window(opts, cbk = () => {}) {
             }
         }
 
+        if (options.offscreen) { 
+          options.override.width = 1920;
+          options.override.height = 1280;
+          options.override.show = false;
+          options.show = true;
+        }
+
         if (isMac) {
             win = new BrowserWindow({
                 vibrancy: "sidebar", // in my case...
@@ -2144,7 +2151,7 @@ function create_window(opts, cbk = () => {}) {
         setHID(win);
 
         //focus window
-        if (options.focus) {
+        if (options.focus && !options.offscreen) {
             win.focus();
             windows.focused.add(win);
         }
@@ -2163,7 +2170,7 @@ function create_window(opts, cbk = () => {}) {
         });
 
         //extend context menu
-        if (options.contextMenu) {
+        if (options.contextMenu && !options.offscreen) {
             contextMenu({
                 window: win,
                 prepend: (defaultActions, parameters, browserWindow) => contextMenuExtensions.map((mi) => {
@@ -2217,7 +2224,7 @@ function create_window(opts, cbk = () => {}) {
             cbk(win);
         } else {
             win.once('ready-to-show', () => {
-                win.show();
+                if (!options.offscreen) win.show(); else win.showInactive();
                 cbk(win);
             });
         }

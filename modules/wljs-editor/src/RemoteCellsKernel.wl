@@ -604,14 +604,14 @@ CellPrintGeneral[cell_Association, opts___] := With[{hash = CreateUUID[], list =
 },
     If[StringQ[System`$EvaluationContext["Ref"] ],
         With[{r = System`$EvaluationContext["Ref"]},
-            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
+            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Notebook"->First[list["Notebook"] ], "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
         ];
     ,
         If[!KeyExistsQ[list, "After"] && !KeyExistsQ[list, "Reference"],
             EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Notebook"->First[list["Notebook"] ], "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
         ,
             With[{r = If[StringQ[#], #, list["Reference"] // First] &@ (list["After"] // First)},
-                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
+                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Notebook"->First[list["Notebook"] ], "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
             ];  
         ];  
     ];
