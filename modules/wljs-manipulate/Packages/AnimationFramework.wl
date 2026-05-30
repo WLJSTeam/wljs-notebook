@@ -1238,12 +1238,8 @@ RecordAnimation[timelineFunction_, opts___] := With[{
       frameText = "Saving data on a disk...";
       progress = 50;
       
-      r["List"] = MapIndexed[Function[{blob, idx}, 
-        <|"uid"->blob, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][ Identity[ StringReplace[PaddedForm[ idx[[1]], 5]//ToString, " "->"0"] ] ]}]|>
-      ], r["Frames"]];
-      
       SetTimeout[
-       Then[FrontFetchAsync[JSHandler["Export", r["List"]], "Window"->s["Window"]], Function[Null, 
+       Then[FrontFetchAsync[JSHandler["Export", Select[r["Frames"], Function[x, !x["dumped"] ] ] ], "Window"->s["Window"]], Function[Null, 
         progress = 60;
         frameText = "Saved.";
         r["FinishedQ"] = True;
@@ -1261,12 +1257,23 @@ RecordAnimation[timelineFunction_, opts___] := With[{
 
       Then[FrontFetchAsync[JSHandler["Capture"], s["Ref"], "Window"->s["Window"]], Function[uid, 
         If[!TrueQ[r["Recording"]], Return[] ];
-        r["Frames"] = Append[r["Frames"], uid];
+        r["Frames"] = Append[r["Frames"], <|"uid"->uid, "dumped"->False, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][ Identity[ StringReplace[PaddedForm[ frame, 5]//ToString, " "->"0"] ] ]}]|>];
+        
         s["FrameHandler"][timer[]];
-      
-        frame = frame + 1;
-        progress = Mod[frame, 60];
-        frameText = StringTemplate["`` frames"][frame];
+
+        If[progress == 119,
+            frameText = " Saving on a disk...";
+            Then[FrontFetchAsync[JSHandler["Export", Select[r["Frames"], Function[x, !x["dumped"] ]  ] ], "Window"->s["Window"]], Function[Null, 
+                r["Frames"] = Map[Join[#, <|"dumped"->True|>]&, r["Frames"]];
+                frame = frame + 1;
+                progress = Mod[frame, 120];
+                frameText = StringTemplate["`` frames"][frame];
+            ]];
+        ,
+            frame = frame + 1;
+            progress = Mod[frame, 120];
+            frameText = StringTemplate["`` frames"][frame];
+        ];
       ]];
     ]];
 
@@ -1281,7 +1288,7 @@ RecordAnimation[timelineFunction_, opts___] := With[{
         EventFire[StartEvent, True];
     ]}];
     
-    PrintTemporary[Row[{ProgressIndicator[progress // Offload, {0,60}], TextView[frameText // Offload, Appearance->None]}]];
+    PrintTemporary[Row[{ProgressIndicator[progress // Offload, {0,120}], TextView[frameText // Offload, Appearance->None]}]];
 
     While[!r["FinishedQ"],
       Pause[0.5];
