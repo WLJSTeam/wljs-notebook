@@ -1236,7 +1236,7 @@ RecordAnimation[timelineFunction_, opts___] := With[{
       Echo["Saving data on a disk"];
       progress = 50;
       r["List"] = MapIndexed[Function[{blob, idx}, 
-        <|"uid"->blob, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][idx[[1]]]}]|>
+        <|"uid"->blob, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][ Identity[ StringReplace[PaddedForm[ idx[[1]], 5]//ToString, " "->"0"] ] ]}]|>
       ], r["Frames"]];
       Then[FrontFetchAsync[JSHandler["Export", r["List"]], s["Ref"], "Window"->s["Window"]], Function[Null, 
         progress = 60;
