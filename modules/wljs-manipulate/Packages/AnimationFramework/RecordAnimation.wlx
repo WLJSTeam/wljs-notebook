@@ -1,101 +1,59 @@
-
-
-
-makeBoxes[UId_, JSHandler_, s_, epilog_, StartEvent_, form_] := With[{
-      Scripts = <div>
-        <span class="mt-1 w-full sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-col" contenteditable="false" style="vertical-align: middle;">
-          <div class="flex-row flex items-center">
-          <div class="h-2 w-6 ring ring-1 ring-gray-400"><div id="{UId}-bar" style="width:0%" class="h-2 bg-sys"></div></div><span id="{UId}-text" class="leading-normal pl-1">Recording</span></div></span>
+Component[JSHandler_, s_, epilog_] := With[{
+      Scripts = 
         <script type="module">
-
-          const bar = document.getElementById('<UId/>-bar');
-          const text = document.getElementById('<UId/>-text');
-          let width = 0;
           let delayTime = 100;
 
           function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
           }
-
+          
           core['<JSHandler/>'] = async (args, env) => {
             const type = await interpretate(args[0], env);
+            console.log('type:', type);
             return await core['<JSHandler/>'][type](args.slice(1), env);
           }
-
-
-          core['<JSHandler/>'].Init =  async (args, env) => {
-            const rect = env.element.getBoundingClientRect();
-            const uid = await interpretate(args[0], env);
-            const path = await interpretate(args[1], env);
-            const format = await interpretate(args[2], env);
-            const quality = await interpretate(args[3], env);
-            delayTime = await interpretate(args[4], env);
+          
+          core['<JSHandler/>'].Export =  async (args, env) => {
+            const payload = await interpretate(args[0], env);
             const promise = new Deferred();
+            console.log('export');
 
-            electronAPI.requestScreenshot({x:rect.x, y:rect.y, width:rect.width, height:rect.height, deferred:'Flush'}, () => {
-              promise.resolve('Got it');
+            electronAPI.binaryBlobWrite(payload, (res) => {
+              promise.resolve(res);
             });
 
-            return promise.promise;
+            return promise.promise;            
           }
-
-          core['<JSHandler/>'].Record =  async (args, env) => {
+          
+          core['<JSHandler/>'].Capture =  async (args, env) => {
             const rect = env.element.getBoundingClientRect();
-            const uid = await interpretate(args[0], env);
             const promise = new Deferred();
-            text.innerText = "Recording";
             console.log('capture');
 
             await delay(delayTime);
 
-            electronAPI.requestScreenshot({x:rect.x, y:rect.y, width:rect.width, height:rect.height, deferred:'Capture'}, () => {
-              width += 5;
-              bar.style.width = String(width) + '%';
-              if (width > 95) width = 5;
-
-              promise.resolve('Got it');
+            electronAPI.requestScreenshot({x:rect.x, y:rect.y, width:rect.width, height:rect.height, toBlob:true}, (res) => {
+              promise.resolve(res);
+              console.log(res);
             });
 
             return promise.promise;            
           }
 
-          core['<JSHandler/>'].Pop =  async (args, env) => {
-            //const uid = await interpretate(args[0], env);
-            const promise = new Deferred();
-            text.innerText = "Saving";
-            console.log('pop');
-
-            electronAPI.requestScreenshot({deferred:'Pop'}, (res) => {
-              promise.resolve(res);
-            });
-
-            return promise.promise;  
-          }
-
-          core['<JSHandler/>'].Finish = (args, env) => {
-             bar.style.width = "100%";
-             console.log('finished');
-             
-             text.innerText = "Finished";
-             core['<JSHandler/>'] = () => {
-              return "nop";
-             }
-          }
-
-          server.kernel.io.poke('<StartEvent/>');
 
         </script>
-        </div>
     },
 
 
-      With[{b = {Graphics[{
+      With[{GraphicsCanvas = Graphics[{
         s["GlobalDirectives"], s["Ref"]
-      }, "TransitionType"->None, "Controls"->False, "GUI"->False, Epilog->epilog, Sequence @@ Normal[KeyDrop[s["Options"], {"Epilog"}]]], HTMLView[Scripts]}//Column
+      }, "TransitionType"->None, "Controls"->False, "GUI"->False, Epilog->epilog, Sequence @@ Normal[KeyDrop[s["Options"], {"Epilog"}]]]
     },
-        MakeBoxes[b, form]
+        <div class="w-full h-full">
+            <GraphicsCanvas/>
+            <Scripts/>
+        </div>
       ]
-    ]
+ ];
 
-
-makeBoxes
+Component

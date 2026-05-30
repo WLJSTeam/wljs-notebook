@@ -2,6 +2,8 @@
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
 const { screen, globalShortcut} = require('electron/main')
 
+const { mkdir, writeFile } = require('node:fs/promises');
+
 const { net } = require('electron')
 const fs = require('fs');
 
@@ -2666,57 +2668,78 @@ app.whenReady().then(() => {
         return await p.promise;
     })
     
-    const capturedBuffer = {};
+    const savedBlobs = new Map();
+
+    async function writeOneBlob({ uid, filePath }) {
+      const blob = savedBlobs.get(uid);
+      if (!blob) return false;
+    
+      const data = blob.toPNG();
+    
+      await mkdir(path.dirname(filePath), { recursive: true });
+      await writeFile(filePath, data); // overwrites by default
+    
+      savedBlobs.delete(uid);
+      return true;
+    }
+    
+    async function writeManyBlobs(
+      items,
+      concurrency = 4,
+    ) {
+      let index = 0;
+      const results = new Array(items.length);
+    
+      async function worker() {
+        while (index < items.length) {
+          const currentIndex = index++;
+          results[currentIndex] = await writeOneBlob(items[currentIndex]);
+        }
+      }
+    
+      await Promise.all(
+        Array.from(
+          { length: Math.min(concurrency, items.length) },
+          worker,
+        ),
+      );
+    
+      return results;
+    }
+    
+    ipcMain.handle(
+      'binaryBlobWrite',
+      async (e, payload) => {
+        if (Array.isArray(payload)) {
+          return writeManyBlobs(payload);
+        }
+    
+        return writeOneBlob(payload);
+      },
+    );
+
 
     ipcMain.handle('capture', async (e, area) => {
         let zoom = e.sender.zoomFactor;
         const windowId = e.sender.id;
 
         if (area) {
-            if (!area.deferred) {
-                    area.x = Math.round(area.x * zoom);
-                    area.y = Math.round(area.y * zoom);
-                    area.width = Math.round(area.width * zoom);
-                    area.height = Math.round(area.height * zoom);
-                    const img = await e.sender.capturePage(area);
-                    return img.toDataURL();
-            }
+          area.x = Math.round(area.x * zoom);
+          area.y = Math.round(area.y * zoom);
+          area.width = Math.round(area.width * zoom);
+          area.height = Math.round(area.height * zoom);
+          const img = await e.sender.capturePage(area);
+          if (area.toBlob) {
+            const uid = uuid4();
+            savedBlobs.set(uid, img);
+            return uid;
+          }
 
-            switch(area.deferred) {
-                case 'Flush':
-                    capturedBuffer[windowId] = [];
-                    return 'flushed';
-
-                case 'Capture': {
-                        console.log(area);
-                        area.x = Math.round(area.x * zoom);
-                        area.y = Math.round(area.y * zoom);
-                        area.width = Math.round(area.width * zoom);
-                        area.height = Math.round(area.height * zoom);
-
-                        const rect = {x: area.x, y: area.y, width: area.width, height: area.height};
-                        console.log(rect);
-
-                        const img = await e.sender.capturePage(rect);
-                        capturedBuffer[windowId].push(img.toDataURL());
-                    }
-                    return 'captured';
-
-                case 'Pop': {
-                    const item = capturedBuffer[windowId].shift();
-                    if (item) return item;                
-                    return false;
-                }
-
-                default:
-                    return false;
-            }
-
+          return img.toDataURL();
         } else {
-            const img = await e.sender.capturePage(area)
-            return img.toDataURL();
+          const img = await e.sender.capturePage(area)
+          return img.toDataURL();
         }
-
     });   
 
     ipcMain.on('set-progress', (e, p) => {

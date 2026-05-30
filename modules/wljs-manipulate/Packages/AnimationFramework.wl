@@ -1173,11 +1173,11 @@ AudioFromClips[a_List] := AudioOverlay[Map[Function[audio,
 
 recordAnimationBox = ImportComponent[FileNameJoin[{root, "RecordAnimation.wlx"}] ];
 
-Options[RecordAnimation] = Join[{FrameRate -> 60, 	"StaggerDelay"->30, GeneratedAssetFormat -> "JPEG", 	"TimeMarkers"-><||>, GeneratedAssetLocation:>(CreateDirectory[]), CompressionLevel -> 0.2}, Join[Options[Graphics], {"GlobalDirectives"->{} }] ];
+Options[RecordAnimation] = Join[{FrameRate -> 60, 	"StaggerDelay"->30, GeneratedAssetFormat -> "JPEG", "Offscreen"->False,	"TimeMarkers"-><||>, GeneratedAssetLocation:>(CreateDirectory[]), CompressionLevel -> 0.2}, Join[Options[Graphics], {"GlobalDirectives"->{}, "Notebook":>EvaluationNotebook[] }] ];
 
 filterRulesForRest[] := Association[Options[RecordAnimation]]
 
-filterRulesForRest[opts__] := With[{keys = Join[{"TimeMarkers", "GlobalDirectives"}, Options[Graphics][[All,1]]]},
+filterRulesForRest[opts__] := With[{keys = Join[{"TimeMarkers","Offscreen", "GlobalDirectives"}, Options[Graphics][[All,1]]]},
   With[{assoc = KeyDrop[Join[Association[Options[RecordAnimation]], Association[opts]], keys]},
 
     assoc
@@ -1199,123 +1199,101 @@ RecordAnimation[timelineFunction_, opts___] := With[{
   rulesForScene = filterRulesForScene[opts],
   rulesForRest  = filterRulesForRest[opts],
   r = recorder[]
-}, Module[{timer, frame = 0, start}, With[{
+}, Module[{timer, frame = 0, progress = 0, start, win}, With[{
   s = Scene @@ Normal[rulesForScene],
-  w = CurrentWindow[], tick = Unique["af"], UId = CreateUUID[], StartEvent = CreateUUID[],
+  CaptureFrameEvent = CreateUUID[], StartEvent = CreateUUID[],
   dir = rulesForRest[GeneratedAssetLocation],
   format = rulesForRest[GeneratedAssetFormat],
   rate = rulesForRest[FrameRate],
   delay = rulesForRest["StaggerDelay"],
+  paddingY = 45,
+  offscreen = TrueQ[rulesForRest["Offscreen"]],
   quality = Max[Min[Round[100 - 100 rulesForRest[CompressionLevel] ], 100], 0],
-  JSHandler = Unique["af"],
-  lastFrame = Unique["af"]
+  JSHandler = Unique["`af"]
 },
   s["AbsoluteTime"] = timer;
-  r["Recording"] = False;
-  r["Finished"] = False;
-
-  s["Window"] = w;
-
-  lastFrame = 0;
 
   timer[] := frame / rate // N;
 
-  
+  r["OutputDirectory"] = dir;
+  r["FrameRate"] = rate;
+  r["Recording"] = False;
+  r["FinishedQ"] = False;
+  r["Frames"] = {};
+
   With[{
     epilog = Join[s["Options"]["Epilog"], {
-      AnimationFrameListener[tick // Offload, "Event"->UId]
+      AnimationFrameListener[frame // Offload, "Event"->CaptureFrameEvent]
     }]
   },
-
-  EventHandler[StartEvent, Function[noop,  
-    s["Window"] = CurrentWindow[];
-    r["Recording"] = True;
-    FrontSubmit[JSHandler["Init", UId, URLEncode[dir], format, quality, delay], s["Ref"], "Window"->w];
-    
+  
+  EventHandler[StartEvent, Function[Null,  
     Then[timelineFunction[s], Function[result,
       r["Recording"] = False;
-      r["Finished"] = True;
+      
       AnimationFramework`Remove[s];(*`*)
-      Then[dumpAllFrames[dir, JSHandler, lastFrame, frame, w], Function[Null, 
-        AnimationFramework`AddTo[s, {Red, {EdgeForm[Red], White, Rectangle[{-0.5,-0.5}, {0.5,0.5}]}, Text[Style["Finished", FontSize->18], {0,0}, {0,0}]}]; (*`*)
-        
-        EventRemove[UId];
-        FrontSubmit[JSHandler["Finish", UId], s["Ref"], "Window"->w];      
-      ] ];
+      EventRemove[CaptureFrameEvent];
+      Echo["Saving data on a disk"];
+      progress = 50;
+      r["List"] = MapIndexed[Function[{blob, idx}, 
+        <|"uid"->blob, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][idx[[1]]]}]|>
+      ], r["Frames"]];
+      Then[FrontFetchAsync[JSHandler["Export", r["List"]], s["Ref"], "Window"->s["Window"]], Function[Null, 
+        progress = 60;
+        r["FinishedQ"] = True;
+      ]];
+      
     ] ];
 
-    EventHandler[UId, Function[noop2,
-      If[!r["Recording"], Return[] ];
-      With[{w = CurrentWindow[]},
-        If[s["Window"] =!= w,
-          s["Window"] = w;
-        ];
-      ];
-      s["FrameHandler"][timer[]];
+    EventHandler[CaptureFrameEvent, Function[Null,
+      If[!TrueQ[r["Recording"]], Return[] ];
+      (* DO NOT USE CURRENTWINDOW HERE *)
+      (* During long evaluation of While[] WL keeps EvaluationContext in Block *)
+      (* then CurrentWindow will mistakenly return a wrong object *)
 
-
-      Then[FrontFetchAsync[JSHandler["Record", UId], s["Ref"], "Window"->w], Function[Null,
-        If[frame - lastFrame > 60,
-          Then[dumpAllFrames[dir, JSHandler, lastFrame, frame, w], Function[Null,
-            lastFrame = frame;
-            frame = frame + 1;
-            tick = 1;
-          ] ];
-        , 
-          frame = frame + 1;
-          tick = 1;        
-        ];
+      Then[FrontFetchAsync[JSHandler["Capture"], s["Ref"], "Window"->s["Window"]], Function[uid, 
+        r["Frames"] = Append[r["Frames"], uid];
+        s["FrameHandler"][timer[]];
+      
+        frame = frame + 1;
+        progress = Mod[frame, 60];
       ]];
     ]];
 
-    tick = 1;
     EventRemove[StartEvent];
+    Echo["Recording will start in 3 seconds"];
+    SetTimeout[r["Recording"] = True; frame = 0, 3000];
   ]];
 
+    win = CreateWindow[Cell[recordAnimationBox[JSHandler, s, epilog], "Output", "WLX"], WindowSize->({0,paddingY} +  s["Options"][ImageSize]), "Notebook"->EvaluationNotebook[], "Offscreen"->offscreen];
 
-    tick = 1;
-  
-    r["OutputDirectory"] = dir;
-    r["FrameRate"] = rate;
-    r["UId"] = UId;
-    r["JSHandler"] = JSHandler;
-    r["Scene"] = s;
-    r["epilog"] = epilog;
-    r["StartEvent"] = StartEvent;
+    EventHandler[win, {"Ready" -> Function[wObj,
+        s["Window"] = wObj;
+        Echo["Window is ready"];
+        EventFire[StartEvent, True];
+    ]}];
     
+    PrintTemporary[ProgressIndicator[progress // Offload, {0,60}]];
+
+    While[!r["FinishedQ"],
+      Pause[0.5];
+    ];
+  
     r
   ]
   
 ] ] ]
 
-dumpAllFrames[dir_, JSHandler_, lastFrame_, frame_, w_] := With[{p = Promise[]},
-  Then[FrontFetchAsync[JSHandler["Pop"], "Window"->w], Function[base,
-    If[lastFrame > frame || !StringQ[base],
-      EventFire[p, Resolve, True];
-    ,
-      Export[FileNameJoin[{dir, StringTemplate["FRAME_``.png"][lastFrame]}], ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
-      Then[dumpAllFrames[dir, JSHandler, lastFrame+1, frame, w], Function[Null, 
-        EventFire[p, Resolve, True];
-      ] ]
-    ];
-  ] ];
-  p
-]
 
 FormatValues[recorder] = {}
 
 System`WLXForm;
-
-recorder /: MakeBoxes[r_recorder, form: StandardForm | WLXForm] := With[{},
-  recordAnimationBox[r["UId"], r["JSHandler"], r["Scene"], r["epilog"], r["StartEvent"], form]
-] /; (r["Recording"] == False && r["Finished"] == False)
 
 recorder /: MakeBoxes[r_recorder, StandardForm] := With[{},
   Module[{above},
         above = { 
           {BoxForm`SummaryItem[{"OutputDirectory: ", r["OutputDirectory"]}]}, 
           {BoxForm`SummaryItem[{"FrameRate: ", r["FrameRate"]}]}
-          {BoxForm`SummaryItem[{"Recording: ", r["Recording"]}]}
         };
 
         BoxForm`ArrangeSummaryBox[
@@ -1326,12 +1304,11 @@ recorder /: MakeBoxes[r_recorder, StandardForm] := With[{},
            Null
         ]
     ]
-] /; (r["Recording"] == True || r["Finished"] == True)
+] 
 
 recorder::sr = "Rendering is still in progress"
 
 RecorderToVideo[r_recorder] := With[{},
-  If[r["Recording"] == True || r["Finished"] == False, Message[recorder::sr]; Return[$Failed] ];
   FrameListVideo[Import /@ SortBy[FileNames["*.png" | "*.jpg" | "*.jpeg", r["OutputDirectory"] ], ToExpression[FileBaseName[#] ]&], CompressionLevel->0, FrameRate->r["FrameRate"] ]
 ]
 
