@@ -2685,7 +2685,7 @@ app.whenReady().then(() => {
     
     async function writeManyBlobs(
       items,
-      concurrency = 4,
+      concurrency = 1,
     ) {
       let index = 0;
       const results = new Array(items.length);
@@ -2718,6 +2718,40 @@ app.whenReady().then(() => {
       },
     );
 
+    function trimTransparent(nativeImage) {
+      const { width, height } = nativeImage.getSize();
+      const bitmap = nativeImage.toBitmap(); // BGRA on Electron
+    
+      let minX = width;
+      let minY = height;
+      let maxX = -1;
+      let maxY = -1;
+    
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const offset = (y * width + x) * 4;
+          const alpha = bitmap[offset + 3];
+    
+          if (alpha !== 0) {
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+          }
+        }
+      }
+    
+      if (maxX === -1) {
+        return nativeImage; // fully transparent
+      }
+    
+      return nativeImage.crop({
+        x: minX,
+        y: minY,
+        width: maxX - minX + 1,
+        height: maxY - minY + 1,
+      });
+    }
 
     ipcMain.handle('capture', async (e, area) => {
         let zoom = e.sender.zoomFactor;
@@ -2728,7 +2762,9 @@ app.whenReady().then(() => {
           area.y = Math.round(area.y * zoom);
           area.width = Math.round(area.width * zoom);
           area.height = Math.round(area.height * zoom);
-          const img = await e.sender.capturePage(area);
+          //a bug. it always adds transparent region on the right side
+          //it only occurs for offscreen window
+          const img = trimTransparent(await e.sender.capturePage(area));
           if (area.toBlob) {
             const uid = uuid4();
             savedBlobs.set(uid, img);

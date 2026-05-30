@@ -1173,11 +1173,11 @@ AudioFromClips[a_List] := AudioOverlay[Map[Function[audio,
 
 recordAnimationBox = ImportComponent[FileNameJoin[{root, "RecordAnimation.wlx"}] ];
 
-Options[RecordAnimation] = Join[{FrameRate -> 60, 	"StaggerDelay"->30, GeneratedAssetFormat -> "JPEG", "Offscreen"->False,	"TimeMarkers"-><||>, GeneratedAssetLocation:>(CreateDirectory[]), CompressionLevel -> 0.2}, Join[Options[Graphics], {"GlobalDirectives"->{}, "Notebook":>EvaluationNotebook[] }] ];
+Options[RecordAnimation] = Join[{FrameRate -> 60, 	"StaggerDelay"->30, GeneratedAssetFormat -> "PNG", "Offscreen"->True,	"TimeMarkers"-><||>, GeneratedAssetLocation:>(CreateDirectory[]), CompressionLevel -> 0.2}, Join[Options[Graphics], {"GlobalDirectives"->{}, "Notebook":>EvaluationNotebook[] }] ];
 
 filterRulesForRest[] := Association[Options[RecordAnimation]]
 
-filterRulesForRest[opts__] := With[{keys = Join[{"TimeMarkers","Offscreen", "GlobalDirectives"}, Options[Graphics][[All,1]]]},
+filterRulesForRest[opts__] := With[{keys = Join[{"TimeMarkers", "GlobalDirectives"}, Options[Graphics][[All,1]]]},
   With[{assoc = KeyDrop[Join[Association[Options[RecordAnimation]], Association[opts]], keys]},
 
     assoc
@@ -1199,7 +1199,7 @@ RecordAnimation[timelineFunction_, opts___] := With[{
   rulesForScene = filterRulesForScene[opts],
   rulesForRest  = filterRulesForRest[opts],
   r = recorder[]
-}, Module[{timer, frame = 0, progress = 0, start, win}, With[{
+}, Module[{timer, frame = 0, progress = 0, frameText=" ", start, win}, With[{
   s = Scene @@ Normal[rulesForScene],
   CaptureFrameEvent = CreateUUID[], StartEvent = CreateUUID[],
   dir = rulesForRest[GeneratedAssetLocation],
@@ -1233,15 +1233,23 @@ RecordAnimation[timelineFunction_, opts___] := With[{
       
       AnimationFramework`Remove[s];(*`*)
       EventRemove[CaptureFrameEvent];
-      Echo["Saving data on a disk"];
+      
+      
+      frameText = "Saving data on a disk...";
       progress = 50;
+      
       r["List"] = MapIndexed[Function[{blob, idx}, 
         <|"uid"->blob, "filePath"->FileNameJoin[{dir, StringTemplate["``.png"][ Identity[ StringReplace[PaddedForm[ idx[[1]], 5]//ToString, " "->"0"] ] ]}]|>
       ], r["Frames"]];
-      Then[FrontFetchAsync[JSHandler["Export", r["List"]], s["Ref"], "Window"->s["Window"]], Function[Null, 
+      
+      SetTimeout[
+       Then[FrontFetchAsync[JSHandler["Export", r["List"]], "Window"->s["Window"]], Function[Null, 
         progress = 60;
+        frameText = "Saved.";
         r["FinishedQ"] = True;
-      ]];
+        NotebookClose[win];
+       ]], 1000
+      ];
       
     ] ];
 
@@ -1252,28 +1260,28 @@ RecordAnimation[timelineFunction_, opts___] := With[{
       (* then CurrentWindow will mistakenly return a wrong object *)
 
       Then[FrontFetchAsync[JSHandler["Capture"], s["Ref"], "Window"->s["Window"]], Function[uid, 
+        If[!TrueQ[r["Recording"]], Return[] ];
         r["Frames"] = Append[r["Frames"], uid];
         s["FrameHandler"][timer[]];
       
         frame = frame + 1;
         progress = Mod[frame, 60];
+        frameText = StringTemplate["`` frames"][frame];
       ]];
     ]];
 
     EventRemove[StartEvent];
-    Echo["Recording will start in 3 seconds"];
-    SetTimeout[r["Recording"] = True; frame = 0, 3000];
+    SetTimeout[r["Recording"] = True; frame = 0, 2000];
   ]];
 
-    win = CreateWindow[Cell[recordAnimationBox[JSHandler, s, epilog], "Output", "WLX"], WindowSize->({0,paddingY} +  s["Options"][ImageSize]), "Notebook"->EvaluationNotebook[], "Offscreen"->offscreen];
+    win = CreateWindow[Cell[recordAnimationBox[JSHandler, s, epilog], "Output", "WLX"], WindowSize->({0,paddingY} +  2 s["Options"][ImageSize]), "Notebook"->EvaluationNotebook[], "Offscreen"->offscreen];
 
     EventHandler[win, {"Ready" -> Function[wObj,
         s["Window"] = wObj;
-        Echo["Window is ready"];
         EventFire[StartEvent, True];
     ]}];
     
-    PrintTemporary[ProgressIndicator[progress // Offload, {0,60}]];
+    PrintTemporary[Row[{ProgressIndicator[progress // Offload, {0,60}], TextView[frameText // Offload, Appearance->None]}]];
 
     While[!r["FinishedQ"],
       Pause[0.5];

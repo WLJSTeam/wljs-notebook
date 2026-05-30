@@ -442,6 +442,7 @@ RemoteCellObj /: EventHandler[ RemoteCellObj[uid_], list_] := Module[{eventLike}
     eventLike /: EventRemove[eventLike] := With[{}, (* just to save some memory *)
         ClearAll[eventLike];
         EventRemove[virtual];
+        (* [TODO] implement unsibscribe logic *)
         EventFire[Internal`Kernel`CommunicationChannel, "CellUnsubscribe", <|"CellHash" -> uid, "Event" -> virtual, "Kernel"->Internal`Kernel`Hash|>];
     ];
 

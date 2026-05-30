@@ -532,10 +532,12 @@ EventHandler[NotebookEditorChannel // EventClone,
             Print["CellSubscribe"];
             With[{hash = assoc["CellHash"], callback = assoc["Callback"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 
-                (* do not clone for cells, since it has to be unique. 
+                (* do not clone for output cells, since it has to be unique. 
                     It may cause issues with output cells, if they are not yet created.
                     But for windows it is fine *)
-                With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], hash]},
+
+                (* WARNING!!! Memory leaks on input cells *)
+                With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], If[cell`InputCellQ[cell`HashMap[hash]], EventClone[hash], hash]]},
                     (* cellClonedEvents[callback] = w; *)
 
                     EventHandler[w, {
@@ -548,7 +550,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     ]
                                 }];
 
-                                GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
+                                GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", Null ] ];
                             ];
                             
                         ],
