@@ -1195,6 +1195,8 @@ filterRulesForScene[opts__] := With[{keys = Complement[Options[RecordAnimation][
 
 CreateUType[recorder, {}];
 
+RecordAnimation::noelectron = "Recording is only possible with WLJS desktop application"
+
 RecordAnimation[timelineFunction_, opts___] := With[{
   rulesForScene = filterRulesForScene[opts],
   rulesForRest  = filterRulesForRest[opts],
@@ -1297,8 +1299,12 @@ RecordAnimation[timelineFunction_, opts___] := With[{
     r
   ]
   
-] ] ]
-
+] ] ] /; If[!TrueQ[Internal`Kernel`ElectronQ],
+    Message[RecordAnimation::noelectron];
+    False
+,
+    True
+]
 
 FormatValues[recorder] = {}
 
