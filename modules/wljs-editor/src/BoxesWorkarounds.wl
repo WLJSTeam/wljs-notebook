@@ -1733,15 +1733,6 @@ StandardForm /: MakeBoxes[StandardForm[expr_], WLXForm] := With[{
     MakeBoxes[editor, WLXForm]
 ]
 
-Unprotect[TraditionalForm]
-DownValues[TraditionalForm] = {};
-
-
-TraditionalForm /: MakeBoxes[TraditionalForm[expr_], WLXForm] := With[{
-    editor = EditorView[ToString[TraditionalForm[expr], StandardForm], "ReadOnly"->True, "Focusable"->False, "Selectable"->False] // CreateFrontEndObject
-},
-    MakeBoxes[editor, WLXForm]
-]
 
 (* WL14 with no reason reloads the definitons of some symbols *)
 (* It breaks ANY FormatValues (even for custom forms) and Downvalues ofc *)

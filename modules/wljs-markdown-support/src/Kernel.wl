@@ -82,6 +82,19 @@ TeXFormAsync[all__] := (
   ], {all}]
 )
 
+
+Unprotect[TraditionalForm]
+DownValues[TraditionalForm] = {};
+
+(* default render sucks, we replace it with true LaTeX *)
+Unprotect[TraditionalForm]
+DownValues[TraditionalForm] = {};
+TraditionalForm[expr_] := BoxForm`TeXForm[expr]
+
+BoxForm`TeXForm /: MakeBoxes[BoxForm`TeXForm[expr_], form_] := With[{tex = TeXForm[expr]//TeXView},
+  MakeBoxes[tex, form]
+]
+
 End[]
 
 EndPackage[]

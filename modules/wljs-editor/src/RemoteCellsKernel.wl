@@ -360,14 +360,14 @@ NotebookEvaluate[r_RemoteNotebook, opts: OptionsPattern[] ] := (
 ParentCell[cell_RemoteCellObj: RemoteCellObj[ System`$EvaluationContext["ResultCellHash"] ] ] := Module[{},
     With[{promise = Promise[]},
         EventFire[Internal`Kernel`CommunicationChannel, "FindParent", <|"Ref"->System`$EvaluationContext["Ref"], "CellHash" -> (cell // First), "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-        promise // WaitAll
+        WaitAll[promise, 45]
     ] // RemoteCellObj
 ]
 
 NotebookDirectory[] := With[{},
     With[{promise = Promise[]},
         EventFire[Internal`Kernel`CommunicationChannel, "AskNotebookDirectory", <|"Notebook"->System`$EvaluationContext["Notebook"], "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-        promise // WaitAll
+        WaitAll[promise, 45]
     ] 
 ]
 
@@ -394,17 +394,17 @@ RemoteNotebook /: Set[RemoteNotebook[uid_][field_], value_] := With[{},
 
 RemoteNotebook[uid_][tag_String] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->Function[x,x], "Tag"->tag, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    promise // WaitAll
+    WaitAll[promise, 45]
 ] 
 
 RemoteNotebook[uid_]["Cells"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->Function[x, (#["Hash"]&)/@x ], "Tag"->"Cells", "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    RemoteCellObj /@ (promise // WaitAll)
+    RemoteCellObj /@ (WaitAll[promise, 45])
 ]
 
 RemoteNotebook[uid_]["FocusedCell"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->((If[StringQ[#["FocusedCell"]["Type"] ], #["FocusedCell"]["Hash"], Last[ #["Cells"] ]["Hash"]  ] )&), "Tag"->Null, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    RemoteCellObj @ (promise // WaitAll)
+    RemoteCellObj @ (WaitAll[promise, 45])
 ]
 
 
@@ -480,7 +480,7 @@ NotebookRead[n_RemoteNotebook] := NotebookFocusedCell[n] // NotebookRead
 NotebookRead[n_List] := NotebookRead /@ n
 NotebookRead[cells: {__RemoteCellObj}] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetMultipleCells", <|"Cells"->cells[[All,1]], "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    NotebookRead /@ (promise // WaitAll)
+    NotebookRead /@ (WaitAll[promise, 45])
 ];
 
 NotebookReadAsync[n_List] := NotebookReadAsync /@ n
@@ -551,12 +551,12 @@ NotebookWrite[NotebookLocationSpecifier[c_RemoteCellObj, "On"], data_ ] := Noteb
 
 RemoteCellObj[uid_][tag_String] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetCellProperty", <|"Hash"->uid, "Function"->Function[x,x], "Tag"->tag, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    promise // WaitAll
+    WaitAll[promise, 45]
 ] 
 
 RemoteCellObj[uid_]["Notebook"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetCellProperty", <|"Hash"->uid, "Function"->Function[x, x["Hash"] ], "Tag"->"Notebook", "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    (promise // WaitAll)//RemoteNotebook
+    (WaitAll[promise, 45])//RemoteNotebook
 ] 
 
 Unprotect[DocumentNotebook]
