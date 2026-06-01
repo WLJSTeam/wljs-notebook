@@ -46088,7 +46088,7 @@ var NOTEBOOK_ASSISTANT_INSTRUCTIONS = `Operate on a local sandboxed WLJS/Wolfram
 
 Workflow:
 1. Inspect before acting: use notebook_context, get_focused_cell, or list_cells.
-2. Before editing a cell, read nearby context with get_cell_lines.
+2. Before editing a cell, read nearby context with get_cell_lines or get_cell_full.
 3. Edit only INPUT cells. 
 4. Outputs are produced by evaluate_cell.
 5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
@@ -46578,6 +46578,19 @@ ${skillIndexText()}`
     ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook })
   );
   register(
+    "get_cell_full",
+    "Reads full content of the cell bypassing shortening and revealing any hidden data. Provide maximum character length",
+    {
+      Cell: idSchema.describe("Cell hash/id."),
+      MaxCharacters: lineNumberSchema.optional().describe("Maximum characters")
+    },
+    ({ Cell, MaxCharacters }) => wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }),
+    {
+      title: "Read Full Cell Content",
+      annotations: READ_ONLY_LOCAL
+    }
+  );
+  register(
     "get_cell_lines",
     "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing.",
     {
@@ -46919,7 +46932,8 @@ function cliManifest() {
         "wljs focused",
         "wljs context",
         "wljs cells <notebook>",
-        "wljs lines <cell> <from> <to>"
+        "wljs lines <cell> <from> <to>",
+        "wljs full <cell>"
       ],
       add_and_render_markdown: [
         "wljs focused",
@@ -47053,6 +47067,16 @@ function cliManifest() {
           "<from> must be less than or equal to <to>."
         ],
         examples: ["wljs lines cell123 1 40"]
+      },
+      {
+        name: "full",
+        category: "inspection",
+        usage: "wljs full <cell>",
+        description: "Read full content of a cell bypassing shortening revaling any hidden data",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs full cell123"]
       },
       {
         name: "docs",
@@ -47206,6 +47230,7 @@ function cliManifest() {
       "Use `wljs lines` before `wljs set-lines`.",
       "Use `wljs docs <topic>` before writing rich WLJS cell types.",
       "Use `wljs add ... --eval` when the user asks to show/render/create visible notebook output.",
+      "Use `wljs full` to reveal any shortened data in the output cells",
       "Avoid `delete-cell` unless deletion was explicitly requested.",
       "Avoid `wl` for visible notebook output; use `add` plus `eval` instead."
     ]
@@ -47310,6 +47335,12 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
       writeJson(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      return 0;
+    }
+    case "full": {
+      const Cell = requireCliArg(args.shift(), "Usage: wljs full <cell>");
+      const MaxCharacters = 9999999;
+      writeJson(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
       return 0;
     }
     case "docs": {
@@ -47599,6 +47630,7 @@ Notebook:
   wljs cells <notebook>
   wljs focused-cell <notebook>
   wljs lines <cell> <from> <to>
+  wljs full <cell>
 
 Editing:
   wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]
