@@ -36,27 +36,27 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
 },
     EventHandler[update, {
         "ExportHTMLNotebookStore" -> Function[state,
-            onsave[<|"ExportHTMLNotebookStore" -> state|>];
+            onsave[<|"ExportHTMLNotebookStore" -> state|>, False];
         ],
 
         "ExportHTMLUseCDN" -> Function[state,
-            onsave[<|"ExportHTMLUseCDN" -> state|>];
+            onsave[<|"ExportHTMLUseCDN" -> state|>, False];
         ],
         
         "ExportHTMLImages" -> Function[state,
-            onsave[<|"ExportHTMLImages" -> state|>];
+            onsave[<|"ExportHTMLImages" -> state|>, False];
         ],
 
         "ExportHTMLAutomaticDark" -> Function[state,
-            onsave[<|"ExportHTMLAutomaticDark" -> state|>];
+            onsave[<|"ExportHTMLAutomaticDark" -> state|>, False];
         ],
 
         "HTMLExportStatesInterpolation" -> Function[state,
-            onsave[<|"HTMLExportStatesInterpolation" -> state|>];
+            onsave[<|"HTMLExportStatesInterpolation" -> state|>, False];
         ],
 
         "ExportSlideExposureTime" -> Function[state,
-            onsave[<|"ExportSlideExposureTime" -> parseInt[state]|>];
+            onsave[<|"ExportSlideExposureTime" -> parseInt[state]|>, False];
         ]
     }];
 
@@ -68,7 +68,7 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
             ,
                 tempBuffer = tempBuffer /. {name -> Nothing};
             ];
-            onsave[<|"ExportHTMLExclude" -> tempBuffer|>];
+            onsave[<|"ExportHTMLExclude" -> tempBuffer|>, False];
         ]
     }];
 

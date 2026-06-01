@@ -47,6 +47,10 @@ Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Front
 
 settings = <||>;
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 NotebookEditorChannel = CreateUUID[];
 
 rootFolder = $InputFileName // DirectoryName;
@@ -246,6 +250,7 @@ sh  = StandardEvaluator`StandardEvaluator["Name" -> "Shell Evaluator", "InitKern
 
 StandardEvaluator`ReadyQ[sh, k_] := (True)
 
+
 processEnv = Inherited;
 If[$OperatingSystem === "MacOSX", processEnv = <|"PATH"->Import["!source ~/.bash_profile; echo $PATH", "Text"]|>];
 
@@ -259,11 +264,27 @@ SystemShellRun[exec : {___String}, opts : OptionsPattern[]] :=
 SystemShellRun[exec_String, opts : OptionsPattern[]] := 
  SystemShellRun[exec, All, opts]
  
-SystemShellRun[exec_String, prop : _String | All, 
-  opts : OptionsPattern[]] := 
- StartProcess[{$SystemShell, 
-   If[StringContainsQ[$OperatingSystem, "Windows"], "/c", "-c"], exec}, 
-   opts]
+ SystemShellRun[exec_String, prop : _String | All, opts : OptionsPattern[]] :=
+  Module[{process},
+   process =
+    StartProcess[
+     {$SystemShell,
+      If[StringContainsQ[$OperatingSystem, "Windows"], "/c", "-c"],
+      exec},
+     opts
+    ];
+ 
+   If[MatchQ[process, _ProcessObject],
+    Quiet @ Check[
+      Close @ ProcessConnection[process, "StandardInput"],
+      Null
+    ];
+   ];
+ 
+   process
+ ]
+
+   
  
 SystemShellRun[exec_String, props_List, opts : OptionsPattern[]] := 
  With[{run = SystemShellRun[exec, All, opts]}, 

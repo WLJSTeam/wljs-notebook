@@ -22,6 +22,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 settings = <||>;
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 generateEntry[Name_String, UId_, LocalControls_] := With[{
 
 },

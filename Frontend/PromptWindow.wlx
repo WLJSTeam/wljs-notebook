@@ -36,6 +36,10 @@ settings = <||>;
 
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 NotebookQ[str_] := FileExtension[str] === "wln"
 
 

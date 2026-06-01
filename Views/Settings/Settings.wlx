@@ -8,10 +8,20 @@ DevSettings := ImportComponent["Components/Dev.wlx"];
 settings = <||>;
 loadSettings[settings];
 
-updateSettings[new_] := (
+updateSettingsProxy[logs_, new_, needRestart_:True] := (
+    If[needRestart, EventFire[logs, Notifications`NotificationMessage["Info"](*`*), "Restart is required to see an effect"]];
     settings = Join[settings, new];
     storeSettings[settings];
+    ElectronIPCSend["reloadSettings", {}];
+    EventFire[settings`events, "Reload", settings];
+    Echo["Reload all opened notebooks"];
+    Map[Function[notebook,
+        WebUIClose[notebook["Socket"], "Reload"];
+    ], Select[Values[nb`HashMap], Function[n, TrueQ[n["Opened"]]]]];
 );
+
+updateSettings[logs_] := updateSettingsProxy[logs, ##]&
+
 
 Script[OptionsPattern[]] := With[{ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
     <div>
@@ -86,16 +96,16 @@ Component[OptionsPattern[]] := With[{
                 <div id="settings-content" class="px-4 py-0 h-full overflow-y-auto dark:text-gray-400">
                   <ul role="list" class="p-0 divide-y divide-gray-200 dark:divide-gray-600">
                       <li class="list-none px-4 py-3 sm:px-0">
-                          <GeneralSettings Modals={modals} Messager={log} Settings={settings} OnSave={updateSettings} Secret={secret}/>
+                          <GeneralSettings Modals={modals} Messager={log} Settings={settings} OnSave={updateSettings[log]} Secret={secret}/>
                       </li>                    
                       <li class="list-none px-4 py-3 sm:px-0">
                           <Extensions Messager={log} Parameters={parameters} Secret={secret}/>
                       </li>
                       <li class="list-none px-4 py-0 sm:px-0">
-                          <ExtensionTemplateInjection Template={"SettingsFooter"}  Modals={modals} Messager={log} Settings={settings} OnSave={updateSettings} Secret={secret} />
+                          <ExtensionTemplateInjection Template={"SettingsFooter"}  Modals={modals} Messager={log} Settings={settings} OnSave={updateSettings[log]} Secret={secret} />
                       </li>
                       <li class="list-none px-4 py-3 sm:px-0">
-                          <DevSettings Messager={log} Settings={settings} OnSave={updateSettings} Secret={secret}/>
+                          <DevSettings Messager={log} Settings={settings} OnSave={updateSettings[log]} Secret={secret}/>
                       </li>
                   </ul>                
                 </div>

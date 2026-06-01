@@ -48,26 +48,22 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "Transparency" -> Function[state,
             settings = Join[settings, <|"Transparency"->state|>];
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
+            onSave[settings, False];
         ],
 
         "RunInTray" -> Function[state,
             settings = Join[settings, <|"RunInTray"->state|>];
             onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
         ],
 
         "ExpertMode" -> Function[state,
             settings = Join[settings, <|"ExpertMode"->state|>];
             onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
         ],        
 
         "Theme" -> Function[state,
             settings = Join[settings, <|"Theme"->state|>];
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
+            onSave[settings, False];
         ],  
 
         "Color" -> Function[state,
@@ -75,8 +71,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
             defaultColor = state;
             If[defaultColorChoice =!= "System",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
-                onSave[settings];
-                EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
+                onSave[settings, False];
             ];
         ],
 
@@ -88,8 +83,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 settings = Join[settings, <|"AccentColor"->"System"|>];
             ];
             
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];        
+            onSave[settings, False];       
         ],
         
         "Material" -> Function[state,
@@ -100,7 +94,6 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
             settings = Join[settings, <|"WindowsBackgroundMaterial"->state|>];
             onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Restart to see an effect"];
         ],  
 
         "ChangeHome" -> Function[Null,
@@ -113,8 +106,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                                         _String,
                                             EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $Client, "Text"->path|>];
                                             settings = Join[settings, <|"Home"->path|>];
-                                            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Changes will be applied after restart"];
-                                            onSave[settings];
+                                            onSave[settings, False];
                                         ,
 
                                         _,
@@ -131,8 +123,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                     "Picked" -> Function[path,
                         EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $Client, "Text"->URLDecode[path]|>];
                         settings = Join[settings, <|"Home"->URLDecode[path]|>];
-                        EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Changes will be applied after restart"];
-                        onSave[settings];
+                        onSave[settings, False];
                         EventRemove[requestId];    
                     ],
 
@@ -146,14 +137,12 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "InputSaveDelay" -> Function[value,
             settings = Join[settings, <|"InputSaveDelay"-> parseInt[value]|>];
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Changes will be applied after restart"];
+            onSave[settings, False];
         ],
 
         "BackupTimeout" -> Function[value,
             settings = Join[settings, <|"BackupTimeout"-> (60 1000 parseInt[value])|>];
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Changes will be applied after restart"];
+            onSave[settings, False];
         ],
 
         "CleanBackups" -> Function[Null,
@@ -163,8 +152,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "FrontEndCustomCSS" -> Function[value,
             settings = Join[settings, <|"FrontEndCustomCSS"-> URLDecode[value]|>];
-            onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "Changes will be applied after restart"];            
+            onSave[settings, False];           
         ]
     }];
 

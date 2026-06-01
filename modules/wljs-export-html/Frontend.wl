@@ -27,6 +27,10 @@ Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Front
 
 settings = <||>;
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 LoaderComponent = ImportComponent[ FileNameJoin[{rootFolder, "Templates", "Loader.wlx"}] ];
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`SFX`" -> "sfx`", FileNameJoin[{rootFolder, "Formats", "SFX", "SFX.wl"}] ];

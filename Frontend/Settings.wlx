@@ -23,6 +23,10 @@ settings = <||>;
 
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 App[request_] := With[{
         Secret = CreateUUID[], 
         GlobalControls  = CreateUUID[],

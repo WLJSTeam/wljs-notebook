@@ -1,5 +1,8 @@
 //just don't look at it. We did not invest enough efforts to this...
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
+
+nativeImage.__emitterPool = new Set();
+
 const { screen, globalShortcut} = require('electron/main')
 
 const { mkdir, writeFile } = require('node:fs/promises');
@@ -1523,8 +1526,10 @@ const windows = {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -1714,6 +1719,7 @@ const read_wl_settings = () => {
         return s;
     }
 
+      
     server.frontend = {};
     while (m = r.exec(file)) {
         server.frontend[m[1].slice(1,-1)] = parse(m[2]);
@@ -2011,8 +2017,10 @@ function create_window(opts, cbk = () => {}) {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -2084,8 +2092,10 @@ function create_window(opts, cbk = () => {}) {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -3086,6 +3096,16 @@ function start_server (window) {
             create_first_window();
             server.running = true;
             if (!server.debug) setTimeout(() => {windows.log.destroy()}, 300);
+        },
+        'reloadSettings': () => {
+           //apply theme?
+           const last = server.frontend.Theme;
+           read_wl_settings();
+           if (server.frontend.Theme != last) {
+               nativeTheme.themeSource = server.frontend.Theme.toLowerCase();
+               nativeImage.__emitterPool.forEach((el) => el());
+               console.log('Update theme!');
+           } 
         },
         'createWindow': (path, title, rest = {}) => {
             console.log(rest);

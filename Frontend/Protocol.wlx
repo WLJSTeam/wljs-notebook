@@ -37,6 +37,10 @@ FakeMenu            = "";
 serverParams = <|"env" -> env|>;
 settings = <||>;
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 
 loadSettings[settings];
 loadSettingsOnceMore := With[{},

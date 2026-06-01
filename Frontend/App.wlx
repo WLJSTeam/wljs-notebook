@@ -34,7 +34,13 @@ FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 serverParams = <|"env" -> env|>;
 settings = <||>;
 
+
 loadSettings[settings];
+
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 loadSettingsOnceMore := With[{},
   Print["Load settings one more time"];
   loadSettingsOnceMore = Null;
@@ -257,6 +263,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
 defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, settings]["Home"] ];
+
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, newData]["Home"] ];
+]}];
 
 ExtensionMenuItems = <|"file"->{}, "misc"->{}, "kernel"->{}, "view"->{}, "edit"->{}|>;
 

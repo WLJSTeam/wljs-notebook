@@ -13,6 +13,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 settings = <||>;
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 addListeners[cli_, chat_] := With[{socket = EventClone[cli]},
     EventHandler[socket, {"Closed" -> Function[Null,
         EventRemove[socket];
@@ -30,8 +34,16 @@ evaluateInPlace[expr_String, k_, p_] := With[{promiseId = p[[1]]},
 getKernelsNames := With[{
     locals = AppExtensions`KernelList(*`*) // ReleaseHold
 },
-    {"Server Kernel", (#["Name"]) &/@ locals} // Flatten
+    {(*"System Shell", *)"Wolfram Kernel: Server", (StringJoin["Wolfram Kernel: ", #["Name"]]) &/@ locals} // Flatten
 ]
+
+(*
+shell = Null;
+
+getKernelTarget[1] := Function[{data, promise}, 
+    If[shell === Null, shell = StartProcess[$SystemShell] ];
+    shell
+]]*)
 
 getKernelTarget[1] := Function[{data, promise}, EventFire[promise, Resolve, <|"Data"->ToString[ToExpression[data, InputForm], InputForm]|>]]
 
@@ -71,6 +83,8 @@ App[request_] := Module[{client, channel, target}, With[{
                 EventHandler[socket, {"Closed" -> Function[Null,
 
                     Echo["Xterm was destroyed!"];
+                    (*KillProcess[shell];
+                    shell = Null;*)
                     ClearAll[client];
                     ClearAll[channel];
                     ClearAll[target];
