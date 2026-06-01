@@ -303,13 +303,19 @@ apiCall[request_, "/api/notebook/cells/list/"] := Module[{body = request["Body"]
         {notebook = nb`HashMap[ fromAlias[body["Notebook"]] ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
         With[{cells = notebook["Cells"]},
-            <|
+            If[cell`InputCellQ[#], <|
                 "Id"-> toAlias[#["Hash"]],
                 "Type" -> #["Type"],
                 "Display" -> #["Display"],
                 "Lines" -> StringCount[#["Data"], "\n"]+1,
                 "FirstLine" -> If[TrueQ[#["Overflow"] ], "[TOO LONG TO BE RENDERED]", StringExtract[#["Data"], "\n"->1] ]
-            |> &/@ cells    
+            |>,
+            <|
+                "Id"-> toAlias[#["Hash"]],
+                "Type" -> #["Type"],
+                "Display" -> #["Display"]
+            |>
+            ] &/@ cells    
         ]
     ]
 ]
@@ -378,6 +384,7 @@ apiCall[request_, "/api/notebook/cells/getlines/"] := Module[{body = request["Bo
             to = body["To"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
+        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Get full content"], Module]];
         If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
         StringRiffle[StringSplit[cell["Data"], "\n", All][[from ;; UpTo[to] ]], "\n"]
     ]
@@ -842,9 +849,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                 <|
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
-                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ],
-                                    "Lines" -> StringCount[c["Data"], "\n"]+1,
-                                    "FirstLine" -> If[TrueQ[c["Overflow"] ], "[TOO LONG TO BE RENDERED]", StringExtract[c["Data"], "\n"->1] ]
+                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
                                 |> 
                             |> ], out] ];
                         ]

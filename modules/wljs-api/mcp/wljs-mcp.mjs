@@ -728,7 +728,7 @@ register(
 
 register(
   "get_cell_full",
-  "Reads full content of the cell bypassing shortening and revealing any hidden data. Provide maximum character length",
+  "Reads full content of the cell bypassing shortening and revealing any hidden data. Provide maximum character length. Use on output cells",
   {
     Cell: idSchema.describe("Cell hash/id."),
     MaxCharacters: lineNumberSchema.optional().describe("Maximum characters")
@@ -742,7 +742,7 @@ register(
 
 register(
   "get_cell_lines",
-  "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing.",
+  "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing. Cannot be used on output cells",
   {
     ...cellIdShape,
     ...lineRangeShape,
@@ -901,7 +901,7 @@ register(
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes",
+    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use get_cell_full on output ids",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
     },
