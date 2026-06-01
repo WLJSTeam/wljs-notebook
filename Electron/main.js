@@ -314,8 +314,18 @@ const cli_info = {
     }
 }
 
-
 var sudo = require('./sudo');
+
+const cliInstalledMarkerPath = () => path.join(appDataFolder, '.cli_i2');
+
+function mark_cli_prompt_handled() {
+    fs.writeFile(cliInstalledMarkerPath(), 'Nothing to see here', function(err) {
+        if (err) {
+            console.error('Failed to write CLI marker');
+            console.error(err);
+        }
+    });
+}
 
 function check_cli_installed(log_window) {
     if (!app.isPackaged) return;
@@ -325,7 +335,7 @@ function check_cli_installed(log_window) {
         return;
     }
 
-    fs.exists(path.join(appDataFolder, '.cli_i2'), (existsQ) => {
+    fs.exists(cliInstalledMarkerPath(), (existsQ) => {
         if (existsQ) {
             console.log('Cli is installed');
             return;
@@ -335,37 +345,52 @@ function check_cli_installed(log_window) {
 
         console.log('Cli is not installed');
 
+        const prompt = dialog.showMessageBox(log_window, {
+            type: 'question',
+            buttons: ['Install', 'Not now'],
+            defaultId: 0,
+            cancelId: 1,
+            noLink: true,
+            message: 'Install the WLJS command line interface?',
+            detail: 'This adds the wljs command so WLJS Notebook can be opened from a terminal.'
+        });
 
-      try {
-        const exePath = app.getPath('exe');
+        prompt.then((res) => {
+            if (res.response !== 0) {
+                mark_cli_prompt_handled();
+                return;
+            }
 
-        console.log(exePath);
+            try {
+                const exePath = app.getPath('exe');
 
-        console.log(path.resolve(cli_info[process.platform].script));
+                console.log(exePath);
 
-        
-        const options = {
-          name: 'WLJS Elevated module'
-        };
-        
-        sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-          function(error, stdout, stderr) {
-            if (error) throw error;
-            console.log('stdout: ' + stdout);
+                console.log(path.resolve(cli_info[process.platform].script));
 
-            fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
-                if (err) throw err;
-            });                    
-          }
-        );
-      } catch (err) {
-        console.log('Failed to install CLI');
-        console.error(err);
-      }
-        
+                const options = {
+                    name: 'WLJS Elevated module'
+                };
 
+                sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
+                    function(error, stdout, stderr) {
+                        if (error) throw error;
+                        console.log('stdout: ' + stdout);
+
+                        mark_cli_prompt_handled();
+                    }
+                );
+            } catch (err) {
+                console.log('Failed to install CLI');
+                console.error(err);
+            }
+        }).catch((err) => {
+            console.log('Failed to show CLI install prompt');
+            console.error(err);
+        });
     })
 }
+
 
 
 
