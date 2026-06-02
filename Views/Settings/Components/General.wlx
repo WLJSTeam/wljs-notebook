@@ -23,6 +23,9 @@ homefolderEvent = CreateUUID[];
 parseInt[any_String] := ToExpression[any]
 parseInt[any_] := any 
 
+darkBrightness =  Lookup[settings, "Brightness", 1.1];
+darkContrast = Lookup[settings, "Contrast", 0.9];
+
 defaultBackupTime = If[KeyExistsQ[settings, "BackupTimeout"], Round[settings["BackupTimeout"]/60/1000], 3]
 defaultInputSaveDelay = If[KeyExistsQ[settings, "InputSaveDelay"], settings["InputSaveDelay"], 180]
 defaultTheme = If[KeyExistsQ[settings, "Theme"], settings["Theme"], "System"]
@@ -65,6 +68,20 @@ EventHandler[Secret, {"Load" -> Function[Null,
             settings = Join[settings, <|"Theme"->state|>];
             onSave[settings, False];
         ],  
+
+        "Brightness" -> Function[value,
+            If[!NumberQ[value//ToExpression], Return[]];
+            settings = Join[settings, <|"Brightness"->ToExpression@value|>];
+            darkBrightness = ToExpression@value;
+            onSave[settings, False];
+        ],  
+ 
+        "Contrast" -> Function[value,
+            If[!NumberQ[value//ToExpression], Return[]];
+            settings = Join[settings, <|"Contrast"->ToExpression@value|>];
+            darkContrast = ToExpression@value;
+            onSave[settings, False];
+        ],         
 
         "Color" -> Function[state,
             Echo[state];
@@ -174,14 +191,14 @@ EventHandler[Secret, {"Load" -> Function[Null,
 {
     <div class="px-4 sm:px-0 pb-3 border-b border-gray-100">
         <h3 class="text-base font-semibold leading-7 text-gray-900 dark:text-gray-300">General settings</h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-500"></p>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400"></p>
     </div> 
 ,
     <div class="mt-4 overflow-y-auto" style="max-height:60%">   
         <span class="dark:text-gray-400">Frontend</span>
         <div class="pb-10 mt-5 gap-y-2 flex flex-col">
-            <p class="mt-1 max-w-2xl text-sm  text-gray-500 dark:text-gray-500">Home folder</p>
-            <p id="doc-home" class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-500"></p>
+            <p class="mt-1 max-w-2xl text-sm  text-gray-500 dark:text-gray-400">Home folder</p>
+            <p id="doc-home" class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400"></p>
             <StringRiffle>
                 <Knob Label={"Change home folder"} Topic={"ChangeHome"} Event={controller} Class={"w15"}/>
             </StringRiffle>
@@ -214,7 +231,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                     doc.innerText = decodeURIComponent(text);
                 })
             </WebUIJSBind>
-            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-500">Purge internal backup storage</p>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">Purge internal backup storage</p>
             <StringRiffle>
                 <Knob Label={"Clean up"} Topic={"CleanBackups"} Event={controller} Class={"w15"}/>
             </StringRiffle>
@@ -251,13 +268,29 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
             <Radio Label={"UI Theme"} List={ {{"System", "System"}, {"Light", "Light"}, {"Dark", "Dark"}} } Selected={defaultTheme} Pattern={"Theme"} Event={controller} />
 
+            <div class="mt-5 gap-y-2 flex flex-col">
+                                <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
+                                    <label for="Brightness" class="block text-xs font-medium text-gray-900 dark:text-gray-400">Dark mode: brightness</label>
+                                    <input type="range" min="0.1" max="1.9" step="0.1" value="{darkBrightness}" id="Brightness" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
+                                    <WebUIEventListener Id={"Brightness"} Type={"blur"} Event={controller} Pattern={"Brightness"}/>
+                                </div> 
+                            </div> 
+
+                            <div class="mb-5 gap-y-2 flex flex-col">
+                                                <div class="rounded-md px-3 pb-3 pt-2.5 shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
+                                                    <label for="Contrast" class="block text-xs font-medium text-gray-900 dark:text-gray-400">Dark mode: contrast</label>
+                                                    <input type="range" min="0.1" max="1.9" step="0.1" value="{darkContrast}" id="Contrast" class="block w-full border-0 p-0 dark:bg-gray-700 text-gray-900 dark:text-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
+                                                    <WebUIEventListener Id={"Contrast"} Type={"blur"} Event={controller} Pattern={"Contrast"}/>
+                                                </div> 
+                                            </div>     
+
             <Radio Label={"UI Color"} List={ {{"System", "System"}, {"User", "User"}} } Selected={defaultColorChoice} Pattern={"ColorChoice"} Event={controller} />
 
             <ColorPicker Label={"Accent color"} Default={defaultColor} Pattern={"Color"} Event={controller}/>
 
             <Radio Label={"Background Material"} List={ {{"Mica", "mica"}, {"Acrylic", "acrylic"}, {"Tabbed", "tabbed"}, {"Auto", "auto"}} } Selected={defaultMaterial} Pattern={"Material"} Event={controller} />
         
-            <p class="mt-1 max-w-2xl text-sm  text-gray-500 dark:text-gray-500">Custom CSS</p>
+            <p class="mt-1 max-w-2xl text-sm  text-gray-500 dark:text-gray-400">Custom CSS</p>
             <textarea rows="8" id="FrontEndCustomCSS" placeholder="paste your CSS directly" class="dark:bg-gray-800 dark:text-gray-400 text-sm sc-b block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"><FrontEndCustomCSS/></textarea> 
             <WebUIEventListener Id={"FrontEndCustomCSS"} Type={"blur"} Event={controller} Pattern={"FrontEndCustomCSS"}/>
         

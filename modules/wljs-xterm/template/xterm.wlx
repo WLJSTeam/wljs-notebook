@@ -147,7 +147,7 @@ App[request_] := Module[{client, channel, target}, With[{
                   <div class="px-4 py-2 text-center text-sm text-gray-500 dark:text-gray-400 linux:h-titlebar win:h-titlebar owin:h-titlebar" style="-webkit-app-region: drag">
                     Kernel Terminal
                   </div>
-                  <div id="xterm-container" class="dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5 owin:m-4 owin:mt-2 owin:rounded-lg owin:bg-white owin:shadow win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans xtem-size h-full"></div>
+                  <div id="xterm-container" class="dark:invert  owin:m-4 owin:mt-2 owin:rounded-lg owin:bg-white owin:shadow win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans xtem-size h-full"></div>
                 </div>           
                 <WebUIOnLoad Event={secret} Pattern={"Load"}/>
               </main>              

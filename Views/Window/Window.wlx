@@ -252,7 +252,7 @@ Component[OptionsPattern[] ] := With[{
 
     With[{},
 
-        <main style="-webkit-app-region: no-drag" class="h-full overflow-hidden dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5">
+        <main style="-webkit-app-region: no-drag" class="h-full overflow-hidden dark:invert ">
             <Container Parameters={parameters} Window={window} Event={secret}>
                 <div class="flex-shrink-0 mr-auto ml-auto mt-auto mb-auto" style="width: 100%; height: 100%; display: flex;">
                     <svg aria-hidden="true" style="margin:auto" class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-sys" viewBox="0 0 100 101" fill="none">

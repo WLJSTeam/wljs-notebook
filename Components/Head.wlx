@@ -2,7 +2,14 @@ hexColor = (IntegerDigits[
   ToExpression@StringReplace[#, "#" -> "16^^"], 256, If[StringLength[#] > 7, 4, 3]]) &;
 
 
+GenerateDarkStyles[brightness_, contrast_] := With[{
+    Brightness = ToString[NumberForm[brightness//N, {2, 1}]],
+    Contrast = ToString[NumberForm[contrast//N, {2, 1}]]
+},
+    StringTemplate["@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(``) contrast(``);}}"][Brightness, Contrast]
+];
 
+GenerateDarkStyles[1.1, 0.9] = "@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);}}"
 
 Component[Children__, OptionsPattern[]] := With[{
     AccentColor = OptionValue["AccentColor"], 
@@ -22,12 +29,17 @@ Component[Children__, OptionsPattern[]] := With[{
             "Dark",
                 <script>(()=>{let m="dark",x="light";if(matchMedia(`(prefers-color-scheme:${m})`).matches)return;let d=document.documentElement;d.classList.remove(x);d.classList.add(m);let r=/\(\s*prefers-color-scheme\s*:\s*(dark|light)\s*\)/i;function p(s){let a=[],q=s.cssRules;for(let i=q.length-1;i>=0;i--){let n=q[i];if(n instanceof CSSMediaRule&&r.test(n.conditionText)){let c=n.conditionText.match(r)[1].toLowerCase();if(c===x)s.deleteRule(i);else if(c===m){a.unshift(...[...n.cssRules].map(v=>v.cssText));s.deleteRule(i)}}else"cssRules"in n&&"deleteRule"in n&&p(n)}for(let v of a)try{s.insertRule(v,s.cssRules.length)}catch{}}for(let s of document.styleSheets)try{p(s)}catch{}})();</script>,
             _, ""
-        ], ""]        
+        ], ""],
+ 
+        DarkStyles = GenerateDarkStyles[
+            Lookup[OptionValue["Settings"], "Brightness", 1.1], 
+            Lookup[OptionValue["Settings"], "Contrast", 0.9]
+        ]
     },
         <head>
                 <title><Title/></title>
                 <style>
-                    :root{--system-accent-color: <AccentColor/>; --system-accent-color-25:  <AccentColor25/>;  accent-color: <AccentColor/>; --editor-selected-tint:     <EditorTintColor/>;}
+                    :root{--system-accent-color: <AccentColor/>; --system-accent-color-25:  <AccentColor25/>;  accent-color: <AccentColor/>; --editor-selected-tint:     <EditorTintColor/>;} <DarkStyles/>
                 </style>
                 <link rel="stylesheet" href="/Styles/Custom.css"/>
                 <link rel="stylesheet" href="/Styles/Optimized.css"/> 

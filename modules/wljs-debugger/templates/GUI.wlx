@@ -40,10 +40,10 @@ generateEntry[Name_String, UId_, LocalControls_] := With[{
           </div>
         </td>
         <td class="px-3 text-xs whitespace-nowrap text-gray-500" style="max-width: 10rem">
-          <div id="{UId}-ownvalue" class="text-gray-900 dark:invert dark:hue-rotate-180"></div>
+          <div id="{UId}-ownvalue" class="text-gray-900 dark:invert"></div>
         </td>
         <td class="px-3 text-xs whitespace-nowrap text-gray-500">
-          <span id="{UId}-state" class="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 bg-gray-50 ring-gray-300 text-gray-500 dark:invert dark:hue-rotate-180 ring-inset">Out of sync</span>
+          <span id="{UId}-state" class="inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 bg-gray-50 ring-gray-300 text-gray-500 dark:invert ring-inset">Out of sync</span>
         </td>
         <td class="relative pr-4 pl-3 text-right text-xs font-normal whitespace-nowrap sm:pr-0">
           <input id="{UId}-break" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>

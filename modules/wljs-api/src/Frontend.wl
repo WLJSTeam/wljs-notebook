@@ -927,7 +927,7 @@ apiCall[request_, "/api/kernel/"] := {
 apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
     With[
         {k = If[StringQ[body["Kernel"] ], 
-            SelectFirst[AppExtensions`KernelList, (#["Hash"] === fromAlias[body["Kernel"]]) &],  
+            SelectFirst[AppExtensions`KernelList, (#["Hash"] === fromAlias[fromAlias[body["Kernel"]]]) &],  
             SelectFirst[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]
         ],
             expr = body["Expression"],
