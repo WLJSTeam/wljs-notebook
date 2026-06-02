@@ -7,7 +7,7 @@ Component[OptionsPattern[]] := With[{Data = OptionValue["Data"], Size = OptionVa
         <span>Too long to display</span><span class="ml-auto"><Size/> Bytes</span>
       </div>
       <div class="px-2 py-2">
-        <Data/>...
+        <Data/>
       </div>
       <div class="px-2 py-2 flex flex-row">       
         <span class="hidden md:block">Try to increase limits in the settings</span><span class="ml-auto"><button id="{Ref}" class="px-2 py-1 bg-gray-50 rounded ring-1 ring-inset ring-gray-200">Show anyway</button></span>

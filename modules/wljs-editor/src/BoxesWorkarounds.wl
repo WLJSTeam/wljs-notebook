@@ -12,6 +12,8 @@ System`ProvidedOptions;
 (* ::: Short reimplementation ::: *)
 (* it messes up with formatting and cuts comments used in WLJS *)
 
+(* [TODO]: Use normal Skeleton[] so that Short can work as InputForm! *)
+
 Unprotect[Short]
 ClearAll[Short]
 

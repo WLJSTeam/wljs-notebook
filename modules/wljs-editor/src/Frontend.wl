@@ -184,12 +184,15 @@ init[k_] := Module[{},
                         If[StringLength[string] < Internal`Kernel`$OutputCharactersLimit || Lookup[t, "IgnoreOverflow", False],
                             EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
                         ,
-                            With[{truncated = ToString[result, InputForm], ref = CreateUUID[]},
+                            With[{
+                                inputform = ToString[result, InputForm], ref = CreateUUID[],
+                                shortform = StringReplace[StringReplace[ToString[Short[result,8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""]
+                            },
                                 (* [TODO] this shit with restoring the intendend content has to be refactored! *)
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->string] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[shortform, Min[StringLength[shortform], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
                             ]
                         ]
                     ]

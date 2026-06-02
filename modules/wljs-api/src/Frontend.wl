@@ -47,6 +47,8 @@ toAlias[id_String] := If[$IdAliases[id] === Null,
   $IdAliases[id]
 ]
 
+
+
 failure;
 
 failureQ[failure[message_] ] := message
@@ -835,9 +837,11 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
 *)
 apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Body"]},
     With[
-        {cell = cell`HashMap[ body["Cell"] //fromAlias ]},
+        {cell = cell`HashMap[ body["Cell"] //fromAlias ],
+         timeout = Lookup[body, "TimeLimit", 20]},
         {notebook = cell["Notebook"]},
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
+        If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
             With[{controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[]},
                 (*fixme*)
@@ -845,7 +849,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                     timer = SetTimeout[
                         EventFire[controller, "Abort", Null];
                         EventFire[promise, Resolve, "$TimedOut" ];                        
-                    , 20000]
+                    , 1000 timeout]
                 },
   
                     Then[EventFire[controller, "NotebookCellEvaluateTemporal", cell], Function[Null,
@@ -854,13 +858,24 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                         With[{
                             out = Select[cell`SelectCells[notebook["Cells"], Sequence[cell, __?cell`OutputCellQ] ], cell`OutputCellQ]
                         },
-                            EventFire[promise, Resolve, Map[Function[c, <|
+                            (* post-process to make shorter versions *)
+                            Then[majorHeadsPreview[notebook["Evaluator"]["Kernel"], Map[Function[c,
+                                If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]],
+                                    If[TrueQ[c["Overflow"]], c["OverflowContent"], c["Data"]]
+                                ,
+                                    "0"
+                                ]
+                            ], out]], Function[shortened,
+                            
+                              EventFire[promise, Resolve, MapThread[Function[{c, o}, <|
                                 <|
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
-                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
+                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ],
+                                    "Preview" -> If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], o, Nothing]
                                 |> 
-                            |> ], out] ];
+                              |> ], {out, shortened}] ]; 
+                            ]];
                         ]
                     ] ];
                     promise
@@ -871,6 +886,14 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
             failure["Can't evaluate cell in a closed notebook. Use /api/kernel/evaluate/ path"]
         ]
     ]
+]
+
+
+majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
+    GenericKernel`Send[k,
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, StringReplace[StringReplace[ToString[Short[ToExpression[#, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""] &/@ exprs ];
+    ];
+    promise
 ]
 
 (* 
@@ -932,6 +955,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
         ],
             expr = body["Expression"],
             timelimit = Lookup[body, "TimeLimit", 20],
+            maxCharacters = Lookup[body, "MaxCharacters", 1500],
             promise = Promise[],
 
             dir = Lookup[body, "Directory", Null]
@@ -939,17 +963,31 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         If[MissingQ[k], Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
 
+        If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
+
         If[!NumberQ[timelimit], Return[failure["TimeLimit is not a number"], Module] ];
 
         If[dir === Null,
             GenericKernel`Send[k, 
-                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm] ];
+                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
+                    If[StringLength[res] > maxCharacters,
+                        StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                    ,
+                        res
+                    ]
+                ] ];
             ];        
         ,
             GenericKernel`Send[k, 
                 With[{prev = Directory[]}, 
                     SetDirectory[dir];
-                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm] ];
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
+                        If[StringLength[res] > maxCharacters,
+                            StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                        ,
+                            res
+                        ]
+                    ] ];
                     SetDirectory[prev];
                 ];
             ];        

@@ -917,16 +917,17 @@ register(
     "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use get_cell_full on output ids",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
+      TimeLimit: z.number().optional().describe("Optional time limit in seconds.")
     },
-    ({ Cell }) =>
-      wlCall(
+    ({ Cell , TimeLimit}) => {
+      return wlCall(
         "/api/notebook/cells/evaluate/",
-        { Cell },
+        { Cell, TimeLimit },
         {
           wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20),
         },
-      ),
+      )},
       {
   title: "Evaluate Cell",
   annotations: EXECUTES_CODE_LOCAL,

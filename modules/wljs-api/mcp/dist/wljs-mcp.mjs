@@ -46735,16 +46735,19 @@ ${skillIndexText()}`
       "evaluate_cell",
       "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use get_cell_full on output ids",
       {
-        Cell: external_exports.string().min(1).describe("Input cell hash/id.")
+        Cell: external_exports.string().min(1).describe("Input cell hash/id."),
+        TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds.")
       },
-      ({ Cell }) => wlCall(
-        "/api/notebook/cells/evaluate/",
-        { Cell },
-        {
-          wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
-        }
-      ),
+      ({ Cell, TimeLimit }) => {
+        return wlCall(
+          "/api/notebook/cells/evaluate/",
+          { Cell, TimeLimit },
+          {
+            wait: true,
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20)
+          }
+        );
+      },
       {
         title: "Evaluate Cell",
         annotations: EXECUTES_CODE_LOCAL
