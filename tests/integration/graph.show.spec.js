@@ -71,6 +71,8 @@ test.describe('Graphs', () => {
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'graphStyle2.png']);
   });
 
+
   
+ 
   
 });

@@ -188,7 +188,15 @@ test.describe('Wolfram Expressions Styling', () => {
     const outputCell = await evaluate(page, 'Labeled[Framed[{a, b, c, d}], lbl, Right]', 5000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'labeled.png']);
   });  
+
+  test('TabView', async () => {
+    await clearCell(page);
   
+    const outputCell = await evaluate(page, '  TabView[{Sin->Plot3D[Sin[x] Sin[y], {x,-2Pi,2Pi}, {y,-2Pi,2Pi}], Sinh->Plot3D[Sinh[x] Sinh[y], {x,-2Pi,2Pi}, {y,-2Pi,2Pi}] }]', 35000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'TabView.png']);
+  });  
+
+
   
   test('Labeled Graphics', async () => {
     await clearCell(page);
@@ -224,5 +232,8 @@ test.describe('Wolfram Expressions Styling', () => {
     const outputCell = await evaluate(page, 'Table[Style[100, n], {n, 30}]', 5000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'styleScaled100.png']);
   });    
+
+
+
   
 });

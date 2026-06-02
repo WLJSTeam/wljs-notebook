@@ -1768,6 +1768,19 @@ If[Internal`Kernel`Watchdog["Enabled"],
     ,
       Get[file]
     , tag];
+    
+    Internal`Kernel`Watchdog["Assertion", "Tooltip",
+      FormatValues[Tooltip]//Hash
+    ,
+      Get[file]
+    , tag];
+ 
+    Internal`Kernel`Watchdog["Assertion", "OpenerView",
+      FormatValues[OpenerView]//Hash
+    ,
+      Get[file]
+    , tag];
+    
 
     Internal`Kernel`Watchdog["Assertion", "Iconize",
       FormatValues[Iconize]//Hash

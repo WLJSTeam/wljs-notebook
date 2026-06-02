@@ -117,7 +117,21 @@ test.describe('3D Plot', () => {
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'plot3d2AxesAuto.png']);
   }); 
 
+  test('CThead', async () => {
+    await clearCell(page);
   
+    const outputCell = await evaluate(page, '  Image3D[ExampleData[{"TestImage3D","CThead"}], BoxRatios->{1,1,1}, ColorFunction->"GrayLevelOpacity"]', 15000, 10000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'CThead.png']);
+  }); 
+
+  test('ComplexPLot 3D', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'ComplexPlot3D[(*FB[*)(((*SpB[*)Power[z(*|*),(*|*)2](*]SpB*)+1)(*,*)/(*,*)((*SpB[*)Power[z(*|*),(*|*)2](*]SpB*)-1))(*]FB*), {z, -2 - 2 I, 2 + 2 I}]', 15000, 10000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'complex3d.png']);
+  }); 
+  
+
   
 
 });

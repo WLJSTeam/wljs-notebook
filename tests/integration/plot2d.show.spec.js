@@ -138,6 +138,67 @@ test.describe('2D Plot', () => {
     const outputCell = await evaluate(page, 'DiscretizeRegion[Disk[]]', 15000, 2000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'diskregionmesh.png']);
   });
+
+  test('Texture Plot', async () => {
+    await clearCell(page);
   
+    const outputCell = await evaluate(page, 'ParametricPlot[{r Cos[\\[Theta]], r Sin[\\[Theta]]}, {r, 1,  2}, {\\[Theta], 0, 2 Pi/3}, PlotRange -> All, Mesh -> 15, PlotStyle->Texture[ExampleData[{"TestImage", "Lena"}]]]', 15000, 20000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'texturePlot2.png']);
+  });
+
+  test('Inset Test', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Graphics[{Circle[], Inset[x^2 + y^2 == 1, {0, 0}]}, ImageSize->Small]', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'inset1.png']);
+  });  
+  
+  test('Inset Test 2', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'g=Plot[Sin[x], {x, 0, 10}, Frame -> True, FrameTicks -> None, AspectRatio -> Full]; Table[Graphics[{Inset[g, Automatic, Automatic, {s, s}], Circle[{0, 0}, 2]}, Frame -> True, ImageSize->150], {s, {1, 2, 3}}]', 15000, 2500);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'inset122.png']);
+  }); 
+
+  
+  test('Tabular Test', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Tabular[{{1, x, Today}, {4, y, Tomorrow}}, {"col1", "col2", "col3"}]', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular1.png']);
+  });  
+  
+  test('Tabular Test2', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'EntityValue[ EntityClass["Book", "DuneBooks"], {"FirstPublished", "Author",  "Image"}, "Tabular"]', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular2.png']);
+  });  
+
+  test('Opener V', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'OpenerView[{"Show me a plot", Plot[x, {x,0,1}]}, False]', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'openerv.png']);
+  });  
+  
+  test('Information on symbols', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, '?Plot', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'infoplot.png']);
+  });  
+
+  test('Axes Origin', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Plot[Sin[x], {x,0,2Pi}, AxesOrigin->{Pi,0}, Ticks->{{{0, "0"},{2Pi, "2Pi"}}, {-0.5,0.5}}]', 15000, 2000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'axsesOrigin.png']);
+  });  
+  
+
+
+
+
 
 });

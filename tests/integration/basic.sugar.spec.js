@@ -35,7 +35,44 @@ test.describe('Easy check for most basic decorators', () => {
   
     const outputCell = await evaluate(page, 'x y z', 15000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'xyz.png']);
+  }); 
+
+  test('Molecule', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Molecule["NC(=O)C[C@H](C(=O)O)N"]', 15000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'moleculae.png']);
   });   
+
+  test('StandardForm', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'StandardForm[1/2]', 15000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'StandardForm12.png']);
+  });   
+
+  test('TraditionalForm', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'TraditionalForm[1/2]', 15000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'TraditionalForm12.png']);
+  });   
+
+
+  test('ShortTest', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Table[Hue[i/100.0], {i, 100}, {3}, {30}] // Short', 15000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'shortTest.png']);
+  });   
+  
+  test('LabeledTest', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Labeled[Red, (*FB[*)(("\\[Alpha]")(*,*)/(*,*)("\\[Beta]"))(*]FB*), Left]', 15000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'LabeledTest.png']);
+  });  
+  
 
   test('Subscript decoration', async () => {
     await clearCell(page);

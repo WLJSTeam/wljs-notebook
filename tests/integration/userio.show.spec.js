@@ -92,5 +92,33 @@ test.describe('Users GUI', () => {
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'soundNote.png']);
   });  
   
+
+  test('Planets', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'ExampleData[{"Dataset","Planets"}]',15000, 5000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'planets2.png']);
+  });
+
+  test('Classify', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'c = Classify[{1 -> "A", 2 -> "A", 3.5 -> "B", 4 -> "B"}]',35000, 35000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'classify.png']);
+  });
+
+  test('Tooltip1', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, ' Plot[{Tooltip[Sin[x], "This is sine"], Tooltip[Cos[x], "This is cosine"]}, {x,0,2Pi}]',15000, 5000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'tooltip1.png']);
+  });
+  
+  test('Tooltip2', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Tooltip[x, Graphics[Disk[], ImageSize->100]]',15000, 5000);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'tooltip2.png']);
+  });
   
 });
