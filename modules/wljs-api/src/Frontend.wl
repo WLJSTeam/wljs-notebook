@@ -223,7 +223,12 @@ apiCall[request_, "/api/notebook/list/"] := With[{},
     <|
         "Id"-> toAlias[#["Hash"]],
         "Opened" -> #["Opened"],
-        "Path" -> #["Path"]
+        "Path" -> #["Path"],
+        "Kernel"->If[
+              TrueQ[#["Evaluator"]["Kernel"]["ContainerReadyQ"]],
+              toAlias[#["Evaluator"]["Kernel"]["Hash"]],
+              "Missing"
+        ]
     |> &/@ Select[Values[nb`HashMap], (Complement[{"Opened", "Path", "Hash"}, #["Properties"] ] === {}) &]
 ]
 
@@ -257,7 +262,11 @@ apiCall[request_, "/api/notebook/focused/"] := With[
    {nb = AppExtensions`AppGlobals["CurrentNotebook"]},
    If[
       TrueQ[nb["Opened"]],
-      toAlias[nb["Hash"]],
+      <|"Id"->toAlias[nb["Hash"]], "Kernel"->If[
+            TrueQ[nb["Evaluator"]["Kernel"]["ContainerReadyQ"]],
+            toAlias[nb["Evaluator"]["Kernel"]["Hash"]],
+            "Missing"
+      ]|>,
       failure["No focused notebook found"]
    ]
 ]
@@ -384,7 +393,7 @@ apiCall[request_, "/api/notebook/cells/getlines/"] := Module[{body = request["Bo
             to = body["To"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
-        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Get full content"], Module]];
+        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Use get full content"], Module]];
         If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
         StringRiffle[StringSplit[cell["Data"], "\n", All][[from ;; UpTo[to] ]], "\n"]
     ]
@@ -421,7 +430,7 @@ apiCall[request_, "/api/notebook/cells/getfullcontent/"] := Module[{body = reque
             (* evaluate it again and forward the result in the input format *)
             (* bypassing any filters *)
             If[!TrueQ[k["ContainerReadyQ"]],
-                Return[failure["Running Kernel is required"], Module];
+                Return[failure["Running Kernel is required. Try to evaluate any input cell to automatically assign kernel to a notebook"], Module];
             ];
 
             With[{p = Promise[], expr = cell["Data"], finalPromise = Promise[]},
@@ -922,22 +931,25 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             SelectFirst[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]
         ],
             expr = body["Expression"],
+            timelimit = Lookup[body, "TimeLimit", 20],
             promise = Promise[],
 
             dir = Lookup[body, "Directory", Null]
         },
 
-        If[MissingQ[k], Return[failure["No kernel is ready for evaluation"], Module] ];
+        If[MissingQ[k], Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
+
+        If[!NumberQ[timelimit], Return[failure["TimeLimit is not a number"], Module] ];
 
         If[dir === Null,
             GenericKernel`Send[k, 
-                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
+                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm] ];
             ];        
         ,
             GenericKernel`Send[k, 
                 With[{prev = Directory[]}, 
                     SetDirectory[dir];
-                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm] ];
                     SetDirectory[prev];
                 ];
             ];        
@@ -945,6 +957,12 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         promise
     ]
+]
+
+apiCall[request_, "/api/kernel/list/"] := Module[{},
+     Map[Function[k,
+        <|"Id"->toAlias[#["Hash"]], "Name"->#["Name"]|>
+     ], Select[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]]
 ]
 
 existsOrEmpty[settings_, field_] := If[KeyExistsQ[settings, field], settings[field], {}]

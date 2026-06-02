@@ -3821,7 +3821,7 @@ var init_to_json_schema = __esm({
             return;
           }
           const seen = entry[1];
-          const { ref, defId } = makeURI(entry);
+          const { ref: ref2, defId } = makeURI(entry);
           seen.def = { ...seen.schema };
           if (defId)
             seen.defId = defId;
@@ -3829,7 +3829,7 @@ var init_to_json_schema = __esm({
           for (const key in schema2) {
             delete schema2[key];
           }
-          schema2.$ref = ref;
+          schema2.$ref = ref2;
         };
         if (params.cycles === "throw") {
           for (const entry of this.seen.entries()) {
@@ -3877,11 +3877,11 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
           if (seen.ref === null) {
             return;
           }
-          const ref = seen.ref;
+          const ref2 = seen.ref;
           seen.ref = null;
-          if (ref) {
-            flattenRef(ref, params2);
-            const refSchema = this.seen.get(ref).schema;
+          if (ref2) {
+            flattenRef(ref2, params2);
+            const refSchema = this.seen.get(ref2).schema;
             if (refSchema.$ref && params2.target === "draft-7") {
               schema2.allOf = schema2.allOf ?? [];
               schema2.allOf.push(refSchema);
@@ -8525,26 +8525,26 @@ var require_resolve = __commonJS({
         addAnchor.call(this, sch.$anchor);
         addAnchor.call(this, sch.$dynamicAnchor);
         baseIds[jsonPtr] = innerBaseId;
-        function addRef(ref) {
+        function addRef(ref2) {
           const _resolve = this.opts.uriResolver.resolve;
-          ref = normalizeId(innerBaseId ? _resolve(innerBaseId, ref) : ref);
-          if (schemaRefs.has(ref))
-            throw ambiguos(ref);
-          schemaRefs.add(ref);
-          let schOrRef = this.refs[ref];
+          ref2 = normalizeId(innerBaseId ? _resolve(innerBaseId, ref2) : ref2);
+          if (schemaRefs.has(ref2))
+            throw ambiguos(ref2);
+          schemaRefs.add(ref2);
+          let schOrRef = this.refs[ref2];
           if (typeof schOrRef == "string")
             schOrRef = this.refs[schOrRef];
           if (typeof schOrRef == "object") {
-            checkAmbiguosRef(sch, schOrRef.schema, ref);
-          } else if (ref !== normalizeId(fullPath)) {
-            if (ref[0] === "#") {
-              checkAmbiguosRef(sch, localRefs[ref], ref);
-              localRefs[ref] = sch;
+            checkAmbiguosRef(sch, schOrRef.schema, ref2);
+          } else if (ref2 !== normalizeId(fullPath)) {
+            if (ref2[0] === "#") {
+              checkAmbiguosRef(sch, localRefs[ref2], ref2);
+              localRefs[ref2] = sch;
             } else {
-              this.refs[ref] = fullPath;
+              this.refs[ref2] = fullPath;
             }
           }
-          return ref;
+          return ref2;
         }
         function addAnchor(anchor) {
           if (typeof anchor == "string") {
@@ -8555,12 +8555,12 @@ var require_resolve = __commonJS({
         }
       });
       return localRefs;
-      function checkAmbiguosRef(sch1, sch2, ref) {
+      function checkAmbiguosRef(sch1, sch2, ref2) {
         if (sch2 !== void 0 && !equal(sch1, sch2))
-          throw ambiguos(ref);
+          throw ambiguos(ref2);
       }
-      function ambiguos(ref) {
-        return new Error(`reference "${ref}" resolves to more than one schema`);
+      function ambiguos(ref2) {
+        return new Error(`reference "${ref2}" resolves to more than one schema`);
       }
     }
     exports.getSchemaRefs = getSchemaRefs;
@@ -9098,9 +9098,9 @@ var require_ref_error = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     var resolve_1 = require_resolve();
     var MissingRefError = class extends Error {
-      constructor(resolver, baseId, ref, msg) {
-        super(msg || `can't resolve reference ${ref} from id ${baseId}`);
-        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref);
+      constructor(resolver, baseId, ref2, msg) {
+        super(msg || `can't resolve reference ${ref2} from id ${baseId}`);
+        this.missingRef = (0, resolve_1.resolveUrl)(resolver, baseId, ref2);
         this.missingSchema = (0, resolve_1.normalizeId)((0, resolve_1.getFullPath)(resolver, this.missingRef));
       }
     };
@@ -9226,22 +9226,22 @@ var require_compile = __commonJS({
       }
     }
     exports.compileSchema = compileSchema;
-    function resolveRef(root, baseId, ref) {
+    function resolveRef(root, baseId, ref2) {
       var _a;
-      ref = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref);
-      const schOrFunc = root.refs[ref];
+      ref2 = (0, resolve_1.resolveUrl)(this.opts.uriResolver, baseId, ref2);
+      const schOrFunc = root.refs[ref2];
       if (schOrFunc)
         return schOrFunc;
-      let _sch = resolve2.call(this, root, ref);
+      let _sch = resolve2.call(this, root, ref2);
       if (_sch === void 0) {
-        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref];
+        const schema = (_a = root.localRefs) === null || _a === void 0 ? void 0 : _a[ref2];
         const { schemaId } = this.opts;
         if (schema)
           _sch = new SchemaEnv({ schema, schemaId, root, baseId });
       }
       if (_sch === void 0)
         return;
-      return root.refs[ref] = inlineOrCompile.call(this, _sch);
+      return root.refs[ref2] = inlineOrCompile.call(this, _sch);
     }
     exports.resolveRef = resolveRef;
     function inlineOrCompile(sch) {
@@ -9259,14 +9259,14 @@ var require_compile = __commonJS({
     function sameSchemaEnv(s1, s2) {
       return s1.schema === s2.schema && s1.root === s2.root && s1.baseId === s2.baseId;
     }
-    function resolve2(root, ref) {
+    function resolve2(root, ref2) {
       let sch;
-      while (typeof (sch = this.refs[ref]) == "string")
-        ref = sch;
-      return sch || this.schemas[ref] || resolveSchema.call(this, root, ref);
+      while (typeof (sch = this.refs[ref2]) == "string")
+        ref2 = sch;
+      return sch || this.schemas[ref2] || resolveSchema.call(this, root, ref2);
     }
-    function resolveSchema(root, ref) {
-      const p = this.opts.uriResolver.parse(ref);
+    function resolveSchema(root, ref2) {
+      const p = this.opts.uriResolver.parse(ref2);
       const refPath = (0, resolve_1._getFullPath)(this.opts.uriResolver, p);
       let baseId = (0, resolve_1.getFullPath)(this.opts.uriResolver, root.baseId, void 0);
       if (Object.keys(root.schema).length > 0 && refPath === baseId) {
@@ -9284,7 +9284,7 @@ var require_compile = __commonJS({
         return;
       if (!schOrRef.validate)
         compileSchema.call(this, schOrRef);
-      if (id === (0, resolve_1.normalizeId)(ref)) {
+      if (id === (0, resolve_1.normalizeId)(ref2)) {
         const { schema } = schOrRef;
         const { schemaId } = this.opts;
         const schId = schema[schemaId];
@@ -10284,26 +10284,26 @@ var require_core = __commonJS({
             return _compileAsync.call(this, sch);
           }
         }
-        function checkLoaded({ missingSchema: ref, missingRef }) {
-          if (this.refs[ref]) {
-            throw new Error(`AnySchema ${ref} is loaded but ${missingRef} cannot be resolved`);
+        function checkLoaded({ missingSchema: ref2, missingRef }) {
+          if (this.refs[ref2]) {
+            throw new Error(`AnySchema ${ref2} is loaded but ${missingRef} cannot be resolved`);
           }
         }
-        async function loadMissingSchema(ref) {
-          const _schema = await _loadSchema.call(this, ref);
-          if (!this.refs[ref])
+        async function loadMissingSchema(ref2) {
+          const _schema = await _loadSchema.call(this, ref2);
+          if (!this.refs[ref2])
             await loadMetaSchema.call(this, _schema.$schema);
-          if (!this.refs[ref])
-            this.addSchema(_schema, ref, meta);
+          if (!this.refs[ref2])
+            this.addSchema(_schema, ref2, meta);
         }
-        async function _loadSchema(ref) {
-          const p = this._loading[ref];
+        async function _loadSchema(ref2) {
+          const p = this._loading[ref2];
           if (p)
             return p;
           try {
-            return await (this._loading[ref] = loadSchema(ref));
+            return await (this._loading[ref2] = loadSchema(ref2));
           } finally {
-            delete this._loading[ref];
+            delete this._loading[ref2];
           }
         }
       }
@@ -12462,12 +12462,12 @@ var require_discriminator = __commonJS({
           for (let i = 0; i < oneOf.length; i++) {
             let sch = oneOf[i];
             if ((sch === null || sch === void 0 ? void 0 : sch.$ref) && !(0, util_1.schemaHasRulesButRef)(sch, it.self.RULES)) {
-              const ref = sch.$ref;
-              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref);
+              const ref2 = sch.$ref;
+              sch = compile_1.resolveRef.call(it.self, it.schemaEnv.root, it.baseId, ref2);
               if (sch instanceof compile_1.SchemaEnv)
                 sch = sch.schema;
               if (sch === void 0)
-                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref);
+                throw new ref_error_1.default(it.opts.uriResolver, it.baseId, ref2);
             }
             const propSch = (_a = sch === null || sch === void 0 ? void 0 : sch.properties) === null || _a === void 0 ? void 0 : _a[tagName];
             if (typeof propSch != "object") {
@@ -33645,9 +33645,9 @@ var require_ipaddr = __commonJS({
           return this.octets.slice(0);
         };
         IPv4.prototype.match = function(other, cidrRange) {
-          var ref;
+          var ref2;
           if (cidrRange === void 0) {
-            ref = other, other = ref[0], cidrRange = ref[1];
+            ref2 = other, other = ref2[0], cidrRange = ref2[1];
           }
           if (other.kind() !== "ipv4") {
             throw new Error("ipaddr: cannot match ipv4 address with non-ipv4 one");
@@ -33720,11 +33720,11 @@ var require_ipaddr = __commonJS({
         };
         if (match = string3.match(ipv4Regexes.fourOctet)) {
           return (function() {
-            var k, len, ref, results;
-            ref = match.slice(1, 6);
+            var k, len, ref2, results;
+            ref2 = match.slice(1, 6);
             results = [];
-            for (k = 0, len = ref.length; k < len; k++) {
-              part = ref[k];
+            for (k = 0, len = ref2.length; k < len; k++) {
+              part = ref2[k];
               results.push(parseIntAuto(part));
             }
             return results;
@@ -33748,7 +33748,7 @@ var require_ipaddr = __commonJS({
       };
       ipaddr.IPv6 = (function() {
         function IPv6(parts, zoneId) {
-          var i, k, l, len, part, ref;
+          var i, k, l, len, part, ref2;
           if (parts.length === 16) {
             this.parts = [];
             for (i = k = 0; k <= 14; i = k += 2) {
@@ -33759,9 +33759,9 @@ var require_ipaddr = __commonJS({
           } else {
             throw new Error("ipaddr: ipv6 part count should be 8 or 16");
           }
-          ref = this.parts;
-          for (l = 0, len = ref.length; l < len; l++) {
-            part = ref[l];
+          ref2 = this.parts;
+          for (l = 0, len = ref2.length; l < len; l++) {
+            part = ref2[l];
             if (!(0 <= part && part <= 65535)) {
               throw new Error("ipaddr: ipv6 part should fit in 16 bits");
             }
@@ -33794,11 +33794,11 @@ var require_ipaddr = __commonJS({
           return string3.substring(0, bestMatchIndex) + "::" + string3.substring(bestMatchIndex + bestMatchLength);
         };
         IPv6.prototype.toByteArray = function() {
-          var bytes, k, len, part, ref;
+          var bytes, k, len, part, ref2;
           bytes = [];
-          ref = this.parts;
-          for (k = 0, len = ref.length; k < len; k++) {
-            part = ref[k];
+          ref2 = this.parts;
+          for (k = 0, len = ref2.length; k < len; k++) {
+            part = ref2[k];
             bytes.push(part >> 8);
             bytes.push(part & 255);
           }
@@ -33807,11 +33807,11 @@ var require_ipaddr = __commonJS({
         IPv6.prototype.toNormalizedString = function() {
           var addr, part, suffix;
           addr = (function() {
-            var k, len, ref, results;
-            ref = this.parts;
+            var k, len, ref2, results;
+            ref2 = this.parts;
             results = [];
-            for (k = 0, len = ref.length; k < len; k++) {
-              part = ref[k];
+            for (k = 0, len = ref2.length; k < len; k++) {
+              part = ref2[k];
               results.push(part.toString(16));
             }
             return results;
@@ -33825,11 +33825,11 @@ var require_ipaddr = __commonJS({
         IPv6.prototype.toFixedLengthString = function() {
           var addr, part, suffix;
           addr = (function() {
-            var k, len, ref, results;
-            ref = this.parts;
+            var k, len, ref2, results;
+            ref2 = this.parts;
             results = [];
-            for (k = 0, len = ref.length; k < len; k++) {
-              part = ref[k];
+            for (k = 0, len = ref2.length; k < len; k++) {
+              part = ref2[k];
               results.push(part.toString(16).padStart(4, "0"));
             }
             return results;
@@ -33841,9 +33841,9 @@ var require_ipaddr = __commonJS({
           return addr + suffix;
         };
         IPv6.prototype.match = function(other, cidrRange) {
-          var ref;
+          var ref2;
           if (cidrRange === void 0) {
-            ref = other, other = ref[0], cidrRange = ref[1];
+            ref2 = other, other = ref2[0], cidrRange = ref2[1];
           }
           if (other.kind() !== "ipv6") {
             throw new Error("ipaddr: cannot match ipv6 address with non-ipv6 one");
@@ -33870,11 +33870,11 @@ var require_ipaddr = __commonJS({
           return this.range() === "ipv4Mapped";
         };
         IPv6.prototype.toIPv4Address = function() {
-          var high, low, ref;
+          var high, low, ref2;
           if (!this.isIPv4MappedAddress()) {
             throw new Error("ipaddr: trying to convert a generic ipv6 address to ipv4");
           }
-          ref = this.parts.slice(-2), high = ref[0], low = ref[1];
+          ref2 = this.parts.slice(-2), high = ref2[0], low = ref2[1];
           return new ipaddr.IPv4([high >> 8, high & 255, low >> 8, low & 255]);
         };
         IPv6.prototype.prefixLengthFromSubnetMask = function() {
@@ -33963,11 +33963,11 @@ var require_ipaddr = __commonJS({
           string3 = string3.slice(0, -1);
         }
         parts = (function() {
-          var k, len, ref, results;
-          ref = string3.split(":");
+          var k, len, ref2, results;
+          ref2 = string3.split(":");
           results = [];
-          for (k = 0, len = ref.length; k < len; k++) {
-            part = ref[k];
+          for (k = 0, len = ref2.length; k < len; k++) {
+            part = ref2[k];
             results.push(parseInt(part, 16));
           }
           return results;
@@ -45414,13 +45414,13 @@ var McpServer = class {
     });
     this._completionHandlerInitialized = true;
   }
-  async handlePromptCompletion(request, ref) {
-    const prompt = this._registeredPrompts[ref.name];
+  async handlePromptCompletion(request, ref2) {
+    const prompt = this._registeredPrompts[ref2.name];
     if (!prompt) {
-      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref.name} not found`);
+      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref2.name} not found`);
     }
     if (!prompt.enabled) {
-      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref.name} disabled`);
+      throw new McpError(ErrorCode.InvalidParams, `Prompt ${ref2.name} disabled`);
     }
     if (!prompt.argsSchema) {
       return EMPTY_COMPLETION_RESULT;
@@ -45437,10 +45437,10 @@ var McpServer = class {
     const suggestions = await completer(request.params.argument.value, request.params.context);
     return createCompletionResult(suggestions);
   }
-  async handleResourceCompletion(request, ref) {
-    const template = Object.values(this._registeredResourceTemplates).find((t) => t.resourceTemplate.uriTemplate.toString() === ref.uri);
+  async handleResourceCompletion(request, ref2) {
+    const template = Object.values(this._registeredResourceTemplates).find((t) => t.resourceTemplate.uriTemplate.toString() === ref2.uri);
     if (!template) {
-      if (this._registeredResources[ref.uri]) {
+      if (this._registeredResources[ref2.uri]) {
         return EMPTY_COMPLETION_RESULT;
       }
       throw new McpError(ErrorCode.InvalidParams, `Resource template ${request.params.ref.uri} not found`);
@@ -46510,7 +46510,7 @@ ${skillIndexText()}`
       Notebook: external_exports.string().optional().describe("Optional notebook hash/id. If omitted, uses the focused notebook.")
     },
     async ({ Notebook }) => {
-      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
+      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", {
         Notebook: notebookId
       });
@@ -46553,7 +46553,7 @@ ${skillIndexText()}`
   );
   register(
     "get_focused_notebook",
-    "Return the id/hash of the currently focused notebook.",
+    "Return the id/hash and kernel info of the currently focused notebook.",
     {},
     () => wlCall("/api/notebook/focused/", {})
   );
@@ -46566,6 +46566,16 @@ ${skillIndexText()}`
     ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook }),
     {
       title: "List Cells",
+      annotations: READ_ONLY_LOCAL
+    }
+  );
+  register(
+    "list_kernels",
+    "List all kernels available",
+    {},
+    ({}) => wlCall("/api/kernel/list/", {}),
+    {
+      title: "List Kernels",
       annotations: READ_ONLY_LOCAL
     }
   );
@@ -46748,19 +46758,24 @@ ${skillIndexText()}`
       },
       ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell })
     );
+    const lookup = (number3, def) => {
+      if (!number3) return def;
+      return ref;
+    };
     register(
       "kernel_evaluate",
-      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code with 25 seconds timeout interval",
+      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code",
       {
         Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
-        Kernel: external_exports.string().optional().describe("Optional kernel hash/id.")
+        Kernel: external_exports.string().optional().describe("Optional kernel hash/id."),
+        TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds.")
       },
-      ({ Expression, Kernel }) => wlCall(
+      ({ Expression, Kernel, TimeLimit }) => wlCall(
         "/api/kernel/evaluate/",
-        compact({ Expression, Kernel }),
+        compact({ Expression, Kernel, TimeLimit }),
         {
           wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20)
         }
       ),
       {
@@ -47304,7 +47319,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "context": {
       const opts2 = parseCliOptions(args);
       const Notebook = opts2.Notebook ?? opts2.notebook;
-      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
+      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
       let focusedCell = null;
       try {
@@ -47334,20 +47349,20 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const From = parsePositiveIntParam(args.shift(), "From");
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
-      writeJson(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      writeText(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
       return 0;
     }
     case "full": {
       const Cell = requireCliArg(args.shift(), "Usage: wljs full <cell>");
       const MaxCharacters = 9999999;
-      writeJson(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
+      writeText(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
       return 0;
     }
     case "docs": {
       const opts2 = parseCliOptions(args.filter((a) => a.startsWith("--")));
       const positional = args.filter((a) => !a.startsWith("--"));
       const Query = requireCliArg(positional.join(" "), "Usage: wljs docs <query> [--wl-only]");
-      writeJson(stdout, await cliConsultDocs(Query, 60, !!(opts2["wl-only"] ?? opts2.wolframOnly)));
+      writeText(stdout, await cliConsultDocs(Query, 60, !!(opts2["wl-only"] ?? opts2.wolframOnly)));
       return 0;
     }
     case "wl":
@@ -47385,7 +47400,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "project": {
       const Cell = requireCliArg(args.shift(), "Usage: wljs project <cell>");
-      writeJson(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
+      writeText(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
       return 0;
     }
     case "add": {
@@ -47570,49 +47585,49 @@ function extractCliCellId(value) {
   }
   return null;
 }
-async function cliConsultDocs(Query, LinesCount = 60, wolframOnly = false) {
-  const localMatches = wolframOnly ? [] : findSkillDocs(Query);
+async function cliConsultDocs(query, linesCount = 60, wolframOnly = false) {
+  const localMatches = wolframOnly ? [] : findSkillDocs(query);
   if (localMatches.length > 0) {
-    return {
-      Source: "bundled-wljs-skills",
-      Query,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri
-      })),
-      Documents: localMatches.map(({ key, title, uri, text }) => ({
-        key,
-        title,
-        uri,
-        text
-      }))
-    };
+    return formatHumanResult({
+      source: "Bundled WLJS Skills",
+      query,
+      docs: localMatches
+    });
   }
   try {
-    return {
-      Source: "wolfram-language-llm-docs",
-      Query,
-      Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri
-      }))
-    };
+    const result = await wlCall("/api/docs/find/", {
+      Query: query,
+      LinesCount: linesCount
+    });
+    return formatHumanResult({
+      source: "Wolfram Language Docs",
+      query,
+      docs: Array.isArray(result) ? result : [result]
+    });
   } catch (error2) {
-    return {
-      Source: "not-found",
-      Query,
-      Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${error2?.message ?? String(error2)}`,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({
-        key,
-        title,
-        uri,
-        aliases
-      }))
-    };
+    return [
+      `No documentation found for "${query}".`,
+      "",
+      `Lookup failed: ${error2?.message ?? String(error2)}`
+    ].join("\n");
   }
+}
+function formatHumanResult({ source, query, docs }) {
+  const sections = [
+    `# ${source}`,
+    "",
+    `Query: ${query}`
+  ];
+  for (const doc of docs) {
+    sections.push(
+      "",
+      `## ${doc.title ?? doc.key}`,
+      doc.uri ? `URI: ${doc.uri}` : "",
+      "",
+      typeof doc.text === "string" ? doc.text : JSON.stringify(doc, null, 2)
+    );
+  }
+  return sections.join("\n");
 }
 function cliHelpText() {
   return `WLJS Notebook CLI

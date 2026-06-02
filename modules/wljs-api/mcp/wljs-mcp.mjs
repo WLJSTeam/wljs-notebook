@@ -650,7 +650,7 @@ register(
       .describe("Optional notebook hash/id. If omitted, uses the focused notebook."),
   },
   async ({ Notebook }) => {
-    const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {}));
+    const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
     const cells = await wlCall("/api/notebook/cells/list/", {
       Notebook: notebookId,
     });
@@ -699,7 +699,7 @@ register(
 
 register(
   "get_focused_notebook",
-  "Return the id/hash of the currently focused notebook.",
+  "Return the id/hash and kernel info of the currently focused notebook.",
   {},
   () => wlCall("/api/notebook/focused/", {}),
 );
@@ -713,6 +713,19 @@ register(
   ({ Notebook }) => wlCall("/api/notebook/cells/list/", { Notebook }),
   {
   title: "List Cells",
+  annotations: READ_ONLY_LOCAL,
+}
+);
+
+register(
+  "list_kernels",
+  "List all kernels available",
+  {
+
+  },
+  ({  }) => wlCall("/api/kernel/list/", {  }),
+  {
+  title: "List Kernels",
   annotations: READ_ONLY_LOCAL,
 }
 );
@@ -929,23 +942,29 @@ register(
     ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell }),
   );
 
+  const lookup = (number, def) => {
+    if (!number) return def;
+    return ref;
+  };
+  
   register(
     "kernel_evaluate",
-    "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code with 25 seconds timeout interval",
+    "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code",
     {
       Expression: z
         .string()
         .min(1)
         .describe("Wolfram Language expression to evaluate."),
       Kernel: z.string().optional().describe("Optional kernel hash/id."),
+      TimeLimit: z.number().optional().describe("Optional time limit in seconds.")
     },
-    ({ Expression, Kernel }) =>
+    ({ Expression, Kernel, TimeLimit }) =>
       wlCall(
         "/api/kernel/evaluate/",
-        compact({ Expression, Kernel }),
+        compact({ Expression, Kernel, TimeLimit }),
         {
           wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20),
         },
       ),
       {
@@ -1554,7 +1573,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const opts = parseCliOptions(args);
       const Notebook = opts.Notebook ?? opts.notebook;
 
-      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {}));
+      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
 
       let focusedCell = null;
@@ -1591,7 +1610,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
       assertLineRange({ From, To });
 
-      writeJson(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      writeText(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
       return 0;
     }
 
@@ -1599,7 +1618,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const Cell = requireCliArg(args.shift(), "Usage: wljs full <cell>");
       const MaxCharacters = 9999999;
 
-      writeJson(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
+      writeText(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
       return 0;
     }    
 
@@ -1607,7 +1626,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const opts = parseCliOptions(args.filter((a) => a.startsWith("--")));
       const positional = args.filter((a) => !a.startsWith("--"));
       const Query = requireCliArg(positional.join(" "), "Usage: wljs docs <query> [--wl-only]");
-      writeJson(stdout, await cliConsultDocs(Query, 60, !!(opts["wl-only"] ?? opts.wolframOnly)));
+      writeText(stdout, await cliConsultDocs(Query, 60, !!(opts["wl-only"] ?? opts.wolframOnly)));
       return 0;
     }
 
@@ -1650,7 +1669,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
     case "project": {
       const Cell = requireCliArg(args.shift(), "Usage: wljs project <cell>");
-      writeJson(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
+      writeText(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
       return 0;
     }
 
@@ -1894,53 +1913,57 @@ function extractCliCellId(value) {
   return null;
 }
 
-async function cliConsultDocs(Query, LinesCount = 60, wolframOnly = false) {
-  const localMatches = wolframOnly ? [] : findSkillDocs(Query);
+async function cliConsultDocs(query, linesCount = 60, wolframOnly = false) {
+  const localMatches = wolframOnly ? [] : findSkillDocs(query);
 
   if (localMatches.length > 0) {
-    return {
-      Source: "bundled-wljs-skills",
-      Query,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri,
-      })),
-      Documents: localMatches.map(({ key, title, uri, text }) => ({
-        key,
-        title,
-        uri,
-        text,
-      })),
-    };
+    return formatHumanResult({
+      source: "Bundled WLJS Skills",
+      query,
+      docs: localMatches,
+    });
   }
 
   try {
-    return {
-      Source: "wolfram-language-llm-docs",
-      Query,
-      Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri,
-      })),
-    };
+    const result = await wlCall("/api/docs/find/", {
+      Query: query,
+      LinesCount: linesCount,
+    });
+
+    return formatHumanResult({
+      source: "Wolfram Language Docs",
+      query,
+      docs: Array.isArray(result) ? result : [result],
+    });
   } catch (error) {
-    return {
-      Source: "not-found",
-      Query,
-      Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${
-        error?.message ?? String(error)
-      }`,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({
-        key,
-        title,
-        uri,
-        aliases,
-      })),
-    };
+    return [
+      `No documentation found for "${query}".`,
+      "",
+      `Lookup failed: ${error?.message ?? String(error)}`,
+    ].join("\n");
   }
+}
+
+function formatHumanResult({ source, query, docs }) {
+  const sections = [
+    `# ${source}`,
+    "",
+    `Query: ${query}`,
+  ];
+
+  for (const doc of docs) {
+    sections.push(
+      "",
+      `## ${doc.title ?? doc.key}`,
+      doc.uri ? `URI: ${doc.uri}` : "",
+      "",
+      typeof doc.text === "string"
+        ? doc.text
+        : JSON.stringify(doc, null, 2)
+    );
+  }
+
+  return sections.join("\n");
 }
 
 function cliHelpText() {
