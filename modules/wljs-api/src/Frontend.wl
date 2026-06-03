@@ -868,12 +868,11 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                             ], out]], Function[shortened,
                             
                               EventFire[promise, Resolve, MapThread[Function[{c, o}, <|
-                                <|
+                                Join[<|
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
-                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ],
-                                    "Preview" -> If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], o, Nothing]
-                                |> 
+                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
+                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Preview" -> o|>, <||>] ] 
                               |> ], {out, shortened}] ]; 
                             ]];
                         ]
