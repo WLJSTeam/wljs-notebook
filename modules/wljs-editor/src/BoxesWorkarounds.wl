@@ -55,7 +55,7 @@ Short /: MakeBoxes[Short[expr_], StandardForm | TraditionalForm] := Module[{row 
     If[Length[row] == 0,
     RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
     ,
-    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}] ]
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index+1], ">>"}]}] ]
     ]
   ])
 }, 
@@ -88,7 +88,7 @@ Short /: MakeBoxes[Short[expr_, lines_Integer], StandardForm | TraditionalForm] 
     If[Length[row] == 0,
     RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
     ,
-    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}], "\n "]
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index+1], ">>"}]}], "\n "]
     ]
   ])
 }, 
