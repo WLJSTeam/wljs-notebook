@@ -945,7 +945,7 @@ register(
 
   const lookup = (number, def) => {
     if (!number) return def;
-    return ref;
+    return number;
   };
   
   register(
