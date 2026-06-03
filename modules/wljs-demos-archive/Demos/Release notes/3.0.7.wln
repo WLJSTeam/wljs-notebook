@@ -1,0 +1,344 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes *3.0.7*
+
+<Now/>
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes *3.0.7*
+
+Wed 3 Jun 2026 17:07:47
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## TraditionalForm
+We implemented `TraditionalForm`, which was missing in WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## TraditionalForm
+We implemented `TraditionalForm`, which was missing in WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Integrate[f[x], x] // TraditionalForm
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Null)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeO5AISY0Iy0wtRwj4p6Xl5CdCVXACidAgH5fU5PyU1GB5IE/V1Dkzr0TVyCBN1ciiQtXIEsgEiqkaAZFBSgUAmPIW7A=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also use it for labels and plot legends.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also use it for labels and plot legends.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[Sin[x], {x, 0, 1}, PlotLegends->{Sin[x]//TraditionalForm}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Legended[ToExpression[FrontEndRef["21a0dc29-abb8-4d97-8f62-a4e5a28975fa"], InputForm], Placed[LineLegend[{Directive[Opacity[1.], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, {BoxForm`TeXForm[Sin[HoldForm[x]]]}, LegendMarkers -> None, LabelStyle -> {}, LegendLayout -> "Column"], After, Identity]])(*,*)(*"1:eJxdUUtOwzAQDVC+AiE4ABIS20gQWtquopamgFQoNBViiROPwaprI9uB5gAcAk7SU3AJVogNR8AfgdTO4sWeeZ5587KfiQFZCoJAbRm4pfDSgVxIpIVMV02mBw/AcUQWLWXDQIKpqVkiWbC5XQNdKbhOOE4mkBcaZQzSA5OOjtAhzqNmiLKsEVZxsx42yEkUoirUUNRo1msE+cYVA4PCPFuzB0C4z1npskNZgNe3YuCaoRwwWf4T06McvEIvpuJySvsX6wY6VEKu6TN4gl2p/4RyqksZuPiJPdlNPmufCiaknO69ft9MP2J57OIzlu9vNr5i32bHQCtTghUaho80H3FQitpV5nS427aBtph0hRzfD+HOfn3BDk4p9xcr4FwwbMvKZiaz3rgf5Je9RHIEUrnSleAwR3TOoAxYqksGJJhRNEvd/O/ZQ6UodGpdNh4UY66syy2izSAr7QID18a2X1CCiro="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Settings Hot Reload & Dark Mode Update
+Now you don't have to restart WLJS every time you change a setting (for the most part). All open notebooks will automatically reload once you change something.
+
+In addition, we added contrast and brightness adjustments for dark mode, so you can tune it continuously until it feels comfortable for your eyes.
+
+
+![](/attachments/Screenshot-2026-06-03-at-16.55.40-ddd.png)
+
+<br/>
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Settings Hot Reload & Dark Mode Update
+Now you don't have to restart WLJS every time you change a setting (for the most part). All open notebooks will automatically reload once you change something.
+
+In addition, we added contrast and brightness adjustments for dark mode, so you can tune it continuously until it feels comfortable for your eyes.
+
+
+![](/attachments/Screenshot-2026-06-03-at-16.55.40-ddd.png)<br />
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Window Manager Refactor & Offscreen Rendering
+We simplified and improved many things in our codebase. `Rasterize` and many other system features no longer require open windows and work seamlessly in the background. However, for most users, this will not make a huge difference; for future maintenance and advanced WLJS usage, it makes a big difference.
+
+If you are using the WLJS desktop application, try:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Window Manager Refactor & Offscreen Rendering
+We simplified and improved many things in our codebase. `Rasterize` and many other system features no longer require open windows and work seamlessly in the background. However, for most users, this will not make a huge difference; for future maintenance and advanced WLJS usage, it makes a big difference.
+
+If you are using the WLJS desktop application, try:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Rasterize[Plot[x, {x,0,1}]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`CellPrint` no longer requires additional parameters when used without an evaluation context, for example inside a `Button`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`CellPrint` no longer requires additional parameters when used without an evaluation context, for example inside a `Button`.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Print", CellPrint[RandomColor[]]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## CLI Update
+You can use the `wljs` utility not only to inspect notebooks,
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## CLI Update
+You can use the `wljs` utility not only to inspect notebooks,
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.sh
+wljs focused
+
+%-------------------------------------------------------------------------%
+Display: shell
+Type: Output
+%-------------------------------------------------------------------------%
+{
+  "Id": "008",
+  "Kernel": "002"
+}
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+but also to run Wolfram Language, similar to `wolframscript`. Here is an analogue of the `ls` or `dir` command, for example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+but also to run Wolfram Language, similar to `wolframscript`. Here is an analogue of the `ls` or `dir` command, for example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.sh
+wljs -c 'FileNames["*"]'
+
+%-------------------------------------------------------------------------%
+Display: shell
+Type: Output
+%-------------------------------------------------------------------------%
+{"2.5.0.wln", "2.5.2.wln", "2.5.3.wln", "2.5.4.wln", "2.5.6.wln", "2.5.7.wln", "2.5.9.wln", "2.6.1.wln", "2.6.2.wln", "2.6.3.wln", "2.6.4.wln", "2.6.5.wln", "2.6.7.wln", "2.6.8.wln", "2.7.0.wln", "2.7.1.wln", "2.7.2.wln", "2.7.2 X1.wln", "2.7.3.wln", "2.7.4.wln", "2.7.5.wln", "2.7.6.wln", "2.7.8.wln", "2.7.9.wln", "2.8.0.wln", "2.8.1.wln", "2.8.2.wln", "2.8.3.wln", "2.8.5.wln", "2.8.7.wln", "2.8.8.wln", "2.8.9.wln", "2.9.1.wln", "2.9.2.wln", "3.0.0.wln", "3.0.1.wln", "3.0.2.wln", "3.0.3.wln", "3.0.4.wln", "3.0.5.wln", "3.0.7.wln", "attachments", ".DS_Store", ".iconized"}
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`Rasterize` and WLJS-specific functions will work out of the box too.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`Rasterize` and WLJS-specific functions will work out of the box too.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.sh
+wljs -c 'Rasterize[TeXView[TeXForm[1/2]]]'
+
+%-------------------------------------------------------------------------%
+Display: shell
+Type: Output
+%-------------------------------------------------------------------------%
+<<Image>>
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## MCP Update
+With help from @Hachann, we significantly improved tools for AI agents and reduced token consumption.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## MCP Update
+With help from @Hachann, we significantly improved tools for AI agents and reduced token consumption.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## AF Update
+The animation framework got an update. It is more stable and renders animations for export fully offscreen at up to 2K resolution, using native NodeJS I/O to write frames to disk and bypass the Wolfram Kernel entirely.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## AF Update
+The animation framework got an update. It is more stable and renders animations for export fully offscreen at up to 2K resolution, using native NodeJS I/O to write frames to disk and bypass the Wolfram Kernel entirely.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Misc
+- Improved `Short`
+- Fixed encoding issues for `Text`
+- Added missing binaries
+- Improved `MMAView`, `GeoGraphics`, and `TeXForm`
+- Stability improvements
+- WLW (Mini Apps) bug fixes
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Misc
+- Improved `Short`
+- Fixed encoding issues for `Text`
+- Added missing binaries
+- Improved `MMAView`, `GeoGraphics`, and `TeXForm`
+- Stability improvements
+- WLW (Mini Apps) bug fixes
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 21a0dc29-abb8-4d97-8f62-a4e5a28975fa
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold["(*VB[*)(FrontEndRef[\"0f5eec31-85b6-41e4-89b1-12aaca479480\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6SZpqYmGxvqWpgmmemaGKaa6FpYJhnqGholJiYnmphbmlgYAACFPRVv\"*)(*]VB*)"]|>
+
+%-------------------------------------------------------------------------%
+Key: 0f5eec31-85b6-41e4-89b1-12aaca479480
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671791575050025}, {0.0006134154329559882, 0.0006134153944868164}, {0.0012268104577487112, 0.0012268101500107125}, {0.002453600507334157, 0.002453598045492154}, {0.004907180606505049, 0.0049071609120325274}, {0.009814340804846833, 0.009814183250618625}, {0.0196286612015304, 0.019627400789846955}, {0.040908357085458646, 0.040896948060643964}, {0.06077788357015209, 0.06074047205867373}, {0.08025764881887605, 0.08017151609612862}, {0.10138846915816112, 0.10121485256692031}, {0.12110912009821138, 0.1208132774430389}, {0.1424808261288228, 0.1419992364323012}, {0.16346277092346467, 0.16273578654011714}, {0.18303454631887175, 0.18201426380639293}, {0.20425737680483996, 0.20284003044248292}, {0.22407003789157337, 0.22219974420484076}, {0.24349293774233727, 0.24109399254344727}, {0.26456689268366235, 0.2614912549747931}, {0.2842306782257526, 0.28041907956046414}, {0.305545518858404, 0.3008134720018645}, {0.32647059825508584, 0.32070205358139503}, {0.34598550825253294, 0.33912395048968885}, {0.3671514733405411, 0.35895820916553417}, {0.3869072690293145, 0.3773261065420019}, {0.408314119808649, 0.3970626064265814}, {0.429331209352014, 0.41626280145262945}, {0.44893812949614426, 0.43400913084585263}, {0.47019610473083556, 0.45306111742878696}, {0.4900439105662921, 0.4706646314529095}, {0.5095019551657791, 0.48774252046139566}, {0.5306110548558273, 0.5060604692420694}, {0.5503099851466406, 0.5229514737526978}, {0.5716599705280151, 0.5410288354199637}, {0.5926201946734201, 0.5585363369378391}, {0.6121702494195903, 0.5746449502417555}, {0.6333713592563216, 0.5918655556761888}, {0.6531622996938181, 0.6077008311209547}, {0.6725634788953451, 0.6229932547540818}, {0.6936157131874332, 0.6393216196907799}, {0.7132577780802865, 0.6543008823566708}, {0.7345508980637009, 0.6702539303951285}, {0.7544338486478805, 0.6848762469337194}, {0.7739270379960906, 0.6989491260962094}, {0.7950712824348619, 0.713913521124578}, {0.8148053574743983, 0.7275920856588592}, {0.8361904876044959, 0.7420950149452272}, {0.857185856498624, 0.7560035118289974}, {0.8767710559935172, 0.7686775392167747}, {0.8980073105789717, 0.7820866796183719}, {0.9178333957651912, 0.7942871812009034}, {0.9372697197154413, 0.8059448058479606}, {0.9583570987562524, 0.8182482264766686}, {0.9780343083978288, 0.8294008321577683}, {0.9783775220102351, 0.8295925209516917}, {0.9787207356226415, 0.8297841120232808}, {0.9794071628474543, 0.8301670009091933}, {0.9807800172970798, 0.8309316050207604}, {0.9835257261963308, 0.8324561135629863}, {0.9890171439948328, 0.835486291759906}, {0.9893603576072392, 0.835674842302319}, {0.9897035712196455, 0.8358632944059272}, {0.9903899984444582, 0.8362399032079451}, {0.9917628528940837, 0.836991938570351}, {0.9945085617933347, 0.838491275371705}, {0.9948517754057411, 0.8386782482358804}, {0.9951949890181475, 0.838865122307463}, {0.9958814162429602, 0.8392385739848094}, {0.9972542706925858, 0.8399842908605987}, {0.9975974843049922, 0.840170472768321}, {0.9979406979173985, 0.8403565557076729}, {0.9986271251422112, 0.8407284245935985}, {0.9989703387546176, 0.8409142104963677}, {0.999313552367024, 0.8410998973431576}, {0.9996567659794304, 0.8412854851120951}, {0.9999999795918367, 0.8414709737813186}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.8414709737813186}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.8414709737813186}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 1629631085legend
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["(*VB[*)(Null)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeO5AISY0Iy0wtRwj4p6Xl5CdCVXACidAgH5fU5PyU1GABIE/V1Lk4M0/VyEDVyKJC1cgSAFlmE1U=\"*)(*]VB*)", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
