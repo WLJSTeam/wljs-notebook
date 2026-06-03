@@ -192,7 +192,7 @@ init[k_] := Module[{},
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[shortform, Min[StringLength[shortform], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringReplace[StringTake[shortform, Min[StringLength[shortform], 5000]], {">"->"&gt;", "<"->"&lt;"} ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
                             ]
                         ]
                     ]
