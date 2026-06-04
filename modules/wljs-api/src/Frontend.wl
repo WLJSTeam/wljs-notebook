@@ -816,6 +816,19 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
     ]
 ]
 
+clonedChannels = <||>;
+
+getMessagesEventChannel[nb_nb`NotebookObj] := If[clonedChannels[nb["Hash"]]["Origin"] =!= nb["MessangerChannel"],
+  Echo["Clonning event channel used for messaging"];
+  With[{cloned = EventClone[nb["MessangerChannel"]], hash = nb["Hash"]},
+    clonedChannels[hash] = <|"Origin"->nb["MessangerChannel"], "Target"->cloned|>;
+    cloned
+  ]
+,
+  Echo["Using cached cloned event channel"];
+  clonedChannels[nb["Hash"]]["Target"]  
+]
+
 (* 
    /api/notebook/cells/evaluate/ - Evaluate a cell and get output cell IDs
    
@@ -840,24 +853,41 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
          timeout = Lookup[body, "TimeLimit", 20]},
         {notebook = cell["Notebook"]},
+        {events = getMessagesEventChannel[notebook]},
+        
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
         If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
-            With[{controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[]},
+            With[{
+                controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[],
+                accumulatedMessages = Unique[]
+            },
                 (*fixme*)
                 Block[{Global`$Client = socket}, With[{
                     timer = SetTimeout[
                         EventFire[controller, "Abort", Null];
-                        EventFire[promise, Resolve, "$TimedOut" ];                        
+                        EventFire[promise, Resolve, "$TimedOut" ]; 
+                        EventRemove[events, "Warning"];
+                        ClearAll[accumulatedMessages];
                     , 1000 timeout]
                 },
-  
+
+                    accumulatedMessages = {};
+                    EventHandler[events, {
+                        "Warning" -> Function[dt,
+                            Echo["------"]; AppendTo[accumulatedMessages, dt]; Echo["------"]
+                        ]
+                    }];
+                    
                     Then[EventFire[controller, "NotebookCellEvaluateTemporal", cell], Function[Null,
                         TaskRemove[timer];
 
                         With[{
                             out = Select[cell`SelectCells[notebook["Cells"], Sequence[cell, __?cell`OutputCellQ] ], cell`OutputCellQ]
                         },
+
+                            EventRemove[events, "Warning"];
+                            
                             (* post-process to make shorter versions *)
                             Then[majorHeadsPreview[notebook["Evaluator"]["Kernel"], Map[Function[c,
                                 If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]],
@@ -866,14 +896,23 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                     "0"
                                 ]
                             ], out]], Function[shortened,
-                            
-                              EventFire[promise, Resolve, MapThread[Function[{c, o}, <|
+
+                              With[{cellsGenerated = MapThread[Function[{c, o}, <|
                                 Join[<|
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
                                     "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
                                 |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Preview" -> o|>, <||>] ] 
-                              |> ], {out, shortened}] ]; 
+                              |> ], {out, shortened}]},
+                              
+                                If[Length[accumulatedMessages] > 0,
+                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->accumulatedMessages|>}]]; 
+                                ,
+                                    EventFire[promise, Resolve,  cellsGenerated]; 
+                                ];
+                                ClearAll[accumulatedMessages];
+                               
+                              ];
                             ]];
                         ]
                     ] ];
@@ -930,6 +969,8 @@ apiCall[request_, "/api/notebook/cells/project/"] := Module[{body = request["Bod
 apiCall[request_, "/api/kernel/"] := {
     "/api/kernel/evaluate/"
 }
+
+
 
 (* 
    /api/kernel/evaluate/ - Evaluate an expression in the kernel directly
@@ -1001,6 +1042,7 @@ apiCall[request_, "/api/kernel/list/"] := Module[{},
         <|"Id"->toAlias[#["Hash"]], "Name"->#["Name"]|>
      ], Select[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]]
 ]
+
 
 existsOrEmpty[settings_, field_] := If[KeyExistsQ[settings, field], settings[field], {}]
 

@@ -1110,7 +1110,7 @@ Component[OptionsPattern[]] := With[{
             notebook["Opened"] = True;
             notebook["Socket"] = $Client;
             notebook["ModalsChannel"] = modals;
-            notebook["MessangerChannel"] = Messanger;
+            notebook["MessangerChannel"] = log;
             notebook["Controller"] = controller;
 
             appGlobals["CurrentNotebook"] = notebook;
