@@ -42,7 +42,7 @@ Typeset math input, expressive syntax, rich media output, and live interactivity
 - **[Github Discussions](https://github.com/JerryI/wolfram-js-frontend/discussions)** 💬
 - **[Telegram Support Chat](https://t.me/wljs_support)** 🐴
 
-**Recommended [Wolfram Engine](https://www.wolfram.com/engine/): Version > 13.3**
+**Recommended [Wolfram Engine](https://www.wolfram.com/engine/): Version 14.3**
 
 > The algorithms, functions, and other components of the Wolfram Language provided by the Wolfram Engine are the intellectual property of Wolfram Research, Inc.
 
