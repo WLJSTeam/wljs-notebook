@@ -66,6 +66,8 @@ Options[WebUILocation] = {"Target" -> "Same", "Features"->False}
 System`UIClose;(*`*)
 
 WebUIClose[cli_:Global`$Client (*`*)] := WebUISubmit[UIClose[], cli]
+WebUIClose[cli_:Global`$Client (*`*), "Reload"] := WebUISubmit[UIClose["Reload"], cli]
+
 
 (* /* WLX Refresher */ *)
 (* /* holds expressions inside and loads by a signal via WebSockets */ *)
@@ -267,6 +269,7 @@ WebUIInitializationScript = With[{},
             
             console.warn('close');
             if (core.UIClose.unload) return;
+            if (args.length > 0) {window.location.reload(); return;}
             window.close();
         }
 

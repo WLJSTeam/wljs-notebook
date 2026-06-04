@@ -36,6 +36,10 @@ settings = <||>;
 
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 NotebookQ[str_] := FileExtension[str] === "wln"
 
 
@@ -181,10 +185,10 @@ App[request_] := Module[{localExtensions}, With[{
         
         SidebarId = CreateUUID[],
         ModalController = CreateUUID[],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         GlobalMessanger = CreateUUID[],
         kernels = Hold[AppExtensions`KernelList] (*`*),
-        GlobalParameters = Join[<|"Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
+        GlobalParameters = Join[<|"Draggable"->True, "Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
         AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
         NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],
         
@@ -310,7 +314,7 @@ App[request_] := Module[{localExtensions}, With[{
             }
           </style>
           <div class="h-full" id="frame">
-            <div class="h-full flex flex-col">
+            <div class="h-full flex flex-col" style="app-region: drag">
               <Views Parameters={GlobalParameters} Modals={ModalController} Kernels={kernels} Path={n["Path"]} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={localExtensions}/>
             </div> 
           </div>

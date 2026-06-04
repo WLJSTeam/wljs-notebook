@@ -7,7 +7,8 @@ BeginPackage["CoffeeLiqueur`Extensions`MarkdownCells`", {
     "CoffeeLiqueur`Extensions`FrontendObject`",
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Extensions`Boxes`",
-    "CoffeeLiqueur`Misc`Parallel`"
+    "CoffeeLiqueur`Misc`Parallel`",
+    "CoffeeLiqueur`Misc`WLJS`Transport`"
 }];
 
 TeXView::usage = "TeXView[expr_] renders expr as LaTeX equation"
@@ -71,6 +72,7 @@ TeXView /: MakeBoxes[TeXView[expr_, opts___], StandardForm] := With[{o = ViewBox
 
 Options[TeXView] = {ImageSize->Automatic, "AnchorPoint"->"Center"};
 
+TeXView[expr_String] := With[{enc = URLEncode[expr]}, TeXView[Offload[URLDecode[enc]]]]
 
 TeXFormAsync[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
@@ -79,6 +81,19 @@ TeXFormAsync[all__] := (
     cbk @ ToString[TeXForm @@ args, InputForm]
   ], {all}]
 )
+
+
+Unprotect[TraditionalForm]
+DownValues[TraditionalForm] = {};
+
+(* default render sucks, we replace it with true LaTeX *)
+Unprotect[TraditionalForm]
+DownValues[TraditionalForm] = {};
+TraditionalForm[expr_] := BoxForm`TeXForm[expr]
+
+BoxForm`TeXForm /: MakeBoxes[BoxForm`TeXForm[expr_], form_] := With[{tex = TeXForm[expr]//TeXView},
+  MakeBoxes[tex, form]
+]
 
 End[]
 

@@ -2,8 +2,11 @@ BeginPackage["CoffeeLiqueur`Notebook`SettingsUtils`"];
 
 initialize;
 storeConfiguration;
+events;
 
 Begin["`Internal`"];
+
+events = CreateUUID[];
 
 loadConfiguration  := If[FileExistsQ[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Get[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Missing[] ];
 storeConfiguration[c_Association] := Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ];

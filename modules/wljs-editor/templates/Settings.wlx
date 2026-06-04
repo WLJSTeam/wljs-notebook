@@ -32,8 +32,8 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
     EventHandler[controller, {
         "Charlim" -> Function[value,
             If[NumericQ[parseInt[value]],
-                onsave[<|"OutputCharactersLimit" -> parseInt[value]|>];
-                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a Kernel required"];
+                onsave[<|"OutputCharactersLimit" -> parseInt[value]|>, False];
+                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a kernel is required"];
             ,
                 EventFire[Messager, Notifications`NotificationMessage["Warning"](*`*), "Not a valid number!"];
             ];
@@ -41,8 +41,8 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
 
         "Felim" -> Function[value,
             If[NumericQ[parseInt[value]],
-                onsave[<|"FrontEndObjectSizeLimit" -> parseInt[value]|>];
-                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a Kernel required"];
+                onsave[<|"FrontEndObjectSizeLimit" -> parseInt[value]|>, False];
+                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a kernel is required"];
             ,
                 EventFire[Messager, Notifications`NotificationMessage["Warning"](*`*), "Not a valid number!"];
             ];
@@ -50,16 +50,16 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
         
         "Boxlimit" -> Function[value,
             If[NumericQ[parseInt[value]],
-                onsave[<|"SummaryBoxSizeLimit" -> parseInt[value]|>];
-                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a Kernel required"];
+                onsave[<|"SummaryBoxSizeLimit" -> parseInt[value]|>, False];
+                EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Restart of a kernel is required"];
             ,
                 EventFire[Messager, Notifications`NotificationMessage["Warning"](*`*), "Not a valid number!"];
             ];
         ],
 
         "Rescan" -> Function[state,
-                onsave[<|"EnableAutocompleteScan" -> (state === "true")|>];
-                EventFire[log, Notifications`NotificationMessage["Warning"](*`*), "Restart of a Kernel required"];
+                onsave[<|"EnableAutocompleteScan" -> (state === "true")|>, False];
+                EventFire[log, Notifications`NotificationMessage["Warning"](*`*), "Restart of a kernel is required"];
         ],
 
         "CacheInNotebook" -> Function[Null,

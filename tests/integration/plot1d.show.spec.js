@@ -70,6 +70,35 @@ test.describe('1D Plot', () => {
     const outputCell = await evaluate(page, 'Plot[{Sin[x], Cos[x]}, {x, 0, 5}, PlotLegends -> SwatchLegend["Expressions"]]', 15000, 500);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'swatchplot.png']);
   });
+
+  test('Legended Swatch plot with StandardForm', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Plot[{Sin[x], Cos[x]}, {x, 0, 5}, PlotLegends -> SwatchLegend[{Sin[x], "Hey"}]]', 15000, 1500);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'swatchplot2.png']);
+  });  
+
+  test('Legended Swatch plot with TraditionalForm', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Plot[{Sin[x], Cos[x]}, {x, 0, 5}, PlotLegends -> SwatchLegend[{Sin[x]//TraditionalForm, "Hey"}]]', 15000, 3500);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'swatchplot3.png']);
+  });   
+
+  test('PlotLabel with TraditionalForm', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, 'Plot[Sin[x], {x, 0, 5}, PlotLabel -> TraditionalForm[Sin[x]]]', 15000, 5500);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'potLabelTrad.png']);
+  });    
+
+  test('Plot with Gridlines', async () => {
+    await clearCell(page);
+  
+    const outputCell = await evaluate(page, ' Plot[{Sin[x], Cos[x]}, {x,0,10}, Frame->True, GridLines->Automatic]', 15000, 500);
+    await expect(outputCell).toHaveScreenshot(['screenshorts', 'gridlinesp.png']);
+  });
+ 
   
   test('Point Legend', async () => {
     await clearCell(page);

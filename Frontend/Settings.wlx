@@ -23,6 +23,10 @@ settings = <||>;
 
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 App[request_] := With[{
         Secret = CreateUUID[], 
         GlobalControls  = CreateUUID[],
@@ -31,7 +35,7 @@ App[request_] := With[{
         cachedClient = Unique["cachedClient"],
         GlobalMessanger = CreateUUID[],
         OnLoad = CreateUUID[],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],
         GlobalParameters = <|"ElectronQ" -> ElectronQ[request], "AccentColor"->"teal"|>
     },

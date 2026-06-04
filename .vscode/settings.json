@@ -1,6 +1,6 @@
 {
     "files.associations": {
-        "*.wlx": "php",
+        "*.wlx": "wolfram",
         "*.wsp": "php",
         "*.wls": "wolfram",
         "*.wl": "wolfram",

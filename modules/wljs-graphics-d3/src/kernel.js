@@ -8098,7 +8098,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
       if (tooltipEl) return;
 
       tooltipEl = document.createElement('div');
-      tooltipEl.classList.add('wljs-tooltip', 'text-sm', 'dark:invert', 'dark:hue-rotate-180','dark:contrast-75','dark:brightness-5', 'bg-white','dark:win:contrast-100');
+      tooltipEl.classList.add('wljs-tooltip', 'text-sm', 'dark:invert', 'bg-white','dark:win:contrast-100');
       tooltipEl.style.position = 'absolute';
       tooltipEl.style.zIndex = '9999';
       tooltipEl.style.padding = '4px 8px';

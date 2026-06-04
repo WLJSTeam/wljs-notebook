@@ -11,6 +11,19 @@ Wolfram Engine is proprietary and distributed separately by Wolfram Research, In
 
 "This project is not affiliated with, endorsed by, or sponsored by Wolfram Research, Inc. Wolfram and Wolfram Language are trademarks of Wolfram Research, Inc." // Print;
 
+If[$VersionNumber < 14.1 || !NumberQ[$VersionNumber],
+    Echo["Wolfram Engine versions older than 14.1 are not supported"];
+    Echo["due to some missing I/O features"];
+    Echo["Please, update"];
+    Exit[0];
+];
+
+If[$VersionNumber > 14.3,
+  Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook. We do not guarantee it will work correctly"];
+  Echo["Proceeding anyway..."];
+  Pause[0.7];
+];
+
 (* $AllowDataUpdates = False; *)
 
 PacletDirectoryUnload /@ PacletDirectoryLoad[]; (* FIXME WL autoloads some crap *)
@@ -145,20 +158,6 @@ With[{appJSON = Import[FileNameJoin[{Directory[], "package.json"}], "RawJSON"]},
   $Env["AppJSON"] = appJSON;
 ];
 
-
-If[!NumberQ[$VersionNumber], 
-  Echo["Warning: your Wolfram Kernel version is unknown. We do not guarantee it will work"];
-];
-
-If[$VersionNumber > 14.3,
-  Echo["Warning: your Wolfram Kernel version is higher, that tested with WLJS Notebook. We do not guarantee it will work"];
-];
-
-If[$VersionNumber < 13.3,
-  Echo["Error: your Wolfram Kernel version is older than 13.3. WLJS App won't work. We are sorry"];
-  Echo["You can always download a freeware Wolfram Engine"];
-  Exit[-1];
-];
 
 
 syncDemoFolders[path_String] := Null;
@@ -340,7 +339,7 @@ ElectronQ[request_] := (KeyExistsQ[request["Headers"], "Electron"]);
 ElectronGetVersion[request_] := If[KeyExistsQ[request["Headers"], "Electron"], request["Headers", "Electron"], "false"];
 
 (* serve static *)
-AppExtensions`HTTPFileExtensions = {"jpeg", "wlx", "ttf",  "otf", "woff", "woff2", "css", "js", "png", "jpg", "webp", "svg", "pdf", "gif", "dat"};
+AppExtensions`HTTPFileExtensions = {"jpeg", "jp2", "json", "wlx", "csv", "tsv", "ppt", "avi", "mp2", "pptx", "doc", "docx", "txt", "ttf", "mp4", "xls", "xlsx", "mov", "wav", "mp3", "ogg", "otf", "woff", "woff2", "css", "js", "png", "jpg", "webp", "svg", "pdf", "gif", "dat"};
 http["MessageHandler", "File"]  = GetFileURequestQ[AppExtensions`HTTPFileExtensions] -> (
   ImportUFile[#, "Base":>$ExposedDirectories, "Routes":>$ExposedRoutes] &
 )
@@ -420,6 +419,8 @@ SetTimeout[
   StringTemplate["Open http://``:`` in your browser"][$Env["host"], $Env["http"] ] // Print;
 , 1000
 ];
+
+ElectronIPCSend["runningAt", $Env["host"], $Env["http"] ];
 
 (* Main sync thread *)
 

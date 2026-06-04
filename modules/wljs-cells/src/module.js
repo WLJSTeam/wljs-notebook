@@ -798,11 +798,10 @@ window.WindowWrapperSupplimentary = class {
     this.display = new window.SupportedCells[input["Display"]].view(this, input["Data"]);  
   }
 }
-
+const windows = new Map();
 window.WindowWrapper = class {
   uid = ''
   element;
-  notebook = '';
 
   channel;
 
@@ -813,6 +812,7 @@ window.WindowWrapper = class {
 
   dispose() {
     console.log('Window was disposed');
+    windows.delete(this.uid);
     removeEventListener("beforeunload", this.unloader);
     delete this.unloader;
     this?.display?.dispose();
@@ -824,11 +824,10 @@ window.WindowWrapper = class {
     this.channel     = eventid;
     this.state       = input["State"];
     this.type        = input["Type"];
-    this.notebook    = input["Notebook"];
 
     const self = this;
 
-    const notebook = Notebook.add(input["Notebook"], {}); 
+    const container = document.getElementById('container-'+this.uid);
 
     this.unloader = () => {
       console.log('unloaded!'); self.dispose();
@@ -837,8 +836,11 @@ window.WindowWrapper = class {
     addEventListener("beforeunload", this.unloader);
 
     //dispose already existing cells
-    notebook.Window?.dispose();
-    notebook.Window = this;
+    if (windows.has(this.uid)) {
+      windows.get(this.uid).dispose();
+    }
+
+    windows.set(this.uid, self);
 
     this.throttledSave = throttle((content) => {
       console.warn('editing inside window is not permitted');
@@ -847,8 +849,8 @@ window.WindowWrapper = class {
     this.updateSelection = () => {};
     this.save = () => {};
 
-    notebook.element.innerHTML = "";
-    notebook.element.insertAdjacentHTML('beforeend', template);
+    container.innerHTML = "";
+    container.insertAdjacentHTML('beforeend', template);
 
     this.group       = document.getElementById('group-' + input["Hash"]);
 

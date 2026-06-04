@@ -63,15 +63,18 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 (*                                         WLE Decoder                                          *)
 (*                                             ***                                                 *)
 
-checkKernel[kernel_, cbk_] := (Echo["Checking kernel..."]; If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
-    Echo["Kernel is ready!"];
-    cbk[kernel];
-,
-    Echo["Not yet..."];
-    SetTimeout[checkKernel[kernel, cbk], 1000];
-])
+checkKernel[getkernel_, cbk_] := With[{
+    kernel = getkernel[]
+}, Echo["Checking kernel..."]; 
+    If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
+        Echo["Kernel is ready!"];
+        cbk[kernel, kernel];
+    ,
+        Echo["Not yet..."];
+        SetTimeout[checkKernel[getkernel, cbk], 500];
+    ]
+]
 
-(* [TODO] [REFACTOR] *)
 
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
 With[{
@@ -80,7 +83,7 @@ With[{
     
     notebook = nb`LoadFromFile[ path ],
 
-    spinner = Notifications`Spinner["Topic"->"Initializing an App", "Body"->"Please, wait"](*`*),
+    spinner = Notifications`Spinner["Topic"->"Initializing an app", "Body"->"Please, wait"](*`*),
     msg = OptionValue["Messager"],
     generated = StringReplace[(Internal`NoWR`RandomWord[])<>StringTake[CreateUUID[], 3]<>"w`", {"-"->""}]
 }, 
@@ -90,24 +93,12 @@ With[{
     options = Join[Association[List[opts] ], Association[ List[secondaryOpts] ] ]; 
 
     notebook["Path"] = path;
+    notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere else *)
 
-    EventFire[msg, spinner, True];
+    EventFire[msg, spinner, True];    
 
-    If[Length[options["Kernels"] //ReleaseHold ] === 0,
-      EventFire[spinner["Promise"], Resolve, True];
-      EventFire[options["Messager"], "Error", "The process is not possible to start without working Kernels"];
-      Pause[2];
-
-      Return[promise];
-    ];
-
-    
-
-    With[{kernel = options["Kernels"] //ReleaseHold //First},
-        checkKernel[kernel, Function[data,
-
-            notebook["Evaluator"] = data["Container"];
-            EventFire[notebook, "AquairedKernel", True];
+    With[{},
+        checkKernel[Function[Null, options["Kernels"] //ReleaseHold //First], Function[{data, kernel},
 
             Echo["Starting evaluation", "WLE Decoder"];
             With[{
@@ -115,10 +106,12 @@ With[{
                 last = FirstCase[notebook["Cells"] // Reverse, _?cell`InputCellQ],
                 dir = FileNameSplit[DirectoryName[ path ] ]
             },
-                EventFire[spinner["Promise"], Resolve, True];
+                
+                notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
+                
+                Echo["Switching the context to "<>generated];
 
                 GenericKernel`Send[kernel,
-                    CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] = EchoLabel["Spinner"]["Evaluating cells in the generated context"];
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
                     $Context = generated;
                     Internal`Kernel`$savedDirectory = Directory[];
@@ -126,13 +119,10 @@ With[{
                     $ContextPath = Append[$ContextPath, generated];
                 ];
 
-                (* FIXME!!! *)
-                (*(
-                    #["Data"] = StringReplace[#["Data"], {"NotebookDirectory[]" -> ToString[dir, InputForm] }];
-                    Print[#["Data"] ];
-                ) &/@ initCells;*)
+                Echo["Evaluating initialization cells"];
 
-                cell`EvaluateCellObj[#] &/@ initCells;
+                data["Container"][ cell`ToTransaction[#, "Notebook"->Null], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|> ] &/@ initCells;
+
 
                 Module[{title = "", decription = ""},
                         With[{t = notebook["Cells"][[1]]},
@@ -146,40 +136,118 @@ With[{
                         ] // Quiet;   
                 ];
                 
+                
 
+                With[{hash = kernel["Hash"]},
+                    Echo["Evaluating the last cell"];
+                    
+                    With[{
+                        win = win`WindowObj["Title"->windowTitle, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"], "RetryWebSocket"->True]
+                    }, {
+                        cloned = EventClone[win],
+                        readyPromise = Promise[],
+                        transaction = cell`ToTransaction[last, "Notebook"->Null]
+                    },
 
-                With[{hash = kernel["Hash"], s = Promise[] // First},
-                    Then[Promise[s], Function[Null,
-                        With[{win = win`WindowObj["Notebook" -> notebook, "Title"->windowTitle, ImageSize->windowSize, "Data" -> last["Data"], "Ref" -> last["Hash"] ]},
-                            win["FirstTime"] = True;
-                            Echo["project >> sending global event"];
-                            EventFire[notebook, "OnWindowCreate", <|"Window"->win, "Client"->options["Client"]|>];
-                            EventHandler[win["Hash"] // EventClone, {"Ready" -> Function[Null,
-                                notebook["ModalsChannel"] = Null;
-                                Echo["Modals set to Null"];
+                        EventHandler[EventClone @ transaction, {
+                            "Result" -> Function[output,
+                                Echo["Get the result... Submitting to a window"];
+                                If[KeyExistsQ[output, "Meta"],
+                                    win["Data"] = output["Data"];
+                                    win["Display"] = Lookup[<|output["Meta"]|>, "Display", "codemirror"];
+                                    With[{generatedHash = <|output["Meta"]|>["Hash"]}, If[StringQ[generatedHash], 
+                                        EventHandler[EventClone[win], {
+                                            (* forward all events *)
+                                            any_ :> (EventFire[generatedHash, any, #]&)
+                                        }];
+                                    ] ];
+                                ,
+                                    win["Data"] = output["Data"];
+                                ];
+                                
+                                If[win["Display"] =!= "wlx",
+                                    win["Display"] = "html";
+                                    win["Data"] = "<div class=\"px-4 py-2\"><small>Output window must be written in WLX. Plain Wolfram is not supported due to context switching issues</small></div>";
+                                ];
 
+                                EventFire[spinner["Promise"], Resolve, True];
+                                EventFire[readyPromise, Resolve, True];
+
+                                Echo["Restoring context"];
+                                (* This must be here. If you put it in Finished, then it outputs local variables
+                                   in Graphics-like objects without their context, assuming it is $Context, and
+                                   it can't fetch them once the context is switched back to Global.
+
+                                   I have no idea why it works when I place it here.
+
+                                   Generally speaking, this problem is related to how
+                                   ExportByteArray[..., "ExpressionJSON"] omits the explicit context prefix
+                                   when it is evaluated within $Context, though I am not sure. It may also have
+                                   something to do with how WLXForm outputs it.
+
+                                   Oh crap...
+
+                                   As a rule, use WLX cells as the main output for mini apps for the moment.
+                                *)
                                 GenericKernel`Send[kernel,
+                                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
+                                                    $Context = "Global`";
+                                                    SetDirectory[Internal`Kernel`$savedDirectory];
+                                ]; 
+                            ],
 
-                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
-                                    $Context = "Global`";
-                                    SetDirectory[Internal`Kernel`$savedDirectory];
-                         
-                                ];                            
+                            "Finished" -> Function[Null,
+                                Delete[transaction];
+                                
+
+
+                            ],
+
+                            "Error" -> Function[Null,
+                                Delete[transaction];
+                                win["Data"] = "$Failed";
+                                Echo["Get the result... ERROR!"];
+                                
+                          
+
+                                EventFire[spinner["Promise"], Resolve, True];
+                                EventFire[readyPromise, Resolve, True]; 
+
+                                Echo["Restoring context"];
+                                GenericKernel`Send[kernel,
+                                                    $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
+                                                    $Context = "Global`";
+                                                    SetDirectory[Internal`Kernel`$savedDirectory];
+                                ];                                                              
                             ]
-                            }];
+                        }];
 
+                        EventHandler[cloned, {
+                            "AfterWebSocketConnected" -> Function[Null,
+                                EventRemove[cloned];
+                                Echo["Window was created, starting evaluation..."];
 
-                            EventFire[promise, Resolve, {StringJoin["/window?id=", win["Hash"] ], ""} ];
-                        
-                        ] ;                    
-                    ] ];
+                                (* just to populate last client, if there is no other source *)
+                                (* some WLW windows might have timers running, which has no access to evaluation context *)
+                                (* Consider to be fixed [TODO] *)
+                                With[{ws = win["KernelWebSocket"]},
+                                    GenericKernel`Send[kernel,
+                                        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = ws;
+                                    ];
+                                ];
 
-                    GenericKernel`Send[kernel,
-                        CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated]["Cancel"];
-                        Unset[CoffeeLiqueur`Extensions`RemoteCells`Private`spinners[generated] ];
-                        EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, True ]; 
-                    ];
+                                data["Container"][transaction, 
+                                    <|"KernelWebSocket"->win["KernelWebSocket"], "Notebook"->notebook["Hash"], "Ref"->last["Hash"]|>
+                                ]; 
 
+                                readyPromise
+                            ]  
+                        }];
+
+                        Echo["Refresh the page"];
+                        EventFire[promise, Resolve, {StringJoin["/window?id=", win["Hash"] ], ""} ];
+                    
+                    ];                    
 
                 ];
             ];

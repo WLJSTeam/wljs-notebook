@@ -30,9 +30,11 @@ Container[k_(*Kernel*)] := Module[{},
 
 InitializedContainer[k_]["Kernel"] := k;
 
-InitializedContainer[k_(*Kernel*)][t_Transaction] := Module[{evaluator, state},
+InitializedContainer[k_(*Kernel*)][t_Transaction] := InitializedContainer[k][t, <||>]
+InitializedContainer[k_(*Kernel*)][t_Transaction, context_Association] := Module[{evaluator, state},
     Print["Standard Eval"];
 
+    t["EvaluationContext"] = context;
     evaluator = t /. Flatten[{#["Pattern"] -> #} &/@ eList]; (* apply patterns like t /. {_ -> evaluator 1, _?watever -> evaluator 2} *)
 
     state = (ReadyQ[evaluator, k]);
@@ -41,6 +43,7 @@ InitializedContainer[k_(*Kernel*)][t_Transaction] := Module[{evaluator, state},
     EvaluateTransaction[evaluator, k, t];
     t 
 ]
+
 
 InitializedContainer[k_(*Kernel*)][$Aborted] := Module[{diposableToken},
     Print["Termination Eval"];
@@ -59,43 +62,6 @@ StandardEvaluator /: ReadyQ[StandardEvaluator[o_(*Kernel*)] ] := True
 StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_] := Echo[evaluator["Name"] <> " >> " <> ToString[msg] ]
 StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_, args__] := Echo[evaluator["Name"] <> " >> " <> StringTemplate[msg // ToString][args] ]
 
-(* Primitive Evaluator *)
-(*
-primitive  = StandardEvaluator["Name" -> "Primitive Static Evaluator", "InitKernel" -> initPrimitiveEvaluator, "Priority"->(Infinity)];
-
-    ReadyQ[primitive, kernel_] := (
-        Print[primitive, "I am always ready"];
-        True
-    );
-
-    EvaluateTransaction[primitive, kernel_, t_] := (
-        t["Evaluator"] = Internal`Kernel`Evaluator`Simple;
-
-        Print[primitive, "GenericKernel`Submit!"];
-        GenericKernel`Submit[kernel, t];
-    );
-
-initPrimitiveEvaluator[k_] := Module[{},
-    Print["Kernel init..."];
-    GenericKernel`Send[k, 
-        Print["Init primitive Kernel (Local)"];
-        Internal`Kernel`Evaluator`Simple = Function[t, 
-            With[{result = ToExpression[ t["Data"], InputForm ] },
-                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> ToString[result, InputForm] |> ];
-                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True ];
-                result;
-            ]
-        ];
-        Internal`Kernel`Evaluator`Held = Function[t, 
-            With[{result = t["Data"] // ReleaseHold },
-                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> result |> ];
-                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Finished", True ];
-                result;
-            ]
-        ];        
-    ]
-]
-*)
 
 End[]
 EndPackage[]

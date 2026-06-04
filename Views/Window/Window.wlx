@@ -4,34 +4,32 @@ Container := ImportComponent["Components/Container.wlx"];
 addListeners[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
     (* /* don't clone  event, must be one ! */ *)
     Echo["Add listeners::::"];
-    Echo[window["Hash"]];
+    Echo[window["Hash"] ];
+
     EventHandler[EventClone @ window , {
         "Ready" -> Function[Null,
-            Echo["Window.wlx >> Ready to show!"];
-            window["EvaluatedQ"] = True;
+            Echo["Window.wlx >> Loading content"];
 
             If[MatchQ[window["Notebook"], _nb`NotebookObj],
                 With[{htmlJsCells = Select[window["Notebook"]["Cells"], Function[c, MatchQ[c["Display"], "html" | "js" | "mjs" ] ] ]},
                     (* /* This you might need to copy to the window, since they might contain scripts and styles */ *)
-                    Echo["Found JS and HTML cells, projecting too..."];
-                    WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                    If[Length[htmlJsCells] > 0, 
+                        Echo["Found JS and HTML cells, projecting too..."];
+                        WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                    ];
                 ]
             ];
 
-            WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client]
+            WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client];
+            EventFire[window, "AfterLoad", window];
         ],
 
-        "Reevaluate" -> Function[Null,
-            Echo["Window >> reevalaute!"];
-            window["EvaluatedQ"] = False;
-            evaluate[window, secret, client, modals, parameters, extensions]; 
-            If[StringQ[window["GeneratedOutputCellHash"]], 
-                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
-                (* /* emulate cell's destroy event */ *)
-                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
-                EventRemove[window["GeneratedOutputCellHash"]];
-            ];
-            WebUISubmit[Global`UIWindow["Unload" ], client]
+        "OnReload" -> Function[Null,
+            Echo["Window >> reload!"];
+            WebUISubmit[Global`UIWindow["Unload" ], client];
+            Then[EventFire[window, "AfterReload", client], Function[Null,
+                EventFire[window, "Ready", Null];
+            ] ];
         ]
     }];
 
@@ -44,9 +42,6 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
     ];
 ];
 
-restoreCells[window_nb`NotebookObj, secret_String, client_, parameters_, extensions__] := Module[{},
-    Print["nothing to do"];
-];
 
 checkWSLink[window_, client_, event_String] := Module[{},
     (*/* check if connected already */*)
@@ -56,30 +51,20 @@ checkWSLink[window_, client_, event_String] := Module[{},
         Echo["checkWSLink >> Already connected"];
         Return[];
     ];
-    Echo["Using port"];
-    Echo[window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"]];
 
-    WebUISubmit[Global`UIWindow["WSConnect", window["Notebook"]["Evaluator"]["Kernel"]["WebSocket"], event, "PrefixMode"->$Env["ws2prefix"]] (*`*), client];
+    WebUISubmit[Global`UIWindow["WSConnect", window["WebSocketPort"], event, "PrefixMode"->$Env["ws2prefix"] ] (*`*), client];    
 ];
 
-evaluate[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
-    checkWSLink[window, client, secret];
-    If[TrueQ[window["EvaluatedQ"]],
-        EventFire[window, "Ready", True];
-    ,
-        win`EvaluateWindowObj[window];(*`*)
-    ]
-    
-];
 
-Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"]},
+Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], RetryWebSocket = If[OptionValue["RetryWebSocket"], "true", "false"]},
     <div>
         <script type="module">
             let wrap, supp = [];
             addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
+
             core.UIWindow = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                core.UIWindow[type](args.slice(1), env);
+                return await core.UIWindow[type](args.slice(1), env);
             }
 
             core.UIWindow.CreateServer = async (args, env) => {
@@ -99,28 +84,35 @@ Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTempla
 
                 server.kernel.connected = true;
                 let socket;
-                if (options.PrefixMode) {
-                    socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://")+window.location.hostname+':'+window.location.port+'/'+options.PrefixMode);
-                } else {
-                    socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://")+window.location.hostname+':'+port);
-                }                
-                socket.binaryType = "arraybuffer";
-                socket.onmessage = interpretate.handleMessage;
+                let connectNow;
+                connectNow = () => {
+                  if (options.PrefixMode) {
+                      socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://"   )+window.location.hostname+':'+window.location.port+'/'+options.PrefixMode);
+                  } else {
+                      socket = new WebSocket((window.location.protocol == "https:" ? "wss://" : "ws://"   )+window.location.hostname+':'+port);
+                  }                
+                  socket.binaryType = "arraybuffer";
+                  socket.onmessage = interpretate.handleMessage;
                 
-                socket.onopen = function(e) {
-                  console.log("[open]");
-                  server.kernel.init({socket: socket});
-                  server.emitt(ev, 'True', 'WebSocketConnected');
-                }; 
+                  socket.onopen = function(e) {
+                    console.log("[open]");
+                    server.kernel.init({socket: socket});
+                    server.emitt(ev, 'True', 'WebSocketConnected');
+                  }; 
 
-                socket.onclose = function(event) {
-                  console.log(event);
-                  console.warn('Connection lost to a Evaluation Kernel');
-                  //server.kernel = undefined;
-                  server.kernel.connected = false;
+                  socket.onclose = function(event) {
+                    console.log(event);
+                    console.warn('Connection lost to a Evaluation Kernel');
+                    //server.kernel = undefined;
+                    server.kernel.connected = false;
+                    if (<RetryWebSocket/>) {
+                        console.warn('Retrying in 500 ms');
+                        setTimeout(() => connectNow(), 500);
+                    } else {server.emitt(ev, 'True', 'WebSocketLost');}
+                  }; 
 
-                  server.emitt(ev, 'True', 'WebSocketLost');
-                }; 
+                };
+                connectNow();
             }
 
             core.UIWindow.Unload = async (args, env) => {
@@ -131,6 +123,10 @@ Script[OptionsPattern[]] := With[{Secret = OptionValue["Event"], ExtensionTempla
             core.UIWindow.LoadSupplimentary = async (args, env) => {
                 const store    = await interpretate(args[0], env);
                 supp.push(new WindowWrapperSupplimentary(store));
+            }
+
+            core.UIWindow.KernelSocket = async (args, env) => {
+                return await server.kernel.ask('Global`$Client');
             }
 
             core.UIWindow.Load = async (args, env) => {
@@ -162,7 +158,7 @@ destructor[window_, secret_, __] := With[{},
 (* /*  Exstension API */  *)
 (* /*  Prolog, Epilog, Mesis, EventHandler */  *)
 
-Component[OptionsPattern[]] := With[{
+Component[OptionsPattern[] ] := With[{
     secret = OptionValue["Secret"], 
     window = OptionValue["Window"], 
     event = OptionValue["Event"],
@@ -181,6 +177,8 @@ Component[OptionsPattern[]] := With[{
         "ExtensionTemplateWrapper" -> OptionValue["ExtensionTemplateWrapper"], 
         "ExtensionTemplateInjection" -> OptionValue["ExtensionTemplateInjection"]
     ]
+}, {
+    RetryWebSocket = TrueQ[win["RetryWebSocket"]]
 },
     
     EventHandler[secret, {
@@ -189,6 +187,8 @@ Component[OptionsPattern[]] := With[{
         "Load" -> Function[Null,
             Print["Window is about to be shown"];
             Echo[StringJoin["Connected using socket: ", $Client // ToString]];
+
+            EventFire[appEvents, "Window:Loaded", window];
 
             (* /* reset WS connection for sure, in a case of incorrect closed socket */*)
             window["WebSocketQ"] = False; 
@@ -215,37 +215,29 @@ Component[OptionsPattern[]] := With[{
     
             (* /* Establish WS Connection to a Kernel (if available) */ *)
             checkWSLink[window, $Client, secret];
-
-            (* /* Restore cells */ *)
-            restoreCells[window, secret, $Client, parameters, extensions];
-
         ],
 
-        "ManuallyClosed" -> Function[Null,
-            If[StringQ[window["GeneratedOutputCellHash"]], 
-                (* /* forward event back to generated id by Kernel, i.e. if ResultCell[] was used */ *)
-                (* /* emulate cell's destroy event */ *)
-                EventFire[window["GeneratedOutputCellHash"], "Destroy", True];
-                EventRemove[window["GeneratedOutputCellHash"]];
-            ];        
+        "ManuallyClosed" -> Function[Null,      
             EventFire[window, "ManuallyClosed", True];
             EventFire[appEvents, "Window:ManuallyClosed", window];
         ],
 
         "WebSocketConnected" -> Function[Null, With[{cli = $Client},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
-            window["WebSocketQ"] = True;
+            Then[WebUIFetch[Global`UIWindow["KernelSocket"], $Client ], Function[data,
+                window["WebSocketQ"] = True;
+                window["KernelWebSocket"] = data;
 
-            With[{x = EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>]},
-                Then[x,
-                    Function[Null,
-                        Echo["Fired. then passed..."];
-                        (* /* start evluation */ *)
-                        evaluate[window, secret, cli, modals, parameters, extensions];                
-                    ]
-                ];
-            ];
-        ]],
+                Then[EventFire[window, "OnWebSocketConnected", <|"Client" -> cli|>], Function[Null,
+                    Then[EventFire[window, "AfterWebSocketConnected", <|"Client" -> cli|>],
+                        Function[Null,
+                            Echo["Fired. then passed..."];
+                            EventFire[window, "Ready", True];              
+                        ]
+                    ];
+                ] ];
+            ] ];
+        ] ],
 
         "WebSocketLost" -> Function[Null,
             Echo["window.wlx >> WebSocket link to evaluation Kernel was LOST"];
@@ -260,17 +252,17 @@ Component[OptionsPattern[]] := With[{
 
     With[{},
 
-        <main style="-webkit-app-region: no-drag" class="h-full overflow-hidden dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5">
+        <main style="-webkit-app-region: no-drag" class="h-full overflow-hidden dark:invert ">
             <Container Parameters={parameters} Window={window} Event={secret}>
-                <div class="flex-shrink-0 mr-auto ml-auto mt-auto mb-auto">
-                    <svg aria-hidden="true" class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-sys" viewBox="0 0 100 101" fill="none">
+                <div class="flex-shrink-0 mr-auto ml-auto mt-auto mb-auto" style="width: 100%; height: 100%; display: flex;">
+                    <svg aria-hidden="true" style="margin:auto" class="w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-sys" viewBox="0 0 100 101" fill="none">
                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                     </svg>
                     <span class="sr-only">Loading...</span>
                 </div>
             </Container>
-            <Script Event={secret} ExtensionTemplateInjection={ExtensionTemplateInjection}/>
+            <Script Event={secret} ExtensionTemplateInjection={ExtensionTemplateInjection} RetryWebSocket={RetryWebSocket}/>
             <WebUIOnLoad Event={secret} Pattern={"Load"}/>
         </main>
 
@@ -278,7 +270,7 @@ Component[OptionsPattern[]] := With[{
 ]
 
 Options[Component] = {"Parameters"->Null, "ElectronQ" -> False, "Window"->"", "AppEvents"->"blacksheep", "Kernels"->{}, "Modals"->"", "Controls" ->"", "ControlsPort"->"", "Notebook"->Null, "Event"->"blackhole", "Messager"->"blackout", "Secret" :> CreateUUID[], "ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "ExternalEventHandlers" -> Null}
-Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction, "Event"->""}
+Options[Script] = {"ExtensionTemplateInjection" -> emptyStringFunction, "Event"->"", "RetryWebSocket"->False}
 
 emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 

@@ -37,6 +37,10 @@ FakeMenu            = "";
 serverParams = <|"env" -> env|>;
 settings = <||>;
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 
 loadSettings[settings];
 loadSettingsOnceMore := With[{},
@@ -92,7 +96,7 @@ App[request_] := With[{
         SidebarId = CreateUUID[],
         OnLoad    = CreateUUID[],
         ModalController = CreateUUID[],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         kernels = Hold[AppExtensions`KernelList] (*`*),
         GlobalMessanger = CreateUUID[],
         GlobalParameters = Join[<|"Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],

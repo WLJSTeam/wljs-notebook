@@ -35,8 +35,13 @@ FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 {loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
 
+
 serverParams = <|"env" -> env|>;
 settings = <||>;
+
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
 
 sidebarState = "show";
 SidebarSize = 16;
@@ -240,6 +245,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 
 defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, settings]["Home"] ];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, newData]["Home"] ];
+]}];
+
 ExtensionMenuItems = <|"file"->{}, "misc"->{}, "view"->{}, "kernel"->{}, "edit"->{}|>;
 
 Map[Function[item, 
@@ -284,7 +293,7 @@ App[request_] := With[{
         appGlobals = AppExtensions`AppGlobals (*`*),
         kernels = Hold[AppExtensions`KernelList] (*`*),
         isElectron = ElectronQ[request],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         GlobalParameters = Join[<|"Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
         AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
         NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],

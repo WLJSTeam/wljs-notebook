@@ -20,9 +20,7 @@ Begin["`Private`"]
 
 MMAView[ head_[all__], opts: OptionsPattern[] ] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[head @@ args, opts]
-  ], {all}], 60 ]
+  WaitAll[ParallelSubmit[Rasterize[head[all], opts] ] ]
 )
 
 MMAViewAsync[ head_[all__], opts: OptionsPattern[] ] := (

@@ -134,6 +134,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     });
   },  
 
+  binaryBlobWrite: (params, cbk) => {
+    ipcRenderer.invoke('binaryBlobWrite', params).then((result) => {
+      cbk(result);
+    });
+  },
+
   windowExpand: (path) => {
     console.log(path);
     ipcRenderer.send('system-window-expand',  {});

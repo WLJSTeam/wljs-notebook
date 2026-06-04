@@ -93,7 +93,7 @@ Component[path_String, OptionsPattern[]] := With[{
         ]
     }];
 
-    <main style="-webkit-app-region: no-drag" class="grow flex flex-col overflow-hidden dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5 owin:mt-2 owin:bg-white dark:win:contrast-100 dark:win:shadow-0 win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans">
+    <main style="-webkit-app-region: no-drag" class="grow flex flex-col overflow-hidden dark:invert  owin:mt-2 owin:bg-white dark:win:contrast-100 dark:win:shadow-0 win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans">
         <div class="ccontainer px-3 pr-4 py-2 sm:px-2 sm:pr-3 md:px-4 md:pr-5 win:sc-b owin:sc-b overflow-y-auto grow bg-white bg-g-trans" style="padding-bottom: 25rem" id="{EditorContainer}"></div>
         
         <WebUIJSBind Event={Controls}>

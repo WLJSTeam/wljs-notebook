@@ -3,7 +3,7 @@ Component[OptionsPattern[]] := With[{event = OptionValue["PromptToolbar"], noteb
 
     If[notebook["AskedToExtend"] === True || n["ShowToolbox"] === True || True,
         <div class="flex flex-row ml-auto mr-auto pt-1">
-            <button title="Expand" id="btn-expand" class="hover:bg-sys hover:text-white text-gray-500 p-2 rounded">
+            <button title="Expand" id="btn-expand" style="app-region: no-drag;" class="hover:bg-sys hover:text-white text-gray-500 p-2 rounded">
             <svg class="h-4 w-4 " viewBox="0 0 24 24" fill="none" >
                             <rect width="24" height="24" fill="none"/>
                             <path d="M13.8284 13.8284L20.8995 20.8995M20.8995 20.8995L20.7816 15.1248M20.8995 20.8995L15.1248 20.7816" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
@@ -12,7 +12,7 @@ Component[OptionsPattern[]] := With[{event = OptionValue["PromptToolbar"], noteb
                             <path d="M9.89947 9.89951L2.8284 2.82844M2.8284 2.82844L2.94626 8.60315M2.8284 2.82844L8.60311 2.94629" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
                           </svg>
             </button>
-            <button title="Cleanup" id="btn-cleanup" class="hover:bg-sys hover:text-white text-gray-500 p-2 rounded">
+            <button title="Cleanup" style="app-region: no-drag;" id="btn-cleanup" class="hover:bg-sys hover:text-white text-gray-500 p-2 rounded">
             <svg fill="currentColor" class="h-4 w-4 " viewBox="0 0 32 32" >
                  <rect x="20" y="18" width="6" height="2" transform="translate(46 38) rotate(-180)"/>
                  <rect x="24" y="26" width="6" height="2" transform="translate(54 54) rotate(-180)"/>

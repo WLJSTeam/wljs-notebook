@@ -1,6 +1,11 @@
 //just don't look at it. We did not invest enough efforts to this...
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
+
+nativeImage.__emitterPool = new Set();
+
 const { screen, globalShortcut} = require('electron/main')
+
+const { mkdir, writeFile } = require('node:fs/promises');
 
 const { net } = require('electron')
 const fs = require('fs');
@@ -309,35 +314,17 @@ const cli_info = {
     }
 }
 
-
 var sudo = require('./sudo');
 
-function cli_uninstall() {
-    if (!app.isPackaged) return;
-    if (!cli_info[process.platform]) return;
+const cliInstalledMarkerPath = () => path.join(appDataFolder, '.cli_i2');
 
-    fs.exists(cli_info[process.platform].cliLink, (existsQ) => {
-        if (!existsQ) {
-            console.log('Cli is not installed');
-            return;
+function mark_cli_prompt_handled() {
+    fs.writeFile(cliInstalledMarkerPath(), 'Nothing to see here', function(err) {
+        if (err) {
+            console.error('Failed to write CLI marker');
+            console.error(err);
         }
-
-        const exePath = app.getPath('exe');
-        const cliPath = cli_info[process.platform].cliPath;
-
-        const options = {
-            name: 'WLJS Elevated module'
-          };
-          
-          sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script_uninstall)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-            function(error, stdout, stderr) {
-              if (error) throw error;
-              console.log('stdout: ' + stdout);
-            }
-          ); 
     });
-
-   
 }
 
 function check_cli_installed(log_window) {
@@ -348,7 +335,7 @@ function check_cli_installed(log_window) {
         return;
     }
 
-    fs.exists(path.join(appDataFolder, '.cli_i2'), (existsQ) => {
+    fs.exists(cliInstalledMarkerPath(), (existsQ) => {
         if (existsQ) {
             console.log('Cli is installed');
             return;
@@ -358,46 +345,52 @@ function check_cli_installed(log_window) {
 
         console.log('Cli is not installed');
 
-        if (fs.existsSync(path.join(appDataFolder, '.nocli_i'))) {
-            console.log('skipped because of a user');
-            return;
-        }
+        const prompt = dialog.showMessageBox(log_window, {
+            type: 'question',
+            buttons: ['Install', 'Not now'],
+            defaultId: 0,
+            cancelId: 1,
+            noLink: true,
+            message: 'Install the WLJS command line interface?',
+            detail: 'This adds the wljs command so WLJS Notebook can be opened from a terminal.'
+        });
 
-        const install = () => {
-            const exePath = app.getPath('exe');
+        prompt.then((res) => {
+            if (res.response !== 0) {
+                mark_cli_prompt_handled();
+                return;
+            }
+
+            try {
+                const exePath = app.getPath('exe');
 
                 console.log(exePath);
-        
+
                 console.log(path.resolve(cli_info[process.platform].script));
-        
-                
+
                 const options = {
-                  name: 'WLJS Elevated module'
+                    name: 'WLJS Elevated module'
                 };
-                
+
                 sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-                  function(error, stdout, stderr) {
-                    if (error) throw error;
-                    console.log('stdout: ' + stdout);
+                    function(error, stdout, stderr) {
+                        if (error) throw error;
+                        console.log('stdout: ' + stdout);
 
-                    fs.writeFile(path.join(appDataFolder, '.cli_i2'), 'Nothing to see here', function(err) {
-                        if (err) throw err;
-                    });                    
-                  }
+                        mark_cli_prompt_handled();
+                    }
                 );
-        }
-
-        if (!log_window) {
-            install();
-            return;
-        }
-
-        install();
-
-        
-
+            } catch (err) {
+                console.log('Failed to install CLI');
+                console.error(err);
+            }
+        }).catch((err) => {
+            console.log('Failed to show CLI install prompt');
+            console.error(err);
+        });
     })
 }
+
 
 
 
@@ -1558,8 +1551,10 @@ const windows = {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -1749,6 +1744,7 @@ const read_wl_settings = () => {
         return s;
     }
 
+      
     server.frontend = {};
     while (m = r.exec(file)) {
         server.frontend[m[1].slice(1,-1)] = parse(m[2]);
@@ -1805,6 +1801,27 @@ function parseWindowFeatures(features) {
 }
 
 
+const overlayConfig =  {};
+
+
+
+overlayConfig.loadWindowState = (win) => {
+  try {
+    win.setBounds(JSON.parse(fs.readFileSync(path.join(appDataFolder, "window-overlay-state.json"))))
+  } catch {
+
+  }
+}
+
+overlayConfig.saveWindowState = (win) => {
+  const {x, y} = win.getBounds();
+
+  fs.writeFileSync(
+    path.join(appDataFolder, "window-overlay-state.json"),
+    JSON.stringify({x,y})
+  );
+}
+
 
 function create_window(opts, cbk = () => {}) {
     if (buildMenu.main) {
@@ -1828,6 +1845,8 @@ function create_window(opts, cbk = () => {}) {
 
 
         const options = Object.assign({}, defaults, opts);
+
+
         options.minWidth = 576;
         if (!isMac) {
             options.minWidth = 700;
@@ -1907,6 +1926,13 @@ function create_window(opts, cbk = () => {}) {
                 options.width = 1920;
                 options.height = 1280;
             }
+        }
+
+        if (options.offscreen) { 
+          options.override.width = 1920;
+          options.override.height = 1280;
+          options.override.show = false;
+          options.show = true;
         }
 
         if (isMac) {
@@ -2016,8 +2042,10 @@ function create_window(opts, cbk = () => {}) {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -2089,8 +2117,10 @@ function create_window(opts, cbk = () => {}) {
                 }
 
                 nativeTheme.on("updated", checkTheme);
+                nativeImage.__emitterPool.add(checkTheme);
                 win.on('closed', () => {
                     nativeTheme.removeListener("updated", checkTheme);
+                    nativeImage.__emitterPool.delete(checkTheme);
                 });
 
                 checkTheme();
@@ -2125,8 +2155,10 @@ function create_window(opts, cbk = () => {}) {
 
         if (options.overlay) {
             win.once('blur', () => {
+                overlayConfig.saveWindowState(win);
                 win.close();
-            })
+            });
+            overlayConfig.loadWindowState(win);
         } else {
             win.webContents.on('will-navigate', () => {
                 win.webContents.send('will-navigate');
@@ -2156,7 +2188,7 @@ function create_window(opts, cbk = () => {}) {
         setHID(win);
 
         //focus window
-        if (options.focus) {
+        if (options.focus && !options.offscreen) {
             win.focus();
             windows.focused.add(win);
         }
@@ -2175,7 +2207,7 @@ function create_window(opts, cbk = () => {}) {
         });
 
         //extend context menu
-        if (options.contextMenu) {
+        if (options.contextMenu && !options.offscreen) {
             contextMenu({
                 window: win,
                 prepend: (defaultActions, parameters, browserWindow) => contextMenuExtensions.map((mi) => {
@@ -2229,7 +2261,7 @@ function create_window(opts, cbk = () => {}) {
             cbk(win);
         } else {
             win.once('ready-to-show', () => {
-                win.show();
+                if (!options.offscreen) win.show(); else win.showInactive();
                 cbk(win);
             });
         }
@@ -2670,68 +2702,115 @@ app.whenReady().then(() => {
 
         return await p.promise;
     })
-
-    ipcMain.on('install-cli', () => {
-        //trackpadUtils.triggerFeedback();
-        check_cli_installed();
-    });
-
-    ipcMain.on('uninstall-cli', () => {
-        //trackpadUtils.triggerFeedback();
-        cli_uninstall();
-    }); 
     
-    const capturedBuffer = {};
+    const savedBlobs = new Map();
+
+    async function writeOneBlob({ uid, filePath }) {
+      const blob = savedBlobs.get(uid);
+      if (!blob) return false;
+    
+      const data = blob.toPNG();
+    
+      await mkdir(path.dirname(filePath), { recursive: true });
+      await writeFile(filePath, data); // overwrites by default
+    
+      savedBlobs.delete(uid);
+      return true;
+    }
+    
+    async function writeManyBlobs(
+      items,
+      concurrency = 1,
+    ) {
+      let index = 0;
+      const results = new Array(items.length);
+    
+      async function worker() {
+        while (index < items.length) {
+          const currentIndex = index++;
+          results[currentIndex] = await writeOneBlob(items[currentIndex]);
+        }
+      }
+    
+      await Promise.all(
+        Array.from(
+          { length: Math.min(concurrency, items.length) },
+          worker,
+        ),
+      );
+    
+      return results;
+    }
+    
+    ipcMain.handle(
+      'binaryBlobWrite',
+      async (e, payload) => {
+        if (Array.isArray(payload)) {
+          return writeManyBlobs(payload);
+        }
+    
+        return writeOneBlob(payload);
+      },
+    );
+
+    function trimTransparent(nativeImage) {
+      const { width, height } = nativeImage.getSize();
+      const bitmap = nativeImage.toBitmap(); // BGRA on Electron
+    
+      let minX = width;
+      let minY = height;
+      let maxX = -1;
+      let maxY = -1;
+    
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const offset = (y * width + x) * 4;
+          const alpha = bitmap[offset + 3];
+    
+          if (alpha !== 0) {
+            if (x < minX) minX = x;
+            if (y < minY) minY = y;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+          }
+        }
+      }
+    
+      if (maxX === -1) {
+        return nativeImage; // fully transparent
+      }
+    
+      return nativeImage.crop({
+        x: minX,
+        y: minY,
+        width: maxX - minX + 1,
+        height: maxY - minY + 1,
+      });
+    }
 
     ipcMain.handle('capture', async (e, area) => {
         let zoom = e.sender.zoomFactor;
         const windowId = e.sender.id;
 
         if (area) {
-            if (!area.deferred) {
-                    area.x = Math.round(area.x * zoom);
-                    area.y = Math.round(area.y * zoom);
-                    area.width = Math.round(area.width * zoom);
-                    area.height = Math.round(area.height * zoom);
-                    const img = await e.sender.capturePage(area);
-                    return img.toDataURL();
-            }
+          area.x = Math.round(area.x * zoom);
+          area.y = Math.round(area.y * zoom);
+          area.width = Math.round(area.width * zoom);
+          area.height = Math.round(area.height * zoom);
+          //a bug. it always adds transparent region on the right side
+          //it only occurs for offscreen window
+          const img = trimTransparent(await e.sender.capturePage(area));
+          if (area.toBlob) {
+            const uid = uuid4();
+            savedBlobs.set(uid, img);
+            return uid;
+          }
 
-            switch(area.deferred) {
-                case 'Flush':
-                    capturedBuffer[windowId] = [];
-                    return 'flushed';
-
-                case 'Capture': {
-                        console.log(area);
-                        area.x = Math.round(area.x * zoom);
-                        area.y = Math.round(area.y * zoom);
-                        area.width = Math.round(area.width * zoom);
-                        area.height = Math.round(area.height * zoom);
-
-                        const rect = {x: area.x, y: area.y, width: area.width, height: area.height};
-                        console.log(rect);
-
-                        const img = await e.sender.capturePage(rect);
-                        capturedBuffer[windowId].push(img.toDataURL());
-                    }
-                    return 'captured';
-
-                case 'Pop': {
-                    const item = capturedBuffer[windowId].shift();
-                    if (item) return item;                
-                    return false;
-                }
-
-                default:
-                    return false;
-            }
-
+          return img.toDataURL();
         } else {
-            const img = await e.sender.capturePage(area)
-            return img.toDataURL();
+          const img = await e.sender.capturePage(area)
+          return img.toDataURL();
         }
-
     });   
 
     ipcMain.on('set-progress', (e, p) => {
@@ -3017,7 +3096,7 @@ function start_server (window) {
 
 
     if (!accentColor) {
-        accentColor = '#ff7214';  
+        accentColor = '#f67070'; 
     } else {
         if (accentColor.charAt(0) != '#') accentColor = '#'+accentColor;
         if (accentColor.length > 7) accentColor = accentColor.slice(0, 7);
@@ -3031,56 +3110,61 @@ function start_server (window) {
     server.wolfram.process.stdin.write('System`$Env = <|"AppData"->URLDecode["'+encodeURIComponent(appDataFolder)+'"], "ElectronCode"->'+server.electronCode+', "AccentColor"->"'+accentColor+'"|>;');
     server.wolfram.process.stdin.write(`Get[URLDecode["${encodeURIComponent(runPath)}"]]\n`);
 
-    const PACError = new RegExp(/Execution of PAC script at/);
+   
+    let buf = "";
 
-
-
-    let url_match;
-    const url_reg = new RegExp(/Open http:\/\/(?<ip>[0-9|.]*):(?<port>[0-9]*) in your browser/);
-
-    server.wolfram.streamer = (data) => {
-
-
-        const string = data.toString();
-        windows.log.print(string);
-
-        
-
-        //listerning for a specific line in output
-        url_match = url_reg.exec(string);
-        if (url_match && !server.running) {
-            //open a window, means server has started
-            server.url.local = `http://${url_match.groups.ip}:${url_match.groups.port}`;
-
-
-
+    const ipc = {
+        'runningAt': (ip, port) => {
+            server.url.local = `http://${ip}:${port}`;
             console.log('Open first window');
-
-            //open a first window. coudl be a file or second instance
+            //open a first window. could be a file or second instance
             create_first_window();
             server.running = true;
-
-            //reset to the default streamer
-            server.wolfram.streamer = (data) => {
-                const string = data.toString();
-                windows.log.print(string);
-            };
-
             if (!server.debug) setTimeout(() => {windows.log.destroy()}, 300);
+        },
+        'reloadSettings': () => {
+           //apply theme?
+           const last = server.frontend.Theme;
+           read_wl_settings();
+           if (server.frontend.Theme != last) {
+               nativeTheme.themeSource = server.frontend.Theme.toLowerCase();
+               nativeImage.__emitterPool.forEach((el) => el());
+               console.log('Update theme!');
+           } 
+        },
+        'createWindow': (path, title, rest = {}) => {
+            console.log(rest);
+            create_window({url: server.url.default() + path, title: title, ...rest});
         }
-
     };
+
+    server.wolfram.streamer = (chunk) => {
+        buf += chunk;
+  
+        let nl;
+        while ((nl = buf.indexOf("\n")) !== -1) {
+          const line = buf.slice(0, nl);
+          buf = buf.slice(nl + 1);
+  
+          if (line.startsWith("<<<IPC>>>")) {
+            try {
+                const payload = JSON.parse(line.slice("<<<IPC>>>".length));
+                ipc[payload[0]](...payload[1]);
+            } catch (err) {
+                console.error(err);
+            }
+          } else {
+            windows.log.print(line);
+          }
+        }
+    };
+
     server.wolfram.errors = (data) => {
         const string = data.toString();
-
-        //checking errors
-        if (PACError.exec(string)) {
-            new promt('binary', 'There might be an problem with Wolfram Engine (Execution of PAC script). If you face any further issues, try to restart frontend with no active internet connection', ()=>{}, window);
-        }
-
         windows.log.print(string, '\x1b[46m');
     };
 
+    server.wolfram.process.stdout.setEncoding("utf8");
     server.wolfram.process.stdout.on('data', server.wolfram.streamer);
     server.wolfram.process.stderr.on('data', server.wolfram.errors);
 }
@@ -3823,4 +3907,9 @@ var unshift = (array, value) => {
     array.unshift(value);
     array.length = Math.min(array.length, 5);
     return array;
+}
+
+let proto = {
+    create_window: create_window,
+    server: server
 }

@@ -46088,7 +46088,7 @@ var NOTEBOOK_ASSISTANT_INSTRUCTIONS = `Operate on a local sandboxed WLJS/Wolfram
 
 Workflow:
 1. Inspect before acting: use notebook_context, get_focused_cell, or list_cells.
-2. Before editing a cell, read nearby context with get_cell_lines.
+2. Before editing a cell, read nearby context with get_cell_lines or get_cell_full.
 3. Edit only INPUT cells. 
 4. Outputs are produced by evaluate_cell.
 5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
@@ -46510,7 +46510,7 @@ ${skillIndexText()}`
       Notebook: external_exports.string().optional().describe("Optional notebook hash/id. If omitted, uses the focused notebook.")
     },
     async ({ Notebook }) => {
-      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
+      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", {
         Notebook: notebookId
       });
@@ -46553,7 +46553,7 @@ ${skillIndexText()}`
   );
   register(
     "get_focused_notebook",
-    "Return the id/hash of the currently focused notebook.",
+    "Return the id/hash and kernel info of the currently focused notebook.",
     {},
     () => wlCall("/api/notebook/focused/", {})
   );
@@ -46570,6 +46570,16 @@ ${skillIndexText()}`
     }
   );
   register(
+    "list_kernels",
+    "List all kernels available",
+    {},
+    ({}) => wlCall("/api/kernel/list/", {}),
+    {
+      title: "List Kernels",
+      annotations: READ_ONLY_LOCAL
+    }
+  );
+  register(
     "get_focused_cell",
     "Get the currently focused cell in a notebook and its selected line range, if any. Lines are 1-indexed.",
     {
@@ -46578,8 +46588,21 @@ ${skillIndexText()}`
     ({ Notebook }) => wlCall("/api/notebook/cells/focused/", { Notebook })
   );
   register(
+    "get_cell_full",
+    "Reads full content of the cell bypassing shortening and revealing any hidden data. Provide maximum character length. Use on output cells",
+    {
+      Cell: idSchema.describe("Cell hash/id."),
+      MaxCharacters: lineNumberSchema.optional().describe("Maximum characters")
+    },
+    ({ Cell, MaxCharacters }) => wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }),
+    {
+      title: "Read Full Cell Content",
+      annotations: READ_ONLY_LOCAL
+    }
+  );
+  register(
     "get_cell_lines",
-    "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing.",
+    "Read an inclusive, 1-indexed line range from a cell. Read a little above and below selected lines before editing. Cannot be used on output cells",
     {
       ...cellIdShape,
       ...lineRangeShape
@@ -46710,18 +46733,21 @@ ${skillIndexText()}`
     );
     register(
       "evaluate_cell",
-      "Evaluate an input cell. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes.",
+      "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use get_cell_full on output ids",
       {
-        Cell: external_exports.string().min(1).describe("Input cell hash/id.")
+        Cell: external_exports.string().min(1).describe("Input cell hash/id."),
+        TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds.")
       },
-      ({ Cell }) => wlCall(
-        "/api/notebook/cells/evaluate/",
-        { Cell },
-        {
-          wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
-        }
-      ),
+      ({ Cell, TimeLimit }) => {
+        return wlCall(
+          "/api/notebook/cells/evaluate/",
+          { Cell, TimeLimit },
+          {
+            wait: true,
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20)
+          }
+        );
+      },
       {
         title: "Evaluate Cell",
         annotations: EXECUTES_CODE_LOCAL
@@ -46735,19 +46761,24 @@ ${skillIndexText()}`
       },
       ({ Cell }) => wlCall("/api/notebook/cells/project/", { Cell })
     );
+    const lookup = (number3, def) => {
+      if (!number3) return def;
+      return number3;
+    };
     register(
       "kernel_evaluate",
-      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code.",
+      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code",
       {
         Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
-        Kernel: external_exports.string().optional().describe("Optional kernel hash/id.")
+        Kernel: external_exports.string().optional().describe("Optional kernel hash/id."),
+        TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds.")
       },
-      ({ Expression, Kernel }) => wlCall(
+      ({ Expression, Kernel, TimeLimit }) => wlCall(
         "/api/kernel/evaluate/",
-        compact({ Expression, Kernel }),
+        compact({ Expression, Kernel, TimeLimit }),
         {
           wait: true,
-          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+          timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20)
         }
       ),
       {
@@ -46919,7 +46950,8 @@ function cliManifest() {
         "wljs focused",
         "wljs context",
         "wljs cells <notebook>",
-        "wljs lines <cell> <from> <to>"
+        "wljs lines <cell> <from> <to>",
+        "wljs full <cell>"
       ],
       add_and_render_markdown: [
         "wljs focused",
@@ -47055,6 +47087,16 @@ function cliManifest() {
         examples: ["wljs lines cell123 1 40"]
       },
       {
+        name: "full",
+        category: "inspection",
+        usage: "wljs full <cell>",
+        description: "Read full content of a cell bypassing shortening revaling any hidden data",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs full cell123"]
+      },
+      {
         name: "docs",
         category: "documentation",
         usage: "wljs docs <query>",
@@ -47146,7 +47188,7 @@ function cliManifest() {
         name: "eval",
         category: "evaluation",
         usage: "wljs eval <cell>",
-        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code.",
+        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Execution time is limited by 20 seconds",
         mutates_notebook: true,
         executes_code: true,
         output: "JSON",
@@ -47181,12 +47223,13 @@ function cliManifest() {
         name: "wl",
         category: "evaluation",
         usage: "wljs wl '<wolfram-expression>'",
-        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell.",
+        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell (max 25 sec evaluation)",
         mutates_notebook: false,
         executes_code: true,
         output: "JSON",
         safety_notes: [
           "This can execute arbitrary Wolfram Language code.",
+          "Execution time is limited to 25 seconds max",
           "Prefer notebook cells when the user expects visible notebook output."
         ],
         examples: [
@@ -47205,6 +47248,7 @@ function cliManifest() {
       "Use `wljs lines` before `wljs set-lines`.",
       "Use `wljs docs <topic>` before writing rich WLJS cell types.",
       "Use `wljs add ... --eval` when the user asks to show/render/create visible notebook output.",
+      "Use `wljs full` to reveal any shortened data in the output cells",
       "Avoid `delete-cell` unless deletion was explicitly requested.",
       "Avoid `wl` for visible notebook output; use `add` plus `eval` instead."
     ]
@@ -47278,7 +47322,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "context": {
       const opts2 = parseCliOptions(args);
       const Notebook = opts2.Notebook ?? opts2.notebook;
-      const notebookId = Notebook ?? await wlCall("/api/notebook/focused/", {});
+      const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
       let focusedCell = null;
       try {
@@ -47308,14 +47352,20 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const From = parsePositiveIntParam(args.shift(), "From");
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
-      writeJson(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      writeText(stdout, await wlCall("/api/notebook/cells/getlines/", { Cell, From, To }));
+      return 0;
+    }
+    case "full": {
+      const Cell = requireCliArg(args.shift(), "Usage: wljs full <cell>");
+      const MaxCharacters = 9999999;
+      writeText(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
       return 0;
     }
     case "docs": {
       const opts2 = parseCliOptions(args.filter((a) => a.startsWith("--")));
       const positional = args.filter((a) => !a.startsWith("--"));
       const Query = requireCliArg(positional.join(" "), "Usage: wljs docs <query> [--wl-only]");
-      writeJson(stdout, await cliConsultDocs(Query, 60, !!(opts2["wl-only"] ?? opts2.wolframOnly)));
+      writeText(stdout, await cliConsultDocs(Query, 60, !!(opts2["wl-only"] ?? opts2.wolframOnly)));
       return 0;
     }
     case "wl":
@@ -47353,7 +47403,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "project": {
       const Cell = requireCliArg(args.shift(), "Usage: wljs project <cell>");
-      writeJson(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
+      writeText(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
       return 0;
     }
     case "add": {
@@ -47538,49 +47588,49 @@ function extractCliCellId(value) {
   }
   return null;
 }
-async function cliConsultDocs(Query, LinesCount = 60, wolframOnly = false) {
-  const localMatches = wolframOnly ? [] : findSkillDocs(Query);
+async function cliConsultDocs(query, linesCount = 60, wolframOnly = false) {
+  const localMatches = wolframOnly ? [] : findSkillDocs(query);
   if (localMatches.length > 0) {
-    return {
-      Source: "bundled-wljs-skills",
-      Query,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri
-      })),
-      Documents: localMatches.map(({ key, title, uri, text }) => ({
-        key,
-        title,
-        uri,
-        text
-      }))
-    };
+    return formatHumanResult({
+      source: "Bundled WLJS Skills",
+      query,
+      docs: localMatches
+    });
   }
   try {
-    return {
-      Source: "wolfram-language-llm-docs",
-      Query,
-      Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-        key,
-        title,
-        uri
-      }))
-    };
+    const result = await wlCall("/api/docs/find/", {
+      Query: query,
+      LinesCount: linesCount
+    });
+    return formatHumanResult({
+      source: "Wolfram Language Docs",
+      query,
+      docs: Array.isArray(result) ? result : [result]
+    });
   } catch (error2) {
-    return {
-      Source: "not-found",
-      Query,
-      Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${error2?.message ?? String(error2)}`,
-      AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri, aliases }) => ({
-        key,
-        title,
-        uri,
-        aliases
-      }))
-    };
+    return [
+      `No documentation found for "${query}".`,
+      "",
+      `Lookup failed: ${error2?.message ?? String(error2)}`
+    ].join("\n");
   }
+}
+function formatHumanResult({ source, query, docs }) {
+  const sections = [
+    `# ${source}`,
+    "",
+    `Query: ${query}`
+  ];
+  for (const doc of docs) {
+    sections.push(
+      "",
+      `## ${doc.title ?? doc.key}`,
+      doc.uri ? `URI: ${doc.uri}` : "",
+      "",
+      typeof doc.text === "string" ? doc.text : JSON.stringify(doc, null, 2)
+    );
+  }
+  return sections.join("\n");
 }
 function cliHelpText() {
   return `WLJS Notebook CLI
@@ -47598,6 +47648,7 @@ Notebook:
   wljs cells <notebook>
   wljs focused-cell <notebook>
   wljs lines <cell> <from> <to>
+  wljs full <cell>
 
 Editing:
   wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]
@@ -47605,21 +47656,28 @@ Editing:
   wljs insert-lines <cell> <after> --content <text|@file|->
   wljs delete-cell <cell>
 
-Evaluation:
+Evaluation in the notebook:
   wljs eval <cell>
   wljs project <cell>
+
+Direct evaluation:
   wljs wl 1+1
+  wljs wl 'Range[10]^2'  
   wljs code 1+1
-  wljs -code 1+1  
-  wljs wl 'Range[10]^2'
+  wljs -code 1+1
+  wljs -c 1+1  
+
+Documentation:  
   wljs docs <query>
 
-Open by path:
+Open notebook by path:
   wljs path/to/notebook.wln
   wljs 'path/to/notebook.wln'
   wljs ./notebook.wln
+  wljs ./notebook.md
+  wljs ./notebook.html
 
-Open folder:
+Open a folder:
   wljs path/to/folder
   wljs .`;
 }

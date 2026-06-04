@@ -13,6 +13,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 settings = <||>;
 loadSettings[settings];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 addListeners[cli_, chat_] := With[{socket = EventClone[cli]},
     EventHandler[socket, {"Closed" -> Function[Null,
         EventRemove[socket];
@@ -30,8 +34,16 @@ evaluateInPlace[expr_String, k_, p_] := With[{promiseId = p[[1]]},
 getKernelsNames := With[{
     locals = AppExtensions`KernelList(*`*) // ReleaseHold
 },
-    {"Server Kernel", (#["Name"]) &/@ locals} // Flatten
+    {(*"System Shell", *)"Wolfram Kernel: Server", (StringJoin["Wolfram Kernel: ", #["Name"]]) &/@ locals} // Flatten
 ]
+
+(*
+shell = Null;
+
+getKernelTarget[1] := Function[{data, promise}, 
+    If[shell === Null, shell = StartProcess[$SystemShell] ];
+    shell
+]]*)
 
 getKernelTarget[1] := Function[{data, promise}, EventFire[promise, Resolve, <|"Data"->ToString[ToExpression[data, InputForm], InputForm]|>]]
 
@@ -52,7 +64,7 @@ App[request_] := Module[{client, channel, target}, With[{
         LocalControls   = CreateUUID[],
         ModalController = CreateUUID[],
         GlobalMessanger = CreateUUID[],
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         cachedClient = Unique["xtermModal"],
         isElectron = ElectronQ[request],
         GlobalParameters = <|"ElectronQ" -> ElectronQ[request], "AccentColor"->"teal"|>
@@ -71,6 +83,8 @@ App[request_] := Module[{client, channel, target}, With[{
                 EventHandler[socket, {"Closed" -> Function[Null,
 
                     Echo["Xterm was destroyed!"];
+                    (*KillProcess[shell];
+                    shell = Null;*)
                     ClearAll[client];
                     ClearAll[channel];
                     ClearAll[target];
@@ -133,7 +147,7 @@ App[request_] := Module[{client, channel, target}, With[{
                   <div class="px-4 py-2 text-center text-sm text-gray-500 dark:text-gray-400 linux:h-titlebar win:h-titlebar owin:h-titlebar" style="-webkit-app-region: drag">
                     Kernel Terminal
                   </div>
-                  <div id="xterm-container" class="dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5 owin:m-4 owin:mt-2 owin:rounded-lg owin:bg-white owin:shadow win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans xtem-size h-full"></div>
+                  <div id="xterm-container" class="dark:invert  owin:m-4 owin:mt-2 owin:rounded-lg owin:bg-white owin:shadow win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:m-4 linux:mt-2 linux:rounded-lg linux:bg-white linux:shadow bg-g-trans xtem-size h-full"></div>
                 </div>           
                 <WebUIOnLoad Event={secret} Pattern={"Load"}/>
               </main>              

@@ -1,6 +1,6 @@
 {
   "name": "wljs-notebook",
-  "version": "3.0.5",
+  "version": "3.0.7",
   "recommended-client-version": "2.6.3",
   "description": "A computational notebook IDE for Wolfram Language",
   "author": {
@@ -176,13 +176,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JerryI/wolfram-js-frontend.git"
+    "url": "git+https://github.com/WLJSTeam/wljs-notebook.git"
   },
   "license": "AGPL",
   "bugs": {
-    "url": "https://github.com/JerryI/wolfram-js-frontend/issues"
+    "url": "https://github.com/WLJSTeam/wljs-notebook/issues"
   },
-  "homepage": "https://github.com/JerryI/wolfram-js-frontend#readme",
+  "homepage": "https://github.com/WLJSTeam/wljs-notebook#readme",
   "devDependencies": {
     "@electron/notarize": "^2.3.0",
     "@playwright/test": "^1.51.0",

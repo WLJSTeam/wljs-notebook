@@ -12,32 +12,34 @@ System`ProvidedOptions;
 (* ::: Short reimplementation ::: *)
 (* it messes up with formatting and cuts comments used in WLJS *)
 
+(* [TODO]: Use normal Skeleton[] so that Short can work as InputForm! *)
+
 Unprotect[Short]
 ClearAll[Short]
 
 Short /: MakeBoxes[Short[expr_?AtomQ, ___], StandardForm | TraditionalForm] := (
-  If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[expr]];
+  If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[expr] ];
   
   RowBox[{"<<", ToString[Head[expr], InputForm], ">>"}]
 ) /; ByteCount[expr] > 1024
 
 Short /: MakeBoxes[Short[expr_?AtomQ, ___], StandardForm | TraditionalForm] := With[{boxes = MakeBoxes[expr, StandardForm]},
-    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes]];
+    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes] ];
   boxes
 ]
 
 Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := With[{boxes = MakeBoxes[expr, StandardForm]},
-    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes]];
+    If[NumericQ[BoxForm`$accumulatorSize], BoxForm`$accumulatorSize += ByteCount[boxes] ];
   boxes
 ]
 
-BoxForm`shortenHeadAndBody[List, args_] := RowBox[Join[{"{"}, Riffle[args, ","], {"}"}]]
+BoxForm`shortenHeadAndBody[List, args_, sep_:""] := RowBox[Join[{"{"<>sep}, Riffle[args, ","<>sep], {StringReplace[sep, " "->""]<>"}"}] ]
 
-BoxForm`shortenHeadAndBody[Plus, args_] := RowBox[Riffle[args, "+"]]
+BoxForm`shortenHeadAndBody[Plus, args_, sep_:""] := RowBox[Riffle[args, "+"<>sep] ]
 
-BoxForm`shortenHeadAndBody[any_, args_] := RowBox[Join[{ToString[any, InputForm], "["}, Riffle[args, ","], {"]"}]]
+BoxForm`shortenHeadAndBody[any_, args_, sep_:""] := RowBox[Join[{ToString[any, InputForm], "["<>sep}, Riffle[args, ","<>sep], {StringReplace[sep, " "->""]<>"]"}] ]
 
-Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
+Short /: MakeBoxes[Short[expr_], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
   process :=   (While[BoxForm`$accumulatorSize < 1024 && index <= Length[expr],
     With[{element = Extract[expr, index]},
       With[{elementBox = MakeBoxes[Short[element, 1], StandardForm]},
@@ -51,9 +53,9 @@ Short /: MakeBoxes[Short[expr_, ___], StandardForm | TraditionalForm] := Module[
     BoxForm`shortenHeadAndBody[Head[expr], row]
   ,
     If[Length[row] == 0,
-    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}]]
+    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
     ,
-    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index], ">>"}]}]]
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index+1], ">>"}]}] ]
     ]
   ])
 }, 
@@ -65,7 +67,40 @@ If[NumericQ[BoxForm`$accumulatorSize],
   Block[{BoxForm`$accumulatorSize = 0},
     process
   ]
-]]
+] ]
+] /; ByteCount[expr] > 1024
+
+Short /: MakeBoxes[Short[expr_, 1], form: StandardForm | TraditionalForm] := MakeBoxes[Short[expr], form]
+
+Short /: MakeBoxes[Short[expr_, lines_Integer], StandardForm | TraditionalForm] := Module[{row = {}, index = 1}, With[{
+  process :=   (While[(BoxForm`$accumulatorSize < 1024 || index < lines) && index <= Length[expr],
+    With[{element = Extract[expr, index]},
+      With[{elementBox = MakeBoxes[Short[element, 1], StandardForm]},
+        AppendTo[row, elementBox];
+        index++;
+      ]
+    ]
+  ];
+
+  If[index == Length[expr]+1,
+    BoxForm`shortenHeadAndBody[Head[expr], row, "\n "]
+  ,
+    If[Length[row] == 0,
+    RowBox[Join[{"<<", ToString[Head[expr], InputForm], ">>"}] ]
+    ,
+    BoxForm`shortenHeadAndBody[Head[expr], Join[row, {RowBox[{"<<", ToString[Length[expr] - index+1], ">>"}]}], "\n "]
+    ]
+  ])
+}, 
+
+If[NumericQ[BoxForm`$accumulatorSize],
+  process
+,
+
+  Block[{BoxForm`$accumulatorSize = 0},
+    process
+  ]
+] ]
 ] /; ByteCount[expr] > 1024
 
 (* ::: Commonly used Math symbols :::  *)
@@ -1268,41 +1303,31 @@ GraphicsGrid /: MakeBoxes[GraphicsGrid[list_, ___], any_] := With[{b = Grid[list
 HorizontalGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[HorizontalGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[HorizontalGauge[all] ]]//WaitAll
 );
 
 BulletGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[BulletGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[BulletGauge[all] ]]//WaitAll
 );
 
 AngularGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[AngularGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[AngularGauge[all] ]]//WaitAll
 );
 
 ThermometerGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[ThermometerGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[ThermometerGauge[all] ]]//WaitAll
 );
 
 ClockGauge[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[ClockGauge @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[ClockGauge[all] ]]//WaitAll
 );
 
 (* :: GeoGraphics :: *)
@@ -1311,17 +1336,13 @@ ClockGauge[all__] := (
 GeoGraphics[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[GeoGraphics @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[GeoGraphics[all] ]]//WaitAll
 )
 
 GeoListPlot[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[GeoListPlot @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[GeoListPlot[all] ]]//WaitAll
 )
 
 
@@ -1332,22 +1353,25 @@ GeoListPlot[all__] := (
 WordCloud[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ Rasterize[WordCloud @@ args]
-  ], {all}], 60 ]
+  ParallelSubmit[Rasterize[WordCloud[all] ]]//WaitAll
 )
 
 (* ::: TeX forms are currently not supported ;(  ::: *)
 
+
 Unprotect[TeXForm]
 ClearAll[TeXForm]
+Unprotect[MathMLForm]
+ClearAll[MathMLForm]
 
 TeXForm[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+  ParallelSubmit[ToString[TeXForm[all], InputForm]]//WaitAll
+)
 
-  WaitAll[ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ ToString[TeXForm @@ args, InputForm]
-  ], {all}], 60 ]
+MathMLForm[all__] := (
+  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+  ParallelSubmit[ToString[MathMLForm[all], InputForm]]//WaitAll
 )
 
 
@@ -1431,7 +1455,6 @@ toStringOutputForm[any_List] := HoldForm[any];
 toStringOutputForm[any_Association] := HoldForm[any];
 
 MakeBoxes[d_InformationData, StandardForm] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
   
   With[{ i = Map[toStringOutputForm, d//Dataset ] },
@@ -1698,6 +1721,21 @@ makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
   ]
 ]
 
+(* StandardForm and TranditionalForm *)
+Unprotect[FormBox]
+Unprotect[StandardForm]
+
+FormBox[expr_, StandardForm] := expr
+FormBox[expr_, TraditionalForm] := expr /. {RowBox->StringJoin}
+
+(* add missing for WLXForm *)
+StandardForm /: MakeBoxes[StandardForm[expr_], WLXForm] := With[{
+    editor = EditorView[ToString[expr, StandardForm], "ReadOnly"->True, "Focusable"->False, "Selectable"->False] // CreateFrontEndObject
+},
+    MakeBoxes[editor, WLXForm]
+]
+
+
 (* WL14 with no reason reloads the definitons of some symbols *)
 (* It breaks ANY FormatValues (even for custom forms) and Downvalues ofc *)
 (* In this example to reproduce see issue https://github.com/WLJSTeam/wolfram-js-frontend/issues/396  *)
@@ -1732,6 +1770,19 @@ If[Internal`Kernel`Watchdog["Enabled"],
     ,
       Get[file]
     , tag];
+    
+    Internal`Kernel`Watchdog["Assertion", "Tooltip",
+      FormatValues[Tooltip]//Hash
+    ,
+      Get[file]
+    , tag];
+ 
+    Internal`Kernel`Watchdog["Assertion", "OpenerView",
+      FormatValues[OpenerView]//Hash
+    ,
+      Get[file]
+    , tag];
+    
 
     Internal`Kernel`Watchdog["Assertion", "Iconize",
       FormatValues[Iconize]//Hash

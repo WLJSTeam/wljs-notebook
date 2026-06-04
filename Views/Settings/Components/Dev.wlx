@@ -20,7 +20,6 @@ EventHandler[Secret, {"Load" -> Function[Null,
         "WindowsLegacy" -> Function[state,
             settings = Join[settings, <|"WindowsLegacy"->state|>];
             onSave[settings];
-            EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "A restart is required"]
         ]
     }];
 

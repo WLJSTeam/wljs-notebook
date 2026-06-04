@@ -12541,6 +12541,12 @@ class TooltipViewManager {
         return true;
     }
 }
+/**
+Creates an extension that configures tooltip behavior.
+*/
+function tooltips(config = {}) {
+    return tooltipConfig.of(config);
+}
 function windowSpace(view) {
     let { win } = view;
     return { top: 0, left: 0, bottom: win.innerHeight, right: win.innerWidth };
@@ -21470,7 +21476,7 @@ function defaultPositionInfo(view, list, option, info, space) {
         }
     }
     return {
-        style: `${side}: ${offset}px; max-width: ${maxWidth}px`,
+        style: `${side}: ${offset}px; max-width: ${maxWidth}px; z-index:9999;`,
         class: "cm-completionInfo-" + (narrow ? (rtl ? "left-narrow" : "right-narrow") : left ? "left" : "right")
     };
 }
@@ -34873,6 +34879,7 @@ compactWLEditor = (args) => {
     args.extensions || [],   
     minimalSetup,
     editorCustomThemeCompact,  
+    tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
     wolframLanguage.of(EditorAutocomplete),
     FractionBoxWidget(compactWLEditor),
@@ -35215,6 +35222,7 @@ const EditorExtensionsMinimal = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
+  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches()
 ]; 
@@ -35241,6 +35249,7 @@ const EditorExtensions = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
+  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,

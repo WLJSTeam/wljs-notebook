@@ -13,7 +13,7 @@ Component[OptionsPattern[]] := With[{
     TB = With[{}, Table[
             <li class="group w-full flex flex-start cursor-default select-none rounded-md list-none">
                 <button type="button" class="dark:bg-gray-800 bg-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-indigo-600">
-                    <div class="dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5 dark:win:contrast-100" id="preview-{Item}"></div>
+                    <div class="dark:invert  dark:win:contrast-100" id="preview-{Item}"></div>
                 </button>                        
             </li> 
         , {Item, OptionValue["Data"]["List"]}]
@@ -26,7 +26,7 @@ Component[OptionsPattern[]] := With[{
             ]
         ,
             With[{Heading = OptionValue["Data"]["Title"]},
-                <h2 id="{UId}-heading" class="mb-2 mt-2 text-xs font-semibold text-gray-900 dark:invert dark:hue-rotate-180 dark:contrast-75 dark:brightness-5 dark:win:contrast-100"><Heading/></h2>
+                <h2 id="{UId}-heading" class="mb-2 mt-2 text-xs font-semibold text-gray-900 dark:invert  dark:win:contrast-100"><Heading/></h2>
             ]
         ]
 

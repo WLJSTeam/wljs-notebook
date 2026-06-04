@@ -1782,303 +1782,441 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 text-center" style="height: 100vh;display: flex;align-content: flex-start;flex-direction: column;flex-wrap: nowrap;justify-content: center;align-items: center;">
-
-<!-- Background wrapper -->
-<div
-  style="
-    position:fixed;
-    top:0; right:0; bottom:0; left:0;
-    z-index:-10;
-    overflow:hidden;
-    pointer-events:none;
-  "
->
-  <!-- Gradient blobs -->
-  <div
-    style="
-      position:absolute;
-      top:0;
-      left:50%;
-      transform:translateX(-50%);
-      width:350px;
-      height:350px;
-      background:linear-gradient(to bottom right,
-        rgba(249,115,22,0.35),
-        rgba(0,0,0,0),
-        rgba(236,72,153,0.45)
-      );
-      filter:blur(64px);
-      animation:pulse 4s ease-in-out infinite;
-    "
-  ></div>
-
-  <div
-    style="
-      position:absolute;
-      top:33.333%;
-      right:-25%;
-      width:250px;
-      height:250px;
-      background:linear-gradient(to bottom left,
-        rgba(244,63,94,0.40),
-        rgba(0,0,0,0),
-        rgba(249,115,22,0.15)
-      );
-      filter:blur(64px);
-      opacity:0.9;
-    "
-  ></div>
-
-  <div
-    style="
-      position:absolute;
-      bottom:0;
-      left:-25%;
-      width:200px;
-      height:200px;
-      background:linear-gradient(to top right,
-        rgba(236,72,153,0.10),
-        rgba(0,0,0,0),
-        rgba(244,63,94,0.10)
-      );
-      filter:blur(64px);
-      opacity:0.2;
-    "
-  ></div>
-
-  <!-- Noise overlay (very subtle) -->
-  <svg
-    style="
-      position:absolute;
-      top:0; right:0; bottom:0; left:0;
-      width:100%;
-      height:100%;
-      opacity:0.2;
-    "
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <defs>
-      <filter id="noise">
-        <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" stitchTiles="stitch" />
-        <feColorMatrix type="saturate" values="3" />
-      </filter>
-    </defs>
-    <rect width="100%" height="100%" filter="url(#noise)"></rect>
-  </svg>
-
-  <!-- Geometric shapes -->
-  <svg
-    style="
-      position:absolute;
-      top:0; right:0; bottom:0; left:0;
-      width:100%;
-      height:100%;
-    "
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 1600 900"
-    preserveAspectRatio="xMidYMid slice"
-  >
-    <defs>
-      <filter id="noiseTexture">
-        <feTurbulence type="fractalNoise" baseFrequency="1" numOctaves="1" result="noise" />
-        <feColorMatrix in="noise" type="saturate" values="0" />
-      </filter>
-    </defs>
-
-    <!-- Circle top right -->
-    <circle cx="1400" cy="150" r="200" fill="#f97316" filter="url(#noiseTexture)" opacity="0.35"></circle>
-
-    <!-- Triangle top left -->
-    <polygon points="100,150 350,100 200,400" fill="#ec4899" filter="url(#noiseTexture)" opacity="0.12"></polygon>
-
-    <!-- Pentagon bottom left -->
-    <polygon points="150,600 300,550 400,650 320,800 120,750" fill="#f43f5e" filter="url(#noiseTexture)" opacity="0.13"></polygon>
-
-    <!-- Rectangle rotated -->
-    <rect x="1200" y="500" width="300" height="200" fill="#f97316"
-      transform="rotate(25 1350 600)" filter="url(#noiseTexture)" opacity="0.22"></rect>
-
-    <!-- Hexagon middle right -->
-    <polygon points="1300,450 1380,490 1380,570 1300,610 1220,570 1220,490"
-      fill="#ec4899" filter="url(#noiseTexture)" opacity="0.13"></polygon>
-
-    <!-- Small circles scattered -->
-    <circle cx="250" cy="450" r="120" fill="#f43f5e" filter="url(#noiseTexture)" opacity="0.10"></circle>
-    <circle cx="1450" cy="700" r="150" fill="#f97316" filter="url(#noiseTexture)" opacity="0.12"></circle>
-
-    <!-- Diamond shape center -->
-    <polygon points="800,350 900,450 800,550 700,450" fill="#ec4899" filter="url(#noiseTexture)" opacity="0.20"></polygon>
-  </svg>
-
-  <!-- Grid pattern -->
-  <div
-    style="
-      position:absolute;
-      top:0; right:0; bottom:0; left:0;
-      background-image:
-        linear-gradient(to right, rgba(136,136,136,0.233) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(136,136,136,0.633) 1px, transparent 1px);
-      background-size:4rem 4rem;
-      opacity:0.9;
-
-      /* radial mask to fade grid out toward edges */
-      -webkit-mask-image:radial-gradient(ellipse 60% 50% at 50% 50%, #000 60%, transparent 100%);
-      mask-image:radial-gradient(ellipse 60% 50% at 50% 50%, #000 60%, transparent 100%);
-    "
-  ></div>
-
-  <!-- Inline keyframes (required for the pulse animation) -->
+<div class="wljs-welcome-intro text-gray-700">
   <style>
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
-      50%      { opacity: 0.75; transform: translateX(-50%) scale(1.05); }
+    @keyframes wljsWelcomeAppear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .appear {
+      opacity: 0;
+      animation: wljsWelcomeAppear 900ms ease-out forwards;
+    }
+
+    .wljs-welcome-intro {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .wljs-welcome-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, #fff7ed 0%, #ffffff 45%, #eff6ff 100%);
+    }
+
+    .wljs-welcome-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(120, 113, 108, 0.16) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(120, 113, 108, 0.12) 1px, transparent 1px);
+      background-size: 4rem 4rem;
+      mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
+    }
+
+    .wljs-welcome-panel {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    .wljs-welcome-title {
+      margin: 0;
+      font-size: 2.75rem;
+      line-height: 1.05;
+      letter-spacing: 0;
+      color: #1f2937;
+    }
+
+    .wljs-welcome-subtitle {
+      max-width: 36rem;
+      margin: 1rem auto 0;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #4b5563;
+    }
+
+    .wljs-tour-step {
+      min-height: 100vh;
+      padding: 1rem 0 2rem;
+      scroll-margin-top: 1rem;
+    }
+
+    .wljs-tour-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(120, 113, 108, 0.18);
+    }
+
+    .wljs-tour-copy {
+      text-align: left;
+      min-width: 0;
+    }
+
+    .wljs-tour-kicker {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #9a3412;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .wljs-tour-copy h1,
+    .wljs-tour-final h2 {
+      margin: 0;
+      color: #1f2937;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .wljs-tour-copy p,
+    .wljs-tour-final p {
+      margin-top: 0.45rem;
+      color: #4b5563;
+      line-height: 1.55;
+    }
+
+    .wljs-tour-button {
+      flex: 0 0 auto;
+      height: 2.25rem;
+      padding: 0 0.9rem;
+      border: 1px solid rgba(120, 113, 108, 0.24);
+      border-radius: 0.45rem;
+      background: #ffffff;
+      color: #1f2937;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(31, 41, 55, 0.08);
+    }
+
+    .wljs-tour-button:hover {
+      background: #fff7ed;
+      border-color: rgba(249, 115, 22, 0.38);
+    }
+
+    .wljs-tour-media {
+      display: block;
+      width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(120, 113, 108, 0.16);
+      box-shadow: 0 18px 45px rgba(31, 41, 55, 0.10);
+      background: #ffffff;
+    }
+
+    .wljs-tour-media--diagram {
+      padding: 1rem;
+      filter: saturate(1.4) contrast(0.96) brightness(0.98);
+    }
+
+    .wljs-tour-shortcuts {
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .wljs-tour-final {
+      min-height: 100vh;
+      padding: 2rem 0;
+      display: grid;
+      align-content: center;
+      gap: 1.5rem;
+    }
+
+    .wljs-tour-final a {
+      color: #9a3412;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media (max-width: 720px) {
+      .wljs-welcome-title { font-size: 2.1rem; }
+      .wljs-tour-header { flex-direction: column; }
+      .wljs-tour-button { width: 100%; }
+      .wljs-tour-shortcuts { flex-direction: column; }
+    }
+
+    [transparency="false"] .bg-g-trans,
+    [transparency="true"] .bg-g-trans {
+      background: transparent !important;
     }
   </style>
-</div>
 
-<style>
-  @keyframes appear {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
+  <div class="wljs-welcome-bg" aria-hidden="true"></div>
 
-  .appear {
-    opacity:0; 
-    animation-name: appear; 
-    animation-duration: 1.5s; 
-    animation-fill-mode: forwards;
-  }
+  <div class="wljs-welcome-panel">
+    <h1 class="appear wljs-welcome-title">Welcome to WLJS Notebook</h1>
+    <p class="appear wljs-welcome-subtitle" style="animation-delay:0.18s">
+      A quick tour through cells, rich input, multiple languages, live controls, and the command palette.
+    </p>
+    <button type="button" data-wljs-goto="marker_0" class="appear wljs-tour-button" style="animation-delay:0.36s">
+      Quick tour
+    </button>
+  </div>
 
-  [transparency="false"] .bg-g-trans {
-    background: transparent !important;
-  }
+  <script type="module">
+    const revealWelcomeStep = (root) => {
+      root.querySelectorAll('.appear').forEach((element) => {
+        element.classList.remove('appear');
+        void element.offsetWidth;
+        element.classList.add('appear');
+      });
+    };
 
-  [transparency="true"] .bg-g-trans {
-    background: transparent !important;
-  }
+    window.__wljsWelcomeGoTo = (targetId) => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      revealWelcomeStep(target);
+    };
 
-</style>
-  
-<h1 style="font-size:2rem" class="appear">Welcome to WLJS Notebook</h1>
-
-<p class="appear mt-2" style="animation-delay:0.25s">Is this your first time using computational notebooks?</p>
-
-<button id="btn1" class="appear sm-controls rounded bg-white px-2 py-1 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Quick tour</button>
-
-<script type="module">
-  document.getElementById('btn1').addEventListener('click', () => {
-    const d = document.getElementById('marker_0');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
+    if (!window.__wljsWelcomeNavBound) {
+      window.__wljsWelcomeNavBound = true;
+      document.addEventListener('click', (event) => {
+        const button = event.target instanceof Element
+          ? event.target.closest('[data-wljs-goto]')
+          : null;
+        if (!button) return;
+        event.preventDefault();
+        window.__wljsWelcomeGoTo(button.dataset.wljsGoto);
+      });
     }
-  })
-</script>
-
-
-  
+  </script>
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 text-center" style="height: 100vh;display: flex;align-content: flex-start;flex-direction: column;flex-wrap: nowrap;justify-content: center;align-items: center;"><!-- Background wrapper --><div style="
-    position:fixed;
-    top:0; right:0; bottom:0; left:0;
-    z-index:-10;
-    overflow:hidden;
-    pointer-events:none;
-  "> <!-- Gradient blobs --><div style="
-      position:absolute;
-      top:0;
-      left:50%;
-      transform:translateX(-50%);
-      width:350px;
-      height:350px;
-      background:linear-gradient(to bottom right,
-        rgba(249,115,22,0.35),
-        rgba(0,0,0,0),
-        rgba(236,72,153,0.45)
-      );
-      filter:blur(64px);
-      animation:pulse 4s ease-in-out infinite;
-    "></div><div style="
-      position:absolute;
-      top:33.333%;
-      right:-25%;
-      width:250px;
-      height:250px;
-      background:linear-gradient(to bottom left,
-        rgba(244,63,94,0.40),
-        rgba(0,0,0,0),
-        rgba(249,115,22,0.15)
-      );
-      filter:blur(64px);
-      opacity:0.9;
-    "></div><div style="
-      position:absolute;
-      bottom:0;
-      left:-25%;
-      width:200px;
-      height:200px;
-      background:linear-gradient(to top right,
-        rgba(236,72,153,0.10),
-        rgba(0,0,0,0),
-        rgba(244,63,94,0.10)
-      );
-      filter:blur(64px);
-      opacity:0.2;
-    "></div> <!-- Noise overlay (very subtle) --><svg style="
-      position:absolute;
-      top:0; right:0; bottom:0; left:0;
-      width:100%;
-      height:100%;
-      opacity:0.2;
-    " xmlns="http://www.w3.org/2000/svg"><defs ><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="1" stitchTiles="stitch"/><feColorMatrix type="saturate" values="3"/></filter></defs><rect width="100%" height="100%" filter="url(#noise)"></rect></svg> <!-- Geometric shapes --><svg style="
-      position:absolute;
-      top:0; right:0; bottom:0; left:0;
-      width:100%;
-      height:100%;
-    " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><defs ><filter id="noiseTexture"><feTurbulence type="fractalNoise" baseFrequency="1" numOctaves="1" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/></filter></defs> <!-- Circle top right --><circle cx="1400" cy="150" r="200" fill="#f97316" filter="url(#noiseTexture)" opacity="0.35"></circle> <!-- Triangle top left --><polygon points="100,150 350,100 200,400" fill="#ec4899" filter="url(#noiseTexture)" opacity="0.12"></polygon> <!-- Pentagon bottom left --><polygon points="150,600 300,550 400,650 320,800 120,750" fill="#f43f5e" filter="url(#noiseTexture)" opacity="0.13"></polygon> <!-- Rectangle rotated --><rect x="1200" y="500" width="300" height="200" fill="#f97316" transform="rotate(25 1350 600)" filter="url(#noiseTexture)" opacity="0.22"></rect> <!-- Hexagon middle right --><polygon points="1300,450 1380,490 1380,570 1300,610 1220,570 1220,490" fill="#ec4899" filter="url(#noiseTexture)" opacity="0.13"></polygon> <!-- Small circles scattered --><circle cx="250" cy="450" r="120" fill="#f43f5e" filter="url(#noiseTexture)" opacity="0.10"></circle><circle cx="1450" cy="700" r="150" fill="#f97316" filter="url(#noiseTexture)" opacity="0.12"></circle> <!-- Diamond shape center --><polygon points="800,350 900,450 800,550 700,450" fill="#ec4899" filter="url(#noiseTexture)" opacity="0.20"></polygon></svg> <!-- Grid pattern --><div ></div> <!-- Inline keyframes (required for the pulse animation) --><style >@keyframes pulse {
-      0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
-      50%      { opacity: 0.75; transform: translateX(-50%) scale(1.05); }
-    }</style></div><style >@keyframes appear {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-
-  .appear {
-    opacity:0; 
-    animation-name: appear; 
-    animation-duration: 1.5s; 
-    animation-fill-mode: forwards;
-  }
-
-  [transparency="false"] .bg-g-trans {
-    background: transparent !important;
-  }
-
-  [transparency="true"] .bg-g-trans {
-    background: transparent !important;
-  }</style><h1 style="font-size:2rem" class="appear">Welcome to WLJS Notebook</h1><p class="appear mt-2" style="animation-delay:0.25s">Is this your first time using computational notebooks?</p><button id="btn1" class="appear sm-controls rounded bg-white px-2 py-1 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Quick tour</button><script type="module"> document.getElementById('btn1').addEventListener('click', () => {
-    const d = document.getElementById('marker_0');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
+<div class="wljs-welcome-intro text-gray-700">
+  <style>
+    @keyframes wljsWelcomeAppear {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-  })</script></div>
+
+    .appear {
+      opacity: 0;
+      animation: wljsWelcomeAppear 900ms ease-out forwards;
+    }
+
+    .wljs-welcome-intro {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .wljs-welcome-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, #fff7ed 0%, #ffffff 45%, #eff6ff 100%);
+    }
+
+    .wljs-welcome-bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(120, 113, 108, 0.16) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(120, 113, 108, 0.12) 1px, transparent 1px);
+      background-size: 4rem 4rem;
+      mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
+    }
+
+    .wljs-welcome-panel {
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+
+    .wljs-welcome-title {
+      margin: 0;
+      font-size: 2.75rem;
+      line-height: 1.05;
+      letter-spacing: 0;
+      color: #1f2937;
+    }
+
+    .wljs-welcome-subtitle {
+      max-width: 36rem;
+      margin: 1rem auto 0;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #4b5563;
+    }
+
+    .wljs-tour-step {
+      min-height: 100vh;
+      padding: 1rem 0 2rem;
+      scroll-margin-top: 1rem;
+    }
+
+    .wljs-tour-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(120, 113, 108, 0.18);
+    }
+
+    .wljs-tour-copy {
+      text-align: left;
+      min-width: 0;
+    }
+
+    .wljs-tour-kicker {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #9a3412;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .wljs-tour-copy h1,
+    .wljs-tour-final h2 {
+      margin: 0;
+      color: #1f2937;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .wljs-tour-copy p,
+    .wljs-tour-final p {
+      margin-top: 0.45rem;
+      color: #4b5563;
+      line-height: 1.55;
+    }
+
+    .wljs-tour-button {
+      flex: 0 0 auto;
+      height: 2.25rem;
+      padding: 0 0.9rem;
+      border: 1px solid rgba(120, 113, 108, 0.24);
+      border-radius: 0.45rem;
+      background: #ffffff;
+      color: #1f2937;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(31, 41, 55, 0.08);
+    }
+
+    .wljs-tour-button:hover {
+      background: #fff7ed;
+      border-color: rgba(249, 115, 22, 0.38);
+    }
+
+    .wljs-tour-media {
+      display: block;
+      width: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(120, 113, 108, 0.16);
+      box-shadow: 0 18px 45px rgba(31, 41, 55, 0.10);
+      background: #ffffff;
+    }
+
+    .wljs-tour-media--diagram {
+      padding: 1rem;
+      filter: saturate(1.4) contrast(0.96) brightness(0.98);
+    }
+
+    .wljs-tour-shortcuts {
+      gap: 2rem;
+      align-items: flex-start;
+    }
+
+    .wljs-tour-final {
+      min-height: 100vh;
+      padding: 2rem 0;
+      display: grid;
+      align-content: center;
+      gap: 1.5rem;
+    }
+
+    .wljs-tour-final a {
+      color: #9a3412;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    @media (max-width: 720px) {
+      .wljs-welcome-title { font-size: 2.1rem; }
+      .wljs-tour-header { flex-direction: column; }
+      .wljs-tour-button { width: 100%; }
+      .wljs-tour-shortcuts { flex-direction: column; }
+    }
+
+    [transparency="false"] .bg-g-trans,
+    [transparency="true"] .bg-g-trans {
+      background: transparent !important;
+    }
+  </style>
+
+  <div class="wljs-welcome-bg" aria-hidden="true"></div>
+
+  <div class="wljs-welcome-panel">
+    <h1 class="appear wljs-welcome-title">Welcome to WLJS Notebook</h1>
+    <p class="appear wljs-welcome-subtitle" style="animation-delay:0.18s">
+      A quick tour through cells, rich input, multiple languages, live controls, and the command palette.
+    </p>
+    <button type="button" data-wljs-goto="marker_0" class="appear wljs-tour-button" style="animation-delay:0.36s">
+      Quick tour
+    </button>
+  </div>
+
+  <script type="module">
+    const revealWelcomeStep = (root) => {
+      root.querySelectorAll('.appear').forEach((element) => {
+        element.classList.remove('appear');
+        void element.offsetWidth;
+        element.classList.add('appear');
+      });
+    };
+
+    window.__wljsWelcomeGoTo = (targetId) => {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      revealWelcomeStep(target);
+    };
+
+    if (!window.__wljsWelcomeNavBound) {
+      window.__wljsWelcomeNavBound = true;
+      document.addEventListener('click', (event) => {
+        const button = event.target instanceof Element
+          ? event.target.closest('[data-wljs-goto]')
+          : null;
+        if (!button) return;
+        event.preventDefault();
+        window.__wljsWelcomeGoTo(button.dataset.wljsGoto);
+      });
+    }
+  </script>
+</div>
 
 %-------------------------------------------------------------------------%
 Props:
@@ -2088,53 +2226,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 pt-2 text-center flex flex-col" style="min-height:100vh" id="marker_0">
+<div class="wljs-tour-step text-gray-700 text-center flex flex-col" id="marker_0">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">1 of 6</span>
+      <h1>Cells are the building blocks</h1>
+      <p>Each cell can hold Wolfram Language, markdown, JavaScript, WLX, slides, and more.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_1" class="appear wljs-tour-button">Next</button>
+  </div>
 
-<div class="appear text-center flex flex-row justify-between">
-
- 
-<h1>Concept of cells</h1>
-
-
-<button id="btn22" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img src="/Introduction/attachments/image-59e.png" style="filter: saturate(5) contrast(0.8) brightness(0.9);padding:1rem; margin-top:1rem; margin-bottom:0.5rem; border-radius:0.25rem;"/>
-
-<script type="module">
-  document.getElementById('btn22').addEventListener('click', () => {
-    const d = document.getElementById('marker_1');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media wljs-tour-media--diagram" src="/Introduction/attachments/image-59e.png" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 pt-2 text-center flex flex-col" style="min-height:100vh" id="marker_0"><div class="appear text-center flex flex-row justify-between"><h1 >Concept of cells</h1><button id="btn22" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img src="/Introduction/attachments/image-59e.png" style="filter: saturate(5) contrast(0.8) brightness(0.9);padding:1rem; margin-top:1rem; margin-bottom:0.5rem; border-radius:0.25rem;"/><script type="module"> document.getElementById('btn22').addEventListener('click', () => {
-    const d = document.getElementById('marker_1');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700 text-center flex flex-col" id="marker_0">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">1 of 6</span>
+      <h1>Cells are the building blocks</h1>
+      <p>Each cell can hold Wolfram Language, markdown, JavaScript, WLX, slides, and more.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_1" class="appear wljs-tour-button">Next</button>
+  </div>
+
+  <img class="wljs-tour-media wljs-tour-media--diagram" src="/Introduction/attachments/image-59e.png" />
+</div>
 
 %-------------------------------------------------------------------------%
 Props:
@@ -2145,54 +2265,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 pt-2" id="marker_1">
+<div class="wljs-tour-step text-gray-700" id="marker_1">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">2 of 6</span>
+      <h1>Create a cell</h1>
+      <p>The first evaluation may take a moment while the runtime starts.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_2" class="appear wljs-tour-button">Next</button>
+  </div>
 
-<div class="appear flex flex-row justify-between">
-
-<div>  
-<h1>Let's Create a Cell</h1>
-<p>The initial evaluation may take a moment...</p>
-</div>
-
-<button id="btn2" class="appear sm-controls bg-white px-2 py-1 font-shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img class="rounded-lg mt-2" src="/Experimental/attachments/Tutor1-955.gif" width="100%"/>
-
-<script type="module">
-  document.getElementById('btn2').addEventListener('click', () => {
-    const d = document.getElementById('marker_2');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media" src="/Experimental/attachments/Tutor1-955.gif" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 pt-2" id="marker_1"><div class="appear flex flex-row justify-between"><div ><h1 >Let's Create a Cell</h1><p >The initial evaluation may take a moment...</p></div><button id="btn2" class="appear sm-controls bg-white px-2 py-1 font-shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img class="rounded-lg mt-2" src="/Experimental/attachments/Tutor1-955.gif" width="100%"/><script type="module"> document.getElementById('btn2').addEventListener('click', () => {
-    const d = document.getElementById('marker_2');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700" id="marker_1">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">2 of 6</span>
+      <h1>Create a cell</h1>
+      <p>The first evaluation may take a moment while the runtime starts.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_2" class="appear wljs-tour-button">Next</button>
+  </div>
+
+  <img class="wljs-tour-media" src="/Experimental/attachments/Tutor1-955.gif" />
+</div>
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -2224,54 +2325,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 pt-2" id="marker_2">
+<div class="wljs-tour-step text-gray-700" id="marker_2">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">3 of 6</span>
+      <h1>Type math naturally</h1>
+      <p>Use keyboard shortcuts for fractions, powers, roots, subscripts, and semantic input.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_3" class="appear wljs-tour-button">Next</button>
+  </div>
 
-<div class="flex flex-row justify-between appear">
-
-<div class="appear">  
-<h1>Try our math typing</h1>
-<p>Keep your fingers on the keyboard and start casting spells!</p>
-</div>
-
-<button id="btn3" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img class="rounded-lg mt-2" src="/Experimental/attachments/typer7-324.gif" width="100%"/>
-
-<script type="module">
-  document.getElementById('btn3').addEventListener('click', () => {
-    const d = document.getElementById('marker_3');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media" src="/Experimental/attachments/typer7-324.gif" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 pt-2" id="marker_2"><div class="flex flex-row justify-between appear"><div class="appear"><h1 >Try our math typing</h1><p >Keep your fingers on the keyboard and start casting spells!</p></div><button id="btn3" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img class="rounded-lg mt-2" src="/Experimental/attachments/typer7-324.gif" width="100%"/><script type="module"> document.getElementById('btn3').addEventListener('click', () => {
-    const d = document.getElementById('marker_3');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700" id="marker_2">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">3 of 6</span>
+      <h1>Type math naturally</h1>
+      <p>Use keyboard shortcuts for fractions, powers, roots, subscripts, and semantic input.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_3" class="appear wljs-tour-button">Next</button>
+  </div>
+
+  <img class="wljs-tour-media" src="/Experimental/attachments/typer7-324.gif" />
+</div>
 
 %-------------------------------------------------------------------------%
 Props:
@@ -2281,20 +2363,20 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 
-<div class="flex flex-row">
+<div class="flex flex-row wljs-tour-shortcuts">
 
 <div>
 
-#### Cells
+#### Math input
 
 - <kbd>Ctrl-/</kbd>: Create fraction
 - <kbd>Ctrl-6</kbd>: Power
 - <kbd>Ctrl-2</kbd>: Square root
 - <kbd>Ctrl--</kbd>: Subscript
 - <kbd>Ctrl-=</kbd>: Semantic input
-- <kbd>ESC</kbd>: Open suggestions for greek symbol
-- <kbd>Alt-/</kbd> or <kbd>\[CloverLeaf]-/</kbd>: Comment a line
-- <kbd>Ctrl-F</kbd> or <kbd>\[CloverLeaf]-F</kbd>: Search inside cell
+- <kbd>ESC</kbd>: Open suggestions for Greek symbols
+- <kbd>Alt-/</kbd> or <kbd>⌘-/</kbd>: Comment a line
+- <kbd>Ctrl-F</kbd> or <kbd>⌘-F</kbd>: Search inside cell
 
 </div>
 
@@ -2303,9 +2385,9 @@ Type: Input
 #### Evaluation
 
 - <kbd>Shift-Enter</kbd>: Evaluate cell
-- <kbd>Ctrl-Enter</kbd> or <kbd>\[CloverLeaf]-Enter</kbd>: Evaluate cell and jump to the next
-- <kbd>Ctrl-Shift-Enter</kbd> or <kbd>\[CloverLeaf]-Shift-Enter</kbd>: Evaluate in a new window
-- <kbd>Alt-I</kbd> or <kbd>\[CloverLeaf]-I</kbd>: Evaluate initialization cells
+- <kbd>Ctrl-Enter</kbd> or <kbd>⌘-Enter</kbd>: Evaluate cell and jump to the next
+- <kbd>Ctrl-Shift-Enter</kbd> or <kbd>⌘-Shift-Enter</kbd>: Evaluate in a new window
+- <kbd>Alt-I</kbd> or <kbd>⌘-I</kbd>: Evaluate initialization cells
 
 </div>
 
@@ -2315,29 +2397,35 @@ Type: Input
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="flex flex-row"><div >
+<div class="flex flex-row wljs-tour-shortcuts">
 
-#### Cells
+<div>
 
-- <kbd >Ctrl-/</kbd>: Create fraction
-- <kbd >Ctrl-6</kbd>: Power
-- <kbd >Ctrl-2</kbd>: Square root
-- <kbd >Ctrl--</kbd>: Subscript
-- <kbd >Ctrl-=</kbd>: Semantic input
-- <kbd >ESC</kbd>: Open suggestions for greek symbol
-- <kbd >Alt-/</kbd> or <kbd >\[CloverLeaf]-/</kbd>: Comment a line
-- <kbd >Ctrl-F</kbd> or <kbd >\[CloverLeaf]-F</kbd>: Search inside cell
+#### Math input
 
-</div><div >
+- <kbd>Ctrl-/</kbd>: Create fraction
+- <kbd>Ctrl-6</kbd>: Power
+- <kbd>Ctrl-2</kbd>: Square root
+- <kbd>Ctrl--</kbd>: Subscript
+- <kbd>Ctrl-=</kbd>: Semantic input
+- <kbd>ESC</kbd>: Open suggestions for Greek symbols
+- <kbd>Alt-/</kbd> or <kbd>⌘-/</kbd>: Comment a line
+- <kbd>Ctrl-F</kbd> or <kbd>⌘-F</kbd>: Search inside cell
+
+</div>
+
+<div>
 
 #### Evaluation
 
-- <kbd >Shift-Enter</kbd>: Evaluate cell
-- <kbd >Ctrl-Enter</kbd> or <kbd >\[CloverLeaf]-Enter</kbd>: Evaluate cell and jump to the next
-- <kbd >Ctrl-Shift-Enter</kbd> or <kbd >\[CloverLeaf]-Shift-Enter</kbd>: Evaluate in a new window
-- <kbd >Alt-I</kbd> or <kbd >\[CloverLeaf]-I</kbd>: Evaluate initialization cells
+- <kbd>Shift-Enter</kbd>: Evaluate cell
+- <kbd>Ctrl-Enter</kbd> or <kbd>⌘-Enter</kbd>: Evaluate cell and jump to the next
+- <kbd>Ctrl-Shift-Enter</kbd> or <kbd>⌘-Shift-Enter</kbd>: Evaluate in a new window
+- <kbd>Alt-I</kbd> or <kbd>⌘-I</kbd>: Evaluate initialization cells
 
-</div></div>
+</div>
+
+</div>
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -2368,54 +2456,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 pt-2" id="marker_3">
+<div class="wljs-tour-step text-gray-700" id="marker_3">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">4 of 6</span>
+      <h1>Mix languages in one notebook</h1>
+      <p>Put the extension on the first line to switch the cell type.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_4" class="appear wljs-tour-button">Next</button>
+  </div>
 
-<div class="flex flex-row appear justify-between">
-
-<div class="appear">  
-<h1>Write in Multiple Languages</h1>
-<p>Type the extension on the first line to change the cell type</p>
-</div>
-
-<button id="btn4" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img class="rounded-lg mt-2" src="/Experimental/attachments/markdown-189.gif" width="100%"/>
-
-<script type="module">
-  document.getElementById('btn4').addEventListener('click', () => {
-    const d = document.getElementById('marker_4');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media" src="/Experimental/attachments/markdown-189.gif" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 pt-2" id="marker_3"><div class="flex flex-row appear justify-between"><div class="appear"><h1 >Write in Multiple Languages</h1><p >Type the extension on the first line to change the cell type</p></div><button id="btn4" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img class="rounded-lg mt-2" src="/Experimental/attachments/markdown-189.gif" width="100%"/><script type="module"> document.getElementById('btn4').addEventListener('click', () => {
-    const d = document.getElementById('marker_4');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700" id="marker_3">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">4 of 6</span>
+      <h1>Mix languages in one notebook</h1>
+      <p>Put the extension on the first line to switch the cell type.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_4" class="appear wljs-tour-button">Next</button>
+  </div>
+
+  <img class="wljs-tour-media" src="/Experimental/attachments/markdown-189.gif" />
+</div>
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -2469,54 +2538,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 pt-2" id="marker_4">
+<div class="wljs-tour-step text-gray-700" id="marker_4">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">5 of 6</span>
+      <h1>Manipulate things live</h1>
+      <p>Drag a slider and see the result update immediately.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_5" class="appear wljs-tour-button">Next</button>
+  </div>
 
-<div class="flex flex-row justify-between appear">
-
-<div class="appear">  
-<h1>Manipulate Things Live</h1>
-<p>Drag a slider and see the changes instantly</p>
-</div>
-
-<button id="btn5" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img class="rounded-lg mt-2" src="/Experimental/attachments/manipulate2-c36.gif" width="100%"/>
-
-<script type="module">
-  document.getElementById('btn5').addEventListener('click', () => {
-    const d = document.getElementById('marker_5');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media" src="/Experimental/attachments/manipulate2-c36.gif" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 pt-2" id="marker_4"><div class="flex flex-row justify-between appear"><div class="appear"><h1 >Manipulate Things Live</h1><p >Drag a slider and see the changes instantly</p></div><button id="btn5" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img class="rounded-lg mt-2" src="/Experimental/attachments/manipulate2-c36.gif" width="100%"/><script type="module"> document.getElementById('btn5').addEventListener('click', () => {
-    const d = document.getElementById('marker_5');
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      d.scrollIntoView({behavior: 'instant'});
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700" id="marker_4">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">5 of 6</span>
+      <h1>Manipulate things live</h1>
+      <p>Drag a slider and see the result update immediately.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_5" class="appear wljs-tour-button">Next</button>
+  </div>
+
+  <img class="wljs-tour-media" src="/Experimental/attachments/manipulate2-c36.gif" />
+</div>
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -2565,56 +2615,35 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 pt-2" id="marker_5">
+<div class="wljs-tour-step text-gray-700" id="marker_5">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">6 of 6</span>
+      <h1>Use the command palette</h1>
+      <p>A compact place for notebook tools and actions.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_8" class="appear wljs-tour-button">Finish</button>
+  </div>
 
-<div class="flex flex-row justify-between appear">
-
-<div class="appear">  
-<h1>Use the Command Palette</h1>
-<p class="markdown">A handy set of powerful tools</p>
-</div>
-
-<button id="btn6" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button>
-
-</div>
-  
-<img class="rounded-lg mt-2" src="/Experimental/attachments/matrix-b0b.gif" width="100%"/>
-
-<script type="module">
-  document.getElementById('btn6').addEventListener('click', () => {
-    const d = document.getElementById('marker_8');
-    d.scrollIntoView({behavior: 'instant'});
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      
-    }
-  })
-</script>
-  
+  <img class="wljs-tour-media" src="/Experimental/attachments/matrix-b0b.gif" />
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 pt-2" id="marker_5"><div class="flex flex-row justify-between appear"><div class="appear"><h1 >Use the Command Palette</h1><p class="markdown">A handy set of powerful tools</p></div><button id="btn6" class="appear sm-controls bg-white px-2 py-1 shadow-sm ring-1 h-8 rounded mt-1 ring-inset ring-gray-300 hover:bg-gray-50" style="margin-top: 2rem;animation-delay:0.5s;left: 0rem;cursor:pointer;box-shadow: #c6c6c6 0px 0px 2px;background: white;">Next</button></div><img class="rounded-lg mt-2" src="/Experimental/attachments/matrix-b0b.gif" width="100%"/><script type="module"> document.getElementById('btn6').addEventListener('click', () => {
-    const d = document.getElementById('marker_8');
-    d.scrollIntoView({behavior: 'instant'});
-    console.log(d);
-    const els = d.querySelectorAll('.appear');
-    console.log(els);
-    for (let i=0; i<els.length; ++i) {
-      console.log(els[i]);
-      els[i].classList.toggle('appear');
-      els[i].classList.toggle('appear');
-      
-    }
-  })</script></div>
+<div class="wljs-tour-step text-gray-700" id="marker_5">
+  <div class="appear wljs-tour-header">
+    <div class="wljs-tour-copy">
+      <span class="wljs-tour-kicker">6 of 6</span>
+      <h1>Use the command palette</h1>
+      <p>A compact place for notebook tools and actions.</p>
+    </div>
+    <button type="button" data-wljs-goto="marker_8" class="appear wljs-tour-button">Finish</button>
+  </div>
+
+  <img class="wljs-tour-media" src="/Experimental/attachments/matrix-b0b.gif" />
+</div>
 
 %-------------------------------------------------------------------------%
 Props:
@@ -2658,32 +2687,43 @@ Type: Input
 %-------------------------------------------------------------------------%
 .wlx
 
-<div class="text-gray-700 mt-2 pt-2" style="min-height:100vh" id="marker_8">
+<div class="wljs-tour-final text-gray-700" id="marker_8">
+  <section class="appear">
+    <h2>Use the WLJS overlay</h2>
+    <p class="markdown">Open it instantly with <kbd>Shift-Alt-Space</kbd>.</p>
+  </section>
 
-<h2>Use WLJS overlay</h2>
-  <p class="markdown">Instant access using <kbd>Shift-Alt-Space</kbd></p>
+  <section class="appear" style="animation-delay:0.12s">
+    <h2>Open docs from autocomplete</h2>
+    <p>Click the magnifying glass icon to find examples and documentation for a symbol.</p>
+  </section>
 
-<br/>
-
-
-<h2>Open docs from autocomplete</h2>
-  <p>Click on \|01f50e to locate examples and documentation on a given symbol</p>
-
-
-<br/>  
-
-
-<h2>Something isn't working?</h2>
-
-Submit an issue or open a discussion on <a style="text-decoration:underline" href="https://github.com/WLJSTeam/wolfram-js-frontend" target="_blank">Github</a>.
-  
+  <section class="appear" style="animation-delay:0.24s">
+    <h2>Something is not working?</h2>
+    <p>Submit an issue or open a discussion on <a href="https://github.com/WLJSTeam/wolfram-js-frontend" target="_blank">GitHub</a>.</p>
+  </section>
 </div>
 
 %-------------------------------------------------------------------------%
 Display: wlx
 Type: Output
 %-------------------------------------------------------------------------%
-<div class="text-gray-700 mt-2 pt-2" style="min-height:100vh" id="marker_8"><h2 >Use WLJS overlay</h2><p class="markdown">Instant access using <kbd >Shift-Alt-Space</kbd></p><br /><h2 >Open docs from autocomplete</h2><p >Click on manifying glass icon to locate examples and documentation on a given symbol</p><br /><h2 >Something isn't working?</h2>Submit an issue or open a discussion on <a style="text-decoration:underline" href="https://github.com/WLJSTeam/wolfram-js-frontend" target="_blank">Github</a>.</div>
+<div class="wljs-tour-final text-gray-700" id="marker_8">
+  <section class="appear">
+    <h2>Use the WLJS overlay</h2>
+    <p class="markdown">Open it instantly with <kbd>Shift-Alt-Space</kbd>.</p>
+  </section>
+
+  <section class="appear" style="animation-delay:0.12s">
+    <h2>Open docs from autocomplete</h2>
+    <p>Click the magnifying glass icon to find examples and documentation for a symbol.</p>
+  </section>
+
+  <section class="appear" style="animation-delay:0.24s">
+    <h2>Something is not working?</h2>
+    <p>Submit an issue or open a discussion on <a href="https://github.com/WLJSTeam/wolfram-js-frontend" target="_blank">GitHub</a>.</p>
+  </section>
+</div>
 
 %-------------------------------------------------------------------------%
 Type: Input

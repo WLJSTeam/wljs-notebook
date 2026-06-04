@@ -32,6 +32,23 @@ Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 {saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 
+$IdAliases[_] := Null;
+$IdAliasesCount = 1;
+
+fromAlias[id_String] := $IdAliases[id];
+
+toAlias[id_String] := If[$IdAliases[id] === Null,
+  With[{alias = StringPadLeft[ToString[$IdAliasesCount], 3, "0"]},
+    $IdAliasesCount++;
+    $IdAliases[id] = alias;
+    $IdAliases[alias] = id;
+    alias
+  ],
+  $IdAliases[id]
+]
+
+
+
 failure;
 
 failureQ[failure[message_] ] := message
@@ -206,9 +223,14 @@ apiCall[request_, "/api/docs/find/"] := With[{
 *)
 apiCall[request_, "/api/notebook/list/"] := With[{},
     <|
-        "Id"-> #["Hash"],
+        "Id"-> toAlias[#["Hash"]],
         "Opened" -> #["Opened"],
-        "Path" -> #["Path"]
+        "Path" -> #["Path"],
+        "Kernel"->If[
+              TrueQ[#["Evaluator"]["Kernel"]["ContainerReadyQ"]],
+              toAlias[#["Evaluator"]["Kernel"]["Hash"]],
+              "Missing"
+        ]
     |> &/@ Select[Values[nb`HashMap], (Complement[{"Opened", "Path", "Hash"}, #["Properties"] ] === {}) &]
 ]
 
@@ -219,13 +241,13 @@ apiCall[request_, "/api/notebook/new/"] := With[{body = request["Body"], nb = nb
 
     nb["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, "llm-"<>StringTake[CreateUUID[], 3]<>".wln"}];
     Then[saveNotebook[nb], Echo];
-    <|"Id"->nb["Hash"], "PathEncoded"->URLEncode[nb["Path"] ]|>
+    <|"Id"->toAlias[nb["Hash"]], "PathEncoded"->URLEncode[nb["Path"] ]|>
 ]
 
 
 apiCall[request_, "/api/notebook/readyQ/"] := With[{body = request["Body"]},
-    If[TrueQ[nb`HashMap[body["Id"] ]["Opened"] ],
-        <|"ReadyQ"->True, "Path"->URLEncode[nb`HashMap[body["Id"] ]["Path"] ], "Name"->FileNameTake[nb`HashMap[body["Id"] ]["Path"] ]|>
+    If[TrueQ[nb`HashMap[fromAlias[body["Id"]] ]["Opened"] ],
+        <|"ReadyQ"->True, "Path"->URLEncode[nb`HashMap[fromAlias[body["Id"]] ]["Path"] ], "Name"->FileNameTake[nb`HashMap[fromAlias[body["Id"]] ]["Path"] ]|>
     ,
         False
     ]
@@ -242,7 +264,11 @@ apiCall[request_, "/api/notebook/focused/"] := With[
    {nb = AppExtensions`AppGlobals["CurrentNotebook"]},
    If[
       TrueQ[nb["Opened"]],
-      nb["Hash"],
+      <|"Id"->toAlias[nb["Hash"]], "Kernel"->If[
+            TrueQ[nb["Evaluator"]["Kernel"]["ContainerReadyQ"]],
+            toAlias[nb["Evaluator"]["Kernel"]["Hash"]],
+            "Missing"
+      ]|>,
       failure["No focused notebook found"]
    ]
 ]
@@ -251,6 +277,7 @@ apiCall[request_, "/api/notebook/focused/"] := With[
 apiCall[request_, "/api/notebook/cells/"] := {
     "/api/notebook/cells/list/",
     "/api/notebook/cells/getlines/",
+    "/api/notebook/cells/getfullcontent/"
     "/api/notebook/cells/setlines/",
     "/api/notebook/cells/setlines/batch/",
     "/api/notebook/cells/insertlines/",
@@ -284,16 +311,22 @@ apiCall[request_, "/api/notebook/cells/"] := {
 *)
 apiCall[request_, "/api/notebook/cells/list/"] := Module[{body = request["Body"]},
     With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
+        {notebook = nb`HashMap[ fromAlias[body["Notebook"]] ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
         With[{cells = notebook["Cells"]},
-            <|
-                "Id"-> #["Hash"],
+            If[cell`InputCellQ[#], <|
+                "Id"-> toAlias[#["Hash"]],
                 "Type" -> #["Type"],
                 "Display" -> #["Display"],
                 "Lines" -> StringCount[#["Data"], "\n"]+1,
                 "FirstLine" -> If[TrueQ[#["Overflow"] ], "[TOO LONG TO BE RENDERED]", StringExtract[#["Data"], "\n"->1] ]
-            |> &/@ cells    
+            |>,
+            <|
+                "Id"-> toAlias[#["Hash"]],
+                "Type" -> #["Type"],
+                "Display" -> #["Display"]
+            |>
+            ] &/@ cells    
         ]
     ]
 ]
@@ -320,11 +353,11 @@ apiCall[request_, "/api/notebook/cells/list/"] := Module[{body = request["Body"]
 *)
 apiCall[request_, "/api/notebook/cells/focused/"] := Module[{body = request["Body"]},
     With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
+        {notebook = nb`HashMap[ fromAlias[body["Notebook"]] ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
         With[{cell = notebook["FocusedCell"], ranges = notebook["FocusedCellSelection"]},
             If[MatchQ[cell, _cell`CellObj], With[{data = cell["Data"]}, <|
-                "Id"-> cell["Hash"],
+                "Id"-> toAlias[cell["Hash"]],
                 "Type" -> cell["Type"],
                 "Display" -> cell["Display"],
                 "Lines" -> StringCount[data, "\n"]+1,
@@ -357,15 +390,72 @@ apiCall[request_, "/api/notebook/cells/focused/"] := Module[{body = request["Bod
 apiCall[request_, "/api/notebook/cells/getlines/"] := Module[{body = request["Body"]},
     With[
         {
-            cell = cell`HashMap[ body["Cell"] ],
+            cell = cell`HashMap[ fromAlias[body["Cell"]] ],
             from = body["From"],
             to = body["To"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
+        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Use get full content"], Module]];
         If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
         StringRiffle[StringSplit[cell["Data"], "\n", All][[from ;; UpTo[to] ]], "\n"]
     ]
 ]
+
+(* 
+   /api/notebook/cells/getfullcontent/ - Read full content of the output cell
+   
+   Retrieves content from a possibly truncated output cells
+   EXPERIMENTAL
+*)  
+apiCall[request_, "/api/notebook/cells/getfullcontent/"] := Module[{body = request["Body"]},
+    With[
+        {
+            cell = cell`HashMap[ fromAlias[body["Cell"]] ],
+            maxLength = Lookup[body, "MaxCharacters", 500]
+        }, {
+            k = cell["Notebook"]["Evaluator"]["Kernel"]
+        },
+        
+        If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
+        If[!NumberQ[maxLength], Return[failure["MaximumCharacterLength is not a number"], Module] ];
+
+        If[cell`InputCellQ[cell], 
+            Return[StringTake[cell["Data"], Min[StringLength[cell["Data"]], maxLength]], Module];
+        ];
+
+        If[TrueQ[cell["Overflow"]],
+            Return[StringTake[cell["OverflowContent"], Min[StringLength[cell["OverflowContent"]], maxLength]], Module];
+        ];
+
+        If[cell["Display"]==="codemirror",
+            (* the most difficult case *)
+            (* evaluate it again and forward the result in the input format *)
+            (* bypassing any filters *)
+            If[!TrueQ[k["ContainerReadyQ"]],
+                Return[failure["Running Kernel is required. Try to evaluate any input cell to automatically assign kernel to a notebook"], Module];
+            ];
+
+            With[{p = Promise[], expr = cell["Data"], finalPromise = Promise[]},
+                GenericKernel`Send[k,
+                    EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
+                ];
+                Then[p, Function[payload,
+                    EventFire[
+                        finalPromise,
+                        Resolve,
+                        StringTake[payload, Min[StringLength[payload], maxLength]]
+                    ];
+                ]];
+
+                Return[finalPromise, Module];
+            ]
+        ];
+
+        StringTake[cell["Data"], Min[StringLength[cell["Data"]], maxLength]]
+    ]
+]
+
+
 
 deleteCell[cell_] := If[TrueQ[cell["Notebook"]["Opened"] ],
                 (* use interactive notebook API. for ex. for collecting trashed cell *)
@@ -409,7 +499,7 @@ makeMagic[cell_] := With[{notebook = cell["Notebook"]},
 apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Body"]},
     With[
         {
-            cell = cell`HashMap[ body["Cell"] ],
+            cell = cell`HashMap[ fromAlias[body["Cell"]] ],
             from = body["From"],
             to = body["To"],
             content = body["Content"]
@@ -452,7 +542,7 @@ apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Bo
 apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request["Body"]},
     With[
         {
-            cell = cell`HashMap[ body["Cell"] ],
+            cell = cell`HashMap[ fromAlias[body["Cell"]] ],
             after = body["After"],
             content = body["Content"]
         },
@@ -502,7 +592,7 @@ apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request[
 apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = request["Body"]},
     With[
         {
-            cell = cell`HashMap[ body["Cell"] ],
+            cell = cell`HashMap[ fromAlias[body["Cell"]] ],
             changes = body["Changes"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
@@ -564,7 +654,7 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
 *)
 apiCall[request_, "/api/notebook/cells/delete/"] := Module[{body = request["Body"]},
     With[
-        {cell = cell`HashMap[ body["Cell"] ]},
+        {cell = cell`HashMap[ fromAlias[body["Cell"]] ]},
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
         If[cell["Type"] === "Output", Return[failure["Cannot delete output cell. Delete parent input cell"], Module] ];
         deleteCell[cell];
@@ -588,21 +678,20 @@ apiCall[request_, "/api/notebook/cells/delete/"] := Module[{body = request["Body
      "Type": "Input",              // optional, default: "Input"
      "Display": "codemirror",      // optional, default: "codemirror"
      "Hidden": false,              // optional, default: false
-     "Id": "custom-uuid"           // optional: specify cell ID
    }
    Response: "created-cell-hash-id"
    Error: "Notebook is missing"
 *)
 apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"], uuid = CreateUUID[]},
     With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
+        {notebook = nb`HashMap[ fromAlias[body["Notebook"]] ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
 
-        If[MatchQ[body["Id"], _String], uuid = body["Id"] ];
+        (* If[MatchQ[fromAlias[body["Id"]], _String], uuid = body["Id"] ]; *)
 
         With[{
-            after = cell`HashMap[ body["After"] ], 
-            before = cell`HashMap[ body["Before"] ],
+            after = cell`HashMap[ body["After"]//fromAlias ], 
+            before = cell`HashMap[ body["Before"]//fromAlias ],
             display = Lookup[body, "Display", "codemirror"],
             type = Lookup[body, "Type", "Input"],
             hidden = Lookup[body, "Hidden", False]
@@ -611,18 +700,18 @@ apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"],
                 If[!MatchQ[before, _cell`CellObj],
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid ]},
                         makeMagic[new];
-                        uuid
+                        uuid//toAlias
                     ]                
                 ,
                     With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "Before"->before]},
                          makeMagic[new];
-                        uuid
+                        uuid//toAlias
                     ] 
                 ]                                        
             ,
                 With[{new = cell`CellObj["Notebook"->notebook, "Type"->type, "Display"->display, "Props"-><|"Hidden"->hidden|>, "Data"->body["Content"], "Hash"->uuid, "After"->after]},
                      makeMagic[new];
-                    uuid
+                    uuid//toAlias
                 ] 
             ]
         ]
@@ -643,7 +732,7 @@ apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"],
      "Cells": [
        {"Content": "cell 1 code", "Type": "Input", "Display": "codemirror"},
        {"Content": "cell 2 code"},  // Type/Display/Hidden are optional per cell
-       {"Content": "cell 3 code", "Id": "custom-id", "Hidden": true}
+       {"Content": "cell 3 code",  "Hidden": true}
      ]
    }
    Response: {"Created": ["uuid-1", "uuid-2", "uuid-3"], "Count": 3}
@@ -652,13 +741,13 @@ apiCall[request_, "/api/notebook/cells/add/"] := Module[{body = request["Body"],
 *)
 apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["Body"], createdIds = {}},
     With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
+        {notebook = nb`HashMap[ body["Notebook"]//fromAlias ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
         
         With[{
             cells = body["Cells"],
-            anchorAfter = cell`HashMap[ body["After"] ],
-            anchorBefore = cell`HashMap[ body["Before"] ]
+            anchorAfter = cell`HashMap[ body["After"]//fromAlias ],
+            anchorBefore = cell`HashMap[ body["Before"]//fromAlias ]
         },
             If[!ListQ[cells], Return[failure["Cells must be a list"], Module] ];
             If[Length[cells] === 0, Return[failure["Cells list is empty"], Module] ];
@@ -684,7 +773,7 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                 Do[
                     With[{
                         cellData = cells[[i]],
-                        uuid = If[StringQ[cells[[i]]["Id"]], cells[[i]]["Id"], CreateUUID[]]
+                        uuid = CreateUUID[]
                     },
                         With[{
                             display = Lookup[cellData, "Display", "codemirror"],
@@ -721,106 +810,23 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
                     {i, Length[cells]}
                 ];
                 
-                <|"Created" -> createdIds, "Count" -> Length[createdIds]|>
+                <|"Created" -> (toAlias/@createdIds), "Count" -> Length[createdIds]|>
             ]
         ]
     ]
 ]
 
-(* create directly an output cell with the content *)
-apiCall[request_, "/api/notebook/cells/add/markdown/"] := Module[{body = request["Body"], uuid = CreateUUID[]},
-    With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
-        If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
+clonedChannels = <||>;
 
-        If[MatchQ[body["Id"], _String], uuid = body["Id"] ];
-
-        With[{after = cell`HashMap[ body["After"] ], before = cell`HashMap[ body["Before"] ]},
-            If[!MatchQ[after, _cell`CellObj], 
-                If[!MatchQ[before, _cell`CellObj],
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".md\n", body["Content"] ], "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"markdown" ];
-                        new["Hash"]
-                    ]                 
-                ,
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".md\n", body["Content"] ], "Before"->before, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"markdown"];
-                        new["Hash"]
-                    ]                
-                ]                                       
-            ,
-                With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".md\n", body["Content"] ], "After"->after, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                    cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"markdown"];
-                    new["Hash"]
-                ]             
-            ]
-        ]
-
-    ]
-]
-
-(* create directly an output cell with the content *)
-apiCall[request_, "/api/notebook/cells/add/js/"] := Module[{body = request["Body"], uuid = CreateUUID[]},
-    With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
-        If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
-
-        If[MatchQ[body["Id"], _String], uuid = body["Id"] ];
-
-        With[{after = cell`HashMap[ body["After"] ], before = cell`HashMap[ body["Before"] ]},
-            If[!MatchQ[after, _cell`CellObj], 
-                If[!MatchQ[before, _cell`CellObj], 
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".js\n", body["Content"] ], "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"js" ];
-                        new["Hash"]
-                    ]
-                ,
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".js\n", body["Content"] ], "Before"->before, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"js" ];
-                        new["Hash"]
-                    ]
-                ]                                        
-            ,
-                With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".js\n", body["Content"] ], "After"->after, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                    cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"js"];
-                    new["Hash"]
-                ]             
-            ]
-        ]
-
-    ]
-]
-
-(* create directly an output cell with the content *)
-apiCall[request_, "/api/notebook/cells/add/html/"] := Module[{body = request["Body"], uuid = CreateUUID[]},
-    With[
-        {notebook = nb`HashMap[ body["Notebook"] ]},
-        If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
-
-        If[MatchQ[body["Id"], _String], uuid = body["Id"] ];
-
-        With[{after = cell`HashMap[ body["After"] ], before = cell`HashMap[ body["Before"] ]},
-            If[!MatchQ[after, _cell`CellObj], 
-                If[!MatchQ[before, _cell`CellObj], 
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".html\n", body["Content"] ], "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"html" ];
-                        new["Hash"]
-                    ]
-                ,
-                    With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".html\n", body["Content"] ], "Before"->before, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                        cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"html"];
-                        new["Hash"]
-                    ]
-                ]                                        
-            ,
-                With[{new = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->StringJoin[".html\n", body["Content"] ], "After"->after, "Props"-><|"Hidden"->True|>, "Hash"->uuid ]},
-                    cell`CellObj["Notebook"->notebook, "After"->new, "Type"->"Output", "Data"->body["Content"], "Display"->"html"];
-                    new["Hash"]
-                ]             
-            ]
-        ]
-
-    ]
+getMessagesEventChannel[nb_nb`NotebookObj] := If[clonedChannels[nb["Hash"]]["Origin"] =!= nb["MessangerChannel"],
+  Echo["Clonning event channel used for messaging"];
+  With[{cloned = EventClone[nb["MessangerChannel"]], hash = nb["Hash"]},
+    clonedChannels[hash] = <|"Origin"->nb["MessangerChannel"], "Target"->cloned|>;
+    cloned
+  ]
+,
+  Echo["Using cached cloned event channel"];
+  clonedChannels[nb["Hash"]]["Target"]  
 ]
 
 (* 
@@ -844,37 +850,88 @@ apiCall[request_, "/api/notebook/cells/add/html/"] := Module[{body = request["Bo
 *)
 apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Body"]},
     With[
-        {cell = cell`HashMap[ body["Cell"] ]},
+        {cell = cell`HashMap[ body["Cell"] //fromAlias ],
+         timeout = Lookup[body, "TimeLimit", 20]},
         {notebook = cell["Notebook"]},
+        {events = getMessagesEventChannel[notebook]},
+        
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
+        If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
-            With[{controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[]},
+            With[{
+                controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[],
+                accumulatedMessages = Unique[]
+            },
                 (*fixme*)
-                Block[{Global`$Client = socket},
-  
+                Block[{Global`$Client = socket}, With[{
+                    timer = SetTimeout[
+                        EventFire[controller, "Abort", Null];
+                        EventFire[promise, Resolve, "$TimedOut" ]; 
+                        EventRemove[events, "Warning"];
+                        ClearAll[accumulatedMessages];
+                    , 1000 timeout]
+                },
+
+                    accumulatedMessages = {};
+                    EventHandler[events, {
+                        "Warning" -> Function[dt,
+                            Echo["------"]; AppendTo[accumulatedMessages, dt]; Echo["------"]
+                        ]
+                    }];
+                    
                     Then[EventFire[controller, "NotebookCellEvaluateTemporal", cell], Function[Null,
+                        TaskRemove[timer];
+
                         With[{
                             out = Select[cell`SelectCells[notebook["Cells"], Sequence[cell, __?cell`OutputCellQ] ], cell`OutputCellQ]
                         },
-                            EventFire[promise, Resolve, Map[Function[c, <|
-                                <|
-                                    "Id"-> c["Hash"],
+
+                            EventRemove[events, "Warning"];
+                            
+                            (* post-process to make shorter versions *)
+                            Then[majorHeadsPreview[notebook["Evaluator"]["Kernel"], Map[Function[c,
+                                If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]],
+                                    If[TrueQ[c["Overflow"]], c["OverflowContent"], c["Data"]]
+                                ,
+                                    "0"
+                                ]
+                            ], out]], Function[shortened,
+
+                              With[{cellsGenerated = MapThread[Function[{c, o}, <|
+                                Join[<|
+                                    "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
-                                    "Display" -> c["Display"],
-                                    "Lines" -> StringCount[c["Data"], "\n"]+1,
-                                    "FirstLine" -> If[TrueQ[c["Overflow"] ], "[TOO LONG TO BE RENDERED]", StringExtract[c["Data"], "\n"->1] ]
-                                |> 
-                            |> ], out] ];
+                                    "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
+                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Preview" -> o|>, <||>] ] 
+                              |> ], {out, shortened}]},
+                              
+                                If[Length[accumulatedMessages] > 0,
+                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->accumulatedMessages|>}]]; 
+                                ,
+                                    EventFire[promise, Resolve,  cellsGenerated]; 
+                                ];
+                                ClearAll[accumulatedMessages];
+                               
+                              ];
+                            ]];
                         ]
                     ] ];
                     promise
-                ]
+                ] ]
             ]
         ,
             (* Can't evaluate cell in a closed notebook *)
             failure["Can't evaluate cell in a closed notebook. Use /api/kernel/evaluate/ path"]
         ]
     ]
+]
+
+
+majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
+    GenericKernel`Send[k,
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, StringReplace[StringReplace[ToString[Short[ToExpression[#, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""] &/@ exprs ];
+    ];
+    promise
 ]
 
 (* 
@@ -889,7 +946,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
 *)
 apiCall[request_, "/api/notebook/cells/project/"] := Module[{body = request["Body"]},
     With[
-        {cell = cell`HashMap[ body["Cell"] ]},
+        {cell = cell`HashMap[ body["Cell"]//fromAlias ]},
         {notebook = cell["Notebook"]},
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
         If[cell["Type"] === "Output", Return[failure["Output cells cannot be projected"], Module] ];
@@ -913,6 +970,8 @@ apiCall[request_, "/api/kernel/"] := {
     "/api/kernel/evaluate/"
 }
 
+
+
 (* 
    /api/kernel/evaluate/ - Evaluate an expression in the kernel directly
    
@@ -931,26 +990,44 @@ apiCall[request_, "/api/kernel/"] := {
 apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
     With[
         {k = If[StringQ[body["Kernel"] ], 
-            SelectFirst[AppExtensions`KernelList, (#["Hash"] === body["Kernel"]) &],  
+            SelectFirst[AppExtensions`KernelList, (#["Hash"] === fromAlias[fromAlias[body["Kernel"]]]) &],  
             SelectFirst[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]
         ],
             expr = body["Expression"],
+            timelimit = Lookup[body, "TimeLimit", 20],
+            maxCharacters = Lookup[body, "MaxCharacters", 1500],
             promise = Promise[],
 
             dir = Lookup[body, "Directory", Null]
         },
 
-        If[MissingQ[k], Return[failure["No kernel is ready for evaluation"], Module] ];
+        If[MissingQ[k], Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
+
+        If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
+
+        If[!NumberQ[timelimit], Return[failure["TimeLimit is not a number"], Module] ];
 
         If[dir === Null,
             GenericKernel`Send[k, 
-                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
+                    If[StringLength[res] > maxCharacters,
+                        StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                    ,
+                        res
+                    ]
+                ] ];
             ];        
         ,
             GenericKernel`Send[k, 
                 With[{prev = Directory[]}, 
                     SetDirectory[dir];
-                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, ToString[CheckAbort[ToExpression[expr, InputForm], $Aborted ], InputForm] ];
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
+                        If[StringLength[res] > maxCharacters,
+                            StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                        ,
+                            res
+                        ]
+                    ] ];
                     SetDirectory[prev];
                 ];
             ];        
@@ -958,6 +1035,12 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         promise
     ]
+]
+
+apiCall[request_, "/api/kernel/list/"] := Module[{},
+     Map[Function[k,
+        <|"Id"->toAlias[#["Hash"]], "Name"->#["Name"]|>
+     ], Select[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]]
 ]
 
 

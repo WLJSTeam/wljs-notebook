@@ -304,7 +304,7 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
             ""
         ], ""],
 
-  accentColor = With[{c = Lookup[OptionValue["Settings"], "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env(*`*), "AccentColor", "#008855"], c]]      
+  accentColor = With[{c = Lookup[OptionValue["Settings"], "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env(*`*), "AccentColor", "#f67070"], c]]      
 },
 
 {

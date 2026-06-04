@@ -3248,7 +3248,7 @@ ol {
 
   .dark\:text-gray-400 {
     --tw-text-opacity: 1;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
+    color: #bdbdbd;
   }
 
   .dark\:text-gray-500 {
@@ -3322,11 +3322,6 @@ ol {
 
   .dark\:hue-rotate-180 {
     --tw-hue-rotate: hue-rotate(180deg);
-    filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-  }
-
-  .dark\:invert {
-    --tw-invert: invert(100%);
     filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
   }
 

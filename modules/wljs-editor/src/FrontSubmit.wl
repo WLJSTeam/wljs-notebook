@@ -1,64 +1,14 @@
+
+
 BeginPackage["CoffeeLiqueur`Extensions`Communication`", {
     "CoffeeLiqueur`Misc`Events`",
-    "CoffeeLiqueur`Misc`Events`Promise`", 
-    "CoffeeLiqueur`WLX`WebUI`"
+    "CoffeeLiqueur`Misc`Events`Promise`",
+    "CoffeeLiqueur`Misc`WLJS`Transport`"
 }]
 
+(* it was removed *)
 
 Begin["`Private`"]
-
-Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
-Needs["CoffeeLiqueur`Notebook`Windows`" -> "win`"];
-Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
-
-Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
-Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
-
-
-rootDir = $InputFileName // DirectoryName // ParentDirectory;
-
-EventHandler[AppExtensions`AppEvents// EventClone, {
-    "Loader:NewNotebook" ->  (Once[ attachListeners[#] ] &),
-    "Loader:LoadNotebook" -> (Once[ attachListeners[#] ] &)
-}];
-
-attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION FrontSubmit"];
-    EventHandler[notebook // EventClone, {
-        "OnWebSocketConnected" -> Function[payload,
-            With[{p = Promise[]},
-                Echo["Requesting socket object for client..."];
-                Then[WebUIFetch[System`FSAskKernelSocket[], payload["Client"] ], Function[data,
-                    notebook["EvaluationContext", "KernelWebSocket"] = data;
-                    notebook["EvaluationContext", "OriginKernelWebSocket"] = data;
-                    EventFire[p, Resolve, True];
-                ] ];
-                p
-            ]
-        ],
-
-        "OnWindowCreate" -> Function[payload,
-            Echo["Subscribe for an window events"];
-            With[{win = payload["Window"]},
-                EventHandler[win, {
-                    "OnWebSocketConnected" -> Function[data,
-                        Echo["Requesting socket object for client window object..."];
-                        With[{p = Promise[]},
-                            Then[WebUIFetch[System`FSAskKernelSocket[], data["Client"] ], Function[dp,
-                                win["EvaluationContext", "OriginKernelWebSocket"] = win["EvaluationContext", "KernelWebSocket"];
-                                win["EvaluationContext", "KernelWebSocket"] = dp;
-                                Echo["Obtained!"];
-                                EventFire[p, Resolve, True];
-                            ] ];
-                            p
-                        ]
-                    ]
-                }];
-            ];
-        ]
-    }]; 
-]
-
 
 End[]
 EndPackage[]

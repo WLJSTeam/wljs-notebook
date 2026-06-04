@@ -305,8 +305,14 @@ start[k_LocalKernelObject] := Module[{link},
                         ReleaseHold[payload];
                     ]
                 ],
-                TextPacket[s_] :> (EventFire[kernel, "Print", s]&),
-                MessagePacket[symbol_, type_] :> (EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]&),
+                TextPacket[s_] :> ((
+                    EchoLabel["KernelPrint"][s];
+                    EventFire[kernel, "Print", s]
+                )&),
+                MessagePacket[symbol_, type_] :> ((
+                    EchoLabel["KernelWarning"][StringTemplate["``::``"][symbol, type]];
+                    EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]
+                )&),
                 any_ :> (Echo[any]&)
             }];
 

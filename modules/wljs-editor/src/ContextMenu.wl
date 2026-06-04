@@ -52,7 +52,7 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
     ];
 
 
-    t["EvaluationContext"] = Join[notebook["EvaluationContext"], <|"Notebook" -> notebook["Hash"]|>];
+    t["EvaluationContext"] = <|"Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|>;
 
     EventHandler[t, {
         (* capture successfull event of the last transaction to end the process *)  

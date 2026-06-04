@@ -20,6 +20,8 @@ NotebookReadAsync::usage = "NotebookReadAsync[] async version of NotebookRead, w
 
 Begin["`Private`"]
 
+$cachedOutput;
+
 Unprotect[Cells]
 ClearAll[Cells]
 
@@ -270,11 +272,7 @@ NotebookEvaluateAsModuleAsync[RemoteNotebook[uid_] ] := Module[{}, With[{
         If[FailureQ[data],
             EventFire[backPromise, Resolve, $Failed];
         ,
-            If[data === Null,
-                EventFire[backPromise, Resolve, Null];
-            ,
-                EventFire[backPromise, Resolve, ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"] ];
-            ];
+            EventFire[backPromise, Resolve, $cachedOutput[uid] ];
         ]
     ] ];
 
@@ -299,18 +297,14 @@ NotebookEvaluateAsModule[RemoteNotebook[uid_] ] := Module[{}, With[{
         ];
 
 
-        EventFire[Internal`Kernel`CommunicationChannel, "EvaluateNotebook", <|"ContextIsolation"->True, "EvaluationContext"-><||>, "Session"->$SessionID, "Hash"->uid, "Elements"->"Module", "Ref"->System`$EvaluationContext["Notebook"],  "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
+        EventFire[Internal`Kernel`CommunicationChannel, "EvaluateNotebook", <|"ContextIsolation"->True, "EvaluationContext"->Automatic, "Session"->$SessionID, "Hash"->uid, "Elements"->"Module", "Ref"->System`$EvaluationContext["Notebook"],  "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
         
         Then[promise, Function[data,
             If[FailureQ[data],
                 pending[fullHash] = $Failed;
                 EvaluateCell[caller // RemoteCellObj];
             ,
-                If[data === Null,
-                    pending[fullHash] = Null;
-                ,
-                    pending[fullHash] = ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"];
-                ];
+                pending[fullHash] = $cachedOutput[uid];
                 
                 EvaluateCell[caller // RemoteCellObj];
             ]
@@ -337,11 +331,7 @@ NotebookEvaluateAsync[RemoteNotebook[uid_], OptionsPattern[] ] := Module[{}, Wit
         If[FailureQ[data],
             EventFire[backPromise, Resolve, $Failed];
         ,
-            If[data === Null,
-                EventFire[backPromise, Resolve, Null];
-            ,
-                EventFire[backPromise, Resolve, ImportByteArray[BaseDecode[ToExpression[data, InputForm] ], "WXF"] ];
-            ];
+            EventFire[backPromise, Resolve, $cachedOutput[uid] ];
         ]
     ] ];
 
@@ -351,7 +341,7 @@ NotebookEvaluateAsync[RemoteNotebook[uid_], OptionsPattern[] ] := Module[{}, Wit
 Options[NotebookEvaluateAsync] = {
     "ContextNotebook" :> RemoteNotebook[System`$EvaluationContext["Notebook"] ],
     EvaluationElements -> All,
-    "EvaluationContext" -> <||>,
+    "EvaluationContext" -> Automatic,
     "ContextIsolation" -> False
 }
 
@@ -370,14 +360,14 @@ NotebookEvaluate[r_RemoteNotebook, opts: OptionsPattern[] ] := (
 ParentCell[cell_RemoteCellObj: RemoteCellObj[ System`$EvaluationContext["ResultCellHash"] ] ] := Module[{},
     With[{promise = Promise[]},
         EventFire[Internal`Kernel`CommunicationChannel, "FindParent", <|"Ref"->System`$EvaluationContext["Ref"], "CellHash" -> (cell // First), "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-        promise // WaitAll
+        WaitAll[promise, 45]
     ] // RemoteCellObj
 ]
 
 NotebookDirectory[] := With[{},
     With[{promise = Promise[]},
         EventFire[Internal`Kernel`CommunicationChannel, "AskNotebookDirectory", <|"Notebook"->System`$EvaluationContext["Notebook"], "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-        promise // WaitAll
+        WaitAll[promise, 45]
     ] 
 ]
 
@@ -404,17 +394,17 @@ RemoteNotebook /: Set[RemoteNotebook[uid_][field_], value_] := With[{},
 
 RemoteNotebook[uid_][tag_String] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->Function[x,x], "Tag"->tag, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    promise // WaitAll
+    WaitAll[promise, 45]
 ] 
 
 RemoteNotebook[uid_]["Cells"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->Function[x, (#["Hash"]&)/@x ], "Tag"->"Cells", "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    RemoteCellObj /@ (promise // WaitAll)
+    RemoteCellObj /@ (WaitAll[promise, 45])
 ]
 
 RemoteNotebook[uid_]["FocusedCell"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetNotebookProperty", <|"NotebookHash"->uid, "Function"->((If[StringQ[#["FocusedCell"]["Type"] ], #["FocusedCell"]["Hash"], Last[ #["Cells"] ]["Hash"]  ] )&), "Tag"->Null, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    RemoteCellObj @ (promise // WaitAll)
+    RemoteCellObj @ (WaitAll[promise, 45])
 ]
 
 
@@ -452,6 +442,7 @@ RemoteCellObj /: EventHandler[ RemoteCellObj[uid_], list_] := Module[{eventLike}
     eventLike /: EventRemove[eventLike] := With[{}, (* just to save some memory *)
         ClearAll[eventLike];
         EventRemove[virtual];
+        (* [TODO] implement unsibscribe logic *)
         EventFire[Internal`Kernel`CommunicationChannel, "CellUnsubscribe", <|"CellHash" -> uid, "Event" -> virtual, "Kernel"->Internal`Kernel`Hash|>];
     ];
 
@@ -489,7 +480,7 @@ NotebookRead[n_RemoteNotebook] := NotebookFocusedCell[n] // NotebookRead
 NotebookRead[n_List] := NotebookRead /@ n
 NotebookRead[cells: {__RemoteCellObj}] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetMultipleCells", <|"Cells"->cells[[All,1]], "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    NotebookRead /@ (promise // WaitAll)
+    NotebookRead /@ (WaitAll[promise, 45])
 ];
 
 NotebookReadAsync[n_List] := NotebookReadAsync /@ n
@@ -560,12 +551,12 @@ NotebookWrite[NotebookLocationSpecifier[c_RemoteCellObj, "On"], data_ ] := Noteb
 
 RemoteCellObj[uid_][tag_String] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetCellProperty", <|"Hash"->uid, "Function"->Function[x,x], "Tag"->tag, "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    promise // WaitAll
+    WaitAll[promise, 45]
 ] 
 
 RemoteCellObj[uid_]["Notebook"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "GetCellProperty", <|"Hash"->uid, "Function"->Function[x, x["Hash"] ], "Tag"->"Notebook", "Promise" -> (promise), "Kernel"->Internal`Kernel`Hash|>];
-    (promise // WaitAll)//RemoteNotebook
+    (WaitAll[promise, 45])//RemoteNotebook
 ] 
 
 Unprotect[DocumentNotebook]
@@ -591,14 +582,14 @@ CellPrint[str_String, opts___] := With[{hash = CreateUUID[], list = Association[
 
     If[StringQ[System`$EvaluationContext["Ref"] ],
         With[{r = System`$EvaluationContext["Ref"]},
-            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
+            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
         ];
     ,
         If[!KeyExistsQ[list, "After"] && !KeyExistsQ[list, "Reference"],
-            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Notebook"->First[list["Notebook"] ], "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
+            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Notebook"->First[list["Notebook"] ], "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
         ,
             With[{r = If[StringQ[#], #, list["Reference"] // First] &@ (list["After"] // First)},
-                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
+                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->"Output", "After"->RemoteCellObj[ r ], opts|> |> ];
             ];  
         ];  
     ];
@@ -614,14 +605,14 @@ CellPrintGeneral[cell_Association, opts___] := With[{hash = CreateUUID[], list =
 },
     If[StringQ[System`$EvaluationContext["Ref"] ],
         With[{r = System`$EvaluationContext["Ref"]},
-            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
+            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Notebook"->First[list["Notebook"] ], "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
         ];
     ,
         If[!KeyExistsQ[list, "After"] && !KeyExistsQ[list, "Reference"],
-            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Notebook"->First[list["Notebook"] ], "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
+            EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Data" -> str, "Notebook"->First[list["Notebook"] ], "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
         ,
             With[{r = If[StringQ[#], #, list["Reference"] // First] &@ (list["After"] // First)},
-                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
+                EventFire[Internal`Kernel`CommunicationChannel, "PrintNewCell", <|"KernelId"->Internal`Kernel`Hash, "Notebook"->First[list["Notebook"] ], "Data" -> str, "Ref"->r, "Meta"-><|"Hash"->hash, "Type"->type, "Display"->display, "Props"->props, "After"->RemoteCellObj[ r ], opts|> |> ];
             ];  
         ];  
     ];

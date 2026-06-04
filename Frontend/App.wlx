@@ -34,7 +34,13 @@ FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 serverParams = <|"env" -> env|>;
 settings = <||>;
 
+
 loadSettings[settings];
+
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 loadSettingsOnceMore := With[{},
   Print["Load settings one more time"];
   loadSettingsOnceMore = Null;
@@ -258,6 +264,10 @@ ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
 
 defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, settings]["Home"] ];
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, newData]["Home"] ];
+]}];
+
 ExtensionMenuItems = <|"file"->{}, "misc"->{}, "kernel"->{}, "view"->{}, "edit"->{}|>;
 
 Map[Function[item, 
@@ -296,7 +306,7 @@ App[request_] := With[{
 
         appGlobals = AppExtensions`AppGlobals (*`*),
 
-        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[AppExtensions`FrontendEnv, "AccentColor", "#008855"], c]],
+        accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[AppExtensions`FrontendEnv, "AccentColor", "#f67070"], c]],
 
         kernels = Hold[AppExtensions`KernelList] (*`*),
 

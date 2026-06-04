@@ -38,7 +38,7 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj] := Module[{}, With[{p = 
     t["Data"] = StringTrim[text];
 
 
-    t["EvaluationContext"] = Join[notebook["EvaluationContext"], <|"Notebook" -> notebook["Hash"]|>];
+    t["EvaluationContext"] = <|"Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|>;
 
     EventHandler[t, {
         (* capture successfull event of the last transaction to end the process *)  

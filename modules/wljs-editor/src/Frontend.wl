@@ -47,6 +47,10 @@ Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Front
 
 settings = <||>;
 
+EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
+    settings = newData;
+]}];
+
 NotebookEditorChannel = CreateUUID[];
 
 rootFolder = $InputFileName // DirectoryName;
@@ -180,11 +184,15 @@ init[k_] := Module[{},
                         If[StringLength[string] < Internal`Kernel`$OutputCharactersLimit || Lookup[t, "IgnoreOverflow", False],
                             EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> string, "Meta"->Sequence["Hash"->hash] |> ];
                         ,
-                            With[{truncated = ToString[result, InputForm], ref = CreateUUID[]},
+                            With[{
+                                inputform = ToString[result, InputForm], ref = CreateUUID[],
+                                shortform = StringReplace[StringReplace[ToString[Short[result,8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""]
+                            },
+                                (* [TODO] this shit with restoring the intendend content has to be refactored! *)
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringTake[truncated, Min[StringLength[truncated], 5000] ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringReplace[StringTake[shortform, Min[StringLength[shortform], 5000]], {">"->"&gt;", "<"->"&lt;"} ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
                             ]
                         ]
                     ]
@@ -245,6 +253,7 @@ sh  = StandardEvaluator`StandardEvaluator["Name" -> "Shell Evaluator", "InitKern
 
 StandardEvaluator`ReadyQ[sh, k_] := (True)
 
+
 processEnv = Inherited;
 If[$OperatingSystem === "MacOSX", processEnv = <|"PATH"->Import["!source ~/.bash_profile; echo $PATH", "Text"]|>];
 
@@ -258,11 +267,27 @@ SystemShellRun[exec : {___String}, opts : OptionsPattern[]] :=
 SystemShellRun[exec_String, opts : OptionsPattern[]] := 
  SystemShellRun[exec, All, opts]
  
-SystemShellRun[exec_String, prop : _String | All, 
-  opts : OptionsPattern[]] := 
- StartProcess[{$SystemShell, 
-   If[StringContainsQ[$OperatingSystem, "Windows"], "/c", "-c"], exec}, 
-   opts]
+ SystemShellRun[exec_String, prop : _String | All, opts : OptionsPattern[]] :=
+  Module[{process},
+   process =
+    StartProcess[
+     {$SystemShell,
+      If[StringContainsQ[$OperatingSystem, "Windows"], "/c", "-c"],
+      exec},
+     opts
+    ];
+ 
+   If[MatchQ[process, _ProcessObject],
+    Quiet @ Check[
+      Close @ ProcessConnection[process, "StandardInput"],
+      Null
+    ];
+   ];
+ 
+   process
+ ]
+
+   
  
 SystemShellRun[exec_String, props_List, opts : OptionsPattern[]] := 
  With[{run = SystemShellRun[exec, All, opts]}, 
