@@ -5858,14 +5858,13 @@ g2d.BezierCurve = async (args, env) => {
       break;
     
       case 3:
-        console.log(data);
-
         object = data.map((d)=>{
-         
+
           const o = env.svg.append("path")
           .datum(d).join("path")
           .attr("vector-effect", "non-scaling-stroke")
           .attr("fill", "none")
+          .attr('opacity', env.opacity)
           .attr("stroke", env.color)
           .attr("stroke-width", env.strokeWidth)
           .attr("d", d3.line()
@@ -5879,9 +5878,11 @@ g2d.BezierCurve = async (args, env) => {
           return o;
         });    
       break;
-    } 
+    }
 
-    env.local.nsets = data.length;
+    // Number of path nodes created (not points). update() drives its reuse off
+    // the actual stored object, so this is informational/consistency only.
+    env.local.nsets = Array.isArray(object) ? object.length : (object ? 1 : 0);
 
     env.local.line = d3.line()
         .x(function(d) { return env.xAxis(d[0]) })
@@ -5934,95 +5935,86 @@ g2d.BezierCurve = async (args, env) => {
       data = data.normal();
      }
 
-    const x = env.xAxis;
-    const y = env.yAxis;
+    const line = env.local.line;
 
-    let stored = env.local.object;
+    // Normalize incoming data into a list of polylines, so the logic below is
+    // independent of how many lines we had before / have now:
+    //   dims 0 (empty [])     -> []      (no lines)
+    //   dims 2 ([[x,y], ...])  -> [data]  (a single line)
+    //   dims 3 ([[[x,y]...]])  -> data    (several lines)
+    let sets;
+    switch (arrdims(data)) {
+      case 2:  sets = [data]; break;
+      case 3:  sets = data;   break;
+      default: sets = [];     break;
+    }
 
-    
+    // The stored selection may be a bare d3 selection (single/empty line) or an
+    // array (multi-line). Normalize into an array "pool" we can index safely,
+    // then drive everything off the real pool length instead of env.local.nsets
+    // (which can be stale / shape-dependent and was the source of the crashes
+    // when the dimensionality changed, e.g. [] -> [[[...]]] or back).
+    let pool = env.local.object;
+    if (!Array.isArray(pool)) pool = pool ? [pool] : [];
 
-    let obj;
+    const tween = function (d) {
+      var previous = d3.select(this).attr('d');
+      var current = line(d);
+      return interpolatePath(previous, current);
+    };
 
+    // 1) Reuse existing paths for the lines we still have, animating the change.
+    const reuse = Math.min(pool.length, sets.length);
+    for (let i = 0; i < reuse; ++i) {
+      pool[i]
+      .datum(sets[i])
+      .maybeTransitionTween(env.transitionType, env.transitionDuration, 'd', tween);
+    }
 
-    switch(arrdims(data)) {
-      case 0:
-        //empty
+    // 2) Append paths if there are now more lines than nodes in the pool.
+    //    NB: keep `o` as the d3 selection — maybeTransition() returns a d3
+    //    *transition* (which has no .datum), so we must not store its result,
+    //    otherwise the next update() crashes on pool[i].datum(...).
+    //    Insert each new path right after this line's current last path rather
+    //    than env.svg.append() (which drops it at the end of the SVG, on top of
+    //    every later primitive) so the line keeps its z-order block.
+    for (let i = pool.length; i < sets.length; ++i) {
+      const ref = pool.length ? pool[pool.length - 1].node() : null;
+      const o = (ref ? env.svg.insert("path", () => ref.nextSibling)
+                     : env.svg.append("path"))
+      .datum(sets[i])
+      .attr("fill", "none")
+      .attr("vector-effect", "non-scaling-stroke")
+      .attr("opacity", env.opacity)
+      .attr("stroke", env.color)
+      .attr("stroke-width", env.strokeWidth);
 
-        obj = stored
-        .datum([])
-        .maybeTransitionTween(env.transitionType, env.transitionDuration, 'd', function (d) {
-          var previous = d3.select(this).attr('d');
-          var current = env.local.line(d);
-          return interpolatePath(previous, current);
-        }); 
+      if (env.dasharray) o.attr('stroke-dasharray', env.dasharray.join());
 
-      break;
-      case 2:
-        //animate equal
+      o.maybeTransition(env.transitionType, env.transitionDuration)
+      .attr("d", line);
 
-        //animate the rest
-        obj = stored
-        .datum(data)
-        .maybeTransitionTween(env.transitionType, env.transitionDuration, 'd', function (d) {
-          var previous = d3.select(this).attr('d');
-          var current = env.local.line(d);
-          return interpolatePath(previous, current);
-        }); 
+      pool.push(o);
+    }
 
-          /*.attrTween('d', function (d) {
-            var previous = d3.select(this).attr('d');
-            var current = env.local.line(d);
-            return interpolatePath(previous, current);
-          }); */
+    // 3) Empty out surplus paths if there are now fewer lines than before.
+    //    Keep the DOM nodes for cheap reuse (no remove/append churn) and let
+    //    them animate collapsing to nothing.
+    for (let i = sets.length; i < pool.length; ++i) {
+      pool[i]
+      .datum([])
+      .maybeTransitionTween(env.transitionType, env.transitionDuration, 'd', tween);
+    }
 
-      break;
-    
-      case 3:
-        for (let i=0; i < Math.min(data.length, env.local.nsets); ++i) {
-          console.log('upd 1');
-          obj = stored[i]
-          .datum(data[i])
-          .maybeTransitionTween(env.transitionType, env.transitionDuration, 'd', function (d) {
-            var previous = d3.select(this).attr('d');
-            var current = env.local.line(d);
-            return interpolatePath(previous, current);
-          }); 
-        }
-        if (data.length > env.local.nsets) {
-          console.log('upd 2');
-          for (let i=env.local.nsets; i < data.length; ++i) {
-            obj = env.svg.append("path")
-            .datum(data[i])
-            .attr("fill", "none")
-            .attr("stroke", env.color)
-            .attr("stroke-width", env.strokeWidth)
-            .maybeTransition(env.transitionType, env.transitionDuration)          
-            .attr("d", d3.line()
-              .x(function(d) { return x(d[0]) })
-              .y(function(d) { return y(d[1]) })
-              ); 
-              
-            stored.push(obj);
-          }
-        }
+    // nsets = number of currently visible lines; pool may hold extra emptied
+    // nodes ready for reuse on the next update.
+    env.local.nsets = sets.length;
 
-        if (data.length < env.local.nsets) {
-          console.log('upd 3');
-          for (let i=data.length; i < env.local.nsets; ++i) {
-            obj = stored[i].datum(data[0])
-            .join("path")
-            .maybeTransition(env.transitionType, env.transitionDuration)
-            .attr("d", env.local.line);            
-          }
-        }
+    // Store back in the shape the rest of the module expects: a bare selection
+    // for a single path, otherwise the array pool.
+    env.local.object = pool.length === 1 ? pool[0] : pool;
 
-        
-      break;
-    }    
-
-    env.local.nsets = Math.max(data.length, env.local.nsets);
-
-    return obj;
+    return pool[0];
 
   };
 
@@ -6042,48 +6034,130 @@ g2d.BezierCurve = async (args, env) => {
     delete env.local.object;
   };
 
+  // Normalize a center argument into a list of [x,y] points, so Circle/Disk
+  // accept both a single point {x,y} and a list of centers {{x1,y1}, ...}.
+  //   dims 0 (empty [])     -> []         (no centers)
+  //   dims 1 ([x, y])       -> [[x, y]]   (a single center)
+  //   dims 2 ([[x,y], ...])  -> as-is      (several centers)
+  const normalizeCenters = (data) => {
+    const dp = arrdims(data);
+    if (dp === 0) return [];
+    if (dp < 2)   return [data];
+    return data;
+  };
+
+  // Apply the shared style to whichever element owns it (the bare <ellipse> in
+  // the single-center case, or the wrapping <g> otherwise). Stroke/fill differ
+  // between Circle (stroked, hollow) and Disk (filled). Returns the selection.
+  const styleCircle = (sel, env) => {
+    sel.style("stroke", env.color)
+       .attr("stroke-width", env.strokeWidth)
+       .style("fill", 'none')
+       .style("opacity", env.opacity);
+    if (env.dasharray) sel.attr('stroke-dasharray', env.dasharray.join());
+    return sel;
+  };
+
+  const styleDisk = (sel, env) => {
+    sel.style("stroke", env.stroke)
+       .attr("stroke-width", env.strokeWidth)
+       .style("fill", env.color)
+       .style("opacity", env.opacity);
+    return sel;
+  };
+
+  const appendEllipse = (parent, env, d) => parent.append("ellipse")
+    .attr("vector-effect", "non-scaling-stroke")
+    .attr("cx", env.xAxis(d[0]))
+    .attr("cy", env.yAxis(d[1]))
+    .attr("rx", env.local.r[0])
+    .attr("ry", env.local.r[1]);
+
+  // Build the DOM for a set of centers. A single center becomes a bare
+  // <ellipse> (no <g> overhead — important when a graphic holds many single
+  // disks); 0 or many centers use a <g> wrapper carrying the shared style with
+  // one <ellipse> per center. Records object/ellipses/grouped on env.local.
+  const buildEllipses = (env, centers, applyStyle) => {
+    let object, ellipses;
+
+    if (centers.length === 1) {
+      object = applyStyle(appendEllipse(env.svg, env, centers[0]), env);
+      ellipses = [object];
+      env.local.grouped = false;
+    } else {
+      object = applyStyle(env.svg.append("g"), env);
+      ellipses = centers.map((d) => appendEllipse(object, env, d));
+      env.local.grouped = true;
+    }
+
+    env.local.object = object;
+    env.local.ellipses = ellipses;
+    if (centers.length) env.local.coords = [env.xAxis(centers[0][0]), env.yAxis(centers[0][1])];
+    return object;
+  };
+
+  // Reconcile the existing DOM with a new set of centers: reuse/append/remove
+  // within the same representation, and rebuild when crossing the single <->
+  // (empty/many) boundary (rare, so a full rebuild is acceptable there).
+  const updateEllipses = (env, centers, applyStyle) => {
+    const x = env.xAxis, y = env.yAxis;
+    const rx = env.local.r[0], ry = env.local.r[1];
+
+    if ((centers.length !== 1) !== Boolean(env.local.grouped)) {
+      if (env.local.object) env.local.object.remove();
+      return buildEllipses(env, centers, applyStyle);
+    }
+
+    const parent = env.local.object;   // the <g> when grouped (append target)
+    const ellipses = env.local.ellipses;
+
+    const reuse = Math.min(ellipses.length, centers.length);
+    for (let i = 0; i < reuse; ++i) {
+      ellipses[i].maybeTransition(env.transitionType, env.transitionDuration)
+      .attr("cx", x(centers[i][0]))
+      .attr("cy", y(centers[i][1]))
+      .attr("rx", rx)
+      .attr("ry", ry);
+    }
+
+    for (let i = ellipses.length; i < centers.length; ++i) {
+      ellipses.push(appendEllipse(parent, env, centers[i]));
+    }
+
+    while (ellipses.length > centers.length) {
+      ellipses.pop().remove();
+    }
+
+    if (centers.length) env.local.coords = [x(centers[0][0]), y(centers[0][1])];
+    return env.local.object;
+  };
+
   g2d.Circle = async (args, env) => {
     if (args.length > 2) {
       env.local.arcQ = true;
-      return await g2d._arc(args, env);
+      env.local.object = await g2d._arc(args, env);
+      return env.local.object;
     }
 
     let data = await interpretate(args[0], env);
-    if (data instanceof NumericArrayObject) data = data.buffer;
+    if (data instanceof NumericArrayObject) data = data.normal();
 
-    let radius = [1, 1]; 
+    let radius = [1, 1];
 
     if (args.length > 1) {
       radius = await interpretate(args[1], env);
       if (!Array.isArray(radius)) radius = [radius, radius];
     }
 
-    //console.warn(args);
-
     const x = env.xAxis;
     const y = env.yAxis;
 
-    env.local.coords = [x(data[0]), y(data[1])];
+    const centers = normalizeCenters(data);
+
+    env.local.radius = radius;
     env.local.r = [x(radius[0]) - x(0), Math.abs(y(radius[1]) - y(0))];
-    //throw env.local.r;
-    const object = env.svg
-    .append("ellipse")
-    .attr("vector-effect", "non-scaling-stroke")
-      .attr("cx",  x(data[0]))
-      .attr("cy", y(data[1]) )
-      .attr("rx", env.local.r[0])
-      .attr("ry", env.local.r[1])
-      .style("stroke", env.color)
-      .attr("vector-effect", "non-scaling-stroke")
-      .attr("stroke-width", env.strokeWidth)
-      .style("fill", 'none')
-      .style("opacity", env.opacity);
 
-    env.local.object = object;
-
-    if (env.dasharray) {
-      object.attr('stroke-dasharray', env.dasharray.join());
-    }
+    const object = buildEllipses(env, centers, styleCircle);
 
     if (env.colorRefs) {
       env.colorRefs[env.root.uid] = env.root;
@@ -6101,42 +6175,40 @@ g2d.BezierCurve = async (args, env) => {
 
   g2d.Circle.updateOpacity = (args, env) => {
     env.local.object.style("opacity", env.opacity);
-  };  
+  };
 
   g2d.Circle.update = async (args, env) => {
     let data = await interpretate(args[0], env);
+    if (data instanceof NumericArrayObject) data = data.normal();
 
-    if (data instanceof NumericArrayObject) data = data.buffer;
-
-    let radius = 1; 
+    let radius = env.local.radius || [1, 1];
 
     if (args.length > 1) {
       radius = await interpretate(args[1], env);
       if (!Array.isArray(radius)) radius = [radius, radius];
-    }   
+    }
+    env.local.radius = radius;
 
     const x = env.xAxis;
-    const y = env.yAxis; 
+    const y = env.yAxis;
 
-    //env.local.coords = [x(data[0]), y(data[1])];
+    // Arc variant: redraw the arc path in place (it has no ellipse pool).
+    if (env.local.arcQ) {
+      if (env.local.object) env.local.object.remove();
+      env.local.object = await g2d._arc(args, env);
+      return env.local.object;
+    }
+
+    const centers = normalizeCenters(data);
     env.local.r = [x(radius[0]) - x(0), Math.abs(y(radius[1]) - y(0))];
 
-   
-
-    env.local.object.maybeTransition(env.transitionType, env.transitionDuration)
-    .attr("cx", x(data[0]) )
-    .attr("cy", y(data[1]) )
-    .attr("rx", env.local.r[0])
-    .attr("ry", env.local.r[1]);
-
-    return env.local.object;
+    return updateEllipses(env, centers, styleCircle);
   };
 
   g2d.Circle.destroy = (args, env) => {
-    if (env.local.arcQ) {
-      return;
-    }
-    env.local.object.remove();
+    if (!env.local) return;
+    if (env.local.object) env.local.object.remove();
+    delete env.local.object;
     if (env.colorRefs) {
       delete env.colorRefs[env.root.uid];
     }
@@ -6535,41 +6607,31 @@ return object;
 
   g2d.Disk = async (args, env) => {
     if (args.length > 2) {
-      return await g2d._arc(args, {...env, filled:true});
+      env.local.arcQ = true;
+      env.local.object = await g2d._arc(args, {...env, filled:true});
+      return env.local.object;
     }
 
     let data = await interpretate(args[0], env);
 
-    if (data instanceof NumericArrayObject) data = data.buffer;
-    
-    let radius = [1, 1]; 
+    if (data instanceof NumericArrayObject) data = data.normal();
+
+    let radius = [1, 1];
 
     if (args.length > 1) {
       radius = await interpretate(args[1], env);
       if (!Array.isArray(radius)) radius = [radius, radius];
     }
 
-    //console.warn(args);
-
     const x = env.xAxis;
     const y = env.yAxis;
 
-    env.local.coords = [x(data[0]), y(data[1])];
-    env.local.r = [x(radius[0]) - x(0), Math.abs(y(radius[1]) - y(0))];
-    //throw env.local.r;
-    const object = env.svg
-    .append("ellipse")
-    .attr("vector-effect", "non-scaling-stroke")
-      .attr("cx",  x(data[0]))
-      .attr("cy", y(data[1]) )
-      .attr("rx", env.local.r[0])
-      .attr("ry", env.local.r[1])
-      .style("stroke", env.stroke)
-      .attr("stroke-width", env.strokeWidth)
-      .style("fill", env.color)
-      .style("opacity", env.opacity);
+    const centers = normalizeCenters(data);
 
-    env.local.object = object;
+    env.local.radius = radius;
+    env.local.r = [x(radius[0]) - x(0), Math.abs(y(radius[1]) - y(0))];
+
+    const object = buildEllipses(env, centers, styleDisk);
 
     if (env.colorRefs) {
       env.colorRefs[env.root.uid] = env.root;
@@ -6584,31 +6646,30 @@ return object;
   g2d.Disk.update = async (args, env) => {
     let data = await interpretate(args[0], env);
 
-    if (data instanceof NumericArrayObject) data = data.buffer;
+    if (data instanceof NumericArrayObject) data = data.normal();
 
-    //console.log(data);
-    let radius = env.local.r; 
+    let radius = env.local.radius || [1, 1];
 
     if (args.length > 1) {
       radius = await interpretate(args[1], env);
       if (!Array.isArray(radius)) radius = [radius, radius];
     }
+    env.local.radius = radius;
 
     const x = env.xAxis;
-    const y = env.yAxis;     
+    const y = env.yAxis;
 
-    env.local.coords = [x(data[0]), y(data[1])];
+    // Arc variant: redraw the arc path in place (it has no ellipse pool).
+    if (env.local.arcQ) {
+      if (env.local.object) env.local.object.remove();
+      env.local.object = await g2d._arc(args, {...env, filled:true});
+      return env.local.object;
+    }
+
+    const centers = normalizeCenters(data);
     env.local.r = [x(radius[0]) - x(0), Math.abs(y(radius[1]) - y(0))];
 
-    //console.warn(args);
-
- 
-    
-    env.local.object.maybeTransition(env.transitionType, env.transitionDuration)
-    .attr("cx",  env.local.coords[0])
-    .attr("cy", env.local.coords[1])
-    .attr("rx", env.local.r[0])
-    .attr("ry", env.local.r[1]);
+    return updateEllipses(env, centers, styleDisk);
   };
 
   g2d.Disk.updateColor = (args, env) => {
@@ -6617,12 +6678,12 @@ return object;
 
   g2d.Disk.updateOpacity = (args, env) => {
     env.local.object.style("opacity", env.opacity);
-  };  
+  };
 
   g2d.Disk.virtual = true;
 
   g2d.Disk.destroy = (args, env) => {
- 
+
     if (!env.local) return;
     if (!env.local.object) return;
     if (env.colorRefs) {
@@ -6632,7 +6693,7 @@ return object;
       delete env.opacityRefs[env.root.uid];
     }
     env.local.object.remove();
-    
+
     delete env.local.object;
     //delete env.local.area;
   };

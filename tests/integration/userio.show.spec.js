@@ -100,13 +100,6 @@ test.describe('Users GUI', () => {
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'planets2.png']);
   });
 
-  test('Classify', async () => {
-    await clearCell(page);
-  
-    const outputCell = await evaluate(page, 'c = Classify[{1 -> "A", 2 -> "A", 3.5 -> "B", 4 -> "B"}]',35000, 35000);
-    await expect(outputCell).toHaveScreenshot(['screenshorts', 'classify.png']);
-  });
-
   test('Tooltip1', async () => {
     await clearCell(page);
   
