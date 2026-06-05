@@ -75,6 +75,42 @@ checkKernel[getkernel_, cbk_] := With[{
     ]
 ]
 
+markdownCellQ[data_String] := StringMatchQ[data, (".md\n"~~__) | (".md\r\n"~~__) | (".md\r"~~__)]
+markdownCellQ[_] := False
+
+metadataCell[cells_List] := SelectFirst[cells, (markdownCellQ[#["Data"]] && #["Type"] === "Input")&]
+
+markdownBody[data_String] := FirstCase[
+    StringCases[data, RegularExpression["^\\.md(?:\\r\\n|\\n|\\r)([\\s\\S]*)$"] :> "$1"],
+    _String,
+    ""
+]
+markdownBody[_] := ""
+
+parseWindowTitle[data_String] := Module[{titleLine, title},
+    titleLine = SelectFirst[
+        StringTrim /@ StringSplit[markdownBody[data], RegularExpression["\\r\\n|\\n|\\r"]],
+        StringLength[#] > 0 && !StringMatchQ[#, RegularExpression["WindowSize\\s*(?::|->).*"]]&,
+        Automatic
+    ];
+
+    If[!StringQ[titleLine], Return[Automatic] ];
+
+    title = StringTrim @ StringReplace[titleLine, RegularExpression["^[#|\\s]+"] -> ""];
+    If[StringLength[title] > 0, title, Automatic]
+]
+parseWindowTitle[_] := Automatic
+
+parseWindowSize[data_String] := Module[{res},
+    res = StringCases[
+        data,
+        RegularExpression["(?:^|[\\r\\n])\\s*WindowSize\\s*(?::|->)\\s*(?:\\{\\s*)?([0-9]+(?:\\.[0-9]*)?(?:`[0-9.]*)?)\\s*(?:[xX]|,)\\s*([0-9]+(?:\\.[0-9]*)?(?:`[0-9.]*)?)(?:\\s*\\})?"] :> {ToExpression["$1"], ToExpression["$2"]}
+    ];
+
+    FirstCase[res, {_?NumberQ, _?NumberQ}, Automatic]
+]
+parseWindowSize[_] := Automatic
+
 
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
 With[{
@@ -124,17 +160,14 @@ With[{
                 data["Container"][ cell`ToTransaction[#, "Notebook"->Null], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|> ] &/@ initCells;
 
 
-                Module[{title = "", decription = ""},
-                        With[{t = notebook["Cells"][[1]]},
-                            If[!StringMatchQ[t["Data"], ".md\n"~~__], Echo["WLW >> Title is missing!"]; ,
-                                {title, decription} = StringCases[t["Data"], RegularExpression[".md\n[#| ]*([^\n]*)\n?(.*)?"]:> {"$1", "$2"}] // First;
-                                If[StringQ[title], windowTitle = title; ];
-                                With[{res = StringCases[t["Data"], "WindowSize: "~~(d1:DigitCharacter..)~~"x"~~(d2:DigitCharacter..) :> {ToExpression[d1],ToExpression[d2]}] // First },
-                                    If[MatchQ[res, {_?NumberQ, _?NumberQ}], windowSize = res ];
-                                ];
-                            ];
-                        ] // Quiet;   
-                ];
+                With[{t = metadataCell[notebook["Cells"]]},
+                    If[MissingQ[t], Echo["WLW >> Title is missing!"]; ,
+                        With[{title = parseWindowTitle[t["Data"]], size = parseWindowSize[t["Data"]]},
+                            If[StringQ[title], windowTitle = title; ];
+                            If[MatchQ[size, {_?NumberQ, _?NumberQ}], windowSize = size ];
+                        ];
+                    ];
+                ] // Quiet;
                 
                 
 
@@ -142,7 +175,7 @@ With[{
                     Echo["Evaluating the last cell"];
                     
                     With[{
-                        win = win`WindowObj["Title"->windowTitle, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"], "RetryWebSocket"->True]
+                        win = win`WindowObj["Title"->windowTitle, WindowSize->windowSize, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"], "RetryWebSocket"->True]
                     }, {
                         cloned = EventClone[win],
                         readyPromise = Promise[],
