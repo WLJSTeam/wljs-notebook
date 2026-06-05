@@ -47023,6 +47023,16 @@ function cliManifest() {
         examples: ["wljs notebooks"]
       },
       {
+        name: "kernels",
+        category: "inspection",
+        usage: "wljs kernels",
+        description: "List all kernels available to the WLJS application, including their ids/hashes. Use a kernel id with `wljs wl --kernel <id>`.",
+        mutates_notebook: false,
+        executes_code: false,
+        output: "JSON",
+        examples: ["wljs kernels"]
+      },
+      {
         name: "new",
         category: "notebook",
         usage: "wljs new [--nocells]",
@@ -47187,16 +47197,19 @@ function cliManifest() {
       {
         name: "eval",
         category: "evaluation",
-        usage: "wljs eval <cell>",
-        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Execution time is limited by 20 seconds",
+        usage: "wljs eval <cell> [--time-limit <seconds>]",
+        description: "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Defaults to a 20 second time limit; pass --time-limit to override.",
         mutates_notebook: true,
         executes_code: true,
         output: "JSON",
+        argument_rules: [
+          "--time-limit is optional and must be a positive number of seconds."
+        ],
         safety_notes: [
           "Only evaluate code that the user requested or that the agent intentionally created.",
           "Long-running evaluations may time out from the CLI perspective while continuing in the sandbox."
         ],
-        examples: ["wljs eval cell123"]
+        examples: ["wljs eval cell123", "wljs eval cell123 --time-limit 120"]
       },
       {
         name: "project",
@@ -47222,23 +47235,27 @@ function cliManifest() {
       {
         name: "wl",
         category: "evaluation",
-        usage: "wljs wl '<wolfram-expression>'",
-        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell (max 25 sec evaluation)",
+        usage: "wljs wl '<wolfram-expression>' [--kernel <id>] [--time-limit <seconds>]",
+        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell. Defaults to a 25 sec evaluation; pass --time-limit to override and --kernel to target a specific kernel (see `wljs kernels`).",
         mutates_notebook: false,
         executes_code: true,
         output: "JSON",
         safety_notes: [
           "This can execute arbitrary Wolfram Language code.",
-          "Execution time is limited to 25 seconds max",
+          "Execution defaults to a 25 second time limit; override with --time-limit.",
           "Prefer notebook cells when the user expects visible notebook output."
         ],
         argument_rules: [
           "The expression is taken from the joined positional arguments.",
-          "Pass '-' (or no expression) to read the expression from stdin; use this on Windows/PowerShell when the expression contains double quotes, since the .bat launcher cannot forward them inline."
+          "Pass '-' (or no expression) to read the expression from stdin; use this on Windows/PowerShell when the expression contains double quotes, since the .bat launcher cannot forward them inline.",
+          "--kernel is optional and selects a specific kernel id/hash.",
+          "--time-limit is optional and must be a positive number of seconds."
         ],
         examples: [
           "wljs wl 'Total[Range[100]]'",
           "wljs wl 'Plot[Sin[x], {x, 0, 10}]'",
+          "wljs wl 'Pause[60]; 1+1' --time-limit 120",
+          "wljs wl 'Range[10]' --kernel abc123",
           `echo 'FileNames["*"]' | wljs -c -`
         ]
       }
@@ -47314,6 +47331,9 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "notebooks":
       writeJson(stdout, await wlCall("/api/notebook/list/", {}));
       return 0;
+    case "kernels":
+      writeJson(stdout, await wlCall("/api/kernel/list/", {}));
+      return 0;
     case "new":
       const opts = parseCliOptions(args);
       if (opts.Nocells || opts.NoCells)
@@ -47326,7 +47346,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       return 0;
     case "context": {
       const opts2 = parseCliOptions(args);
-      const Notebook = opts2.Notebook ?? opts2.notebook;
+      const Notebook = unquoteId(opts2.Notebook ?? opts2.notebook);
       const notebookId = Notebook ?? (await wlCall("/api/notebook/focused/", {})).Id;
       const cells = await wlCall("/api/notebook/cells/list/", { Notebook: notebookId });
       let focusedCell = null;
@@ -47343,17 +47363,17 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       return 0;
     }
     case "cells": {
-      const Notebook = requireCliArg(args.shift(), "Usage: wljs cells <notebook>");
+      const Notebook = unquoteId(requireCliArg(args.shift(), "Usage: wljs cells <notebook>"));
       writeJson(stdout, await wlCall("/api/notebook/cells/list/", { Notebook }));
       return 0;
     }
     case "focused-cell": {
-      const Notebook = requireCliArg(args.shift(), "Usage: wljs focused-cell <notebook>");
+      const Notebook = unquoteId(requireCliArg(args.shift(), "Usage: wljs focused-cell <notebook>"));
       writeJson(stdout, await wlCall("/api/notebook/cells/focused/", { Notebook }));
       return 0;
     }
     case "lines": {
-      const Cell = requireCliArg(args.shift(), "Usage: wljs lines <cell> <from> <to>");
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs lines <cell> <from> <to>"));
       const From = parsePositiveIntParam(args.shift(), "From");
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
@@ -47361,7 +47381,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       return 0;
     }
     case "full": {
-      const Cell = requireCliArg(args.shift(), "Usage: wljs full <cell>");
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs full <cell>"));
       const MaxCharacters = 9999999;
       writeText(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
       return 0;
@@ -47377,57 +47397,60 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "code":
     case "-c":
     case "-code": {
-      const joined = args.join(" ");
+      const { Kernel, TimeLimit, positional } = extractKernelEvalOptions(args);
+      const joined = positional.join(" ");
       const Expression = removeTicks(requireCliArg(
         joined === "-" || joined === "" ? readFileSync(0, "utf8").trim() : joined,
-        "Usage: wljs wl '<expression>'   (or pipe it:  <expression> | wljs wl -)"
+        "Usage: wljs wl '<expression>' [--kernel <id>] [--time-limit <seconds>]   (or pipe it:  <expression> | wljs wl -)"
       ));
       writeText(
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
-          { Expression, Directory: resolve() },
+          compact({ Expression, Directory: resolve(), Kernel, TimeLimit }),
           {
             wait: true,
-            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + cliTimeLimitMs(TimeLimit)
           }
         )
       );
       return 0;
     }
     case "eval": {
-      const Cell = requireCliArg(args.shift(), "Usage: wljs eval <cell>");
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs eval <cell> [--time-limit <seconds>]"));
+      const opts2 = parseCliOptions(args);
+      const TimeLimit = parseCliTimeLimit(opts2);
       writeJson(
         stdout,
         await wlCall(
           "/api/notebook/cells/evaluate/",
-          { Cell },
+          compact({ Cell, TimeLimit }),
           {
             wait: true,
-            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS
+            timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + cliTimeLimitMs(TimeLimit)
           }
         )
       );
       return 0;
     }
     case "project": {
-      const Cell = requireCliArg(args.shift(), "Usage: wljs project <cell>");
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs project <cell>"));
       writeText(stdout, await wlCall("/api/notebook/cells/project/", { Cell }));
       return 0;
     }
     case "add": {
       ensureWritableCli();
-      const Notebook = requireCliArg(
+      const Notebook = unquoteId(requireCliArg(
         args.shift(),
         "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]"
-      );
+      ));
       const opts2 = parseCliOptions(args);
       const Content = removeTicks(readCliContent(opts2));
       const payload = compact({
         Notebook,
         Content,
-        After: opts2.after ?? opts2.After,
-        Before: opts2.before ?? opts2.Before
+        After: unquoteId(opts2.after ?? opts2.After),
+        Before: unquoteId(opts2.before ?? opts2.Before)
       });
       assertSingleAnchor(payload);
       const added = await wlCall("/api/notebook/cells/add/", payload);
@@ -47459,10 +47482,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "set-lines": {
       ensureWritableCli();
-      const Cell = requireCliArg(
+      const Cell = unquoteId(requireCliArg(
         args.shift(),
         "Usage: wljs set-lines <cell> <from> <to> --content <text|@file|->"
-      );
+      ));
       const From = parsePositiveIntParam(args.shift(), "From");
       const To = parsePositiveIntParam(args.shift(), "To");
       assertLineRange({ From, To });
@@ -47481,10 +47504,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "insert-lines": {
       ensureWritableCli();
-      const Cell = requireCliArg(
+      const Cell = unquoteId(requireCliArg(
         args.shift(),
         "Usage: wljs insert-lines <cell> <after> --content <text|@file|->"
-      );
+      ));
       const After = parseNonNegativeCliInt(args.shift(), "After");
       const opts2 = parseCliOptions(args);
       const Content = readCliContent(opts2);
@@ -47500,7 +47523,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
     case "delete-cell": {
       ensureWritableCli();
-      const Cell = requireCliArg(args.shift(), "Usage: wljs delete-cell <cell>");
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs delete-cell <cell>"));
       writeJson(stdout, await wlCall("/api/notebook/cells/delete/", { Cell }));
       return 0;
     }
@@ -47530,6 +47553,18 @@ function writeText(stdout, text) {
 function removeTicks(literal2) {
   if (literal2.charAt(0) == "'" && literal2.charAt(literal2.length - 1) == "'") return literal2.slice(1, -1);
   return literal2;
+}
+function unquoteId(value) {
+  if (typeof value !== "string") return value;
+  const trimmed = value.trim();
+  if (trimmed.length >= 2) {
+    const first = trimmed.charAt(0);
+    const last = trimmed.charAt(trimmed.length - 1);
+    if ((first === "'" || first === '"') && first === last) {
+      return trimmed.slice(1, -1);
+    }
+  }
+  return trimmed;
 }
 function requireCliArg(value, usage) {
   if (value === void 0 || value === "") {
@@ -47565,6 +47600,54 @@ function parseCliOptions(args) {
     i += 1;
   }
   return out;
+}
+function parseCliTimeLimit(opts) {
+  const raw = opts["time-limit"] ?? opts.timeLimit ?? opts.TimeLimit ?? opts.timelimit ?? opts.tl;
+  if (raw === void 0) return void 0;
+  if (raw === true) {
+    throw new Error("--time-limit requires a value in seconds.");
+  }
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) {
+    throw new Error("--time-limit must be a positive number of seconds.");
+  }
+  return n;
+}
+function cliTimeLimitMs(timeLimit) {
+  return Number.isFinite(timeLimit) && timeLimit > 0 ? timeLimit * 1e3 : 0;
+}
+function extractKernelEvalOptions(args) {
+  const positional = [];
+  let Kernel;
+  let TimeLimit;
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    const key = typeof arg === "string" && arg.startsWith("--") ? arg.slice(2).toLowerCase() : null;
+    if (key === "kernel") {
+      const value = args[i + 1];
+      if (value === void 0 || value.startsWith("--")) {
+        throw new Error("--kernel requires a kernel id value.");
+      }
+      Kernel = unquoteId(value);
+      i += 1;
+      continue;
+    }
+    if (key === "time-limit" || key === "timelimit" || key === "tl") {
+      const value = args[i + 1];
+      if (value === void 0 || value.startsWith("--")) {
+        throw new Error("--time-limit requires a value in seconds.");
+      }
+      const n = Number(value);
+      if (!Number.isFinite(n) || n <= 0) {
+        throw new Error("--time-limit must be a positive number of seconds.");
+      }
+      TimeLimit = n;
+      i += 1;
+      continue;
+    }
+    positional.push(arg);
+  }
+  return { Kernel, TimeLimit, positional };
 }
 function readCliContent(opts) {
   const literal2 = opts.content ?? opts.Content;
@@ -47655,6 +47738,7 @@ Usage:
 
 Notebook:
   wljs notebooks
+  wljs kernels
   wljs new [--nocells]
   wljs focused
   wljs context [--Notebook <id>]
@@ -47670,12 +47754,14 @@ Editing:
   wljs delete-cell <cell>
 
 Evaluation in the notebook:
-  wljs eval <cell>
+  wljs eval <cell> [--time-limit <seconds>]
   wljs project <cell>
 
 Direct evaluation:
   wljs wl 1+1
   wljs wl 'Range[10]^2'
+  wljs wl 'Pause[60]; 1+1' --time-limit 120
+  wljs wl 'Range[10]' --kernel <kernel-id>
   wljs code 1+1
   wljs -code 1+1
   wljs -c 1+1

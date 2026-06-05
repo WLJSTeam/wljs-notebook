@@ -27,7 +27,7 @@ Type: Output
 %-------------------------------------------------------------------------%
 # Release Notes *3.0.7*
 
-Wed 3 Jun 2026 17:07:47
+Fri 5 Jun 2026 16:31:22
 
 %-------------------------------------------------------------------------%
 Props:
@@ -36,14 +36,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## TraditionalForm
-We implemented `TraditionalForm`, which was missing in WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
+We implemented `TraditionalForm`, which was missing from WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## TraditionalForm
-We implemented `TraditionalForm`, which was missing in WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
+We implemented `TraditionalForm`, which was missing from WLJS. Under the hood, it attempts to convert expressions to LaTeX and render them in the output.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -86,9 +86,9 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Settings Hot Reload & Dark Mode Update
-Now you don't have to restart WLJS every time you change a setting (for the most part). All open notebooks will automatically reload once you change something.
+You no longer need to restart WLJS every time you change a setting, for the most part. Open notebooks automatically reload after a settings change.
 
-In addition, we added contrast and brightness adjustments for dark mode, so you can tune it continuously until it feels comfortable for your eyes.
+In addition, we added contrast and brightness adjustments for dark mode, so you can tune it until it feels comfortable for your eyes.
 
 
 ![](/attachments/Screenshot-2026-06-03-at-16.55.40-ddd.png)
@@ -101,9 +101,9 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Settings Hot Reload & Dark Mode Update
-Now you don't have to restart WLJS every time you change a setting (for the most part). All open notebooks will automatically reload once you change something.
+You no longer need to restart WLJS every time you change a setting, for the most part. Open notebooks automatically reload after a settings change.
 
-In addition, we added contrast and brightness adjustments for dark mode, so you can tune it continuously until it feels comfortable for your eyes.
+In addition, we added contrast and brightness adjustments for dark mode, so you can tune it until it feels comfortable for your eyes.
 
 
 ![](/attachments/Screenshot-2026-06-03-at-16.55.40-ddd.png)<br />
@@ -115,7 +115,7 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Window Manager Refactor & Offscreen Rendering
-We simplified and improved many things in our codebase. `Rasterize` and many other system features no longer require open windows and work seamlessly in the background. However, for most users, this will not make a huge difference; for future maintenance and advanced WLJS usage, it makes a big difference.
+We simplified and improved many parts of the codebase. `Rasterize` and many other system features no longer require open windows and now work seamlessly in the background. Most users may not notice a huge difference, but this makes future maintenance and advanced WLJS usage much better.
 
 If you are using the WLJS desktop application, try:
 
@@ -124,7 +124,7 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Window Manager Refactor & Offscreen Rendering
-We simplified and improved many things in our codebase. `Rasterize` and many other system features no longer require open windows and work seamlessly in the background. However, for most users, this will not make a huge difference; for future maintenance and advanced WLJS usage, it makes a big difference.
+We simplified and improved many parts of the codebase. `Rasterize` and many other system features no longer require open windows and now work seamlessly in the background. Most users may not notice a huge difference, but this makes future maintenance and advanced WLJS usage much better.
 
 If you are using the WLJS desktop application, try:
 
@@ -139,13 +139,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-`CellPrint` no longer requires additional parameters when used without an evaluation context, for example inside a `Button`.
+`CellPrint` no longer requires additional parameters when used without an evaluation context, such as inside a `Button`.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-`CellPrint` no longer requires additional parameters when used without an evaluation context, for example inside a `Button`.
+`CellPrint` no longer requires additional parameters when used without an evaluation context, such as inside a `Button`.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -159,14 +159,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## CLI Update
-You can use the `wljs` utility not only to inspect notebooks,
+You can use the `wljs` utility to inspect notebooks:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## CLI Update
-You can use the `wljs` utility not only to inspect notebooks,
+You can use the `wljs` utility to inspect notebooks:
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -190,13 +190,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-but also to run Wolfram Language, similar to `wolframscript`. Here is an analogue of the `ls` or `dir` command, for example:
+You can also run Wolfram Language code, similar to `wolframscript`. For example, here is an analogue of the `ls` or `dir` command:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-but also to run Wolfram Language, similar to `wolframscript`. Here is an analogue of the `ls` or `dir` command, for example:
+You can also run Wolfram Language code, similar to `wolframscript`. For example, here is an analogue of the `ls` or `dir` command:
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -217,13 +217,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-`Rasterize` and WLJS-specific functions will work out of the box too.
+`Rasterize` and WLJS-specific functions also work out of the box.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-`Rasterize` and WLJS-specific functions will work out of the box too.
+`Rasterize` and WLJS-specific functions also work out of the box.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -245,14 +245,77 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## MCP Update
-With help from @Hachann, we significantly improved tools for AI agents and reduced token consumption.
+With help from @Hachann, we significantly improved the tools for AI agents and reduced token consumption.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## MCP Update
-With help from @Hachann, we significantly improved tools for AI agents and reduced token consumption.
+With help from @Hachann, we significantly improved the tools for AI agents and reduced token consumption.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Disk and Circle Improvements
+Our `Disk` and `Circle` graphics primitives now support multiple coordinates as their first argument, similar to `Point` and `Line`. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Disk and Circle Improvements
+Our `Disk` and `Circle` graphics primitives now support multiple coordinates as their first argument, similar to `Point` and `Line`. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pts = {{-1.,-1.}, {1.,1.}};
+Graphics[{
+  Disk[pts // Offload, 0.08], Red, 
+  Circle[pts // Offload, 0.11]
+}, "Controls"->False]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[{Disk[Offload[pts], 0.08], RGBColor[1, 0, 0], Circle[Offload[pts], 0.11]}, "Controls" -> False])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkHAvSizIyEwuTmOGyftkFpdA5EE8l8zibIhediDhn5aWk5+YUgxSXFBSXFQtss79YdUWe4hukHlB7k7O+Tn5RZkgPZkMMAJiIBuQcM4sSs5JxW2kZkz/oa8ae+wRTggqzUkNBpntnJ9XUpSfU1zMCuS4JeYUpwIAslYw0A=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now try updating the points:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now try updating the points:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pts = Append[pts, RandomReal[{-1,1}, 2]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This was already possible with `FrontSubmit` and by referencing the graphics canvas with `FrontInstanceReference`. Use that approach if you need to append or remove compound graphics primitives.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This was already possible with `FrontSubmit` and by referencing the graphics canvas with `FrontInstanceReference`. Use that approach if you need to append or remove compound graphics primitives.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -261,14 +324,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## AF Update
-The animation framework got an update. It is more stable and renders animations for export fully offscreen at up to 2K resolution, using native NodeJS I/O to write frames to disk and bypass the Wolfram Kernel entirely.
+The animation framework has been updated. It is more stable and now renders export animations fully offscreen at up to 2K resolution. It uses native Node.js I/O to write frames to disk and bypasses the Wolfram Kernel entirely.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## AF Update
-The animation framework got an update. It is more stable and renders animations for export fully offscreen at up to 2K resolution, using native NodeJS I/O to write frames to disk and bypass the Wolfram Kernel entirely.
+The animation framework has been updated. It is more stable and now renders export animations fully offscreen at up to 2K resolution. It uses native Node.js I/O to write frames to disk and bypasses the Wolfram Kernel entirely.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -320,6 +383,10 @@ Key: 1629631085legend
 
 
 %--------------------------------%Symbols%--------------------------------%
+Key: pts
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON["JTVCJTVCLTElMkMtMSU1RCUyQyU1QjElMkMxJTVEJTJDJTVCMC40MTIzODcxMDk2MTIzNzg1NyUyQzAuNDY5MzM5NTAwMjgzMTA4OSU1RCUyQyU1Qi0wLjQzMTcxNDA5NDg2MjY4NjUlMkMtMC44ODYyMzEwMjE4MzMxMjkxJTVEJTJDJTVCMC43OTQzNjc4NjI4MDk0OTI2JTJDLTAuMjgxMzY5MTE3Mjk4MTQ3ODQlNUQlMkMlNUIwLjg4Mzg3NTAwMDg2MjMxMTclMkMtMC44NTEyMzAyNTQ0OTUxODkxJTVEJTJDJTVCLTAuMjA5OTkyMDU3Njc1OTU1MyUyQzAuOTg2MTk4OTM2NzYzNjMzNyU1RCUyQyU1QjAuMTUxMzg2MDI0Nzc0NzY5MzclMkMtMC4xOTM4MjcwNzg5MDg2NTM1OCU1RCUyQyU1QjAuOTQ4NDk4Njc4Mzc3Nzk3MyUyQzAuOTQ0MzM4NjE2Mjg1OTY3NyU1RCUyQyU1Qi0wLjI4NDg0ODEwNDI2MzUzODQ2JTJDMC41NDM0NTUzNjg5Njg2OTQxJTVEJTJDJTVCLTAuNjg5NzI3MjkwNTUxMDgwNSUyQy0wLjg0MzMwNzgzMjc2MjA3ODclNUQlMkMlNUIwLjQ5NjE1OTQ0MzExMzAyMDA3JTJDMC4xNDQxNDQ4NDE3ODI1NzU0NyU1RCUyQyU1QjAuMjczNTg0ODA4MDU1MzAzMTYlMkMtMC45MjUwOTU1NTQ2MjkzNzg2JTVEJTJDJTVCLTAuMDU5MTQ1NTg1NDg0NjA2NTglMkMwLjI5ODQ4NzExNjY3NzA1NTMlNUQlMkMlNUItMC44MTQyMzA2MTE0OTI1MjcxJTJDMC4zOTk2MzYyMjE4NzgwMjE0JTVEJTVE"]
+
 %-----------------------------%EndOfSymbols%------------------------------%
 
 
