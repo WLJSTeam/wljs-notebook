@@ -178,7 +178,7 @@ Component[OptionsPattern[] ] := With[{
         "ExtensionTemplateInjection" -> OptionValue["ExtensionTemplateInjection"]
     ]
 }, {
-    RetryWebSocket = TrueQ[win["RetryWebSocket"]]
+    RetryWebSocket = TrueQ[window["RetryWebSocket"]]
 },
     
     EventHandler[secret, {
