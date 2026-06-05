@@ -316,7 +316,7 @@ const cli_info = {
 
 var sudo = require('./sudo');
 
-const cliInstalledMarkerPath = () => path.join(appDataFolder, '.cli_i2');
+const cliInstalledMarkerPath = () => path.join(appDataFolder, '.cli_i3');
 
 function mark_cli_prompt_handled() {
     fs.writeFile(cliInstalledMarkerPath(), 'Nothing to see here', function(err) {

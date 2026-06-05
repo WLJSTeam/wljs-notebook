@@ -74,7 +74,7 @@ toMMAUTF8[str_String] := FromCharacterCode[
   ]
 ]
 
-fromUTF8MMA[str_String] := FromCharacterCode[ToCharacterCode[str], "UTF8"]
+fromUTF8MMA[str_String] := StringReplace[FromCharacterCode[ToCharacterCode[str], "UTF8"], "\r"->""]
 
 (* end of workarounds *)
 

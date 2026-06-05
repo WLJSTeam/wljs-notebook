@@ -47232,9 +47232,14 @@ function cliManifest() {
           "Execution time is limited to 25 seconds max",
           "Prefer notebook cells when the user expects visible notebook output."
         ],
+        argument_rules: [
+          "The expression is taken from the joined positional arguments.",
+          "Pass '-' (or no expression) to read the expression from stdin; use this on Windows/PowerShell when the expression contains double quotes, since the .bat launcher cannot forward them inline."
+        ],
         examples: [
           "wljs wl 'Total[Range[100]]'",
-          "wljs wl 'Plot[Sin[x], {x, 0, 10}]'"
+          "wljs wl 'Plot[Sin[x], {x, 0, 10}]'",
+          `echo 'FileNames["*"]' | wljs -c -`
         ]
       }
     ],
@@ -47372,7 +47377,11 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "code":
     case "-c":
     case "-code": {
-      const Expression = requireCliArg(args.join(" "), "Usage: wljs wl '<expression>'");
+      const joined = args.join(" ");
+      const Expression = requireCliArg(
+        joined === "-" || joined === "" ? readFileSync(0, "utf8").trim() : joined,
+        "Usage: wljs wl '<expression>'   (or pipe it:  <expression> | wljs wl -)"
+      );
       writeText(
         stdout,
         await wlCall(
@@ -47662,10 +47671,12 @@ Evaluation in the notebook:
 
 Direct evaluation:
   wljs wl 1+1
-  wljs wl 'Range[10]^2'  
+  wljs wl 'Range[10]^2'
   wljs code 1+1
   wljs -code 1+1
-  wljs -c 1+1  
+  wljs -c 1+1
+  echo 'FileNames["*"]' | wljs -c -   (read expression from stdin; use this on
+                                       Windows/PowerShell for quoted expressions)
 
 Documentation:  
   wljs docs <query>

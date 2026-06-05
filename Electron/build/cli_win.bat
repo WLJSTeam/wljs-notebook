@@ -12,7 +12,6 @@ set "exePath=%~2"
 :: Create the batch launcher script
 (
     echo @echo off
-    echo setlocal enabledelayedexpansion
     echo set "APP_PATH=%exePath%"
 
     echo rem Handle no argument
@@ -23,12 +22,13 @@ set "exePath=%~2"
 
     echo rem Handle current directory call
     echo if "%%~1"=="." ^(
-    echo     set "TARGET_PATH=!CD!"
-    echo     call "!APP_PATH!" "!TARGET_PATH!"
+    echo     call "%%APP_PATH%%" "%%CD%%"
     echo     goto :eof
-    echo ^)    
+    echo ^)
 
-    echo rem Passthrough
+    echo rem Passthrough. Note: cmd/PowerShell cannot reliably forward embedded
+    echo rem double quotes to a .bat. For expressions containing quotes, pipe
+    echo rem them into "wljs -c -" via stdin instead of passing them inline.
     echo call "%%APP_PATH%%" --cli %%*
 ) > "%targetFile%"
 
