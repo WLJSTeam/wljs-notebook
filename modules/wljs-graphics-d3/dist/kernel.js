@@ -2729,8 +2729,14 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       const zoom = d3.zoom().filter(filter).on("zoom", zoomed);
    
       listener.call(zoom);
-      
+
       env._zoom = zoom;
+
+      //keep track of the current zoom transform so it can be queried later (see g2d.ZoomAt)
+      env.local.currentZoomTransform = d3.zoomIdentity;
+      env.onZoom.push((transform) => {
+        env.local.currentZoomTransform = transform;
+      });
 
       const resetZoom = () => {
         const transform = d3.zoomIdentity;
@@ -4747,12 +4753,22 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   };
 
   g2d.ZoomAt = async (args, env) => {
-    let zoom = await interpretate(args[0], env);
     const dims = {
 
       width: env.xAxis((env.plotRange[0][0] + env.plotRange[0][1])/2.0),
       height: env.yAxis((env.plotRange[1][0] + env.plotRange[1][1])/2.0)
     };
+
+    //called with no arguments: report current zoom and position as [zoom, [x, y]]
+    if (args.length === 0) {
+      const t = env.local.currentZoomTransform || d3.zoomIdentity;
+      //invert the transform built below to recover the focused point in data coordinates
+      const px = (dims.width  - t.x) / t.k;
+      const py = (dims.height - t.y) / t.k;
+      return [t.k, [env.xAxis.invert(px), env.yAxis.invert(py)]];
+    }
+
+    let zoom = await interpretate(args[0], env);
 
     let translate = [(env.plotRange[0][0] + env.plotRange[0][1])/2.0, -(env.plotRange[1][0] + env.plotRange[1][1])/2.0];
     if (args.length > 1) {
@@ -4767,7 +4783,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     console.log(env.svg.attr('transform'));
 
     const transform = d3.zoomIdentity.translate(dims.width, dims.height).scale(zoom).translate(-translate[0], -translate[1]);
-    
+    env.local.currentZoomTransform = transform;
+
 
     o.svg.maybeTransition(env.transitionType, env.transitionDuration).attr("transform", transform);
     if (o.gX)
