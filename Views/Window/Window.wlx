@@ -77,12 +77,14 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                 const port = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
 
-                if (server.kernel.connected) {
+                if (server.kernel.connected || server.kernel.connecting) {
                     console.warn('A request to connect was rejected, since socket is still alive');
                     return;
                 }
 
-                server.kernel.connected = true;
+                
+                server.kernel.connecting = true;
+                
                 let socket;
                 let connectNow;
                 connectNow = () => {
@@ -98,17 +100,21 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                     console.log("[open]");
                     server.kernel.init({socket: socket});
                     server.emitt(ev, 'True', 'WebSocketConnected');
+                    server.kernel.connected = true;
+                    server.kernel.connecting = false;
                   }; 
 
                   socket.onclose = function(event) {
                     console.log(event);
                     console.warn('Connection lost to a Evaluation Kernel');
                     //server.kernel = undefined;
-                    server.kernel.connected = false;
-                    if (<RetryWebSocket/>) {
-                        console.warn('Retrying in 500 ms');
-                        setTimeout(() => connectNow(), 500);
+                    
+                    if (<RetryWebSocket/> && !server.kernel.connected) {
+                        console.warn('Retrying in 3500 ms');
+                        setTimeout(() => connectNow(), 3500);
                     } else {server.emitt(ev, 'True', 'WebSocketLost');}
+
+                    server.kernel.connected = false;
                   }; 
 
                 };
