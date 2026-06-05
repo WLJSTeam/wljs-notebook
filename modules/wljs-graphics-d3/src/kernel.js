@@ -166,10 +166,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   g2d["Graphics`Canvas"] = async (args, env) => {
     //const copy = {...env};
     //modify local axes to transform correctly the coordinates of scaled container
-    let t = {k: 1, x:0, y:0};
-    env.onZoom.push((tranform) => {
-      t = tranform;
-    });
+    //read the live zoom transform from the shared store so both user gestures and
+    //programmatic ZoomAt are reflected immediately (see env.local.currentZoomTransform)
+    const currentTransform = () => env.local.currentZoomTransform || {k: 1, x: 0, y: 0};
 
     const copy = {xAxis: env.xAxis, yAxis: env.yAxis};
 
@@ -182,11 +181,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     };
 
     env.xAxis.invert = (x) => {
+      const t = currentTransform();
       const X = (x - t.x - env.panZoomEntites.left) / t.k;
       return copy.xAxis.invert(X);
     };
 
     env.yAxis.invert = (y) => {
+      const t = currentTransform();
       const Y = (y - t.y - env.panZoomEntites.top) / t.k;
       return copy.yAxis.invert(Y);
     };
@@ -4840,6 +4841,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     const transform = d3.zoomIdentity.translate(dims.width, dims.height).scale(zoom).translate(-translate[0], -translate[1]);
     env.local.currentZoomTransform = transform;
 
+    //sync the d3.zoom behavior's internal transform so a subsequent user drag/wheel
+    //continues from here instead of snapping back to the pre-ZoomAt transform
+    if (env._zoom && o.canvas) o.canvas.node().__zoom = transform;
+
+    //notify onZoom listeners (event coordinate inversion, currentZoomTransform tracker, ...)
+    //so screen->data conversion is correct immediately, not only after the first user drag
+    if (env.onZoom) env.onZoom.forEach((h) => h(transform));
 
     o.svg.maybeTransition(env.transitionType, env.transitionDuration).attr("transform", transform);
     if (o.gX)
@@ -4848,7 +4856,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       o.gY.maybeTransition(env.transitionType, env.transitionDuration).call(o.yAxis.scale(transform.rescaleY(o.y)));
 
     // Update grid lines
-    if (o.gGX) o.gGX.maybeTransition(env.transitionType, env.transitionDuration).call(o.xGrid(transform.rescaleY(o.x)));
+    if (o.gGX) o.gGX.maybeTransition(env.transitionType, env.transitionDuration).call(o.xGrid(transform.rescaleX(o.x)));
     if (o.gGY) o.gGY.maybeTransition(env.transitionType, env.transitionDuration).call(o.yGrid(transform.rescaleY(o.y)));
 
     if (o.gTX)
@@ -7028,10 +7036,9 @@ return object;
 
   const getCanvas = (env) => {
 
-    let t = {k: 1, x:0, y:0};
-    env.onZoom.push((tranform) => {
-      t = tranform;
-    });
+    //read the live zoom transform from the shared store so both user gestures and
+    //programmatic ZoomAt are reflected immediately (see env.local.currentZoomTransform)
+    const currentTransform = () => env.local.currentZoomTransform || {k: 1, x: 0, y: 0};
 
     const copy = {xAxis: env.xAxis, yAxis: env.yAxis};
 
@@ -7044,11 +7051,13 @@ return object;
     };
 
     env.xAxis.invert = (x) => {
+      const t = currentTransform();
       const X = (x - t.x - env.panZoomEntites.left) / t.k;
       return copy.xAxis.invert(X);
     };
 
     env.yAxis.invert = (y) => {
+      const t = currentTransform();
       const Y = (y - t.y - env.panZoomEntites.top) / t.k;
       return copy.yAxis.invert(Y);
     };
@@ -7179,17 +7188,18 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
   object.classed("cursor-pointer", true);
 
-  let t = { k: 1, x: 0, y: 0 };
-  env.onZoom.push((transform) => {
-    t = transform;
-  });
+  //read the live zoom transform from the shared store so both user gestures and
+  //programmatic ZoomAt are reflected immediately (see env.local.currentZoomTransform)
+  const currentTransform = () => env.local.currentZoomTransform || { k: 1, x: 0, y: 0 };
 
   const xAxisinvert = (x) => {
+    const t = currentTransform();
     const X = (x - t.x - env.panZoomEntites.left) / t.k;
     return env.xAxis.invert(X);
   };
 
   const yAxisinvert = (y) => {
+    const t = currentTransform();
     const Y = (y - t.y - env.panZoomEntites.top) / t.k;
     return env.yAxis.invert(Y);
   };

@@ -110,8 +110,8 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                     //server.kernel = undefined;
                     
                     if (<RetryWebSocket/> && !server.kernel.connected) {
-                        console.warn('Retrying in 1500 ms');
-                        setTimeout(() => window.location.reload(), 1500);
+                        console.warn('Retrying in 1700 ms');
+                        setTimeout(() => window.location.reload(), 1700);
                     } else {server.emitt(ev, 'True', 'WebSocketLost');}
 
                     server.kernel.connected = false;
