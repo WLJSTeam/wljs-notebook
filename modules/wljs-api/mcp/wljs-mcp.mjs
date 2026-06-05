@@ -1645,10 +1645,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       // .bat launcher cannot reliably forward embedded double quotes (e.g.
       // FileNames["*"]). Pipe instead:  echo 'FileNames["*"]' | wljs -c -
       const joined = args.join(" ");
-      const Expression = requireCliArg(
+      const Expression = removeTicks(requireCliArg(
         joined === "-" || joined === "" ? readFileSync(0, "utf8").trim() : joined,
         "Usage: wljs wl '<expression>'   (or pipe it:  <expression> | wljs wl -)",
-      );
+      ));
 
       writeText(
         stdout,
@@ -1696,7 +1696,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       );
 
       const opts = parseCliOptions(args);
-      const Content = readCliContent(opts);
+      const Content = removeTicks(readCliContent(opts));
 
       const payload = compact({
         Notebook,
@@ -1821,6 +1821,11 @@ function writeText(stdout, text) {
   stdout.write(`${text}\n`);
 }
 
+function removeTicks(literal) { 
+  if (literal.charAt(0) == "'" && literal.charAt(literal.length - 1) == "'") return literal.slice(1, -1);
+  return literal;
+}
+
 function requireCliArg(value, usage) {
   if (value === undefined || value === "") {
     throw new Error(usage);
@@ -1867,6 +1872,8 @@ function parseCliOptions(args) {
   return out;
 }
 
+
+
 function readCliContent(opts) {
   const literal = opts.content ?? opts.Content;
   const escaped = opts["content-escaped"] ?? opts.contentEscaped;
@@ -1890,6 +1897,8 @@ function readCliContent(opts) {
   if (typeof literal === "string" && literal.startsWith("@")) {
     return readFileSync(literal.slice(1), "utf8");
   }
+
+  
 
   return String(literal);
 }

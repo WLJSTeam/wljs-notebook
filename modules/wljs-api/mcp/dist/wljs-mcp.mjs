@@ -47378,10 +47378,10 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "-c":
     case "-code": {
       const joined = args.join(" ");
-      const Expression = requireCliArg(
+      const Expression = removeTicks(requireCliArg(
         joined === "-" || joined === "" ? readFileSync(0, "utf8").trim() : joined,
         "Usage: wljs wl '<expression>'   (or pipe it:  <expression> | wljs wl -)"
-      );
+      ));
       writeText(
         stdout,
         await wlCall(
@@ -47422,7 +47422,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
         "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]"
       );
       const opts2 = parseCliOptions(args);
-      const Content = readCliContent(opts2);
+      const Content = removeTicks(readCliContent(opts2));
       const payload = compact({
         Notebook,
         Content,
@@ -47526,6 +47526,10 @@ function writeJson(stdout, value) {
 function writeText(stdout, text) {
   stdout.write(`${text}
 `);
+}
+function removeTicks(literal2) {
+  if (literal2.charAt(0) == "'" && literal2.charAt(literal2.length - 1) == "'") return literal2.slice(1, -1);
+  return literal2;
 }
 function requireCliArg(value, usage) {
   if (value === void 0 || value === "") {

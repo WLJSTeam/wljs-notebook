@@ -818,15 +818,16 @@ apiCall[request_, "/api/notebook/cells/add/batch/"] := Module[{body = request["B
 
 clonedChannels = <||>;
 
-getMessagesEventChannel[nb_nb`NotebookObj] := If[clonedChannels[nb["Hash"]]["Origin"] =!= nb["MessangerChannel"],
+(* can be used for not only kernels *)
+getMessagesEventChannel[kernel_, prop_] := If[clonedChannels[kernel[prop]]["Origin"] =!= kernel[prop],
   Echo["Clonning event channel used for messaging"];
-  With[{cloned = EventClone[nb["MessangerChannel"]], hash = nb["Hash"]},
-    clonedChannels[hash] = <|"Origin"->nb["MessangerChannel"], "Target"->cloned|>;
+  With[{cloned = EventClone[kernel[prop]], hash = kernel[prop]},
+    clonedChannels[hash] = <|"Origin"->kernel[prop], "Target"->cloned|>;
     cloned
   ]
 ,
   Echo["Using cached cloned event channel"];
-  clonedChannels[nb["Hash"]]["Target"]  
+  clonedChannels[kernel[prop]]["Target"]  
 ]
 
 (* 
@@ -853,7 +854,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
          timeout = Lookup[body, "TimeLimit", 20]},
         {notebook = cell["Notebook"]},
-        {events = getMessagesEventChannel[notebook]},
+        {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
         
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
         If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
@@ -997,15 +998,38 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             timelimit = Lookup[body, "TimeLimit", 20],
             maxCharacters = Lookup[body, "MaxCharacters", 1500],
             promise = Promise[],
+            finalPromise = Promise[],
 
-            dir = Lookup[body, "Directory", Null]
+            dir = Lookup[body, "Directory", Null],
+            accumulated = Unique[]
+        }, {
+            events = getMessagesEventChannel[k, "Hash"]
         },
 
-        If[MissingQ[k], Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
+        If[MissingQ[k], ClearAll[accumulated]; Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
 
-        If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
+        If[!NumberQ[maxCharacters], ClearAll[accumulated]; Return[failure["MaxCharacters is not a number"], Module]];
 
-        If[!NumberQ[timelimit], Return[failure["TimeLimit is not a number"], Module] ];
+        If[!NumberQ[timelimit],ClearAll[accumulated];  Return[failure["TimeLimit is not a number"], Module] ];
+
+        accumulated = {};
+        
+        EventHandler[events, {"Print" -> Function[data,
+            AppendTo[accumulated, {"Print", data}];
+        ], "Warning" -> Function[data,
+            AppendTo[accumulated, {"Warning", data}];
+        ]}];
+
+        Then[promise, Function[payload, Module[{},
+            EventFire[finalPromise, Resolve, If[Length[accumulated] > 0,
+                StringRiffle[Join[accumulated[[All,2]], {payload}], "\n"]
+            ,
+                payload
+            ] ];
+            ClearAll[accumulated];
+            EventRemove[events, "Print"];
+            EventRemove[events, "Warning"];
+        ]]];
 
         If[dir === Null,
             GenericKernel`Send[k, 
@@ -1033,7 +1057,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             ];        
         ];
 
-        promise
+        finalPromise
     ]
 ]
 
