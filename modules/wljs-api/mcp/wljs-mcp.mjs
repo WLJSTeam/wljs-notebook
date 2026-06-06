@@ -957,12 +957,13 @@ register(
         .min(1)
         .describe("Wolfram Language expression to evaluate."),
       Kernel: z.string().optional().describe("Optional kernel hash/id."),
-      TimeLimit: z.number().optional().describe("Optional time limit in seconds.")
+      TimeLimit: z.number().optional().describe("Optional time limit in seconds."),
+      MaxCharacters: z.number().optional().describe("Optional maximum allowed character before shortening. Default is 5000")
     },
-    ({ Expression, Kernel, TimeLimit }) =>
+    ({ Expression, Kernel, TimeLimit, MaxCharacters }) =>
       wlCall(
         "/api/kernel/evaluate/",
-        compact({ Expression, Kernel, TimeLimit }),
+        compact({ Expression, Kernel, TimeLimit, MaxCharacters }),
         {
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20),

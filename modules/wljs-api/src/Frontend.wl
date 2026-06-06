@@ -996,7 +996,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
         ],
             expr = body["Expression"],
             timelimit = Lookup[body, "TimeLimit", 20],
-            maxCharacters = Lookup[body, "MaxCharacters", 1500],
+            maxCharacters = Lookup[body, "MaxCharacters", 5500],
             promise = Promise[],
             finalPromise = Promise[],
 
