@@ -28,7 +28,8 @@
     "publish": [
       {
         "provider": "github",
-        "channel": "latest-${arch}"
+        "channel": "latest-${arch}",
+        "releaseType": "release"
       }
     ],
     "afterSign": "./Electron/sign.js",

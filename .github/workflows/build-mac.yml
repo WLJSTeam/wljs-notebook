@@ -1,5 +1,7 @@
 name: Build for Mac
 on: workflow_dispatch
+env:
+  EP_GH_IGNORE_TIME: "true"
 jobs:
   build-MacOSX-ARM:
     runs-on: macos-latest
