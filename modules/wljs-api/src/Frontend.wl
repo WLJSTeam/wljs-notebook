@@ -1063,7 +1063,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
 apiCall[request_, "/api/kernel/list/"] := Module[{},
      Map[Function[k,
-        <|"Id"->toAlias[#["Hash"]], "Name"->#["Name"]|>
+        <|"Id"->toAlias[k["Hash"]], "Name"->k["Name"]|>
      ], Select[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]]
 ]
 
