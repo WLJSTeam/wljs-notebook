@@ -1,7 +1,5 @@
 name: Build for GNULinux 
 on: workflow_dispatch
-env:
-  EP_GH_IGNORE_TIME: "true"
 jobs:
   build-x86:
     runs-on: ubuntu-latest

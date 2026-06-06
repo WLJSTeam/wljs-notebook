@@ -344,11 +344,11 @@ jobs:
         with:
           tag_name: v${{ steps.appver.outputs.version }}
           name: v${{ steps.appver.outputs.version }}
-          draft: false
+          draft: true
           prerelease: false
-          overwrite_files: true
           files: ${{ steps.find_signed.outputs.file }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
 
 
