@@ -1,137 +1,313 @@
-<|"Notebook" -> <|"Controller" -> "fa84af00-6929-4d09-896c-e8bf9c39804b", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$508], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "981cd5b5-1278-4f43-9daa-23ff358a60d4", "Objects" -> <||>, 
-   "Path" -> "/users/kirill/Github/wljs-demos-archive/Demos/17 - Apps/Units \
-Converter.wln", "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Units converter", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$501]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Source code", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$501]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Units converter\nAn app for fast convertion \
-different optical units.\n\n<br/>\n\n## Source code\n\nDefine a custom input \
-component", "Display" -> "codemirror", 
-    "Hash" -> "0795d772-6d7b-43bb-9f21-b59f6b02198c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> "# Units converter\nAn app for fast convertion different \
-optical units.\n\n<br />\n\n## Source code\n\nDefine a custom input \
-component", "Display" -> "markdown", 
-    "Hash" -> "d133c0c4-e8c6-44ba-8949-05f446744039", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> ".wlx\n\nCustomInput[sym_, OptionsPattern[]] := Module[{\n  \
-Label = OptionValue[\"Label\"],\n  Ev = OptionValue[\"Event\"],\n  Pattern = \
-OptionValue[\"Pattern\"],\n  System`Handler\n},\n  With[{Handler = \
-System`Handler},\n  With[{Template = \n    <div class=\"mt-2 flex\">\n      \
-<div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md \
-bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 \
-outline-gray-300 sm:text-sm/6\"><Label/></div>\n      <input type=\"number\" \
-step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 \
-text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 \
-placeholder:text-gray-400 focus:outline focus:outline-2 \
-focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" \
-placeholder=\"0.0\"/>\n    <script type=\"module\">\n      core['<Handler/>'] \
-= async (args, env) => {\n        const input = \
-env.element.getElementsByTagName('input')[0];\n\n\n        const data = await \
-interpretate(args[0], env);\n        input.value = \
-+data['<Pattern/>'].toFixed(4);\n        env.local.input = input;\n\n        \
-input.addEventListener('change', () => {\n          \n          \
-console.warn(input.value);\n          env.local.skip = true;\n          \
-server.kernel.emitt('<Ev/>', input.value, '<Pattern/>');\n        });        \
-\n      }\n\n      core['<Handler/>'].update = async (args, env) => {\n       \
- if (env.local.skip) {\n          env.local.skip = false;\n          \
-return;\n        }\n        console.log('Update');\n        \
-env.local.input.value = +(await interpretate(args[0], \
-env))['<Pattern/>'].toFixed(4);\n      }\n\n      core['<Handler/>'].destroy \
-= () => {\n        delete core['<Handler/>'];\n      }\n\n      \
-core['<Handler/>'].virtual = true;\n    </script>\n  </div>\n  },\n    \
-HTMLView[Template, Epilog->(Handler[sym])]\n  ]]\n]\n\nOptions[CustomInput] = \
-{\"Label\"->\"\", \"Event\"->\"\", \"Pattern\"->\"Default\"};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0765541e-a22c-4ad0-a4bf-053c5023d5e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> ".md\nApp logic", "Display" -> "codemirror", 
-    "Hash" -> "b7cdead0-a455-478a-92e6-988318c756e9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, <|"Data" -> "App logic", 
-    "Display" -> "markdown", "Hash" -> 
-     "8145b59e-607a-411d-b7a2-3558c3cbf469", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> "Sliders = LeakyModule[{\n  ev = CreateUUID[],\n  rules,\n  \
-assoc,\n  System`rack,\n  recalc\n},\n  \n\nrules = {\n  \"Centimeters\" -> \
-\"Centimeters\",\n  \"eV\" -> \"Centimeters\" / 8065.6,\n  \"meV\" -> 1000 \
-\"Centimeters\" / 8065.6,\n  \"Micrometers\" -> 10000 / \"Centimeters\",\n  \
-\"Nanometers\" -> (*SpB[*)Power[10(*|*),(*|*)7](*]SpB*) / \"Centimeters\",\n  \
-\"Angstrem\" -> (*SpB[*)Power[10(*|*),(*|*)8](*]SpB*) / \"Centimeters\",\n  \
-\"MHz\" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 \"Centimeters\",\n  \
-\"GHz\" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 \"Centimeters\" \
-0.001,\n  \"THz\" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 \
-\"Centimeters\" 0.001 0.001,\n  \"K\" -> 1.428 \"Centimeters\",\n\n  \"ps\" \
--> 0.004136 / (\"Centimeters\" / 8065.6),\n\n  \n  \"T\" -> 4.26602  \
-\"Centimeters\",\n  \"Oe\" -> 10000 4.26602  \"Centimeters\",\n  \n  \
-\"kJ/Mol\" -> 0.0120 \"Centimeters\",\n  \"Hartree\" ->   \"Centimeters\" / \
-(27.2114 8065.6)\n};\n\nassoc = Association[rules];\n\nSystem`rack = \
-Map[Function[v, 0.0], assoc];\n\nModule[{var},\nrecalc[units_, val_] := \
-With[{cm = NSolve[val == (assoc[units] /. \"Centimeters\" -> var), \
-var][[1,1,2]] // N},\n  Map[Function[key,\n    System`rack[key] = \
-Round[(assoc[key] /. \"Centimeters\" -> cm), 0.0001]\n  ], \
-Keys[System`rack]];\n\n  System`rack = \
-System`rack;\n];\n]\n\nEventHandler[ev, {\n  units_ :> (recalc[units, \
-#]&)\n}];\n\nCreateFrontEndObject /@ {\n  CustomInput[System`rack//Offload, \
-\"Event\"->ev, \"Label\"->\"cm<sup>-1</sup>\", \
-\"Pattern\"->\"Centimeters\"],\n  CustomInput[System`rack//Offload, \
-\"Event\"->ev, \"Label\"->\"eV\", \"Pattern\"->\"eV\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"meV\", \
-\"Pattern\"->\"meV\"],\n  HTMLView[\"<hr/>\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"&micro;m\", \
-\"Pattern\"->\"Micrometers\"],\n  CustomInput[System`rack//Offload, \
-\"Event\"->ev, \"Label\"->\"nm\", \"Pattern\"->\"Nanometers\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"A\", \
-\"Pattern\"->\"Angstrem\"],\n  HTMLView[\"<hr/>\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"MHz\", \
-\"Pattern\"->\"MHz\"],\n  CustomInput[System`rack//Offload, \"Event\"->ev, \
-\"Label\"->\"GHz\", \"Pattern\"->\"GHz\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"THz\", \
-\"Pattern\"->\"THz\"],\n  HTMLView[\"<hr/>\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"ps\", \
-\"Pattern\"->\"ps\"],\n  HTMLView[\"<hr/>\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"Oe (1/2)\", \
-\"Pattern\"->\"Oe\"],\n  CustomInput[System`rack//Offload, \"Event\"->ev, \
-\"Label\"->\"T (1/2)\", \"Pattern\"->\"T\"],\n  HTMLView[\"<hr/>\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"K\", \
-\"Pattern\"->\"K\"],\n  CustomInput[System`rack//Offload, \"Event\"->ev, \
-\"Label\"->\"kJ/Mol\", \"Pattern\"->\"kJ/Mol\"],\n  \
-CustomInput[System`rack//Offload, \"Event\"->ev, \"Label\"->\"Hartree\", \
-\"Pattern\"->\"Hartree\"]\n}\n];", "Display" -> "codemirror", 
-    "Hash" -> "fb82a955-12eb-4bb5-97ff-cd8b4631026e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> ".md\nApp layout", "Display" -> "codemirror", 
-    "Hash" -> "480649e1-4206-4bb4-99e3-2b33e98b9d42", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, <|"Data" -> "App layout", 
-    "Display" -> "markdown", "Hash" -> 
-     "360ca049-3095-488d-addf-7b047f79ecb2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>, 
-   <|"Data" -> ".wlx\n\n<div class=\"flex flex-col bg-white p-4 w-full h-full \
-gap-y-1 overflow-y-scroll\">\n  <Sliders/>\n</div>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9c6b7c82-e81e-4c89-8142-c0d7d335c9f4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "8da11258-068b-4049-b6cb-960fc64698fb"|>}, "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Units converter
+An app for fast convertion different optical units.
+
+<br/>
+
+## Source code
+
+Define a custom input component
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Units converter
+An app for fast convertion different optical units.
+
+<br />
+
+## Source code
+
+Define a custom input component
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+CustomInput[Label__, opts:OptionsPattern[]] := CustomInput[ToStringRiffle[{Label}], opts];
+CustomInput[Label_, OptionsPattern[]] := Module[{
+  sym = OptionValue["Symbol"],
+  Ev = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"],
+  System`Handler (* to avoid context issues when placing it in core[] *)
+},
+  With[{Handler = System`Handler},
+  With[{Template = 
+    <div class="mt-2 flex">
+      <div style="width: 7rem" class="flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6"><Label/></div>
+      <input type="number" step="1" class="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="0.0"/>
+    <script type="module">
+      core['<Handler/>'] = async (args, env) => {
+        const input = env.element.getElementsByTagName('input')[0];
+
+
+        const data = await interpretate(args[0], env);
+        input.value = +data['<Pattern/>'].toFixed(4);
+        env.local.input = input;
+
+        input.addEventListener('change', () => {
+          
+          console.warn(input.value);
+          env.local.skip = true;
+          server.kernel.io.fire('<Ev/>', Number(input.value), '<Pattern/>');
+        });        
+      }
+
+      core['<Handler/>'].update = async (args, env) => {
+        if (env.local.skip) {
+          env.local.skip = false;
+          return;
+        }
+        console.log('Update');
+        env.local.input.value = +(await interpretate(args[0], env))['<Pattern/>'].toFixed(4);
+      }
+
+      core['<Handler/>'].destroy = () => {
+        delete core['<Handler/>'];
+      }
+
+      core['<Handler/>'].virtual = true;
+    </script>
+  </div>
+  },
+    HTMLView[Template, Epilog->(Handler[sym])]
+  ]]
+]
+
+Options[CustomInput] = {"Symbol"->Null, "Event"->"", "Pattern"->"Default"};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+App logic
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+App logic
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+Module[{
+  ev = CreateUUID[],
+  rules,
+  assoc,
+  recalc
+},
+  
+
+rules = {
+  "Centimeters" -> "Centimeters",
+  "eV" -> "Centimeters" / 8065.6,
+  "meV" -> 1000 "Centimeters" / 8065.6,
+  "Micrometers" -> 10000 / "Centimeters",
+  "Nanometers" -> (*SpB[*)Power[10(*|*),(*|*)7](*]SpB*) / "Centimeters",
+  "Angstrem" -> (*SpB[*)Power[10(*|*),(*|*)8](*]SpB*) / "Centimeters",
+  "MHz" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 "Centimeters",
+  "GHz" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 "Centimeters" 0.001,
+  "THz" -> (*SpB[*)Power[10(*|*),(*|*)4](*]SpB*) 2.9979 "Centimeters" 0.001 0.001,
+  "K" -> 1.428 "Centimeters",
+
+  "ps" -> 0.004136 / ("Centimeters" / 8065.6),
+
+  
+  "T" -> 4.26602  "Centimeters",
+  "Oe" -> 10000 4.26602  "Centimeters",
+  
+  "kJ/Mol" -> 0.0120 "Centimeters",
+  "Hartree" ->   "Centimeters" / (27.2114 8065.6)
+};
+
+assoc = Association[rules];
+
+rack = Map[Function[v, 0.0], assoc];
+
+Module[{var},
+recalc[units_, val_] := With[{cm = NSolve[val == (assoc[units] /. "Centimeters" -> var), var][[1,1,2]] // N},
+  Map[Function[key,
+    rack[key] = Round[(assoc[key] /. "Centimeters" -> cm), 0.0001]
+  ], Keys[rack]];
+
+  rack = rack;
+];
+]
+
+EventHandler[ev, {
+  units_ :> (recalc[units, #]&)
+}];
+
+<div class="flex flex-col bg-white p-4 w-full h-full gap-y-1 overflow-y-scroll">
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Centimeters"}>cm<sup>-1</sup></CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"eV"}>eV</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"meV"}>meV</CustomInput>
+  <hr/>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Micrometers"}>&micro;m</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Nanometers"}>nm</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Angstrem"}>A</CustomInput>
+  <hr/>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"MHz"}>MHz</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"GHz"}>GHz</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"THz"}>THz</CustomInput>
+  <hr/>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"ps"}>ps</CustomInput>
+  <hr/>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Oe"}>Oe (1/2)</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"T"}>T (1/2)</CustomInput>
+  <hr/>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"K"}>K</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"kJ/Mol"}>kJ/Mol</CustomInput>
+  <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Hartree"}>Hartree</CustomInput>
+</div>
+]
+
+%-------------------------------------------------------------------------%
+Display: wlx
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="flex flex-col bg-white p-4 w-full h-full gap-y-1 overflow-y-scroll">FrontEndExecutable[b74b92ad-d917-4e4e-98cc-f1c80b397226]FrontEndExecutable[16c870f5-4759-4d64-807b-0b6c58f1c17d]FrontEndExecutable[0eac825f-1a13-4972-9795-c1bec5ba3ff7]<hr />FrontEndExecutable[d9f07150-8198-401d-b74a-5fc7a62d20fc]FrontEndExecutable[8e5c1c33-f622-4853-b1b5-8b7e67d85c7f]FrontEndExecutable[ed931251-832e-434c-8f6e-bb3f180e4a4a]<hr />FrontEndExecutable[b91cd191-aeed-48ce-b860-56fb31d64b49]FrontEndExecutable[3fe70051-2591-43ed-b194-bb16bad522bb]FrontEndExecutable[c930a8e1-d08a-4824-b674-48eff287bb98]<hr />FrontEndExecutable[cc2a2b1f-ec9f-453e-bbf7-e8d36d255d00]<hr />FrontEndExecutable[6feefb02-3e91-4448-8da6-7801041afda4]FrontEndExecutable[08f1dba0-4dac-4acd-824d-1cc2be90df5f]<hr />FrontEndExecutable[ea86c419-4a56-4044-81d8-f0d30cc35144]FrontEndExecutable[79b053ad-7bb3-4da8-9c95-7734a11f739e]FrontEndExecutable[8fc60c78-2cb9-4144-afdc-01a6336806c8]</div>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: b74b92ad-d917-4e4e-98cc-f1c80b397226
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">cm\n<sup >-1</sup></div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722015'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Centimeters'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Centimeters');\n        });        \n      }\n\n      core['Handler$1722015'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Centimeters'].toFixed(4);\n      }\n\n      core['Handler$1722015'].destroy = () => {\n        delete core['Handler$1722015'];\n      }\n\n      core['Handler$1722015'].virtual = true;</script></div>", Epilog -> Handler$1722015[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 16c870f5-4759-4d64-807b-0b6c58f1c17d
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">eV</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722016'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['eV'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'eV');\n        });        \n      }\n\n      core['Handler$1722016'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['eV'].toFixed(4);\n      }\n\n      core['Handler$1722016'].destroy = () => {\n        delete core['Handler$1722016'];\n      }\n\n      core['Handler$1722016'].virtual = true;</script></div>", Epilog -> Handler$1722016[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 0eac825f-1a13-4972-9795-c1bec5ba3ff7
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">meV</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722017'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['meV'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'meV');\n        });        \n      }\n\n      core['Handler$1722017'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['meV'].toFixed(4);\n      }\n\n      core['Handler$1722017'].destroy = () => {\n        delete core['Handler$1722017'];\n      }\n\n      core['Handler$1722017'].virtual = true;</script></div>", Epilog -> Handler$1722017[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: d9f07150-8198-401d-b74a-5fc7a62d20fc
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">&micro;m</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722018'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Micrometers'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Micrometers');\n        });        \n      }\n\n      core['Handler$1722018'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Micrometers'].toFixed(4);\n      }\n\n      core['Handler$1722018'].destroy = () => {\n        delete core['Handler$1722018'];\n      }\n\n      core['Handler$1722018'].virtual = true;</script></div>", Epilog -> Handler$1722018[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8e5c1c33-f622-4853-b1b5-8b7e67d85c7f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">nm</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722019'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Nanometers'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Nanometers');\n        });        \n      }\n\n      core['Handler$1722019'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Nanometers'].toFixed(4);\n      }\n\n      core['Handler$1722019'].destroy = () => {\n        delete core['Handler$1722019'];\n      }\n\n      core['Handler$1722019'].virtual = true;</script></div>", Epilog -> Handler$1722019[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: ed931251-832e-434c-8f6e-bb3f180e4a4a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">A</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722020'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Angstrem'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Angstrem');\n        });        \n      }\n\n      core['Handler$1722020'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Angstrem'].toFixed(4);\n      }\n\n      core['Handler$1722020'].destroy = () => {\n        delete core['Handler$1722020'];\n      }\n\n      core['Handler$1722020'].virtual = true;</script></div>", Epilog -> Handler$1722020[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: b91cd191-aeed-48ce-b860-56fb31d64b49
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">MHz</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722021'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['MHz'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'MHz');\n        });        \n      }\n\n      core['Handler$1722021'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['MHz'].toFixed(4);\n      }\n\n      core['Handler$1722021'].destroy = () => {\n        delete core['Handler$1722021'];\n      }\n\n      core['Handler$1722021'].virtual = true;</script></div>", Epilog -> Handler$1722021[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 3fe70051-2591-43ed-b194-bb16bad522bb
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">GHz</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722022'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['GHz'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'GHz');\n        });        \n      }\n\n      core['Handler$1722022'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['GHz'].toFixed(4);\n      }\n\n      core['Handler$1722022'].destroy = () => {\n        delete core['Handler$1722022'];\n      }\n\n      core['Handler$1722022'].virtual = true;</script></div>", Epilog -> Handler$1722022[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: c930a8e1-d08a-4824-b674-48eff287bb98
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">THz</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722023'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['THz'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'THz');\n        });        \n      }\n\n      core['Handler$1722023'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['THz'].toFixed(4);\n      }\n\n      core['Handler$1722023'].destroy = () => {\n        delete core['Handler$1722023'];\n      }\n\n      core['Handler$1722023'].virtual = true;</script></div>", Epilog -> Handler$1722023[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: cc2a2b1f-ec9f-453e-bbf7-e8d36d255d00
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">ps</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722024'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['ps'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'ps');\n        });        \n      }\n\n      core['Handler$1722024'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['ps'].toFixed(4);\n      }\n\n      core['Handler$1722024'].destroy = () => {\n        delete core['Handler$1722024'];\n      }\n\n      core['Handler$1722024'].virtual = true;</script></div>", Epilog -> Handler$1722024[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 6feefb02-3e91-4448-8da6-7801041afda4
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">Oe (1/2)</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722025'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Oe'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Oe');\n        });        \n      }\n\n      core['Handler$1722025'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Oe'].toFixed(4);\n      }\n\n      core['Handler$1722025'].destroy = () => {\n        delete core['Handler$1722025'];\n      }\n\n      core['Handler$1722025'].virtual = true;</script></div>", Epilog -> Handler$1722025[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 08f1dba0-4dac-4acd-824d-1cc2be90df5f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">T (1/2)</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722026'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['T'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'T');\n        });        \n      }\n\n      core['Handler$1722026'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['T'].toFixed(4);\n      }\n\n      core['Handler$1722026'].destroy = () => {\n        delete core['Handler$1722026'];\n      }\n\n      core['Handler$1722026'].virtual = true;</script></div>", Epilog -> Handler$1722026[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: ea86c419-4a56-4044-81d8-f0d30cc35144
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">K</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722027'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['K'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'K');\n        });        \n      }\n\n      core['Handler$1722027'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['K'].toFixed(4);\n      }\n\n      core['Handler$1722027'].destroy = () => {\n        delete core['Handler$1722027'];\n      }\n\n      core['Handler$1722027'].virtual = true;</script></div>", Epilog -> Handler$1722027[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 79b053ad-7bb3-4da8-9c95-7734a11f739e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">kJ/Mol</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722028'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['kJ/Mol'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'kJ/Mol');\n        });        \n      }\n\n      core['Handler$1722028'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['kJ/Mol'].toFixed(4);\n      }\n\n      core['Handler$1722028'].destroy = () => {\n        delete core['Handler$1722028'];\n      }\n\n      core['Handler$1722028'].virtual = true;</script></div>", Epilog -> Handler$1722028[Offload[rack]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8fc60c78-2cb9-4144-afdc-01a6336806c8
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"mt-2 flex\"><div style=\"width: 7rem\" class=\"flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6\">Hartree</div><input type=\"number\" step=\"1\" class=\"-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6\" placeholder=\"0.0\"/><script type=\"module\"> core['Handler$1722029'] = async (args, env) => {\n        const input = env.element.getElementsByTagName('input')[0];\n\n\n        const data = await interpretate(args[0], env);\n        input.value = +data['Hartree'].toFixed(4);\n        env.local.input = input;\n\n        input.addEventListener('change', () => {\n          \n          console.warn(input.value);\n          env.local.skip = true;\n          server.kernel.io.fire('aec66c22-8df8-4d6d-a3dd-8101ff9572bf', Number(input.value), 'Hartree');\n        });        \n      }\n\n      core['Handler$1722029'].update = async (args, env) => {\n        if (env.local.skip) {\n          env.local.skip = false;\n          return;\n        }\n        console.log('Update');\n        env.local.input.value = +(await interpretate(args[0], env))['Hartree'].toFixed(4);\n      }\n\n      core['Handler$1722029'].destroy = () => {\n        delete core['Handler$1722029'];\n      }\n\n      core['Handler$1722029'].virtual = true;</script></div>", Epilog -> Handler$1722029[Offload[rack]]]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: rack
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON["JTdCJTIyQ2VudGltZXRlcnMlMjIlM0EwLjAwMSUyQyUyMmVWJTIyJTNBMCUyQyUyMm1lViUyMiUzQTAuMDAwMSUyQyUyMk1pY3JvbWV0ZXJzJTIyJTNBMTAzMzc1ODYuMjA2OSUyQyUyMk5hbm9tZXRlcnMlMjIlM0ExMDMzNzU4NjIwNi44OTY2JTJDJTIyQW5nc3RyZW0lMjIlM0ExMDMzNzU4NjIwNjguOTY1NSUyQyUyMk1IeiUyMiUzQTI5JTJDJTIyR0h6JTIyJTNBMC4wMjklMkMlMjJUSHolMjIlM0EwJTJDJTIySyUyMiUzQTAuMDAxNCUyQyUyMnBzJTIyJTNBMzQ0ODUuNDg2MzAwMDAwMDA0JTJDJTIyVCUyMiUzQTAuMDA0MSUyQyUyMk9lJTIyJTNBNDEuMjY3MSUyQyUyMmtKJTJGTW9sJTIyJTNBMCUyQyUyMkhhcnRyZWUlMjIlM0EwJTdE"]
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

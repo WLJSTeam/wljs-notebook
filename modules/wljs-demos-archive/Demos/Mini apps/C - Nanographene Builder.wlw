@@ -1,0 +1,2380 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Building an Interactive Nanographene Constructor
+
+[Dr. Vasil Saroka](https://www.linkedin.com/in/vasil-saroka/) recently built a small interactive Wolfram Language application, `NanographenesBuilder`, that helps chemists construct hydrocarbons and explore their structural properties using graph theory. He later asked me (@JerryI) whether it could also run in WLJS Notebook. That is how this short story began. We will go through the basics of low-level dynamics, reactive programming, event systems, asynchronous programming, and writing apps with WLJS.
+
+![](/attachments/Screenshot-2026-06-07-at-14.51.26-d0c.png)
+
+## Mathematica vs. WLJS Notebook
+
+For static output, there is little difference between Mathematica and WLJS Notebook: both use the Wolfram Language standard library and the same kernel. For interactive elements and user input, both provide `Manipulate` and `Animate`, which cover many common use cases. At a lower level, however, their dynamic UI models diverge:
+
+| Concern | Mathematica | WLJS Notebook |
+| --- | --- | --- |
+| Rendering model | Immediate mode | Retained mode |
+| Reactive updates | Automatic dependency tracking and reevaluation | Explicit, granular updates |
+| Data binding | Two-way symbol binding | One-way symbol binding, with events for input elements |
+
+Of course, for `Manipulate` or `Refresh` expressions, WLJS has to emulate an immediate mode with dependency tracking, bridging the gap between two different systems.
+
+In any case, `Dynamic` and `DynamicModule` cannot be directly translated from Mathematica to WLJS since they are based on two different paradigms.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Building an Interactive Nanographene Constructor
+
+[Dr. Vasil Saroka](https://www.linkedin.com/in/vasil-saroka/) recently built a small interactive Wolfram Language application, `NanographenesBuilder`, that helps chemists construct hydrocarbons and explore their structural properties using graph theory. He later asked me (@JerryI) whether it could also run in WLJS Notebook. That is how this short story began. We will go through the basics of low-level dynamics, reactive programming, event systems, asynchronous programming, and writing apps with WLJS.
+
+![](/attachments/Screenshot-2026-06-07-at-14.51.26-d0c.png)
+
+## Mathematica vs. WLJS Notebook
+
+For static output, there is little difference between Mathematica and WLJS Notebook: both use the Wolfram Language standard library and the same kernel. For interactive elements and user input, both provide `Manipulate` and `Animate`, which cover many common use cases. At a lower level, however, their dynamic UI models diverge:
+
+| Concern | Mathematica | WLJS Notebook |
+| --- | --- | --- |
+| Rendering model | Immediate mode | Retained mode |
+| Reactive updates | Automatic dependency tracking and reevaluation | Explicit, granular updates |
+| Data binding | Two-way symbol binding | One-way symbol binding, with events for input elements |
+
+Of course, for `Manipulate` or `Refresh` expressions, WLJS has to emulate an immediate mode with dependency tracking, bridging the gap between two different systems.
+
+In any case, `Dynamic` and `DynamicModule` cannot be directly translated from Mathematica to WLJS since they are based on two different paradigms.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Basics
+### A few steps back
+Let’s begin with what we are trying to achieve. Vasil developed an application in which users navigate a hexagonal lattice and toggle vertices with the mouse. Each selected vertex represents a carbon atom. In the end, the resulting nanographene structure can be represented as a graph, which allows us to apply graph-theoretic methods to analyze its structure and bond properties. For example, maximum matching and the Gallai-Edmonds decomposition can identify unmatched vertices, calculate the matching deficit, and so on. Related matching-based analysis can also provide a simplified model of fixed and delocalized bonds.
+
+This can be very useful for chemists who want to quickly sketch a structure and export it as XYZ or as an image.
+
+### The Algorithm
+We won't go into the details of the analysis code (@JerryI knows only a little about this subject), but it is clear that we can separate it from the GUI into a self-contained module that does three things:
+
+1. Generates a hexagonal lattice and returns its XY coordinates
+2. Takes the toggled vertices and returns the resulting bonds and their properties
+3. Takes the results of (2) and exports them in XYZ text format
+
+Here is the full code for this part, developed by Vasil:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Basics
+### A few steps back
+Let’s begin with what we are trying to achieve. Vasil developed an application in which users navigate a hexagonal lattice and toggle vertices with the mouse. Each selected vertex represents a carbon atom. In the end, the resulting nanographene structure can be represented as a graph, which allows us to apply graph-theoretic methods to analyze its structure and bond properties. For example, maximum matching and the Gallai-Edmonds decomposition can identify unmatched vertices, calculate the matching deficit, and so on. Related matching-based analysis can also provide a simplified model of fixed and delocalized bonds.
+
+This can be very useful for chemists who want to quickly sketch a structure and export it as XYZ or as an image.
+
+### The Algorithm
+We won't go into the details of the analysis code (@JerryI knows only a little about this subject), but it is clear that we can separate it from the GUI into a self-contained module that does three things:
+
+1. Generates a hexagonal lattice and returns its XY coordinates
+2. Takes the toggled vertices and returns the resulting bonds and their properties
+3. Takes the results of (2) and exports them in XYZ text format
+
+Here is the full code for this part, developed by Vasil:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+HexGrid;
+NanographeneAnalysis;
+SelectedXYZString;
+
+RibbonUnitCell[] := <|
+  "Atoms" -> {
+    {0., 0., 0.}, {0., 1.42, 0.}, {-1.2297560733739028, -0.71, 0.},
+    {-1.2297560733739028, 2.13, 0.}, {-2.4595121467478056, 0., 0.},
+    {-2.4595121467478056, 1.42, 0.}, {-3.6892682201217086, -0.71, 0.},
+    {-3.6892682201217086, 2.13, 0.}, {-4.919024293495611, 0., 0.},
+    {-4.919024293495611, 1.42, 0.}, {-6.148780366869514, -0.71, 0.},
+    {-6.148780366869514, 2.13, 0.}, {-7.378536440243417, 0., 0.},
+    {-7.378536440243417, 1.42, 0.}, {-8.60829251361732, -0.71, 0.},
+    {-8.60829251361732, 2.13, 0.}, {-9.838048586991222, 0., 0.},
+    {-9.838048586991222, 1.42, 0.}, {-11.067804660365125, -0.71, 0.},
+    {-11.067804660365125, 2.13, 0.}, {-12.297560733739028, 0., 0.},
+    {-12.297560733739028, 1.42, 0.}, {-13.52731680711293, -0.71, 0.},
+    {-13.52731680711293, 2.13, 0.}, {-14.757072880486835, 0., 0.},
+    {-14.757072880486835, 1.42, 0.}, {-15.986828953860737, -0.71, 0.},
+    {-15.986828953860737, 2.13, 0.}, {-17.21658502723464, 0., 0.},
+    {-17.21658502723464, 1.42, 0.}, {-18.446341100608542, -0.71, 0.},
+    {-18.446341100608542, 2.13, 0.}, {-19.676097173982445, 0., 0.},
+    {-19.676097173982445, 1.42, 0.}, {-20.905853247356347, -0.71, 0.},
+    {-20.905853247356347, 2.13, 0.}, {-22.13560932073025, 0., 0.},
+    {-22.13560932073025, 1.42, 0.}, {-23.365365394104153, -0.71, 0.},
+    {-23.365365394104153, 2.13, 0.}, {-24.595121467478055, 0., 0.},
+    {-24.595121467478055, 1.42, 0.}, {-25.824877540851958, -0.71, 0.},
+    {-25.824877540851958, 2.13, 0.}, {-27.05463361422586, 0., 0.},
+    {-27.05463361422586, 1.42, 0.}, {-28.284389687599763, -0.71, 0.},
+    {-28.284389687599763, 2.13, 0.}, {-29.51414576097367, 0., 0.},
+    {-29.51414576097367, 1.42, 0.}, {-30.74390183434757, -0.71, 0.},
+    {-30.74390183434757, 2.13, 0.}, {-31.973657907721474, 0., 0.},
+    {-31.973657907721474, 1.42, 0.}, {-33.20341398109538, -0.71, 0.},
+    {-33.20341398109538, 2.13, 0.}
+  },
+  "Translation" -> {0., 4.26, 0.},
+  "CCBondLength" -> 1.42
+|>;
+
+HexGrid[n_Integer : 7] /; n >= 1 := Module[{ribbon = RibbonUnitCell[]},
+  Flatten[
+    Table[# + (i - 1) ribbon["Translation"] & /@ ribbon["Atoms"], {i, n}],
+    1
+  ]
+];
+
+projectionIndices[{1, 1, 0}] := {1, 2};
+projectionIndices[{1, 0, 1}] := {1, 3};
+projectionIndices[{0, 1, 1}] := {2, 3};
+projectionIndices[{1, 1, 1}] := {1, 2, 3};
+projectionIndices[_] := $Failed;
+
+BondIndexPairs[coords_List, a0_ : 1.42, delta_ : 0.3] := Module[{n = Length[coords]},
+  Reap[
+    Do[
+      If[Abs[Norm[coords[[i]] - coords[[j]]] - a0] < delta, Sow[{i, j}]],
+      {i, 1, n - 1}, {j, i + 1, n}
+    ]
+  ][[2]] /. {{} -> {}, {pairs_} :> pairs}
+];
+
+BondSegments[coords_List, a0_ : 1.42, projection_ : {1, 1, 0}, delta_ : 0.3] :=
+  Module[{idx = projectionIndices[projection]},
+    If[idx === $Failed,
+      $Failed,
+      ({coords[[#[[1]], idx]], coords[[#[[2]], idx]]} &) /@
+        BondIndexPairs[coords, a0, delta]
+    ]
+  ];
+
+Options[BondOrderIndexPairs] = {"MaxMatchingsPerComponent" -> 2000};
+
+BondOrderIndexPairs[coords_List, a0_ : 1.42, delta_ : 0.3, OptionsPattern[]] :=
+  Module[
+    {
+      pairs, graph, components, maxMatchingsPerComponent,
+      single = {}, double = {}, aromatic = {}, complete = True,
+      componentMatchingCounts = {}, componentMaximumSizes = {},
+      radicalComponents = {}, componentEdges, componentGraphData, cg,
+      oneMatching, matchSize, perfect,
+      enumeration, matchings, matchingEdges, matchingCount, edgeCount
+    },
+    pairs = BondIndexPairs[coords, a0, delta];
+    graph = NearestNeighborAdjacency[coords, a0, delta];
+    components = connectedComponents[graph];
+    maxMatchingsPerComponent = OptionValue["MaxMatchingsPerComponent"];
+
+    Do[
+      componentEdges = Select[
+        pairs,
+        MemberQ[component, #[[1]]] && MemberQ[component, #[[2]]] &
+      ];
+
+      If[componentEdges =!= {},
+        componentGraphData = componentGraph[component, componentEdges];
+        cg = componentGraphData["Graph"];
+
+        (* One maximum matching tells us the matching size and, by comparing *)
+        (* it to the number of atoms, whether a perfect matching (a Kekule   *)
+        (* structure) exists for this fragment.                              *)
+        oneMatching = First @ maxMatching[Table[0, {Length[cg]}], cg];
+        matchSize = Count[oneMatching, _?(# =!= 0 &)]/2;
+        perfect = (2 matchSize === Length[component]);
+        AppendTo[componentMaximumSizes, matchSize];
+
+        If[perfect,
+          (* Kekulean fragment: a perfect matching exists, so every atom     *)
+          (* carries exactly one double bond in each resonance structure.    *)
+          (* Classify each bond by its (Pauling) double-bond fraction over   *)
+          (* all perfect matchings:                                          *)
+          (*   double in 0 structures     -> single                          *)
+          (*   double in every structure  -> double                          *)
+          (*   double in some but not all -> aromatic (fractional order)     *)
+          enumeration = enumerateMaximumMatchings[cg, maxMatchingsPerComponent];
+          matchings = originalEdgePairs[component, #] & /@ enumeration["Matchings"];
+          matchingEdges = Flatten[matchings, 1];
+          matchingCount = Length[matchings];
+
+          AppendTo[componentMatchingCounts, matchingCount];
+          complete = complete && enumeration["Complete"];
+
+          Do[
+            edgeCount = Count[matchingEdges, edge];
+            Which[
+              edgeCount === 0, AppendTo[single, edge],
+              edgeCount === matchingCount, AppendTo[double, edge],
+              True, AppendTo[aromatic, edge]
+            ],
+            {edge, componentEdges}
+          ],
+
+          (* Non-Kekulean (open-shell / radical) fragment: no perfect        *)
+          (* matching exists, so a resonance bond order is undefined and we   *)
+          (* must NOT smear the bonds into "aromatic". Draw the plain single  *)
+          (* skeleton instead; the unpaired-electron character is reported    *)
+          (* separately via the deficiency / Gallai-Edmonds tools.            *)
+          AppendTo[componentMatchingCounts, 0];
+          AppendTo[radicalComponents, component];
+          single = Join[single, componentEdges]
+        ]
+      ],
+      {component, components}
+    ];
+
+    <|
+      "Single" -> single,
+      "Double" -> double,
+      "Aromatic" -> aromatic,
+      "Complete" -> complete,
+      "ComponentMatchingCounts" -> componentMatchingCounts,
+      "ComponentMaximumSizes" -> componentMaximumSizes,
+      "RadicalComponents" -> radicalComponents,
+      "Method" -> "PerfectMatchingResonance"
+    |>
+  ];
+
+Options[BondOrderSegments] = Options[BondOrderIndexPairs];
+
+BondOrderSegments[
+  coords_List,
+  a0_ : 1.42,
+  projection_ : {1, 1, 0},
+  delta_ : 0.3,
+  opts : OptionsPattern[]
+] :=
+  Module[{idx = projectionIndices[projection], classified},
+    If[idx === $Failed,
+      $Failed,
+      classified = BondOrderIndexPairs[coords, a0, delta, opts];
+      Join[
+        <|
+          "Single" -> segmentsFromIndexPairs[coords, classified["Single"], idx],
+          "Double" -> segmentsFromIndexPairs[coords, classified["Double"], idx],
+          "Aromatic" -> segmentsFromIndexPairs[coords, classified["Aromatic"], idx]
+        |>,
+        KeyDrop[classified, {"Single", "Double", "Aromatic"}]
+      ]
+    ]
+  ];
+
+NearestNeighborAdjacency[coords_List, a0_ : 1.42, delta_ : 0.3] :=
+  Module[{n = Length[coords], graph},
+    graph = Table[{}, {n}];
+    Scan[
+      (
+        AppendTo[graph[[#[[1]]]], #[[2]]];
+        AppendTo[graph[[#[[2]]]], #[[1]]]
+      ) &,
+      BondIndexPairs[coords, a0, delta]
+    ];
+    graph
+  ];
+
+
+SelectedCoordinates[grid_List, selected_List] :=
+  If[selected === {}, {}, grid[[selected]]];
+
+PeakValleyAnalysis[coords_List, a0_ : 1.42, delta_ : 0.3] := Module[
+  {
+    n = Length[coords], v1, v2, v3, vec, aVertices = {}, bVertices = {},
+    valleyRejects = {}, peakRejects = {}, valleys, peaks, pt1, pt2
+  },
+  v1 = a0 {Sqrt[3]/2, 1/2, 0};
+  v2 = a0 {-Sqrt[3]/2, 1/2, 0};
+  v3 = a0 {0, -1, 0};
+
+  Do[
+    If[i =!= j,
+      vec = coords[[j]] - coords[[i]];
+      If[
+        Abs[(vec - v1).(vec - v1)] < delta ||
+          Abs[(vec - v2).(vec - v2)] < delta ||
+          Abs[(vec - v3).(vec - v3)] < delta,
+        AppendTo[aVertices, i],
+        If[
+          Abs[(vec + v1).(vec + v1)] < delta ||
+            Abs[(vec + v2).(vec + v2)] < delta ||
+            Abs[(vec + v3).(vec + v3)] < delta,
+          AppendTo[bVertices, i]
+        ]
+      ]
+    ],
+    {i, 1, n}, {j, 1, n}
+  ];
+
+  aVertices = Union[aVertices];
+  bVertices = Union[bVertices];
+
+  Do[
+    pt1 = coords[[i]];
+    pt2 = coords[[j]];
+    vec = pt2 - pt1;
+    If[Abs[(vec - v3).(vec - v3)] < delta,
+      AppendTo[valleyRejects, i];
+      AppendTo[peakRejects, j]
+    ],
+    {i, aVertices}, {j, bVertices}
+  ];
+
+  valleys = Complement[aVertices, valleyRejects];
+  peaks = Complement[bVertices, peakRejects];
+
+  <|
+    "ValleyIndices" -> valleys,
+    "PeakIndices" -> peaks,
+    "Valleys" -> coords[[valleys]],
+    "Peaks" -> coords[[peaks]],
+    "ColorExcess" -> Abs[Length[peaks] - Length[valleys]]
+  |>
+];
+
+GallaiEdmondsAnalysis[coords_List, a0_ : 1.42, delta_ : 0.3] := Module[
+  {graph, matching, sets, matchingSegments},
+  graph = NearestNeighborAdjacency[coords, a0, delta];
+  {matching, sets} = gallaiEdmondsDecomposition[graph];
+  matchingSegments = MatchingSegments[coords, matching];
+
+  <|
+    "Graph" -> graph,
+    "Matching" -> matching,
+    "MatchingSegments" -> matchingSegments,
+    "DSet" -> sets[[1]],
+    "ASet" -> sets[[2]],
+    "CSet" -> sets[[3]],
+    "Deficit" -> Count[matching, 0]
+  |>
+];
+
+MatchingSegments[coords_List, matching_List] := Module[{seen = matching, segments = {}},
+  Do[
+    If[seen[[i]] =!= 0,
+      AppendTo[segments, {coords[[i, {1, 2}]], coords[[seen[[i]], {1, 2}]]}];
+      seen[[seen[[i]]]] = 0
+    ],
+    {i, Length[seen]}
+  ];
+  segments
+];
+
+Options[NanographeneAnalysis] = {
+  "CCBondLength" -> 1.42,
+  "Delta" -> 0.3,
+  "Projection" -> {1, 1, 0},
+  "IncludePeakValley" -> True,
+  "IncludeGallaiEdmonds" -> True,
+  "IncludeBondOrders" -> False,
+  "MaxMatchingsPerComponent" -> 2000
+};
+
+NanographeneAnalysis[grid_List, selected_List, OptionsPattern[]] := Module[
+  {coords, a0, delta, projection, result},
+  coords = SelectedCoordinates[grid, selected];
+  a0 = OptionValue["CCBondLength"];
+  delta = OptionValue["Delta"];
+  projection = OptionValue["Projection"];
+
+  result = <|
+    "SelectedIndices" -> selected,
+    "Coordinates" -> coords,
+    "BondSegments" -> BondSegments[coords, a0, projection, delta]
+  |>;
+
+  If[coords =!= {} && TrueQ[OptionValue["IncludePeakValley"]],
+    result = Join[result, <|"PeakValley" -> PeakValleyAnalysis[coords, a0, delta]|>]
+  ];
+
+  If[coords =!= {} && TrueQ[OptionValue["IncludeGallaiEdmonds"]],
+    result = Join[result, <|"GallaiEdmonds" -> GallaiEdmondsAnalysis[coords, a0, delta]|>]
+  ];
+
+  If[coords =!= {} && TrueQ[OptionValue["IncludeBondOrders"]],
+    result = Join[
+      result,
+      <|"BondOrders" -> BondOrderSegments[
+        coords,
+        a0,
+        projection,
+        delta,
+        "MaxMatchingsPerComponent" -> OptionValue["MaxMatchingsPerComponent"]
+      ]|>
+    ]
+  ];
+
+  result
+];
+
+HydrogenPositions[coords_List, ccBondLength_ : 1.42, cxBondLength_ : 1.09, delta_ : 0.3] :=
+  Module[
+    {
+      n = Length[coords], rm1, rm2, v1, v2, v3, xPositions = {},
+      neighbors, v, vec, dir
+    },
+    rm1 = RotationMatrix[Pi/3, {0, 0, 1}];
+    rm2 = RotationMatrix[-Pi/3, {0, 0, 1}];
+    v1 = cxBondLength {Sqrt[3]/2, 1/2, 0};
+    v2 = cxBondLength {-Sqrt[3]/2, 1/2, 0};
+    v3 = cxBondLength {0, -1, 0};
+
+    Do[
+      neighbors = {};
+      Do[
+        v = coords[[i]] - coords[[j]];
+        If[Abs[Norm[v] - ccBondLength] < delta, AppendTo[neighbors, coords[[j]]]];
+        If[Length[neighbors] > 2, Break[]],
+        {j, n}
+      ];
+
+      Switch[Length[neighbors],
+        2,
+          vec = -(neighbors[[1]] - coords[[i]] + neighbors[[2]] - coords[[i]]);
+          AppendTo[xPositions, coords[[i]] + Normalize[vec] cxBondLength],
+        1,
+          vec = -(neighbors[[1]] - coords[[i]]);
+          AppendTo[xPositions, coords[[i]] + (Normalize[vec] cxBondLength).rm1];
+          AppendTo[xPositions, coords[[i]] + (Normalize[vec] cxBondLength).rm2],
+        0,
+          dir = RandomChoice[{-1, 1}];
+          AppendTo[xPositions, coords[[i]] + dir v1];
+          AppendTo[xPositions, coords[[i]] + dir v2];
+          AppendTo[xPositions, coords[[i]] + dir v3]
+      ],
+      {i, n}
+    ];
+    xPositions
+  ];
+
+ExportCXXYZString[
+  coords_List,
+  ccBondLength_ : 1.42,
+  cxBondLength_ : 1.09,
+  xLabel_String : "H",
+  tag_String : DefaultExportTag[]
+] := Module[
+  {xPositions, labels, allCoords, firstLine, rows, formatNumber},
+  xPositions = HydrogenPositions[coords, ccBondLength, cxBondLength];
+  labels = Join[ConstantArray["C", Length[coords]], ConstantArray[xLabel, Length[xPositions]]];
+  allCoords = Join[coords, xPositions];
+  firstLine = "C" <> ToString[Length[coords]] <> xLabel <> ToString[Length[xPositions]] <> tag;
+  formatNumber[x_] := ToString[PaddedForm[1.0 x, {9, 6}], OutputForm];
+  rows = MapThread[
+    StringRiffle[{#1, formatNumber[#2[[1]]], formatNumber[#2[[2]]], formatNumber[#2[[3]]]}, "\t"] &,
+    {labels, allCoords}
+  ];
+  StringRiffle[Join[{firstLine}, rows], "\n"] <> "\n"
+];
+
+ExportCXXYZ[
+  coords_List,
+  ccBondLength_ : 1.42,
+  cxBondLength_ : 1.09,
+  xLabel_String : "H",
+  path_String,
+  tag_String : DefaultExportTag[]
+] := Export[path, ExportCXXYZString[coords, ccBondLength, cxBondLength, xLabel, tag], "Text"];
+
+(* Plain XYZ structure of the chosen points only (no hydrogens added). *)
+(* Format: line 1 = atom count, line 2 = comment, then "<label> x y z" rows. *)
+SelectedXYZString[
+  coords_List,
+  label_String : "C",
+  comment_String : "Selected points from GrapheneApp"
+] := Module[{n = Length[coords], rows, formatNumber},
+  formatNumber[x_] := ToString[PaddedForm[1.0 x, {10, 6}], OutputForm];
+  rows = (StringRiffle[
+       {label, formatNumber[#[[1]]], formatNumber[#[[2]]], formatNumber[#[[3]]]},
+       "\t"
+     ] &) /@ coords;
+  StringRiffle[Join[{ToString[n], comment}, rows], "\n"] <> "\n"
+];
+
+ExportSelectedXYZ[coords_List, path_String, label_String : "C"] :=
+  Export[path, SelectedXYZString[coords, label], "Text"];
+
+segmentsFromIndexPairs[coords_List, pairs_List, projectionIndices_List] :=
+  ({coords[[#[[1]], projectionIndices]], coords[[#[[2]], projectionIndices]]} &) /@ pairs;
+
+connectedComponents[graph_List] := Module[
+  {n = Length[graph], unseen, components = {}, root, queue, component, v, neighbors},
+  unseen = Range[n];
+  While[unseen =!= {},
+    root = First[unseen];
+    queue = {root};
+    component = {};
+    unseen = DeleteCases[unseen, root];
+
+    While[queue =!= {},
+      v = First[queue];
+      queue = Rest[queue];
+      AppendTo[component, v];
+      neighbors = Intersection[graph[[v]], unseen];
+      queue = Join[queue, neighbors];
+      unseen = Complement[unseen, neighbors];
+    ];
+
+    AppendTo[components, Sort[component]];
+  ];
+  components
+];
+
+componentGraph[vertices_List, edges_List] := Module[
+  {map, graph, i, j},
+  map = AssociationThread[vertices -> Range[Length[vertices]]];
+  graph = Table[{}, {Length[vertices]}];
+
+  Do[
+    i = map[edge[[1]]];
+    j = map[edge[[2]]];
+    AppendTo[graph[[i]], j];
+    AppendTo[graph[[j]], i],
+    {edge, edges}
+  ];
+
+  <|"Graph" -> (Sort /@ graph), "Map" -> map|>
+];
+
+originalEdgePairs[vertices_List, matching_List] :=
+  Sort /@ ({vertices[[#[[1]]]], vertices[[#[[2]]]]} & /@ matching);
+
+enumerateMaximumMatchings[graph_List, maxCount_ : 2000] := Module[
+  {n = Length[graph], targetSize, result = {}, complete = True, cap, rec, matching},
+  matching = First@maxMatching[Table[0, {Length[graph]}], graph];
+  targetSize = Count[matching, _?(# =!= 0 &)]/2;
+  cap = maxCount;
+
+  rec[remaining_List, current_List] := Module[{v, rest, candidates},
+    If[cap =!= Infinity && Length[result] >= cap,
+      complete = False;
+      Return[]
+    ];
+
+    If[Length[current] === targetSize,
+      AppendTo[result, Sort[Sort /@ current]];
+      Return[]
+    ];
+
+    If[remaining === {}, Return[]];
+    If[Length[current] + Floor[Length[remaining]/2] < targetSize, Return[]];
+
+    v = First[remaining];
+    rest = Rest[remaining];
+
+    If[Length[current] + Floor[Length[rest]/2] >= targetSize,
+      rec[rest, current]
+    ];
+
+    candidates = Intersection[graph[[v]], rest];
+    Do[
+      rec[DeleteCases[rest, u], Append[current, Sort[{v, u}]]],
+      {u, candidates}
+    ];
+  ];
+
+  rec[Range[n], {}];
+
+  <|
+    "Size" -> targetSize,
+    "Matchings" -> result,
+    "Complete" -> complete
+  |>
+];
+
+gallaiEdmondsDecomposition[graph_List] := Module[
+  {glen, matching, trees, len, sdList, tree, vertices, vertexTypes, s, d, sSet, dSet, cSet},
+  glen = Length[graph];
+  matching = Table[0, {glen}];
+  {matching, trees} = maxMatching[matching, graph];
+
+  If[FreeQ[matching, 0],
+    {matching, {{}, {}, Range[glen]}},
+    len = Length[trees];
+    sdList = {};
+    Do[
+      tree = trees[[i]];
+      vertices = Select[Flatten[Position[tree, {_?(# =!= 0 &), _}]], # <= glen &];
+      If[vertices =!= {},
+        vertexTypes = tree[[vertices, 2]];
+        s = {};
+        d = {};
+        Do[
+          If[vertexTypes[[j]] === 1, AppendTo[s, vertices[[j]]], AppendTo[d, vertices[[j]]]],
+          {j, Length[vertices]}
+        ];
+        AppendTo[sdList, {s, d}]
+      ],
+      {i, len}
+    ];
+
+    {sSet, dSet} = If[sdList === {}, {{}, {}}, Union @@ # & /@ Transpose[sdList]];
+    cSet = Complement[Range[glen], sSet, dSet];
+    {matching, {dSet, sSet, cSet}}
+  ]
+];
+
+maxMatching[matching_List, graph_List] := Module[{augPath = {}, largerMatching, trees},
+  largerMatching = matching;
+  {augPath, trees} = augmentingPath[largerMatching, graph];
+
+  If[augPath =!= {},
+    Do[
+      largerMatching[[augPath[[2 i]]]] = augPath[[2 i - 1]];
+      largerMatching[[augPath[[2 i - 1]]]] = augPath[[2 i]],
+      {i, Length[augPath]/2}
+    ];
+    maxMatching[largerMatching, graph],
+    {largerMatching, trees}
+  ]
+];
+
+augmentingPath[matching_List, graph_List] := Catch[
+  Module[
+    {
+      path = {}, freeVertices, trees, parent, queue, idx, path0, path1,
+      commonPath, base, cycle, newGraph, len, contractedNode, newNode,
+      vertexNumbers, substitutions, newMatching, pos, splitPosition
+    },
+    freeVertices = RandomSample[Flatten[Position[matching, 0]]];
+    trees = {};
+
+    While[freeVertices =!= {},
+      idx = First[freeVertices];
+      freeVertices = Rest[freeVertices];
+
+      parent = Table[{0, 0}, {Length[graph]}];
+      queue = {};
+      parent[[idx]] = {-1, 0};
+      AppendTo[queue, idx];
+
+      While[queue =!= {},
+        idx = First[queue];
+        queue = Rest[queue];
+
+        Do[
+          If[matching[[i]] =!= 0 && parent[[i, 1]] === 0,
+            AppendTo[queue, matching[[i]]];
+            parent[[i]] = {idx, 1};
+            parent[[matching[[i]], 1]] = i,
+            If[parent[[i, 1]] =!= 0,
+              If[parent[[idx, 2]] === parent[[i, 2]],
+                path0 = Reverse@Most@NestWhileList[parent[[#, 1]] &, idx, (# =!= -1) &];
+                path1 = Reverse@Most@NestWhileList[parent[[#, 1]] &, i, (# =!= -1) &];
+                commonPath = {};
+                Do[
+                  If[path0[[j]] === path1[[j]], AppendTo[commonPath, path0[[j]]]],
+                  {j, Min[Length[path0], Length[path1]]}
+                ];
+                base = commonPath[[-1]];
+                cycle = Join[
+                  {base},
+                  DeleteCases[path0, Alternatives @@ path1],
+                  Reverse@DeleteCases[path1, Alternatives @@ path0]
+                ];
+
+                newGraph = graph;
+                len = Length[newGraph];
+                contractedNode = len + 1;
+                newNode = {};
+                newMatching = matching;
+
+                If[parent[[base, 1]] =!= -1,
+                  newMatching[[parent[[base, 1]]]] = contractedNode;
+                  AppendTo[newMatching, parent[[base, 1]]],
+                  AppendTo[newMatching, 0]
+                ];
+
+                Do[
+                  vertexNumbers = DeleteCases[newGraph[[j]], Alternatives @@ cycle];
+                  newNode = Join[newNode, vertexNumbers];
+                  newGraph[[j]] = {};
+                  newMatching[[j]] = 0,
+                  {j, cycle}
+                ];
+
+                substitutions = (# -> contractedNode) & /@ cycle;
+                Do[
+                  newGraph[[j]] = newGraph[[j]] /. substitutions,
+                  {j, newNode}
+                ];
+
+                AppendTo[newGraph, newNode];
+                {path, trees} = augmentingPath[newMatching, newGraph];
+
+                If[! FreeQ[path, contractedNode],
+                  pos = Position[path, contractedNode][[1, 1]];
+                  path = Switch[
+                    pos,
+                    1,
+                      splitPosition = Position[
+                        cycle,
+                        Intersection[graph[[path[[2]]]], cycle][[1]]
+                      ][[1, 1]];
+                      If[OddQ[splitPosition],
+                        Join[cycle[[1 ;; splitPosition]], Rest[path]],
+                        Join[Reverse[Join[cycle[[splitPosition ;; All]], {cycle[[1]]}]], Rest[path]]
+                      ],
+                    Length[path],
+                      splitPosition = Position[
+                        cycle,
+                        Intersection[graph[[path[[-2]]]], cycle][[1]]
+                      ][[1, 1]];
+                      If[OddQ[splitPosition],
+                        Join[Most[path], Reverse[cycle[[1 ;; splitPosition]]]],
+                        Join[Most[path], Join[cycle[[splitPosition ;; All]], {cycle[[1]]}]]
+                      ],
+                    _,
+                      splitPosition = Position[
+                        cycle,
+                        Intersection[graph[[path[[pos + 1]]]], cycle][[1]]
+                      ][[1, 1]];
+                      If[OddQ[splitPosition],
+                        Join[path[[1 ;; pos - 1]], cycle[[1 ;; splitPosition]], path[[pos + 1 ;; All]]],
+                        Join[
+                          path[[1 ;; pos - 1]],
+                          Reverse[Join[cycle[[splitPosition ;; All]], {cycle[[1]]}]],
+                          path[[pos + 1 ;; All]]
+                        ]
+                      ]
+                  ]
+                ];
+                Throw[{path, trees}]
+              ],
+              If[matching[[i]] === 0,
+                path = Prepend[
+                  Most@NestWhileList[parent[[#, 1]] &, idx, (# =!= -1) &],
+                  i
+                ];
+                Throw[{path, trees}]
+              ]
+            ]
+          ],
+          {i, graph[[idx]]}
+        ]
+      ];
+
+      AppendTo[trees, parent];
+    ];
+
+    {path, trees}
+  ]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Implementing selector
+The first step is simple: let's generate a lattice and draw it.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Implementing selector
+The first step is simple: let's generate a lattice and draw it.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: false
+Type: Input
+%-------------------------------------------------------------------------%
+grid = HexGrid[6];
+Graphics[grid//Point, ImageSize->300]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["2c2ddd6a-e7bc-46d4-beaf-53ad02479dd9"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKGyUbpaSkmCXqpponJeuamKWY6CalJqbpmhonphgYmZhbpqRYAgCapRaS"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The next step is to track the user's mouse and check whether they clicked on a vertex. There are multiple ways to do that. You can attach an event handler to each individual point, but if you have 100-1000 of them, this will be a waste of resources. It is more efficient to track the mouse position globally across the whole canvas and check for an intersection in the kernel:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The next step is to track the user's mouse and check whether they clicked on a vertex. There are multiple ways to do that. You can attach an event handler to each individual point, but if you have 100-1000 of them, this will be a waste of resources. It is more efficient to track the mouse position globally across the whole canvas and check for an intersection in the kernel:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[Graphics[{
+  grid//Point
+}, ImageSize->300, "Controls"->False], {
+  "mousemove" -> moveAction,
+  "click" -> clickAction
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In Mathematica, it would be something like `Dynamic[MousePosition[]]`, while here we explicitly attach `EventHandler` to the `Graphics` primitive and subscribe to two event patterns: `"mousemove"` and `"click"`. Let's define our handlers:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In Mathematica, it would be something like `Dynamic[MousePosition[]]`, while here we explicitly attach `EventHandler` to the `Graphics` primitive and subscribe to two event patterns: `"mousemove"` and `"click"`. Let's define our handlers:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+hovered = {-15.,10.};
+moveAction[xy_] := hovered = Round[xy,0.1];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To see the coordinates, we bind them to a `TextView` expression:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To see the coordinates, we bind them to a `TextView` expression:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TextView[hovered//Offload]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This is exactly what *one-way binding* means. Instead of `Dynamic`, we use `Offload`, which has the `HoldFirst` attribute and prevents evaluation of the `hovered` symbol. Whenever `hovered` changes, the nearest parent expression outside `Offload` is reevaluated or updated. The update cycle starts at the bottom and then propagates top-down:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This is exactly what *one-way binding* means. Instead of `Dynamic`, we use `Offload`, which has the `HoldFirst` attribute and prevents evaluation of the `hovered` symbol. Whenever `hovered` changes, the nearest parent expression outside `Offload` is reevaluated or updated. The update cycle starts at the bottom and then propagates top-down:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.mermaid
+%%{init: {"flowchart": {"curve": "basis"}}}%%
+flowchart LR
+    textView["TextView"] --> hovered["hovered"]
+    hovered --> list["List"]
+    hovered --"update bubbles up"--> textView
+
+    linkStyle 2 stroke:#d1495b,stroke-width:2px,color:#d1495b
+
+%-------------------------------------------------------------------------%
+Display: mermaid
+Type: Output
+%-------------------------------------------------------------------------%
+%%{init: {"flowchart": {"curve": "basis"}}}%%
+flowchart LR
+    textView["TextView"] --> hovered["hovered"]
+    hovered --> list["List"]
+    hovered --"update bubbles up"--> textView
+
+    linkStyle 2 stroke:#d1495b,stroke-width:2px,color:#d1495b
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Not all expressions support this, since it is a dedicated feature listed in the documentation.
+
+Let's rewrite our handler function to check for an intersection with the nearest grid point and snap the cursor to it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Not all expressions support this, since it is a dedicated feature listed in the documentation.
+
+Let's rewrite our handler function to check for an intersection with the nearest grid point and snap the cursor to it:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: false
+Type: Input
+%-------------------------------------------------------------------------%
+hovered = {-15.,10.};
+
+ClearAll[moveAction];
+moveAction[xy_] := With[{
+  (* match the mouse cursor to the nearest grid point *)
+  found = SelectFirst[
+    grid, Function[point, Norm[point[[;;2]] - xy] < 0.7]
+  ]},
+    If[!MissingQ[found], 
+      hovered = found;
+    ]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Much better! Let's add a red visual guide to show where the snapped point is on the lattice. For that, we use `Circle` with its first argument bound to the `hovered` symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Much better! Let's add a red visual guide to show where the snapped point is on the lattice. For that, we use `Circle` with its first argument bound to the `hovered` symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[Graphics[{
+  grid//Point, Red, Circle[hovered//Offload, 0.5]
+}, ImageSize->300, "Controls"->False], {
+  "mousemove" -> moveAction,
+  "click" -> clickAction
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now for the click action. Let's define `selectedList` to store our toggled vertices as indices and `selectedCoords` to store their actual coordinates. We will need both later:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now for the click action. Let's define `selectedList` to store our toggled vertices as indices and `selectedCoords` to store their actual coordinates. We will need both later:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: false
+Type: Input
+%-------------------------------------------------------------------------%
+selectedCoords = {};
+selectedList = {};
+
+ClearAll[clickAction];
+clickAction[xy_] := With[{
+  idx = Position[grid, hovered][[1,1]]
+},
+  (* toggle selection *)
+  selectedList = If[MemberQ[selectedList, idx], 
+    selectedList /. idx -> Nothing,
+    Append[selectedList, idx]
+  ];
+
+  If[Length[selectedList] == 0, Return[]];
+  
+  (* update coordinates *)
+  selectedCoords = grid[[selectedList]];
+  
+  (* rerun "analysis" *)
+  runAnalysis;
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we also leave `runAnalysis` undefined, implying that we will reanalyze all bonds whenever our grid changes. For now, it won't have any effect.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we also leave `runAnalysis` undefined, implying that we will reanalyze all bonds whenever our grid changes. For now, it won't have any effect.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As the final step, we need to indicate the selected vertices from the list. How? Let's use `Disk` primitives:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As the final step, we need to indicate the selected vertices from the list. How? Let's use `Disk` primitives:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+hovered = {-15.,10.};
+
+EventHandler[Graphics[{
+  {Opacity[0.25], grid//Point}, Black, 
+  Disk[selectedCoords//Offload, 0.4],
+  Red, Circle[hovered//Offload, 0.5]
+}, ImageSize->300, "Controls"->False], {
+  "mousemove" -> moveAction,
+  "click" -> clickAction
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This is how we can make a basic selector/toggler for the vertices: one `Graphics` block with `EventHandler` and two handler functions, one for clicks and one for mouse movements.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This is how we can make a basic selector/toggler for the vertices: one `Graphics` block with `EventHandler` and two handler functions, one for clicks and one for mouse movements.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Drawing bonds
+The analysis classifies each bond as single, double, or aromatic (fractional order). For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Drawing bonds
+The analysis classifies each bond as single, double, or aromatic (fractional order). For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NanographeneAnalysis[
+  grid,
+  selectedList,
+  "CCBondLength" -> 1.42,
+  "Projection" -> {1, 1, 0},
+  "Delta" -> 0.3,
+  "IncludeBondOrders" -> True
+];
+Short[%["BondOrders"]//Normal, 10]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{
+ "Single"->{{{-13.52731680711293`,12.07`},{-13.52731680711293`,10.649999999999999`}}},
+ "Double"->{{{-14.757072880486835`,9.94`},{-13.52731680711293`,10.649999999999999`}},{{-14.757072880486835`,12.78`},{-13.52731680711293`,12.07`}}},
+ <<Rule>>,
+ "Complete"->True,
+ "ComponentMatchingCounts"->{1,2},
+ "ComponentMaximumSizes"->{2,3},
+ "RadicalComponents"->{},
+ "Method"->"PerfectMatchingResonance"
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The most straightforward approach is to define a symbol called `lineBonds` and store all bonds there as three arrays. However, we can distinguish between these types not only by color, but also by drawing double bonds as two offset lines. Here is a helper function for that:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The most straightforward approach is to define a symbol called `lineBonds` and store all bonds there as three arrays. However, we can distinguish between these types not only by color, but also by drawing double bonds as two offset lines. Here is a helper function for that:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+(* Used to draw double bonds. *)
+offset[lines_, c_] := Map[Function[segments,
+  With[{normal = {1,-1} Normal[segments[[2]]-segments[[1]]][[{2,1}]]},
+    {segments[[1]]  + normal c, segments[[2]] + normal c}
+  ]
+], lines]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+It is time to define our `runAnalysis` symbol, which will update all bonds:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+It is time to define our `runAnalysis` symbol, which will update all bonds:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: false
+Type: Input
+%-------------------------------------------------------------------------%
+lineBonds = {{}, {}, {}};
+
+ClearAll[runAnalysis];
+runAnalysis := Module[{results = NanographeneAnalysis[
+  grid,
+  selectedList,
+  "CCBondLength" -> 1.42,
+  "Projection" -> {1, 1, 0},
+  "Delta" -> 0.3,
+  "IncludeBondOrders" -> True
+], noBonds = False},
+
+  noBonds = !KeyExistsQ[results, "BondOrders"];
+
+  (* assign either an empty list or three types of bonds *)
+  lineBonds = If[noBonds, {{}, {}, {}}, {
+    results["BondOrders", "Single"],
+    Join[
+      offset[results["BondOrders", "Double"], 0.1],
+      offset[results["BondOrders", "Double"], -0.1]
+    ],
+    results["BondOrders", "Aromatic"]
+  }];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+It is important to note that if no bonds are formed, we need to assign three empty arrays to our `lineBonds` symbol.
+
+Let's reconstruct our graphics canvas with these types of bonds added:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+It is important to note that if no bonds are formed, we need to assign three empty arrays to our `lineBonds` symbol.
+
+Let's reconstruct our graphics canvas with these types of bonds added:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+hovered = {-15.,10.};
+
+EventHandler[graphics = Graphics[{
+  {Opacity[0.25], grid//Point}, Black,
+  { 
+    AbsoluteThickness[4],
+    ColorData[97][2],
+    Line[lineBonds[[1]]//Offload],
+    ColorData[97][3],
+    { AbsoluteThickness[2], 
+      Line[lineBonds[[2]]//Offload]
+    },
+    ColorData[97][9],
+    Line[lineBonds[[3]]//Offload]
+  },  
+  Disk[selectedCoords//Offload, 0.4],
+  Red, Circle[hovered//Offload, 0.5]
+}, ImageSize->300, "Controls"->False], {
+  "mousemove" -> moveAction,
+  "click" -> clickAction
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As a basic UI element, it is worth adding a *Clear* button:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As a basic UI element, it is worth adding a *Clear* button:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputButton["Clear"], (
+  selectedCoords = {};
+  selectedList = {};
+  runAnalysis;
+)&]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(EventObject[<|"Id" -> "4926dd82-b6e1-4fb3-a34f-7256ce627c55", "Initial" -> False, "View" -> "b18b7379-6c86-49be-8f46-848e364563b1"|>])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJxlaJJkbm1vqmiVbmOmaWCal6lqkmZjpWphYpBqbmZiaGScZAgB8KxUE"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same can be done in Mathematica style with implicit event binding:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same can be done in Mathematica style with implicit event binding:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Clear",
+  selectedCoords = {};
+  selectedList = {};
+  runAnalysis;
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(EventObject[<|"Id" -> "0bf96dd9-89dd-4973-87d2-ab1bbd4770d3", "Initial" -> False, "View" -> "a569d8ce-1f9f-44d3-9130-b809fc6fa390"|>])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5qaWaZYJKfqGqZZpumamKQY61oaGhvoJlkYWKYlm6UlGlsaAACIoRWz"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Exporting as image or XYZ
+Finally, we need an option to render it as an image and also export it to a text file.
+
+We shall start with the latter, since it is the most straightforward. To ask the user for a file path, we need `SystemDialogInput`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Exporting as image or XYZ
+Finally, we need an option to render it as an image and also export it to a text file.
+
+We shall start with the latter, since it is the most straightforward. To ask the user for a file path, we need `SystemDialogInput`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SystemDialogInput["FileSave", {Null, {
+    "ASCII" -> {"*.xyz", "*.dat"}
+}}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"/Users/kirill/Downloads/Untitled.xyz"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Note that `SystemDialogInput` __is a blocking function__. It pauses kernel evaluation until the request is resolved. This can be very bad if we use it inside a `Button` or an event handler function. Wolfram Kernel uses a kind of event loop for timers and calls from outside (such as our notebook GUI), and we don't want to block it completely. Therefore, let's use `SystemDialogInputAsync`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Note that `SystemDialogInput` __is a blocking function__. It pauses kernel evaluation until the request is resolved. This can be very bad if we use it inside a `Button` or an event handler function. Wolfram Kernel uses a kind of event loop for timers and calls from outside (such as our notebook GUI), and we don't want to block it completely. Therefore, let's use `SystemDialogInputAsync`.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SystemDialogInputAsync["FileSave", {Null, {
+    "ASCII" -> {"*.xyz", "*.dat"}
+}}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Promise["7e249171-f84c-42d6-bbfa-24c44dcfa94b"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This returns a `Promise`, which one can subscribe to or pipe through a `Then` expression:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This returns a `Promise`, which one can subscribe to or pipe through a `Then` expression:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Then[SystemDialogInputAsync["FileSave", {Null, {
+    "ASCII" -> {"*.xyz", "*.dat"}
+}}], Print]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+If we have many of these promise-based expressions, we might eventually end up in [callback hell](https://callbackhell.com/). To avoid this, many programming languages introduced async functions, and WLJS did too:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+If we have many of these promise-based expressions, we might eventually end up in [callback hell](https://callbackhell.com/). To avoid this, many programming languages introduced async functions, and WLJS did too:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+AsyncFunction[Null, Module[{path},
+  path = SystemDialogInputAsync["FileSave", {Null, {
+    "ASCII" -> {"*.xyz", "*.dat"}
+  }}];
+
+  path = path // Await;
+
+  Print[path];
+]][];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`AsyncFunction` allows us to write asynchronous code, as in the previous example, as if it were sequential. This is useful for long-running user requests or tasks running on a parallel kernel. Each `Await` statement effectively wraps the rest of the code in an internal *callback*. This is still an experimental feature, and it might not work nicely with `Return` statements. However, it is good enough for our use case:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`AsyncFunction` allows us to write asynchronous code, as in the previous example, as if it were sequential. This is useful for long-running user requests or tasks running on a parallel kernel. Each `Await` statement effectively wraps the rest of the code in an internal *callback*. This is still an experimental feature, and it might not work nicely with `Return` statements. However, it is good enough for our use case:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Export XYZ", AsyncFunction[Null, Module[{path, d},
+  path = SystemDialogInputAsync["FileSave", {Null, {
+    "ASCII" -> {"*.xyz", "*.dat"}
+  }}];
+
+  path = path // Await;
+
+  If[StringQ[path],
+    d = SelectedXYZString[selectedCoords];
+    (* the parallel kernel will write to disk *)
+    ExportAsync[path, d, "Text"] // Await;
+    MessageDialog["Saved to "<>path];
+  ];
+]][]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same approach can be applied to rasterization. There is an async variant of `Rasterize` called `RasterizeAsync`. Let's write it as well.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same approach can be applied to rasterization. There is an async variant of `Rasterize` called `RasterizeAsync`. Let's write it as well.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Save image", AsyncFunction[Null, Module[{img, path, plot},
+  (* ask for a path to save to *)
+  path = SystemDialogInputAsync["FileSave", {Null, {"Raster Formats" -> {"*.jpg", "*.png"}}}];
+  path = path // Await;
+
+  (* prepare the plot; remove Offload because we don't need dynamics *)
+  plot = graphics /. Offload->Identity;
+  
+  If[StringQ[path],
+    img = RasterizeAsync[plot] // Await;  
+    (* rendering will happen offscreen *)
+    (* the parallel kernel will write to disk *)
+    ExportAsync[path, img] // Await;
+    MessageDialog["Saved to "<>path];
+  ];
+]][Null]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+---
+
+## Polishing into an app
+In order to use it as an app, we need to fix a few things:
+- Remove side effects from functions
+- Add optional *Peak Valley* and *Gallai-Edmonds* decomposition
+- Add plot legends
+- Allow zooming and panning
+- Export this notebook as a mini app
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+---
+
+## Polishing into an app
+In order to use it as an app, we need to fix a few things:
+- Remove side effects from functions
+- Add optional *Peak Valley* and *Gallai-Edmonds* decomposition
+- Add plot legends
+- Allow zooming and panning
+- Export this notebook as a mini app
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Side effects and optional elements
+For a small app, it might still be okay to define many functions that mutate global variables in the session. When you export a notebook as a *Mini App*, it will automatically isolate all defined symbols in a randomly generated context. In this sense, your mini app's symbols will never leak into other apps or sessions running at the same time. But it is a bit easier to read and maintain code when cause and effect are explicitly connected.
+
+Let's start with the action handlers we had before.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Side effects and optional elements
+For a small app, it might still be okay to define many functions that mutate global variables in the session. When you export a notebook as a *Mini App*, it will automatically isolate all defined symbols in a randomly generated context. In this sense, your mini app's symbols will never leak into other apps or sessions running at the same time. But it is a bit easier to read and maintain code when cause and effect are explicitly connected.
+
+Let's start with the action handlers we had before.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[moveAction];
+
+moveAction[hovered_, grid_][xy_] := With[{
+  (* match the mouse cursor to the nearest grid point *)
+  found = SelectFirst[
+    grid, Function[point, Norm[point[[;;2]] - xy] < 0.7]
+  ]},
+    If[!MissingQ[found], 
+      hovered = found;
+    ]
+];
+
+SetAttributes[moveAction, HoldFirst]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+It has the `HoldFirst` attribute set; therefore, the `hovered` symbol will not be evaluated and can be reassigned to something else. But one may still call it a mutation. Anyway, we are not talking about pure functions here.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+It has the `HoldFirst` attribute set; therefore, the `hovered` symbol will not be evaluated and can be reassigned to something else. But one may still call it a mutation. Anyway, we are not talking about pure functions here.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ss = {};
+moveAction[ss, {{0.5,0.5}, {1.0,1.0}}][{0.1,0.1}];
+ss
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{0.5`,0.5`}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same goes for `clickAction`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same goes for `clickAction`.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[clickAction];
+
+clickAction[selectedList_, selectedCoords_, hovered_, grid_, effect_][xy_] := With[{
+  idx = Position[grid, hovered][[1,1]]
+},
+  (* toggle selection *)
+  selectedList = If[MemberQ[selectedList, idx], 
+    selectedList /. idx -> Nothing,
+    Append[selectedList, idx]
+  ];
+
+  If[Length[selectedList] == 0, 
+    effect[selectedList, grid];
+    Return[]
+  ];
+  
+  (* update coordinates *)
+  selectedCoords = grid[[selectedList]];
+  
+  (* execute any provided callbacks *)
+  effect[selectedList, grid];
+]
+
+SetAttributes[clickAction, HoldAll]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+Let's redefine our `runAnalysis` to account for additional bond analysis and remove side effects.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+Let's redefine our `runAnalysis` to account for additional bond analysis and remove side effects.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[runAnalysis];
+Options[runAnalysis] = {"IncludePeakValley"->False, "IncludeGallaiEdmonds"->False};
+runAnalysis[grid_, selectedList_, OptionsPattern[]] := Module[{results = NanographeneAnalysis[
+  grid,
+  selectedList,
+  "CCBondLength" -> 1.42,
+  "Projection" -> {1, 1, 0},
+  "Delta" -> 0.3,
+  "IncludeBondOrders" -> True,
+  "IncludePeakValley" -> OptionValue["IncludePeakValley"],
+  "IncludeGallaiEdmonds" -> OptionValue["IncludeGallaiEdmonds"]
+], noBonds = False, lineBonds, peaks, valleys, colorExcess, matchingEdges, etaLabel, dSet, aSet, cSet},
+
+  noBonds = !KeyExistsQ[results, "BondOrders"];
+
+  (* assign either an empty list or three types of bonds *)
+  lineBonds = If[noBonds, {{}, {}, {}}, {
+    results["BondOrders", "Single"],
+    Join[
+      offset[results["BondOrders", "Double"], 0.1],
+      offset[results["BondOrders", "Double"], -0.1]
+    ],
+    results["BondOrders", "Aromatic"]
+  }];
+
+  (* assign peak positions or an empty list *)
+  peaks = If[OptionValue["IncludePeakValley"] && !noBonds, results["PeakValley", "Peaks"][[All, 1;;2]], {}];
+  
+  (* assign valley positions or an empty list *)
+  valleys = If[OptionValue["IncludePeakValley"] && !noBonds, results["PeakValley", "Valleys"][[All, 1;;2]], {}];
+  
+  colorExcess = "Color excess \[CapitalDelta]: " <> If[OptionValue["IncludePeakValley"] && !noBonds, ToString[results["PeakValley", "ColorExcess"]], "N/A"];
+
+  (* the same goes for the rest ... *)
+  
+  If[OptionValue["IncludeGallaiEdmonds"] && !noBonds,
+    ge = results["GallaiEdmonds"];
+    matchingEdges = ge["MatchingSegments"];
+    coords = results["Coordinates"][[All,{1,2}]];
+  ,
+    matchingEdges = {};
+  ];
+  
+  dSet = If[OptionValue["IncludeGallaiEdmonds"] && !noBonds, coords[[#]]&/@ge["DSet"], {}];
+  aSet = If[OptionValue["IncludeGallaiEdmonds"] && !noBonds, coords[[#]]&/@ge["ASet"], {}];
+  cSet = If[OptionValue["IncludeGallaiEdmonds"] && !noBonds, coords[[#]]&/@ge["CSet"], {}];
+  
+  etaLabel = "Deficit \[Eta]: " <> If[OptionValue["IncludeGallaiEdmonds"] && !noBonds, ToString[ge["Deficit"]], "N/A"];  
+
+  {lineBonds, peaks, valleys, colorExcess, matchingEdges, dSet, aSet, cSet, etaLabel}
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now, instead of mutating global variables, it returns a list of all the different coordinate sets used for bonds, valleys, and other visuals.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now, instead of mutating global variables, it returns a list of all the different coordinate sets used for bonds, valleys, and other visuals.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we define a display generator function that accounts for new elements such as `Disk` and uses `Offload` as we did before:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we define a display generator function that accounts for new elements such as `Disk` and uses `Offload` as we did before:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[makeGraphics];
+SetAttributes[makeGraphics, HoldAll];
+
+makeGraphics[
+  selectedCoords_, hovered_, grid_, lineBonds_, peaks_, valleys_, 
+  matchingEdges_, dSet_, aSet_, cSet_
+][range_, epilog_] := With[{
+  ratio = (*FB[*)((MinMax[grid[[All,2]]]//Differences//First)(*,*)/(*,*)(MinMax[grid[[All,1]]]//Differences//First))(*]FB*)
+}, Graphics[{{
+    Opacity[0.3],
+    ColorData[3, "ColorList"][[4]],
+    AbsoluteThickness[10],
+    Line[matchingEdges//Offload]
+  },
+  PointSize[0.01], Gray, Point[grid],
+  { 
+    ColorData[97][3],
+    Line[lineBonds[[1]]//Offload],
+    ColorData[97][3],
+    {AbsoluteThickness[1], Line[lineBonds[[2]]//Offload]},
+    ColorData[97][2],
+    Line[lineBonds[[3]]//Offload]
+  },
+  ColorData[97][1], PointSize[0.03],
+  Disk[selectedCoords//Offload, 0.25],
+  
+  Opacity[0.5],
+  
+  {ColorData[3, "ColorList"][[10]], Disk[peaks//Offload, 0.6]},
+  {ColorData[3, "ColorList"][[7]], Disk[valleys//Offload, 0.6]},
+
+  {ColorData[3, "ColorList"][[2]], Disk[dSet//Offload, 0.45]},
+  {ColorData[3, "ColorList"][[8]], Disk[aSet//Offload, 0.45]},
+  {ColorData[3, "ColorList"][[3]], Disk[cSet//Offload, 0.45]},
+  
+  Directive["TransitionType"->"CubicInOut"],
+  Opacity[1], Pink, Circle[hovered//Offload, 0.3]
+}, Epilog->epilog, AspectRatio->ratio, 
+  PlotRange->range, "TransitionType"->None]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In addition, we provide `Epilog` and `PlotRange` as arguments for later use in rendering. The `HoldAll` attribute will prevent the symbols used in `Offload` from evaluating, except for the `range` and `epilog` arguments in subvalues.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In addition, we provide `Epilog` and `PlotRange` as arguments for later use in rendering. The `HoldAll` attribute will prevent the symbols used in `Offload` from evaluating, except for the `range` and `epilog` arguments in subvalues.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Test
+Let's test it! Now we can fully scope the model.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Test
+Let's test it! Now we can fully scope the model.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{
+  lineBonds = {{}, {}, {}}, peaks = {}, valleys = {}, colorExcess, 
+  matchingEdges = {}, dSet = {}, aSet = {}, cSet = {}, etaLabel,
+  hovered = {1000,1000}, grid = HexGrid[6],
+  selectedCoords = {},
+  selectedList = {}
+},
+
+  EventHandler[makeGraphics[
+                  selectedCoords, hovered, grid,
+                  lineBonds, peaks, valleys, 
+                  matchingEdges, dSet, aSet, cSet
+                ][
+                     {MinMax[grid[[All,1]]], MinMax[grid[[All,2]]]},
+                     {}
+                ], 
+  {
+    "mousemove" -> moveAction[hovered, grid],
+    "click" -> clickAction[selectedList, selectedCoords, hovered, grid, Function[{s,g},
+    
+      {lineBonds, peaks, valleys, 
+        colorExcess, matchingEdges, 
+        dSet, aSet, cSet, etaLabel} = runAnalysis[
+                                          g, s, 
+                                          "IncludeGallaiEdmonds"->True
+                                    ];
+    ]]
+  }]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+And now let's turn off the optional analysis...
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And now let's turn off the optional analysis...
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Dynamic plot legends
+If *Gallai-Edmonds decomposition* is enabled, we need to provide a legend that explains the color coding. The exact color coding is not that important, so let's make a helper function:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Dynamic plot legends
+If *Gallai-Edmonds decomposition* is enabled, we need to provide a legend that explains the color coding. The exact color coding is not that important, so let's make a helper function:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+makeLegends[graphics_Graphics, showPeakValley_:False, showGallaiEdmonds_:False] := Legended[graphics, 
+    Placed[
+      makeLegends[{showPeakValley, showGallaiEdmonds}], 
+      Right
+    ]
+];
+
+makeLegends[{True, True}] := SwatchLegend[{(*VB[*)(RGBColor[0.996078431372549, 0.3607843137254902, 0.027450980392156862])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qenAfBN7bF4mDwXX7IhkwmGMPAHWkF6M="*)(*]VB*), (*VB[*)(RGBColor[0.47058823529411764, 0.2627450980392157, 0.5843137254901961])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qkgODe/ZFFy+AgX3R5k0g8MgeAFx2GyY="*)(*]VB*), (*VB[*)(RGBColor[0.996078431372549, 0.9882352941176471, 0.03529411764705882])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qenAfBN7bFy2YDwJAhhAYLLIHAKO3GrY="*)(*]VB*), (*VB[*)(RGBColor[0.9058823529411765, 0.027450980392156862, 0.12941176470588237])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q+vsHBN7YF8mAwRz7ookTQOCAPQCTzxsO"*)(*]VB*), (*VB[*)(RGBColor[0.15294117647058825, 0.11372549019607843, 0.49019607843137253])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qmjIZBA7bF8mCwV77ongwuG8PAFJtF44="*)(*]VB*), (*VB[*)(RGBColor[0.560181, 0.691569, 0.194885])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYngWtYXh7UP7otK1e/1DFZ/ZF0lO2Hvv78cT9gBtzBsa"*)(*]VB*), (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*)}, {"D set", "A set", "C set", "Peaks", "Valleys", "Single/Double bonds", "Fractional bonds"}];
+makeLegends[{False, True}] := SwatchLegend[{(*VB[*)(RGBColor[0.996078431372549, 0.3607843137254902, 0.027450980392156862])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qenAfBN7bF4mDwXX7IhkwmGMPAHWkF6M="*)(*]VB*), (*VB[*)(RGBColor[0.47058823529411764, 0.2627450980392157, 0.5843137254901961])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qkgODe/ZFFy+AgX3R5k0g8MgeAFx2GyY="*)(*]VB*), (*VB[*)(RGBColor[0.996078431372549, 0.9882352941176471, 0.03529411764705882])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qenAfBN7bFy2YDwJAhhAYLLIHAKO3GrY="*)(*]VB*), (*VB[*)(RGBColor[0.560181, 0.691569, 0.194885])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYngWtYXh7UP7otK1e/1DFZ/ZF0lO2Hvv78cT9gBtzBsa"*)(*]VB*), (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*)}, {"D set", "A set", "C set", "Single/Double bonds", "Fractional bonds"}];
+makeLegends[{True, False}] := SwatchLegend[{(*VB[*)(RGBColor[0.9058823529411765, 0.027450980392156862, 0.12941176470588237])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q+vsHBN7YF8mAwRz7ookTQOCAPQCTzxsO"*)(*]VB*), (*VB[*)(RGBColor[0.15294117647058825, 0.11372549019607843, 0.49019607843137253])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qmjIZBA7bF8mCwV77ongwuG8PAFJtF44="*)(*]VB*), (*VB[*)(RGBColor[0.560181, 0.691569, 0.194885])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYngWtYXh7UP7otK1e/1DFZ/ZF0lO2Hvv78cT9gBtzBsa"*)(*]VB*), (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*)}, {"Peaks", "Valleys", "Single/Double bonds", "Fractional bonds"}];
+makeLegends[{False, False}] := SwatchLegend[{(*VB[*)(RGBColor[0.560181, 0.691569, 0.194885])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYngWtYXh7UP7otK1e/1DFZ/ZF0lO2Hvv78cT9gBtzBsa"*)(*]VB*), (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*)}, {"Single/Double bonds", "Fractional bonds"}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The only problem is that `Legended` __does not support__ `Offload`; in other words, it cannot be updated. When a user deselects a checkbox, the legend should disappear. How do we fix that?
+
+Full reevaluation:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The only problem is that `Legended` __does not support__ `Offload`; in other words, it cannot be updated. When a user deselects a checkbox, the legend should disappear. How do we fix that?
+
+Full reevaluation:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+refresh = EventObject[];
+showGallaiEdmonds = False;
+Refresh[makeLegends[Graphics[Disk[], ImageSize->100], False, showGallaiEdmonds], refresh]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Null)(*,*)(*"1:eJxdjkkLwjAUhOsCLv9C8FpoYxrxqigKLtCK50byHgZCollQ/71RqQcvw8cwb96MzqbEVpIkrhtlbZTAN7hhlBLQgrvMzQM7jbcU0ht7knD/XvWiHBCV4cJNIy8MIsBW3gIEWy8fHrSTRrt6x7W8BsU91BvtwWquauftOGczRgm2mwllUFD1P9+5OGj1/LhHG+AvM4iwCkqV4MD/QtU4AlLIiiKHFBllKZ1MecoZO6cImaAZITkpiEyatn0seQFFzUMd"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here, `Refresh` is controlled by an external event object, so we can tell the kernel and front end to reevaluate the whole expression if needed. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here, `Refresh` is controlled by an external event object, so we can tell the kernel and front end to reevaluate the whole expression if needed. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+showGallaiEdmonds = True;
+EventFire[refresh, True];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or disable it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or disable it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+showGallaiEdmonds = False;
+EventFire[refresh, True];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Zooming and Panning
+By default, zooming and panning are enabled in any `Graphics` expression. However, when you export a graphics object as an image or vector, the state of the canvas will be reset. Therefore, you need to:
+
+1. Read the current zoom and pan
+2. Store it somewhere
+3. Rasterize the graphics with the stored settings
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Zooming and Panning
+By default, zooming and panning are enabled in any `Graphics` expression. However, when you export a graphics object as an image or vector, the state of the canvas will be reset. Therefore, you need to:
+
+1. Read the current zoom and pan
+2. Store it somewhere
+3. Rasterize the graphics with the stored settings
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Fortunately, there is a special `ZoomAt` primitive for that. It is a so-called front-end symbol, which is meant to be executed outside the evaluation kernel. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Fortunately, there is a special `ZoomAt` primitive for that. It is a so-called front-end symbol, which is meant to be executed outside the evaluation kernel. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ref = FrontInstanceReference[];
+Plot[x, {x,0,1}, Epilog->{ref}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["395fe5d4-7c1f-4f12-8833-204fd158a262"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG1uapqWappjomicbpumapBka6VpYGBvrGhmYpKUYmlokGpkZAQB/mBUZ"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we created a plot and referenced it as `ref`. Now let's evaluate `ZoomAt` in the context of this plot on the front end:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we created a plot and referenced it as `ref`. Now let's evaluate `ZoomAt` in the context of this plot on the front end:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontSubmit[ZoomAt[0.1, {0.6,0.6}], ref]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In the same way, you can read it back:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In the same way, you can read it back:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontFetch[ZoomAt[], ref]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{0.1`,{0.5999999999999999`,0.6000000000000003`}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or place it in `Plot` beforehand (as if it were a graphics primitive), which will automatically zoom in:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or place it in `Plot` beforehand (as if it were a graphics primitive), which will automatically zoom in:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x, {x,0,1}, Epilog->{ZoomAt[0.1, {.6,.6}]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["0d84b681-0486-4fe5-99e9-f122c225ef6f"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6RYmCSZWRjqGphYmOmapKWa6lpaplrqphkaGSUbGZmmppmlAQB46hVY"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is a helper function that will return the current zoom and pan variables:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is a helper function that will return the current zoom and pan variables:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+getCurrentZoom[ref_] := FrontFetchAsync[ZoomAt[], ref];
+
+(* default zoom and pan *)
+getDefaultZoom[grid_] := {1.0, Mean/@{MinMax[grid[[All,1]]], MinMax[grid[[All,2]]]}};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Saving data
+Let's also add support for PDF export and define all the saving functions.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Saving data
+Let's also add support for PDF export and define all the saving functions.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+saveImage = AsyncFunction[{ref, grid, showGallaiEdmonds, zoom, pan, graphics}, Module[{img, path, plot},
+  (* ask for a path to save to *)
+  path = SystemDialogInputAsync["FileSave", {Null, {"Raster Formats" -> {"*.jpg", "*.png"}, "Plain Vector Format" -> {"*.pdf"}}}];
+  path = path // Await;
+
+  (* prepare the plot and apply zoom and pan *)
+  plot = makeLegends[graphics[
+        {MinMax[grid[[All,1]]], MinMax[grid[[All,2]]]}, 
+        ZoomAt[zoom, pan]
+    ] /. Offload->Identity, showGallaiEdmonds];
+  
+  If[StringQ[path],
+    If[FileExtension[path] === "pdf",
+      (* for PDF, use asynchronous PDF export *)
+      (* rendering will happen offscreen *)
+      ExportAsync[path, plot] // Await;
+      MessageDialog["Saved to "<>path];
+    ,
+      (* for a raster image, rasterize and then export *)
+      img = RasterizeAsync[plot] // Await;  
+      (* rendering will happen offscreen *)
+      (* the parallel kernel will write to disk *)
+      ExportAsync[path, img] // Await;
+      MessageDialog["Saved to "<>path];
+    ];
+  ];
+]];
+
+(* export the currently selected points as a plain XYZ text file *)
+saveXYZ = AsyncFunction[selectedCoords, Module[{path, data},
+  If[Length[selectedCoords] === 0, Beep[]; Return[Null, Module]];
+
+  (* ask for a path to save to *)
+  path = SystemDialogInputAsync["FileSave", {Null, {"XYZ Structure" -> {"*.xyz"}, "Plain Text" -> {"*.txt"}}}];
+  path = path // Await;
+
+  If[StringQ[path],
+    data = SelectedXYZString[selectedCoords];
+    (* the parallel kernel will write to disk *)
+    ExportAsync[path, data, "Text"] // Await;
+    MessageDialog["Saved to "<>path];
+  ];
+]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Layout and app structure
+There are a few rules for turning a notebook into a mini app using WLJS. Here is how it works:
+
+1. The default context is switched from `Global` to a randomly generated context
+2. All initialization cells are evaluated in sequence (marked with a **dot**)
+3. The last input cell is evaluated, and its output is shown in the main window
+4. The output of the last input cell is expected to be WLX
+
+Since we need to use WLX in the end, let's take advantage of it and customize the layout of our application. Now the whole power of HTML is in your hands. Let's begin with the controls: we need a few buttons and checkboxes to toggle the *Gallai-Edmonds decomposition*, as well as a few labels generated by `runAnalysis` that carry additional information about the resulting structure.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Layout and app structure
+There are a few rules for turning a notebook into a mini app using WLJS. Here is how it works:
+
+1. The default context is switched from `Global` to a randomly generated context
+2. All initialization cells are evaluated in sequence (marked with a **dot**)
+3. The last input cell is evaluated, and its output is shown in the main window
+4. The output of the last input cell is expected to be WLX
+
+Since we need to use WLX in the end, let's take advantage of it and customize the layout of our application. Now the whole power of HTML is in your hands. Let's begin with the controls: we need a few buttons and checkboxes to toggle the *Gallai-Edmonds decomposition*, as well as a few labels generated by `runAnalysis` that carry additional information about the resulting structure.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+UIControls["Section"->"Checkboxes and Labels", OptionsPattern[]] = With[{
+  colorExcess = OptionValue["ColorExcess"],
+  etaLabel = OptionValue["EtaLabel"],
+  ev = OptionValue["Event"]
+}, Column[{
+    TextView[colorExcess, Appearance->None],
+    TextView[etaLabel, Appearance->None],
+    InputCheckbox[ev, False, "Label"->"Show Peak Valley", "Topic"->"Valley"],
+    InputCheckbox[ev, False, "Label"->"Show Gallai-Edmonds", "Topic"->"Gallai"]
+}]];
+
+UIControls["Section"->"Buttons", OptionsPattern[]] = With[{ev = OptionValue["Event"]}, Row[{
+      InputButton[ev, "Save image", "Topic"->"Save"],
+      <div class="w-2"></div>,
+      InputButton[ev, "Export XYZ", "Topic"->"Export"],
+      <div class="w-2"></div>,
+      InputButton[ev, "Clear", "Topic"->"Clear"]
+}]];
+
+Options[UIControls] = {"Event"->"", "ColorExcess"->"", "EtaLabel"->""};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As the final step, we assemble the rest and scope all the symbols we used:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As the final step, we assemble the rest and scope all the symbols we used:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+MainWin = Module[{
+  lineBonds = {{}, {}, {}}, peaks = {}, valleys = {}, colorExcess = "", 
+  matchingEdges = {}, dSet = {}, aSet = {}, cSet = {}, etaLabel = "",
+  hovered = {1000,1000}, grid = HexGrid[6],
+  selectedCoords = {}, zoom, pan,
+  selectedList = {}, showGallaiEdmonds = False, showPeakValley = False,
+  graphics = Null, ref = FrontInstanceReference[],
+  hardReset = EventObject[], controls = EventObject[]
+}, 
+
+{zoom, pan} = getDefaultZoom[grid];
+
+With[{
+  calculateAll = Function[Null,
+      {lineBonds, peaks, valleys, 
+        colorExcess, matchingEdges, 
+        dSet, aSet, cSet, etaLabel} = runAnalysis[
+                                          grid, selectedList, 
+                                          "IncludeGallaiEdmonds"->showGallaiEdmonds,
+                                          "IncludePeakValley"->showPeakValley
+                                    ];
+  ]
+},
+{
+  bindedWindow := EventHandler[graphics = makeGraphics[
+                    selectedCoords, hovered, grid,
+                    lineBonds, peaks, valleys, 
+                    matchingEdges, dSet, aSet, cSet
+                  ];
+                  graphics[
+                     {MinMax[grid[[All,1]]], MinMax[grid[[All,2]]]},
+                     {ref, ZoomAt[zoom, pan]}
+                  ], 
+  {
+    "mousemove" -> moveAction[hovered, grid],
+    "click" -> clickAction[selectedList, selectedCoords, hovered, grid, calculateAll]
+  }]
+}, {
+  GraphWindow = Refresh[makeLegends[bindedWindow, showPeakValley, showGallaiEdmonds], hardReset]
+},
+
+  EventHandler[controls, {
+    "Clear" -> Function[Null,
+      selectedList = {}; selectedCoords = {}; 
+      calculateAll[];
+    ],
+    "Valley" -> Function[state,
+      showPeakValley = state;
+      calculateAll[];
+    ],
+    "Gallai" -> AsyncFunction[state,
+      showGallaiEdmonds = state;
+      {zoom, pan} = getCurrentZoom[ref] // Await;
+      calculateAll[];
+      EventFire[hardReset, True];
+    ],
+    "Save" -> AsyncFunction[Null,
+      hovered = {1000,1000};
+      {zoom, pan} = getCurrentZoom[ref] // Await;
+      saveImage[ref, grid, showGallaiEdmonds, zoom, pan, graphics] // Await;
+    ],
+    "Export" -> AsyncFunction[Null,
+      saveXYZ[selectedCoords] // Await;
+    ]
+  }];  
+
+  <div class="flex flex-row justify-between mt-2">
+    <GraphWindow/>
+    <div class="h-full flex flex-col justify-between" style="height:280px">
+      <UIControls Section={"Checkboxes and Labels"} Event={controls} ColorExcess={Offload[colorExcess]} EtaLabel={Offload[etaLabel]}/>
+      <div>
+        <UIControls Section={"Buttons"} Event={controls}/>
+        <div class="h-2"></div>
+        <small style="opacity:0.25">Vasil Saroka, Kirill Vasin (2026)</small>
+      </div>
+    </div>
+  </div>
+] ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+And one last trick up our sleeve. Let's use JavaScript to resize our window wherever this application is running and add some padding on the left, right, top, and bottom.
+
+These will be my final few lines, since what you are reading is both a notebook and a blog post. It is already a valid mini application in both structure and code, and I am not allowed to write after the last WLX cell.
+
+:::note
+If you opened it as a notebook, navigate to the *Share* icon and pick *Mini App* as the export option. Or just rerun the initialization cells and then the very last one (or project the last cell into a new window) to see the app in action.
+:::
+
+Hope you found this entertaining or learned something new, and that this framework comes in handy. Cheers!
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And one last trick up our sleeve. Let's use JavaScript to resize our window wherever this application is running and add some padding on the left, right, top, and bottom.
+
+These will be my final few lines, since what you are reading is both a notebook and a blog post. It is already a valid mini application in both structure and code, and I am not allowed to write after the last WLX cell.
+
+:::note
+If you opened it as a notebook, navigate to the *Share* icon and pick *Mini App* as the export option. Or just rerun the initialization cells and then the very last one (or project the last cell into a new window) to see the app in action.
+:::
+
+Hope you found this entertaining or learned something new, and that this framework comes in handy. Cheers!
+
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+<div class="w-full h-full bg-white px-4 py-2">
+  <small>Zoom and pan the grid with a mouse. Click on the vertices to toggle ions</small>
+  <MainWin/>
+  <script type="module">
+    resizeTo(850, 380);
+  </script>
+</div>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 2c2ddd6a-e7bc-46d4-beaf-53ad02479dd9
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[Point[{{0, 0, 0}, {0, 1.42, 0}, {-1.2297560733739028, -0.71, 0}, {-1.2297560733739028, 2.13, 0}, {-2.4595121467478056, 0, 0}, {-2.4595121467478056, 1.42, 0}, {-3.6892682201217086, -0.71, 0}, {-3.6892682201217086, 2.13, 0}, {-4.919024293495611, 0, 0}, {-4.919024293495611, 1.42, 0}, {-6.148780366869514, -0.71, 0}, {-6.148780366869514, 2.13, 0}, {-7.378536440243417, 0, 0}, {-7.378536440243417, 1.42, 0}, {-8.60829251361732, -0.71, 0}, {-8.60829251361732, 2.13, 0}, {-9.838048586991222, 0, 0}, {-9.838048586991222, 1.42, 0}, {-11.067804660365125, -0.71, 0}, {-11.067804660365125, 2.13, 0}, {-12.297560733739028, 0, 0}, {-12.297560733739028, 1.42, 0}, {-13.52731680711293, -0.71, 0}, {-13.52731680711293, 2.13, 0}, {-14.757072880486835, 0, 0}, {-14.757072880486835, 1.42, 0}, {-15.986828953860737, -0.71, 0}, {-15.986828953860737, 2.13, 0}, {-17.21658502723464, 0, 0}, {-17.21658502723464, 1.42, 0}, {-18.446341100608542, -0.71, 0}, {-18.446341100608542, 2.13, 0}, {-19.676097173982445, 0, 0}, {-19.676097173982445, 1.42, 0}, {-20.905853247356347, -0.71, 0}, {-20.905853247356347, 2.13, 0}, {-22.13560932073025, 0, 0}, {-22.13560932073025, 1.42, 0}, {-23.365365394104153, -0.71, 0}, {-23.365365394104153, 2.13, 0}, {-24.595121467478055, 0, 0}, {-24.595121467478055, 1.42, 0}, {-25.824877540851958, -0.71, 0}, {-25.824877540851958, 2.13, 0}, {-27.05463361422586, 0, 0}, {-27.05463361422586, 1.42, 0}, {-28.284389687599763, -0.71, 0}, {-28.284389687599763, 2.13, 0}, {-29.51414576097367, 0, 0}, {-29.51414576097367, 1.42, 0}, {-30.74390183434757, -0.71, 0}, {-30.74390183434757, 2.13, 0}, {-31.973657907721474, 0, 0}, {-31.973657907721474, 1.42, 0}, {-33.20341398109538, -0.71, 0}, {-33.20341398109538, 2.13, 0}, {0, 4.26, 0}, {0, 5.68, 0}, {-1.2297560733739028, 3.55, 0}, {-1.2297560733739028, 6.39, 0}, {-2.4595121467478056, 4.26, 0}, {-2.4595121467478056, 5.68, 0}, {-3.6892682201217086, 3.55, 0}, {-3.6892682201217086, 6.39, 0}, {-4.919024293495611, 4.26, 0}, {-4.919024293495611, 5.68, 0}, {-6.148780366869514, 3.55, 0}, {-6.148780366869514, 6.39, 0}, {-7.378536440243417, 4.26, 0}, {-7.378536440243417, 5.68, 0}, {-8.60829251361732, 3.55, 0}, {-8.60829251361732, 6.39, 0}, {-9.838048586991222, 4.26, 0}, {-9.838048586991222, 5.68, 0}, {-11.067804660365125, 3.55, 0}, {-11.067804660365125, 6.39, 0}, {-12.297560733739028, 4.26, 0}, {-12.297560733739028, 5.68, 0}, {-13.52731680711293, 3.55, 0}, {-13.52731680711293, 6.39, 0}, {-14.757072880486835, 4.26, 0}, {-14.757072880486835, 5.68, 0}, {-15.986828953860737, 3.55, 0}, {-15.986828953860737, 6.39, 0}, {-17.21658502723464, 4.26, 0}, {-17.21658502723464, 5.68, 0}, {-18.446341100608542, 3.55, 0}, {-18.446341100608542, 6.39, 0}, {-19.676097173982445, 4.26, 0}, {-19.676097173982445, 5.68, 0}, {-20.905853247356347, 3.55, 0}, {-20.905853247356347, 6.39, 0}, {-22.13560932073025, 4.26, 0}, {-22.13560932073025, 5.68, 0}, {-23.365365394104153, 3.55, 0}, {-23.365365394104153, 6.39, 0}, {-24.595121467478055, 4.26, 0}, {-24.595121467478055, 5.68, 0}, {-25.824877540851958, 3.55, 0}, {-25.824877540851958, 6.39, 0}, {-27.05463361422586, 4.26, 0}, {-27.05463361422586, 5.68, 0}, {-28.284389687599763, 3.55, 0}, {-28.284389687599763, 6.39, 0}, {-29.51414576097367, 4.26, 0}, {-29.51414576097367, 5.68, 0}, {-30.74390183434757, 3.55, 0}, {-30.74390183434757, 6.39, 0}, {-31.973657907721474, 4.26, 0}, {-31.973657907721474, 5.68, 0}, {-33.20341398109538, 3.55, 0}, {-33.20341398109538, 6.39, 0}, {0, 8.52, 0}, {0, 9.94, 0}, {-1.2297560733739028, 7.81, 0}, {-1.2297560733739028, 10.649999999999999, 0}, {-2.4595121467478056, 8.52, 0}, {-2.4595121467478056, 9.94, 0}, {-3.6892682201217086, 7.81, 0}, {-3.6892682201217086, 10.649999999999999, 0}, {-4.919024293495611, 8.52, 0}, {-4.919024293495611, 9.94, 0}, {-6.148780366869514, 7.81, 0}, {-6.148780366869514, 10.649999999999999, 0}, {-7.378536440243417, 8.52, 0}, {-7.378536440243417, 9.94, 0}, {-8.60829251361732, 7.81, 0}, {-8.60829251361732, 10.649999999999999, 0}, {-9.838048586991222, 8.52, 0}, {-9.838048586991222, 9.94, 0}, {-11.067804660365125, 7.81, 0}, {-11.067804660365125, 10.649999999999999, 0}, {-12.297560733739028, 8.52, 0}, {-12.297560733739028, 9.94, 0}, {-13.52731680711293, 7.81, 0}, {-13.52731680711293, 10.649999999999999, 0}, {-14.757072880486835, 8.52, 0}, {-14.757072880486835, 9.94, 0}, {-15.986828953860737, 7.81, 0}, {-15.986828953860737, 10.649999999999999, 0}, {-17.21658502723464, 8.52, 0}, {-17.21658502723464, 9.94, 0}, {-18.446341100608542, 7.81, 0}, {-18.446341100608542, 10.649999999999999, 0}, {-19.676097173982445, 8.52, 0}, {-19.676097173982445, 9.94, 0}, {-20.905853247356347, 7.81, 0}, {-20.905853247356347, 10.649999999999999, 0}, {-22.13560932073025, 8.52, 0}, {-22.13560932073025, 9.94, 0}, {-23.365365394104153, 7.81, 0}, {-23.365365394104153, 10.649999999999999, 0}, {-24.595121467478055, 8.52, 0}, {-24.595121467478055, 9.94, 0}, {-25.824877540851958, 7.81, 0}, {-25.824877540851958, 10.649999999999999, 0}, {-27.05463361422586, 8.52, 0}, {-27.05463361422586, 9.94, 0}, {-28.284389687599763, 7.81, 0}, {-28.284389687599763, 10.649999999999999, 0}, {-29.51414576097367, 8.52, 0}, {-29.51414576097367, 9.94, 0}, {-30.74390183434757, 7.81, 0}, {-30.74390183434757, 10.649999999999999, 0}, {-31.973657907721474, 8.52, 0}, {-31.973657907721474, 9.94, 0}, {-33.20341398109538, 7.81, 0}, {-33.20341398109538, 10.649999999999999, 0}, {0, 12.78, 0}, {0, 14.2, 0}, {-1.2297560733739028, 12.07, 0}, {-1.2297560733739028, 14.91, 0}, {-2.4595121467478056, 12.78, 0}, {-2.4595121467478056, 14.2, 0}, {-3.6892682201217086, 12.07, 0}, {-3.6892682201217086, 14.91, 0}, {-4.919024293495611, 12.78, 0}, {-4.919024293495611, 14.2, 0}, {-6.148780366869514, 12.07, 0}, {-6.148780366869514, 14.91, 0}, {-7.378536440243417, 12.78, 0}, {-7.378536440243417, 14.2, 0}, {-8.60829251361732, 12.07, 0}, {-8.60829251361732, 14.91, 0}, {-9.838048586991222, 12.78, 0}, {-9.838048586991222, 14.2, 0}, {-11.067804660365125, 12.07, 0}, {-11.067804660365125, 14.91, 0}, {-12.297560733739028, 12.78, 0}, {-12.297560733739028, 14.2, 0}, {-13.52731680711293, 12.07, 0}, {-13.52731680711293, 14.91, 0}, {-14.757072880486835, 12.78, 0}, {-14.757072880486835, 14.2, 0}, {-15.986828953860737, 12.07, 0}, {-15.986828953860737, 14.91, 0}, {-17.21658502723464, 12.78, 0}, {-17.21658502723464, 14.2, 0}, {-18.446341100608542, 12.07, 0}, {-18.446341100608542, 14.91, 0}, {-19.676097173982445, 12.78, 0}, {-19.676097173982445, 14.2, 0}, {-20.905853247356347, 12.07, 0}, {-20.905853247356347, 14.91, 0}, {-22.13560932073025, 12.78, 0}, {-22.13560932073025, 14.2, 0}, {-23.365365394104153, 12.07, 0}, {-23.365365394104153, 14.91, 0}, {-24.595121467478055, 12.78, 0}, {-24.595121467478055, 14.2, 0}, {-25.824877540851958, 12.07, 0}, {-25.824877540851958, 14.91, 0}, {-27.05463361422586, 12.78, 0}, {-27.05463361422586, 14.2, 0}, {-28.284389687599763, 12.07, 0}, {-28.284389687599763, 14.91, 0}, {-29.51414576097367, 12.78, 0}, {-29.51414576097367, 14.2, 0}, {-30.74390183434757, 12.07, 0}, {-30.74390183434757, 14.91, 0}, {-31.973657907721474, 12.78, 0}, {-31.973657907721474, 14.2, 0}, {-33.20341398109538, 12.07, 0}, {-33.20341398109538, 14.91, 0}, {0, 17.04, 0}, {0, 18.46, 0}, {-1.2297560733739028, 16.33, 0}, {-1.2297560733739028, 19.169999999999998, 0}, {-2.4595121467478056, 17.04, 0}, {-2.4595121467478056, 18.46, 0}, {-3.6892682201217086, 16.33, 0}, {-3.6892682201217086, 19.169999999999998, 0}, {-4.919024293495611, 17.04, 0}, {-4.919024293495611, 18.46, 0}, {-6.148780366869514, 16.33, 0}, {-6.148780366869514, 19.169999999999998, 0}, {-7.378536440243417, 17.04, 0}, {-7.378536440243417, 18.46, 0}, {-8.60829251361732, 16.33, 0}, {-8.60829251361732, 19.169999999999998, 0}, {-9.838048586991222, 17.04, 0}, {-9.838048586991222, 18.46, 0}, {-11.067804660365125, 16.33, 0}, {-11.067804660365125, 19.169999999999998, 0}, {-12.297560733739028, 17.04, 0}, {-12.297560733739028, 18.46, 0}, {-13.52731680711293, 16.33, 0}, {-13.52731680711293, 19.169999999999998, 0}, {-14.757072880486835, 17.04, 0}, {-14.757072880486835, 18.46, 0}, {-15.986828953860737, 16.33, 0}, {-15.986828953860737, 19.169999999999998, 0}, {-17.21658502723464, 17.04, 0}, {-17.21658502723464, 18.46, 0}, {-18.446341100608542, 16.33, 0}, {-18.446341100608542, 19.169999999999998, 0}, {-19.676097173982445, 17.04, 0}, {-19.676097173982445, 18.46, 0}, {-20.905853247356347, 16.33, 0}, {-20.905853247356347, 19.169999999999998, 0}, {-22.13560932073025, 17.04, 0}, {-22.13560932073025, 18.46, 0}, {-23.365365394104153, 16.33, 0}, {-23.365365394104153, 19.169999999999998, 0}, {-24.595121467478055, 17.04, 0}, {-24.595121467478055, 18.46, 0}, {-25.824877540851958, 16.33, 0}, {-25.824877540851958, 19.169999999999998, 0}, {-27.05463361422586, 17.04, 0}, {-27.05463361422586, 18.46, 0}, {-28.284389687599763, 16.33, 0}, {-28.284389687599763, 19.169999999999998, 0}, {-29.51414576097367, 17.04, 0}, {-29.51414576097367, 18.46, 0}, {-30.74390183434757, 16.33, 0}, {-30.74390183434757, 19.169999999999998, 0}, {-31.973657907721474, 17.04, 0}, {-31.973657907721474, 18.46, 0}, {-33.20341398109538, 16.33, 0}, {-33.20341398109538, 19.169999999999998, 0}, {0, 21.299999999999997, 0}, {0, 22.72, 0}, {-1.2297560733739028, 20.589999999999996, 0}, {-1.2297560733739028, 23.429999999999996, 0}, {-2.4595121467478056, 21.299999999999997, 0}, {-2.4595121467478056, 22.72, 0}, {-3.6892682201217086, 20.589999999999996, 0}, {-3.6892682201217086, 23.429999999999996, 0}, {-4.919024293495611, 21.299999999999997, 0}, {-4.919024293495611, 22.72, 0}, {-6.148780366869514, 20.589999999999996, 0}, {-6.148780366869514, 23.429999999999996, 0}, {-7.378536440243417, 21.299999999999997, 0}, {-7.378536440243417, 22.72, 0}, {-8.60829251361732, 20.589999999999996, 0}, {-8.60829251361732, 23.429999999999996, 0}, {-9.838048586991222, 21.299999999999997, 0}, {-9.838048586991222, 22.72, 0}, {-11.067804660365125, 20.589999999999996, 0}, {-11.067804660365125, 23.429999999999996, 0}, {-12.297560733739028, 21.299999999999997, 0}, {-12.297560733739028, 22.72, 0}, {-13.52731680711293, 20.589999999999996, 0}, {-13.52731680711293, 23.429999999999996, 0}, {-14.757072880486835, 21.299999999999997, 0}, {-14.757072880486835, 22.72, 0}, {-15.986828953860737, 20.589999999999996, 0}, {-15.986828953860737, 23.429999999999996, 0}, {-17.21658502723464, 21.299999999999997, 0}, {-17.21658502723464, 22.72, 0}, {-18.446341100608542, 20.589999999999996, 0}, {-18.446341100608542, 23.429999999999996, 0}, {-19.676097173982445, 21.299999999999997, 0}, {-19.676097173982445, 22.72, 0}, {-20.905853247356347, 20.589999999999996, 0}, {-20.905853247356347, 23.429999999999996, 0}, {-22.13560932073025, 21.299999999999997, 0}, {-22.13560932073025, 22.72, 0}, {-23.365365394104153, 20.589999999999996, 0}, {-23.365365394104153, 23.429999999999996, 0}, {-24.595121467478055, 21.299999999999997, 0}, {-24.595121467478055, 22.72, 0}, {-25.824877540851958, 20.589999999999996, 0}, {-25.824877540851958, 23.429999999999996, 0}, {-27.05463361422586, 21.299999999999997, 0}, {-27.05463361422586, 22.72, 0}, {-28.284389687599763, 20.589999999999996, 0}, {-28.284389687599763, 23.429999999999996, 0}, {-29.51414576097367, 21.299999999999997, 0}, {-29.51414576097367, 22.72, 0}, {-30.74390183434757, 20.589999999999996, 0}, {-30.74390183434757, 23.429999999999996, 0}, {-31.973657907721474, 21.299999999999997, 0}, {-31.973657907721474, 22.72, 0}, {-33.20341398109538, 20.589999999999996, 0}, {-33.20341398109538, 23.429999999999996, 0}}], ImageSize -> 300]]|>
+
+%-------------------------------------------------------------------------%
+Key: b18b7379-6c86-49be-8f46-848e364563b1
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<button style=\"\" class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Clear</button>\n<script type=\"module\"> const el = document.getElementById('#instanceId');\n            el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px 0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('click', (event)=>{\n                server.kernel.io.fire('4926dd82-b6e1-4fb3-a34f-7256ce627c55', true, 'Default');     \n            });</script>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: a569d8ce-1f9f-44d3-9130-b809fc6fa390
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<button style=\"\" class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Clear</button>\n<script type=\"module\"> const el = document.getElementById('#instanceId');\n            el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px 0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('click', (event)=>{\n                server.kernel.io.fire('0bf96dd9-89dd-4973-87d2-ab1bbd4770d3', true, 'Default');     \n            });</script>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 395fe5d4-7c1f-4f12-8833-204fd158a262
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Epilog -> {FrontInstanceReference[4390831984440649700]}, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 0d84b681-0486-4fe5-99e9-f122c225ef6f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Epilog -> {ZoomAt[0.1, {0.6, 0.6}]}, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: CoffeeLiqueur`Extensions`Manipulate`Internal`str$169642
+%-------------------------------------------------------------------------%
+"(*VB[*)(Graphics[Disk[{0, 0}], ImageSize -> 100])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkHAvSizIyEwuRsi7ZBZnQ+RBPJ/M4pJMIM0AJhDiQaU5qcWcQIZnbmJ6anBmVWpmCpAHAEFcFLI=\"*)(*]VB*)"
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

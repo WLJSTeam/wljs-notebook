@@ -1,1444 +1,1178 @@
-<|"Notebook" -> <|"Controller" -> "53bb8b62-2cd9-42b0-ac85-98eaf0a7bce1", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$700], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "23e1f0a6-fe76-4e31-afa8-e18942ffd6df", 
-   "Objects" -> <|"532235e0-ff61-4965-a2a8-164886fc87e2" -> 
-      <|"Public" -> Hold[CellView[
-          "<div \
->FrontEndExecutable[93190ffa-364f-4471-893e-31274e5d9abc]</div>", 
-          "Display" -> "wlx"]]|>, "8b2319a0-4025-4f50-96b5-be8bc20c09ea" -> 
-      <|"Public" -> Hold[CellView["<div class=\"py-1\"><fieldset \
-class=\"text-sm mb-2 rounded\"><button \
-id=\"keys-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"px-2 py-1 \
-rounded ring-1 ring-inset ring-gray-200 bg-white\">Keys</button><button \
-id=\"strings-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"px-2 py-1 \
-rounded\">Strings</button></fieldset><div \
-id=\"strings-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"hidden text-sm \
-px-2\">FrontEndExecutable[cc92465a-d374-4192-805d-5b140ea9a315]</div><script \
-type=\"module\"> const keysButton = \
-document.getElementById('keys-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231');\
-\n    const stringButton = \
-document.getElementById('strings-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231'\
-);\n    const container = \
-document.getElementById('strings-7403f176-b9ed-4dba-8f86-b2e9a4a10231');\n\n  \
-  keysButton.addEventListener('click', () => {\n      \
-keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      stringButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.add('hidden');\n      server.kernel.emitt('bullshit', \
-'\"Keys\"', 'Instrument');\n    });\n\n    \
-stringButton.addEventListener('click', () => {\n      \
-stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      keysButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.remove('hidden');\n      server.kernel.emitt('bullshit', \
-'\"Strings\"', 'Instrument');\n    })</script></div>", "Display" -> 
-           "wlx"]]|>, "7970ec24-94e9-4686-9ba4-ffac9c2f81de" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            1524674792206635800], {GrayLevel[1], EdgeForm[GrayLevel[0.5]], 
-            {Annotation[Rectangle[{1.5, 0}, {2.5, 1}], 0, 1], 
-             Annotation[Rectangle[{2.5, 0}, {3.5, 1}], 0, 3], 
-             Annotation[Rectangle[{3.5, 0}, {4.5, 1}], 0, 5], 
-             Annotation[Rectangle[{4.5, 0}, {5.5, 1}], 0, 6], 
-             Annotation[Rectangle[{5.5, 0}, {6.5, 1}], 0, 8], 
-             Annotation[Rectangle[{6.5, 0}, {7.5, 1}], 0, 10], 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{7.5, 0}, {8.5, 1}], 0, 12]}, 
-             Annotation[Rectangle[{8.5, 0}, {9.5, 1}], 0, 13], 
-             Annotation[Rectangle[{9.5, 0}, {10.5, 1}], 0, 15], 
-             Annotation[Rectangle[{10.5, 0}, {11.5, 1}], 0, 17], 
-             Annotation[Rectangle[{11.5, 0}, {12.5, 1}], 0, 18], 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{12.5, 0}, {13.5, 1}], 0, 20]}, 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{13.5, 0}, {14.5, 1}], 0, 22]}, 
-             Annotation[Rectangle[{14.5, 0}, {15.5, 1}], 0, 24], 
-             Annotation[Rectangle[{15.5, 0}, {16.5, 1}], 0, 25]}, 
-            RGBColor[0.3333333333333333, 0.3333333333333333, 
-             0.3333333333333333], {Annotation[Rectangle[{2.2, 0.5}, {2.8, 
-                1}], 1, 2], Annotation[Rectangle[{3.2, 0.5}, {3.8, 1}], 1, 
-              4], Annotation[Rectangle[{5.2, 0.5}, {5.8, 1}], 1, 7], 
-             Annotation[Rectangle[{6.2, 0.5}, {6.8, 1}], 1, 9], 
-             Annotation[Rectangle[{7.2, 0.5}, {7.8, 1}], 1, 11], 
-             Annotation[Rectangle[{9.2, 0.5}, {9.8, 1}], 1, 14], 
-             Annotation[Rectangle[{10.2, 0.5}, {10.8, 1}], 1, 16], 
-             Annotation[Rectangle[{12.2, 0.5}, {12.8, 1}], 1, 19], 
-             Annotation[Rectangle[{13.2, 0.5}, {13.8, 1}], 1, 21], 
-             Annotation[Rectangle[{14.2, 0.5}, {14.8, 1}], 1, 23]}}, 
-           {RGBColor[1, 1, 0], Opacity[0.3]}, {GrayLevel[0], 
-            {Text["G", {13, 0.4}, {0, 0}], Text["A", {14, 0.4}, {0, 0}], 
-             Text["B", {8, 0.4}, {0, 0}]}}, EventListener[Graphics`Canvas[], 
-            {"click" -> "550d29c9-fefb-4b4f-812c-dc90f97e27ca"}]}, 
-          ImageSize -> {500, 200}, "Controls" -> False]]|>, 
-     "1658f480-2dd5-407e-a6e7-786a8d2eded0" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            315864363497754200], EventListener[Graphics`Canvas[], 
-            {"click" -> "c0213d25-e2cb-415b-aec0-92eb3f12c6a7"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E", {-0.4, 0.8}, {-1, -1}], 
-            Text["A", {-0.4, 1.8}, {-1, -1}], Text["D", {-0.4, 2.8}, 
-             {-1, -1}], Text["G", {-0.4, 3.8}, {-1, -1}], 
-            Text["B", {-0.4, 4.8}, {-1, -1}], Text["E", {-0.4, 5.8}, 
-             {-1, -1}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 
-               4, "E"]}}, {RGBColor[1, 0.7215686274509804, 
-              0.2196078431372549], {Annotation[Disk[{0, 4}, {0.15, 0.42}], 
-               19, "G"], {Annotation[Disk[{5, 3}, {0.15, 0.42}], 19, "G"], 
-               GrayLevel[1], Text["G", {5, 2.84}, {0, -1}]}, 
-              {Annotation[Disk[{10, 2}, {0.15, 0.42}], 19, "G"], GrayLevel[
-                1], Text["G", {10, 1.84}, {0, -1}]}}}, 
-            {RGBColor[0.9490196078431372, 0.8627450980392157, 
-              0.43529411764705883], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 
-                11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, -1}]}, 
-              {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[
-                1], Text["B", {7, 0.84}, {0, -1}]}}}}}, 
-          ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, 
-          PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "93190ffa-364f-4471-893e-31274e5d9abc" -> 
-      <|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block \
-text-gray-600 sm-controls\"></label><div class=\"relative mt-2\"><input \
-value=\"\" id=\"#instanceId-text\" style=\"padding-right:0.5rem\" \
-type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 \
-py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 \
-focus:ring-teal-600\" role=\"combobox\" aria-controls=\"options\" \
-aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute \
-inset-y-0 right-0 flex items-center rounded-r-md px-2 \
-focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 \
-20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path \
-fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 \
-1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" \
-clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> \
-const inputField = document.getElementById(\"#instanceId-text\");\n    const \
-parent = inputField.parentNode;\n    const search = \
-document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    \
-const clearOnSubmit =true;\n\n    let renderedArray = [];\n    let opened = \
-false;\n\n    const construct = () => {\n      const ul = \
-document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute \
-z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 border-0 \
-text-base shadow-lg focus:outline-hidden sm:text-sm ring-1 ring-inset \
-ring-gray-300\".split(' ')));\n\n      const rect = \
-inputField.getBoundingClientRect();\n      console.warn(rect);\n      \
-ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = \
-rect.left+'px';\n      ul.style.width = rect.width+'px';\n      \
-ul.classList.remove('hidden');\n\n      list = ul;\n      \
-document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if \
-(!list) return;\n      console.warn('Destroy autocomplete');\n      \
-list.remove();\n      list = undefined;\n    }\n\n    const generate = \
-(array, enter) => {\n      if (!opened) return;\n\n      if (!list) \
-construct();\n      \n      let newArray = array.map((el, indeX) => {\n       \
- return {name: String(el), value: indeX, index: (indeX), domId: \
-'0e8a844d-78f2-410c-8aab-860f131c406b'+String(el)}\n      });\n      \n      \
-renderedArray.filter((x) => !newArray.some((element) => element.domId === \
-x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      \
-const intersection = [];\n      renderedArray.forEach((el) => {\n        \
-const found = newArray.find((element) => element.domId === el.domId);\n       \
- if (found) {\n          intersection.push(el);\n          el.value = \
-found.value;\n          el.index = found.index;\n        }\n      });\n\n     \
- console.log(intersection);\n      \n      const newElements = \
-newArray.filter((x) => !intersection.some((element) => element.domId === \
-x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) \
-=> {\n        const node = document.createElement('li');\n        \
-node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-teal-500/25', \
-'relative', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n      \
-  node.tabIndex = -1;\n        \n        const span = \
-document.createElement('span');\n        span.classList.add('block', \
-'truncate');\n        span.innerText = el.name;\n        \n        \
-node.appendChild(span);\n        list.prepend(node);\n\n        \
-node.addEventListener('click', () => {\n          submit(el.index);\n         \
- close();\n        });\n        \n        \n        el.dom = node;\n      \
-});\n\n      renderedArray = [...intersection, ...newElements];\n\n      \
-renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      \
-renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n \
-     });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    \
-keyHandler = (event) => {\n      // Check for up/down key presses\n      \
-switch(event.keyCode){\n        case 38: // Up arrow    \n          if \
-(renderedArray.length == 0) {\n            currentLI = -1;\n            \
-return;\n          }\n          \n          currentLI--;\n          if \
-(currentLI < 0) {\n            currentLI = -1;\n            \
-inputField.focus();\n            event.preventDefault();\n            \
-return;\n          }\n          renderedArray[currentLI].dom.focus(); // \
-Highlight the new element\n          event.preventDefault();\n        \
-break;\n        case 40: // Down arrow\n          if (renderedArray.length == \
-0) {\n            currentLI = -1;\n            return;\n          }\n         \
- currentLI = currentLI < renderedArray.length-1 ? ++currentLI : \
-renderedArray.length-1; // Increase counter \n          \
-renderedArray[currentLI].dom.focus();       // Highlight the new element\n    \
-      event.preventDefault();\n        break;    \n\n        case 13: \
-//Enter\n          event.preventDefault();\n          \n          if \
-(renderedArray.length == 0) currentLI = -1;\n          \n          if \
-(currentLI < 0) {\n            submit(inputField.value.trim());\n            \
-close();\n          } else {\n            \
-renderedArray[currentLI].dom.click();\n          }\n          \n        \
-break;\n\n        case 27: //Esc\n          event.preventDefault();\n         \
- close();\n        break;\n      }\n    };\n\n    \
-search.addEventListener('click', () => {\n      \
-submit(inputField.value.trim());\n      close();\n    });\n\n    var close = \
-() => {\n      opened = false;\n      \
-document.removeEventListener(\"keydown\", keyHandler);\n      if (list) \
-list.classList.add('hidden');\n      \n      destruct();\n      renderedArray \
-= [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n \
-     \n      if (clearOnSubmit) inputField.value = '';\n      \
-inputField.blur();\n      if (typeof data == 'string') {\n        if \
-(data.trim() == '') return;\n        \
-server.kernel.emitt('69ddd060-3e5b-423d-89f8-ca7f81550b8f', '\"'+data+'\"', \
-\"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = \
-renderedArray.find((el) => el.index === data).name;\n        \
-server.kernel.emitt('69ddd060-3e5b-423d-89f8-ca7f81550b8f', \
-'\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    \
-let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        \
-const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) \
-{\n            \
-server.kernel.ask('xhxComplete185[\"'+encodeURIComponent(trimmed)+'\"]', \
-'callback').then(async (result) => {\n                const assoc = await \
-interpretate(result, {});\n                if (!assoc) return;\n              \
-  if (!assoc.length) return;\n\n                generate(assoc);\n            \
-})\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n  \
-    opened = true;\n      \n      document.addEventListener(\"keydown\", \
-keyHandler);\n      //list.classList.remove('hidden');\n\n      \
-window.addEventListener('click', outOfFocus);\n    });\n\n    \n    \
-outOfFocus = (ev) => {\n                            console.log(ev.target);\n \
-                           if (!parent.contains( ev.target )) {\n             \
-                   window.removeEventListener('click', outOfFocus);\n         \
-                       close();\n                            }\n\n            \
-                ev.stopPropagation();\n    };</script></div>", 
-          Prolog -> HTMLView`TemplateProcessor[Association["instanceId" -> 
-              CreateUUID[]]]]]|>, "cc92465a-d374-4192-805d-5b140ea9a315" -> 
-      <|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block \
-text-gray-600 sm-controls\">Tuning</label><div class=\"relative mt-2\"><input \
-value=\"Standard\" id=\"#instanceId-text\" style=\"padding-right:0.5rem\" \
-type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 \
-py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 \
-focus:ring-teal-600\" role=\"combobox\" aria-controls=\"options\" \
-aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute \
-inset-y-0 right-0 flex items-center rounded-r-md px-2 \
-focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 \
-20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path \
-fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 \
-1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" \
-clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> \
-const inputField = document.getElementById(\"#instanceId-text\");\n    const \
-parent = inputField.parentNode;\n    const search = \
-document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    \
-const clearOnSubmit =false;\n\n    let renderedArray = [];\n    let opened = \
-false;\n\n    const construct = () => {\n      const ul = \
-document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute \
-z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 border-0 \
-text-base shadow-lg focus:outline-hidden sm:text-sm ring-1 ring-inset \
-ring-gray-300\".split(' ')));\n\n      const rect = \
-inputField.getBoundingClientRect();\n      console.warn(rect);\n      \
-ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = \
-rect.left+'px';\n      ul.style.width = rect.width+'px';\n      \
-ul.classList.remove('hidden');\n\n      list = ul;\n      \
-document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if \
-(!list) return;\n      console.warn('Destroy autocomplete');\n      \
-list.remove();\n      list = undefined;\n    }\n\n    const generate = \
-(array, enter) => {\n      if (!opened) return;\n\n      if (!list) \
-construct();\n      \n      let newArray = array.map((el, indeX) => {\n       \
- return {name: String(el), value: indeX, index: (indeX), domId: \
-'2a6044bc-5029-41d9-8508-66bf7e2ec6ca'+String(el)}\n      });\n      \n      \
-renderedArray.filter((x) => !newArray.some((element) => element.domId === \
-x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      \
-const intersection = [];\n      renderedArray.forEach((el) => {\n        \
-const found = newArray.find((element) => element.domId === el.domId);\n       \
- if (found) {\n          intersection.push(el);\n          el.value = \
-found.value;\n          el.index = found.index;\n        }\n      });\n\n     \
- console.log(intersection);\n      \n      const newElements = \
-newArray.filter((x) => !intersection.some((element) => element.domId === \
-x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) \
-=> {\n        const node = document.createElement('li');\n        \
-node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-teal-500/25', \
-'relative', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n      \
-  node.tabIndex = -1;\n        \n        const span = \
-document.createElement('span');\n        span.classList.add('block', \
-'truncate');\n        span.innerText = el.name;\n        \n        \
-node.appendChild(span);\n        list.prepend(node);\n\n        \
-node.addEventListener('click', () => {\n          submit(el.index);\n         \
- close();\n        });\n        \n        \n        el.dom = node;\n      \
-});\n\n      renderedArray = [...intersection, ...newElements];\n\n      \
-renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      \
-renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n \
-     });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    \
-keyHandler = (event) => {\n      // Check for up/down key presses\n      \
-switch(event.keyCode){\n        case 38: // Up arrow    \n          if \
-(renderedArray.length == 0) {\n            currentLI = -1;\n            \
-return;\n          }\n          \n          currentLI--;\n          if \
-(currentLI < 0) {\n            currentLI = -1;\n            \
-inputField.focus();\n            event.preventDefault();\n            \
-return;\n          }\n          renderedArray[currentLI].dom.focus(); // \
-Highlight the new element\n          event.preventDefault();\n        \
-break;\n        case 40: // Down arrow\n          if (renderedArray.length == \
-0) {\n            currentLI = -1;\n            return;\n          }\n         \
- currentLI = currentLI < renderedArray.length-1 ? ++currentLI : \
-renderedArray.length-1; // Increase counter \n          \
-renderedArray[currentLI].dom.focus();       // Highlight the new element\n    \
-      event.preventDefault();\n        break;    \n\n        case 13: \
-//Enter\n          event.preventDefault();\n          \n          if \
-(renderedArray.length == 0) currentLI = -1;\n          \n          if \
-(currentLI < 0) {\n            submit(inputField.value.trim());\n            \
-close();\n          } else {\n            \
-renderedArray[currentLI].dom.click();\n          }\n          \n        \
-break;\n\n        case 27: //Esc\n          event.preventDefault();\n         \
- close();\n        break;\n      }\n    };\n\n    \
-search.addEventListener('click', () => {\n      \
-submit(inputField.value.trim());\n      close();\n    });\n\n    var close = \
-() => {\n      opened = false;\n      \
-document.removeEventListener(\"keydown\", keyHandler);\n      if (list) \
-list.classList.add('hidden');\n      \n      destruct();\n      renderedArray \
-= [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n \
-     \n      if (clearOnSubmit) inputField.value = '';\n      \
-inputField.blur();\n      if (typeof data == 'string') {\n        if \
-(data.trim() == '') return;\n        \
-server.kernel.emitt('505ce195-38c0-45aa-ab92-4d0ef7de36ad', '\"'+data+'\"', \
-\"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = \
-renderedArray.find((el) => el.index === data).name;\n        \
-server.kernel.emitt('505ce195-38c0-45aa-ab92-4d0ef7de36ad', \
-'\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    \
-let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        \
-const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) \
-{\n            \
-server.kernel.ask('xhxComplete180[\"'+encodeURIComponent(trimmed)+'\"]', \
-'callback').then(async (result) => {\n                const assoc = await \
-interpretate(result, {});\n                if (!assoc) return;\n              \
-  if (!assoc.length) return;\n\n                generate(assoc);\n            \
-})\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n  \
-    opened = true;\n      \n      document.addEventListener(\"keydown\", \
-keyHandler);\n      //list.classList.remove('hidden');\n\n      \
-window.addEventListener('click', outOfFocus);\n    });\n\n    \n    \
-outOfFocus = (ev) => {\n                            console.log(ev.target);\n \
-                           if (!parent.contains( ev.target )) {\n             \
-                   window.removeEventListener('click', outOfFocus);\n         \
-                       close();\n                            }\n\n            \
-                ev.stopPropagation();\n    };</script></div>", 
-          Prolog -> HTMLView`TemplateProcessor[Association["instanceId" -> 
-              CreateUUID[]]]]]|>, "5e7488c0-648c-4048-97e5-3c76f4d21ccd" -> 
-      <|"Public" -> Hold[Graphics[{{{Line[{{0.06470476127563017, 
-                0.24148145657226705}, {0.2588190451025207, 
-                0.9659258262890682}}], Text["I", {0, 1}, {0, 0}], 
-             {Opacity[0.3], RGBColor[0.30980392156862746, 
-               0.47058823529411764, 0.34509803921568627], 
-              Rotate[{EventListener[Polygon[{{0.1616928484400852, 
-                    0.6034459255989321}, {0.15808336399480044, 
-                    0.6046773106608907}, {0.06835700523617148, 
-                    0.6212506095249661}, {-0.022826264411036773, 
-                    0.6245830302313996}, {-0.11352303186214777, 
-                    0.6146035480184163}, {-0.1613333584687302, 
-                    0.6021042907610239}, {-0.2420000377030953, 
-                    0.9031564361415358}, {-0.17028454779322166, 
-                    0.9219053220276244}, {-0.03423939661655516, 
-                    0.9368745453470995}, {0.10253550785425723, 
-                    0.9318759142874493}, {0.2371250459922007, 
-                    0.9070159659913362}, {0.2425392726601278, 
-                    0.9051688883983983}}], {"click" -> 
-                   "92cf4aec-3cf5-4441-a2de-9e821bd6d6c2"}], Opacity[1], 
-                Directive[FontSize -> 12], Text["C", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 0, {
-                0, 0}]}}, {Line[{{0.17677669529663687, 0.17677669529663687}, {
-                0.7071067811865475, 0.7071067811865475}}], 
-             Text["II", {Rational[1, 2], Rational[1, 2]*Sqrt[3]}, {0, 0}], 
-             {Opacity[0.3], RGBColor[0.2980392156862745, 0.28627450980392155, 
-               0.5490196078431373], Rotate[{EventListener[Polygon[
-                  {{0.06467713937603409, 0.24137837023957287}, 
-                   {0.06323334559792018, 0.2418709242643563}, 
-                   {0.027342802094468596, 0.24850024380998648}, 
-                   {-0.00913050576441471, 0.24983321209255985}, 
-                   {-0.04540921274485911, 0.24584141920736652}, 
-                   {-0.06453334338749209, 0.24084171630440956}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.16169284844008516, 0.6034459255989321}}], 
-                 {"click" -> "7ac2a663-f692-4a65-8d5f-d2b50de611d7"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["Dm", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, 
-               Rational[1, 6]*Pi, {0, 0}]}}, {Line[{{0.24148145657226705, 
-                0.06470476127563017}, {0.9659258262890682, 
-                0.2588190451025207}}], Text["III", {Rational[1, 2]*Sqrt[3], 
-               Rational[1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[
-               0.27058823529411763, 0.1843137254901961, 0.3764705882352941], 
-              Rotate[{EventListener[Polygon[{{0.06467713937603409, 
-                    0.24137837023957287}, {0.06323334559792018, 
-                    0.2418709242643563}, {0.027342802094468596, 
-                    0.24850024380998648}, {-0.00913050576441471, 
-                    0.24983321209255985}, {-0.04540921274485911, 
-                    0.24584141920736652}, {-0.06453334338749209, 
-                    0.24084171630440956}, {-0.1613333584687302, 
-                    0.6021042907610239}, {-0.11352303186214777, 
-                    0.6146035480184163}, {-0.022826264411036773, 
-                    0.6245830302313996}, {0.06835700523617148, 
-                    0.6212506095249661}, {0.15808336399480044, 
-                    0.6046773106608907}, {0.16169284844008516, 
-                    0.6034459255989321}}], {"click" -> 
-                   "b16c12e8-d6c7-43c1-aa09-6533c22d64fa"}], Opacity[1], 
-                Directive[FontSize -> 12], Text["Em", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, 
-               Rational[1, 3]*Pi, {0, 0}]}}, {Line[{{0.24148145657226705, 
-                -0.06470476127563017}, {0.9659258262890682, 
-                -0.2588190451025207}}], Text["IV", {1, 0}, {0, 0}], 
-             {Opacity[0.3], RGBColor[0.8784313725490196, 0.10196078431372549, 
-               0.20784313725490197], Rotate[{EventListener[Polygon[
-                  {{0.1616928484400852, 0.6034459255989321}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.2420000377030953, 0.9031564361415358}, 
-                   {-0.17028454779322166, 0.9219053220276244}, 
-                   {-0.03423939661655516, 0.9368745453470995}, 
-                   {0.10253550785425723, 0.9318759142874493}, 
-                   {0.2371250459922007, 0.9070159659913362}, 
-                   {0.2425392726601278, 0.9051688883983983}}], 
-                 {"click" -> "a2330c07-8853-4e34-a9bd-f54bb9608e9c"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["F", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 
-               Rational[1, 2]*Pi, {0, 0}]}}, {Line[{{0.17677669529663687, 
-                -0.17677669529663687}, {0.7071067811865475, 
-                -0.7071067811865475}}], Text["V", {Rational[1, 2]*Sqrt[3], 
-               Rational[-1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[0.8, 
-               0.058823529411764705, 0.07450980392156863], 
-              Rotate[{EventListener[Polygon[{{0.1616928484400852, 
-                    0.6034459255989321}, {0.15808336399480044, 
-                    0.6046773106608907}, {0.06835700523617148, 
-                    0.6212506095249661}, {-0.022826264411036773, 
-                    0.6245830302313996}, {-0.11352303186214777, 
-                    0.6146035480184163}, {-0.1613333584687302, 
-                    0.6021042907610239}, {-0.2420000377030953, 
-                    0.9031564361415358}, {-0.17028454779322166, 
-                    0.9219053220276244}, {-0.03423939661655516, 
-                    0.9368745453470995}, {0.10253550785425723, 
-                    0.9318759142874493}, {0.2371250459922007, 
-                    0.9070159659913362}, {0.2425392726601278, 
-                    0.9051688883983983}}], {"click" -> 
-                   "d877f2f4-c045-4ba8-a7e9-b565644057a2"}], Opacity[1], 
-                Directive[FontSize -> 12], Text["G", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 
-               Rational[2, 3]*Pi, {0, 0}]}}, {Line[{{0.06470476127563017, 
-                -0.24148145657226705}, {0.2588190451025207, 
-                -0.9659258262890682}}], Text["VI", {Rational[1, 2], 
-               Rational[-1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], 
-              RGBColor[0.803921568627451, 0.30980392156862746, 
-               0.07058823529411765], Rotate[{EventListener[Polygon[
-                  {{0.06467713937603409, 0.24137837023957287}, 
-                   {0.06323334559792018, 0.2418709242643563}, 
-                   {0.027342802094468596, 0.24850024380998648}, 
-                   {-0.00913050576441471, 0.24983321209255985}, 
-                   {-0.04540921274485911, 0.24584141920736652}, 
-                   {-0.06453334338749209, 0.24084171630440956}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.16169284844008516, 0.6034459255989321}}], 
-                 {"click" -> "536fe707-f961-464f-9059-693033ad50e9"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["Am", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, 
-               Rational[5, 6]*Pi, {0, 0}]}}, {Line[{{-0.06470476127563017, 
-                -0.24148145657226705}, {-0.2588190451025207, 
-                -0.9659258262890682}}], Text["VII", {0, -1}, {0, 0}], 
-             {Opacity[0.3], RGBColor[1, 0.7254901960784313, 
-               0.09411764705882353], Rotate[{EventListener[Polygon[
-                  {{0.06467713937603409, 0.24137837023957287}, 
-                   {0.06323334559792018, 0.2418709242643563}, 
-                   {0.027342802094468596, 0.24850024380998648}, 
-                   {-0.00913050576441471, 0.24983321209255985}, 
-                   {-0.04540921274485911, 0.24584141920736652}, 
-                   {-0.06453334338749209, 0.24084171630440956}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.16169284844008516, 0.6034459255989321}}], 
-                 {"click" -> "45a39318-18ce-431d-b6e9-b8a0db5ea299"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["Bm", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Pi, 
-               {0, 0}]}}, {Line[{{-0.17677669529663687, 
-                -0.17677669529663687}, {-0.7071067811865475, 
-                -0.7071067811865475}}], Text["VIII", {Rational[-1, 2], 
-               Rational[-1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], 
-              RGBColor[0.9568627450980393, 0.796078431372549, 
-               0.13725490196078433], Rotate[{EventListener[Polygon[
-                  {{0.1616928484400852, 0.6034459255989321}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.2420000377030953, 0.9031564361415358}, 
-                   {-0.17028454779322166, 0.9219053220276244}, 
-                   {-0.03423939661655516, 0.9368745453470995}, 
-                   {0.10253550785425723, 0.9318759142874493}, 
-                   {0.2371250459922007, 0.9070159659913362}, 
-                   {0.2425392726601278, 0.9051688883983983}}], 
-                 {"click" -> "c911626d-6478-478e-b9a7-af57c44ca6cf"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["C", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 
-               Rational[7, 6]*Pi, {0, 0}]}}, {Line[{{-0.24148145657226705, 
-                -0.06470476127563017}, {-0.9659258262890682, 
-                -0.2588190451025207}}], Text["IX", {Rational[-1, 2]*Sqrt[3], 
-               Rational[-1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[
-               0.9529411764705882, 0.9803921568627451, 0.5725490196078431], 
-              Rotate[{EventListener[Polygon[{{0.06467713937603409, 
-                    0.24137837023957287}, {0.06323334559792018, 
-                    0.2418709242643563}, {0.027342802094468596, 
-                    0.24850024380998648}, {-0.00913050576441471, 
-                    0.24983321209255985}, {-0.04540921274485911, 
-                    0.24584141920736652}, {-0.06453334338749209, 
-                    0.24084171630440956}, {-0.1613333584687302, 
-                    0.6021042907610239}, {-0.11352303186214777, 
-                    0.6146035480184163}, {-0.022826264411036773, 
-                    0.6245830302313996}, {0.06835700523617148, 
-                    0.6212506095249661}, {0.15808336399480044, 
-                    0.6046773106608907}, {0.16169284844008516, 
-                    0.6034459255989321}}], {"click" -> 
-                   "41eb5651-1dc1-4198-b183-c1718fbc9dd0"}], Opacity[1], 
-                Directive[FontSize -> 12], Text["Dm", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, 
-               Rational[4, 3]*Pi, {0, 0}]}}, {Line[{{-0.24148145657226705, 
-                0.06470476127563017}, {-0.9659258262890682, 
-                0.2588190451025207}}], Text["X", {-1, 0}, {0, 0}], 
-             {Opacity[0.3], RGBColor[0.4117647058823529, 0.592156862745098, 
-               0.4], Rotate[{EventListener[Polygon[{{0.06467713937603409, 
-                    0.24137837023957287}, {0.06323334559792018, 
-                    0.2418709242643563}, {0.027342802094468596, 
-                    0.24850024380998648}, {-0.00913050576441471, 
-                    0.24983321209255985}, {-0.04540921274485911, 
-                    0.24584141920736652}, {-0.06453334338749209, 
-                    0.24084171630440956}, {-0.1613333584687302, 
-                    0.6021042907610239}, {-0.11352303186214777, 
-                    0.6146035480184163}, {-0.022826264411036773, 
-                    0.6245830302313996}, {0.06835700523617148, 
-                    0.6212506095249661}, {0.15808336399480044, 
-                    0.6046773106608907}, {0.16169284844008516, 
-                    0.6034459255989321}}], {"click" -> 
-                   "3397ff59-0064-4029-b33a-8e1533811bda"}], Opacity[1], 
-                Directive[FontSize -> 12], Text["Em", 
-                 {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, 
-               Rational[3, 2]*Pi, {0, 0}]}}, {Line[{{-0.17677669529663687, 
-                0.17677669529663687}, {-0.7071067811865475, 
-                0.7071067811865475}}], Text["XI", {Rational[-1, 2]*Sqrt[3], 
-               Rational[1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[
-               0.30980392156862746, 0.47058823529411764, 
-               0.34509803921568627], Rotate[{EventListener[Polygon[
-                  {{0.1616928484400852, 0.6034459255989321}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.2420000377030953, 0.9031564361415358}, 
-                   {-0.17028454779322166, 0.9219053220276244}, 
-                   {-0.03423939661655516, 0.9368745453470995}, 
-                   {0.10253550785425723, 0.9318759142874493}, 
-                   {0.2371250459922007, 0.9070159659913362}, 
-                   {0.2425392726601278, 0.9051688883983983}}], 
-                 {"click" -> "11384670-9173-4f68-bb74-efbafd12d919"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["F", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 
-               Rational[5, 3]*Pi, {0, 0}]}}, {Line[{{-0.06470476127563017, 
-                0.24148145657226705}, {-0.2588190451025207, 
-                0.9659258262890682}}], Text["XII", {Rational[-1, 2], 
-               Rational[1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], 
-              RGBColor[0.2980392156862745, 0.28627450980392155, 
-               0.5490196078431373], Rotate[{EventListener[Polygon[
-                  {{0.1616928484400852, 0.6034459255989321}, 
-                   {0.15808336399480044, 0.6046773106608907}, 
-                   {0.06835700523617148, 0.6212506095249661}, 
-                   {-0.022826264411036773, 0.6245830302313996}, 
-                   {-0.11352303186214777, 0.6146035480184163}, 
-                   {-0.1613333584687302, 0.6021042907610239}, 
-                   {-0.2420000377030953, 0.9031564361415358}, 
-                   {-0.17028454779322166, 0.9219053220276244}, 
-                   {-0.03423939661655516, 0.9368745453470995}, 
-                   {0.10253550785425723, 0.9318759142874493}, 
-                   {0.2371250459922007, 0.9070159659913362}, 
-                   {0.2425392726601278, 0.9051688883983983}}], 
-                 {"click" -> "6004090c-9f06-4786-8621-37f19f9cdc8e"}], 
-                Opacity[1], Directive[FontSize -> 12], Text["G", 
-                 {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 
-               Rational[11, 6]*Pi, {0, 0}]}}}, Circle[{0, 0}, 0.25], 
-           Circle[{0, 0}, 0.625]}, "Controls" -> False, 
-          ImageSize -> {250, 250}]]|>, 
-     "93a9531b-926f-4128-9d01-ba87b74216ac" -> 
-      <|"Public" -> Hold[HTMLView["<button style=\"box-shadow: rgb(255, 255, \
-255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, \
-0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px\" \
-class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 \
-ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Chord \
-charts</button>\n<script type=\"module\"> const el = \
-document.getElementById('#instanceId');\n            \
-el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px \
-0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            \
-el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n         \
-   el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n   \
-         el.addEventListener('click', (event)=>{\n                \
-server.kernel.io.fire('89a0effb-acf6-4d9b-83ce-08c9f8250eed', true, \
-'Default');     \n            });</script>", Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]]]]|>, 
-     "37d6889a-a6ba-4ad6-8bad-5f310cd599f3" -> 
-      <|"Public" -> Hold[HTMLView["<button style=\"box-shadow: rgb(255, 255, \
-255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, \
-0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px\" \
-class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 \
-ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Scale \
-charts</button>\n<script type=\"module\"> const el = \
-document.getElementById('#instanceId');\n            \
-el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px \
-0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            \
-el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n         \
-   el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n   \
-         el.addEventListener('click', (event)=>{\n                \
-server.kernel.io.fire('e76c1a87-ec5c-49b4-92ba-61d080323618', true, \
-'Default');     \n            });</script>", Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]]]]|>, 
-     "1669f216-dace-49e6-b405-9f51ea471be8" -> 
-      <|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block \
-text-gray-600 sm-controls\">Tuning</label><div class=\"relative mt-2\"><input \
-value=\"Standard\" id=\"#instanceId-text\" style=\"padding-left:0.5rem\" \
-type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 \
-py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 \
-focus:ring-sys\" role=\"combobox\" aria-controls=\"options\" \
-aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute \
-inset-y-0 right-0 flex items-center rounded-r-md px-2 \
-focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 \
-20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path \
-fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 \
-1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" \
-clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> \
-const inputField = document.getElementById(\"#instanceId-text\");\n    const \
-parent = inputField.parentNode;\n    const search = \
-document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    \
-const clearOnSubmit =false;\n\n    let renderedArray = [];\n    let opened = \
-false;\n\n    const construct = () => {\n      const ul = \
-document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute \
-z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 \
-dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden \
-sm:text-sm ring-1 ring-inset ring-gray-300\".split(' ')));\n\n      const \
-rect = inputField.getBoundingClientRect();\n      console.warn(rect);\n      \
-ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = \
-rect.left+'px';\n      ul.style.width = rect.width+'px';\n      \
-ul.classList.remove('hidden');\n\n      list = ul;\n      \
-document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if \
-(!list) return;\n      console.warn('Destroy autocomplete');\n      \
-list.remove();\n      list = undefined;\n    }\n\n    const generate = \
-(array, enter) => {\n      if (!opened) return;\n\n      if (!list) \
-construct();\n      \n      let newArray = array.map((el, indeX) => {\n       \
- return {name: String(el), value: indeX, index: (indeX), domId: \
-'56921d83-6253-43c6-b61e-75302c98931c'+String(el)}\n      });\n      \n      \
-renderedArray.filter((x) => !newArray.some((element) => element.domId === \
-x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      \
-const intersection = [];\n      renderedArray.forEach((el) => {\n        \
-const found = newArray.find((element) => element.domId === el.domId);\n       \
- if (found) {\n          intersection.push(el);\n          el.value = \
-found.value;\n          el.index = found.index;\n        }\n      });\n\n     \
- console.log(intersection);\n      \n      const newElements = \
-newArray.filter((x) => !intersection.some((element) => element.domId === \
-x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) \
-=> {\n        const node = document.createElement('li');\n        \
-node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-sys-25', \
-'relative', 'dark:text-gray-400', 'cursor-default', 'py-1', 'text-gray-900', \
-'select-none');\n        node.tabIndex = -1;\n        \n        const span = \
-document.createElement('span');\n        span.classList.add('block', \
-'truncate');\n        span.innerText = el.name;\n        \n        \
-node.appendChild(span);\n        list.prepend(node);\n\n        \
-node.addEventListener('click', () => {\n          submit(el.index);\n         \
- close();\n        });\n        \n        \n        el.dom = node;\n      \
-});\n\n      renderedArray = [...intersection, ...newElements];\n\n      \
-renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      \
-renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n \
-     });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    \
-keyHandler = (event) => {\n      // Check for up/down key presses\n      \
-switch(event.keyCode){\n        case 38: // Up arrow    \n          if \
-(renderedArray.length == 0) {\n            currentLI = -1;\n            \
-return;\n          }\n          \n          currentLI--;\n          if \
-(currentLI < 0) {\n            currentLI = -1;\n            \
-inputField.focus();\n            event.preventDefault();\n            \
-return;\n          }\n          renderedArray[currentLI].dom.focus(); // \
-Highlight the new element\n          event.preventDefault();\n        \
-break;\n        case 40: // Down arrow\n          if (renderedArray.length == \
-0) {\n            currentLI = -1;\n            return;\n          }\n         \
- currentLI = currentLI < renderedArray.length-1 ? ++currentLI : \
-renderedArray.length-1; // Increase counter \n          \
-renderedArray[currentLI].dom.focus();       // Highlight the new element\n    \
-      event.preventDefault();\n        break;    \n\n        case 13: \
-//Enter\n          event.preventDefault();\n          \n          if \
-(renderedArray.length == 0) currentLI = -1;\n          \n          if \
-(currentLI < 0) {\n            submit(inputField.value.trim());\n            \
-close();\n          } else {\n            \
-renderedArray[currentLI].dom.click();\n          }\n          \n        \
-break;\n\n        case 27: //Esc\n          event.preventDefault();\n         \
- close();\n        break;\n      }\n    };\n\n    \
-search.addEventListener('click', () => {\n      \
-submit(inputField.value.trim());\n      close();\n    });\n\n    var close = \
-() => {\n      opened = false;\n      \
-document.removeEventListener(\"keydown\", keyHandler);\n      if (list) \
-list.classList.add('hidden');\n      \n      destruct();\n      renderedArray \
-= [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n \
-     \n      if (clearOnSubmit) inputField.value = '';\n      \
-inputField.blur();\n      if (typeof data == 'string') {\n        if \
-(data.trim() == '') return;\n        \
-server.kernel.emitt('9f087969-bffd-44b4-a650-2e9134db5fe1', '\"'+data+'\"', \
-\"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = \
-renderedArray.find((el) => el.index === data).name;\n        \
-server.kernel.emitt('9f087969-bffd-44b4-a650-2e9134db5fe1', \
-'\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    \
-let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        \
-const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) \
-{\n            \
-server.kernel.ask('xhxComplete81[\"'+encodeURIComponent(trimmed)+'\"]', \
-'callback').then(async (result) => {\n                const assoc = await \
-interpretate(result, {});\n                if (!assoc) return;\n              \
-  if (!assoc.length) return;\n\n                generate(assoc);\n            \
-})\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n  \
-    opened = true;\n      \n      document.addEventListener(\"keydown\", \
-keyHandler);\n      //list.classList.remove('hidden');\n\n      \
-window.addEventListener('click', outOfFocus);\n    });\n\n    \n    \
-outOfFocus = (ev) => {\n                            console.log(ev.target);\n \
-                           if (!parent.contains( ev.target )) {\n             \
-                   window.removeEventListener('click', outOfFocus);\n         \
-                       close();\n                            }\n\n            \
-                ev.stopPropagation();\n    };</script></div>", 
-          Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]]]]|>, 
-     "fb087bba-9f45-466a-8b9c-ecca1aa0960b" -> 
-      <|"Public" -> Hold[HTMLView["<div class=\"sm-controls\"><label \
-for=\"#instanceId\" class=\"block text-sm font-medium leading-6 \
-text-gray-900\"></label><div class=\"mt-1\"><input style=\"width: \
-Round[Automatic]px;\" value=\"\" class=\"relative cursor-default rounded-md 0 \
-h-6 pl-3 pr-2 text-left text-gray-900  focus:outline-none sm:text-xs \
-sm:leading-6 bg-gray-100\" placeholder=\"...\" id=\"#instanceId\" \
-data-type=\"text-string\" type=\"text\"/></div><p class=\"mt-1 text-sm \
-text-gray-500\"></p></div>\n", Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]], 
-          Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalEl\
-ementUpdate[Offload[currentTune$374577], "text-string", "value"]]]|>|>, 
-   "Path" -> "/Users/kirill/Library/CloudStorage/OneDrive-Personal/\:0414\
-\:043e\:043a\:0443\:043c\:0435\:043d\:0442\:044b/WLJS Notebooks/Demos/Mini \
-apps/D - Scales and chords.wlw", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <|"currentTune$374577" -> "E1 B2 G4"|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Musical scales on piano and guitar", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$652]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Internal framework", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$654]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Components", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$657]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Circle of 5s", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$657]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Windows", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$662]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Main window with search", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$662]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Circle5 window", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$670]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Piano View", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$681]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Guitar view", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$686]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Output widget", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$694]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Musical scales on piano and guitar\nA small \
-widget, which allows to build chords from scales, play them and show on both: \
-strings and keys. ", "Display" -> "codemirror", 
-    "Hash" -> "36309383-2ebd-4455-843c-65b38b2c1733", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "# Musical scales on piano and guitar\nA small widget, which \
-allows to build chords from scales, play them and show on both: strings and \
-keys. ", "Display" -> "markdown", "Hash" -> 
-     "34cb56a3-c881-4f89-96ef-c01b3258d1e5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> 
-     ".md\n## Internal framework\nAllows to work with notes easier", 
-    "Display" -> "codemirror", "Hash" -> 
-     "65cdbeb8-42a3-48c7-8afb-af84f1a791fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Internal framework\nAllows to work with notes easier", 
-    "Display" -> "markdown", "Hash" -> 
-     "41af9e83-02ae-42a6-9f58-65b5349e7c9c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "convertToSemitones[s_String] := With[{c = StringCases[s, \
-{a__~~b:DigitCharacter :> {a,ToExpression[b]}, a__ :> {a,4}}]//First},\n  \
-semitone[c[[1]]] + (c[[2]] - 4) 12\n]\nconvertToSemitones[s_] := \
-s;\n\nconvertToSemitones[l_List] := convertToSemitones /@ l\n\nsemitone[0] = \
-\"C\";\nsemitone[1] = \"C#\";\nsemitone[2] = \"D\";\nsemitone[3] = \
-\"D#\";\nsemitone[3] = \"Eb\";\nsemitone[4] = \"E\";\nsemitone[5] = \
-\"F\";\nsemitone[6] = \"F#\";\nsemitone[6] = \"Gb\";\nsemitone[7] = \
-\"G\";\nsemitone[8] = \"Ab\";\nsemitone[8] = \"G#\";\nsemitone[9] = \
-\"A\";\nsemitone[10] = \"Bb\";\nsemitone[11] = \"B\";\n\nsemitone[n_Integer] \
-:= semitone[Mod[n, 12]] /; n < 0 || n > 11\n\nsemitone[\"C\"] = \
-0;\nsemitone[\"C#\"] = 1;\nsemitone[\"D\"] = 2;\nsemitone[\"D#\"] = \
-3;\nsemitone[\"Eb\"] = 3;\nsemitone[\"E\"] = 4;\nsemitone[\"F\"] = \
-5;\nsemitone[\"F#\"] = 6;\nsemitone[\"Gb\"] = 6;\nsemitone[\"G\"] = \
-7;\nsemitone[\"Ab\"] = 8;\nsemitone[\"G#\"] = 8;\nsemitone[\"A\"] = \
-9;\nsemitone[\"Bb\"] = 10;\nsemitone[\"B\"] = 11;\n\nscale[\"Major\"] = \
-{2,2,1,2,2,2,1};\nmood[\"Major\"] = \"Bright and upbeat \
-feeling\";\nscale[\"Major Pentatonic\"] = {2, 2, 3, 2, 3};\nmood[\"Major \
-Pentatonic\"] = \"Joyful and open feeling\";\nscale[\"Minor\"] = \
-{2,1,2,2,1,2,2};\nmood[\"Minor\"] = \"Sad and reflective \
-feeling\";\nscale[\"Minor Pentatonic\"] = {3, 2, 2, 3, 2};\nmood[\"Minor \
-Pentatonic\"] = \"Bluesy and soulful feeling\";\nscale[\"Dorian\"] = \
-{2,1,2,2,2,1,2};\nmood[\"Dorian\"] = \"Mellow and jazzy \
-feeling\";\nscale[\"Lydian\"] = {2,2,2,1,2,2,1};\nmood[\"Lydian\"] = \"Dreamy \
-and mystical feeling\";\nscale[\"Mixolydian\"] = \
-{2,2,1,2,2,1,2};\nmood[\"Mixolydian\"] = \"Bluesy and relaxed \
-feeling\";\nscale[\"Phrygian\"] = {1,2,2,2,1,2,2};\nmood[\"Phrygian\"] = \
-\"Exotic and tense feeling\";\n\ntuning[\"Standard\"] = \
-{\"E6\",\"B5\",\"G5\",\"D5\",\"A4\",\"E4\"};\ntuning[\"Drop Ab\"] = {\"Ab\", \
-\"Eb\", \"Ab\", \"Eb\", \"Ab\", \"Bb\"};\ntuning[\"Drop C\"] = {\"D6\", \
-\"A5\",\"F5\",\"C5\", \"G4\",\"C4\" };\n\nmajorQ[SoundNote[n_List]] := \
-With[{notes = Sort[convertToSemitones @ n]},\n  notes[[2]] - notes[[1]] > \
-3\n]\n\nmakeScale[root_Integer, scale_List] := With[{base = \
-Accumulate[Join[{root}, scale]]},\n  (base[[Mod[#-1, Length[base]-1] + 1]] + \
-12 Floor[# / Length[base]]) &\n]\n\nmakeScale[root_String, scale_List] := \
-makeScale[convertToSemitones[root], scale]\n\nmakeChord[root_, \
-scalename_String, ext_Integer:3] := With[{s = makeScale[root, \
-scale[scalename]]},\n  chordObject[s, \
-ext]\n]\n\nNoteTranspose[SoundNote[l_List], i_Integer] := With[{c = \
-convertToSemitones[l]}, \n  SoundNote[Map[(# + i)&, \
-c]]\n]\n\nNoteTranspose[SoundNote[l_Integer], i_Integer] := With[{c = \
-convertToSemitones[l]}, \n  SoundNote[c + \
-i]\n]\n\nNoteMerge[s:(SoundNote[_List]..)] := \
-SoundNote[DeleteDuplicates[convertToSemitones[Join @@ \
-({s}[[All,1]])]]]\n\n\nmakeChord[root_, scalename_String, \
-ext_String];\nmakeChord[root_, scalename_String, ext_Integer, \
-mod_Rule];\nmakeChord[root_, scalename_String, ext_Integer, \
-mod:{__Rule}];\n\nchordObject[s_, ext_][offset_String] := chordObject[s, \
-ext][FromRomanNumeral[offset]-1]\n\nchordObject[s_, ext_][offset_Integer] := \
-SoundNote @ Table[  s[i + offset], {i, 1, 2 ext, 2}] \
-\n\nNoteNormalize[SoundNote[l_List], {min_, max_}] := With[{notes = \
-convertToSemitones @ l},\n  SoundNote[With[{mod = Mod[#, max]}, If[mod < min, \
-mod + min, mod]] &/@ notes // DeleteDuplicates]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c7341d62-a5d6-47e4-b1a2-124093c7c4ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\n## Components\n\n### Circle of 5s", 
-    "Display" -> "codemirror", "Hash" -> 
-     "14ecfd8d-dd3b-4113-b528-e2d888fb9284", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Components\n\n### Circle of 5s", "Display" -> "markdown", 
-    "Hash" -> "30e27997-1b9e-4a89-a719-82ff2ef14792", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "pad2 = With[{\nc2 = {Cos[ Pi/2 - Pi/12], Sin[ Pi/2 - Pi/12]} \
-// N,\nc3 = {Cos[1 2Pi/12 + Pi/2 - Pi/12], Sin[1 2Pi/12 + Pi/2 - Pi/12]} //N \
-\n},\n  RegionIntersection[RegionDifference[Polygon[{c2 0.1, 1.5 c2, 1.5 c3, \
-c3 0.1}], Disk[{0,0}, 0.25]],\n    Disk[{0,0}, (0.75+0.5)/2]\n  ]\n] // \
-BoundaryDiscretizeRegion // MeshCoordinates // Polygon;\n\npad1 = With[{\nc2 \
-= {Cos[ Pi/2 - Pi/12], Sin[ Pi/2 - Pi/12]} // N,\nc3 = {Cos[1 2Pi/12 + Pi/2 - \
-Pi/12], Sin[1 2Pi/12 + Pi/2 - Pi/12]} //N \n},\n  \
-RegionIntersection[RegionDifference[Polygon[{c2 0.1, 1.5 c2, 1.5 c3, c3 \
-0.1}], Disk[{0,0}, (0.75+0.5)/2]],\n    Disk[{0,0}, (((0.75 + 1)/2.0) + \
-1)/2.0]\n  ]\n] // BoundaryDiscretizeRegion // MeshCoordinates // \
-Polygon;\n\ncircleFifth[key_, scale_] := Graphics[{Table[With[{\n  c1 = \
-{Cos[-i 2Pi/12 + Pi/2], Sin[-i 2Pi/12 + Pi/2]},\n  c2 = {Cos[-i 2Pi/12 + Pi/2 \
-- Pi/12], Sin[-i 2Pi/12 + Pi/2 - Pi/12]} //N,\n  chord = makeChord[key, \
-scale, 3][i]\n}, {\n\n  Line[{0.25 c2, c2}],\n  Text[RomanNumeral[i+1], c1, \
-{0,0}],\n  \n  {Opacity[0.3], ColorData[35][i+6], Rotate[If[majorQ[chord], \
-{\n    EventHandler[pad1, {\"click\" -> Function[Null, \
-NoteNormalize[NoteMerge[chord, NoteTranspose[chord, 12]], {12,24+12}] // \
-Sound // EmitSound]}],\n    Opacity[1], Directive[FontSize->12], \
-Text[semitone[chord[[1,1]]], pad1 // RegionCentroid, {0,0}]\n  }, {\n    \
-EventHandler[pad2, {\"click\" -> Function[Null, \
-NoteNormalize[NoteMerge[chord, NoteTranspose[chord, 12]], {12, 24+12}] // \
-Sound // EmitSound]}],\n    Opacity[1], Directive[FontSize->12], \
-Text[semitone[chord[[1,1]]] <> \"m\", pad2 // RegionCentroid, {0,0}]\n  }], i \
-2 Pi/12, {0,0}]}\n}], {i, 0,11}],\n\nCircle[{0,0}, 0.25],\nCircle[{0,0}, \
-(0.75+0.5)/2]\n\n}, \"Controls\"->False, ImageSize->{250,250}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "da2e9e8d-4f2d-4636-9d17-e7fd1da33fee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "5612b7ff-bdc7-42a8-8a01-45717f0388c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "10312507-e2a9-49d2-81de-abcf9bca8fbd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> 
-     ".md\n## Windows\n### Main window with search\nHelper functions", 
-    "Display" -> "codemirror", "Hash" -> 
-     "242920be-efc8-4e48-bc9c-9dcb96716697", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Windows\n### Main window with search\nHelper functions", 
-    "Display" -> "markdown", "Hash" -> 
-     "3a0d7f3e-257f-45b2-9a46-2d1fcb7de6fd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "searchScale[text_] := With[{\n  scales = \
-DownValues[scale][[All,1,1,1]],\n  semitones = \
-DownValues[semitone][[All,1,1,1]]\n},\n  With[{words = StringTrim /@ \
-StringSplit[text, \" \"]},\n    With[{key = SelectFirst[words, \
-(StringLength[#]<=2)&]},\n    \n      If[MissingQ[key],\n        \
-<|\"Key\"->Missing[], \"Scales\"->Table[{scale, Total @ Map[Function[word, \
-Count[\n              Map[Function[scaleWord, StringMatchQ[scaleWord, \
-___~~word~~___] ], StringSplit[scale, \" \"]]\n            , True]], words]}, \
-{scale, scales}]|>\n      ,\n        With[{rest = words /. {key -> \
-Nothing}},\n          If[NumberQ[semitone[key]],\n            <|\"Key\"->key, \
-\"Scales\"->Table[{scale, Total @ Map[Function[word, Count[\n              \
-Map[Function[scaleWord, StringMatchQ[scaleWord, ___~~word~~___] ], \
-StringSplit[scale, \" \"]]\n            , True]], rest]}, {scale, \
-scales}]|>\n          ,\n            <|\"Key\"->Missing[], \
-\"Scales\"->Table[{scale, Total @ Map[Function[word, Count[\n              \
-Map[Function[scaleWord, StringMatchQ[scaleWord, ___~~word~~___] ], \
-StringSplit[scale, \" \"]]\n            , True]], rest]}, {scale, \
-scales}]|>\n          ]\n        ]\n      ]\n    ]\n  \
-]\n]\n\n\npickScales[data_, n_:5] := With[{scales = \
-Take[SortBy[data[\"Scales\"], -#[[2]]&], Min[n, \
-Length[data[\"Scales\"]]]][[All,1]]},\n  If[MissingQ[data[\"Key\"]],\n    \
-Table[k -> {\"C\", k}, {k, scales}] // Association\n  ,\n    \
-Table[StringTemplate[\"`` ``\"][data[\"Key\"], k] -> {data[\"Key\"], k}, {k, \
-scales}] // Association\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "ecd7a7b0-1b2b-4fca-9ac8-d82f9bb531f0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\nWidget", "Display" -> "codemirror", 
-    "Hash" -> "35db8c89-3056-4c8e-8007-e4fdd70d54d3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "Widget", "Display" -> "markdown", 
-    "Hash" -> "53b8bbae-1916-4e1a-8159-8f1977d904f5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\nmainWindow[callback_] := Module[{pick = Null}, \
-With[{\n  InputField = InputAutocomplete[Function[{text, cbk},\n    pick = \
-pickScales[searchScale[text]];\n    pick//Keys//cbk;\n  ], \
-\"ClearOnSubmit\"->True]\n},\n\n  EventHandler[InputField, \
-Function[selected,\n    If[MissingQ[pick[selected]] || pick === Null,\n      \
-Notify[\"Key / Scale does not exist\", \"Type\"->\"Warning\"];\n      \
-Return[];\n    ];\n\n    callback @ (pick[selected]) \n  ]];\n\n  <div>\n    \
-<InputField/>\n  </div>\n\n]\n]", "Display" -> "codemirror", 
-    "Hash" -> "402a2f58-da28-4463-8c9f-2d934350b2de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "CellView[mainWindow[Print[{##}]&], \"Display\"->\"wlx\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b55afb62-dc8e-4638-afc2-e8c4dd611923", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"532235e0-ff61-4965-a2a8-164886fc87e2\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxobG\
-RmbphropqWZGeqaWJqZ6iYaJVroGpqZWFiYpSVbmKcaAQBzhBTz\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b0137641-b66d-4b74-aef3-e5ae05be1e0d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\n## Circle5 window\n\nTuning component", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9236aab6-59b4-4276-8cfd-7e92734ba7e2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Circle5 window\n\nTuning component", 
-    "Display" -> "markdown", "Hash" -> 
-     "1285862f-5799-4864-aca7-466c3756bf1c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\nOptions[TuningComponent] = \
-{\"Event\"->\"\"}\nTuningComponent[OptionsPattern[]] := Module[{\n  Event = \
-OptionValue[\"Event\"],\n  UId = CreateUUID[],\n  tunings = \
-DownValues[tuning][[All,1,1,1]],\n  currentTune = \
-StringRiffle[tuning[\"Standard\"], \" \"],\n  buffer\n},\n\nWith[{\n  \
-TuningField = InputAutocomplete[Function[{input, cbk}, \n    buffer = \
-SortBy[Table[{tuning, Total @ Map[Function[word, Count[\n              \
-Map[Function[tuningWord, StringMatchQ[tuningWord, ___~~word~~___, \
-IgnoreCase->True] ], StringSplit[tuning, \" \"]]\n            , True]], \
-StringSplit[input, \" \"]]}, {tuning, tunings}], Function[l, -l[[2]]]];\n    \
-cbk[buffer[[All,1]]];\n\n  ], \"Standard\", \"Label\"->\"Tuning\", \
-\"ClearOnSubmit\"->False],\n\n  TuningFieldCurrent = \
-CreateFrontEndObject[TextView[currentTune // \
-Offload]]\n},\n\nEventHandler[TuningField, {\n\n  \"Selected\" -> \
-Function[key,\n    currentTune = StringRiffle[tuning[key], \" \"];\n    \
-Beep[];\n    EventFire[Event, \"Tuning\", convertToSemitones @ \
-tuning[key]];\n  ],\n\n  \"Entered\" -> Function[input,\n    currentTune = \
-input;\n    Echo[input];\n    With[{semitones = convertToSemitones @ \
-StringSplit[input, \" \"]},\n      If[!TrueQ[AllTrue[semitones, NumberQ]], \n \
-       Notify[\"Tuning must be like E5 D5 ... form\", \
-\"Type\"->\"Warning\"];\n        Return[];\n      ];\n\n      \
-EventFire[Event, \"Tuning\", semitones];\n    ]\n  ]\n}];\n\n<div \
-class=\"py-1\">\n  <fieldset class=\"text-sm mb-2 rounded\">\n    <button \
-id=\"keys-button-{UId}\" class=\"px-2 py-1 rounded ring-1 ring-inset \
-ring-gray-200 bg-white\">Keys</button>\n    <button \
-id=\"strings-button-{UId}\" class=\"px-2 py-1 rounded\">Strings</button>\n  \
-</fieldset>\n  <div id=\"strings-{UId}\" class=\"hidden text-sm px-2 flex \
-flex-col\">\n    <TuningField/>\n    <TuningFieldCurrent/>\n  </div>\n  \
-<script type=\"module\">\n    const keysButton = \
-document.getElementById('keys-button-<UId/>');\n    const stringButton = \
-document.getElementById('strings-button-<UId/>');\n    const container = \
-document.getElementById('strings-<UId/>');\n\n    \
-keysButton.addEventListener('click', () => {\n      \
-keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      stringButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.add('hidden');\n      server.kernel.emitt('<Event/>', \
-'\"Keys\"', 'Instrument');\n    });\n\n    \
-stringButton.addEventListener('click', () => {\n      \
-stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      keysButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.remove('hidden');\n      server.kernel.emitt('<Event/>', \
-'\"Strings\"', 'Instrument');\n    })\n  </script>\n</div>\n]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4c6aa95f-fc14-43a6-be43-0cff211969a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "CellView[TuningComponent[\"Event\"->\"bullshit\"] , \
-\"Display\"->\"wlx\"]", "Display" -> "codemirror", 
-    "Hash" -> "051f05ea-450f-4bdb-903a-9c2d4b585c59", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"8b2319a0-4025-4f50-96b5-be8bc20c09ea\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKWyQZG\
-RtaJhromhgYmeqapJka6FqaJZnqJqVaJCUbGSQbWKYmAgB2NxVl\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1ff68002-5cb2-40e8-8dd0-7b23ead380b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> 
-     "Notify[\"Tuning must be like E5 D5 ... form\", \"Type\"->\"Warning\"];"\
-, "Display" -> "codemirror", "Hash" -> 
-     "84f51878-0db2-4b92-9d22-67f2b428494e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\nMain window", "Display" -> "codemirror", 
-    "Hash" -> "17a52f7c-5425-4de0-a66d-f6f8854f6ff6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "Main window", "Display" -> "markdown", 
-    "Hash" -> "4199096a-84d3-4ad7-bf9c-d06c86a4466f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\nOptions[LandingWindow] = {\"Key\"->\"C\", \
-\"Scale\"->\"Major\"}\nLandingWindow[callback_, OptionsPattern[]] := \
-Module[{\n  stringTuning = tuning[\"Standard\"],\n  localControls = \
-CreateUUID[],\n  instrument = \"Keys\"\n},\n\nWith[{\n  CircleFifth = \
-circleFifth[OptionValue[\"Key\"], OptionValue[\"Scale\"]],\n  TuningComponent \
-= TuningComponent[\"Event\"->localControls],\n  ChordChart = \
-InputButton[\"Chord charts\", \"Style\"->\"box-shadow: rgb(255, 255, 255) 0px \
-0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) \
-0px 0px 0px 0px; font-weight:normal; font-size:14px\"],\n  ScaleChart = \
-InputButton[\"Scale charts\", \"Style\"->\"box-shadow: rgb(255, 255, 255) 0px \
-0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) \
-0px 0px 0px 0px; font-weight:normal; font-size:14px\"],\n  Title = \
-StringJoin[OptionValue[\"Key\"], \" \", OptionValue[\"Scale\"]],\n  Mood = \
-mood[OptionValue[\"Scale\"]],\n  currentScale = OptionValue[\"Scale\"],\n  \
-currentKey = OptionValue[\"Key\"]\n},\n\nEventHandler[localControls, \
-{\"Instrument\" -> Function[i, instrument = i], \"Tuning\" -> Function[t, \
-stringTuning = t]}];\n\nEventHandler[ChordChart, Function[Null,\n  \
-callback[\"Chord\", {currentKey, currentScale}, instrument, \
-\"Tuning\"->stringTuning];\n]];\n\nEventHandler[ScaleChart, Function[Null,\n  \
-callback[\"Scale\", {currentKey, currentScale}, instrument, \
-\"Tuning\"->stringTuning];\n]];\n\n<div class=\"p-4 bg-white h-full \
-w-full\">\n  <div class=\"px-4 sm:px-0\">\n    <h3 class=\"text-base/7 \
-font-semibold text-gray-900\"><Title/></h3>\n    <p class=\"mt-1 max-w-2xl \
-text-sm/6 text-gray-500\"><Mood/></p>\n  </div>\n  <div class=\"mt-6 border-t \
-border-gray-100 flex flex-row gap-x-5\">\n    <dl class=\"divide-y \
-divide-gray-100 gap-y-3 flex flex-col\">\n      <CircleFifth/>\n    </dl>    \
-\n    <dl class=\"divide-y divide-gray-100 gap-y-3 flex flex-col\">\n      \
-<div class=\"flex flex-row gap-x-3\">\n        <ChordChart/>\n        \
-<ScaleChart/>\n      </div>\n      <p class=\"mt-1 max-w-2xl text-sm/6 \
-text-gray-500\">Select the instrument</p>\n      <TuningComponent/>\n    \
-</dl>\n  </div>\n</div>\n] ]", "Display" -> "codemirror", 
-    "Hash" -> "dba1ee0e-c4fc-4fe4-95f6-fe32ed10b28b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\nLandingWindow[Print[{##}]&, \"Scale\"->\"Major\", \
-\"Key\"->\"C\"]", "Display" -> "codemirror", 
-    "Hash" -> "c8dceeda-a81a-47b4-8f39-e4303b3d9035", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "<div class=\"p-4 bg-white h-full w-full\"><div class=\"px-4 \
-sm:px-0\"><h3 class=\"text-base/7 font-semibold text-gray-900\">C \
-Major</h3><p class=\"mt-1 max-w-2xl text-sm/6 text-gray-500\">Bright and \
-upbeat feeling</p></div><div class=\"mt-6 border-t border-gray-100 flex \
-flex-row gap-x-5\"><dl class=\"divide-y divide-gray-100 gap-y-3 flex \
-flex-col\">FrontEndExecutable[5e7488c0-648c-4048-97e5-3c76f4d21ccd]</dl><dl \
-class=\"divide-y divide-gray-100 gap-y-3 flex flex-col\"><div class=\"flex \
-flex-row \
-gap-x-3\">FrontEndExecutable[93a9531b-926f-4128-9d01-ba87b74216ac]FrontEndExe\
-cutable[37d6889a-a6ba-4ad6-8bad-5f310cd599f3]</div><p class=\"mt-1 max-w-2xl \
-text-sm/6 text-gray-500\">Select the instrument</p><div \
-class=\"py-1\"><fieldset class=\"text-sm mb-2 rounded\"><button \
-id=\"keys-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82\" class=\"px-2 py-1 \
-rounded ring-1 ring-inset ring-gray-200 bg-white\">Keys</button><button \
-id=\"strings-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82\" class=\"px-2 py-1 \
-rounded\">Strings</button></fieldset><div \
-id=\"strings-fd3a3ac3-4a06-42e4-b570-fb48c82edf82\" class=\"hidden text-sm \
-px-2 flex \
-flex-col\">FrontEndExecutable[1669f216-dace-49e6-b405-9f51ea471be8]FrontEndEx\
-ecutable[fb087bba-9f45-466a-8b9c-ecca1aa0960b]</div><script type=\"module\"> \
-const keysButton = \
-document.getElementById('keys-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82');\
-\n    const stringButton = \
-document.getElementById('strings-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82'\
-);\n    const container = \
-document.getElementById('strings-fd3a3ac3-4a06-42e4-b570-fb48c82edf82');\n\n  \
-  keysButton.addEventListener('click', () => {\n      \
-keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      stringButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.add('hidden');\n      \
-server.kernel.emitt('635a5b27-ddd2-4272-836c-99f9fc2a19f5', '\"Keys\"', \
-'Instrument');\n    });\n\n    stringButton.addEventListener('click', () => \
-{\n      stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 \
-bg-white'.split(' ')));\n      keysButton.classList.remove(...('ring-1 \
-ring-inset ring-gray-200 bg-white'.split(' ')));\n      \
-container.classList.remove('hidden');\n      \
-server.kernel.emitt('635a5b27-ddd2-4272-836c-99f9fc2a19f5', '\"Strings\"', \
-'Instrument');\n    })</script></div></dl></div></div>", "Display" -> "wlx", 
-    "Hash" -> "b3f4062a-98ee-4970-b9b4-f3d265625dc9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "currentTune$370513", "Display" -> "codemirror", 
-    "Hash" -> "037f42c9-677c-46d4-840a-c00a9dbf6ab2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "\"E1 B2 G4\"", "Display" -> "codemirror", 
-    "Hash" -> "b96db961-dbd3-480c-ac53-0d6dfe8bc135", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\n## Piano View", "Display" -> "codemirror", 
-    "Hash" -> "c93b70ac-e9c0-454a-a4ed-83c9841f2837", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Piano View", "Display" -> "markdown", 
-    "Hash" -> "7049ee1f-baf1-48f9-b1b4-1d7eb2e7da09", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "keyLevels = {0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, \
-0};\ngenerateKeys[keyCount_] := Module[\n  {index = 1, position = 1, \
-keyWidth, keyOffset},\n  Table[\n    With[\n      {\n        cycleIndex = \
-Mod[index - 1, 12] + 1,\n        level = keyLevels[[Mod[index - 1, 12] + \
-1]]\n      },\n      keyWidth = 0.5 - 0.2 level;\n      keyOffset = 0.5 \
-level;\n      position += 1 - level;\n      index++;\n      Rectangle[\n      \
-  {position - keyWidth + keyOffset, keyOffset},\n        {position + keyWidth \
-+ keyOffset, 1}\n      ]\n    ],\n    {keyCount}\n  \
-]\n];\n\nannotateKeys[keys_] := MapIndexed[\n  Annotation[#, \
-keyLevels[[Mod[#2[[1]] - 1, 12] + 1]], #2[[1]]] &,\n  \
-keys\n];\n\nhighlightNotes[skeys_, indexes_] := Map[Function[key,\n  \
-If[MemberQ[indexes, key[[3]]], \n    {Pink, key}\n  ,\n    key\n  ]\n], \
-skeys]\n\nseparateKeys[keys_] := Module[\n  {annotatedKeys = \
-annotateKeys[keys]},\n  {\n    Cases[annotatedKeys, Annotation[_, 0, _]],\n   \
- Cases[annotatedKeys, Annotation[_, 1, _]]\n  }\n];\n\n\nclicker[scene_, \
-separated_, keys_, additional_:{}, notes_, scale_:False][xy_] := With[{\n  \
-whiteMatch = SelectFirst[separated[[1]], RegionMember[#[[1]], xy]  &],\n  \
-blackMatch = SelectFirst[separated[[2]], RegionMember[#[[1]], xy]  &]\n},\n\n \
- With[{\n    key = If[!MissingQ[blackMatch], blackMatch[[3]], \
-whiteMatch[[3]]]\n  },\n  \n    If[scale === False, With[{group = \
-FrontInstanceGroup[]}, \n      \n      \
-FrontSubmit[NoteTranspose[SoundNote[Join[additional, \
-{key-1}]//DeleteDuplicates], 12] // Sound];\n      FrontSubmit[{\n        \
-Red, Text[notes[[Mod[# - 1, 12] + 1]], \n        Mean[List @@ (keys[[#]])] - \
-{0,0.2}, {0,0}] &/@ Join[(Mod[#, Length[keys]-1] &/@ additional)+1, {key}], \
-\n        Opacity[0.3], keys[[Join[((Mod[#, Length[keys]-1]) &/@ \
-additional)+1, {key}]]]\n      } // group, scene];\n    \n      \
-SetTimeout[Delete[group], 200];\n      Return[]\n    ]];\n\n    With[{sorted \
-= Join[additional, {key-1}]//DeleteDuplicates // Sort},\n      Do[With[{note \
-= sorted[[i]], window = CurrentWindow[]},\n        SetTimeout[\n          \
-FrontSubmit[NoteTranspose[SoundNote[note], 12] // Sound, \
-\"Window\"->window];\n          With[{group = FrontInstanceGroup[]},\n        \
-    FrontSubmit[{\n                    Red, Text[notes[[Mod[# - 1, 12] + 1]], \
-\n                    Mean[List @@ (keys[[#]])] - {0,0.2}, {0,0}] &/@ \
-Join[(Mod[#, Length[keys]-1] &/@ {note})+1, {key}], \n                    \
-Opacity[0.3], keys[[Join[((Mod[#, Length[keys]-1]) &/@ {note})+1, {key}]]]\n  \
-          } // group, scene, \"Window\"->window];   \n            \
-SetTimeout[Delete[group], 400];\n          ];\n        , (i-1)400 + 10];\n    \
-  ], {i, Length[sorted]}]\n    ];\n\n    \n  \
-]\n]\n\n\nClearAll[PianoView];\nPianoView[] := \
-PianoView[SoundNote[{}]]\nPianoView[SoundNote[rawNotes_List], \
-OptionsPattern[]] := Module[{\n  keys, separated, scene, scaleMode = False,\n \
- highlighted, names = {\"C\", \"C#\", \"D\", \"Eb\", \"E\", \"F\", \"F#\", \
-\"G\", \"Ab\", \"A\", \"Bb\", \"B\", \"C\"}, annotations,\n  notes = \
-convertToSemitones @ rawNotes\n},\n  keys = \
-generateKeys[OptionValue[\"Size\"]];\n\n  separated = separateKeys[keys];\n\n \
- scene = FrontInstanceReference[];\n\n  highlighted = Mod[#, Length[keys]] + \
-1 &/@ notes;\n  annotations = Text[names[[Mod[#, 12]+1]], Mean @ (\n    List \
-@@ keys[[Mod[#, Length[keys]] + 1]]\n  ) + {0.,-0.1}, {0,0}] &/@ notes;\n\n  \
-notes = Switch[OptionValue[\"Mode\"],\n    \"Play\",\n      notes,\n\n    \
-\"Show\",\n      {},\n\n    \"Scale\",\n      scaleMode = True; notes,\n    \
-_,\n      notes\n  ];\n\n  Graphics[{scene,\n    {White, EdgeForm[Gray], \
-highlightNotes[separated[[1]], highlighted], Black//Lighter, \
-highlightNotes[separated[[2]],highlighted]},\n    {Yellow, Opacity[0.3]}, \
-{Black, annotations},\n  EventHandler[Graphics`Canvas[], {\"click\" -> \
-clicker[scene, separated, keys, notes, names, scaleMode]}]\n  }, \
-ImageSize->OptionValue[ImageSize], \
-\"Controls\"->False]\n]\n\nOptions[PianoView] = {ImageSize->{500,200}, \
-\"Size\"->25, \"Mode\"->\"Play\"};\n\n", "Display" -> "codemirror", 
-    "Hash" -> "55f24fd2-2198-4e77-b1b6-ff4bb0f561e1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> 
-     "PianoView[SoundNote[{\"G5\", \"A5\", \"B\" }], \"Mode\"->\"Scale\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b46a1bab-6177-4379-b1aa-bec18c440f84", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"7970ec24-94e9-4686-9ba4-ffac9c2f81de\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm1uaG\
-6QmG5noWpqkWuqamFmY6VomJZropqUlJlsmG6VZGKakAgB+/BXx\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "201848d2-2aad-4d6e-b656-33ea61748f69", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\n## Guitar view", "Display" -> "codemirror", 
-    "Hash" -> "d60e573a-f0a5-458c-baf0-2653dcc06887", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Guitar view", "Display" -> "markdown", 
-    "Hash" -> "d2b1ab22-4203-408b-9c53-d814dd3b76c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "plucker[scene_, board_, highlighted_, additional_, \
-scaleQ_][xy_] := With[{\n  match = SelectFirst[board//Values//Flatten, \
-With[{reg = Disk[#[[1,1]], #[[1,2]] * 2] },\n    RegionMember[reg, xy]\n  \
-]&]\n},\n  If[MissingQ[match], Return[]];\n  With[{\n    notes = \
-Sort[Join[additional, {match[[2]]}]//DeleteDuplicates],\n    client = \
-CurrentWindow[]\n  },\n\n    If[scaleQ,\n      MapIndexed[Function[{val, \
-index},\n        SetTimeout[With[{group = FrontInstanceGroup[]},\n        \n  \
-        FrontSubmit[SoundNote[val, \"8n\"] // Sound, \"Window\"->client];\n   \
-       FrontSubmit[{\n            Opacity[0.7], highlighted[{val}, Red]\n     \
-     } // group, scene, \"Window\"->client];\n  \n          \
-SetTimeout[Delete[group], 450]; \n          \n        ], 450 * (index[[1]]-1) \
-+ 1]\n      ], notes];   \n    ,\n      With[{group = \
-FrontInstanceGroup[]},\n        FrontSubmit[SoundNote[notes] // Sound];\n     \
-   FrontSubmit[{\n          Opacity[0.7], highlighted[notes]\n        } // \
-group, scene];\n  \n        SetTimeout[Delete[group], 200];   \n      ]\n    \
-]\n  ]  \n]\n\n\nGuitarView[SoundNote[rawNotes_List], OptionsPattern[]] := \
-Module[{\n  tuning = convertToSemitones @ OptionValue[\"Tuning\"],\n  scene = \
-FrontInstanceReference[],\n  scaleQ = False,\n names = {\"C\", \"C#\", \"D\", \
-\"Eb\", \"E\", \"F\", \"F#\", \"G\", \"Ab\", \"A\", \"Bb\", \"B\", \"C\"}, \
-annotations,\n  notes = convertToSemitones @ rawNotes,\n  board, \
-highlighted,\n  semitoneTuning = Reverse[convertToSemitones @ \
-OptionValue[\"Tuning\"]]\n},\n\nnotes = Switch[OptionValue[\"Mode\"],\n    \
-\"Play\",\n      notes,\n\n    \"Show\",\n      {},\n\n    \"Scale\",\n      \
-scaleQ = True;\n      notes,\n\n    _,\n      notes\n  ];\n\nnotes = With[{c \
-= Mod[#, convertToSemitones @ (semitoneTuning[[-1]] + 12)]},\n  If[c < \
-semitoneTuning[[1]],\n    c + 12\n  ,\n    c\n  ]\n] &/@ notes;\n\nboard = \
-GroupBy[Flatten[\n  Table[With[{note = semitoneTuning[[y]] + x},\n    \
-Annotation[Disk[{x,y}, {0.15, 0.15 2.8 }], note, names[[Mod[note, 12]+1]]]\n  \
-], {x, 0, 12}, {y, Length[tuning]}]\n], #[[2]] &];\n\nhighlighted[notes_, \
-color_:Automatic] := {\n  If[color === Automatic, ColorData[97], color&] /@ \
-Range[notes // Length],\n  Map[Function[place, \n    If[place[[1,1,1]] > \
-0.5,\n      {place, White, Text[place[[3]] , place[[1,1]]- {0,0.16}, \
-{0,-1}]}\n    ,\n      place\n    ]\n  ], board[#]] &/@ \
-notes\n}//Transpose;\n\nGraphics[{\n  scene, EventHandler[Graphics`Canvas[], \
-{\"click\"->plucker[scene, board, highlighted, notes, scaleQ]}],\n  \
-Table[Line[{{0, string}, {12, string}}], {string, Length[tuning]}],\n  \
-Table[Line[{{i - 0.5, 1 - 0.2 }, {i - 0.5, Length[tuning] + 0.2}}], {i, \
-12}],\n  Table[Text[semitone[tuning[[Length[tuning] + 1 - string]]], {-0.4, \
-string - 0.2}, {-1,-1}], {string, Length[tuning]}],\n  {\n    \
-AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, Length[tuning]}}], \n    Gray, \
-Table[Disk[{0.5 + 2.5 + k, 0.3}, {0.15, 0.15 2.8 }/2], {k, 0, 6, 2}],\n    \
-Disk[{0.5 + 2.5 + 8.9, 0.3}, {0.15, 0.15 2.8 }/2], Disk[{0.5 + 2.5 + 9.1, \
-0.3}, {0.15, 0.15 2.8 }/2]\n  },\n  \n  highlighted[notes]\n  \n}, \
-ImageSize->OptionValue[ImageSize], \"Controls\"->False, ImagePadding->None, \
-PlotRange->{{0 - 0.5, 12 + 0.5}, {0, Length[tuning] + \
-.5}}]\n]\n\nOptions[GuitarView] = {\"Tuning\"->({\"E4\", \"A4\", \"D5\", \
-\"G5\", \"B5\", \"E6\"}//Reverse), \"Mode\"->\"Play\", ImageSize->(1.2 \
-{500,100})}\n\n", "Display" -> "codemirror", 
-    "Hash" -> "6c1d80ae-4fb8-4866-a6dd-4c713422c6fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "{\"Tuning\"->{\"E6\",\"B5\",\"G5\",\"D5\",\"A4\",\"E4\"},\"Mo\
-de\"->\"Play\",ImageSize->{600.`,120.`}}", "Display" -> "codemirror", 
-    "Hash" -> "dfe7d044-9e67-4f9c-8b5b-a51340070cda", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> 
-     "GuitarView[SoundNote[{\"E4\", \"G5\", \"B4\"}], \"Mode\"->\"Scale\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4d365bf1-b02c-40da-bb70-d32d3c6d5c80", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"1658f480-2dd5-407e-a6e7-786a8d2eded0\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5qZW\
-qSZWBjoGqWkmOqaGJin6iaapZrrmluYJVqkGKWmpKYYAAB7NBWx\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "76b72b13-f16b-4c7e-a041-c0d7f21ac68f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "EvaluationNotebook[]", "Display" -> "codemirror", 
-    "Hash" -> "72bb4a5e-1451-472c-a36f-7c43b275c24f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "RemoteNotebook[\"68d64a5d-d727-419f-8a86-e9665e84a280\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ae379f92-7197-424a-bc45-af51a7e069ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\n## Output widget", "Display" -> "codemirror", 
-    "Hash" -> "78789917-a254-4e0f-8c41-1850f2269fa3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "## Output widget", "Display" -> "markdown", 
-    "Hash" -> "7ff07403-035e-48c6-9117-44222849e03b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\ninternalMiddleware[notebook_][rest__] := \
-internalHandler[rest, \"Notebook\"->notebook];\n\ninternalHandler[\"Scale\", \
-{currentKey_, currentScale_}, \"Keys\", OptionsPattern[]] := \
-CellPrint[With[{\n  Widget = PianoView[\n    With[{scaleMaker = \
-makeScale[currentKey, scale[currentScale]]},\n      scaleMaker /@ \
-Range[12-4]\n    ] // SoundNote\n  , \"Mode\"->\"Scale\"],\n  Title = \
-StringTemplate[\"`` ``\"][currentKey, currentScale],\n  Mood = \
-mood[currentScale]\n},\n<div class=\"p-4 bg-white h-full w-full\">\n  <div \
-class=\"pb-2\">\n    <h3 class=\"text-base/7 font-semibold \
-text-gray-900\"><Title/></h3>\n  </div>\n  <Widget/>\n</div>\n], \
-\"Notebook\"->OptionValue[\"Notebook\"], \"Target\"->_, \
-\"Display\"->\"wlx\"]\n\n\ninternalHandler[\"Scale\", {currentKey_, \
-currentScale_}, \"Strings\", OptionsPattern[]] := CellPrint[With[{\n  Widget \
-= GuitarView[\n    With[{scaleMaker = makeScale[currentKey, \
-scale[currentScale]]},\n      With[{notes = scaleMaker /@ Range[12-4] // \
-SoundNote},\n        NoteMerge[NoteTranspose[notes, 12], NoteTranspose[notes, \
-12 2], NoteTranspose[notes, 12 3]]\n      ]\n    ] \n  , \"Mode\"->\"Scale\", \
-\"Tuning\"->(OptionValue[\"Tuning\"])],\n  Title = StringTemplate[\"`` \
-``\"][currentKey, currentScale],\n  Mood = mood[currentScale]\n},\n<div \
-class=\"p-4 bg-white h-full w-full\">\n  <div class=\"pb-2\">\n    <h3 \
-class=\"text-base/7 font-semibold text-gray-900\"><Title/></h3>\n  </div>\n  \
-<Widget/>\n</div>\n], \"Notebook\"->OptionValue[\"Notebook\"], \"Target\"->_, \
-\"Display\"->\"wlx\"]\n\nOptions[internalHandler] = {\"Notebook\"->\"\", \
-\"Tuning\"->\"\"};", "Display" -> "codemirror", 
-    "Hash" -> "bffdb15e-4217-4ac7-9d63-edf18f5a45fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".md\nChord maker", "Display" -> "codemirror", 
-    "Hash" -> "c86c72a6-05ee-4ac8-8907-1bbb35d1e35a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "Chord maker", "Display" -> "markdown", 
-    "Hash" -> "cf08317d-cf13-4bb4-923c-38769b93e47d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\ninternalHandler[\"Chord\", {CurrentKey_, \
-CurrentScale_}, \"Keys\", OptionsPattern[]] := CellPrint[With[{m = \
-makeChord[CurrentKey, CurrentScale, 3]},\n  With[{TableList = Table[With[{\n  \
-  Widget = PianoView[m[r], ImageSize->{270,100}], \n    Roman = r\n  },\n    \
-<div class=\"flex flex-row gap-x-2 items-center\">\n      <Widget/>\n      \
-<h3><Roman/></h3>\n    </div>\n  ], {r, {\"I\", \"II\", \"III\", \"IV\", \
-\"V\", \"VI\"}}]},\n\n    <div class=\"flex flex-col gap-y-2 p-4 \
-bg-white\">\n      <p class=\"mt-1 max-w-2xl text-sm/6 \
-text-gray-500\"><CurrentKey/><span> </span><CurrentScale/></p>\n      \
-<TableList/>\n    </div>\n  ]\n], \"Notebook\"->OptionValue[\"Notebook\"], \
-\"Target\"->_, \"Display\"->\"wlx\"]\n\ninternalHandler[\"Chord\", \
-{CurrentKey_, CurrentScale_}, \"Strings\", OptionsPattern[]] := \
-CellPrint[With[{m = makeChord[CurrentKey, CurrentScale, 3]},\n  \
-With[{TableList = Table[With[{\n    Widget = \
-GuitarView[NoteMerge[NoteTranspose[m[r], 12], NoteTranspose[m[r], 24], \
-NoteTranspose[m[r], 12 3]], ImageSize->( {500,100}), \
-\"Tuning\"->OptionValue[\"Tuning\"]], \n    Roman = r\n  },\n    <div \
-class=\"flex flex-row gap-x-2 items-center\">\n      <Widget/>\n      \
-<h3><Roman/></h3>\n    </div>\n  ], {r, {\"I\", \"II\", \"III\", \"IV\", \
-\"V\", \"VI\"}}]},\n\n    <div class=\"flex flex-col gap-y-2 p-4 \
-bg-white\">\n      <p class=\"mt-1 max-w-2xl text-sm/6 \
-text-gray-500\"><CurrentKey/><span> </span><CurrentScale/></p>\n      \
-<TableList/>\n    </div>\n  ]\n], \"Notebook\"->OptionValue[\"Notebook\"], \
-\"Target\"->_, \"Display\"->\"wlx\"]", "Display" -> "codemirror", 
-    "Hash" -> "a1f073b7-87c0-474e-ae48-e85f7905cd2d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "7d6cda6a-c31b-468c-8d6a-359edc7351fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>, 
-   <|"Data" -> ".wlx\n\nWith[{notebook = EvaluationNotebook[]},\n  \
-With[{MainWindow = mainWindow[Function[keyScale,\n    \
-CellPrint[LandingWindow[internalMiddleware[notebook], \"Key\"->keyScale[[1]], \
-\"Scale\"->keyScale[[2]]], \"Notebook\"->notebook, \"Target\"->_, \
-\"Display\"->\"wlx\"];\n  ]]\n  },\n<div class=\"p-4 bg-white h-full \
-w-full\">\n  <div class=\"px-4 sm:px-0\">\n    <p class=\"mt-1 max-w-2xl \
-text-sm/6 text-gray-500\">Pick scale and key</p>\n  </div>\n  \
-<MainWindow/>\n</div>\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "b6c4d1ed-37c3-45da-9b5c-67328e729b41", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3f3b2c50-fe98-4381-b29e-37f9bf2854b8"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Musical scales on piano and guitar
+A small widget, which allows to build chords from scales, play them and show on both: strings and keys. 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Musical scales on piano and guitar
+A small widget, which allows to build chords from scales, play them and show on both: strings and keys. 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Internal framework
+Allows to work with notes easier
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Internal framework
+Allows to work with notes easier
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[semitone, scale, mood, tuning];
+normalizeNoteName[s_String] := With[{trim = StringTrim[s]},
+  If[StringLength[trim] == 0, trim, ToUpperCase[StringTake[trim, 1]] <> StringReplace[StringDrop[trim, 1], {"#"->"#", "b"->"b", "B"->"b"}]]
+]
+
+convertToSemitones[s_String] := With[{c = StringCases[s, {a__~~b:DigitCharacter :> {a,ToExpression[b]}, a__ :> {a,4}}]//First},
+  semitone[normalizeNoteName[c[[1]]]] + (c[[2]] - 4) 12
+]
+convertToSemitones[s_] := s;
+
+convertToSemitones[l_List] := convertToSemitones /@ l
+
+semitone[0] = "C";
+semitone[1] = "C#";
+semitone[2] = "D";
+semitone[3] = "Eb";
+semitone[4] = "E";
+semitone[5] = "F";
+semitone[6] = "F#";
+semitone[7] = "G";
+semitone[8] = "G#";
+semitone[9] = "A";
+semitone[10] = "Bb";
+semitone[11] = "B";
+
+semitone[n_Integer] := semitone[Mod[n, 12]] /; n < 0 || n > 11
+
+semitone["C"] = 0;
+semitone["B#"] = 0;
+semitone["C#"] = 1;
+semitone["Db"] = 1;
+semitone["D"] = 2;
+semitone["D#"] = 3;
+semitone["Eb"] = 3;
+semitone["E"] = 4;
+semitone["Fb"] = 4;
+semitone["E#"] = 5;
+semitone["F"] = 5;
+semitone["F#"] = 6;
+semitone["Gb"] = 6;
+semitone["G"] = 7;
+semitone["G#"] = 8;
+semitone["Ab"] = 8;
+semitone["A"] = 9;
+semitone["A#"] = 10;
+semitone["Bb"] = 10;
+semitone["B"] = 11;
+semitone["Cb"] = 11;
+
+scale["Major"] = {2, 2, 1, 2, 2, 2, 1};
+mood["Major"] = "Bright and upbeat feeling";
+scale["Natural Minor"] = {2, 1, 2, 2, 1, 2, 2};
+mood["Natural Minor"] = "Sad and reflective feeling";
+scale["Minor"] = scale["Natural Minor"];
+mood["Minor"] = mood["Natural Minor"];
+scale["Harmonic Minor"] = {2, 1, 2, 2, 1, 3, 1};
+mood["Harmonic Minor"] = "Dark and dramatic feeling";
+scale["Melodic Minor"] = {2, 1, 2, 2, 2, 2, 1};
+mood["Melodic Minor"] = "Minor with a lifted, modern color";
+scale["Major Pentatonic"] = {2, 2, 3, 2, 3};
+mood["Major Pentatonic"] = "Joyful and open feeling";
+scale["Minor Pentatonic"] = {3, 2, 2, 3, 2};
+mood["Minor Pentatonic"] = "Bluesy and soulful feeling";
+scale["Blues"] = {3, 2, 1, 1, 3, 2};
+mood["Blues"] = "Gritty and expressive feeling";
+scale["Dorian"] = {2, 1, 2, 2, 2, 1, 2};
+mood["Dorian"] = "Mellow and jazzy feeling";
+scale["Phrygian"] = {1, 2, 2, 2, 1, 2, 2};
+mood["Phrygian"] = "Exotic and tense feeling";
+scale["Lydian"] = {2, 2, 2, 1, 2, 2, 1};
+mood["Lydian"] = "Dreamy and mystical feeling";
+scale["Mixolydian"] = {2, 2, 1, 2, 2, 1, 2};
+mood["Mixolydian"] = "Bluesy and relaxed feeling";
+scale["Locrian"] = {1, 2, 2, 1, 2, 2, 2};
+mood["Locrian"] = "Unstable and diminished feeling";
+scale["Phrygian Dominant"] = {1, 3, 1, 2, 1, 2, 2};
+mood["Phrygian Dominant"] = "Spanish and tense feeling";
+scale["Whole Tone"] = {2, 2, 2, 2, 2, 2};
+mood["Whole Tone"] = "Floating and symmetrical feeling";
+scale["Chromatic"] = ConstantArray[1, 12];
+mood["Chromatic"] = "All semitones";
+scale["Diminished Whole Half"] = {2, 1, 2, 1, 2, 1, 2, 1};
+mood["Diminished Whole Half"] = "Symmetrical diminished color";
+scale["Diminished Half Whole"] = {1, 2, 1, 2, 1, 2, 1, 2};
+mood["Diminished Half Whole"] = "Dominant diminished color";
+
+scaleDegreeCount[steps_List] := Length[steps] + 1
+scaleNotes[root_, steps_List] := With[{scaleMaker = makeScale[root, steps]},
+  scaleMaker /@ Range[scaleDegreeCount[steps]]
+]
+scaleNotes[root_, scalename_String] := scaleNotes[root, scale[scalename]]
+
+tuning["Standard"] = {"E6", "B5", "G5", "D5", "A4", "E4"};
+tuning["Drop D"] = {"E6", "B5", "G5", "D5", "A4", "D4"};
+tuning["Half Step Down"] = {"Eb6", "Bb5", "Gb5", "Db5", "Ab4", "Eb4"};
+tuning["Whole Step Down"] = {"D6", "A5", "F5", "C5", "G4", "D4"};
+tuning["D Standard"] = tuning["Whole Step Down"];
+tuning["C# Standard"] = {"C#6", "G#5", "E5", "B4", "F#4", "C#4"};
+tuning["C Standard"] = {"C6", "G5", "Eb5", "Bb4", "F4", "C4"};
+tuning["B Standard"] = {"B5", "F#5", "D5", "A4", "E4", "B3"};
+tuning["Drop C#"] = {"Eb6", "Bb5", "Gb5", "Db5", "Ab4", "Db4"};
+tuning["Drop Db"] = tuning["Drop C#"];
+tuning["Drop C"] = {"D6", "A5", "F5", "C5", "G4", "C4"};
+tuning["Drop B"] = {"C#6", "G#5", "E5", "B4", "F#4", "B3"};
+tuning["Drop Bb"] = {"C6", "G5", "Eb5", "Bb4", "F4", "Bb3"};
+tuning["Drop A"] = {"B5", "F#5", "D5", "A4", "E4", "A3"};
+tuning["Drop Ab"] = {"Bb5", "F5", "Db5", "Ab4", "Eb4", "Ab3"};
+tuning["DADGAD"] = {"D6", "A5", "G5", "D5", "A4", "D4"};
+tuning["Open D"] = {"D6", "A5", "F#5", "D5", "A4", "D4"};
+tuning["Open G"] = {"D6", "B5", "G5", "D5", "G4", "D4"};
+
+majorQ[SoundNote[n_List]] := With[{notes = Sort[convertToSemitones @ n]},
+  notes[[2]] - notes[[1]] > 3
+]
+
+makeScale[root_Integer, steps_List] := With[{base = Accumulate[Join[{root}, steps]]},
+  (base[[Mod[#-1, Length[base]-1] + 1]] + 12 Floor[# / Length[base]]) &
+]
+
+makeScale[root_String, steps_List] := makeScale[convertToSemitones[root], steps]
+
+makeChord[root_, scalename_String, ext_Integer:3] := With[{s = makeScale[root, scale[scalename]]},
+  chordObject[s, ext]
+]
+
+NoteTranspose[SoundNote[l_List], i_Integer] := With[{c = convertToSemitones[l]}, 
+  SoundNote[Map[(# + i)&, c]]
+]
+
+NoteTranspose[SoundNote[l_Integer], i_Integer] := With[{c = convertToSemitones[l]}, 
+  SoundNote[c + i]
+]
+
+NoteMerge[s:(SoundNote[_List]..)] := SoundNote[DeleteDuplicates[convertToSemitones[Join @@ ({s}[[All,1]])]]]
+
+makeChord[root_, scalename_String, ext_String];
+makeChord[root_, scalename_String, ext_Integer, mod_Rule];
+makeChord[root_, scalename_String, ext_Integer, mod:{__Rule}];
+
+chordObject[s_, ext_][offset_String] := chordObject[s, ext][FromRomanNumeral[offset]-1]
+
+chordObject[s_, ext_][offset_Integer] := SoundNote @ Table[s[i + offset], {i, 1, 2 ext, 2}]
+
+NoteNormalize[SoundNote[l_List], {min_, max_}] := With[{notes = convertToSemitones @ l},
+  SoundNote[DeleteDuplicates[Map[Function[n, Module[{c = n},
+    While[c < min, c += 12];
+    While[c > max, c -= 12];
+    c
+  ]], notes]]]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Components
+
+### Circle of 5s
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Components
+
+### Circle of 5s
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+pad2 = With[{
+c2 = {Cos[ Pi/2 - Pi/12], Sin[ Pi/2 - Pi/12]} // N,
+c3 = {Cos[1 2Pi/12 + Pi/2 - Pi/12], Sin[1 2Pi/12 + Pi/2 - Pi/12]} //N 
+},
+  RegionIntersection[RegionDifference[Polygon[{c2 0.1, 1.5 c2, 1.5 c3, c3 0.1}], Disk[{0,0}, 0.25]],
+    Disk[{0,0}, (0.75+0.5)/2]
+  ]
+] // BoundaryDiscretizeRegion // MeshCoordinates // Polygon;
+
+pad1 = With[{
+c2 = {Cos[ Pi/2 - Pi/12], Sin[ Pi/2 - Pi/12]} // N,
+c3 = {Cos[1 2Pi/12 + Pi/2 - Pi/12], Sin[1 2Pi/12 + Pi/2 - Pi/12]} //N 
+},
+  RegionIntersection[RegionDifference[Polygon[{c2 0.1, 1.5 c2, 1.5 c3, c3 0.1}], Disk[{0,0}, (0.75+0.5)/2]],
+    Disk[{0,0}, (((0.75 + 1)/2.0) + 1)/2.0]
+  ]
+] // BoundaryDiscretizeRegion // MeshCoordinates // Polygon;
+
+circleFifth[key_, scale_] := Graphics[{Table[With[{
+  c1 = {Cos[-i 2Pi/12 + Pi/2], Sin[-i 2Pi/12 + Pi/2]},
+  c2 = {Cos[-i 2Pi/12 + Pi/2 - Pi/12], Sin[-i 2Pi/12 + Pi/2 - Pi/12]} //N,
+  chord = makeChord[key, scale, 3][i]
+}, {
+
+  Line[{0.25 c2, c2}],
+  Text[RomanNumeral[i+1], c1, {0,0}],
+  
+  {Opacity[0.3], ColorData[35][i+6], Rotate[If[majorQ[chord], {
+    EventHandler[pad1, {"click" -> Function[Null, NoteNormalize[NoteMerge[chord, NoteTranspose[chord, 12]], {12,24+12}] // Sound // EmitSound]}],
+    Opacity[1], Directive[FontSize->12], Text[semitone[chord[[1,1]]], pad1 // RegionCentroid, {0,0}]
+  }, {
+    EventHandler[pad2, {"click" -> Function[Null, NoteNormalize[NoteMerge[chord, NoteTranspose[chord, 12]], {12, 24+12}] // Sound // EmitSound]}],
+    Opacity[1], Directive[FontSize->12], Text[semitone[chord[[1,1]]] <> "m", pad2 // RegionCentroid, {0,0}]
+  }], i 2 Pi/12, {0,0}]}
+}], {i, 0,11}],
+
+Circle[{0,0}, 0.25],
+Circle[{0,0}, (0.75+0.5)/2]
+
+}, "Controls"->False, ImageSize->{250,250}]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Windows
+### Main window with search
+Helper functions
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Windows
+### Main window with search
+Helper functions
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+scaleSearchScore[scaleName_, words_] := Total @ Map[Function[word,
+  Count[
+    StringMatchQ[#, ___~~word~~___, IgnoreCase->True]& /@ StringSplit[scaleName, " "],
+    True
+  ]
+], DeleteCases[words, ""]]
+
+searchScale[text_] := With[{
+  scales = DownValues[scale][[All,1,1,1]]
+},
+  With[{words = StringTrim /@ StringSplit[text, " "]},
+    With[{key = SelectFirst[words, StringLength[#] <= 2 && NumberQ[semitone[normalizeNoteName[#]]]&]},
+      If[MissingQ[key],
+        <|"Key"->Missing[], "Scales"->Table[{scale, scaleSearchScore[scale, words]}, {scale, scales}]|>
+      ,
+        With[{rest = words /. {key -> Nothing}},
+          <|"Key"->normalizeNoteName[key], "Scales"->Table[{scale, scaleSearchScore[scale, rest]}, {scale, scales}]|>
+        ]
+      ]
+    ]
+  ]
+]
+
+pickScales[data_, n_:10] := With[{scales = Take[SortBy[data["Scales"], -#[[2]]&], Min[n, Length[data["Scales"]]]][[All,1]]},
+  If[MissingQ[data["Key"]],
+    Table[k -> {"C", k}, {k, scales}] // Association
+  ,
+    Table[StringTemplate["`` ``"][data["Key"], k] -> {data["Key"], k}, {k, scales}] // Association
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+mainWindow[callback_] := Module[{pick = Null}, With[{
+  InputField = InputAutocomplete[Function[{text, cbk},
+    pick = pickScales[searchScale[text]];
+    pick//Keys//cbk;
+  ], "ClearOnSubmit"->True]
+},
+
+  EventHandler[InputField, Function[selected,
+    If[MissingQ[pick[selected]] || pick === Null,
+      Notify["Key / Scale does not exist", "Type"->"Warning"];
+      Return[];
+    ];
+
+    callback @ (pick[selected]) 
+  ]];
+
+  <div>
+    <InputField/>
+  </div>
+
+]
+]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CellView[mainWindow[Print[{##}]&], "Display"->"wlx"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["532235e0-ff61-4965-a2a8-164886fc87e2"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxobGRmbphropqWZGeqaWJqZ6iYaJVroGpqZWFiYpSVbmKcaAQBzhBTz"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Circle5 window
+
+Tuning component
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Circle5 window
+
+Tuning component
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+Options[TuningComponent] = {"Event"->""}
+TuningComponent[OptionsPattern[]] := Module[{
+  Event = OptionValue["Event"],
+  UId = CreateUUID[],
+  tunings = DownValues[tuning][[All,1,1,1]],
+  currentTune = StringRiffle[tuning["Standard"], " "],
+  buffer
+},
+
+With[{
+  TuningField = InputAutocomplete[Function[{input, cbk}, 
+    buffer = SortBy[Table[{tuning, Total @ Map[Function[word, Count[
+              Map[Function[tuningWord, StringMatchQ[tuningWord, ___~~word~~___, IgnoreCase->True] ], StringSplit[tuning, " "]]
+            , True]], StringSplit[input, " "]]}, {tuning, tunings}], Function[l, -l[[2]]]];
+    cbk[buffer[[All,1]]];
+
+  ], "Standard", "Label"->"Tuning", "ClearOnSubmit"->False],
+
+  TuningFieldCurrent = CreateFrontEndObject[TextView[currentTune // Offload]]
+},
+
+EventHandler[TuningField, {
+
+  "Selected" -> Function[key,
+    currentTune = StringRiffle[tuning[key], " "];
+    Beep[];
+    EventFire[Event, "Tuning", convertToSemitones @ tuning[key]];
+  ],
+
+  "Entered" -> Function[input,
+    currentTune = input;
+    Echo[input];
+    With[{semitones = convertToSemitones @ StringSplit[input, " "]},
+      If[!TrueQ[AllTrue[semitones, NumberQ]], 
+        Notify["Tuning must be like E5 D5 ... form", "Type"->"Warning"];
+        Return[];
+      ];
+
+      EventFire[Event, "Tuning", semitones];
+    ]
+  ]
+}];
+
+<div class="py-1">
+  <fieldset class="text-sm mb-2 rounded">
+    <button id="keys-button-{UId}" class="px-2 py-1 rounded ring-1 ring-inset ring-gray-200 bg-white">Keys</button>
+    <button id="strings-button-{UId}" class="px-2 py-1 rounded">Strings</button>
+  </fieldset>
+  <div id="strings-{UId}" class="hidden text-sm px-2 flex flex-col">
+    <TuningField/>
+    <TuningFieldCurrent/>
+  </div>
+  <script type="module">
+    const keysButton = document.getElementById('keys-button-<UId/>');
+    const stringButton = document.getElementById('strings-button-<UId/>');
+    const container = document.getElementById('strings-<UId/>');
+
+    keysButton.addEventListener('click', () => {
+      keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      stringButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      container.classList.add('hidden');
+      server.kernel.emitt('<Event/>', '"Keys"', 'Instrument');
+    });
+
+    stringButton.addEventListener('click', () => {
+      stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      keysButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      container.classList.remove('hidden');
+      server.kernel.emitt('<Event/>', '"Strings"', 'Instrument');
+    })
+  </script>
+</div>
+]]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CellView[TuningComponent["Event"->"bullshit"] , "Display"->"wlx"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["8b2319a0-4025-4f50-96b5-be8bc20c09ea"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKWyQZGRtaJhromhgYmeqapJka6FqaJZnqJqVaJCUbGSQbWKYmAgB2NxVl"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Notify["Tuning must be like E5 D5 ... form", "Type"->"Warning"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Main window
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Main window
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+Options[LandingWindow] = {"Key"->"C", "Scale"->"Major"}
+LandingWindow[callback_, OptionsPattern[]] := Module[{
+  stringTuning = tuning["Standard"],
+  localControls = CreateUUID[],
+  instrument = "Keys"
+},
+
+With[{
+  CircleFifth = circleFifth[OptionValue["Key"], OptionValue["Scale"]],
+  TuningComponent = TuningComponent["Event"->localControls],
+  ChordChart = InputButton["Chord charts", "Style"->"box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px"],
+  ScaleChart = InputButton["Scale charts", "Style"->"box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px"],
+  Title = StringJoin[OptionValue["Key"], " ", OptionValue["Scale"]],
+  Mood = mood[OptionValue["Scale"]],
+  currentScale = OptionValue["Scale"],
+  currentKey = OptionValue["Key"]
+},
+
+EventHandler[localControls, {"Instrument" -> Function[i, instrument = i], "Tuning" -> Function[t, stringTuning = t]}];
+
+EventHandler[ChordChart, Function[Null,
+  callback["Chord", {currentKey, currentScale}, instrument, "Tuning"->stringTuning];
+]];
+
+EventHandler[ScaleChart, Function[Null,
+  callback["Scale", {currentKey, currentScale}, instrument, "Tuning"->stringTuning];
+]];
+
+<div class="p-4 bg-white h-full w-full">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base/7 font-semibold text-gray-900"><Title/></h3>
+    <p class="mt-1 max-w-2xl text-sm/6 text-gray-500"><Mood/></p>
+  </div>
+  <div class="mt-6 border-t border-gray-100 flex flex-row gap-x-5">
+    <dl class="divide-y divide-gray-100 gap-y-3 flex flex-col">
+      <CircleFifth/>
+    </dl>    
+    <dl class="divide-y divide-gray-100 gap-y-3 flex flex-col">
+      <div class="flex flex-row gap-x-3">
+        <ChordChart/>
+        <ScaleChart/>
+      </div>
+      <p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Select the instrument</p>
+      <TuningComponent/>
+    </dl>
+  </div>
+</div>
+] ]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+LandingWindow[Print[{##}]&, "Scale"->"Major", "Key"->"C"]
+
+%-------------------------------------------------------------------------%
+Display: wlx
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="p-4 bg-white h-full w-full"><div class="px-4 sm:px-0"><h3 class="text-base/7 font-semibold text-gray-900">C Major</h3><p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Bright and upbeat feeling</p></div><div class="mt-6 border-t border-gray-100 flex flex-row gap-x-5"><dl class="divide-y divide-gray-100 gap-y-3 flex flex-col">FrontEndExecutable[5e7488c0-648c-4048-97e5-3c76f4d21ccd]</dl><dl class="divide-y divide-gray-100 gap-y-3 flex flex-col"><div class="flex flex-row gap-x-3">FrontEndExecutable[93a9531b-926f-4128-9d01-ba87b74216ac]FrontEndExecutable[37d6889a-a6ba-4ad6-8bad-5f310cd599f3]</div><p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Select the instrument</p><div class="py-1"><fieldset class="text-sm mb-2 rounded"><button id="keys-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82" class="px-2 py-1 rounded ring-1 ring-inset ring-gray-200 bg-white">Keys</button><button id="strings-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82" class="px-2 py-1 rounded">Strings</button></fieldset><div id="strings-fd3a3ac3-4a06-42e4-b570-fb48c82edf82" class="hidden text-sm px-2 flex flex-col">FrontEndExecutable[1669f216-dace-49e6-b405-9f51ea471be8]FrontEndExecutable[fb087bba-9f45-466a-8b9c-ecca1aa0960b]</div><script type="module"> const keysButton = document.getElementById('keys-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82');
+    const stringButton = document.getElementById('strings-button-fd3a3ac3-4a06-42e4-b570-fb48c82edf82');
+    const container = document.getElementById('strings-fd3a3ac3-4a06-42e4-b570-fb48c82edf82');
+
+    keysButton.addEventListener('click', () => {
+      keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      stringButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      container.classList.add('hidden');
+      server.kernel.emitt('635a5b27-ddd2-4272-836c-99f9fc2a19f5', '"Keys"', 'Instrument');
+    });
+
+    stringButton.addEventListener('click', () => {
+      stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      keysButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));
+      container.classList.remove('hidden');
+      server.kernel.emitt('635a5b27-ddd2-4272-836c-99f9fc2a19f5', '"Strings"', 'Instrument');
+    })</script></div></dl></div></div>
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+currentTune$370513
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"E1 B2 G4"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Piano View
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Piano View
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+keyLevels = {0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0};
+generateKeys[keyCount_] := Module[
+  {index = 1, position = 1, keyWidth, keyOffset},
+  Table[
+    With[
+      {
+        cycleIndex = Mod[index - 1, 12] + 1,
+        level = keyLevels[[Mod[index - 1, 12] + 1]]
+      },
+      keyWidth = 0.5 - 0.2 level;
+      keyOffset = 0.5 level;
+      position += 1 - level;
+      index++;
+      Rectangle[
+        {position - keyWidth + keyOffset, keyOffset},
+        {position + keyWidth + keyOffset, 1}
+      ]
+    ],
+    {keyCount}
+  ]
+];
+
+annotateKeys[keys_] := MapIndexed[
+  Annotation[#, keyLevels[[Mod[#2[[1]] - 1, 12] + 1]], #2[[1]]] &,
+  keys
+];
+
+highlightNotes[skeys_, indexes_] := Map[Function[key,
+  If[MemberQ[indexes, key[[3]]], 
+    {Pink, key}
+  ,
+    key
+  ]
+], skeys]
+
+separateKeys[keys_] := Module[
+  {annotatedKeys = annotateKeys[keys]},
+  {
+    Cases[annotatedKeys, Annotation[_, 0, _]],
+    Cases[annotatedKeys, Annotation[_, 1, _]]
+  }
+];
+
+
+clicker[scene_, separated_, keys_, additional_:{}, notes_, scale_:False][xy_] := With[{
+  whiteMatch = SelectFirst[separated[[1]], RegionMember[#[[1]], xy]  &],
+  blackMatch = SelectFirst[separated[[2]], RegionMember[#[[1]], xy]  &]
+},
+
+  With[{
+    key = If[!MissingQ[blackMatch], blackMatch[[3]], whiteMatch[[3]]]
+  },
+  
+    If[scale === False, With[{group = FrontInstanceGroup[]}, 
+      
+      FrontSubmit[NoteTranspose[SoundNote[Join[additional, {key-1}]//DeleteDuplicates], 12] // Sound];
+      FrontSubmit[{
+        Red, Text[notes[[Mod[# - 1, 12] + 1]], 
+        Mean[List @@ (keys[[#]])] - {0,0.2}, {0,0}] &/@ Join[(Mod[#, Length[keys]-1] &/@ additional)+1, {key}], 
+        Opacity[0.3], keys[[Join[((Mod[#, Length[keys]-1]) &/@ additional)+1, {key}]]]
+      } // group, scene];
+    
+      SetTimeout[Delete[group], 200];
+      Return[]
+    ]];
+
+    With[{sorted = Join[additional, {key-1}]//DeleteDuplicates // Sort},
+      Do[With[{note = sorted[[i]], window = CurrentWindow[]},
+        SetTimeout[
+          FrontSubmit[NoteTranspose[SoundNote[note], 12] // Sound, "Window"->window];
+          With[{group = FrontInstanceGroup[]},
+            FrontSubmit[{
+                    Red, Text[notes[[Mod[# - 1, 12] + 1]], 
+                    Mean[List @@ (keys[[#]])] - {0,0.2}, {0,0}] &/@ Join[(Mod[#, Length[keys]-1] &/@ {note})+1, {key}], 
+                    Opacity[0.3], keys[[Join[((Mod[#, Length[keys]-1]) &/@ {note})+1, {key}]]]
+            } // group, scene, "Window"->window];   
+            SetTimeout[Delete[group], 400];
+          ];
+        , (i-1)400 + 10];
+      ], {i, Length[sorted]}]
+    ];
+
+    
+  ]
+]
+
+
+ClearAll[PianoView];
+PianoView[] := PianoView[SoundNote[{}]]
+PianoView[SoundNote[rawNotes_List], OptionsPattern[]] := Module[{
+  keys, separated, scene, scaleMode = False,
+  highlighted, names = {"C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"}, annotations,
+  notes = convertToSemitones @ rawNotes
+},
+  keys = generateKeys[OptionValue["Size"]];
+
+  separated = separateKeys[keys];
+
+  scene = FrontInstanceReference[];
+
+  notes = Switch[OptionValue["Mode"],
+    "Play",
+      notes,
+
+    "Show",
+      {},
+
+    "Scale",
+      scaleMode = True; notes,
+    _,
+      notes
+  ];
+
+  highlighted = Mod[#, Length[keys]] + 1 &/@ notes;
+  annotations = Text[names[[Mod[#, 12]+1]], Mean @ (
+    List @@ keys[[Mod[#, Length[keys]] + 1]]
+  ) + {0.,-0.1}, {0,0}] &/@ notes;
+
+  Graphics[{scene,
+    {White, EdgeForm[Gray], highlightNotes[separated[[1]], highlighted], Black//Lighter, highlightNotes[separated[[2]],highlighted]},
+    {Yellow, Opacity[0.3]}, {Black, annotations},
+  EventHandler[Graphics`Canvas[], {"click" -> clicker[scene, separated, keys, notes, names, scaleMode]}]
+  }, ImageSize->OptionValue[ImageSize], "Controls"->False, Background->White]
+]
+Options[PianoView] = {ImageSize->{500,200}, "Size"->25, "Mode"->"Play"};
+
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+PianoView[SoundNote[{"G5", "A5", "B" }], "Mode"->"Scale"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["7970ec24-94e9-4686-9ba4-ffac9c2f81de"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm1uaG6QmG5noWpqkWuqamFmY6VomJZropqUlJlsmG6VZGKakAgB+/BXx"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Guitar view
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Guitar view
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+plucker[scene_, board_, highlighted_, additional_, scaleQ_][xy_] := With[{
+  match = SelectFirst[board//Values//Flatten, With[{reg = Disk[#[[1,1]], #[[1,2]] * 2] },
+    RegionMember[reg, xy]
+  ]&]
+},
+  If[MissingQ[match], Return[]];
+  With[{
+    notes = Sort[Join[additional, {match[[2]]}]//DeleteDuplicates],
+    client = CurrentWindow[]
+  },
+
+    If[scaleQ,
+      MapIndexed[Function[{val, index},
+        SetTimeout[With[{group = FrontInstanceGroup[]},
+        
+          FrontSubmit[SoundNote[val, "8n"] // Sound, "Window"->client];
+          FrontSubmit[{
+            Opacity[0.7], highlighted[{val}, Red]
+          } // group, scene, "Window"->client];
+  
+          SetTimeout[Delete[group], 450]; 
+          
+        ], 450 * (index[[1]]-1) + 1]
+      ], notes];   
+    ,
+      With[{group = FrontInstanceGroup[]},
+        FrontSubmit[SoundNote[notes] // Sound];
+        FrontSubmit[{
+          Opacity[0.7], highlighted[notes]
+        } // group, scene];
+  
+        SetTimeout[Delete[group], 200];   
+      ]
+    ]
+  ]  
+]
+
+GuitarView[SoundNote[rawNotes_List], OptionsPattern[]] := Module[{
+  rawTuning = convertToSemitones @ OptionValue["Tuning"],
+  scene = FrontInstanceReference[],
+  scaleQ = False,
+  names = {"C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"},
+  notes = convertToSemitones @ rawNotes,
+  board, highlighted, semitoneTuning, tuningMin, tuningMax, normalizeNote
+},
+
+semitoneTuning = If[First[rawTuning] > Last[rawTuning], Reverse[rawTuning], rawTuning];
+tuningMin = Min[semitoneTuning];
+tuningMax = Max[semitoneTuning] + 12;
+normalizeNote[n_] := Module[{c = n},
+  While[c < tuningMin, c += 12];
+  While[c > tuningMax, c -= 12];
+  c
+];
+
+notes = Switch[OptionValue["Mode"],
+    "Play",
+      notes,
+
+    "Show",
+      {},
+
+    "Scale",
+      scaleQ = True;
+      notes,
+
+    _,
+      notes
+  ];
+
+notes = DeleteDuplicates @ Sort[normalizeNote /@ notes];
+board = GroupBy[Flatten[
+  Table[With[{note = semitoneTuning[[y]] + x},
+    Annotation[Disk[{x,y}, {0.15, 0.15 2.8 }], note, names[[Mod[note, 12]+1]]]
+  ], {x, 0, 12}, {y, Length[semitoneTuning]}]
+], #[[2]] &];
+
+highlighted[notes_, color_:Automatic] := {
+  If[color === Automatic, ColorData[97], color&] /@ Range[notes // Length],
+  Map[Function[place, 
+    If[place[[1,1,1]] > 0.5,
+      {place, White, Text[place[[3]] , place[[1,1]]- {0,0.16}, {0,-1}]}
+    ,
+      place
+    ]
+  ], board[#]] &/@ notes
+}//Transpose;
+
+Graphics[{
+  scene, EventHandler[Graphics`Canvas[], {"click"->plucker[scene, board, highlighted, notes, scaleQ]}],
+  Table[Line[{{0, string}, {12, string}}], {string, Length[semitoneTuning]}],
+  Table[Line[{{i - 0.5, 1 - 0.2 }, {i - 0.5, Length[semitoneTuning] + 0.2}}], {i, 12}],
+  Table[Text[semitone[semitoneTuning[[string]]], {-0.4, string - 0.2}, {-1,-1}], {string, Length[semitoneTuning]}],
+  {
+    AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, Length[semitoneTuning]}}], 
+    Gray, Table[Disk[{0.5 + 2.5 + k, 0.3}, {0.15, 0.15 2.8 }/2], {k, 0, 6, 2}],
+    Disk[{0.5 + 2.5 + 8.9, 0.3}, {0.15, 0.15 2.8 }/2], Disk[{0.5 + 2.5 + 9.1, 0.3}, {0.15, 0.15 2.8 }/2]
+  },
+  
+  highlighted[notes]
+  
+}, ImageSize->OptionValue[ImageSize], Background->White, "Controls"->False, ImagePadding->None, PlotRange->{{0 - 0.5, 12 + 0.5}, {0, Length[semitoneTuning] + .5}}]
+]
+Options[GuitarView] = {"Tuning"->({"E4", "A4", "D5", "G5", "B5", "E6"}//Reverse), "Mode"->"Play", ImageSize->(1.2 {500,100})}
+
+
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{"Tuning"->{"E6","B5","G5","D5","A4","E4"},"Mode"->"Play",ImageSize->{600.`,120.`}}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+GuitarView[SoundNote[{"E4", "G5", "B4"}], "Mode"->"Scale"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["a598553b-94b7-4c08-b83d-354a467b1748"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5paWpiaGifpWpokmeuaJBtY6CZZGKfoGpuaJJqYmScZmptYAAB55hTz"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+GuitarView[SoundNote[{"C4", "D4", "E4", "G4", "A4"}], "Mode"->"Scale", "Tuning"->{"D4", "A4", "D5", "G5", "A5", "D6"}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["84aae485-b6e7-444c-ad72-992110573f87"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW5gkJqaaWJjqJpmlmuuamJgk6yammBvpWloaGRoamJobp1mYAwCCxBUi"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EvaluationNotebook[]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+RemoteNotebook["68d64a5d-d727-419f-8a86-e9665e84a280"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Output widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Output widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+internalMiddleware[notebook_][rest__] := internalHandler[rest, "Notebook"->notebook];
+
+internalHandler["Scale", {currentKey_, currentScale_}, "Keys", OptionsPattern[]] := CreateWindow[Cell[With[{
+  Widget = PianoView[
+    scaleNotes[currentKey, currentScale] // SoundNote
+  , "Mode"->"Scale"],
+  Title = StringTemplate["`` ``"][currentKey, currentScale],
+  Mood = mood[currentScale]
+},
+<div class="p-4 bg-white h-full w-full">
+  <div class="pb-2">
+    <h3 class="text-base/7 font-semibold text-gray-900"><Title/></h3>
+  </div>
+  <Widget/>
+</div>
+], "Output", "wlx"], "Notebook"->OptionValue["Notebook"]]
+
+
+internalHandler["Scale", {currentKey_, currentScale_}, "Strings", OptionsPattern[]] := CreateWindow[Cell[With[{
+  Widget = GuitarView[
+    With[{notes = scaleNotes[currentKey, currentScale] // SoundNote},
+      NoteMerge[notes, NoteTranspose[notes, 12], NoteTranspose[notes, 24]]
+    ],
+    "Mode"->"Scale", "Tuning"->(OptionValue["Tuning"])
+  ],
+  Mood = mood[currentScale]
+},
+<div class="p-4 bg-white h-full w-full">
+  <div class="pb-2">
+    <h3 class="text-base/7 font-semibold text-gray-900"><Title/></h3>
+  </div>
+  <Widget/>
+</div>
+], "Output", "wlx"], "Notebook"->OptionValue["Notebook"]]
+
+Options[internalHandler] = {"Notebook"->"", "Tuning"->""};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Chord maker
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Chord maker
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+internalHandler["Chord", {CurrentKey_, CurrentScale_}, "Keys", OptionsPattern[]] := CreateWindow[Cell[With[{m = makeChord[CurrentKey, CurrentScale, 3]},
+  With[{TableList = Table[With[{
+    Widget = PianoView[m[r], ImageSize->{270,100}], 
+    Roman = r
+  },
+    <div class="flex flex-row gap-x-2 items-center">
+      <Widget/>
+      <h3><Roman/></h3>
+    </div>
+  ], {r, {"I", "II", "III", "IV", "V", "VI"}}]},
+
+    <div class="flex flex-col gap-y-2 p-4 bg-white">
+      <p class="mt-1 max-w-2xl text-sm/6 text-gray-500"><CurrentKey/><span> </span><CurrentScale/></p>
+      <TableList/>
+    </div>
+  ]
+], "Output", "wlx"], "Notebook"->OptionValue["Notebook"]]
+
+internalHandler["Chord", {CurrentKey_, CurrentScale_}, "Strings", OptionsPattern[]] := CreateWindow[Cell[With[{m = makeChord[CurrentKey, CurrentScale, 3]},
+  With[{TableList = Table[With[{
+    Widget = GuitarView[NoteMerge[m[r], NoteTranspose[m[r], 12], NoteTranspose[m[r], 24]], ImageSize->( {500,100}), "Tuning"->OptionValue["Tuning"]], 
+    Roman = r
+  },
+    <div class="flex flex-row gap-x-2 items-center">
+      <Widget/>
+      <h3><Roman/></h3>
+    </div>
+  ], {r, {"I", "II", "III", "IV", "V", "VI"}}]},
+
+    <div class="flex flex-col gap-y-2 p-4 bg-white">
+      <p class="mt-1 max-w-2xl text-sm/6 text-gray-500"><CurrentKey/><span> </span><CurrentScale/></p>
+      <TableList/>
+    </div>
+  ]
+], "Output", "wlx"], "Notebook"->OptionValue["Notebook"]]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: false
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+With[{notebook = EvaluationNotebook[]},
+  With[{MainWindow = mainWindow[Function[keyScale,
+    CreateWindow[Cell[LandingWindow[internalMiddleware[notebook], "Key"->keyScale[[1]], "Scale"->keyScale[[2]]], "Output", "wlx"], "Notebook"->notebook];
+  ]]
+  },
+<div class="p-4 bg-white h-full w-full">
+  <div class="px-4 sm:px-0">
+    <p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Pick scale and key</p>
+  </div>
+  <MainWindow/>
+</div>
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Display: wlx
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="p-4 bg-white h-full w-full"><div class="px-4 sm:px-0"><p class="mt-1 max-w-2xl text-sm/6 text-gray-500">Pick scale and key</p></div><div >FrontEndExecutable[81f8d3ae-71fe-4695-acaf-ee79649dbf04]</div></div>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 532235e0-ff61-4965-a2a8-164886fc87e2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CellView["<div >FrontEndExecutable[93190ffa-364f-4471-893e-31274e5d9abc]</div>", "Display" -> "wlx"]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8b2319a0-4025-4f50-96b5-be8bc20c09ea
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CellView["<div class=\"py-1\"><fieldset class=\"text-sm mb-2 rounded\"><button id=\"keys-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"px-2 py-1 rounded ring-1 ring-inset ring-gray-200 bg-white\">Keys</button><button id=\"strings-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"px-2 py-1 rounded\">Strings</button></fieldset><div id=\"strings-7403f176-b9ed-4dba-8f86-b2e9a4a10231\" class=\"hidden text-sm px-2\">FrontEndExecutable[cc92465a-d374-4192-805d-5b140ea9a315]</div><script type=\"module\"> const keysButton = document.getElementById('keys-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231');\n    const stringButton = document.getElementById('strings-button-7403f176-b9ed-4dba-8f86-b2e9a4a10231');\n    const container = document.getElementById('strings-7403f176-b9ed-4dba-8f86-b2e9a4a10231');\n\n    keysButton.addEventListener('click', () => {\n      keysButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));\n      stringButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));\n      container.classList.add('hidden');\n      server.kernel.emitt('bullshit', '\"Keys\"', 'Instrument');\n    });\n\n    stringButton.addEventListener('click', () => {\n      stringButton.classList.add(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));\n      keysButton.classList.remove(...('ring-1 ring-inset ring-gray-200 bg-white'.split(' ')));\n      container.classList.remove('hidden');\n      server.kernel.emitt('bullshit', '\"Strings\"', 'Instrument');\n    })</script></div>", "Display" -> "wlx"]]|>
+
+%-------------------------------------------------------------------------%
+Key: 5e7488c0-648c-4048-97e5-3c76f4d21ccd
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{{{Line[{{0.06470476127563017, 0.24148145657226705}, {0.2588190451025207, 0.9659258262890682}}], Text["I", {0, 1}, {0, 0}], {Opacity[0.3], RGBColor[0.30980392156862746, 0.47058823529411764, 0.34509803921568627], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "92cf4aec-3cf5-4441-a2de-9e821bd6d6c2"}], Opacity[1], Directive[FontSize -> 12], Text["C", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, 0, {0, 0}]}}, {Line[{{0.17677669529663687, 0.17677669529663687}, {0.7071067811865475, 0.7071067811865475}}], Text["II", {Rational[1, 2], Rational[1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], RGBColor[0.2980392156862745, 0.28627450980392155, 0.5490196078431373], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "7ac2a663-f692-4a65-8d5f-d2b50de611d7"}], Opacity[1], Directive[FontSize -> 12], Text["Dm", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Rational[1, 6]*Pi, {0, 0}]}}, {Line[{{0.24148145657226705, 0.06470476127563017}, {0.9659258262890682, 0.2588190451025207}}], Text["III", {Rational[1, 2]*Sqrt[3], Rational[1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[0.27058823529411763, 0.1843137254901961, 0.3764705882352941], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "b16c12e8-d6c7-43c1-aa09-6533c22d64fa"}], Opacity[1], Directive[FontSize -> 12], Text["Em", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Rational[1, 3]*Pi, {0, 0}]}}, {Line[{{0.24148145657226705, -0.06470476127563017}, {0.9659258262890682, -0.2588190451025207}}], Text["IV", {1, 0}, {0, 0}], {Opacity[0.3], RGBColor[0.8784313725490196, 0.10196078431372549, 0.20784313725490197], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "a2330c07-8853-4e34-a9bd-f54bb9608e9c"}], Opacity[1], Directive[FontSize -> 12], Text["F", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, Rational[1, 2]*Pi, {0, 0}]}}, {Line[{{0.17677669529663687, -0.17677669529663687}, {0.7071067811865475, -0.7071067811865475}}], Text["V", {Rational[1, 2]*Sqrt[3], Rational[-1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[0.8, 0.058823529411764705, 0.07450980392156863], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "d877f2f4-c045-4ba8-a7e9-b565644057a2"}], Opacity[1], Directive[FontSize -> 12], Text["G", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, Rational[2, 3]*Pi, {0, 0}]}}, {Line[{{0.06470476127563017, -0.24148145657226705}, {0.2588190451025207, -0.9659258262890682}}], Text["VI", {Rational[1, 2], Rational[-1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], RGBColor[0.803921568627451, 0.30980392156862746, 0.07058823529411765], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "536fe707-f961-464f-9059-693033ad50e9"}], Opacity[1], Directive[FontSize -> 12], Text["Am", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Rational[5, 6]*Pi, {0, 0}]}}, {Line[{{-0.06470476127563017, -0.24148145657226705}, {-0.2588190451025207, -0.9659258262890682}}], Text["VII", {0, -1}, {0, 0}], {Opacity[0.3], RGBColor[1, 0.7254901960784313, 0.09411764705882353], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "45a39318-18ce-431d-b6e9-b8a0db5ea299"}], Opacity[1], Directive[FontSize -> 12], Text["Bm", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Pi, {0, 0}]}}, {Line[{{-0.17677669529663687, -0.17677669529663687}, {-0.7071067811865475, -0.7071067811865475}}], Text["VIII", {Rational[-1, 2], Rational[-1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], RGBColor[0.9568627450980393, 0.796078431372549, 0.13725490196078433], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "c911626d-6478-478e-b9a7-af57c44ca6cf"}], Opacity[1], Directive[FontSize -> 12], Text["C", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, Rational[7, 6]*Pi, {0, 0}]}}, {Line[{{-0.24148145657226705, -0.06470476127563017}, {-0.9659258262890682, -0.2588190451025207}}], Text["IX", {Rational[-1, 2]*Sqrt[3], Rational[-1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[0.9529411764705882, 0.9803921568627451, 0.5725490196078431], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "41eb5651-1dc1-4198-b183-c1718fbc9dd0"}], Opacity[1], Directive[FontSize -> 12], Text["Dm", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Rational[4, 3]*Pi, {0, 0}]}}, {Line[{{-0.24148145657226705, 0.06470476127563017}, {-0.9659258262890682, 0.2588190451025207}}], Text["X", {-1, 0}, {0, 0}], {Opacity[0.3], RGBColor[0.4117647058823529, 0.592156862745098, 0.4], Rotate[{EventListener[Polygon[{{0.06467713937603409, 0.24137837023957287}, {0.06323334559792018, 0.2418709242643563}, {0.027342802094468596, 0.24850024380998648}, {-0.00913050576441471, 0.24983321209255985}, {-0.04540921274485911, 0.24584141920736652}, {-0.06453334338749209, 0.24084171630440956}, {-0.1613333584687302, 0.6021042907610239}, {-0.11352303186214777, 0.6146035480184163}, {-0.022826264411036773, 0.6245830302313996}, {0.06835700523617148, 0.6212506095249661}, {0.15808336399480044, 0.6046773106608907}, {0.16169284844008516, 0.6034459255989321}}], {"click" -> "3397ff59-0064-4029-b33a-8e1533811bda"}], Opacity[1], Directive[FontSize -> 12], Text["Em", {0.000013191095963502262, 0.4581875072555506}, {0, 0}]}, Rational[3, 2]*Pi, {0, 0}]}}, {Line[{{-0.17677669529663687, 0.17677669529663687}, {-0.7071067811865475, 0.7071067811865475}}], Text["XI", {Rational[-1, 2]*Sqrt[3], Rational[1, 2]}, {0, 0}], {Opacity[0.3], RGBColor[0.30980392156862746, 0.47058823529411764, 0.34509803921568627], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "11384670-9173-4f68-bb74-efbafd12d919"}], Opacity[1], Directive[FontSize -> 12], Text["F", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, Rational[5, 3]*Pi, {0, 0}]}}, {Line[{{-0.06470476127563017, 0.24148145657226705}, {-0.2588190451025207, 0.9659258262890682}}], Text["XII", {Rational[-1, 2], Rational[1, 2]*Sqrt[3]}, {0, 0}], {Opacity[0.3], RGBColor[0.2980392156862745, 0.28627450980392155, 0.5490196078431373], Rotate[{EventListener[Polygon[{{0.1616928484400852, 0.6034459255989321}, {0.15808336399480044, 0.6046773106608907}, {0.06835700523617148, 0.6212506095249661}, {-0.022826264411036773, 0.6245830302313996}, {-0.11352303186214777, 0.6146035480184163}, {-0.1613333584687302, 0.6021042907610239}, {-0.2420000377030953, 0.9031564361415358}, {-0.17028454779322166, 0.9219053220276244}, {-0.03423939661655516, 0.9368745453470995}, {0.10253550785425723, 0.9318759142874493}, {0.2371250459922007, 0.9070159659913362}, {0.2425392726601278, 0.9051688883983983}}], {"click" -> "6004090c-9f06-4786-8621-37f19f9cdc8e"}], Opacity[1], Directive[FontSize -> 12], Text["G", {0.000022492509783969572, 0.7812684418588233}, {0, 0}]}, Rational[11, 6]*Pi, {0, 0}]}}}, Circle[{0, 0}, 0.25], Circle[{0, 0}, 0.625]}, "Controls" -> False, ImageSize -> {250, 250}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 7970ec24-94e9-4686-9ba4-ffac9c2f81de
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[1524674792206635800], {GrayLevel[1], EdgeForm[GrayLevel[0.5]], {Annotation[Rectangle[{1.5, 0}, {2.5, 1}], 0, 1], Annotation[Rectangle[{2.5, 0}, {3.5, 1}], 0, 3], Annotation[Rectangle[{3.5, 0}, {4.5, 1}], 0, 5], Annotation[Rectangle[{4.5, 0}, {5.5, 1}], 0, 6], Annotation[Rectangle[{5.5, 0}, {6.5, 1}], 0, 8], Annotation[Rectangle[{6.5, 0}, {7.5, 1}], 0, 10], {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{7.5, 0}, {8.5, 1}], 0, 12]}, Annotation[Rectangle[{8.5, 0}, {9.5, 1}], 0, 13], Annotation[Rectangle[{9.5, 0}, {10.5, 1}], 0, 15], Annotation[Rectangle[{10.5, 0}, {11.5, 1}], 0, 17], Annotation[Rectangle[{11.5, 0}, {12.5, 1}], 0, 18], {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{12.5, 0}, {13.5, 1}], 0, 20]}, {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{13.5, 0}, {14.5, 1}], 0, 22]}, Annotation[Rectangle[{14.5, 0}, {15.5, 1}], 0, 24], Annotation[Rectangle[{15.5, 0}, {16.5, 1}], 0, 25]}, RGBColor[0.3333333333333333, 0.3333333333333333, 0.3333333333333333], {Annotation[Rectangle[{2.2, 0.5}, {2.8, 1}], 1, 2], Annotation[Rectangle[{3.2, 0.5}, {3.8, 1}], 1, 4], Annotation[Rectangle[{5.2, 0.5}, {5.8, 1}], 1, 7], Annotation[Rectangle[{6.2, 0.5}, {6.8, 1}], 1, 9], Annotation[Rectangle[{7.2, 0.5}, {7.8, 1}], 1, 11], Annotation[Rectangle[{9.2, 0.5}, {9.8, 1}], 1, 14], Annotation[Rectangle[{10.2, 0.5}, {10.8, 1}], 1, 16], Annotation[Rectangle[{12.2, 0.5}, {12.8, 1}], 1, 19], Annotation[Rectangle[{13.2, 0.5}, {13.8, 1}], 1, 21], Annotation[Rectangle[{14.2, 0.5}, {14.8, 1}], 1, 23]}}, {RGBColor[1, 1, 0], Opacity[0.3]}, {GrayLevel[0], {Text["G", {13, 0.4}, {0, 0}], Text["A", {14, 0.4}, {0, 0}], Text["B", {8, 0.4}, {0, 0}]}}, EventListener[Graphics`Canvas[], {"click" -> "550d29c9-fefb-4b4f-812c-dc90f97e27ca"}]}, ImageSize -> {500, 200}, "Controls" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 93190ffa-364f-4471-893e-31274e5d9abc
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block text-gray-600 sm-controls\"></label><div class=\"relative mt-2\"><input value=\"\" id=\"#instanceId-text\" style=\"padding-right:0.5rem\" type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-teal-600\" role=\"combobox\" aria-controls=\"options\" aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> const inputField = document.getElementById(\"#instanceId-text\");\n    const parent = inputField.parentNode;\n    const search = document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    const clearOnSubmit =true;\n\n    let renderedArray = [];\n    let opened = false;\n\n    const construct = () => {\n      const ul = document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 border-0 text-base shadow-lg focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300\".split(' ')));\n\n      const rect = inputField.getBoundingClientRect();\n      console.warn(rect);\n      ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = rect.left+'px';\n      ul.style.width = rect.width+'px';\n      ul.classList.remove('hidden');\n\n      list = ul;\n      document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if (!list) return;\n      console.warn('Destroy autocomplete');\n      list.remove();\n      list = undefined;\n    }\n\n    const generate = (array, enter) => {\n      if (!opened) return;\n\n      if (!list) construct();\n      \n      let newArray = array.map((el, indeX) => {\n        return {name: String(el), value: indeX, index: (indeX), domId: '0e8a844d-78f2-410c-8aab-860f131c406b'+String(el)}\n      });\n      \n      renderedArray.filter((x) => !newArray.some((element) => element.domId === x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      const intersection = [];\n      renderedArray.forEach((el) => {\n        const found = newArray.find((element) => element.domId === el.domId);\n        if (found) {\n          intersection.push(el);\n          el.value = found.value;\n          el.index = found.index;\n        }\n      });\n\n      console.log(intersection);\n      \n      const newElements = newArray.filter((x) => !intersection.some((element) => element.domId === x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) => {\n        const node = document.createElement('li');\n        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-teal-500/25', 'relative', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n        node.tabIndex = -1;\n        \n        const span = document.createElement('span');\n        span.classList.add('block', 'truncate');\n        span.innerText = el.name;\n        \n        node.appendChild(span);\n        list.prepend(node);\n\n        node.addEventListener('click', () => {\n          submit(el.index);\n          close();\n        });\n        \n        \n        el.dom = node;\n      });\n\n      renderedArray = [...intersection, ...newElements];\n\n      renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n      });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    keyHandler = (event) => {\n      // Check for up/down key presses\n      switch(event.keyCode){\n        case 38: // Up arrow    \n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          \n          currentLI--;\n          if (currentLI < 0) {\n            currentLI = -1;\n            inputField.focus();\n            event.preventDefault();\n            return;\n          }\n          renderedArray[currentLI].dom.focus(); // Highlight the new element\n          event.preventDefault();\n        break;\n        case 40: // Down arrow\n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          currentLI = currentLI < renderedArray.length-1 ? ++currentLI : renderedArray.length-1; // Increase counter \n          renderedArray[currentLI].dom.focus();       // Highlight the new element\n          event.preventDefault();\n        break;    \n\n        case 13: //Enter\n          event.preventDefault();\n          \n          if (renderedArray.length == 0) currentLI = -1;\n          \n          if (currentLI < 0) {\n            submit(inputField.value.trim());\n            close();\n          } else {\n            renderedArray[currentLI].dom.click();\n          }\n          \n        break;\n\n        case 27: //Esc\n          event.preventDefault();\n          close();\n        break;\n      }\n    };\n\n    search.addEventListener('click', () => {\n      submit(inputField.value.trim());\n      close();\n    });\n\n    var close = () => {\n      opened = false;\n      document.removeEventListener(\"keydown\", keyHandler);\n      if (list) list.classList.add('hidden');\n      \n      destruct();\n      renderedArray = [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n      \n      if (clearOnSubmit) inputField.value = '';\n      inputField.blur();\n      if (typeof data == 'string') {\n        if (data.trim() == '') return;\n        server.kernel.emitt('69ddd060-3e5b-423d-89f8-ca7f81550b8f', '\"'+data+'\"', \"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;\n        server.kernel.emitt('69ddd060-3e5b-423d-89f8-ca7f81550b8f', '\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) {\n            server.kernel.ask('xhxComplete185[\"'+encodeURIComponent(trimmed)+'\"]', 'callback').then(async (result) => {\n                const assoc = await interpretate(result, {});\n                if (!assoc) return;\n                if (!assoc.length) return;\n\n                generate(assoc);\n            })\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n      opened = true;\n      \n      document.addEventListener(\"keydown\", keyHandler);\n      //list.classList.remove('hidden');\n\n      window.addEventListener('click', outOfFocus);\n    });\n\n    \n    outOfFocus = (ev) => {\n                            console.log(ev.target);\n                            if (!parent.contains( ev.target )) {\n                                window.removeEventListener('click', outOfFocus);\n                                close();\n                            }\n\n                            ev.stopPropagation();\n    };</script></div>", Prolog -> HTMLView`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: cc92465a-d374-4192-805d-5b140ea9a315
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block text-gray-600 sm-controls\">Tuning</label><div class=\"relative mt-2\"><input value=\"Standard\" id=\"#instanceId-text\" style=\"padding-right:0.5rem\" type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-teal-600\" role=\"combobox\" aria-controls=\"options\" aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> const inputField = document.getElementById(\"#instanceId-text\");\n    const parent = inputField.parentNode;\n    const search = document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    const clearOnSubmit =false;\n\n    let renderedArray = [];\n    let opened = false;\n\n    const construct = () => {\n      const ul = document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 border-0 text-base shadow-lg focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300\".split(' ')));\n\n      const rect = inputField.getBoundingClientRect();\n      console.warn(rect);\n      ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = rect.left+'px';\n      ul.style.width = rect.width+'px';\n      ul.classList.remove('hidden');\n\n      list = ul;\n      document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if (!list) return;\n      console.warn('Destroy autocomplete');\n      list.remove();\n      list = undefined;\n    }\n\n    const generate = (array, enter) => {\n      if (!opened) return;\n\n      if (!list) construct();\n      \n      let newArray = array.map((el, indeX) => {\n        return {name: String(el), value: indeX, index: (indeX), domId: '2a6044bc-5029-41d9-8508-66bf7e2ec6ca'+String(el)}\n      });\n      \n      renderedArray.filter((x) => !newArray.some((element) => element.domId === x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      const intersection = [];\n      renderedArray.forEach((el) => {\n        const found = newArray.find((element) => element.domId === el.domId);\n        if (found) {\n          intersection.push(el);\n          el.value = found.value;\n          el.index = found.index;\n        }\n      });\n\n      console.log(intersection);\n      \n      const newElements = newArray.filter((x) => !intersection.some((element) => element.domId === x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) => {\n        const node = document.createElement('li');\n        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-teal-500/25', 'relative', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n        node.tabIndex = -1;\n        \n        const span = document.createElement('span');\n        span.classList.add('block', 'truncate');\n        span.innerText = el.name;\n        \n        node.appendChild(span);\n        list.prepend(node);\n\n        node.addEventListener('click', () => {\n          submit(el.index);\n          close();\n        });\n        \n        \n        el.dom = node;\n      });\n\n      renderedArray = [...intersection, ...newElements];\n\n      renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n      });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    keyHandler = (event) => {\n      // Check for up/down key presses\n      switch(event.keyCode){\n        case 38: // Up arrow    \n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          \n          currentLI--;\n          if (currentLI < 0) {\n            currentLI = -1;\n            inputField.focus();\n            event.preventDefault();\n            return;\n          }\n          renderedArray[currentLI].dom.focus(); // Highlight the new element\n          event.preventDefault();\n        break;\n        case 40: // Down arrow\n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          currentLI = currentLI < renderedArray.length-1 ? ++currentLI : renderedArray.length-1; // Increase counter \n          renderedArray[currentLI].dom.focus();       // Highlight the new element\n          event.preventDefault();\n        break;    \n\n        case 13: //Enter\n          event.preventDefault();\n          \n          if (renderedArray.length == 0) currentLI = -1;\n          \n          if (currentLI < 0) {\n            submit(inputField.value.trim());\n            close();\n          } else {\n            renderedArray[currentLI].dom.click();\n          }\n          \n        break;\n\n        case 27: //Esc\n          event.preventDefault();\n          close();\n        break;\n      }\n    };\n\n    search.addEventListener('click', () => {\n      submit(inputField.value.trim());\n      close();\n    });\n\n    var close = () => {\n      opened = false;\n      document.removeEventListener(\"keydown\", keyHandler);\n      if (list) list.classList.add('hidden');\n      \n      destruct();\n      renderedArray = [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n      \n      if (clearOnSubmit) inputField.value = '';\n      inputField.blur();\n      if (typeof data == 'string') {\n        if (data.trim() == '') return;\n        server.kernel.emitt('505ce195-38c0-45aa-ab92-4d0ef7de36ad', '\"'+data+'\"', \"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;\n        server.kernel.emitt('505ce195-38c0-45aa-ab92-4d0ef7de36ad', '\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) {\n            server.kernel.ask('xhxComplete180[\"'+encodeURIComponent(trimmed)+'\"]', 'callback').then(async (result) => {\n                const assoc = await interpretate(result, {});\n                if (!assoc) return;\n                if (!assoc.length) return;\n\n                generate(assoc);\n            })\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n      opened = true;\n      \n      document.addEventListener(\"keydown\", keyHandler);\n      //list.classList.remove('hidden');\n\n      window.addEventListener('click', outOfFocus);\n    });\n\n    \n    outOfFocus = (ev) => {\n                            console.log(ev.target);\n                            if (!parent.contains( ev.target )) {\n                                window.removeEventListener('click', outOfFocus);\n                                close();\n                            }\n\n                            ev.stopPropagation();\n    };</script></div>", Prolog -> HTMLView`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 93a9531b-926f-4128-9d01-ba87b74216ac
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<button style=\"box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px\" class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Chord charts</button>\n<script type=\"module\"> const el = document.getElementById('#instanceId');\n            el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px 0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('click', (event)=>{\n                server.kernel.io.fire('89a0effb-acf6-4d9b-83ce-08c9f8250eed', true, 'Default');     \n            });</script>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 37d6889a-a6ba-4ad6-8bad-5f310cd599f3
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<button style=\"box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(229, 231, 235) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px; font-weight:normal; font-size:14px\" class=\"sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 \" type=\"button\" id=\"#instanceId\">Scale charts</button>\n<script type=\"module\"> const el = document.getElementById('#instanceId');\n            el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px 0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n            el.addEventListener('click', (event)=>{\n                server.kernel.io.fire('e76c1a87-ec5c-49b4-92ba-61d080323618', true, 'Default');     \n            });</script>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 1669f216-dace-49e6-b405-9f51ea471be8
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block text-gray-600 sm-controls\">Tuning</label><div class=\"relative mt-2\"><input value=\"Standard\" id=\"#instanceId-text\" style=\"padding-left:0.5rem\" type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys\" role=\"combobox\" aria-controls=\"options\" aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> const inputField = document.getElementById(\"#instanceId-text\");\n    const parent = inputField.parentNode;\n    const search = document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    const clearOnSubmit =false;\n\n    let renderedArray = [];\n    let opened = false;\n\n    const construct = () => {\n      const ul = document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300\".split(' ')));\n\n      const rect = inputField.getBoundingClientRect();\n      console.warn(rect);\n      ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = rect.left+'px';\n      ul.style.width = rect.width+'px';\n      ul.classList.remove('hidden');\n\n      list = ul;\n      document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if (!list) return;\n      console.warn('Destroy autocomplete');\n      list.remove();\n      list = undefined;\n    }\n\n    const generate = (array, enter) => {\n      if (!opened) return;\n\n      if (!list) construct();\n      \n      let newArray = array.map((el, indeX) => {\n        return {name: String(el), value: indeX, index: (indeX), domId: '56921d83-6253-43c6-b61e-75302c98931c'+String(el)}\n      });\n      \n      renderedArray.filter((x) => !newArray.some((element) => element.domId === x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      const intersection = [];\n      renderedArray.forEach((el) => {\n        const found = newArray.find((element) => element.domId === el.domId);\n        if (found) {\n          intersection.push(el);\n          el.value = found.value;\n          el.index = found.index;\n        }\n      });\n\n      console.log(intersection);\n      \n      const newElements = newArray.filter((x) => !intersection.some((element) => element.domId === x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) => {\n        const node = document.createElement('li');\n        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-sys-25', 'relative', 'dark:text-gray-400', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n        node.tabIndex = -1;\n        \n        const span = document.createElement('span');\n        span.classList.add('block', 'truncate');\n        span.innerText = el.name;\n        \n        node.appendChild(span);\n        list.prepend(node);\n\n        node.addEventListener('click', () => {\n          submit(el.index);\n          close();\n        });\n        \n        \n        el.dom = node;\n      });\n\n      renderedArray = [...intersection, ...newElements];\n\n      renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n      });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    keyHandler = (event) => {\n      // Check for up/down key presses\n      switch(event.keyCode){\n        case 38: // Up arrow    \n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          \n          currentLI--;\n          if (currentLI < 0) {\n            currentLI = -1;\n            inputField.focus();\n            event.preventDefault();\n            return;\n          }\n          renderedArray[currentLI].dom.focus(); // Highlight the new element\n          event.preventDefault();\n        break;\n        case 40: // Down arrow\n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          currentLI = currentLI < renderedArray.length-1 ? ++currentLI : renderedArray.length-1; // Increase counter \n          renderedArray[currentLI].dom.focus();       // Highlight the new element\n          event.preventDefault();\n        break;    \n\n        case 13: //Enter\n          event.preventDefault();\n          \n          if (renderedArray.length == 0) currentLI = -1;\n          \n          if (currentLI < 0) {\n            submit(inputField.value.trim());\n            close();\n          } else {\n            renderedArray[currentLI].dom.click();\n          }\n          \n        break;\n\n        case 27: //Esc\n          event.preventDefault();\n          close();\n        break;\n      }\n    };\n\n    search.addEventListener('click', () => {\n      submit(inputField.value.trim());\n      close();\n    });\n\n    var close = () => {\n      opened = false;\n      document.removeEventListener(\"keydown\", keyHandler);\n      if (list) list.classList.add('hidden');\n      \n      destruct();\n      renderedArray = [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n      \n      if (clearOnSubmit) inputField.value = '';\n      inputField.blur();\n      if (typeof data == 'string') {\n        if (data.trim() == '') return;\n        server.kernel.emitt('9f087969-bffd-44b4-a650-2e9134db5fe1', '\"'+data+'\"', \"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;\n        server.kernel.emitt('9f087969-bffd-44b4-a650-2e9134db5fe1', '\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) {\n            server.kernel.ask('xhxComplete81[\"'+encodeURIComponent(trimmed)+'\"]', 'callback').then(async (result) => {\n                const assoc = await interpretate(result, {});\n                if (!assoc) return;\n                if (!assoc.length) return;\n\n                generate(assoc);\n            })\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n      opened = true;\n      \n      document.addEventListener(\"keydown\", keyHandler);\n      //list.classList.remove('hidden');\n\n      window.addEventListener('click', outOfFocus);\n    });\n\n    \n    outOfFocus = (ev) => {\n                            console.log(ev.target);\n                            if (!parent.contains( ev.target )) {\n                                window.removeEventListener('click', outOfFocus);\n                                close();\n                            }\n\n                            ev.stopPropagation();\n    };</script></div>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: fb087bba-9f45-466a-8b9c-ecca1aa0960b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"sm-controls\"><label for=\"#instanceId\" class=\"block text-sm font-medium leading-6 text-gray-900\"></label><div class=\"mt-1\"><input style=\"width: Round[Automatic]px;\" value=\"\" class=\"relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-900  focus:outline-none sm:text-xs sm:leading-6 bg-gray-100\" placeholder=\"...\" id=\"#instanceId\" data-type=\"text-string\" type=\"text\"/></div><p class=\"mt-1 text-sm text-gray-500\"></p></div>\n", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]], Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate[Offload[currentTune$374577], "text-string", "value"]]]|>
+
+%-------------------------------------------------------------------------%
+Key: a598553b-94b7-4c08-b83d-354a467b1748
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[1058183243802379800], EventListener[Graphics`Canvas[], {"click" -> "d58ef719-3807-4f96-a9fe-f6db4d43c66c"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E", {-0.4, 0.8}, {-1, -1}], Text["A", {-0.4, 1.8}, {-1, -1}], Text["D", {-0.4, 2.8}, {-1, -1}], Text["G", {-0.4, 3.8}, {-1, -1}], Text["B", {-0.4, 4.8}, {-1, -1}], Text["E", {-0.4, 5.8}, {-1, -1}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.368417, 0.506779, 0.709798], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 4, "E"]}}, {RGBColor[0.880722, 0.611041, 0.142051], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, -1}]}, {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, {0, -1}]}}}, {RGBColor[0.560181, 0.691569, 0.194885], {Annotation[Disk[{0, 4}, {0.15, 0.42}], 19, "G"], {Annotation[Disk[{5, 3}, {0.15, 0.42}], 19, "G"], GrayLevel[1], Text["G", {5, 2.84}, {0, -1}]}, {Annotation[Disk[{10, 2}, {0.15, 0.42}], 19, "G"], GrayLevel[1], Text["G", {10, 1.84}, {0, -1}]}}}}}, ImageSize -> {600, 120}, Background -> GrayLevel[1], "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 84aae485-b6e7-444c-ad72-992110573f87
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[2826707473471426000], EventListener[Graphics`Canvas[], {"click" -> "cc6cfd2e-c61e-41af-b892-f4ec39835cb0"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["D", {-0.4, 0.8}, {-1, -1}], Text["A", {-0.4, 1.8}, {-1, -1}], Text["D", {-0.4, 2.8}, {-1, -1}], Text["G", {-0.4, 3.8}, {-1, -1}], Text["A", {-0.4, 4.8}, {-1, -1}], Text["D", {-0.4, 5.8}, {-1, -1}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.368417, 0.506779, 0.709798], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 2, "D"]}}, {RGBColor[0.880722, 0.611041, 0.142051], {{Annotation[Disk[{2, 1}, {0.15, 0.42}], 4, "E"], GrayLevel[1], Text["E", {2, 0.84}, {0, -1}]}}}, {RGBColor[0.560181, 0.691569, 0.194885], {{Annotation[Disk[{5, 1}, {0.15, 0.42}], 7, "G"], GrayLevel[1], Text["G", {5, 0.84}, {0, -1}]}}}, {RGBColor[0.922526, 0.385626, 0.209179], {Annotation[Disk[{0, 2}, {0.15, 0.42}], 9, "A"], {Annotation[Disk[{7, 1}, {0.15, 0.42}], 9, "A"], GrayLevel[1], Text["A", {7, 0.84}, {0, -1}]}}}, {RGBColor[0.528488, 0.470624, 0.701351], {{Annotation[Disk[{3, 2}, {0.15, 0.42}], 12, "C"], GrayLevel[1], Text["C", {3, 1.84}, {0, -1}]}, {Annotation[Disk[{10, 1}, {0.15, 0.42}], 12, "C"], GrayLevel[1], Text["C", {10, 0.84}, {0, -1}]}}}}}, ImageSize -> {600, 120}, Background -> GrayLevel[1], "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 81f8d3ae-71fe-4695-acaf-ee79649dbf04
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div ><label class=\"ml-1 block text-gray-600 sm-controls\"></label><div class=\"relative mt-2\"><input value=\"\" id=\"#instanceId-text\" style=\"padding-left:0.5rem\" type=\"text\" class=\"sm-controls block w-full rounded-md bg-white border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys\" role=\"combobox\" aria-controls=\"options\" aria-expanded=\"false\"/><button id=\"#instanceId-search\" class=\"absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden\"><svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\" data-slot=\"icon\"><path fill-rule=\"evenodd\" d=\"M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z\" clip-rule=\"evenodd\"></path></svg></button></div><script type=\"module\"> const inputField = document.getElementById(\"#instanceId-text\");\n    const parent = inputField.parentNode;\n    const search = document.getElementById(\"#instanceId-search\");\n\n    let list;\n    \n    const clearOnSubmit =true;\n\n    let renderedArray = [];\n    let opened = false;\n\n    const construct = () => {\n      const ul = document.createElement('ul');\n      ul.classList.add(...(\"hidden absolute z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300\".split(' ')));\n\n      const rect = inputField.getBoundingClientRect();\n      console.warn(rect);\n      ul.style.top = (rect.top+rect.height)+'px';\n      ul.style.left = rect.left+'px';\n      ul.style.width = rect.width+'px';\n      ul.classList.remove('hidden');\n\n      list = ul;\n      document.body.append(ul);\n    }\n\n    const destruct = () => {\n      if (!list) return;\n      console.warn('Destroy autocomplete');\n      list.remove();\n      list = undefined;\n    }\n\n    const generate = (array, enter) => {\n      if (!opened) return;\n\n      if (!list) construct();\n      \n      let newArray = array.map((el, indeX) => {\n        return {name: String(el), value: indeX, index: (indeX), domId: '35c50e14-356b-4513-943b-f2ec935d2d21'+String(el)}\n      });\n      \n      renderedArray.filter((x) => !newArray.some((element) => element.domId === x.domId)).forEach((el) => {\n        el.dom.remove();\n      });\n\n      const intersection = [];\n      renderedArray.forEach((el) => {\n        const found = newArray.find((element) => element.domId === el.domId);\n        if (found) {\n          intersection.push(el);\n          el.value = found.value;\n          el.index = found.index;\n        }\n      });\n\n      console.log(intersection);\n      \n      const newElements = newArray.filter((x) => !intersection.some((element) => element.domId === x.domId));\n      console.log(newElements);\n\n      newElements.forEach((el) => {\n        const node = document.createElement('li');\n        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-sys-25', 'relative', 'dark:text-gray-400', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');\n        node.tabIndex = -1;\n        \n        const span = document.createElement('span');\n        span.classList.add('block', 'truncate');\n        span.innerText = el.name;\n        \n        node.appendChild(span);\n        list.prepend(node);\n\n        node.addEventListener('click', () => {\n          submit(el.index);\n          close();\n        });\n        \n        \n        el.dom = node;\n      });\n\n      renderedArray = [...intersection, ...newElements];\n\n      renderedArray = renderedArray.sort((a, b) => a.value - b.value);\n\n      renderedArray.toReversed().forEach((el) => {\n        list.prepend(el.dom);\n      });\n    }\n\n    \n\n    let keyHandler;\n    let currentLI = -1;\n    keyHandler = (event) => {\n      // Check for up/down key presses\n      switch(event.keyCode){\n        case 38: // Up arrow    \n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          \n          currentLI--;\n          if (currentLI < 0) {\n            currentLI = -1;\n            inputField.focus();\n            event.preventDefault();\n            return;\n          }\n          renderedArray[currentLI].dom.focus(); // Highlight the new element\n          event.preventDefault();\n        break;\n        case 40: // Down arrow\n          if (renderedArray.length == 0) {\n            currentLI = -1;\n            return;\n          }\n          currentLI = currentLI < renderedArray.length-1 ? ++currentLI : renderedArray.length-1; // Increase counter \n          renderedArray[currentLI].dom.focus();       // Highlight the new element\n          event.preventDefault();\n        break;    \n\n        case 13: //Enter\n          event.preventDefault();\n          \n          if (renderedArray.length == 0) currentLI = -1;\n          \n          if (currentLI < 0) {\n            submit(inputField.value.trim());\n            close();\n          } else {\n            renderedArray[currentLI].dom.click();\n          }\n          \n        break;\n\n        case 27: //Esc\n          event.preventDefault();\n          close();\n        break;\n      }\n    };\n\n    search.addEventListener('click', () => {\n      submit(inputField.value.trim());\n      close();\n    });\n\n    var close = () => {\n      opened = false;\n      document.removeEventListener(\"keydown\", keyHandler);\n      if (list) list.classList.add('hidden');\n      \n      destruct();\n      renderedArray = [];\n      \n      currentLI = -1;\n    }\n\n    var submit = (data) => {\n      \n      if (clearOnSubmit) inputField.value = '';\n      inputField.blur();\n      if (typeof data == 'string') {\n        if (data.trim() == '') return;\n        server.kernel.emitt('8d35fd5a-3fe6-40ab-8dce-060e4dcadc2b', '\"'+data+'\"', \"Entered\");\n      } else {\n        if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;\n        server.kernel.emitt('8d35fd5a-3fe6-40ab-8dce-060e4dcadc2b', '\"'+renderedArray[data].name+'\"', \"Selected\");\n      }\n    } \n\n    let outOfFocus;\n\n    inputField.addEventListener('input', () => {\n        const trimmed = inputField.value.trim();\n        if (trimmed.length >= 2) {\n            server.kernel.ask('xhxComplete160[\"'+encodeURIComponent(trimmed)+'\"]', 'callback').then(async (result) => {\n                const assoc = await interpretate(result, {});\n                if (!assoc) return;\n                if (!assoc.length) return;\n\n                generate(assoc);\n            })\n        } \n    })\n\n    inputField.addEventListener('focus', () => {\n      opened = true;\n      \n      document.addEventListener(\"keydown\", keyHandler);\n      //list.classList.remove('hidden');\n\n      window.addEventListener('click', outOfFocus);\n    });\n\n    \n    outOfFocus = (ev) => {\n                            console.log(ev.target);\n                            if (!parent.contains( ev.target )) {\n                                window.removeEventListener('click', outOfFocus);\n                                close();\n                            }\n\n                            ev.stopPropagation();\n    };</script></div>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: currentTune$374577
+%-------------------------------------------------------------------------%
+"E1 B2 G4"
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
