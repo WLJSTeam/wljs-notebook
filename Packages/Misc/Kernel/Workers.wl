@@ -62,6 +62,7 @@ WorkerLaunch[expr_] := Module[{kernel, cmd = $CommandLine//First},
     
       LinkWrite[kernel, Unevaluated[EnterExpressionPacket[
         Unprotect[EventFire, EventHandler]; ClearAll[EventHandler];
+        Unprotect[Rasterize]; ClearAll[Rasterize];
         EventFire[Null, rest__] := LinkWrite[$ParentLink, EnterExpressionPacket[Internal`WorkerEventPacket[rest]]];
         EventFire[Null, rest_] := LinkWrite[$ParentLink, EnterExpressionPacket[Internal`WorkerEventPacket["Message", rest]]];
         EventHandler[Null, rest_] := Internal`EventHandlerWorker = {_ -> rest};
