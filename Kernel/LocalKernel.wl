@@ -277,6 +277,7 @@ start[k_LocalKernelObject] := Module[{link},
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Language`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Events`Promise`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Parallel`"] ];
+        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Workers`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`WebUSocketHandler`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`WLJS`Transport`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CUSockets`EventsExtension`"] ];
