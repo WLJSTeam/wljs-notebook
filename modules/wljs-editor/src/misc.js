@@ -79,6 +79,8 @@ core['CoffeeLiqueur`Extensions`Rasterize`Internal`GetPDF'] = async (args, env) =
   }
 
 core['CoffeeLiqueur`Extensions`ContextMenu`Internal`ReadSelectionInDoc'] = (args, env) => document.getSelection().toString()
+
+core.FrontTextSelected = (args, env) => document.getSelection().toString() 
 core['CoffeeLiqueur`Extensions`EditorView`FrontTextSelected'] = (args, env) => document.getSelection().toString() 
 
 core['CoffeeLiqueur`Extensions`Rasterize`Internal`takeScreenshot'] = async (args, env) => {

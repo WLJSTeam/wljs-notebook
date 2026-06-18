@@ -731,6 +731,8 @@ core.Equals.destroy = core.Equals
 core.Alert = async(args, env) => {
     interpretate.alert(await interpretate(args[0], env));
 }
+//alias
+core['CoffeeLiqueur`Extensions`WLJSInterpreter`Alert'] = core.Alert;
 
 core.Print = async(args, env) => {
     console.log('Out:\t' + JSON.stringify(await interpretate(args[0], env)));

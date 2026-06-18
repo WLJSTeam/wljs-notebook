@@ -7921,3 +7921,12 @@ core.Image3D.destroy = (args, env) => {
 
 g3d.Ball = g3d.Sphere
 
+//aliases 
+g3d['CoffeeLiqueur`Extensions`Graphics3D`HemisphereLight'] = g3d.HemisphereLight
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshMaterial'] = g3d.MeshMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshPhysicalMaterial'] = g3d.MeshPhysicalMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshToonMaterial'] = g3d.MeshToonMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshLambertMaterial'] = g3d.MeshLambertMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshPhongMaterial'] = g3d.MeshPhongMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshFogMaterial'] = g3d.MeshFogMaterial
+g3d['CoffeeLiqueur`Extensions`Graphics3D`LinearFog'] = g3d.LinearFog

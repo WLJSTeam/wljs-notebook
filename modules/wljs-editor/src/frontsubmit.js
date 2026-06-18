@@ -58,6 +58,9 @@ core.FrontInstanceReference.destroy = (args, env) => {
     delete references[uid];
 }  
 
+//alias
+core['CoffeeLiqueur`Extensions`Communication`FrontInstanceReference'] = core.FrontInstanceReference
+
 var delay = ms => new Promise(r => setTimeout(r, ms));
 
 core['CoffeeLiqueur`Extensions`Communication`Private`execJS'] = async (args, env) => {
@@ -159,6 +162,8 @@ core.FrontInstanceGroup = async (args, env) => {
 
   return result;
 }
+//alias
+core['CoffeeLiqueur`Extensions`Communication`FrontInstanceGroup'] = core.FrontInstanceGroup
 
 core['CoffeeLiqueur`Extensions`Communication`Private`groupRemove'] = (args, env) => {
   const uid = interpretate(args[0], env); 

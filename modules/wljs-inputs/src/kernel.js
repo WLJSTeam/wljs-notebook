@@ -106,7 +106,7 @@ core.HTMLView = async (args, env) => {
   }
 }   
 
-core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView // a bug
+core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView // an alias
 
 
 core.Prolog = () => "Prolog"

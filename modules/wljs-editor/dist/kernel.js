@@ -35759,6 +35759,10 @@ core.FrontEditorSelected = async (args, env) => {
   }
 };
 
+//context anti-aliases
+core['CoffeeLiqueur`Extensions`EditorView`FrontEditorSelected'] = core.FrontEditorSelected;
+core['CoffeeLiqueur`Extensions`EditorViewMinimal`FrontEditorSelected'] = core.FrontEditorSelected;
+
 
 class ShellCell {
     

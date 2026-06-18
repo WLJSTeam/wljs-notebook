@@ -187,6 +187,7 @@ core.FrontEndExecutable.destroy = async (args, env) => {
 
 //bug fix when importing an old format notebook, context gets lost
 core["Global`FrontEndExecutable"] = core.FrontEndExecutable;
+core["System`FrontEndExecutable"] = core.FrontEndExecutable;
 
 const protectedObjects = new Map();
 

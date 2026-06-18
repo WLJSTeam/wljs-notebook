@@ -609,6 +609,8 @@ core.PCMPlayer.destroy = (args, env) => {
 
 core.PCMPlayer.virtual = true;
 
+core['CoffeeLiqueur`Extensions`Sound`PCMPlayer'] = core.PCMPlayer;
+
 const sound = {
     name: 'Sound'
 };

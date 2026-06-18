@@ -105,6 +105,8 @@ core.FrontSlidesSelected = async (args, env) => {
   return res;
 }
 
+core['CoffeeLiqueur`Extensions`SlidesTools`FrontSlidesSelected'] = core.FrontSlidesSelected;
+
 let cnt = 0;
 
 class RevealJSCell {

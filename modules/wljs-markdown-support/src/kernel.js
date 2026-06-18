@@ -635,4 +635,5 @@ tex.destroy = (args, env) => {
 
 /* it is anyway meant to be global, so we define it in all contexts */
 core.TeXView = tex;
+core['CoffeeLiqueur`Extensions`MarkdownCells`TeXView'] = tex;
 core['CoffeeLiqueur`Extensions`MarkdownCells`Private`TeXView'] = tex;

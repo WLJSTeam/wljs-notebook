@@ -9458,3 +9458,12 @@ g2d.GraphicsGroupBox = g2d.GraphicsGroup
 g2d.GraphicsComplexBox = g2d.GraphicsComplex
 g2d.DiskBox = g2d.Disk
 g2d.LineBox = g2d.Line
+
+//aliases, normally you do not use them
+g2d['CoffeeLiqueur`Extensions`Graphics`Controls'] = g2d.Controls
+g2d['CoffeeLiqueur`Extensions`Graphics`TransitionType'] = g2d.TransitionType
+g2d['CoffeeLiqueur`Extensions`Graphics`TransitionDuration'] = g2d.TransitionDuration
+g2d['CoffeeLiqueur`Extensions`Graphics`ZoomAt'] = g2d.ZoomAt
+g2d['CoffeeLiqueur`Extensions`Graphics`SVGAttribute'] = g2d.SVGAttribute
+g2d['CoffeeLiqueur`Extensions`Graphics`AnimationFrameListener'] = g2d.AnimationFrameListener
+g2d['CoffeeLiqueur`Extensions`Graphics`SVGGroup'] = g2d.SVGGroup
