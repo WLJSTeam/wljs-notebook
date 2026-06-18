@@ -70,8 +70,10 @@ WorkerLaunch[expr_] := Module[{kernel, cmd = $CommandLine//First},
         Internal`EventHandlerWorkerRun[data_] := Internal`EventHandlerWorkerRun["Message", data];
         Internal`EventHandlerWorkerRun[topic_, data_] := (topic /. Internal`EventHandlerWorker)[data];
       ]]];
-    
-      LinkWrite[kernel, Unevaluated[EnterExpressionPacket[expr;]]];
+
+      With[{comp = Compress[Hold[expr]]},
+        LinkWrite[kernel, Unevaluated[EnterExpressionPacket[Uncompress[comp]//ReleaseHold;]]];
+      ];
 
    
       AppendTo[workersPool, w];
