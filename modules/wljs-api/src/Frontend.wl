@@ -907,7 +907,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                               |> ], {out, shortened}]},
                               
                                 If[Length[accumulatedMessages] > 0,
-                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->accumulatedMessages|>}]]; 
+                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages]|>}]]; 
                                 ,
                                     EventFire[promise, Resolve,  cellsGenerated]; 
                                 ];
@@ -927,6 +927,15 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     ]
 ]
 
+trimMessages[messages_List] = Select[
+  StringTrim @ 
+  StringReplace[
+    DeleteDuplicates[messages], 
+    
+    RegularExpression["\\s+"] -> " "
+  ],
+  StringFreeQ[#, "will be suppressed during this calculation"] &
+];
 
 majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
     GenericKernel`Send[k,
@@ -1002,9 +1011,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
             dir = Lookup[body, "Directory", Null],
             accumulated = Unique[]
-        }, {
-            events = getMessagesEventChannel[k, "Hash"]
-        },
+        }, 
 
         If[MissingQ[k], ClearAll[accumulated]; Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
 
@@ -1012,46 +1019,94 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
 
         If[!NumberQ[timelimit],ClearAll[accumulated];  Return[failure["TimeLimit is not a number"], Module] ];
 
-        accumulated = {};
-        
-        EventHandler[events, {"Print" -> Function[data,
-            AppendTo[accumulated, {"Print", data}];
-        ], "Warning" -> Function[data,
-            AppendTo[accumulated, {"Warning", data}];
-        ]}];
 
         Then[promise, Function[payload, Module[{},
-            EventFire[finalPromise, Resolve, If[Length[accumulated] > 0,
-                StringRiffle[Join[accumulated[[All,2]], {payload}], "\n"]
-            ,
-                payload
-            ] ];
-            ClearAll[accumulated];
-            EventRemove[events, "Print"];
-            EventRemove[events, "Warning"];
+            EventFire[finalPromise, Resolve, payload];
         ]]];
 
         If[dir === Null,
             GenericKernel`Send[k, 
-                EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
-                    If[StringLength[res] > maxCharacters,
-                        StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
-                    ,
-                        res
+              EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, 
+                With[{
+                  postProcess = Function[data,
+                    With[{string = ToString[data, InputForm]},
+                      If[Length[string] > maxCharacters,
+                        StringReplace[ToString[Short[ToExpression[string, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                      ,
+                        string
+                      ]
                     ]
-                ] ];
+                  ]
+                },
+                 Block[{$Messages = {}}, 
+                  If[
+                    #["MessagesText"] === {}, 
+                    postProcess[#["Result"]], 
+                    "⚠ " <> StringRiffle[
+                      Select[
+                        StringTrim @ 
+                        StringReplace[
+                          DeleteDuplicates[#["MessagesText"]], 
+                          
+                          RegularExpression["\\s+"] -> " "
+                        ],
+                        StringFreeQ[#, "will be suppressed during this calculation"] &
+                      ], 
+                      " | "
+                    ] <> "\n" <> postProcess[#["Result"]]
+                  ] & @ EvaluationData[
+                    CheckAbort[
+                      TimeConstrained[
+                        ToExpression[expr, InputForm], 
+                        timelimit, 
+                      $TimedOut
+                    ], $Aborted ]
+                  ]
+                ]]               
+              ];
             ];        
         ,
             GenericKernel`Send[k, 
                 With[{prev = Directory[]}, 
                     SetDirectory[dir];
-                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, With[{res = ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], timelimit, $TimedOut], $Aborted ], InputForm]},
-                        If[StringLength[res] > maxCharacters,
-                            StringReplace[ToString[Short[ToExpression[res, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
-                        ,
-                            res
+                    EventFire[Internal`Kernel`RemoteEvent[ promise // First ], Resolve, 
+                      With[{
+                        postProcess = Function[data,
+                          With[{string = ToString[data, InputForm]},
+                            If[Length[string] > maxCharacters,
+                              StringReplace[ToString[Short[ToExpression[string, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                            ,
+                              string
+                            ]
+                          ]
                         ]
-                    ] ];
+                      },
+                       Block[{$Messages = {}}, 
+                        If[
+                          #["MessagesText"] === {}, 
+                          postProcess[#["Result"]], 
+                          "⚠ " <> StringRiffle[
+                            Select[
+                              StringTrim @ 
+                              StringReplace[
+                                DeleteDuplicates[#["MessagesText"]], 
+                                
+                                RegularExpression["\\s+"] -> " "
+                              ],
+                              StringFreeQ[#, "will be suppressed during this calculation"] &
+                            ], 
+                            " | "
+                          ] <> "\n" <> postProcess[#["Result"]]
+                        ] & @ EvaluationData[
+                          CheckAbort[
+                            TimeConstrained[
+                              ToExpression[expr, InputForm], 
+                              timelimit, 
+                            $TimedOut
+                          ], $Aborted ]
+                        ]
+                      ]]               
+                    ];
                     SetDirectory[prev];
                 ];
             ];        
