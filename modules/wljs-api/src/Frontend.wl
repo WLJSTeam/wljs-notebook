@@ -873,6 +873,8 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                         EventFire[promise, Resolve, "$TimedOut" ]; 
                         EventRemove[events, "Warning"];
                         ClearAll[accumulatedMessages];
+                        Echo["Aborting..."];
+                        GenericKernel`AbortEvaluation[notebook["Evaluator"]["Kernel"]] // Echo;
                     , 1000 timeout]
                 },
 
@@ -1008,7 +1010,8 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
         ],
             expr = body["Expression"],
             timelimit = Lookup[body, "TimeLimit", 20],
-            maxCharacters = Lookup[body, "MaxCharacters", 5500],
+            maxCharacters = Lookup[body, "MaxCharacters", 2500],
+            summarize = Lookup[body, "Summarize", False],
             promise = Promise[],
             finalPromise = Promise[],
 
@@ -1034,7 +1037,11 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                   postProcess = Function[data,
                     With[{string = ToString[data, InputForm]},
                       If[Length[string] > maxCharacters,
-                        StringReplace[ToString[Short[ToExpression[string, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                       If[summarize,
+                        BoxForm`SpokenWithinLimit[string, maxCharacters]
+                       ,
+                        StringTake[string, Min[maxCharacters, StringLength[string]]]
+                       ]
                       ,
                         string
                       ]
@@ -1077,7 +1084,11 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                         postProcess = Function[data,
                           With[{string = ToString[data, InputForm]},
                             If[Length[string] > maxCharacters,
-                              StringReplace[ToString[Short[ToExpression[string, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""]
+                              If[summarize,
+                                BoxForm`SpokenWithinLimit[string, maxCharacters]
+                              ,
+                                StringTake[string, Min[maxCharacters, StringLength[string]]]
+                              ]
                             ,
                               string
                             ]

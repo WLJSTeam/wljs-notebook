@@ -46768,16 +46768,17 @@ ${skillIndexText()}`
     };
     register(
       "kernel_evaluate",
-      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. Can execute arbitrary WL code",
+      "Evaluate Wolfram Language directly in a ready kernel without a notebook cell. The output is capped by MaxCharacters; if Summarize is true, over-limit output is summarized to fit instead of truncated. Can execute arbitrary WL code.",
       {
         Expression: external_exports.string().min(1).describe("Wolfram Language expression to evaluate."),
         Kernel: external_exports.string().optional().describe("Optional kernel hash/id."),
         TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds."),
-        MaxCharacters: external_exports.number().optional().describe("Optional maximum allowed character before shortening. Default is 5000")
+        MaxCharacters: external_exports.number().optional().describe("Optional maximum returned characters after evaluation. Default is 2500"),
+        Summarize: external_exports.boolean().optional().describe("When true, summarize over-limit output to fit MaxCharacters instead of truncating it. Default is false")
       },
-      ({ Expression, Kernel, TimeLimit, MaxCharacters }) => wlCall(
+      ({ Expression, Kernel, TimeLimit, MaxCharacters, Summarize }) => wlCall(
         "/api/kernel/evaluate/",
-        compact({ Expression, Kernel, TimeLimit, MaxCharacters }),
+        compact({ Expression, Kernel, TimeLimit, MaxCharacters, Summarize }),
         {
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20)
@@ -47237,8 +47238,8 @@ function cliManifest() {
       {
         name: "wl",
         category: "evaluation",
-        usage: "wljs wl '<wolfram-expression>' [--kernel <id>] [--time-limit <seconds>]",
-        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell. Defaults to a 25 sec evaluation; pass --time-limit to override and --kernel to target a specific kernel (see `wljs kernels`).",
+        usage: "wljs wl '<wolfram-expression>' [--kernel <id>] [--time-limit <seconds>] [--summarize]",
+        description: "Evaluate Wolfram Language directly in a ready kernel without creating a notebook cell. Output is capped by MaxCharacters; --summarize summarizes over-limit output to fit instead of truncating it.",
         mutates_notebook: false,
         executes_code: true,
         output: "JSON",
@@ -47251,13 +47252,15 @@ function cliManifest() {
           "The expression is taken from the joined positional arguments.",
           "Pass '-' (or no expression) to read the expression from stdin; use this on Windows/PowerShell when the expression contains double quotes, since the .bat launcher cannot forward them inline.",
           "--kernel is optional and selects a specific kernel id/hash.",
-          "--time-limit is optional and must be a positive number of seconds."
+          "--time-limit is optional and must be a positive number of seconds.",
+          "--summarize is optional and summarizes over-limit output to fit the maximum character limit instead of truncating it."
         ],
         examples: [
           "wljs wl 'Total[Range[100]]'",
           "wljs wl 'Plot[Sin[x], {x, 0, 10}]'",
           "wljs wl 'Pause[60]; 1+1' --time-limit 120",
           "wljs wl 'Range[10]' --kernel abc123",
+          "wljs wl 'Range[100000]' --summarize",
           `echo 'FileNames["*"]' | wljs -c -`
         ]
       }
@@ -47402,17 +47405,17 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     case "code":
     case "-c":
     case "-code": {
-      const { Kernel, TimeLimit, positional } = extractKernelEvalOptions(args);
+      const { Kernel, TimeLimit, Summarize, positional } = extractKernelEvalOptions(args);
       const joined = positional.join(" ");
       const Expression = removeTicks(requireCliArg(
         joined === "-" || joined === "" ? readFileSync(0, "utf8").trim() : joined,
-        "Usage: wljs wl '<expression>' [--kernel <id>] [--time-limit <seconds>]   (or pipe it:  <expression> | wljs wl -)"
+        "Usage: wljs wl '<expression>' [--kernel <id>] [--time-limit <seconds>] [--summarize]   (or pipe it:  <expression> | wljs wl -)"
       ));
       writeText(
         stdout,
         await wlCall(
           "/api/kernel/evaluate/",
-          compact({ Expression, Directory: resolve(), Kernel, TimeLimit }),
+          compact({ Expression, Directory: resolve(), Kernel, TimeLimit, Summarize }),
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + cliTimeLimitMs(TimeLimit)
@@ -47625,6 +47628,7 @@ function extractKernelEvalOptions(args) {
   const positional = [];
   let Kernel;
   let TimeLimit;
+  let Summarize;
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
     const key = typeof arg === "string" && arg.startsWith("--") ? arg.slice(2).toLowerCase() : null;
@@ -47650,9 +47654,13 @@ function extractKernelEvalOptions(args) {
       i += 1;
       continue;
     }
+    if (key === "summarize") {
+      Summarize = true;
+      continue;
+    }
     positional.push(arg);
   }
-  return { Kernel, TimeLimit, positional };
+  return { Kernel, TimeLimit, Summarize, positional };
 }
 function readCliContent(opts) {
   const literal2 = opts.content ?? opts.Content;
@@ -47767,6 +47775,7 @@ Direct evaluation:
   wljs wl 'Range[10]^2'
   wljs wl 'Pause[60]; 1+1' --time-limit 120
   wljs wl 'Range[10]' --kernel <kernel-id>
+  wljs wl 'Range[100000]' --summarize
   wljs code 1+1
   wljs -code 1+1
   wljs -c 1+1
