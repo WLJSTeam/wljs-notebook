@@ -31,11 +31,16 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
     const construct = () => {
       const ul = document.createElement('ul');
-      ul.classList.add(...("hidden absolute z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300".split(' ')));
+      ul.classList.add(...("hidden fixed z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300".split(' ')));
 
       const rect = inputField.getBoundingClientRect();
-      console.warn(rect);
-      ul.style.top = (rect.top+rect.height)+'px';
+      const dropdownMaxHeight = 240;
+      const spaceBelow = window.innerHeight - rect.bottom;
+      if (spaceBelow < dropdownMaxHeight && rect.top > dropdownMaxHeight) {
+        ul.style.top = (rect.top - dropdownMaxHeight) + 'px';
+      } else {
+        ul.style.top = rect.bottom + 'px';
+      }
       ul.style.left = rect.left+'px';
       ul.style.width = rect.width+'px';
       ul.classList.remove('hidden');
@@ -46,7 +51,6 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
     const destruct = () => {
       if (!list) return;
-      console.warn('Destroy autocomplete');
       list.remove();
       list = undefined;
     }
@@ -74,10 +78,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
         }
       });
 
-      console.log(intersection);
-      
       const newElements = newArray.filter((x) => !intersection.some((element) => element.domId === x.domId));
-      console.log(newElements);
 
       newElements.forEach((el) => {
         const node = document.createElement('li');
@@ -170,12 +171,12 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
     var close = () => {
       opened = false;
+      window.removeEventListener('click', outOfFocus);
       document.removeEventListener("keydown", keyHandler);
-      if (list) list.classList.add('hidden');
-      
+
       destruct();
       renderedArray = [];
-      
+
       currentLI = -1;
     }
 
@@ -197,6 +198,11 @@ AutocompleteComponent[OptionsPattern[]] := With[{
     inputField.addEventListener('input', () => {
         const trimmed = inputField.value.trim();
         if (trimmed.length >= 2) {
+            if (!opened) {
+                opened = true;
+                document.addEventListener("keydown", keyHandler);
+                window.addEventListener('click', outOfFocus);
+            }
             server.kernel.ask('<HandlerSymbol/>["'+encodeURIComponent(trimmed)+'"]', 'callback').then(async (result) => {
                 const assoc = await interpretate(result, {});
                 if (!assoc) return;
@@ -204,27 +210,24 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
                 generate(assoc);
             })
-        } 
+        } else {
+            if (opened) close();
+        }
     })
 
     inputField.addEventListener('focus', () => {
+      if (opened) return;
       opened = true;
-      
-      document.addEventListener("keydown", keyHandler);
-      //list.classList.remove('hidden');
 
+      document.addEventListener("keydown", keyHandler);
       window.addEventListener('click', outOfFocus);
     });
 
-    
-    outOfFocus = (ev) => {
-                            console.log(ev.target);
-                            if (!parent.contains( ev.target )) {
-                                window.removeEventListener('click', outOfFocus);
-                                close();
-                            }
 
-                            ev.stopPropagation();
+    outOfFocus = (ev) => {
+        if (!parent.contains(ev.target) && (!list || !list.contains(ev.target))) {
+            close();
+        }
     };
 
     
