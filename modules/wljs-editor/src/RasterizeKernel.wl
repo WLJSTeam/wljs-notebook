@@ -19,6 +19,8 @@ Begin["`Private`"]
 window[_] := Null;
 windowObject[_] := Null;
 windowReadyQ[_] := False;
+windowClosingQ[_] := False;
+windowOpts[_] := {};
 lastTimeUsed[_] := Now;
 intervalTimer[_] := Null;
 que[_] := Null;
@@ -61,36 +63,50 @@ checkQue[hash_] := Module[{q = que[hash]},
     ][q[[1]]];
 ];
 
-destroy[hash_] := With[{qq = que[hash]},
+destroy[hash_] := Module[{pending},
     windowReadyQ[hash] = False;
+    windowClosingQ[hash] = False;
     window[hash] = Null;
     TaskRemove[intervalTimer[hash]];
     intervalTimer[hash] = Null;
+    (* Preserve items that arrived during the closing window gap *)
+    pending = Select[que[hash], #["State"] === "Added" &];
     que[hash] = {};
+    If[Length[pending] > 0,
+        que[hash] = pending;
+        createWindow[hash, Sequence @@ windowOpts[hash]];
+    ];
 ];
 
 createWindow[hash_, opts___] := With[{}, If[window[hash] === Null,
+    windowOpts[hash] = {opts};
     window[hash] = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->{1920, 1280}, "Offscreen"->True, opts ];
-    
+
     EventHandler[window[hash], {"Ready" -> Function[w,
         windowObject[hash] = w;
         windowReadyQ[hash] = True;
+        windowClosingQ[hash] = False;
         lastTimeUsed[hash] = Now;
         checkQue[hash];
         If[intervalTimer[hash] =!= Null, TaskRemove[intervalTimer[hash]]];
         intervalTimer[hash] = SetInterval[
             checkQue[hash];
             If[Now - lastTimeUsed[hash] > Quantity[3, "Seconds"],
+                windowClosingQ[hash] = True;
                 NotebookClose[window[hash]];
             ];
-        , 500];        
+        , 500];
     ], "Closed" -> Function[Null,
         If[window[hash] =!= Null,
             destroy[hash];
         ];
     ]}];
-, 
-    lastTimeUsed[hash] = Now;
+,
+    (* Window is alive but closing: don't reset the idle timer, let it finish closing.
+       Items added to the queue now will be picked up by destroy's recreation. *)
+    If[!windowClosingQ[hash],
+        lastTimeUsed[hash] = Now;
+    ];
 ]];
 
 End[]
