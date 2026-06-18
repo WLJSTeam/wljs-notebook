@@ -113,9 +113,9 @@ BoxForm`SpokenWithinLimit[expr_, maxChars_: 1500] := Module[
   params = Flatten[
     Table[
       {sl, asl, depth},
-      {depth, 10, 5, 2, 1, -1},
+      {depth, {10, 5, 2, 1}},
       {asl, {200, 150, 100, 75, 50, 25, 10, 5, 1}},
-      {sl, {1000,500,300,50,10}}
+      {sl, {1000,500,50,10}}
     ],
     2
   ];
