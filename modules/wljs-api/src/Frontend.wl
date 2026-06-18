@@ -1011,7 +1011,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             expr = body["Expression"],
             timelimit = Lookup[body, "TimeLimit", 20],
             maxCharacters = Lookup[body, "MaxCharacters", 2500],
-            summarize = Lookup[body, "Summarize", False],
+            summarize = TrueQ[Lookup[body, "Summarize", False]],
             promise = Promise[],
             finalPromise = Promise[],
 
@@ -1036,7 +1036,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                 With[{
                   postProcess = Function[data,
                     With[{string = ToString[data, InputForm]},
-                      If[Length[string] > maxCharacters,
+                      If[StringLength[string] > maxCharacters,
                        If[summarize,
                         BoxForm`SpokenWithinLimit[data, maxCharacters]
                        ,
@@ -1083,7 +1083,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                       With[{
                         postProcess = Function[data,
                           With[{string = ToString[data, InputForm]},
-                            If[Length[string] > maxCharacters,
+                            If[StringLength[string] > maxCharacters,
                               If[summarize,
                                 BoxForm`SpokenWithinLimit[data, maxCharacters]
                               ,
