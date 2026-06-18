@@ -932,7 +932,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     ]
 ]
 
-trimMessages[messages_List] = Select[
+trimMessages[messages_List] := Select[
   StringTrim @ 
   StringReplace[
     DeleteDuplicates[messages], 
