@@ -47389,7 +47389,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
       const opts2 = parseCliOptions(args.filter((a) => a.startsWith("--")));
       const positional = args.filter((a) => !a.startsWith("--"));
       const Cell = unquoteId(requireCliArg(positional.shift(), "Usage: wljs full <cell> [--summarize]"));
-      const MaxCharacters = 9999999;
+      const MaxCharacters = 5e3;
       const Summarize = !!(opts2.summarize ?? opts2.Summarize);
       writeText(stdout, await wlCall("/api/notebook/cells/readcontent/", { Cell, MaxCharacters, Summarize }));
       return 0;
