@@ -104,9 +104,9 @@ If[NumericQ[BoxForm`$accumulatorSize],
 ] /; ByteCount[expr] > 1024
 
 
-BoxForm`SpokenWithinLimit[expr_String, maxChars_: 1500] := Module[
+BoxForm`SpokenWithinLimit[expr_, maxChars_: 1500] := Module[
   {
-    e = ToExpression[expr, InputForm],
+    e = expr,
     params,
     s
   },

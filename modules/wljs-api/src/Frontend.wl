@@ -944,7 +944,7 @@ trimMessages[messages_List] := Select[
 
 majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit /@ exprs ];
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit[ToExpression[#, InputForm]] &/@ exprs ];
     ];
     promise
 ]
@@ -1038,7 +1038,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                     With[{string = ToString[data, InputForm]},
                       If[Length[string] > maxCharacters,
                        If[summarize,
-                        BoxForm`SpokenWithinLimit[string, maxCharacters]
+                        BoxForm`SpokenWithinLimit[data, maxCharacters]
                        ,
                         StringTake[string, Min[maxCharacters, StringLength[string]]]
                        ]
@@ -1085,7 +1085,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                           With[{string = ToString[data, InputForm]},
                             If[Length[string] > maxCharacters,
                               If[summarize,
-                                BoxForm`SpokenWithinLimit[string, maxCharacters]
+                                BoxForm`SpokenWithinLimit[data, maxCharacters]
                               ,
                                 StringTake[string, Min[maxCharacters, StringLength[string]]]
                               ]
