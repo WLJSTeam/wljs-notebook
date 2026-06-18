@@ -277,7 +277,7 @@ apiCall[request_, "/api/notebook/focused/"] := With[
 apiCall[request_, "/api/notebook/cells/"] := {
     "/api/notebook/cells/list/",
     "/api/notebook/cells/getlines/",
-    "/api/notebook/cells/getfullcontent/"
+    "/api/notebook/cells/readcontent/"
     "/api/notebook/cells/setlines/",
     "/api/notebook/cells/setlines/batch/",
     "/api/notebook/cells/insertlines/",
@@ -395,23 +395,24 @@ apiCall[request_, "/api/notebook/cells/getlines/"] := Module[{body = request["Bo
             to = body["To"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
-        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Use get full content"], Module]];
+        If[cell`OutputCellQ[cell], Return[failure["Cannot read lines of output cell. Use readcontent"], Module]];
         If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
         StringRiffle[StringSplit[cell["Data"], "\n", All][[from ;; UpTo[to] ]], "\n"]
     ]
 ]
 
 (* 
-   /api/notebook/cells/getfullcontent/ - Read full content of the output cell
+   /api/notebook/cells/readcontent/ - Read full content of the output cell
    
    Retrieves content from a possibly truncated output cells
    EXPERIMENTAL
 *)  
-apiCall[request_, "/api/notebook/cells/getfullcontent/"] := Module[{body = request["Body"]},
+apiCall[request_, "/api/notebook/cells/readcontent/"] := Module[{body = request["Body"]},
     With[
         {
             cell = cell`HashMap[ fromAlias[body["Cell"]] ],
-            maxLength = Lookup[body, "MaxCharacters", 500]
+            maxLength = Lookup[body, "MaxCharacters", 1500],
+            summarize = Lookup[body, "Summarize", False]
         }, {
             k = cell["Notebook"]["Evaluator"]["Kernel"]
         },
@@ -423,11 +424,8 @@ apiCall[request_, "/api/notebook/cells/getfullcontent/"] := Module[{body = reque
             Return[StringTake[cell["Data"], Min[StringLength[cell["Data"]], maxLength]], Module];
         ];
 
-        If[TrueQ[cell["Overflow"]],
-            Return[StringTake[cell["OverflowContent"], Min[StringLength[cell["OverflowContent"]], maxLength]], Module];
-        ];
 
-        If[cell["Display"]==="codemirror",
+        If[cell["Display"]==="codemirror" || TrueQ[cell["Overflow"]],
             (* the most difficult case *)
             (* evaluate it again and forward the result in the input format *)
             (* bypassing any filters *)
@@ -435,10 +433,15 @@ apiCall[request_, "/api/notebook/cells/getfullcontent/"] := Module[{body = reque
                 Return[failure["Running Kernel is required. Try to evaluate any input cell to automatically assign kernel to a notebook"], Module];
             ];
 
-            With[{p = Promise[], expr = cell["Data"], finalPromise = Promise[]},
+            With[{p = Promise[], expr = If[TrueQ[cell["Overflow"]], cell["OverflowContent"], cell["Data"]], finalPromise = Promise[]},
                 GenericKernel`Send[k,
-                    EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 20, $TimedOut], $Aborted ], InputForm] ];
+                    If[summarize,
+                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, BoxForm`SpokenWithinLimit[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], maxLength] ];
+                    ,
+                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], InputForm] ];
+                    ];
                 ];
+                
                 Then[p, Function[payload,
                     EventFire[
                         finalPromise,
@@ -939,7 +942,7 @@ trimMessages[messages_List] = Select[
 
 majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, StringReplace[StringReplace[ToString[Short[ToExpression[#, InputForm],8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""] &/@ exprs ];
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit /@ exprs ];
     ];
     promise
 ]

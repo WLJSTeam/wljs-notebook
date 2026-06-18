@@ -164,7 +164,7 @@ const NOTEBOOK_ASSISTANT_INSTRUCTIONS = `Operate on a local sandboxed WLJS/Wolfr
 
 Workflow:
 1. Inspect before acting: use notebook_context, get_focused_cell, or list_cells.
-2. Before editing a cell, read nearby context with get_cell_lines or get_cell_full.
+2. Before editing a cell, read nearby context with get_cell_lines or read_content.
 3. Edit only INPUT cells. 
 4. Outputs are produced by evaluate_cell.
 5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
@@ -740,15 +740,16 @@ register(
 );
 
 register(
-  "get_cell_full",
-  "Reads full content of the cell bypassing shortening and revealing any hidden data. Provide maximum character length. Use on output cells",
+  "read_content",
+  "Read cell content, bypassing output shortening and revealing hidden data when possible. Use Summarize for a concise text summary of output expressions.",
   {
     Cell: idSchema.describe("Cell hash/id."),
-    MaxCharacters: lineNumberSchema.optional().describe("Maximum characters")
+    MaxCharacters: lineNumberSchema.optional().describe("Maximum characters. Default is 1500"),
+    Summarize: z.boolean().optional().describe("Summarize output content instead of returning the full expression. Default is false")
   },
-  ({ Cell, MaxCharacters }) => wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }),
+  ({ Cell, MaxCharacters, Summarize }) => wlCall("/api/notebook/cells/readcontent/", { Cell, MaxCharacters, Summarize }),
   {
-  title: "Read Full Cell Content",
+  title: "Read Cell Content",
   annotations: READ_ONLY_LOCAL,
 }
 );
@@ -914,7 +915,7 @@ register(
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use get_cell_full on output ids",
+    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids.",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
       TimeLimit: z.number().optional().describe("Optional time limit in seconds.")
@@ -1318,13 +1319,13 @@ function cliManifest() {
       {
         name: "full",
         category: "inspection",
-        usage: "wljs full <cell>",
+        usage: "wljs full <cell> [--summarize]",
         description:
-          "Read full content of a cell bypassing shortening revaling any hidden data",
+          "Read cell content, bypassing shortening and revealing hidden data when possible.",
         mutates_notebook: false,
         executes_code: false,
         output: "JSON",
-        examples: ["wljs full cell123"],
+        examples: ["wljs full cell123", "wljs full cell123 --summarize"],
       },
       {
         name: "docs",
@@ -1643,10 +1644,13 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
 
     case "full": {
-      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs full <cell>"));
+      const opts = parseCliOptions(args.filter((a) => a.startsWith("--")));
+      const positional = args.filter((a) => !a.startsWith("--"));
+      const Cell = unquoteId(requireCliArg(positional.shift(), "Usage: wljs full <cell> [--summarize]"));
       const MaxCharacters = 9999999;
+      const Summarize = !!(opts.summarize ?? opts.Summarize);
 
-      writeText(stdout, await wlCall("/api/notebook/cells/getfullcontent/", { Cell, MaxCharacters }));
+      writeText(stdout, await wlCall("/api/notebook/cells/readcontent/", { Cell, MaxCharacters, Summarize }));
       return 0;
     }    
 

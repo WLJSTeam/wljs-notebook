@@ -103,6 +103,47 @@ If[NumericQ[BoxForm`$accumulatorSize],
 ] ]
 ] /; ByteCount[expr] > 1024
 
+
+BoxForm`SpokenWithinLimit[expr_String, maxChars_: 1500] := Module[
+  {
+    e = ToExpression[expr, InputForm],
+    params,
+    s
+  },
+  params = Flatten[
+    Table[
+      {sl, asl, depth},
+      {depth, 10, 5, 2, 1, -1},
+      {asl, {200, 150, 100, 75, 50, 25, 10, 5, 1}},
+      {sl, {1000,500,300,50,10}}
+    ],
+    2
+  ];
+
+  s = SelectFirst[
+    SpokenString[
+      e,
+      StringLengthLimit -> #[[1]],
+      ArraySizeLimit -> #[[2]],
+      ExpressionDepthLimit -> #[[3]]
+    ] & /@ params,
+    StringLength[#] <= maxChars &
+  ];
+
+  If[MissingQ[s],
+    StringTake[
+      SpokenString[
+        e,
+        StringLengthLimit -> 1,
+        ArraySizeLimit -> 1,
+        ExpressionDepthLimit -> 1
+      ],
+      UpTo[maxChars]
+    ],
+    s
+  ]
+];
+
 (* ::: Commonly used Math symbols :::  *)
 (* ::: does not require decorators ::: *)
 
