@@ -915,15 +915,16 @@ register(
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids.",
+    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids. If Summarize is true, codemirror/overflow outputs include concise summaries.",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
-      TimeLimit: z.number().optional().describe("Optional time limit in seconds.")
+      TimeLimit: z.number().optional().describe("Optional time limit in seconds."),
+      Summarize: z.boolean().optional().describe("When true, summarize codemirror/overflow output expressions. Default is false.")
     },
-    ({ Cell , TimeLimit}) => {
+    ({ Cell, TimeLimit, Summarize }) => {
       return wlCall(
         "/api/notebook/cells/evaluate/",
-        { Cell, TimeLimit },
+        compact({ Cell, TimeLimit, Summarize }),
         {
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20),
@@ -1695,15 +1696,16 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
 
     case "eval": {
-      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs eval <cell> [--time-limit <seconds>]"));
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs eval <cell> [--time-limit <seconds>] [--summarize]"));
       const opts = parseCliOptions(args);
       const TimeLimit = parseCliTimeLimit(opts);
+      const Summarize = !!(opts.summarize ?? opts.Summarize);
 
       writeJson(
         stdout,
         await wlCall(
           "/api/notebook/cells/evaluate/",
-          compact({ Cell, TimeLimit }),
+          compact({ Cell, TimeLimit, Summarize }),
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + cliTimeLimitMs(TimeLimit),
@@ -1754,7 +1756,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
         const evaluated = await wlCall(
           "/api/notebook/cells/evaluate/",
-          { Cell },
+          compact({ Cell, Summarize: !!(opts.summarize ?? opts.Summarize) }),
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,

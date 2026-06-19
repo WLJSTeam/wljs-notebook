@@ -157,7 +157,7 @@ wolframAlphaRequest[query_String] := With[{str = ImportString[ExportString[
  ],  "String"]},
   If[!StringQ[str], failure["Failed request"],
     If[StringLength[str] > 1000, 
-      StringTake[str, Min[StringLength[str], 1000] ]<>"..."
+      StringTake[str, Min[StringLength[str], 1500] ]<>"..."
     ,
       str
     ]
@@ -855,7 +855,9 @@ getMessagesEventChannel[kernel_, prop_] := If[clonedChannels[kernel[prop]]["Orig
 apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Body"]},
     With[
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
-         timeout = Lookup[body, "TimeLimit", 20]},
+         timeout = Lookup[body, "TimeLimit", 20],
+         summarize = TrueQ[Lookup[body, "Summarize", False]]
+         },
         {notebook = cell["Notebook"]},
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
         
@@ -901,14 +903,14 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                 ,
                                     "0"
                                 ]
-                            ], out]], Function[shortened,
+                            ], out], summarize], Function[shortened,
 
                               With[{cellsGenerated = MapThread[Function[{c, o}, <|
                                 Join[<|
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
                                     "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
-                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Preview" -> o|>, <||>] ] 
+                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Summary" -> o|>, <||>] ] 
                               |> ], {out, shortened}]},
                               
                                 If[Length[accumulatedMessages] > 0,
@@ -942,11 +944,15 @@ trimMessages[messages_List] := Select[
   StringFreeQ[#, "will be suppressed during this calculation"] &
 ];
 
-majorHeadsPreview[k_, exprs_] := With[{promise = Promise[]},
+majorHeadsPreview[k_, exprs_, True] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit[ToExpression[#, InputForm]] &/@ exprs ];
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit[ToExpression[#, InputForm], 1500] &/@ exprs ];
     ];
     promise
+]
+
+majorHeadsPreview[k_, exprs_, False] := With[{},
+    (StringTake[#, Min[StringLength[#], 1500] ] <>"...")&/@exprs
 ]
 
 (* 
