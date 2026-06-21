@@ -544,7 +544,11 @@ Kernel`Internal`trimStringCharacters[s_String] := With[{
 Unprotect[Around]
 FormatValues[Around] = {};
 Around /: MakeBoxes[Around[mean_?NumberQ, std_?NumberQ], StandardForm] := With[{},
-  ViewBox[Around[mean, std], ViewDecorator["Around", TextString[Round[mean, std] ], TextString @ std ] ]
+  ViewBox[Around[mean, std], ViewDecorator["Around", TextString[N@Round[mean, std/2] ], TextString @ std ] ]
+] 
+
+Around /: MakeBoxes[Around[mean_?NumberQ, {stdm_?NumberQ, stdp_?NumberQ}], StandardForm] := With[{},
+  ViewBox[Around[mean, {stdm, stdp}], ViewDecorator["Around", TextString[N@Round[mean, Min[stdp, stdm]/2 ] ], (TextString @ stdp)<>"/"<>(TextString @ stdm) ] ]
 ] 
 
 (* ::: Styling expressions ::: *)
