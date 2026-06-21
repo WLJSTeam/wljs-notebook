@@ -28,8 +28,6 @@ PacletObject[
           {"CoffeeLiqueur`Notebook`FrontendObject`", "FrontendObject.wl"},
           {"CoffeeLiqueur`Notebook`Kernel`", "Kernel.wl"},
           {"CoffeeLiqueur`Notebook`LocalKernel`", "LocalKernel.wl"},
-          {"CoffeeLiqueur`LTP`", "LTP.wl"},
-          {"CoffeeLiqueur`LTP`Events`", "LTPEvents.wl"},
           {"CoffeeLiqueur`Notebook`FrontendObject`", "FrontendObject.wl"},
           {"CoffeeLiqueur`Notebook`MasterKernel`", "MasterKernel.wl"},
 

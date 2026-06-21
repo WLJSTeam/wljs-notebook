@@ -50,7 +50,7 @@ extend[set_] := shareDefinitions[#, set] &/@ clients;
 (* a bug with a first defined symbol $InterfaceEnvironment that causes shutdown (BUT THIS IS A STRING!!!). No idea why *)
 skip = -1;
 
-blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`", "CoffeeLiqueur`LTP`Events`","CoffeeLiqueur`CUSockets`EventsExtension`","CoffeeLiqueur`Misc`WLJS`Transport`","CoffeeLiqueur`WebUSocketHandler`","CoffeeLiqueur`TCPUServer`","CoffeeLiqueur`LTP`","CoffeeLiqueur`UInternal`","CoffeeLiqueur`CUSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
+blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`","CoffeeLiqueur`CUSockets`EventsExtension`","CoffeeLiqueur`Misc`WLJS`Transport`","CoffeeLiqueur`WebUSocketHandler`","CoffeeLiqueur`TCPUServer`","CoffeeLiqueur`UInternal`","CoffeeLiqueur`CUSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
 
 BuildVocabularAsync := With[{},
     BuildVocabularAsync = Null;
