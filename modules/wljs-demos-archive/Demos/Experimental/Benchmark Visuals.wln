@@ -1,0 +1,557 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Benchmark
+More FPS - better
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Benchmark
+More FPS - better
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+System info
+
+__<$System/>__
+
+__<$Version/>__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+System info
+
+__Mac OS X ARM (64-bit)__
+
+__14.3.0 for Mac OS X ARM (64-bit) (July 31, 2025)__
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Boids 1000
+Single color - point primitives
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Boids 1000
+Single color - point primitives
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[handler, n, r, f, s, x, p , q]
+
+n = 1000;
+r := RandomInteger[{1, n}];
+f := (#/(.01 + Sqrt[#.#])) & /@ (x[[#]] - x) &;
+s := With[{r1 = r}, p[[r1]] = r; q[[r1]] = r];
+x = RandomReal[{-1, 1}, {n, 2}];
+{p, q} = RandomInteger[{1, n}, {2, n}];
+
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+fpsHistory = {};
+
+handler = Function[Null,
+  x = 0.995 x + 0.02 f[p] - 0.01 f[q];
+  If[r < 100, s];
+
+  (* FPS counter *)
+  fps += 1;
+  With[{diff = AbsoluteTime[] - time},
+    If[diff >= 1.0,
+      fpsLabel = ToString[fps / (diff)];
+      AppendTo[fpsHistory, fps / (diff)];
+      fps = 0;
+      time = AbsoluteTime[];
+    ];
+  ];
+];
+
+Pause[1];
+
+time = AbsoluteTime[];
+With[{}, cell = ResultCell[]; Graphics[{
+  PointSize[0.007], Point[x // Offload],
+  EventHandler[AnimationFrameListener[x // Offload], handler],
+  Text[fpsLabel // Offload, {-1.8,1.8}]
+}, PlotRange -> {{-2,2}, {-2,2}}, TransitionType->None]] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Run it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Run it
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Measure after some time...
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Measure after some time...
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+Around[Drop[fpsHistory,1]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Around[38.4251368684990879624`6.4579675431564345, 2.8195731303304058621`5.0530882634840735])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgOKOBbll+algJnGlnom5ibB7ECmkZ6FoaWpOQBqNQ/t"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Boids 10000 colored
+The same, but more points with colors
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Boids 10000 colored
+The same, but more points with colors
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[handler, n, r, f, s, x, p , q]
+
+n = 10000/4; 
+r := RandomInteger[{1, n}];
+f := (#/(.01 + Sqrt[#.#])) & /@ (x[[#]] - x) &;
+s := With[{r1 = r}, p[[r1]] = r; q[[r1]] = r];
+x = RandomReal[{-1, 1}, {n, 2}];
+ox = x;
+{p, q} = RandomInteger[{1, n}, {2, n}];
+
+x = 0.995 x + 0.02 f[p] - 0.01 f[q];
+colors = MapThread[(List@@(RGBColor[Hue[Norm[#1-#2] 20.0]]))&, {x,ox}];    
+ox = x;
+data = {x,colors};
+
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+fpsHistory = {};
+
+Pause[1];
+
+With[{}, cell = ResultCell[]; Graphics[{
+  PointSize[0.007], GraphicsComplex[
+    data[[1]]//Offload, Point[Range[n]], VertexColors->Offload[data[[2]]]
+  ],Red, Text[fpsLabel//Offload, {-1,-1}], 
+  EventHandler[AnimationFrameListener[data // Offload], With[{},
+    x = 0.995 x + 0.02 f[p] - 0.01 f[q];
+    colors = MapThread[(List@@(RGBColor[Hue[Norm[#1-#2] 20.0]]))&, {x,ox}]; 
+    ox = x;
+    If[r < 100, s];
+    data = {x,colors};
+
+    (* FPS counter *)
+    fps += 1;
+    With[{diff = AbsoluteTime[] - time},
+      If[diff >= 1.0,
+        fpsLabel = ToString[fps / (diff)];
+        AppendTo[fpsHistory, fps / (diff)];
+        fps = 0;
+        time = AbsoluteTime[];
+      ];
+    ];    
+  ]&]
+}, 
+  PlotRange -> {{-2,2}, {-2,2}}, TransitionType->None, 
+  Background->Black, "Controls"->False, ImageSize->300
+]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Measure
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Measure
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+Around[Drop[fpsHistory,1]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Around[30.2115686083902819299`6.460345783723945, 0.1955316214087792886`3.9686624086927753])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgOKOBbll+alBLMCmcYGesaGYEEDPUNLU1MASNUPaw=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Image animation
+Stream raw data
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Image animation
+Stream raw data
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+frames = Table[RandomImage[{0,1}, {500,500}], {30}];
+buffer = ImageData[frames[[1]], "Byte"];
+index = 1;
+
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+fpsHistory = {};
+
+
+Pause[1];
+
+With[{}, cell = ResultCell[]; Labeled[
+Image[buffer//Offload, "Byte", Epilog->{
+  EventHandler[AnimationFrameListener[buffer//Offload], Function[Null,
+    index++;
+    If[index > Length[frames], index = 1];
+    buffer = ImageData[frames[[index]], "Byte"];
+
+    (* FPS counter *)
+    fps += 1;
+    With[{diff = AbsoluteTime[] - time},
+      If[diff >= 1.0,
+        fpsLabel = ToString[fps / (diff)];
+        AppendTo[fpsHistory, fps / (diff)];
+        fps = 0;
+        time = AbsoluteTime[];
+      ];
+    ];     
+  ]]
+}], TextView[fpsLabel//Offload]]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Measure
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Measure
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+Around[Drop[fpsHistory,1]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Around[38.0998539405806942065`6.456866794548985, 0.8518793103091800211`4.578171263418184])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgOKOBbll+algJnGFnrGxqbB7ECmgZ6FqaGFBQBp2w/m"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 3D Geometry Basic
+Flying balls
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 3D Geometry Basic
+Flying balls
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+balls = RandomReal[{-1,1}, {300,3}];
+vels  = RandomReal[{-1,1}, {300,3}];
+
+updateFunction = Function[Null,
+  vels = Table[
+    If[Norm[balls[[i]]] < 0.01, -1, 1] vels[[i]] - 0.08 balls[[i]]
+  , {i, Length[balls]}];
+  
+  balls = Table[balls[[i]] + 0.08 vels[[i]], {i, Length[balls]}];
+  
+    (* FPS counter *)
+    fps += 1;
+    With[{diff = AbsoluteTime[] - time},
+      If[diff >= 1.0,
+        fpsLabel = ToString[fps / (diff)];
+        AppendTo[fpsHistory, fps / (diff)];
+        fps = 0;
+        time = AbsoluteTime[];
+      ];
+    ]; 
+  
+];
+
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+fpsHistory = {};
+
+Pause[1];
+
+With[{}, cell = ResultCell[]; Graphics3D[{
+  Text[fpsLabel//Offload, {1,1,1}],
+  Table[With[{i = i},
+    {
+      RGBColor[RandomReal[{0,1}, 3]],
+      Sphere[balls[[i]] // Offload, 0.03]
+    }
+  ], {i, Length[balls]}], 
+  EventHandler[AnimationFrameListener[balls // Offload], updateFunction]
+}]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Measure
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Measure
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+Around[Drop[fpsHistory,1]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Around[39.8891043462494982797`6.456346701340894, 0.5993545613294228869`4.298049299058649])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgOKOBbll+algJkmBnqGpubB7ECmgZ6ppaWxKQBpiQ/i"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 3D Geometry Complex
+Gaussian
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 3D Geometry Complex
+Gaussian
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+(* Grid dimensions *)
+nx = 25; ny = 25;
+
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+fpsHistory = {};
+
+Pause[1];
+
+(* All triangle indices *)
+allIndices = Flatten[Table[
+  With[{v = (i - 1) ny + j},
+    {{v, v + 1, v + ny + 1}, {v, v + ny + 1, v + ny}}
+  ],
+  {i, nx - 1}, {j, ny - 1}
+], 2];
+
+xs = Subdivide[-2., 2., nx - 1];
+ys = Subdivide[-2., 2., ny - 1];
+
+(* Precompute centroid XY of each triangle for fast filtering *)
+gridXY = Flatten[Table[{x, y}, {x, xs}, {y, ys}], 1];
+triCX = (gridXY[[#[[1]], 1]] + gridXY[[#[[2]], 1]] + gridXY[[#[[3]], 1]]) / 3. & /@ allIndices;
+triCY = (gridXY[[#[[1]], 2]] + gridXY[[#[[2]], 2]] + gridXY[[#[[3]], 2]]) / 3. & /@ allIndices;
+
+generateFrame[t_] := Module[{verts, zVals, mn, mx, h1, h2, d1, d2, mask},
+  verts = Flatten[Table[
+    With[{r = Sqrt[x^2 + y^2]},
+      {x, y,
+        Sin[4 r - 2 t] Exp[-0.3 r] +
+        0.3 Sin[2 x - t] Cos[2 y + 0.5 t]}
+    ],
+    {x, xs}, {y, ys}
+  ], 1];
+
+  zVals = verts[[All, 3]];
+  {mn, mx} = MinMax[zVals];
+
+  (* Two holes orbiting the center *)
+  h1 = {1.3 Cos[0.8 t], 1.3 Sin[0.8 t]};
+  h2 = {1.3 Cos[0.8 t + Pi], 1.3 Sin[0.8 t + Pi]};
+
+  (* Vectorized distance computation *)
+  d1 = Sqrt[(triCX - h1[[1]])^2 + (triCY - h1[[2]])^2];
+  d2 = Sqrt[(triCX - h2[[1]])^2 + (triCY - h2[[2]])^2];
+
+  (* Keep triangles outside both holes *)
+  mask = UnitStep[d1 - 0.55] UnitStep[d2 - 0.55];
+
+  {Pick[allIndices, mask, 1], {verts,
+   Map[With[{s = Rescale[#[[3]], {mn, mx}]},
+     List @@ RGBColor[s, 0.15 + 0.35 s, 1. - 0.8 s]] &, verts]}}
+];
+
+(* Initialize *)
+{indices, complex} = generateFrame[0.];
+
+With[{}, cell = ResultCell[]; Graphics3D[{Text[fpsLabel//Offload, {-1,-1,-1}], GraphicsComplex[
+  Offload[complex[[1]]],
+  {Polygon[Offload[indices]]},
+  VertexColors -> Offload[complex[[2]]],
+  "VertexFence" -> True
+], EventHandler[AnimationFrameListener[complex // Offload], Function[Null,
+  {indices, complex} = generateFrame[AbsoluteTime[]];
+
+    (* FPS counter *)
+    fps += 1;
+    With[{diff = AbsoluteTime[] - time},
+      If[diff >= 1.0,
+        fpsLabel = ToString[fps / (diff)];
+        AppendTo[fpsHistory, fps / (diff)];
+        fps = 0;
+        time = AbsoluteTime[];
+      ];
+    ];  
+]]}]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Measure
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Measure
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+Around[Drop[fpsHistory,1]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Around[31.5028089646234370468`6.458306770139437, 0.5981397590427453779`4.47159085504058])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgOKOBbll+algJnGhnrmBobB7ECmgZ6ppYWhCQBpRg/Z"*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+Key: brassavola-fb5
+%-------------------------------------------------------------------------%
+"1:eJxTTMoPymQAAgALRAGu"
+
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
