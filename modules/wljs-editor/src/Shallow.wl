@@ -290,7 +290,7 @@ fitToBudget[expr_, maxChars_Integer, OptionsPattern[]] :=
 Unprotect[Shallow];
 ClearAll[Shallow];
 
-Shallow /: MakeBoxes[Shallow[expr_], StandardForm] := fitToBudget[expr, 500]
+Shallow /: MakeBoxes[Shallow[expr_], StandardForm] := fitToBudget[expr, 1000]
 Shallow /: MakeBoxes[Shallow[expr_, depth_Integer], StandardForm] := expressionSchema[expr, depth, 3, 40, 1500]
 Shallow /: MakeBoxes[Shallow[expr_, {depth_Integer, length_Integer}], StandardForm] := expressionSchema[expr, depth, length, 40, 1500]
 
