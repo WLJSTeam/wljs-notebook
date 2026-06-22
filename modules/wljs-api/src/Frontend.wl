@@ -411,7 +411,7 @@ apiCall[request_, "/api/notebook/cells/readcontent/"] := Module[{body = request[
     With[
         {
             cell = cell`HashMap[ fromAlias[body["Cell"]] ],
-            maxLength = Lookup[body, "MaxCharacters", 1500],
+            maxLength = Lookup[body, "MaxCharacters", 2500],
             summarize = Lookup[body, "Summarize", False]
         }, {
             k = cell["Notebook"]["Evaluator"]["Kernel"]
@@ -857,7 +857,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
          timeout = Lookup[body, "TimeLimit", 20],
          summarize = TrueQ[Lookup[body, "Summarize", False]],
-         maxCharacters = Lookup[body, "MaxCharacters", 500]
+         maxCharacters = Lookup[body, "MaxCharacters", 1000]
          },
         {notebook = cell["Notebook"]},
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
@@ -912,7 +912,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                     "Id"-> toAlias[c["Hash"]],
                                     "Type" -> c["Type"],
                                     "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
-                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Summary" -> o|>, <||>] ] 
+                                |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Content" -> o|>, <||>] ] 
                               |> ], {out, shortened}]},
                               
                                 If[Length[accumulatedMessages] > 0,

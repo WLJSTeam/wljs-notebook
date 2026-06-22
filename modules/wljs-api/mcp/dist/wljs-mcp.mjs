@@ -46592,7 +46592,7 @@ ${skillIndexText()}`
     "Read cell content, bypassing output shortening and revealing hidden data when possible. Use Summarize to reveal overall shape summary of output expressions.",
     {
       Cell: idSchema.describe("Cell hash/id."),
-      MaxCharacters: lineNumberSchema.optional().describe("Maximum characters. Default is 1500"),
+      MaxCharacters: lineNumberSchema.optional().describe("Maximum characters. Default is 2500"),
       Summarize: external_exports.boolean().optional().describe("Summarize output content instead of returning the full expression. Default is false")
     },
     ({ Cell, MaxCharacters, Summarize }) => wlCall("/api/notebook/cells/readcontent/", { Cell, MaxCharacters, Summarize }),
@@ -46734,12 +46734,12 @@ ${skillIndexText()}`
     );
     register(
       "evaluate_cell",
-      "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids. If Summarize is true, codemirror outputs include concise summaries capped by MaxCharacters.",
+      "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids. If Summarize is true, output expression is summarized",
       {
         Cell: external_exports.string().min(1).describe("Input cell hash/id."),
         TimeLimit: external_exports.number().optional().describe("Optional time limit in seconds."),
-        MaxCharacters: lineNumberSchema.optional().describe("Optional maximum characters for codemirror/overflow output summaries. Default is 500."),
-        Summarize: external_exports.boolean().optional().describe("When true, summarize codemirror/overflow output expressions. Default is false.")
+        MaxCharacters: lineNumberSchema.optional().describe("Optional maximum characters for wolfram output. Default is 1000."),
+        Summarize: external_exports.boolean().optional().describe("When true, summarize wolfram output expressions. Default is false.")
       },
       ({ Cell, TimeLimit, MaxCharacters, Summarize }) => {
         return wlCall(
