@@ -5069,11 +5069,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
     const {gl, programInfo} = env.wgl;
-    let bufferInfo; 
-    
+    let bufferInfo;
+    const use32bit = env.wgl.fallbackVertices.length > 65535;
+    const makeIndices = (arr) => use32bit ? new Uint32Array(arr) : new Uint16Array(arr);
+
     switch(points[0].length) {
       case 3:
-        bufferInfo = twgl.createBufferInfoFromArrays(gl, { indices:  points.flat(Infinity).map((index) => index-1)});
+        bufferInfo = twgl.createBufferInfoFromArrays(gl, { indices: makeIndices(points.flat(Infinity).map((index) => index-1))});
       break;
 
       case 4:
@@ -5087,8 +5089,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           );
         }
 
-        bufferInfo = twgl.createBufferInfoFromArrays(gl, { 
-          indices: temporalBuffer
+        bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+          indices: makeIndices(temporalBuffer)
         });}
 
       break;
@@ -5106,13 +5108,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
               p[0] - 1, p[3] - 1, p[4] - 1
             );
           }
-      
+
           bufferInfo = twgl.createBufferInfoFromArrays(gl, {
-            indices: temporalBuffer
+            indices: makeIndices(temporalBuffer)
           });
         }
         break;
-      
+
       case 6:
         // Handle Hexagon (6 points)
         {
@@ -5127,13 +5129,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
               p[0] - 1, p[4] - 1, p[5] - 1
             );
           }
-      
+
           bufferInfo = twgl.createBufferInfoFromArrays(gl, {
-            indices: temporalBuffer
+            indices: makeIndices(temporalBuffer)
           });
         }
         break;
-    
+
       default:
         // Handle Arbitrary Polygon (N points)
         // Using earcut triangulation
@@ -5142,19 +5144,19 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         if (!earcut) earcut = (await import('./earcut-09a28c82.js')).default;
 
         for (let poly of points) {
-          
+
           poly = poly.map((index)=>index-1);
 
           const explicitVertices = poly.flatMap((index) => fallbackVertices[index]);
-          
-          
+
+
           localIndices.push(earcut(explicitVertices).map((index) => poly[index]));
-          
+
         }
 
 
-        bufferInfo = twgl.createBufferInfoFromArrays(gl, { 
-          indices: localIndices.flat()
+        bufferInfo = twgl.createBufferInfoFromArrays(gl, {
+          indices: makeIndices(localIndices.flat())
         });
 
         // Save points (1-indexed) for handler recomputation when vertices update.
@@ -6743,7 +6745,6 @@ return object;
     let indices = points.flat(Infinity).map(i => i - 1);
 
     if (env.wgl.fallbackVertices.length > 65535) {
-      console.warn('Vertex buffer is too large and may not be indexed correctly');
       bufferInfo = twgl.createBufferInfoFromArrays(gl, {
         indices: new Uint32Array(indices)
       });
