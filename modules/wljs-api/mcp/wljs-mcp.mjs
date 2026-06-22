@@ -741,7 +741,7 @@ register(
 
 register(
   "read_content",
-  "Read cell content, bypassing output shortening and revealing hidden data when possible. Use Summarize for a concise text summary of output expressions.",
+  "Read cell content, bypassing output shortening and revealing hidden data when possible. Use Summarize to reveal overall shape summary of output expressions.",
   {
     Cell: idSchema.describe("Cell hash/id."),
     MaxCharacters: lineNumberSchema.optional().describe("Maximum characters. Default is 1500"),

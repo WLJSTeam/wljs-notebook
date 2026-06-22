@@ -47,6 +47,7 @@
       "src/StandardForm.wl",
       "src/Boxes.wl",
       "src/BoxesWorkarounds.wl",
+      "src/Shallow.wl",
       "src/OffloadExtension.wl",
       "src/SetDirectoryKernel.wl",
       "src/FrontSubmitKernel.wl",

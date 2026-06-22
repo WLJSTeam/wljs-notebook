@@ -436,7 +436,7 @@ apiCall[request_, "/api/notebook/cells/readcontent/"] := Module[{body = request[
             With[{p = Promise[], expr = If[TrueQ[cell["Overflow"]], cell["OverflowContent"], cell["Data"]], finalPromise = Promise[]},
                 GenericKernel`Send[k,
                     If[summarize,
-                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, BoxForm`SpokenWithinLimit[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], maxLength] ];
+                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], maxLength] ];
                     ,
                         EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], InputForm] ];
                     ];
@@ -946,7 +946,7 @@ trimMessages[messages_List] := Select[
 
 majorHeadsPreview[k_, exprs_, True] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, BoxForm`SpokenWithinLimit[ToExpression[#, InputForm], 1500] &/@ exprs ];
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[ToExpression[#, InputForm], 1500] &/@ exprs ];
     ];
     promise
 ]
@@ -1044,7 +1044,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                     With[{string = ToString[data, InputForm]},
                       If[StringLength[string] > maxCharacters,
                        If[summarize,
-                        BoxForm`SpokenWithinLimit[data, maxCharacters]
+                        CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[data, maxCharacters]
                        ,
                         StringTake[string, Min[maxCharacters, StringLength[string]]]
                        ]
@@ -1091,7 +1091,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                           With[{string = ToString[data, InputForm]},
                             If[StringLength[string] > maxCharacters,
                               If[summarize,
-                                BoxForm`SpokenWithinLimit[data, maxCharacters]
+                                CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[data, maxCharacters]
                               ,
                                 StringTake[string, Min[maxCharacters, StringLength[string]]]
                               ]
