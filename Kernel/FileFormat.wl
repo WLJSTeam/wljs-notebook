@@ -538,7 +538,7 @@ readNotebook[stream_, timeout_:10] := Module[
                     If[FailureQ[buffer],
                         Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse header of %"<>field<>"% data"|>] ]
                     ];
-                    AppendTo[list, temp["Key"] -> ToExpression[buffer, InputForm]];
+                    AppendTo[list, ToString[temp["Key"]] -> ToExpression[buffer, InputForm]];
                 ];
                 If[FailureQ[temp] || FailureQ[buffer],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse %"<>field<>"% data end"|>] ]
