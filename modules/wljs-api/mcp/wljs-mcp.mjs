@@ -915,16 +915,17 @@ register(
 
   register(
     "evaluate_cell",
-    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids. If Summarize is true, codemirror/overflow outputs include concise summaries.",
+    "Evaluate an input cell with 20 seconds timeout interval. Output cells are created by evaluation. Returns output cell metadata when evaluation finishes. Use read_content on output ids. If Summarize is true, wolfram outputs include concise summaries capped by MaxCharacters.",
     {
       Cell: z.string().min(1).describe("Input cell hash/id."),
       TimeLimit: z.number().optional().describe("Optional time limit in seconds."),
-      Summarize: z.boolean().optional().describe("When true, summarize codemirror/overflow output expressions. Default is false.")
+      MaxCharacters: lineNumberSchema.optional().describe("Optional maximum characters for wolfram output summaries. Default is 500."),
+      Summarize: z.boolean().optional().describe("When true, summarize wolfram output expressions. Default is false.")
     },
-    ({ Cell, TimeLimit, Summarize }) => {
+    ({ Cell, TimeLimit, MaxCharacters, Summarize }) => {
       return wlCall(
         "/api/notebook/cells/evaluate/",
-        compact({ Cell, TimeLimit, Summarize }),
+        compact({ Cell, TimeLimit, MaxCharacters, Summarize }),
         {
           wait: true,
           timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + lookup(TimeLimit, 20),
@@ -1355,7 +1356,7 @@ function cliManifest() {
         name: "add",
         category: "editing",
         usage:
-          "wljs add <notebook> --content <text|@file|-> [--after <cell>] [--before <cell>] [--eval]",
+          "wljs add <notebook> --content <text|@file|-> [--after <cell>] [--before <cell>] [--eval] [--summarize] [--max-characters <n>]",
         description:
           "Add a new INPUT cell to a notebook. Use first-line markers such as .md, .html, .js, .mermaid, or .slide to choose special cell types.",
         mutates_notebook: true,
@@ -1367,6 +1368,7 @@ function cliManifest() {
           "--content @file reads from a file.",
           "--content - reads from stdin.",
           "--eval evaluates the newly added cell if the cell id can be inferred.",
+          "--summarize and --max-characters apply to the evaluation when --eval is provided.",
         ],
         examples: [
           "wljs add abc123 --content '.md\\n# Hello' --eval",
@@ -1426,20 +1428,22 @@ function cliManifest() {
       {
         name: "eval",
         category: "evaluation",
-        usage: "wljs eval <cell> [--time-limit <seconds>]",
+        usage: "wljs eval <cell> [--time-limit <seconds>] [--summarize] [--max-characters <n>]",
         description:
-          "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Defaults to a 20 second time limit; pass --time-limit to override.",
+          "Evaluate an input cell. Evaluation creates output cells and may execute arbitrary Wolfram Language or cell-specific code. Defaults to a 20 second time limit; pass --time-limit to override. When --summarize is used, --max-characters caps codemirror/overflow output summaries.",
         mutates_notebook: true,
         executes_code: true,
         output: "JSON",
         argument_rules: [
           "--time-limit is optional and must be a positive number of seconds.",
+          "--summarize is optional and summarizes codemirror/overflow outputs.",
+          "--max-characters is optional and must be a positive integer.",
         ],
         safety_notes: [
           "Only evaluate code that the user requested or that the agent intentionally created.",
           "Long-running evaluations may time out from the CLI perspective while continuing in the sandbox.",
         ],
-        examples: ["wljs eval cell123", "wljs eval cell123 --time-limit 120"],
+        examples: ["wljs eval cell123", "wljs eval cell123 --time-limit 120", "wljs eval cell123 --summarize --max-characters 1200"],
       },
       {
         name: "project",
@@ -1696,16 +1700,17 @@ async function runWljsCli(app, args, { stdout, stderr }) {
     }
 
     case "eval": {
-      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs eval <cell> [--time-limit <seconds>] [--summarize]"));
+      const Cell = unquoteId(requireCliArg(args.shift(), "Usage: wljs eval <cell> [--time-limit <seconds>] [--summarize] [--max-characters <n>]"));
       const opts = parseCliOptions(args);
       const TimeLimit = parseCliTimeLimit(opts);
+      const MaxCharacters = parseCliMaxCharacters(opts);
       const Summarize = !!(opts.summarize ?? opts.Summarize);
 
       writeJson(
         stdout,
         await wlCall(
           "/api/notebook/cells/evaluate/",
-          compact({ Cell, TimeLimit, Summarize }),
+          compact({ Cell, TimeLimit, MaxCharacters, Summarize }),
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS + cliTimeLimitMs(TimeLimit),
@@ -1726,7 +1731,7 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
       const Notebook = unquoteId(requireCliArg(
         args.shift(),
-        "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]",
+        "Usage: wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval] [--summarize] [--max-characters <n>]",
       ));
 
       const opts = parseCliOptions(args);
@@ -1756,7 +1761,11 @@ async function runWljsCli(app, args, { stdout, stderr }) {
 
         const evaluated = await wlCall(
           "/api/notebook/cells/evaluate/",
-          compact({ Cell, Summarize: !!(opts.summarize ?? opts.Summarize) }),
+          compact({
+            Cell,
+            MaxCharacters: parseCliMaxCharacters(opts),
+            Summarize: !!(opts.summarize ?? opts.Summarize),
+          }),
           {
             wait: true,
             timeoutMs: runtimeConfig.PROMISE_TIMEOUT_MS,
@@ -1935,6 +1944,15 @@ function parseCliTimeLimit(opts) {
     throw new Error("--time-limit must be a positive number of seconds.");
   }
   return n;
+}
+
+function parseCliMaxCharacters(opts) {
+  const raw = opts["max-characters"] ?? opts.maxCharacters ?? opts.MaxCharacters ?? opts.maxcharacters ?? opts.maxchars;
+  if (raw === undefined) return undefined;
+  if (raw === true) {
+    throw new Error("--max-characters requires a value.");
+  }
+  return parsePositiveIntParam(raw, "--max-characters");
 }
 
 function cliTimeLimitMs(timeLimit) {
@@ -2123,13 +2141,13 @@ Notebook:
   wljs full <cell>
 
 Editing:
-  wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval]
+  wljs add <notebook> --content <text|@file|-> [--after cell] [--before cell] [--eval] [--summarize] [--max-characters <n>]
   wljs set-lines <cell> <from> <to> --content <text|@file|->
   wljs insert-lines <cell> <after> --content <text|@file|->
   wljs delete-cell <cell>
 
 Evaluation in the notebook:
-  wljs eval <cell> [--time-limit <seconds>]
+  wljs eval <cell> [--time-limit <seconds>] [--summarize] [--max-characters <n>]
   wljs project <cell>
 
 Direct evaluation:

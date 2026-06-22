@@ -856,13 +856,15 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     With[
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
          timeout = Lookup[body, "TimeLimit", 20],
-         summarize = TrueQ[Lookup[body, "Summarize", False]]
+         summarize = TrueQ[Lookup[body, "Summarize", False]],
+         maxCharacters = Lookup[body, "MaxCharacters", 500]
          },
         {notebook = cell["Notebook"]},
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
         
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
         If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
+        If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
             With[{
                 controller = notebook["Controller"], socket = notebook["Socket"], promise = Promise[],
@@ -903,7 +905,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                 ,
                                     "0"
                                 ]
-                            ], out], summarize], Function[shortened,
+                            ], out], summarize, maxCharacters], Function[shortened,
 
                               With[{cellsGenerated = MapThread[Function[{c, o}, <|
                                 Join[<|
@@ -944,15 +946,15 @@ trimMessages[messages_List] := Select[
   StringFreeQ[#, "will be suppressed during this calculation"] &
 ];
 
-majorHeadsPreview[k_, exprs_, True] := With[{promise = Promise[]},
+majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[ToExpression[#, InputForm], 1500] &/@ exprs ];
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[ToExpression[#, InputForm], lim] &/@ exprs ];
     ];
     promise
 ]
 
-majorHeadsPreview[k_, exprs_, False] := With[{},
-    (StringTake[#, Min[StringLength[#], 1500] ] <>"...")&/@exprs
+majorHeadsPreview[k_, exprs_, False, lim_:1500] := With[{},
+    (StringTake[#, Min[StringLength[#], lim] ] <>"...")&/@exprs
 ]
 
 (* 
