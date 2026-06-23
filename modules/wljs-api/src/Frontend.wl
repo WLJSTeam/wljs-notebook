@@ -861,7 +861,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {cell = cell`HashMap[ body["Cell"] //fromAlias ],
          timeout = Lookup[body, "TimeLimit", 20],
          summarize = TrueQ[Lookup[body, "Summarize", False]],
-         maxCharacters = Lookup[body, "MaxCharacters", 1000]
+         maxCharacters = Lookup[body, "MaxCharacters", 700]
          },
         {notebook = cell["Notebook"]},
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
