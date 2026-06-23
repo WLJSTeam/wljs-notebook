@@ -186,7 +186,7 @@ init[k_] := Module[{},
                         ,
                             With[{
                                 inputform = ToString[result, InputForm], ref = CreateUUID[],
-                                shortform = StringReplace[StringReplace[ToString[Short[result,8], StandardForm], Shortest["(*"~~__~~"*)"]->""], "\n"->""]
+                                shortform = CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[result, 1500]
                             },
                                 (* [TODO] this shit with restoring the intendend content has to be refactored! *)
                                 Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
