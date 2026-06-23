@@ -1195,7 +1195,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (options.PlotRange || env.plotRange) {
       const r = env.plotRange || (await interpretate(options.PlotRange, env));
 
-      if (Number.isFinite(r[0][0])) {
+      if (typeof r == 'number') {
+        range = [[-r,r], [-r,r]];
+        unknownRanges = false;
+      } else if (Number.isFinite(r[0][0])) {
         if (Number.isFinite(r[1][0])) {
           range = r;
           unknownRanges = false;
