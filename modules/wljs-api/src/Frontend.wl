@@ -446,7 +446,11 @@ apiCall[request_, "/api/notebook/cells/readcontent/"] := Module[{body = request[
                     EventFire[
                         finalPromise,
                         Resolve,
-                        StringTake[payload, Min[StringLength[payload], maxLength]]
+                        If[StringLength[payload] > maxLength,
+                            StringTake[payload, maxLength]<>"..."
+                        ,
+                            payload
+                        ]
                     ];
                 ]];
 
@@ -953,8 +957,17 @@ majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
     promise
 ]
 
-majorHeadsPreview[k_, exprs_, False, lim_:1500] := With[{},
-    (StringTake[#, Min[StringLength[#], lim] ] <>"...")&/@exprs
+majorHeadsPreview[k_, exprs_, False, lim_:1500] := With[{promise = Promise[]},
+    GenericKernel`Send[k,
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, With[{r =ToString[ToExpression[#, InputForm], InputForm]}, 
+            If[StringLength[r] > lim,
+                StringTake[r, lim]<>"..."
+            ,
+                r
+            ]
+        ] &/@ exprs ];
+    ];
+    promise
 ]
 
 (* 
@@ -1048,7 +1061,7 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                        If[summarize,
                         CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[data, maxCharacters]
                        ,
-                        StringTake[string, Min[maxCharacters, StringLength[string]]]
+                        StringTake[string, Min[maxCharacters, StringLength[string]]]<>"..."
                        ]
                       ,
                         string
