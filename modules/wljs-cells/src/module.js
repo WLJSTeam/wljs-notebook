@@ -238,7 +238,6 @@ window.CellWrapper = class {
     const pos = list.indexOf(this.uid);
     if (pos + 1 < list.length) {
       const next = CellHash.get(list[pos + 1]);
-      console.log([next.display.editor, (!skipOutputs || (next.type == 'Input')), !next.invisible, !next.props["Locked"]]);
       if (next.display.editor && (!skipOutputs || (next.type == 'Input')) && !next.invisible && !next.props["Locked"]) {
         
         next.focus(1);
@@ -254,6 +253,8 @@ window.CellWrapper = class {
 
   focus(dir) {
     if (!this.display.editor) return;
+
+    this.element.scrollIntoView({block: 'nearest'});
 
     const self = this;
     if (self.props["Hidden"] && self.type == 'Input') {
