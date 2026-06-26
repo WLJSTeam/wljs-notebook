@@ -67,10 +67,10 @@ function semanticSnippet() {
           destroy: () => {},
           dispatch: () => {}
         }; const errText = String(err);
-        span.style.color = "rgb(255, 85, 85)";
-        span.style.background = "rgba(255, 179, 179, 0.2)";
+        //span.style.color = "rgb(255, 85, 85)";
+        //span.style.background = "rgba(255, 179, 179, 0.2)";
         span.classList.add('px-2', 'py-1', 'rounded-md', 'text-xs');
-        span.innerText = errText.slice(0, Math.min(24, errText.length-1))+'...';
+        span.innerText = '...';
         span.title = errText; 
         console.error(err);
     }
