@@ -5815,14 +5815,101 @@ g2d.BezierCurve = async (args, env) => {
     drawSampled(ctrl, Math.max(24, leftover * 12));
   }
 
-  return env.svg.append("path")
+  const object = env.svg.append("path")
     .attr("fill", "none")
     .attr("vector-effect", "non-scaling-stroke")
     .attr("opacity", env.opacity)
     .attr("stroke", env.color)
     .attr("stroke-width", env.strokeWidth)
     .attr("d", path);
+
+  env.local.object = object;
+  env.local.degreeOpt = degreeOpt;
+
+  return object;
 };
+
+g2d.BezierCurve.update = async (args, env) => {
+  const options = await core._getRules(args, env);
+  let points = await interpretate(args[0], env);
+
+  const degreeOpt = (options && Number.isInteger(options.SplineDegree))
+    ? options.SplineDegree
+    : (env.local.degreeOpt ?? 3);
+  const deg = Math.max(1, degreeOpt);
+
+  const x = env.xAxis;
+  const y = env.yAxis;
+
+  points = points.map(p => [x(p[0]), y(p[1])]);
+
+  const path = d3.path();
+
+  if (points.length >= 2) {
+    path.moveTo(points[0][0], points[0][1]);
+
+    let i = 1;
+    while (i + deg - 1 < points.length) {
+      const remaining = points.length - i;
+
+      if (deg === 3 && remaining >= 3) {
+        path.bezierCurveTo(
+          points[i][0], points[i][1],
+          points[i + 1][0], points[i + 1][1],
+          points[i + 2][0], points[i + 2][1]
+        );
+        i += 3;
+      } else if (deg === 2 && remaining >= 2) {
+        path.quadraticCurveTo(
+          points[i][0], points[i][1],
+          points[i + 1][0], points[i + 1][1]
+        );
+        i += 2;
+      } else {
+        const take = Math.min(deg, remaining);
+        const ctrl = [path._currentPoint || points[i - 1]]
+          .concat(points.slice(i, i + take));
+        drawSampled(path, ctrl, Math.max(24, take * 12));
+        const end = ctrl[ctrl.length - 1];
+        path._currentPoint = [end[0], end[1]];
+        i += take;
+      }
+    }
+
+    const leftover = points.length - i;
+    if (leftover === 1) {
+      path.lineTo(points[i][0], points[i][1]);
+    } else if (leftover === 2) {
+      path.quadraticCurveTo(points[i][0], points[i][1], points[i + 1][0], points[i + 1][1]);
+    } else if (leftover > 2) {
+      const ctrl = [path._currentPoint || points[i - 1]].concat(points.slice(i));
+      drawSampled(path, ctrl, Math.max(24, leftover * 12));
+    }
+  }
+
+  env.local.degreeOpt = degreeOpt;
+
+  const dStr = path.toString();
+  env.local.object
+    .maybeTransition(env.transitionType, env.transitionDuration)
+    .attr("d", dStr);
+};
+
+g2d.BezierCurve.updateColor = (args, env) => {
+  env.local.object.style("stroke", env.color);
+};
+
+g2d.BezierCurve.updateOpacity = (args, env) => {
+  env.local.object.style("opacity", env.opacity);
+};
+
+g2d.BezierCurve.destroy = (args, env) => {
+  if (!env.local || !env.local.object) return;
+  env.local.object.remove();
+  delete env.local.object;
+};
+
+g2d.BezierCurve.virtual = true;
 
 
 
