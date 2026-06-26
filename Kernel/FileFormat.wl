@@ -409,7 +409,9 @@ readNotebook[stream_, timeout_:10] := Module[
              Return[ Failure["InvalidWLN", <|"Message" -> "Separator after %Notebook% not found"|>] ]
         ];
         notebookHeader = parseMiniYAML[StringTrim[temp]];
-        
+        If[notebookHeader["ObjectFields"] === <||>, 
+            notebookHeader["ObjectFields"] = {};
+        ];
         
         list = {};
         temp = Check[

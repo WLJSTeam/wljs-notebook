@@ -19,9 +19,9 @@ If[$VersionNumber < 14.1 || !NumberQ[$VersionNumber],
 ];
 
 If[$VersionNumber > 14.3,
-  Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook. We do not guarantee it will work correctly"];
+  Do[Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook - 14.1-14.3. We do not guarantee it will work correctly"], {5}];
   Echo["Proceeding anyway..."];
-  Pause[0.7];
+  Pause[1];
 ];
 
 (* $AllowDataUpdates = False; *)
