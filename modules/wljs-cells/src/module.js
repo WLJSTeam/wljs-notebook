@@ -254,13 +254,12 @@ window.CellWrapper = class {
   focus(dir) {
     if (!this.display.editor) return;
 
-    this.element.scrollIntoView({block: 'nearest'});
-
     const self = this;
     if (self.props["Hidden"] && self.type == 'Input') {
       //temporary unhide it
       self.toggle(false);
       self.display.focus(dir);
+      this.element.scrollIntoView({block: 'nearest'});
 
       function leftFocus() {
         self.toggle(false);
@@ -283,6 +282,7 @@ window.CellWrapper = class {
       self.element.addEventListener('focusout', leftFocus);       
     } {
       self.display.focus(dir);
+      self.element.scrollIntoView({block: 'nearest'});
     }
   }
 

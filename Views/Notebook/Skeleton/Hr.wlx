@@ -13,7 +13,6 @@ Script = With[{},
             const origin = self.origin;
 
             self.keyListener = (event) => {
-                console.error(event);
                 switch(event.key) {
                     case 'ArrowUp':
                     case 'ArrowLeft':    
