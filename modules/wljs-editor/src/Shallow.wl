@@ -252,7 +252,7 @@ expressionSchema[
     expr_,
     maxDepth_        : Infinity,
     maxElements_Integer     : 3,
-    maxStringLength_Integer : 40,
+    maxStringLength_Integer : 80,
     maxNodes_Integer        : 5000
 ] := (budget = maxNodes; iShape[expr, maxDepth, maxElements, maxStringLength]);
 
@@ -291,8 +291,12 @@ Unprotect[Shallow];
 ClearAll[Shallow];
 
 Shallow /: MakeBoxes[Shallow[expr_], StandardForm] := fitToBudget[expr, 1000]
-Shallow /: MakeBoxes[Shallow[expr_, depth_Integer], StandardForm] := expressionSchema[expr, depth, 3, 40, 1500]
-Shallow /: MakeBoxes[Shallow[expr_, {depth_Integer, length_Integer}], StandardForm] := expressionSchema[expr, depth, length, 40, 1500]
+Shallow /: MakeBoxes[Shallow[expr_, depth_Integer], StandardForm] := expressionSchema[expr, depth, 3, 80, 1500]
+Shallow /: MakeBoxes[Shallow[expr_, {depth_Integer, length_Integer}], StandardForm] := expressionSchema[expr, depth, length, 80, 1500]
+
+Shallow /: MakeBoxes[Shallow[expr_, {depth_Integer, length_Integer, string_Integer}], StandardForm] := expressionSchema[expr, depth, length, string, 1500]
+
+Shallow /: MakeBoxes[Shallow[expr_, {depth_Integer, length_Integer, string_Integer, max_Integer}], StandardForm] := expressionSchema[expr, depth, length, string, max]
 
 Protect[Shallow]
 

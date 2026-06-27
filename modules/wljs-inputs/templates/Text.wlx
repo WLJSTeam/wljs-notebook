@@ -1,15 +1,15 @@
 makeScript[_, _, _] := ""
-makeScript[_, Event_String, Topic_String] := (
+makeScript[_, _, _, _] := ""
+makeScript[_, Event_String, Topic_String, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
-        console.log('WORKING!!!!');
         el.addEventListener('input', () => {
             server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<Topic/>')
         })
     </script>
 )
 
-makeScript[_, Event_String, {TopicChange_String, _}] := (
+makeScript[_, Event_String, {TopicChange_String, _}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('input', () => {
@@ -18,7 +18,7 @@ makeScript[_, Event_String, {TopicChange_String, _}] := (
     </script>    
 )
 
-makeScript[_, Event_String, {_, TopicBlur_String}] := (
+makeScript[_, Event_String, {_, TopicBlur_String}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('blur', () => {
@@ -27,7 +27,7 @@ makeScript[_, Event_String, {_, TopicBlur_String}] := (
     </script>    
 )
 
-makeScript[_, Event_String, {TopicChange_String, TopicBlur_String}] := (
+makeScript[_, Event_String, {TopicChange_String, TopicBlur_String}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('blur', () => {
@@ -39,10 +39,11 @@ makeScript[_, Event_String, {TopicChange_String, TopicBlur_String}] := (
     </script>    
 )
 
-Component[value_String:"", OptionsPattern[]] := With[{
+Component[value_:"", OptionsPattern[]] := With[{
     event = OptionValue["Event"], size = OptionValue[ImageSize], Label = OptionValue["Label"], Descp = OptionValue["Description"], Placeholder = OptionValue["Placeholder"], topic = OptionValue["Topic"],
+    EditableQ = OptionValue["Editable"],
     ClassName = If[OptionValue[Appearance] === Automatic, 
-        "relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-900  focus:outline-none sm:text-xs sm:leading-6 bg-gray-50",
+        "relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-900  focus:outline-none sm:text-xs sm:leading-6 bg-white",
         "relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left focus:outline-none border-0 sm:text-xs sm:leading-6"
     ],
     CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
@@ -52,8 +53,11 @@ Component[value_String:"", OptionsPattern[]] := With[{
 {
     FinalCSS = StringJoin[StringTemplate["width: ``px;"][Round[size]], CSSStyle]
 },
+{
+    InitialValue = ToString[value]
+},
   {
-    If[size === Automatic,
+    If[EditableQ === True,
         <div class="sm-controls">
             <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
@@ -65,16 +69,16 @@ Component[value_String:"", OptionsPattern[]] := With[{
         <div class="sm-controls">
             <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
-              <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="{ClassName}" placeholder="{Placeholder}" aria-describedby="email-description"/>
+              <div id="#instanceId" style="{FinalCSS}" data-type="text-string" class="{ClassName}">...</div>
             </div>
             <p class="mt-1 text-sm text-gray-500"><Descp/></p>
         </div>
     ]
   ,
-    makeScript[_, event, topic]
+    makeScript[_, event, topic, EditableQ]
   }
 ]
 
-Options[Component] = {"CSS"->"", "Style"->"", "Placeholder"->"Type here...", Appearance->Automatic, ImageSize->Automatic, "Label"->"", "Description"->"", "UId":>CreateUUID[], "Event"->Null, "Topic"->"Default", "LabelClass"->"", "LabelStyle"->""}
+Options[Component] = {"CSS"->"", "Style"->"", "Placeholder"->"Type here...", Appearance->Automatic, ImageSize->Automatic, "Label"->"", "Description"->"", "UId":>CreateUUID[], "Event"->Null, "Topic"->"Default", "LabelClass"->"", "LabelStyle"->"", "Editable"->True}
 
 Component

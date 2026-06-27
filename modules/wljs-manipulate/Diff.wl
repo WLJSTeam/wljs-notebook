@@ -127,7 +127,7 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
 diff[exp_, exp_, _, _] := {}
 diff[_Texture, _Texture, _, _] := (failureMessage["Textures are not supported", {None, None}]; $Failed)
 diff[_Image3D, _Image3D, _, _] := (failureMessage["Image3D are not supported", {None, None}]; $Failed)
-diff[exp1_, exp2_, _, _] := (failureMessage["Cannot link two expressions with available diff patterns", {exp1, exp2}]; $Failed)
+
 
 diff[Rule[PlotRange, x_], Rule[PlotRange, y_], level_, attributes_] := {}
 
@@ -823,6 +823,8 @@ diff[head1_[___], head2_[___], level_, attributes_] := (
   failureMessage[ToString[head1]<>" and "<>ToString[head2]<>"cannot be linked", Null];
   $Failed
 )
+
+diff[exp1_, exp2_, _, _] := (failureMessage["Cannot link two expressions with available diff patterns", {exp1, exp2}]; $Failed)
 
 
 End[]

@@ -382,7 +382,7 @@ InputText[EventObject[a_Association] ] := InputText["Event" -> a["Id"] ]
 Options[InputText] = {"Label"->"", "Description"->"", "Placeholder"->"", "Topic"->"Default", "Event":>CreateUUID[], ImageSize->Automatic, "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->""}
 
 TextView[value_, opts: OptionsPattern[] ] := With[{id = CreateUUID[]},
-	HTMLView[ TextX["Placeholder"->"...", "UId" -> id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>], Epilog-> InternalElementUpdate[value, "text-string", "value"] ]
+	HTMLView[ TextX["", "UId" -> id, "Editable"->False, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>], Epilog-> InternalElementUpdate[value, "text-string", "innerText", True] ]
 ]
 
 JoystickX = ImportComponent[FileNameJoin[{$troot, "Joystick.wlx"}] ];
