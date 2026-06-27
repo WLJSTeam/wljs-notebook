@@ -363,10 +363,10 @@ apiCall[request_, "/api/notebook/cells/focused/"] := Module[{body = request["Bod
                 "Lines" -> StringCount[data, "\n"]+1,
                 "FirstLine" -> StringExtract[data, "\n"->1],
                 "SelectedLines" -> If[ListQ[ranges], 
-                    {
+                    Sort[{
                         StringCount[StringTake[data, Min[ranges[[1]], StringLength[data] ] ], "\n"] + 1,
                         StringCount[StringTake[data, Min[ranges[[2]], StringLength[data] ] ], "\n"] + 1
-                    },
+                    }],
                     Null
                 ]
             |>],

@@ -1,0 +1,317 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes *3.0.8*
+<Now/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes *3.0.8*
+Sat 27 Jun 2026 11:22:34
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Workers API
+WLJS now provides asynchronous access to parallel kernels. The freeware Wolfram Engine is not limited to a single parallel kernel or subkernel, so you can use this API to build truly parallel Wolfram Language workflows.
+
+> Why not `ParallelSubmit`?
+
+The default Wolfram parallel API is blocking, which makes it hard to stream data in and out without pausing the main kernel. The Workers API avoids that bottleneck. Here is a basic message loopback example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Workers API
+WLJS now provides asynchronous access to parallel kernels. The freeware Wolfram Engine is not limited to a single parallel kernel or subkernel, so you can use this API to build truly parallel Wolfram Language workflows.
+
+> Why not `ParallelSubmit`?
+
+The default Wolfram parallel API is blocking, which makes it hard to stream data in and out without pausing the main kernel. The Workers API avoids that bottleneck. Here is a basic message loopback example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+w = WorkerLaunch[Module[{},
+  EventHandler[Null, {
+    _ -> (EventFire[Null, #]&)
+  }]
+]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+WorkerObject[(*VB[*) LinkObject["'/Applications/Wolfram Engine.app/Contents/Resources/Wolfram Player.app/Contents/MacOS/WolframKernel' -noicon -wstp -noinit -subkernel", 819, 11], "dfaaf4aa-19b6-484b-8ce0-ef7d3dc13233" (*,*)(*"1:eJydU8tum0AUTfpuN5W6qdRVK5WlqwHjV3dgY4xj/IAYx1l1DBcbGBgygA35pn5kB9tKUnXTVkKXc885usycGb5sqOU/v7i4yD7xotJySFn8Q2EMJ1vw7CKOMas47V/Wnve8DBlNci3xnIDlBSYn4cMTQSvBLXK8IWB/5TRue9BqNTsNGfVwQxah1+iittiQNr7kbuROB/XAf1YPecHLJMjy08iH7qh9fLK686qMHGIngIP9imtTHMP3zyfvO140L8gpq+XHaSNKvFP3lpelNRmASz2wf/JOkCRB6gjSUElTErg4D2iS8XZFic9wLEhIS7ZBAt9wmnK6z7cKSV47LMhowVz43T0nuAL2p9vE7sx+dF4BS4Acv4waCQ1cmtTokOXpmUmCvEZZsYnOXukxLavgIb+pAWBvlpDqyF6zAv41w9fnIdX/hni4rEPsCpLiqEJL5W9B6nFiWhByQkeq/yAcgSQKTQXGlROi6EoJtYXlZepIl3eFjg55KCkz5FhLw1rdjPzM0aPteEzVnruGQzukC+IVc8rDDIbiap+JZsuhxtYcLX2zWq7nWR/5YCt6Vu7SfmsN3W4cDguSl/cz1pb0sFwFy7F9K86na2Nh8MNRzVhF3ZtoHWmY3S1SQq4rWs6Xi1C/GTI7oqG68hDpo0jXRN+dFNbssAnb+2UH2/L+zt0we8BQZ3LoLcbR2uQZqFWcF2U7CNUJtVBsrJw7XRFvY8NFxgCmMJfZJEo1SOf3cXIje7t9t70ym01o7lqlGXnyVvVGC6E5qJ/6hj7JrjVwzin/zX3IXtZ/KCYZ/AJM/R05"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also start a worker from a `.wl` file:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also start a worker from a `.wl` file:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+w = WorkerLaunch["path_to_worker.wl"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Each worker object runs in a separate OS thread and communicates with the main kernel through the shared-memory WSTP protocol.
+
+This design mirrors the JavaScript Workers API used across frontend and backend systems. In the example below, we subscribe to messages from a worker, then submit one to it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Each worker object runs in a separate OS thread and communicates with the main kernel through the shared-memory WSTP protocol.
+
+This design mirrors the JavaScript Workers API used across frontend and backend systems. In the example below, we subscribe to messages from a worker, then submit one to it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[w, Print];
+EventFire[w, "Hey!"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Terminate the worker when it is no longer needed:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Terminate the worker when it is no longer needed:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+WorkerClose[w]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Check the documentation for more examples.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Check the documentation for more examples.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Typed `Shallow` / Expression Summarization
+With help from @Hachann, we extended `Shallow` with typed expression summarization. You can tune both the depth and the number of arguments shown at each level. It now hides the internals of opaque objects such as `ByteArray` and `TimeSeries`, whose input forms are usually less useful than their overall structure.
+
+We also expanded the basic skeleton view from the Wolfram Standard Library. Instead of showing only <Escape>`<<N>>`</Escape>, WLJS can now display types and expression patterns such as:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Typed `Shallow` / Expression Summarization
+With help from @Hachann, we extended `Shallow` with typed expression summarization. You can tune both the depth and the number of arguments shown at each level. It now hides the internals of opaque objects such as `ByteArray` and `TimeSeries`, whose input forms are usually less useful than their overall structure.
+
+We also expanded the basic skeleton view from the Wolfram Standard Library. Instead of showing only `<<N>>`, WLJS can now display types and expression patterns such as:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Table[{i,j}, {i,1000}, {j,10}]//Shallow 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{{1, 1}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, <<5, {_Integer, _Integer}>>}, {{2, 1}, {2, 2}, {2, 3}, {2, 4}, {2, 5}, <<5, {_Integer, _Integer}>>}, {{3, 1}, {3, 2}, {3, 3}, {3, 4}, {3, 5}, <<5, {_Integer, _Integer}>>}, {{4, 1}, {4, 2}, {4, 3}, {4, 4}, {4, 5}, <<5, {_Integer, _Integer}>>}, {{5, 1}, {5, 2}, {5, 3}, {5, 4}, {5, 5}, <<5, {_Integer, _Integer}>>}, <<995, {{_Integer, _Integer}..}>>}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Byte arrays are summarized by structure rather than full contents:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Byte arrays are summarized by structure rather than full contents:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{{{{ByteArray[{1,2,3,4}]}, Red, I}}, ByteArray[RandomInteger[{0,255}, 10000]]} // Shallow 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{{{ByteArray[...]}, RGBColor[1, 0, 0], I}}, ByteArray[...]}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+A more complex example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+A more complex example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Shallow[Plot[x, {x,0,1}], {2,1}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Graphics[{Annotation[<<3>>]}, <<1, {_Rule | _RuleDelayed..}>>]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## UI Improvements
+- The notebook now autoscrolls the focused cell into view.
+- Fixed race conditions during multiple `Rasterize` calls.
+
+## MCP Server
+- Improved summarization, with contributions from @Hachann.
+- Added more options for cell evaluation.
+- Improved error messages.
+- Improved the CLI.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## UI Improvements
+- The notebook now autoscrolls the focused cell into view.
+- Fixed race conditions during multiple `Rasterize` calls.
+
+## MCP Server
+- Improved summarization, with contributions from @Hachann.
+- Added more options for cell evaluation.
+- Improved error messages.
+- Improved the CLI.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Wolfram Engine 15.0
+For now, WLJS Notebook will stay on Wolfram Engine 14.3. Early testing with Wolfram Engine 15.0 showed a 15-20% performance regression, including on the official WolframMark benchmark on MacOS/ARM64 machines. WLJS still runs on 15.0 in shallow tests, but we cannot guarantee that every new feature works reliably there yet.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Wolfram Engine 15.0
+For now, WLJS Notebook will stay on Wolfram Engine 14.3. Early testing with Wolfram Engine 15.0 showed a 15-20% performance regression, including on the official WolframMark benchmark on MacOS/ARM64 machines. WLJS still runs on 15.0 in shallow tests, but we cannot guarantee that every new feature works reliably there yet.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Misc
+- Fixed the `wln` parser.
+- Added `Offload` support for `BezierCurve`.
+- Fixed a 32-bit index-buffer overflow for `GraphicsComplex` in the `Graphics` context.
+- Fixed rounding output for `Around`.
+- Improved stability.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Misc
+- Fixed the `wln` parser.
+- Added `Offload` support for `BezierCurve`.
+- Fixed a 32-bit index-buffer overflow for `GraphicsComplex` in the `Graphics` context.
+- Fixed rounding output for `Around`.
+- Improved stability.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: a6de5537-409a-41e9-8061-2bf2cb47709e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Null]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: CoffeeLiqueur`Extensions`Manipulate`Internal`trigger$161756
+%-------------------------------------------------------------------------%
+0
+
+%-------------------------------------------------------------------------%
+Key: CoffeeLiqueur`Extensions`Manipulate`Internal`str$161743
+%-------------------------------------------------------------------------%
+"False"
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
