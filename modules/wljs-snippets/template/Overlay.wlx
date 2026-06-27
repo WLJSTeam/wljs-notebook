@@ -424,7 +424,7 @@ With[{
 
     EventHandler[LocalControls, {"Open" -> (open[#, "Palette", cachedClient, quickTags, ClickActions, Path, Controls, Modals, Messanger, LocalControls, typeWritter, keyListener, CancelListener, emptyPanel, aiPanel, searchPanel, fieldState, PlaceholderData, ulStyles]&)}];
 
-    <div style="-webkit-app-region: no-drag" class="relative grow rounded-md bg-gray-100 dark:bg-gray-700 win:mt-1 linux:mt-1">
+    <div style="-webkit-app-region: no-drag; user-select: none;" class="relative grow rounded-md bg-gray-100 dark:bg-gray-700 win:mt-1 linux:mt-1">
         <div class="absolute w-full h-full rounded-md overflow-hidden">
         </div>
         <div id="palette" class="grow relative p-1 items-center flex rounded-md 0 h-7 owin:h-6 win:h-6 linux:h-6 pl-3  pr-2 text-left text-gray-500  ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-xs sm:leading-6 dark:ring-gray-600 ">

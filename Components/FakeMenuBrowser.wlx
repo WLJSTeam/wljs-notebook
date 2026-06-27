@@ -107,7 +107,7 @@ LayoutMisc =
   }//Flatten
 },
 
-    <div style="-webkit-app-region: no-drag" class="h-titlebar p-1 pr-2 flex zen:ml-0 pl-1 md:-ml-70 zen:relative relative ml-0 md:absolute">
+    <div style="-webkit-app-region: no-drag;user-select: none" class="h-titlebar p-1 pr-2 flex zen:ml-0 pl-1 md:-ml-70 zen:relative relative ml-0 md:absolute">
         <div class="my-auto mr-auto pr-1 flex gap-x-1 text-sm">
             <button id="fake-menu-file" class="text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
                 File
