@@ -1,0 +1,502 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Sand/Water Automaton
+
+This notebook is a small side-view "falling sand" experiment. We start with the simplest material: sand. Each grain is one cell on a grid. A grain should fall if there is empty space below it, come to rest when blocked, and sometimes topple sideways when it is sitting in an unstable little stack. Those three behaviors are enough to make a recognizable pile.
+
+The goal is not a physically exact granular solver. It is a fast visual model with a few useful invariants: cells live on a square lattice, particles are never created or destroyed by the update rules, and all motion is expressed as swaps or rearrangements inside local 2x2 blocks. After sand is working, water can be added as another cell type with stronger sideways spreading and a lighter interaction with sand.
+
+The implementation follows the idea in Jonathan Devlin and Micah D. Schuster's *Probabilistic Cellular Automata for Granular Media in Video Games* ([arXiv:2008.06341](https://arxiv.org/abs/2008.06341)). Their model uses a square lattice, a custom modified Margolus neighborhood, and probabilistic transitions tuned for sand-like friction. In this notebook we keep the same spirit and add a second material, water.
+
+A useful way to classify the update scheme is as a [block cellular automaton](https://en.wikipedia.org/wiki/Block_cellular_automaton): instead of updating each cell from a fixed neighborhood, the grid is partitioned into non-overlapping blocks and a transition rule is applied to each whole block. The common two-dimensional case is the [Margolus neighborhood](https://en.wikipedia.org/wiki/Block_cellular_automaton#Neighborhoods), where 2x2 partitions alternate by one cell on consecutive steps.
+
+## Rules and Algorithm
+
+Each cell stores one integer state:
+
+- `0`: empty space
+- `1`: sand
+- `2`: wall
+- `3`: water
+
+For sand alone, the local rule can be read as a tiny gravity model: sand falls into empty space, piles up on walls or other sand, and probabilistically tumbles when a 2x2 block contains an unstable arrangement. The randomness is important; without it, piles tend to look too regular and grid-aligned.
+
+![](/attachments/Screenshot-2026-06-27-at-16.09.34-9a5.png)
+
+Inside each 2x2 block we only swap or rearrange existing states; this is why the number of sand and water cells is conserved except when the user draws or erases material.
+
+Unlike deterministic automata such as Conway's Game of Life, these rules are probabilistic. A fall can be forced, while sideways spreading or toppling can happen with a chosen probability. That small amount of randomness gives the pile a less grid-locked look and plays a role similar to the probabilistic rule selection in [MarkovJunior](https://wljs.io/blog/markov).
+
+The alternating 2x2 partition is important. If we always used the same blocks, grains could only interact with the same immediate partners forever. The one-cell offset on the second pass lets neighboring blocks exchange sand, so avalanches and settling can propagate through the whole field while every local update remains small and cheap.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Sand/Water Automaton
+
+This notebook is a small side-view "falling sand" experiment. We start with the simplest material: sand. Each grain is one cell on a grid. A grain should fall if there is empty space below it, come to rest when blocked, and sometimes topple sideways when it is sitting in an unstable little stack. Those three behaviors are enough to make a recognizable pile.
+
+The goal is not a physically exact granular solver. It is a fast visual model with a few useful invariants: cells live on a square lattice, particles are never created or destroyed by the update rules, and all motion is expressed as swaps or rearrangements inside local 2x2 blocks. After sand is working, water can be added as another cell type with stronger sideways spreading and a lighter interaction with sand.
+
+The implementation follows the idea in Jonathan Devlin and Micah D. Schuster's *Probabilistic Cellular Automata for Granular Media in Video Games* ([arXiv:2008.06341](https://arxiv.org/abs/2008.06341)). Their model uses a square lattice, a custom modified Margolus neighborhood, and probabilistic transitions tuned for sand-like friction. In this notebook we keep the same spirit and add a second material, water.
+
+A useful way to classify the update scheme is as a [block cellular automaton](https://en.wikipedia.org/wiki/Block_cellular_automaton): instead of updating each cell from a fixed neighborhood, the grid is partitioned into non-overlapping blocks and a transition rule is applied to each whole block. The common two-dimensional case is the [Margolus neighborhood](https://en.wikipedia.org/wiki/Block_cellular_automaton#Neighborhoods), where 2x2 partitions alternate by one cell on consecutive steps.
+
+## Rules and Algorithm
+
+Each cell stores one integer state:
+
+- `0`: empty space
+- `1`: sand
+- `2`: wall
+- `3`: water
+
+For sand alone, the local rule can be read as a tiny gravity model: sand falls into empty space, piles up on walls or other sand, and probabilistically tumbles when a 2x2 block contains an unstable arrangement. The randomness is important; without it, piles tend to look too regular and grid-aligned.
+
+![](/attachments/Screenshot-2026-06-27-at-16.09.34-9a5.png)
+
+Inside each 2x2 block we only swap or rearrange existing states; this is why the number of sand and water cells is conserved except when the user draws or erases material.
+
+Unlike deterministic automata such as Conway's Game of Life, these rules are probabilistic. A fall can be forced, while sideways spreading or toppling can happen with a chosen probability. That small amount of randomness gives the pile a less grid-locked look and plays a role similar to the probabilistic rule selection in [MarkovJunior](https://wljs.io/blog/markov).
+
+The alternating 2x2 partition is important. If we always used the same blocks, grains could only interact with the same immediate partners forever. The one-cell offset on the second pass lets neighboring blocks exchange sand, so avalanches and settling can propagate through the whole field while every local update remains small and cheap.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same sand pile is shown below under the two Margolus phases. Orange cells are sand, gray cells are walls, and the colored outlines show the 2x2 blocks that are updated together. The phase shift matters because a grain that is blocked in one partition may be able to fall or topple in the next one.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same sand pile is shown below under the two Margolus phases. Orange cells are sand, gray cells are walls, and the colored outlines show the 2x2 blocks that are updated together. The phase shift matters because a grain that is blocked in one partition may be able to fall or topple in the next one.
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+With[{n = 8, off = 11},
+  Module[{sand, walls, gridLines, phase0, phase1, shifted, cellRects},
+    sand = {{2, 5}, {4, 6}, {5, 5}, {3, 3}, {2, 2}, {3, 2}, {4, 2}, {1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1}};
+    walls = Table[{x, 0}, {x, 0, n - 1}];
+    shifted[cells_, dx_] := cells /. {x_, y_} :> {x + dx, y};
+    cellRects[cells_] := Rectangle[# + 0.08, # + 0.92] & /@ cells;
+
+    gridLines = Join[
+      Table[{{x, 0}, {x, n}}, {x, 0, n}],
+      Table[{{0, y}, {n, y}}, {y, 0, n}],
+      Table[{{off + x, 0}, {off + x, n}}, {x, 0, n}],
+      Table[{{off, y}, {off + n, y}}, {y, 0, n}]
+    ];
+    phase0 = Flatten[
+      Table[{{x, y}, {x + 2, y}, {x + 2, y + 2}, {x, y + 2}, {x, y}},
+        {x, 0, n - 2, 2}, {y, 0, n - 2, 2}],
+      1
+    ];
+    phase1 = Flatten[
+      Table[{{off + x, y}, {off + x + 2, y}, {off + x + 2, y + 2}, {off + x, y + 2}, {off + x, y}},
+        {x, 1, n - 2, 2}, {y, 1, n - 2, 2}],
+      1
+    ];
+
+    Graphics[
+      {GrayLevel[0.84], Line[gridLines // Offload],
+        GrayLevel[0.45], cellRects[walls], cellRects[shifted[walls, off]],
+        RGBColor[0.86, 0.58, 0.16], cellRects[sand], cellRects[shifted[sand, off]],
+        RGBColor[0.15, 0.36, 0.76], Thickness[0.06], Line[phase0 // Offload],
+        RGBColor[0.84, 0.39, 0.12], Thickness[0.06], Line[phase1 // Offload],
+        Black, Text["phase 0", {n/2, -0.7}], Text["phase 1", {off + n/2, -0.7}]},
+      PlotRange -> {{-0.2, off + n + 0.2}, {-1.2, n + 0.2}},
+      ImageSize -> {520, 260},
+      "Controls" -> False
+    ]
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["a8e1c361-745a-430f-a6c8-1b1fc7b6717e"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ1qkGiYbmxnqmpuYJuqaGBuk6SaaJVvoGiYZpiWbJ5mZG5qnAgCCWRWf"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Sandbox
+
+Now we can build the interactive sandbox. The code is split into three parts: state and colors, drawing into the lattice, and the block update rule.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Sandbox
+
+Now we can build the interactive sandbox. The code is split into three parts: state and colors, drawing into the lattice, and the block update rule.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+penPosition = {0,0};
+pickedRadius = 10.0;
+drawingQ = False;
+pickedType = 1;
+pickedRoundness = 1;
+
+colors[0] = List@@RGBColor[ColorData["Pastel"][0.8]];
+colors[1] = List@@RGBColor[ColorData["Pastel"][0.5]];
+colors[2] = List@@RGBColor[ColorData["Pastel"][0.3]];
+colors[3] = List@@RGBColor[ColorData["Pastel"][1]];
+
+pickedColor = colors[1];
+
+colorize = Function[value, If[value==0, colors[0], If[value==1, colors[1], If[value==2, colors[2], colors[3]]]]] /. DownValues[colors];
+
+field = Table[0, {262}, {350}];
+screen = NumericArray[255 Map[colorize, field, {2}], "Byte", "ClipAndRound"]; 
+
+fps = 0;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`field` is the integer grid for the simulated medium: `0` is empty, `1` is sand, `2` is wall, and `3` is water. For each frame we map those integers through `colorize` and store the result in `screen`, a byte image that the UI can display efficiently.
+
+The palette and state encoding are deliberately simple. Keeping the grid numeric makes it easier for Wolfram Language to use compact numeric arrays and vectorized array operations in the hot path.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`field` is the integer grid for the simulated medium: `0` is empty, `1` is sand, `2` is wall, and `3` is water. For each frame we map those integers through `colorize` and store the result in `screen`, a byte image that the UI can display efficiently.
+
+The palette and state encoding are deliberately simple. Keeping the grid numeric makes it easier for Wolfram Language to use compact numeric arrays and vectorized array operations in the hot path.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+SetAttributes[draw, HoldFirst];
+draw[field_, startPos_, pos_, radius_, roundness_, type_] := Module[
+  {h, w, rad, q, steps, t, ix, iy, r, c, rmin, rmax, cmin, cmax, rows, cols, rr, cc, mask},
+  {h, w} = Dimensions[field];
+  rad = Max[1, Round[radius]];
+  q = 2 / Max[0.001, Min[1, roundness]];
+
+  steps = Max[1, Ceiling[2 * EuclideanDistance[startPos, pos]]];
+
+  Do[
+    t = If[steps == 1, 0., (i - 1) / (steps - 1.)];
+    {ix, iy} = Round[startPos + t * (pos - startPos)];
+    r = h - iy + 1; c = ix;
+    rmin = Max[1, r - rad]; rmax = Min[h, r + rad];
+    cmin = Max[1, c - rad]; cmax = Min[w, c + rad];
+    If[rmin <= rmax && cmin <= cmax,
+      rows = Range[rmin, rmax];
+      cols = Range[cmin, cmax];
+      rr = N[Abs[(rows - r) / rad]];
+      cc = N[Abs[(cols - c) / rad]];
+      mask = Unitize[Clip[1 - Outer[Power[#1, q] + Power[#2, q] &, rr, cc], {0, 1}]];
+      field[[rows, cols]] = mask * type + (1 - mask) * field[[rows, cols]];
+    ],
+    {i, 1, steps}
+  ];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`draw` mutates `field` in place. That is intentional: during painting, copying the whole grid for every mouse movement would dominate the cost. The function samples along the line between the previous and current pointer positions, then stamps a rounded or rectangular mask into the affected cells.
+
+The simulation step uses the same in-place style. Following a modified Margolus scheme, `nextField` performs two block passes: first over 2x2 blocks starting at the top-left corner, then over blocks shifted by one cell. Both sand and water are handled in the same block pass, including their interaction: sand can fall through water, which makes water move upward relative to sand.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`draw` mutates `field` in place. That is intentional: during painting, copying the whole grid for every mouse movement would dominate the cost. The function samples along the line between the previous and current pointer positions, then stamps a rounded or rectangular mask into the affected cells.
+
+The simulation step uses the same in-place style. Following a modified Margolus scheme, `nextField` performs two block passes: first over 2x2 blocks starting at the top-left corner, then over blocks shifted by one cell. Both sand and water are handled in the same block pass, including their interaction: sand can fall through water, which makes water move upward relative to sand.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+SetAttributes[nextField, HoldFirst];
+SetAttributes[blockStepWater, HoldFirst];
+
+nextField[field_, pSand_: 0.5, pWater_: 0.8] := (
+  blockStepWater[field, pSand, pWater, 0];
+  blockStepWater[
+    field,
+    pSand,
+    pWater,
+    1
+  ];);
+
+blockStepWater[field_, pSand_: 0.5, pWater_: 0.8, phase_: 0] := Module[
+  {
+    out = field, nr, nc, r0, c0, r1, c1, rows, cols,
+    sub, dims, blocks, tl, tr, bl, br,
+    sandFallL, sandFallR, waterFallL, waterFallR,
+    stackL, stackR, sandTumble,
+    waterTopL, waterTopR, waterBotL, waterBotR,
+    waterMoveTop, waterMoveBot
+  },
+
+  {nr, nc} = Dimensions[field];
+  {r0, c0} = {1, 1} + phase;
+
+  r1 = r0 + 2 Quotient[nr - r0 + 1, 2] - 1;
+  c1 = c0 + 2 Quotient[nc - c0 + 1, 2] - 1;
+
+  rows = r0 ;; r1;
+  cols = c0 ;; c1;
+  sub = out[[rows, cols]];
+  dims = Quotient[Dimensions[sub], 2];
+
+  blocks = Transpose[
+    ArrayReshape[sub, {dims[[1]], 2, dims[[2]], 2}],
+    {1, 3, 2, 4}
+  ];
+
+  tl = blocks[[All, All, 1, 1]];
+  tr = blocks[[All, All, 1, 2]];
+  bl = blocks[[All, All, 2, 1]];
+  br = blocks[[All, All, 2, 2]];
+
+  (* Sand falls through air or water *)
+  sandFallL =
+    (1 - Unitize[tl - 1]) *
+    ((1 - Unitize[bl]) + (1 - Unitize[bl - 3]));
+
+  sandFallR =
+    (1 - Unitize[tr - 1]) *
+    ((1 - Unitize[br]) + (1 - Unitize[br - 3]));
+
+  tl = tl - sandFallL + 3 sandFallL (1 - Unitize[bl - 3]);
+  bl = bl + sandFallL - 3 sandFallL (1 - Unitize[bl - 3]);
+
+  tr = tr - sandFallR + 3 sandFallR (1 - Unitize[br - 3]);
+  br = br + sandFallR - 3 sandFallR (1 - Unitize[br - 3]);
+
+  (* Water falls through air *)
+  waterFallL = (1 - Unitize[tl - 3]) * (1 - Unitize[bl]);
+  waterFallR = (1 - Unitize[tr - 3]) * (1 - Unitize[br]);
+
+  tl = tl - 3 waterFallL;
+  bl = bl + 3 waterFallL;
+
+  tr = tr - 3 waterFallR;
+  br = br + 3 waterFallR;
+
+  (* Sand stacked in one column may spread into empty/water other column *)
+  stackL =
+    (1 - Unitize[tl - 1]) (1 - Unitize[bl - 1]) *
+    (1 - Unitize[tr]) (1 - Unitize[br]);
+
+  stackR =
+    (1 - Unitize[tr - 1]) (1 - Unitize[br - 1]) *
+    (1 - Unitize[tl]) (1 - Unitize[bl]);
+
+  sandTumble = Unitize[stackL + stackR] *
+    UnitStep[pSand - RandomReal[1, dims]];
+
+  tl = (tl - stackL) (1 - sandTumble);
+  bl = (bl - stackL) (1 - sandTumble) + sandTumble;
+  tr = (tr - stackR) (1 - sandTumble);
+  br = (br - stackR) (1 - sandTumble) + sandTumble;
+
+  tl = tl + sandTumble;
+  tr = tr + sandTumble;
+
+  (* Water spreads horizontally into air, independently per row *)
+  waterTopL = (1 - Unitize[tl - 3]) * (1 - Unitize[tr]);
+  waterTopR = (1 - Unitize[tr - 3]) * (1 - Unitize[tl]);
+  waterBotL = (1 - Unitize[bl - 3]) * (1 - Unitize[br]);
+  waterBotR = (1 - Unitize[br - 3]) * (1 - Unitize[bl]);
+
+  waterMoveTop =
+    Unitize[waterTopL + waterTopR] *
+    UnitStep[pWater - RandomReal[1, dims]];
+
+  waterMoveBot =
+    Unitize[waterBotL + waterBotR] *
+    UnitStep[pWater - RandomReal[1, dims]];
+
+  tl = tl + 3 waterMoveTop (waterTopR - waterTopL);
+  tr = tr + 3 waterMoveTop (waterTopL - waterTopR);
+
+  bl = bl + 3 waterMoveBot (waterBotR - waterBotL);
+  br = br + 3 waterMoveBot (waterBotL - waterBotR);
+
+  blocks[[All, All, 1, 1]] = tl;
+  blocks[[All, All, 1, 2]] = tr;
+  blocks[[All, All, 2, 1]] = bl;
+  blocks[[All, All, 2, 2]] = br;
+
+  field[[rows, cols]] = ArrayReshape[
+    Transpose[blocks, {1, 3, 2, 4}],
+    Dimensions[sub]
+  ];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Within each block, the rule is organized as a sequence of simple masks: sand falls, water falls, stacked sand may topple, and water may spread sideways. The probabilities `pSand` and `pWater` control the non-deterministic parts. Lower sand probability makes piles more stable; higher water probability makes water spread faster and behave less like dry grains.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Within each block, the rule is organized as a sequence of simple masks: sand falls, water falls, stacked sand may topple, and water may spread sideways. The probabilities `pSand` and `pWater` control the non-deterministic parts. Lower sand probability makes piles more stable; higher water probability makes water spread faster and behave less like dry grains.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+time = AbsoluteTime[];
+
+animate = Function[Null,
+  If[RandomReal[]<0.2, fps = StringTemplate["`` FPS"][NumberForm[Round[1.0/(AbsoluteTime[] - time)],2]]];
+  time = AbsoluteTime[];
+  screen = NumericArray[255 Map[colorize, field, {2}], "Byte", "ClipAndRound"];
+  nextField[field];
+];
+
+With[{out = EventHandler[
+  Graphics[{
+    Inset[Image[screen//Offload, "Byte"], {0,262}, {Top, Left}, {350,262}],
+    Text[fps//Offload, {10,250}, {-1,0}],
+    RGBColor[pickedColor//Offload],
+    Rectangle[
+      Offload[penPosition-{ pickedRadius, pickedRadius}], 
+      Offload[penPosition+{ pickedRadius, pickedRadius}], 
+      RoundingRadius->Offload[pickedRoundness]
+    ],
+    EventHandler[
+      AnimationFrameListener[screen//Offload], animate]
+  }, PlotRange->{{0,350}, {0,262}}, "Controls"->False, ImageSize->{350,262}], 
+  {
+    "mousemove" -> Function[xy, 
+      If[!drawingQ, penPosition = xy; Return[]]; 
+      draw[field, penPosition, xy, pickedRadius, pickedRoundness, pickedType];
+      penPosition = xy; 
+    ],
+    "mousedown" -> Function[xy, 
+      penPosition = xy; drawingQ = True; 
+      draw[field, xy,xy, pickedRadius, pickedRoundness, pickedType]
+    ],
+    "mouseup" -> Function[Null, drawingQ = False]
+  }]},
+
+  Row[{
+    out,
+    Column[{
+      EventHandler[InputRadio[{0->"Erase", 1->"Sand", 2->"Wall", 3->"Water"}, 1],
+        (pickedType = #; pickedColor = colors[#])&
+      ],
+      EventHandler[InputRange[1,40,1], (pickedRadius = #)&],
+      EventHandler[InputRadio[{0.01->"Rectangle", 1->"Round"}, 1], 
+        (pickedRoundness = #)&
+      ],
+      Button["Clear", field = field 0]
+    }]
+  }]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Finally, the UI overlays a drawing cursor on top of the byte image, advances the automaton on animation frames, and exposes controls for material, brush size, brush shape, and clearing the field. This is still pure Wolfram Language code, so it can be resource-heavy compared with a compiled or GPU-backed version. If the animation keeps the kernel busy, clearing the output cell will stop it. Have fun!
+
+## References
+
+- Jonathan Devlin and Micah D. Schuster, *Probabilistic Cellular Automata for Granular Media in Video Games* ([arXiv:2008.06341](https://arxiv.org/abs/2008.06341)).
+- [Block cellular automaton](https://en.wikipedia.org/wiki/Block_cellular_automaton), especially the Margolus-neighborhood description.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Finally, the UI overlays a drawing cursor on top of the byte image, advances the automaton on animation frames, and exposes controls for material, brush size, brush shape, and clearing the field. This is still pure Wolfram Language code, so it can be resource-heavy compared with a compiled or GPU-backed version. If the animation keeps the kernel busy, clearing the output cell will stop it. Have fun!
+
+## References
+
+- Jonathan Devlin and Micah D. Schuster, *Probabilistic Cellular Automata for Granular Media in Video Games* ([arXiv:2008.06341](https://arxiv.org/abs/2008.06341)).
+- [Block cellular automaton](https://en.wikipedia.org/wiki/Block_cellular_automaton), especially the Margolus-neighborhood description.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: a8e1c361-745a-430f-a6c8-1b1fc7b6717e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{GrayLevel[0.84], Line[Offload[gridLines$6879906]], GrayLevel[0.45], {Rectangle[{0.08, 0.08}, {0.92, 0.92}], Rectangle[{1.08, 0.08}, {1.92, 0.92}], Rectangle[{2.08, 0.08}, {2.92, 0.92}], Rectangle[{3.08, 0.08}, {3.92, 0.92}], Rectangle[{4.08, 0.08}, {4.92, 0.92}], Rectangle[{5.08, 0.08}, {5.92, 0.92}], Rectangle[{6.08, 0.08}, {6.92, 0.92}], Rectangle[{7.08, 0.08}, {7.92, 0.92}]}, {Rectangle[{11.08, 0.08}, {11.92, 0.92}], Rectangle[{12.08, 0.08}, {12.92, 0.92}], Rectangle[{13.08, 0.08}, {13.92, 0.92}], Rectangle[{14.08, 0.08}, {14.92, 0.92}], Rectangle[{15.08, 0.08}, {15.92, 0.92}], Rectangle[{16.08, 0.08}, {16.92, 0.92}], Rectangle[{17.08, 0.08}, {17.92, 0.92}], Rectangle[{18.08, 0.08}, {18.92, 0.92}]}, RGBColor[0.86, 0.58, 0.16], {Rectangle[{2.08, 5.08}, {2.92, 5.92}], Rectangle[{4.08, 6.08}, {4.92, 6.92}], Rectangle[{5.08, 5.08}, {5.92, 5.92}], Rectangle[{3.08, 3.08}, {3.92, 3.92}], Rectangle[{2.08, 2.08}, {2.92, 2.92}], Rectangle[{3.08, 2.08}, {3.92, 2.92}], Rectangle[{4.08, 2.08}, {4.92, 2.92}], Rectangle[{1.08, 1.08}, {1.92, 1.92}], Rectangle[{2.08, 1.08}, {2.92, 1.92}], Rectangle[{3.08, 1.08}, {3.92, 1.92}], Rectangle[{4.08, 1.08}, {4.92, 1.92}], Rectangle[{5.08, 1.08}, {5.92, 1.92}]}, {Rectangle[{13.08, 5.08}, {13.92, 5.92}], Rectangle[{15.08, 6.08}, {15.92, 6.92}], Rectangle[{16.08, 5.08}, {16.92, 5.92}], Rectangle[{14.08, 3.08}, {14.92, 3.92}], Rectangle[{13.08, 2.08}, {13.92, 2.92}], Rectangle[{14.08, 2.08}, {14.92, 2.92}], Rectangle[{15.08, 2.08}, {15.92, 2.92}], Rectangle[{12.08, 1.08}, {12.92, 1.92}], Rectangle[{13.08, 1.08}, {13.92, 1.92}], Rectangle[{14.08, 1.08}, {14.92, 1.92}], Rectangle[{15.08, 1.08}, {15.92, 1.92}], Rectangle[{16.08, 1.08}, {16.92, 1.92}]}, RGBColor[0.15, 0.36, 0.76], Thickness[0.06], Line[Offload[phase0$6879906]], RGBColor[0.84, 0.39, 0.12], Thickness[0.06], Line[Offload[phase1$6879906]], GrayLevel[0], Text["phase 0", {4, -0.7}], Text["phase 1", {15, -0.7}]}, PlotRange -> {{-0.2, 19.2}, {-1.2, 8.2}}, ImageSize -> {520, 260}, "Controls" -> False]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: gridLines$6879906
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractCompressed["eJyN0ksKwkAURNG9OM4g/e/swR1IFuBY948VQawXLuioKTg9edzb5Xp/PC/L+V2Xdbcx9+/6vMlJQpKdZCTFSUFSnVQkzUlD0p10JMPJQDKdTCThdIcnkpwkJNlJRlKcFCTVSUXSnDQk3UlHMpwMJPPX6VJsiqNKoSotRKErLUShLC1EoS0tRKEuLUShLy1EoTAtRFtA2z/HPL4gshSFqEUhi1GIahSyHIWoRyELUoiKFLIkhahJIYtSiKoUsiyFqMt3Zqdj7i8NbGpg"]
+
+%-------------------------------------------------------------------------%
+Key: phase0$6879906
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractCompressed["eJx9kMEJAzEMBHu5tx9GCOEi0kFwAXkn/RP8udPcrfUSCzuCnffx+nx/R7vf3vo8gzHYFTpDn1eSFcDWPMMIJj+lCmBrkWEEl59SBbC1kWGEEJ+gxhn2u5UnVAB7sVt5QgWwF7uVJ1QAe1YDaYt5foKaYNjvVp5QARzFbuUJFcBR7FaeUAEcWQ2kLeb5CWoGw3638oQK4FHsVp5QATyK3coTKoBHVgNpi5nzDyvQSAg="]
+
+%-------------------------------------------------------------------------%
+Key: phase1$6879906
+%-------------------------------------------------------------------------%
+{{{12, 1}, {14, 1}, {14, 3}, {12, 3}, {12, 1}}, {{12, 3}, {14, 3}, {14, 5}, {12, 5}, {12, 3}}, {{12, 5}, {14, 5}, {14, 7}, {12, 7}, {12, 5}}, {{14, 1}, {16, 1}, {16, 3}, {14, 3}, {14, 1}}, {{14, 3}, {16, 3}, {16, 5}, {14, 5}, {14, 3}}, {{14, 5}, {16, 5}, {16, 7}, {14, 7}, {14, 5}}, {{16, 1}, {18, 1}, {18, 3}, {16, 3}, {16, 1}}, {{16, 3}, {18, 3}, {18, 5}, {16, 5}, {16, 3}}, {{16, 5}, {18, 5}, {18, 7}, {16, 7}, {16, 5}}}
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

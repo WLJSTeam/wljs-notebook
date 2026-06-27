@@ -1,0 +1,602 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Parallel Computing with Wolfram Language
+
+A practical introduction to using Wolfram Language parallel kernels for independent work, data-parallel mapping, shared definitions, and simple performance checks.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Parallel Computing with Wolfram Language
+
+A practical introduction to using Wolfram Language parallel kernels for independent work, data-parallel mapping, shared definitions, and simple performance checks.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 1. Start parallel kernels
+
+Parallel computations run on separate Wolfram Language kernels. `LaunchKernels[]` starts the configured local subkernels, and `ParallelEvaluate` lets us ask each subkernel what it is.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 1. Start parallel kernels
+
+Parallel computations run on separate Wolfram Language kernels. `LaunchKernels[]` starts the configured local subkernels, and `ParallelEvaluate` lets us ask each subkernel what it is.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+LaunchKernels[];
+
+kernelSummary = ParallelEvaluate[
+  <|
+    "KernelID" -> $KernelID,
+    "Machine" -> $MachineName,
+    "ProcessID" -> $ProcessID
+  |>
+];
+
+Dataset[kernelSummary]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["1cc4e1cc-b574-4714-8c03-53f1c9210c40"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKGyYnm6QCCd0kU3MTXRNzQxNdi2QDY11T4zTDZEsjQ4NkEwMAhCIVLw=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`$KernelCount` reports how many parallel kernels are currently available. This number controls the maximum amount of work that can run at the same instant.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`$KernelCount` reports how many parallel kernels are currently available. This number controls the maximum amount of work that can run at the same instant.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+<|
+  "ParallelKernelCount" -> $KernelCount,
+  "KernelIDs" -> ParallelEvaluate[$KernelID]
+|>
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+<|"ParallelKernelCount"->8,"KernelIDs"->{9,10,11,<|"KernelID"->12,"Machine"->"MacBookAir","ProcessID"->98201|>,<|"KernelID"->13,"Machine"->"MacBookAir","ProcessID"->98202|>,<|"KernelID"->14,"Machine"->"MacBookAir","ProcessID"->98203|>,<|"KernelID"->15,"Machine"->"MacBookAir","ProcessID"->98204|>,<|"KernelID"->16,"Machine"->"MacBookAir","ProcessID"->98205|>}|>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 2. Data parallelism with `ParallelTable`
+
+The best first use case is a list of independent calculations. Each item can be computed without looking at the others, so Wolfram Language can spread the work across kernels.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 2. Data parallelism with `ParallelTable`
+
+The best first use case is a list of independent calculations. Each item can be computed without looking at the others, so Wolfram Language can spread the work across kernels.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Clear[primeBlockTotal];
+primeBlockTotal[start_Integer] := Total[Prime /@ Range[start, start + 1499]];
+DistributeDefinitions[primeBlockTotal];
+
+starts = Range[10000, 30000, 2500];
+
+serialTiming = First @ AbsoluteTiming[
+  serialResult = Table[primeBlockTotal[start], {start, starts}]
+];
+
+parallelTiming = First @ AbsoluteTiming[
+  parallelResult = ParallelTable[
+    primeBlockTotal[start],
+    {start, starts},
+    Method -> "CoarsestGrained"
+  ]
+];
+
+<|
+  "SameResults" -> serialResult === parallelResult,
+  "SerialSeconds" -> serialTiming,
+  "ParallelSeconds" -> parallelTiming,
+  "ObservedSpeedup" -> serialTiming/parallelTiming
+|>//TableView 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["17958ab3-1043-4299-aa99-3183b99ecf3b"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5pbmlokJhnrGhqYGOuaGFla6iYmAgljQwvjJEvL1OQ04yQAcYoVIQ=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Small examples do not always become faster. Parallel kernels have startup, scheduling, and data-transfer overhead. Parallelism is most useful when each item is expensive enough to pay for that overhead.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Small examples do not always become faster. Parallel kernels have startup, scheduling, and data-transfer overhead. Parallelism is most useful when each item is expensive enough to pay for that overhead.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 3. Mapping work with `ParallelMap`
+
+`ParallelMap[f, list]` is the parallel version of `Map[f, list]`. It is useful when a function should be applied independently to every element.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 3. Mapping work with `ParallelMap`
+
+`ParallelMap[f, list]` is the parallel version of `Map[f, list]`. It is useful when a function should be applied independently to every element.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Clear[textFeatures];
+textFeatures[text_String] := <|
+  "Text" -> text,
+  "Characters" -> StringLength[text],
+  "Words" -> WordCount[text],
+  "Vowels" -> StringCount[ToLowerCase[text], Alternatives @@ Characters["aeiou"]]
+|>;
+DistributeDefinitions[textFeatures];
+
+sentences = {
+  "Parallel kernels evaluate independent tasks.",
+  "Definitions must be available on every subkernel.",
+  "Large tasks usually scale better than tiny tasks.",
+  "Return values are easier to reason about than shared mutation."
+};
+
+TableView @ ParallelMap[textFeatures, sentences]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["49989195-4154-48e1-b2b0-4e22333daeb5"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm1haWlgaWprqmhiamuiaWKQa6iYZJRnomqQaGRkbG6ckpiaZAgBrtRTm"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 4. Send definitions to subkernels
+
+Subkernels do not automatically know every definition created in the main kernel. Use `DistributeDefinitions` before calling custom functions in parallel.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 4. Send definitions to subkernels
+
+Subkernels do not automatically know every definition created in the main kernel. Use `DistributeDefinitions` before calling custom functions in parallel.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Clear[estimatePi];
+estimatePi[samples_Integer] := Module[{points, inside},
+  points = RandomReal[{-1, 1}, {samples, 2}];
+  inside = Count[Total[points^2, {2}], x_ /; x <= 1];
+  N[4 inside/samples]
+];
+
+DistributeDefinitions[estimatePi];
+
+estimates = ParallelTable[estimatePi[75000], {8}];
+
+<|
+  "Estimates" -> estimates,
+  "MeanEstimate" -> Mean[estimates],
+  "Error" -> Abs[Mean[estimates] - Pi]
+|>//TableView  
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["e589a688-36bf-47e9-ba57-0a90d488879b"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKp5paWCaaWVjoGpslpemamKda6iYlmprrGiRaGqSYWFhYmFsmAQCB5BVq"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 5. Run setup on every kernel
+
+`ParallelEvaluate` is also useful for per-kernel initialization. Here each subkernel receives a deterministic random seed based on its own `$KernelID`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 5. Run setup on every kernel
+
+`ParallelEvaluate` is also useful for per-kernel initialization. Here each subkernel receives a deterministic random seed based on its own `$KernelID`.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+ParallelEvaluate[SeedRandom[2026 + $KernelID]];
+
+ParallelTable[
+  <|"Task" -> task, "KernelID" -> $KernelID, "RandomValue" -> RandomReal[]|>,
+  {task, 8}
+] // TableView
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["804b4d1b-a0ad-4a2f-9933-5c5e36c4cc7e"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKWxiYJJmkGCbpJhokpuiaJBql6VpaGhvrmiabphqbJZskJ5unAgCHYRX7"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 6. A compact pattern for real work
+
+The most reliable pattern is:
+
+1. Start kernels with `LaunchKernels[]`.
+2. Define ordinary Wolfram Language functions in the master kernel.
+3. Send needed definitions with `DistributeDefinitions`.
+4. Use `ParallelMap`, `ParallelTable`, `ParallelDo`, or related parallel functions.
+5. Return values instead of relying on shared mutation when possible.
+6. Close kernels when the notebook is finished.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 6. A compact pattern for real work
+
+The most reliable pattern is:
+
+1. Start kernels with `LaunchKernels[]`.
+2. Define ordinary Wolfram Language functions in the master kernel.
+3. Send needed definitions with `DistributeDefinitions`.
+4. Use `ParallelMap`, `ParallelTable`, `ParallelDo`, or related parallel functions.
+5. Return values instead of relying on shared mutation when possible.
+6. Close kernels when the notebook is finished.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Clear[expensiveScore];
+expensiveScore[n_Integer] := Module[{sample},
+  Pause[0.05];
+  sample = Prime /@ Range[n, n + 999];
+  <|
+    "n" -> n,
+    "KernelID" -> $KernelID,
+    "PrimeSum" -> Total[sample],
+    "PrimeMean" -> N[Mean[sample]]
+  |>
+];
+
+DistributeDefinitions[expensiveScore];
+
+Dataset @ ParallelMap[expensiveScore, Range[2000, 2007], Method -> "CoarsestGrained"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["1ee36dcb-ad48-486a-8e48-b23e2dea055a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6amGpulJCfpJqaYWOiaWJgl6lqkAllJRsapRimpiQampokAkUQWMA=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 7. Asynchronous parallel submission
+
+WLJS also provides `ParallelSubmitAsync[expr]`, which submits work to an available parallel kernel and immediately returns a `Promise`. This is useful when a master kernel should stay responsive while the parallel kernel works.
+
+For tutorial cells we can call `WaitAll[promise, seconds]` to show a synchronous result, but interactive notebooks usually attach a callback with `Then[promise, callback]` instead.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 7. Asynchronous parallel submission
+
+WLJS also provides `ParallelSubmitAsync[expr]`, which submits work to an available parallel kernel and immediately returns a `Promise`. This is useful when a master kernel should stay responsive while the parallel kernel works.
+
+For tutorial cells we can call `WaitAll[promise, seconds]` to show a synchronous result, but interactive notebooks usually attach a callback with `Then[promise, callback]` instead.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+asyncPromise = ParallelSubmitAsync[
+  Pause[0.75];
+  <|
+    "KernelID" -> $KernelID,
+    "FinishedAt" -> DateString[{"Hour", ":", "Minute", ":", "Second"}],
+    "Result" -> Total[Range[100000]]
+  |>
+];
+
+<|
+  "ReturnedImmediatelyAs" -> Head[asyncPromise],
+  "SynchronousResultForTutorial" -> WaitAll[asyncPromise, 5]
+|> // TableView
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["b775f13d-085f-4e87-a4c1-f8522818222e"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5mbm6YZGqfoGliYpumapFqY6yaaJBvqplmYGhlZGFoYGRmlAgB/eRUd"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The promise can be subscribed to with `Then`. The callback runs when the parallel result is ready. In this example the callback stores a compact summary in `asyncCallbackResult`; a short `Pause` at the end only gives the callback time to update the displayed value.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The promise can be subscribed to with `Then`. The callback runs when the parallel result is ready. In this example the callback stores a compact summary in `asyncCallbackResult`; a short `Pause` at the end only gives the callback time to update the displayed value.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+asyncCallbackResult = Missing["Waiting"];
+
+callbackPromise = ParallelSubmitAsync[
+  Pause[0.5];
+  <|"KernelID" -> $KernelID, "Value" -> 144|>
+];
+
+Then[
+  callbackPromise,
+  Function[result,
+    asyncCallbackResult = <|
+      "Handled" -> True,
+      "OriginalResult" -> result,
+      "DoubledValue" -> 2 result["Value"]
+    |>;
+    Null
+  ]
+];
+
+Pause[1];
+asyncCallbackResult
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+<|"Handled"->True,"OriginalResult"-><|"KernelID"->9,"Value"->144|>,"DoubledValue"->288|>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Multiple async jobs can be submitted first and collected later. The important point is that submission is non-blocking; the waits below happen after all promises have already been created.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Multiple async jobs can be submitted first and collected later. The important point is that submission is non-blocking; the waits below happen after all promises have already been created.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Clear[asyncScore];
+asyncScore[n_Integer] := Module[{},
+  Pause[0.25];
+  <|
+    "n" -> n,
+    "KernelID" -> $KernelID,
+    "Score" -> Total[Range[n]^2]
+  |>
+];
+
+DistributeDefinitions[asyncScore];
+
+asyncPromises = Table[
+  With[{task = n}, ParallelSubmitAsync[asyncScore[task]]],
+  {n, 5, 10}
+];
+
+Dataset[WaitAll[#, 5] &/@ asyncPromises]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["123a8afa-0f3b-47d9-acd3-cb7f0c5eac4b"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKGxoZJ1okpiXqGqQZJ+mamKdY6iYmpxjrJieZpxkkm6YmJpskAQCQuhax"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 8. ParallelSubmitFunctionAsync
+An an additional helper function `ParallelSubmitFunctionAsync` allows an inner expression __make callback manually__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 8. ParallelSubmitFunctionAsync
+An an additional helper function `ParallelSubmitFunctionAsync` allows an inner expression __make callback manually__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+promise = ParallelSubmitFunctionAsync[
+		Function[{url, cbk}, 
+			With[{data = URLRead["http://google.com"]},
+				cbk[data];
+			];
+		],
+		
+		"http://google.com"
+];
+
+promise // WaitAll // Shallow 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+HTTPResponse[ByteArray[...], <|"Headers" -> {{"Content-Type", "text/html; charset=ISO-8859-1"}, {"Date", "Sat, 27 Jun 2026 12:34:42 GMT"}, {"Expires", "-1"}, {"Cache-Control", "private, max-age=0"}, {"Content-Security-Policy-Report-Only", "object-src 'none';base-uri 'self';script-src 'nonce-PMz-Tw4AIwf9Xrx1lZY9Pg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"}, {"Content-Encoding", "gzip"}, {"Server", "gws"}, {"Content-Length", "27150"}, {"X-XSS-Protection", "0"}, {"X-Frame-Options", "SAMEORIGIN"}, {"Set-Cookie", "AEC=AdJVEataIWIi7vl9UAPFPkqb2QZ91qJ9UksBXFu6NMuYiNn7tr5MeGg1eQ; expires=Thu, 24-Dec-2026 12:34:42 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax"}}, "StatusCode" -> 200, "Cookies" -> {}|>, CharacterEncoding -> Automatic]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Cleanup
+
+Run this cell when you are done with the tutorial and want to release the parallel kernels.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Cleanup
+
+Run this cell when you are done with the tutorial and want to release the parallel kernels.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+CloseKernels[]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 1355436283
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["Promise", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 1cc4e1cc-b574-4714-8c03-53f1c9210c40
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[{Association["KernelID" -> 9, "Machine" -> "MacBookAir", "ProcessID" -> 98198], Association["KernelID" -> 10, "Machine" -> "MacBookAir", "ProcessID" -> 98199], Association["KernelID" -> 11, "Machine" -> "MacBookAir", "ProcessID" -> 98200], $`j[{351042340}, 145], $`j[{397716042}, 146], $`j[{445077260}, 147], $`j[{492102454}, 148], $`j[{539865428}, 149]}, TypeSystem`Tuple[{TypeSystem`Struct[{"KernelID", "Machine", "ProcessID"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[String], TypeSystem`Atom[Integer]}], TypeSystem`Struct[{"KernelID", "Machine", "ProcessID"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[String], TypeSystem`Atom[Integer]}], TypeSystem`Struct[{"KernelID", "Machine", "ProcessID"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[String], TypeSystem`Atom[Integer]}], TypeSystem`AnyType, TypeSystem`AnyType, TypeSystem`AnyType, TypeSystem`AnyType, TypeSystem`AnyType}], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 17958ab3-1043-4299-aa99-3183b99ecf3b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[Association["SameResults" -> True, "SerialSeconds" -> 0.008121, "ParallelSeconds" -> 0.021134, "ObservedSpeedup" -> 0.38426232610958644], TypeSystem`Struct[{"SameResults", "SerialSeconds", "ParallelSeconds", "ObservedSpeedup"}, {TypeSystem`Atom[TypeSystem`Boolean], TypeSystem`Atom[Real], TypeSystem`Atom[Real], TypeSystem`Atom[Real]}], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 49989195-4154-48e1-b2b0-4e22333daeb5
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[{Association["Text" -> "Parallel kernels evaluate independent tasks.", "Characters" -> 44, "Words" -> 5, "Vowels" -> 15], Association["Text" -> "Definitions must be available on every subkernel.", "Characters" -> 49, "Words" -> 7, "Vowels" -> 18], Association["Text" -> "Large tasks usually scale better than tiny tasks.", "Characters" -> 49, "Words" -> 8, "Vowels" -> 13], Association["Text" -> "Return values are easier to reason about than shared mutation.", "Characters" -> 62, "Words" -> 10, "Vowels" -> 25]}, TypeSystem`Vector[TypeSystem`Struct[{"Text", "Characters", "Words", "Vowels"}, {TypeSystem`Atom[String], TypeSystem`Atom[Integer], TypeSystem`Atom[Integer], TypeSystem`Atom[Integer]}], 4], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: e589a688-36bf-47e9-ba57-0a90d488879b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[Association["Estimates" -> {3.1520533333333334, 3.1414933333333335, 3.1392, 3.1405866666666666, 3.1428266666666667, 3.14032, 3.144693333333333, 3.1423466666666666}, "MeanEstimate" -> 3.1429400000000003, "Error" -> 0.001347346410207173], TypeSystem`Struct[{"Estimates", "MeanEstimate", "Error"}, {TypeSystem`Vector[TypeSystem`Atom[Real], 8], TypeSystem`Atom[Real], TypeSystem`Atom[Real]}], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 804b4d1b-a0ad-4a2f-9933-5c5e36c4cc7e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[{Association["Task" -> 1, "KernelID" -> 9, "RandomValue" -> 0.36332308515230904], Association["Task" -> 2, "KernelID" -> 10, "RandomValue" -> 0.12877325011431506], Association["Task" -> 3, "KernelID" -> 11, "RandomValue" -> 0.477311623870325], Association["Task" -> 4, "KernelID" -> 9, "RandomValue" -> 0.34630485185318305], Association["Task" -> 5, "KernelID" -> 10, "RandomValue" -> 0.41154249837308554], Association["Task" -> 6, "KernelID" -> 11, "RandomValue" -> 0.6002361343225757], Association["Task" -> 7, "KernelID" -> 9, "RandomValue" -> 0.9880713684330609], Association["Task" -> 8, "KernelID" -> 10, "RandomValue" -> 0.3851468091836854]}, TypeSystem`Vector[TypeSystem`Struct[{"Task", "KernelID", "RandomValue"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[Integer], TypeSystem`Atom[Real]}], 8], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 1ee36dcb-ad48-486a-8e48-b23e2dea055a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[{Association["n" -> 2000, "KernelID" -> 9, "PrimeSum" -> 22360524, "PrimeMean" -> 22360.524], Association["n" -> 2001, "KernelID" -> 10, "PrimeSum" -> 22370584, "PrimeMean" -> 22370.584], Association["n" -> 2002, "KernelID" -> 11, "PrimeSum" -> 22380648, "PrimeMean" -> 22380.648], Association["n" -> 2003, "KernelID" -> 9, "PrimeSum" -> 22390726, "PrimeMean" -> 22390.726], Association["n" -> 2004, "KernelID" -> 10, "PrimeSum" -> 22400790, "PrimeMean" -> 22400.79], Association["n" -> 2005, "KernelID" -> 11, "PrimeSum" -> 22410858, "PrimeMean" -> 22410.858], Association["n" -> 2006, "KernelID" -> 9, "PrimeSum" -> 22420936, "PrimeMean" -> 22420.936], Association["n" -> 2007, "KernelID" -> 10, "PrimeSum" -> 22431020, "PrimeMean" -> 22431.02]}, TypeSystem`Vector[TypeSystem`Struct[{"n", "KernelID", "PrimeSum", "PrimeMean"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[Integer], TypeSystem`Atom[Integer], TypeSystem`Atom[Real]}], 8], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: b775f13d-085f-4e87-a4c1-f8522818222e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[Association["ReturnedImmediatelyAs" -> Promise, "SynchronousResultForTutorial" -> Association["KernelID" -> 9, "FinishedAt" -> "14:31:14", "Result" -> 5000050000]], TypeSystem`Struct[{"ReturnedImmediatelyAs", "SynchronousResultForTutorial"}, {TypeSystem`AnyType, TypeSystem`Struct[{"KernelID", "FinishedAt", "Result"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[String], TypeSystem`Atom[Integer]}]}], Association[]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 123a8afa-0f3b-47d9-acd3-cb7f0c5eac4b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Dataset[{Association["n" -> 5, "KernelID" -> 9, "Score" -> 55], Association["n" -> 6, "KernelID" -> 10, "Score" -> 91], Association["n" -> 7, "KernelID" -> 11, "Score" -> 140], Association["n" -> 8, "KernelID" -> 9, "Score" -> 204], Association["n" -> 9, "KernelID" -> 10, "Score" -> 285], Association["n" -> 10, "KernelID" -> 11, "Score" -> 385]}, TypeSystem`Vector[TypeSystem`Struct[{"n", "KernelID", "Score"}, {TypeSystem`Atom[Integer], TypeSystem`Atom[Integer], TypeSystem`Atom[Integer]}], 6], Association[]]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
