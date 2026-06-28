@@ -76,6 +76,17 @@ Optimized for interactive computing and allows to make complex real-time visuali
 
 ![Dynamic Plots](imgs/DynamicsFast-ezgif.com-optimize.gif)
 
+WLJS and Mathematica frontends are based on two different paradigms, where both have their own advantages, while we focus on control and performance
+
+| Aspect           | Mathematica                                     | WLJS                                       |
+| ---------------- | ----------------------------------------------- | -------------------------------------------------- |
+| Rendering model  | Immediate mode                                  | Retained mode (+ immediate mode emulation)         |
+| Reactive updates | Automatic dependency tracking and re-evaluation | Explicit, targeted updates                         |
+| Data binding     | Two-way symbol binding                          | One-way symbol binding + events for input elements |
+| Reactive model          | Pull                                      | Push 
+
+
+
 ### Super portable
 Export and share your notebook as a standalone or embeddable .html or .mdx file—plots stay interactive, and sliders remain draggable.
 
