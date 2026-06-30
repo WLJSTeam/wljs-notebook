@@ -32926,6 +32926,7 @@ var compactCMEditor$2;
                   { key: "ArrowLeft", run: function (editor, key) {  
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
+                        if (cols[j-2].editor.stringOnly) return;
                         cols[j-2].editor.dispatch({selection:{anchor:cols[j-2].editor.state.doc.length}});
                         cols[j-2].editor.focus();
                         
@@ -32943,6 +32944,7 @@ var compactCMEditor$2;
                   { key: "ArrowRight", run: function (editor, key) {  
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
+                        if (cols[j+2].editor.stringOnly) return;
                         cols[j+2].editor.dispatch({selection:{anchor:0}});
                         cols[j+2].editor.focus();
                   
@@ -33007,7 +33009,8 @@ var compactCMEditor$2;
             const itemDesc = text.match(itemBox);
 
             if (itemDesc) {  //stylize the text
-              td.innerHTML = itemDesc[1];
+              //td.innerHTML = itemDesc[1];
+              processGreeks(td, itemDesc[1], false);
               td.classList.add('selectable');
               //throw(itemDesc);
 
@@ -33019,7 +33022,7 @@ var compactCMEditor$2;
               interpretate(json, env);    
 
             } else {
-              td.innerHTML = text.slice(1,-1);
+              processGreeks(td, text.slice(1,-1), false);
               td.classList.add('selectable');
             }
           }
@@ -33639,7 +33642,8 @@ let EditorWidget$1 = class EditorWidget {
           self.editor = {
             destroy: () => {
               console.log('Nothing to destroy, this is just a text field.');
-            }
+            },
+            stringOnly: true
           };
           const aa = document.createElement('span');
           this.aa;
@@ -33649,14 +33653,14 @@ let EditorWidget$1 = class EditorWidget {
                  e.preventDefault();
              }
          };
-          aa.contentEditable = "plaintext-only";
-          aa.innerText = self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset);
-          aa.addEventListener('input', console.log);
-          aa.addEventListener("input", () => {
+          //aa.contentEditable = "plaintext-only";
+          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset), false);
+          //aa.addEventListener('input', console.log);
+          /*aa.addEventListener("input", () => {
             console.log('Update');
             console.log(aa.innerText);
             this.applyChanges(aa.innerText);
-          });  
+            });  */
 
           env.global.element.appendChild(aa);
 
@@ -33816,6 +33820,9 @@ let Widget$1 = class Widget extends WidgetType {
 
   skipPosition(pos, oldPos, selected) {
     if (oldPos.from != oldPos.to || selected) return pos;
+    const editor = this.DOMElement.EditorWidget.editor;
+    if (editor.stringOnly) return pos;
+    
     //this.DOMElement.EditorWidget.wantedPosition = pos;
     if (pos.from - oldPos.from > 0) {
       //this.DOMElement.EditorWidget.topEditor.dispatch()
@@ -33823,7 +33830,6 @@ let Widget$1 = class Widget extends WidgetType {
       this.DOMElement.EditorWidget.editor.focus();
       //this.DOMElement.EditorWidget.topEditor.focus();
     } else {
-      const editor = this.DOMElement.EditorWidget.editor;
       editor.dispatch({selection: {anchor: editor.state.doc.length}});
       editor.focus();
       //this.DOMElement.EditorWidget.bottomEditor.focus();

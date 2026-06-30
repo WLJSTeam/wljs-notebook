@@ -9,6 +9,8 @@ import { isCursorInside } from "./utils";
 
 import { Mma } from "./../mma-uncompress/src/mma";
 
+import { processGreeks } from "../sugar/misc";
+
 import { BallancedMatchDecorator2, matchArguments } from "./matcher";
 
 import { keymap } from "@codemirror/view";
@@ -159,7 +161,8 @@ class EditorWidget {
           self.editor = {
             destroy: () => {
               console.log('Nothing to destroy, this is just a text field.');
-            }
+            },
+            stringOnly: true
           };
           const aa = document.createElement('span');
           this.aa;
@@ -169,14 +172,14 @@ class EditorWidget {
                  e.preventDefault()
              }
          };
-          aa.contentEditable = "plaintext-only";
-          aa.innerText = self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset);
-          aa.addEventListener('input', console.log);
-          aa.addEventListener("input", () => {
+          //aa.contentEditable = "plaintext-only";
+          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset), false);
+          //aa.addEventListener('input', console.log);
+          /*aa.addEventListener("input", () => {
             console.log('Update');
             console.log(aa.innerText);
             this.applyChanges(aa.innerText);
-          });  
+            });  */
 
           env.global.element.appendChild(aa);
 
@@ -337,6 +340,9 @@ class Widget extends WidgetType {
 
   skipPosition(pos, oldPos, selected) {
     if (oldPos.from != oldPos.to || selected) return pos;
+    const editor = this.DOMElement.EditorWidget.editor;
+    if (editor.stringOnly) return pos;
+    
     //this.DOMElement.EditorWidget.wantedPosition = pos;
     if (pos.from - oldPos.from > 0) {
       //this.DOMElement.EditorWidget.topEditor.dispatch()
@@ -344,7 +350,6 @@ class Widget extends WidgetType {
       this.DOMElement.EditorWidget.editor.focus();
       //this.DOMElement.EditorWidget.topEditor.focus();
     } else {
-      const editor = this.DOMElement.EditorWidget.editor;
       editor.dispatch({selection: {anchor: editor.state.doc.length}});
       editor.focus();
       //this.DOMElement.EditorWidget.bottomEditor.focus();

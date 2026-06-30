@@ -6,6 +6,8 @@ import {
     MatchDecorator
   } from "@codemirror/view";
   import { isCursorInside } from "./utils";
+
+import { processGreeks } from "../sugar/misc";
   
   import { BallancedMatchDecorator2, matchArguments  } from "./matcher";
   
@@ -93,6 +95,7 @@ import {
                   { key: "ArrowLeft", run: function (editor, key) {  
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
+                        if (cols[j-2].editor.stringOnly) return;
                         cols[j-2].editor.dispatch({selection:{anchor:cols[j-2].editor.state.doc.length}});
                         cols[j-2].editor.focus();
                         
@@ -110,6 +113,7 @@ import {
                   { key: "ArrowRight", run: function (editor, key) {  
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
+                        if (cols[j+2].editor.stringOnly) return;
                         cols[j+2].editor.dispatch({selection:{anchor:0}});
                         cols[j+2].editor.focus();
                   
@@ -178,7 +182,8 @@ import {
             const itemDesc = text.match(itemBox);
 
             if (itemDesc) {  //stylize the text
-              td.innerHTML = itemDesc[1];
+              //td.innerHTML = itemDesc[1];
+              processGreeks(td, itemDesc[1], false);
               td.classList.add('selectable');
               //throw(itemDesc);
 
@@ -190,7 +195,7 @@ import {
               interpretate(json, env);    
 
             } else {
-              td.innerHTML = text.slice(1,-1);
+              processGreeks(td, text.slice(1,-1), false);
               td.classList.add('selectable');
             }
           }
