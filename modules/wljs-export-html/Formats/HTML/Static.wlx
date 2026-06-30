@@ -425,12 +425,19 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
                 console.log('IE: calling our symbol...');
                 if (env.root && !env.novirtual) core[element].instances[env.root.uid] = env.root;
                 const data = await interpretate(core[element].data, env);
+                if (args.length > 0) {
+                    const key = await interpretate(args[0], env);
+                    return data[key];
+                }
                 return data;
               };
             
               core[element].update = async (args, env) => {
                 const data = await interpretate(core[element].data, env);
-                //if (env.hold) return ['JSObject', data];
+                if (args.length > 0) {
+                    const key = await interpretate(args[0], env);
+                    return data[key];
+                }
                 return data;
               }  
             

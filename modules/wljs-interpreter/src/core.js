@@ -1061,6 +1061,7 @@ core.JSObject = (args, env) => {
 }
 
 core.Set = async(args, env) => {
+    console.warn('do not use Set. depricated');
     const data = await interpretate(args[1], {
         ...env,
         novirtual: true,

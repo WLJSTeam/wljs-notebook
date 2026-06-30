@@ -1,18 +1,3 @@
-function jsonStringifyRecursive(obj) {
-  const cache = new Set();
-  return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-          if (cache.has(value)) {
-              // Circular reference found, discard key
-              return;
-          }
-          // Store value in our collection
-          cache.add(value);
-      }
-      return value;
-  }, 4);
-}
-
 //default plug for a server object
 window.server = undefined;
 
@@ -21,11 +6,13 @@ interpretate.anonymous = async (d, org) => {
   console.log('Anonimous symbol: ' + JSON.stringify(d));  
 
   let name;
+  let associationQ = false;
   //check it is a plain symbol
   if (d instanceof Array) {
-    //console.error('stack call: ');
-    //console.error(jsonStringifyRecursive(org.global.stack));
-    throw(d[0] + ' is not defined on frontend');
+    //possibly an association
+    // we don't know for sure
+    name = d[0];
+    associationQ = true;
   } else {
     name = d;   //symbol
   }
@@ -61,10 +48,6 @@ interpretate.anonymous = async (d, org) => {
   //if it is a shit
   if ((symbolQ && !(data in core)) || typeof data == 'undefined') {
     console.log('checking... '+name);
-    console.log('recived data..');
-    console.log(jsonStringifyRecursive(data));
-    //console.error('stack call: ');
-    //console.error(jsonStringifyRecursive(org.global.stack));
     throw('symbol '+data+' is not defined in any contextes and packing on frontend'); 
   }
 
@@ -75,41 +58,44 @@ interpretate.anonymous = async (d, org) => {
     return interpretate(d, org);
   }
 
-  core[name] = async (args, env) => {
-    //console.log('IE: calling our symbol...');
-    //evaluate in the context
-    const data = await interpretate(core[name].data, env);
-
-    if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; //if it was evaluated insdide the container, then, add it to the tracking list
-    //if (env.hold) return ['JSObject', core[name].data];
-
-    return data;
+  if (!associationQ) {
+    core[name] = async (args, env) => {
+      const data = await interpretate(core[name].data, env);
+      if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; 
+      return data;
+    }
+  
+    core[name].update = async (args, env) => {
+      //cache good for numerics
+      if (env.useCache) {
+        if (!core[name].cached || core[name].currentData != core[name].data) {
+          core[name].cached = await interpretate(core[name].data, env);
+          core[name].currentData = core[name].data; //just copy the reference
+        } 
+        return core[name].cached;
+      }
+      const data = await interpretate(core[name].data, env);
+      return data;
+    }      
+  } else {
+    core[name] = async (args, env) => {
+      const key = await interpretate(args[0], env);
+      let data = await interpretate(core[name].data, {...env, hold:true});
+      data = await interpretate(data[key], env);
+      if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; 
+      return data;
+    }
+  
+    core[name].update = async (args, env) => {
+      const key = await interpretate(args[0], env);
+      let data = await interpretate(core[name].data, {...env, hold:true});
+      data = await interpretate(data[key], env);
+      return data;
+    }      
   }
 
-  core[name].update = async (args, env) => {
-    //evaluate in the context
-
-    //cache good for numerics
-    if (env.useCache) {
-      if (!core[name].cached || core[name].currentData != core[name].data) {
-        core[name].cached = await interpretate(core[name].data, env);
-        core[name].currentData = core[name].data; //just copy the reference
-        //console.log('cache miss');
-      } 
-
-      return core[name].cached;
-    }
-
-    const data = await interpretate(core[name].data, env);
-    //if (env.hold) return ['JSObject', data];
-    return data;
-  }  
-
   core[name].destroy = async (args, env) => {
-
     delete core[name].instances[env.root.uid];
-    //console.warn(env.root.uid + ' was destroyed')
-    //console.warn('external symbol was destoryed');
   }  
 
   core[name].data = data; //get the data
