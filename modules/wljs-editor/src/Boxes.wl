@@ -43,6 +43,12 @@ ViewBox[rowbox_RowBox, display_, OptionsPattern[] ] := With[{event = OptionValue
   RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
+ViewBox[rowbox_String, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, If[event === Null,
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]VB*)"}]
+,
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
+] ]
+
 Options[ViewBox] = {"Event" -> Null}
 
 
