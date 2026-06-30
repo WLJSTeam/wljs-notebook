@@ -2,6 +2,64 @@ var core = {};
 core.name = "Core Context";
 interpretate.contextExpand(core);
 
+function roundDeep(x, o) {
+  if (NumericArrayObject.Q(x)) {
+    const buf = x.buffer;
+    const out = new buf.constructor(buf.length);
+    for (let i = 0; i < buf.length; i++) out[i] = roundScalar(buf[i], o);
+    return new NumericArrayObject(out, x.dims);
+  }
+  if (!Array.isArray(x)) return roundScalar(x, o);
+  const result = new Array(x.length);
+  for (let i = 0; i < x.length; i++) result[i] = roundDeep(x[i], o);
+  return result;
+}
+
+// defined once, not per call
+function roundScalar(x, o) {
+  const scaled = x / o;
+  const lower = Math.floor(scaled);
+  const diff = scaled - lower;
+
+  let rounded;
+  if (diff < 0.5) rounded = lower;
+  else if (diff > 0.5) rounded = lower + 1;
+  else rounded = lower % 2 === 0 ? lower : lower + 1; // exact tie -> round to even
+
+  return rounded * o;
+}
+
+core.Round = async (args, env) => {
+  const n = await interpretate(args[0], env);
+  const o = args.length > 1 ? await interpretate(args[1], env) : 1;
+
+  return roundDeep(n, o);
+}
+core.Round.update = core.Round
+
+core.NumberForm = async (args, env) => {
+  const n = await interpretate(args[0], env);
+  const digits = args.length > 1 ? await interpretate(args[1], env) : undefined;
+
+  return digits === undefined ? String(n) : n.toPrecision(digits);
+}
+core.NumberForm.update = core.NumberForm
+
+core.ToString = async (args, env) => {
+  const val = await interpretate(args[0], env);
+  return String(val);
+}
+core.ToString.update = core.ToString
+
+core.StringJoin = async (args, env) => {
+  let result = '';
+  for (const arg of args) {
+    result += await interpretate(arg, env);
+  }
+  return result;
+}
+core.StringJoin.update = core.StringJoin
+
 core.DefaultWidth = 370;
 
 core.ConsoleLog = [];
