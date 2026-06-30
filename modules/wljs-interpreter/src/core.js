@@ -37,13 +37,33 @@ core.Round = async (args, env) => {
 }
 core.Round.update = core.Round
 
-core.NumberForm = async (args, env) => {
-  const n = await interpretate(args[0], env);
-  const digits = args.length > 1 ? await interpretate(args[1], env) : undefined;
-
-  return digits === undefined ? String(n) : n.toPrecision(digits);
+function formatFixed(val, f) {
+  const factor = Math.pow(10, f);
+  const rounded = roundScalar(val * factor, 1) / factor;
+  return rounded.toFixed(f);
 }
-core.NumberForm.update = core.NumberForm
+
+function padIntegerPart(str, targetIntDigits) {
+  const negative = str.startsWith("-");
+  const unsigned = negative ? str.slice(1) : str;
+  const dotIndex = unsigned.indexOf(".");
+  const intLen = dotIndex === -1 ? unsigned.length : dotIndex;
+  const padLen = Math.max(0, targetIntDigits - intLen);
+  return " ".repeat(padLen) + (negative ? "-" : "") + unsigned;
+}
+
+core.NumberForm = async (args, env) => {
+  const val = await interpretate(args[0], env);
+  const spec = args.length > 1 ? await interpretate(args[1], env) : undefined;
+
+  if (spec === undefined) return String(val);
+  if (Array.isArray(spec)) {
+    const [n, f] = spec;
+    return padIntegerPart(formatFixed(val, f), n - f);
+  }
+  return val.toPrecision(spec);
+};
+core.NumberForm.update = core.NumberForm;
 
 core.ToString = async (args, env) => {
   const val = await interpretate(args[0], env);
