@@ -438,7 +438,14 @@ apiCall[request_, "/api/notebook/cells/readcontent/"] := Module[{body = request[
                     If[summarize,
                         EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], maxLength] ];
                     ,
-                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve, ToString[CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ], InputForm] ];
+                        EventFire[Internal`Kernel`RemoteEvent[ p // First ], Resolve,   
+                            With[{res = CheckAbort[TimeConstrained[ToExpression[expr, InputForm], 60, $TimedOut], $Aborted ]},  
+                                If[!FailureQ[res] && res =!= $Aborted && res =!= $TimedOut, 
+                                    ToString[res, InputForm],
+                                    expr
+                                ]
+                            ] 
+                        ];
                     ];
                 ];
                 
@@ -959,7 +966,7 @@ majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
 
 majorHeadsPreview[k_, exprs_, False, lim_:1500] := With[{promise = Promise[]},
     GenericKernel`Send[k,
-        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, With[{r =ToString[ToExpression[#, InputForm], InputForm]}, 
+        EventFire[Internal`Kernel`RemoteEvent@promise, Resolve, With[{ex = ToExpression[#, InputForm]}, {r = If[!FailureQ[ex], ToString[ex, InputForm], #]}, 
             If[StringLength[r] > lim,
                 StringTake[r, lim]<>"..."
             ,
