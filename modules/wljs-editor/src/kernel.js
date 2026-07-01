@@ -1230,8 +1230,17 @@ class CodeMirrorCell {
     }
     //console.warn(options);
     if ('Selectable' in options) {
-      if (!options.Selectable)
+      if (!options.Selectable) {
         ext.push(EditorView.editable.of(false));
+        ext.push(EditorView.domEventHandlers({
+          blur: (ev, v) => {
+            return;
+          },
+          focus: (ev,v) => {
+            v.contentDOM.setAttribute("contenteditable","false");
+          }
+        }));
+      }
     }
 
     if (options.ForceUpdate) {

@@ -211,7 +211,6 @@
 
   boxes.GeneralLegend = async (args, env, markerFunction) => {
     //const copy = {...env, context: legends, color: black, thickness: 1, pointSize: 1};
- 
 
     const markers = await interpretate(args[0], {...env, hold:true});
     const labels = await interpretate(args[1], {...env, hold:true});
@@ -586,10 +585,12 @@
   }
 
   boxes.ViewDecorator.Pane = async (args, env) => {
+    
     env.element.classList.add(...('sm-controls cursor-default 0 py-1 text-left text-gray-500 flex flex-row'.split(' '))); 
    // console.warn(args);
     
     const opts = await core._getRules(args, {...env, context: boxes});
+
     if (opts.ImageSize) {
       const size = opts.ImageSize;
       if (size instanceof Object === true) {
@@ -610,6 +611,9 @@
     }
 
     if (opts.Background) env.element.style.backgroundColor = opts.Background;
+    if ('Selectable' in opts && !opts.Selectable) {
+      env.global.disableCellSelecting = true;
+    }
     //if (opts.Background) env.element.style.backgroundColor = opts.Background;
 
     if (opts.Event) {
@@ -876,6 +880,10 @@
       }
     }
 
+    if (opts.DefaultBaseStyle === "Panel") {
+      env.global.disableCellSelecting = true;
+    }
+
     if (opts.Alignment) {
       const align = opts.Alignment;
       if (Array.isArray(align)) {
@@ -884,6 +892,7 @@
         el.style.textAlign = align;
       }
     }
+    
     //console.log(env.global.EditorWidget.view.dom.parentNode);
     //mutate the outer editor
 
@@ -1119,7 +1128,10 @@
 
   boxes.ViewDecorator.Intergate = boxes.ViewDecorator.Integrate;
 
-
+  boxes.ViewDecorator.NS = async (args, env) => {
+    env.global.allowCellHighlighting = false;
+    env.global.disableCellSelecting = true;
+  }
 
   boxes.ViewDecorator.Matrix = async (args, env) => {
     env.global.allowCellHighlighting = true;
@@ -1274,6 +1286,7 @@
   }
 
   boxes.ViewDecorator.Panel = async (args, env) => {
+    
     const options = await core._getRules(args, {...env, context: boxes});
 
     let title = undefined;
@@ -1287,12 +1300,13 @@
     if (options.FrameMargins) margin = Math.round(10.0 * options.FrameMargins / 10.0)/10.0;
 
     if (options.ImageSize) {
-      const size = await interpretate(options.ImageSize, env);
-      if (size instanceof Object === true) {
+      const size = options.ImageSize;
+      if (Array.isArray(size)) {
+       
         env.element.style.width = size[0] + 'px';
         env.element.style.height = size[1] + 'px';
       } else {
-        env.element.style.maxWidth = size + 'px';
+        env.element.style.width = size + 'px';
       }
     }
 
@@ -1306,8 +1320,11 @@
     env.element.style.alignItems = "baseline";
     env.element.style.padding = margin + "em";
 
-    if (options.Background) env.element.style.backgroundColor = opts.Background;
+    if (options.Background) env.element.style.backgroundColor = options.Background;
 
+    if ('Selectable' in options && !options.Selectable) {
+      env.global.disableCellSelecting = true;
+    }
 
     if (title) {
       const t = document.createElement('span');

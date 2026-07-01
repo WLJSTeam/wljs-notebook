@@ -1,6 +1,7 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+  <|"label"->"Deploy", "type"->"keyword", "info"->"Deploy[expr] renders expression with disabled editing/selection, where expr can be Panel, Row, Column or nested decorations"|>,
   <|"label" -> "GPUArray", "type" -> "keyword", "info" -> "GPUArray[array] yields an array stored in GPU-accessible memory for GPU-accelerated computation.\nGPUArray[array, type] stores data with the specified numeric type.\nUse Normal[g] to retrieve the data back from the GPU."|>,
   <|"label" -> "GPUArrayQ", "type" -> "keyword", "info" -> "GPUArrayQ[g] gives True if g is a valid GPUArray object and False otherwise."|>,
 

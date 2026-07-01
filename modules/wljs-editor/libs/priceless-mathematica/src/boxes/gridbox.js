@@ -78,6 +78,8 @@ import { processGreeks } from "../sugar/misc";
           if (j == cols.length-1 && i == this.args.length-1) text = text.slice(0,-2);
           if (j == cols.length-1 && i != this.args.length-1) text = text.slice(0,-1);
 
+          
+          
           if (text.charAt(0) != '"') {
     
             cols[j].editor = compactCMEditor({
@@ -93,6 +95,7 @@ import { processGreeks } from "../sugar/misc";
               extensions: [
                 keymap.of([
                   { key: "ArrowLeft", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
                         if (cols[j-2].editor.stringOnly) return;
@@ -111,6 +114,7 @@ import { processGreeks } from "../sugar/misc";
                     
                   } }, 
                   { key: "ArrowRight", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
                         if (cols[j+2].editor.stringOnly) return;
@@ -130,6 +134,7 @@ import { processGreeks } from "../sugar/misc";
                      
                   } },             
                   { key: "ArrowUp", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i - 2 >= 0) {
                         args[i-2].body[j].editor.focus();
@@ -142,6 +147,7 @@ import { processGreeks } from "../sugar/misc";
                     //editor.editorLastCursor = editor.state.selection.ranges[0].to;  
                   } },             
                   { key: "ArrowDown", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i + 2 < args.length) {
                         args[i+2].body[j].editor.focus();
@@ -163,7 +169,10 @@ import { processGreeks } from "../sugar/misc";
              
                     },
                     focus: (ev,v) => {
-  
+                      if (globalScope.disableCellSelecting) {
+                        v.contentDOM.setAttribute("contenteditable","false");
+                        return;
+                      }
                       if (!globalScope.allowCellHighlighting) return;
                       const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                       td.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;

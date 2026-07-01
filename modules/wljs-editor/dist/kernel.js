@@ -32909,6 +32909,8 @@ var compactCMEditor$2;
           if (j == cols.length-1 && i == this.args.length-1) text = text.slice(0,-2);
           if (j == cols.length-1 && i != this.args.length-1) text = text.slice(0,-1);
 
+          
+          
           if (text.charAt(0) != '"') {
     
             cols[j].editor = compactCMEditor$2({
@@ -32924,6 +32926,7 @@ var compactCMEditor$2;
               extensions: [
                 keymap.of([
                   { key: "ArrowLeft", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
                         if (cols[j-2].editor.stringOnly) return;
@@ -32942,6 +32945,7 @@ var compactCMEditor$2;
                     
                   } }, 
                   { key: "ArrowRight", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
                         if (cols[j+2].editor.stringOnly) return;
@@ -32961,6 +32965,7 @@ var compactCMEditor$2;
                      
                   } },             
                   { key: "ArrowUp", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i - 2 >= 0) {
                         args[i-2].body[j].editor.focus();
@@ -32971,6 +32976,7 @@ var compactCMEditor$2;
                     //editor.editorLastCursor = editor.state.selection.ranges[0].to;  
                   } },             
                   { key: "ArrowDown", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i + 2 < args.length) {
                         args[i+2].body[j].editor.focus();
@@ -32990,7 +32996,10 @@ var compactCMEditor$2;
              
                     },
                     focus: (ev,v) => {
-  
+                      if (globalScope.disableCellSelecting) {
+                        v.contentDOM.setAttribute("contenteditable","false");
+                        return;
+                      }
                       if (!globalScope.allowCellHighlighting) return;
                       const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                       td.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
@@ -33677,21 +33686,25 @@ let EditorWidget$1 = class EditorWidget {
           parent: env.global.element,
           update: (upd) => this.applyChanges(upd),
           eval: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.eval();
           },
           evalNext: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.evalNext();
           },
           extensions: [
             keymap.of([
               { key: "ArrowLeft", run: function (editor, key) {  
+                if (env.global.disableCellSelecting) return;
                 if (editor.state.selection.main.head == 0) {
                   view.dispatch({selection: {anchor: self.visibleValue.pos}});
                   view.focus();
                   return;
                 }
               } }, 
-              { key: "ArrowRight", run: function (editor, key) {  
+              { key: "ArrowRight", run: function (editor, key) { 
+               if (env.global.disableCellSelecting) return; 
                 if (editor.state.selection.main.head === editor.state.doc.length) {
               
                   view.dispatch({selection: {anchor: self.visibleValue.pos + self.visibleValue.length}});
@@ -33705,9 +33718,15 @@ let EditorWidget$1 = class EditorWidget {
 
             EditorView.domEventHandlers({
               blur: (ev, v) => {
+                if (env.global.disableCellSelecting) return;
                 el.style.backgroundColor = '';
               },
               focus: (ev,v) => {
+                
+                if (env.global.disableCellSelecting) {
+                  v.contentDOM.setAttribute("contenteditable","false");
+                  return;
+                }
                 const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                 el.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
               }
@@ -35484,8 +35503,17 @@ class CodeMirrorCell {
     }
     //console.warn(options);
     if ('Selectable' in options) {
-      if (!options.Selectable)
+      if (!options.Selectable) {
         ext.push(EditorView.editable.of(false));
+        ext.push(EditorView.domEventHandlers({
+          blur: (ev, v) => {
+            return;
+          },
+          focus: (ev,v) => {
+            v.contentDOM.setAttribute("contenteditable","false");
+          }
+        }));
+      }
     }
 
     if (options.ForceUpdate) {

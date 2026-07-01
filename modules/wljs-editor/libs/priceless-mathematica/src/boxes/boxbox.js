@@ -196,21 +196,25 @@ class EditorWidget {
           parent: env.global.element,
           update: (upd) => this.applyChanges(upd),
           eval: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.eval();
           },
           evalNext: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.evalNext();
           },
           extensions: [
             keymap.of([
               { key: "ArrowLeft", run: function (editor, key) {  
+                if (env.global.disableCellSelecting) return;
                 if (editor.state.selection.main.head == 0) {
                   view.dispatch({selection: {anchor: self.visibleValue.pos}});
                   view.focus();
                   return;
                 }
               } }, 
-              { key: "ArrowRight", run: function (editor, key) {  
+              { key: "ArrowRight", run: function (editor, key) { 
+               if (env.global.disableCellSelecting) return; 
                 if (editor.state.selection.main.head === editor.state.doc.length) {
               
                   view.dispatch({selection: {anchor: self.visibleValue.pos + self.visibleValue.length}});
@@ -224,9 +228,15 @@ class EditorWidget {
 
             EditorView.domEventHandlers({
               blur: (ev, v) => {
+                if (env.global.disableCellSelecting) return;
                 el.style.backgroundColor = '';
               },
               focus: (ev,v) => {
+                
+                if (env.global.disableCellSelecting) {
+                  v.contentDOM.setAttribute("contenteditable","false");
+                  return;
+                }
                 const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                 el.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
               }

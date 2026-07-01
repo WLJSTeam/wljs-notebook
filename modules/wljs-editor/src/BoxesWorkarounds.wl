@@ -336,27 +336,35 @@ TagBox[x_, opts___] := x
 
 Unprotect[GridBox]
 GridBox[list_List, opts___] := With[{sorted = Association[ List[opts] ]},
-If[!KeyExistsQ[sorted, GridBoxDividers],
-If[Lookup[sorted, DefaultBaseStyle, False] === "Matrix",
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
-,
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{"}(*]GB*)"}}]))
+    If[!KeyExistsQ[sorted, GridBoxDividers],
+        If[Lookup[sorted, DefaultBaseStyle, False] === "Matrix",
+            RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                Riffle[
+                    (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
+        ,
+            If[Lookup[sorted, Selectable, True]===False,
+                RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                    Riffle[
+                        (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                            If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["NS"]  ], "*)(*]GB*)"]}}]))
+            ,
+                RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                    Riffle[
+                        (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                            If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{"}(*]GB*)"}}]))
+            ]
 
+        ]
+    ,
+        With[{val = sorted[GridBoxDividers]},
+            RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                Riffle[
+                    (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                    If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", GridBoxDividers -> val ]  ], "*)(*]GB*)"]}}]))
+        ]
+    ] 
 ]
-,
-With[{val = sorted[GridBoxDividers]},
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", GridBoxDividers -> val ]  ], "*)(*]GB*)"]}}]))
-]
-] ]
 
 MakeBoxes[TableForm[{{1,2}, {3,4}}], StandardForm]; (* trigger symbol fetch *)
 
@@ -631,18 +639,32 @@ PanelBox[x_, opts___]  := RowBox[{"(*BB[*)(Panel[", x, "])(*,*)(*", ToString[Com
 
 (* Special WLX Form*)
 
+Unprotect[Panel];
+Options[Panel] = Join[Options[Panel], {Selectable->True}]
+
 Panel /: MakeBoxes[Panel[expr_, ___], WLXForm] := With[{
   Content = MakeBoxes[expr, WLXForm]
 },
   StringJoin["<div class=\"rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400\">", Content, "</div>"]
 ]
 
+(* Deploy *)
+
+Unprotect[Deploy]
+Deploy[expr_] := expr /. {
+  Panel[f_, a___] :> Panel[Deploy[f],a, Selectable->False],
+  Pane[f_, a___] :> Pane[Deploy[f],a, Selectable->False],
+  Row[f_, a___] :> Row[Deploy[f],a, Selectable->False],
+  Column[f_, a___] :> Column[Deploy[f],a, Selectable->False],
+  Grid[f_, a___] :> Grid[Deploy[f],a, Selectable->False]
+};
+
 (* :::Template Boxes convertion to ViewDecorators ::: *)
 
 Unprotect[TemplateBox]
 
-TemplateBox[list_List, "RowDefault", ___] := GridBox[{list}]
-TemplateBox[list_List, "Row", ___] := GridBox[{list}]
+TemplateBox[list_List, "RowDefault", rest___] := GridBox[{list}, rest]
+TemplateBox[list_List, "Row", rest___] := GridBox[{list}, rest]
 
 TemplateBox[{head_String}, "InactiveHead", __] := head
 
@@ -1808,7 +1830,7 @@ If[Internal`Kernel`Watchdog["Enabled"],
       DownValues[TemplateBox]//Hash
     ,
       Get[file]
-    , tag];  
+    , tag];
 
     Internal`Kernel`Watchdog["Assertion", "MatrixForm",
       FormatValues[MatrixForm]//Hash
