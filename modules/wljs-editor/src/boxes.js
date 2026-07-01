@@ -1147,65 +1147,295 @@
     element.style.borderRight = 'solid #303030 0.15rem';
   }
 
+  const gridContext = {};
+  gridContext.Left = () => "Left"
+  gridContext.Right = () => "Right"
+  gridContext.Baseline = () => "Baseline"
+  gridContext.Automatic = () => undefined
+  gridContext.Axis = () => "Axis"
+  gridContext.Top = () => "Top"
+  gridContext.None = () => undefined
+  gridContext.All = () => "All"
+  gridContext.Columns = () => "Columns"
+  gridContext.Rows = () => "Rows"
+
+  gridContext.Bottom = () => "Bottom"
+  gridContext.Center = () => "Center"
+  gridContext.Tiny = () => 50
+  gridContext.Small = () => 200
+  gridContext.Medium = () => 500
+  gridContext.Large = () => 1000
+
+  gridContext.ImageSize = () => "ImageSize"
+  gridContext.BaselinePosition = () => "BaselinePosition"
+  gridContext.GridBoxDividers = () => "GridBoxDividers"
+  gridContext.GridBoxAlignment = () => "GridBoxAlignment"
+  gridContext.GridBoxSpacings = () => "GridBoxSpacings"
+  gridContext.GridBoxSpacing = () => "GridBoxSpacings"
+  gridContext.Selectable = () => "Selectable"
+
+
+  const gridDividerBorder = 'solid 1px darkgray';
+
+  const gridRows = (element) => {
+    if (!element) return [];
+    return Array.from(element.rows || element.children || []);
+  }
+
+  const gridTable = (element) => {
+    if (!element) return undefined;
+    if (element.tagName === 'TABLE') return element;
+    return element.closest ? element.closest('table') : element.parentNode;
+  }
+
+  const gridWrapper = (element) => {
+    const table = gridTable(element);
+    return table && table.parentElement ? table.parentElement : table;
+  }
+
+  const gridColumnCount = (rows) => {
+    return rows.reduce((acc, row) => Math.max(acc, row.cells ? row.cells.length : row.children.length), 0);
+  }
+
+  const isGridRule = (value) => {
+    return value && typeof value === 'object' && !Array.isArray(value) && 'lhs' in value && 'rhs' in value;
+  }
+
+  const gridRules = (value) => {
+    if (isGridRule(value)) return [value];
+    if (Array.isArray(value) && value.every(isGridRule)) return value;
+    return [];
+  }
+
+  const gridRuleValue = (rules, lhs) => {
+    const rule = rules.find((item) => item.lhs === lhs);
+    return rule ? rule.rhs : undefined;
+  }
+
+  const repeatedGridPattern = (pattern, count) => {
+    if (!Array.isArray(pattern) || pattern.length == 0) return [];
+    return Array.from({length: count}, (_, index) => pattern[index % pattern.length]);
+  }
+
+  const expandGridSpec = (spec, count) => {
+    if (count <= 0) return [];
+    if (!Array.isArray(spec)) return Array.from({length: count}, () => spec);
+    if (spec.length == 0) return [];
+    if (spec.length == 1 && Array.isArray(spec[0])) return repeatedGridPattern(spec[0], count);
+
+    const patternIndex = spec.findIndex(Array.isArray);
+    if (patternIndex >= 0) {
+      const prefix = spec.slice(0, patternIndex);
+      const suffix = spec.slice(patternIndex + 1);
+      const repeatCount = Math.max(0, count - prefix.length - suffix.length);
+      return prefix.concat(repeatedGridPattern(spec[patternIndex], repeatCount), suffix).slice(0, count);
+    }
+
+    return spec.slice(0, count);
+  }
+
+  const gridNumber = (value) => {
+    return (typeof value == 'number' && Number.isFinite(value)) ? value : undefined;
+  }
+
+  const gridNumberFromSpec = (spec) => {
+    if (typeof spec == 'number') return gridNumber(spec);
+    if (!Array.isArray(spec)) return undefined;
+
+    const expanded = expandGridSpec(spec, 3);
+    const middle = expanded.length > 1 ? gridNumber(expanded[1]) : undefined;
+    if (typeof middle == 'number') return middle;
+
+    for (let i=0; i<expanded.length; ++i) {
+      const value = gridNumber(expanded[i]);
+      if (typeof value == 'number') return value;
+    }
+
+    return undefined;
+  }
+
+  const gridDividerQ = (value) => {
+    return value === true || value === "All";
+  }
+
+  const gridHorizontalAlign = (value) => {
+    switch(value) {
+      case 'Left': return 'left';
+      case 'Right': return 'right';
+      case 'Center': return 'center';
+      default: return undefined;
+    }
+  }
+
+  const gridVerticalAlign = (value) => {
+    switch(value) {
+      case 'Top': return 'top';
+      case 'Bottom': return 'bottom';
+      case 'Center':
+      case 'Axis':
+        return 'middle';
+      case 'Baseline': return 'baseline';
+      default: return undefined;
+    }
+  }
+
+  const applyGridImageSize = (element, imageSize) => {
+    if (typeof imageSize == 'undefined') return;
+    const target = gridTable(element) || element;
+
+    if (Array.isArray(imageSize)) {
+      const width = gridNumber(imageSize[0]);
+      const height = gridNumber(imageSize[1]);
+
+      if (typeof width == 'number') target.style.width = width + 'px';
+      if (typeof height == 'number') target.style.height = height + 'px';
+      return;
+    }
+
+    const width = gridNumber(imageSize);
+    if (typeof width == 'number') target.style.width = width + 'px';
+  }
+
+  const applyGridBaselinePosition = (element, baselinePosition) => {
+    const align = gridVerticalAlign(baselinePosition);
+    if (!align) return;
+
+    const target = gridWrapper(element);
+    if (!target) return;
+
+    target.style.verticalAlign = align;
+  }
+
+  const applyGridSpacings = (element, spacings) => {
+    if (typeof spacings == 'undefined') return;
+
+    let x;
+    let y;
+    const rules = gridRules(spacings);
+
+    if (rules.length > 0) {
+      x = gridNumberFromSpec(gridRuleValue(rules, 'Columns'));
+      y = gridNumberFromSpec(gridRuleValue(rules, 'Rows'));
+    } else if (Array.isArray(spacings)) {
+      x = gridNumberFromSpec(spacings[0]);
+      y = gridNumberFromSpec(spacings[1]);
+    } else {
+      const value = gridNumber(spacings);
+      x = value;
+      y = value;
+    }
+
+    if (typeof x != 'number' && typeof y != 'number') return;
+
+    const table = gridTable(element);
+    if (!table) return;
+
+    table.style.borderCollapse = 'separate';
+    table.style.borderSpacing = (typeof x == 'number' ? x : 0) + 'em ' + (typeof y == 'number' ? y : 0) + 'em';
+  }
+
+  const applyGridDividers = (element, dividers) => {
+    const rules = gridRules(dividers);
+    const rows = gridRows(element);
+    const columnCount = gridColumnCount(rows);
+    let columnRawSpec;
+    let rowRawSpec;
+
+    if (rules.length > 0) {
+      columnRawSpec = gridRuleValue(rules, 'Columns');
+      rowRawSpec = gridRuleValue(rules, 'Rows');
+    } else if (Array.isArray(dividers) && dividers.length == 2) {
+      columnRawSpec = dividers[0];
+      rowRawSpec = dividers[1];
+    } else if (gridDividerQ(dividers)) {
+      columnRawSpec = dividers;
+      rowRawSpec = dividers;
+    } else {
+      return;
+    }
+
+    const columnSpec = expandGridSpec(columnRawSpec, columnCount + 1);
+    const rowSpec = expandGridSpec(rowRawSpec, rows.length + 1);
+
+    rows.forEach((row) => {
+      const cells = Array.from(row.cells || row.children || []);
+
+      columnSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        if (index < cells.length) {
+          cells[index].style.borderLeft = gridDividerBorder;
+          if (index > 0 && cells[index - 1]) cells[index - 1].classList.add('pr-2');
+          cells[index].classList.add('pl-2');
+        } else if (index == cells.length && cells[index - 1]) {
+          cells[index - 1].style.borderRight = gridDividerBorder;
+          cells[index - 1].classList.add('pr-2');
+        }
+      });
+    });
+
+    rowSpec.forEach((value, index) => {
+      if (!gridDividerQ(value)) return;
+
+      if (index < rows.length) {
+        rows[index].style.borderTop = gridDividerBorder;
+      } else if (index == rows.length && rows[index - 1]) {
+        rows[index - 1].style.borderBottom = gridDividerBorder;
+      }
+    });
+  }
+
+  const applyGridAlignment = (element, alignment) => {
+    if (typeof alignment == 'undefined') return;
+
+    const rows = gridRows(element);
+    const columnCount = gridColumnCount(rows);
+    let columnSpec;
+    let rowSpec;
+
+    const rules = gridRules(alignment);
+    if (rules.length > 0) {
+      columnSpec = gridRuleValue(rules, 'Columns');
+      rowSpec = gridRuleValue(rules, 'Rows');
+    } else if (Array.isArray(alignment) && alignment.length == 2 && !isGridRule(alignment[0])) {
+      columnSpec = alignment[0];
+      rowSpec = alignment[1];
+    } else {
+      columnSpec = alignment;
+    }
+
+    const columns = expandGridSpec(columnSpec, columnCount);
+    const rowAlignments = expandGridSpec(rowSpec, rows.length);
+
+    rows.forEach((row, rowIndex) => {
+      const vertical = gridVerticalAlign(rowAlignments[rowIndex]);
+      const cells = Array.from(row.cells || row.children || []);
+
+      cells.forEach((cell, columnIndex) => {
+        const horizontal = gridHorizontalAlign(columns[columnIndex]);
+
+        if (horizontal) cell.style.textAlign = horizontal;
+        if (vertical) cell.style.verticalAlign = vertical;
+      });
+    });
+  }
+
+
+
   boxes.ViewDecorator.Grid = async (args, env) => {
-    const opts = await core._getRules(args, {...env, context:boxes});
+    const opts = await core._getRules(args, {...env, context:[gridContext, boxes]});
    // console.warn(env);
    // console.warn(opts);
-    if (opts.GridBoxDividers) {
-      console.warn(opts.GridBoxDividers);
-      if (!Array.isArray(opts.GridBoxDividers)) return;
-      const rows = env.element.children;
-      opts.GridBoxDividers.forEach((item) => {
-        switch(item.lhs) {
-          case 'Columns':
-            if (!Array.isArray(item.rhs)) {
-              break;
-            }
-
-            if (item.rhs.length == 1) {
-              Array.from(rows).forEach((ch, index) => {
-
-                Array.from(ch.cells).forEach((cell ,index) => {
-                  if (index == 0) return;
-                  cell.style.borderLeft = 'solid 1px darkgray';
-                });
-              });
-              break;
-            }
-        
-            for (let i=0; i<item.rhs.length; ++i) {
-              if (item.rhs[i] == true) {
-                for(let j=0; j<rows.length; ++j) {
-                  if (i>0) {
-                    rows[j].children[i-1].classList.add('pr-2');
-                  }
-                  rows[j].children[i].style.borderLeft = 'solid 1px darkgray';
-                  rows[j].children[i].classList.add('pl-2');
-                } 
-              }
-            }
-          break;
-
-          case 'Rows':
-            if (!Array.isArray(item.rhs)) break;
-
-            if (item.rhs.length == 1) {
-              Array.from(rows).forEach((ch, index) => {
-                if (index == 0) return;
-                ch.style.borderTop = 'solid 1px darkgray';
-              });
-              break;
-            }
-
-            for (let i=0; i<item.rhs.length; ++i) {
-              if (item.rhs[i] == true) {
-                rows[i].style.borderTop = 'solid 1px darkgray';
-              }
-            }
-          break;
-        }
-      })
+    if (!opts.Selectable && 'Selectable' in opts) {
+      env.global.allowCellHighlighting = false;
+      env.global.disableCellSelecting = true;
     }
+
+    applyGridImageSize(env.element, opts.ImageSize);
+    applyGridBaselinePosition(env.element, opts.BaselinePosition);
+    applyGridSpacings(env.element, opts.GridBoxSpacings);
+    applyGridAlignment(env.element, opts.GridBoxAlignment);
+    applyGridDividers(env.element, opts.GridBoxDividers);
   }
 
   boxes.ViewDecorator.Over = async (args, env) => {
@@ -1465,6 +1695,8 @@
 
     if ('ShowContents' in options) {
       if (!options.ShowContents) env.element.style.opacity = 0;
+      env.global.disableCellSelecting = true;
+      env.global.allowCellHighlighting = false;
     }
 
     const data = [];

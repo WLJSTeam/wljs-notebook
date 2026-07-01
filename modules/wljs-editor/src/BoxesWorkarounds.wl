@@ -334,36 +334,22 @@ TagBox[x_, opts___] := x
 (* :::Grid Decorators::: aka TableForm, MatrixForm and many more *)
 (* we do support only one(two) option*)
 
+
+
 Unprotect[GridBox]
-GridBox[list_List, opts___] := With[{sorted = Association[ List[opts] ]},
-    If[!KeyExistsQ[sorted, GridBoxDividers],
-        If[Lookup[sorted, DefaultBaseStyle, False] === "Matrix",
+GridBox[list_List, opts___] := With[{rls = FilterRules[List[opts], {BaselinePosition, Selectable, GridBoxDividers, GridBoxAlignment, GridBoxSpacings, ImageSize}]},
+        If[Association[List[opts]][DefaultBaseStyle] === "Matrix",
             RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
                 Riffle[
                     (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
                         If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
         ,
-            If[Lookup[sorted, Selectable, True]===False,
-                RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-                    Riffle[
-                        (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-                            If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["NS"]  ], "*)(*]GB*)"]}}]))
-            ,
-                RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-                    Riffle[
-                        (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-                            If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{"}(*]GB*)"}}]))
-            ]
-
-        ]
-    ,
-        With[{val = sorted[GridBoxDividers]},
             RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
                 Riffle[
                     (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-                    If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", GridBoxDividers -> val ]  ], "*)(*]GB*)"]}}]))
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", Sequence@@rls]  ], "*)(*]GB*)"]}}]))
+
         ]
-    ] 
 ]
 
 MakeBoxes[TableForm[{{1,2}, {3,4}}], StandardForm]; (* trigger symbol fetch *)
