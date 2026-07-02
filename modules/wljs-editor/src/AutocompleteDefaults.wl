@@ -336,16 +336,7 @@ represents the absolute correlation function at lags <i>hspec</i> for the \
 random process <i>proc</i>. \
 \n\nAbsoluteCorrelationFunction[<i>proc</i>,<i>s</i>,<i>t</i>] represents the \
 absolute correlation function at times <i>s</i> and <i>t</i> for the random \
-process <i>proc</i>. "|>, <|"label" -> "AbsoluteCurrentValue", 
-  "type" -> "keyword", "info" -> "AbsoluteCurrentValue[<i>item</i>] gives the \
-absolute current value of <i>item</i> at a location in the Wolfram System and \
-interface. \n\nAbsoluteCurrentValue[{<i>item</i>,<i>spec</i>}] gives the \
-absolute current value for the feature of <i>item</i> specified by \
-<i>spec</i>.\n\nAbsoluteCurrentValue[<i>obj</i>,<i>item</i>] gives the \
-absolute current value of <i>item</i> associated with the object <i>obj</i>. \
-\n\nAbsoluteCurrentValue[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</sub>,\
-...},<i>item</i>] gives a list of the absolute current values \
-associated with each of the <i>obj</i><sub><i>i</i></sub>."|>, 
+process <i>proc</i>. "|>,
  <|"label" -> "AbsoluteDashing", "type" -> "keyword", 
   "info" -> "AbsoluteDashing[{<i>d</i><sub>1</sub>,<i>d</i><sub>2</sub>,\
 ...}] is a graphics directive which specifies that lines which follow \
@@ -853,10 +844,7 @@ the result from applying <i>fun</i> should be returned in format \
 be returned in format <i>failfmt</i>."|>, <|"label" -> "Appearance", 
   "type" -> "keyword", "info" -> "Appearance is an option for displayed \
 objects such as Button and Slider that specifies the general type of \
-appearance they should have. "|>, <|"label" -> "AppearanceElements", 
-  "type" -> "keyword", "info" -> "AppearanceElements is an option for \
-functions like Manipulate that specifies what elements should be included in \
-the displayed form of the object generated."|>, 
+appearance they should have. "|>,
  <|"label" -> "AppearanceRules", "type" -> "keyword", 
   "info" -> "AppearanceRules is an option for form and page generation \
 functions that specifies the overall appearance of the generated object."|>, 
@@ -2043,10 +2031,7 @@ correlation \[Rho]."|>, <|"label" -> "Beep", "type" -> "keyword",
 <i>message</i>."|>, <|"label" -> "Before", "type" -> "keyword", 
   "info" -> "Before is a symbol that represents the region before an object \
 for purposes of placement."|>, <|"label" -> "Begin", "type" -> "keyword", 
-  "info" -> "Begin[\"<i>context</i>`\"] resets the current context. "|>, 
- <|"label" -> "BeginDialogPacket", "type" -> "keyword", 
-  "info" -> "BeginDialogPacket[<i>integer</i>] is a WSTP packet that \
-indicates the start of the Dialog subsession referenced by <i>integer</i>."|>\
+  "info" -> "Begin[\"<i>context</i>`\"] resets the current context. "|>\
 , <|"label" -> "BellB", "type" -> "keyword", "info" -> "BellB[<i>n</i>] gives \
 the Bell number B<sub>n</sub>. \n\nBellB[<i>n</i>,<i>x</i>] gives the Bell \
 polynomial B<sub>n</sub>(x). "|>, <|"label" -> "BellY", "type" -> "keyword", 
@@ -2438,10 +2423,7 @@ bond between atoms with indices <i>id</i><sub><i>i</i></sub> and \
 specifies what labels and label positions should be used for bonds."|>, 
  <|"label" -> "BondLabelStyle", "type" -> "keyword", 
   "info" -> "BondLabelStyle is an option for MoleculePlot and MoleculePlot3D \
-that specifies the style to use for bond labels."|>, 
- <|"label" -> "Bookmarks", "type" -> "keyword", 
-  "info" -> "Bookmarks is an option for Manipulate and related functions that \
-gives a list of bookmark settings."|>, <|"label" -> "Boole", 
+that specifies the style to use for bond labels."|>, <|"label" -> "Boole",
   "type" -> "keyword", "info" -> 
    "Boole[<i>expr</i>] yields 1 if <i>expr</i> is True and 0 if it is False. \
 "|>, <|"label" -> "BooleanConvert", "type" -> "keyword", 
@@ -2775,10 +2757,6 @@ specified parameter <i>param</i> for calendar <i>cal</i>."|>,
  <|"label" -> "CalendarType", "type" -> "keyword", 
   "info" -> "CalendarType is an option that determines the calendar system in \
 which all dates are to be interpreted and output."|>, 
- <|"label" -> "CallPacket", "type" -> "keyword", 
-  "info" -> "CallPacket[<i>integer</i>,<i>list</i>] is a WSTP packet \
-encapsulating a request to invoke the external function numbered \
-<i>integer</i> with the arguments contained in <i>list</i>."|>, 
  <|"label" -> "CanberraDistance", "type" -> "keyword", 
   "info" -> "CanberraDistance[<i>u</i>,<i>v</i>] gives the Canberra distance \
 between vectors <i>u</i> and <i>v</i>."|>, <|"label" -> "Cancel", 
@@ -3071,49 +3049,8 @@ of the transform."|>, <|"label" -> "CepstrumArray", "type" -> "keyword",
  <|"label" -> "ChampernowneNumber", "type" -> "keyword", 
   "info" -> "ChampernowneNumber[<i>b</i>] gives the base-<i>b</i> \
 Champernowne number <i>C</i><sub><i>b</i></sub>.\n\nChampernowneNumber[] \
-gives the base-10 Champernowne number."|>, <|"label" -> "ChannelBase", 
-  "type" -> "keyword", "info" -> "ChannelBase is an option specifying the \
-base URL of the server to use for brokering channel communications."|>, 
- <|"label" -> "ChannelBrokerAction", "type" -> "keyword", 
-  "info" -> "ChannelBrokerAction is an option specifying the action to \
-execute on the channel broker server in addition to routing a message."|>, 
- <|"label" -> "ChannelHistoryLength", "type" -> "keyword", 
-  "info" -> "ChannelHistoryLength is an option to ChannelListen that \
-specifies the maximum number of messages to cache in the channel listener \
-object. "|>, <|"label" -> "ChannelListen", "type" -> "keyword", 
-  "info" -> "ChannelListen[<i>channel</i>] starts listening on the specified \
-channel.\n\nChannelListen[<i>channel</i>,<i>func</i>] applies <i>func</i> to \
-the association corresponding to each message received on the \
-channel.\n\nChannelListen[<i>channel</i>,None] stores each message received \
-on the channel, without applying any function.\n\nChannelListen[<i>url</i>] \
-listens on the specified URL, storing messages received, without requiring an \
-explicit channel to exist on the channel broker."|>, 
- <|"label" -> "ChannelListener", "type" -> "keyword", 
-  "info" -> "ChannelListener[...] represents a channel listener \
-created by ChannelListen."|>, <|"label" -> "ChannelListeners", 
-  "type" -> "keyword", "info" -> 
-   "ChannelListeners[] gives a list of currently active channel listeners."|>\
-, <|"label" -> "ChannelObject", "type" -> "keyword", 
-  "info" -> "ChannelObject[] gives a new anonymous channel \
-specification.\n\n\[UnknownGlyph] represents a channel specified by a given \
-URL.\n\nChannelObject[\"<i>relpath</i>\"] represents a channel for the \
-currently authenticated user at a relative \
-path.\n\nChannelObject[<i>\"id:\[UnknownGlyph]</i>] represents a channel for \
-the user with the specified Wolfram ID at the given \
-path.\n\nChannelObject[<i>\"/\[UnknownGlyph]</i>] represents a channel at an \
-absolute path on the channel broker."|>, 
- <|"label" -> "ChannelReceiverFunction", "type" -> "keyword", 
-  "info" -> "ChannelReceiverFunction[<i>fun</i>] represents a channel \
-receiver function that applies <i>fun</i> to any channel message it \
-receives."|>, <|"label" -> "ChannelSend", "type" -> "keyword", 
-  "info" -> "ChannelSend[<i>channel</i>,<i>msg</i>] sends the specified \
-message <i>msg</i> to the specified channel."|>, 
- <|"label" -> "ChannelSubscribers", "type" -> "keyword", 
-  "info" -> "ChannelSubscribers[<i>channel</i>] gives a list of users \
-currently subscribed to the specified \
-channel.\n\nChannelSubscribers[{<i>channel</i><sub>1</sub>,<i>channel</i><sub\
->2</sub>,...}] gives a list of subscribed users for each of the \
-channels <i>channel</i><sub><i>i</i></sub>."|>, 
+gives the base-10 Champernowne number."|>\
+,
  <|"label" -> "ChanVeseBinarize", "type" -> "keyword", 
   "info" -> "ChanVeseBinarize[<i>image</i>] finds a two-level segmentation of \
 <i>image</i> by computing optimal contours around regions of consistent \
@@ -3447,13 +3384,6 @@ session cookies for all domains."|>, <|"label" -> "ClebschGordan",
 \[VerticalSeparator]j,m\[RightAngleBracket] in terms of \
 \[VerticalSeparator]j<sub>1</sub>,m<sub>1</sub>\[RightAngleBracket]\
 \[VerticalSeparator]j<sub>2</sub>,m<sub>2</sub>\[RightAngleBracket]. "|>, 
- <|"label" -> "ClickPane", "type" -> "keyword", 
-  "info" -> "ClickPane[<i>image</i>,<i>func</i>] represents a clickable pane \
-that displays as <i>image</i> and applies <i>func</i> to the x,y coordinates \
-of each click within the \
-pane.\n\nClickPane[<i>image</i>,{{<i>x</i><sub><i>min</i></sub>,<i>y</i><sub>\
-<i>min</i></sub>},{<i>x</i><sub><i>max</i></sub>,<i>y</i><sub><i>max</i></sub\
->}},<i>func</i>] specifies the range of coordinates to use."|>, 
  <|"label" -> "ClickToCopy", "type" -> "keyword", 
   "info" -> "ClickToCopy[<i>expr</i>] represents a button that copies \
 <i>expr</i> whenever it is clicked.\n\nClickToCopy[<i>label</i>,<i>expr</i>] \
@@ -4477,16 +4407,7 @@ the order <i>p</i> Lehmer contraharmonic mean."|>,
 loss based on a distance metric and a target that specifies whether the \
 distance should be minimized or \
 maximized.\n\nContrastiveLossLayer[<i>margin</i>] specifies a distance above \
-which the loss is zero for True targets."|>, <|"label" -> "Control", 
-  "type" -> "keyword", "info" -> "Control[{<i>u</i>,<i>dom</i>}] represents \
-an interactive control for the variable <i>u</i> in the domain <i>dom</i>, \
-with the type of control chosen to be appropriate for the domain \
-specified.\n\nControl[{{<i>u</i>,<i>u</i><sub><i>init</i></sub>},<i>dom</i>}] \
-represents a control with initial value <i>u</i><sub><i>init</i></sub>."|>, 
- <|"label" -> "ControlActive", "type" -> "keyword", 
-  "info" -> "ControlActive[<i>act</i>,<i>norm</i>] evaluates to <i>act</i> if \
-a control that affects <i>act</i> is actively being used, and to <i>norm</i> \
-otherwise."|>, <|"label" -> "ControllabilityGramian", "type" -> "keyword", 
+which the loss is zero for True targets."|>, <|"label" -> "ControllabilityGramian", "type" -> "keyword",
   "info" -> "ControllabilityGramian[<i>ssm</i>] gives the controllability \
 Gramian of the state-space model <i>ssm</i>."|>, 
  <|"label" -> "ControllabilityMatrix", "type" -> "keyword", 
@@ -4638,10 +4559,7 @@ displays as x\[Coproduct]y\[Coproduct]...."|>,
   "info" -> "CopulaDistribution[<i>ker</i>,{<i>dist</i><sub>1</sub>,<i>dist</\
 i><sub>2</sub>,...}] represents a copula distribution with kernel \
 distribution <i>ker</i> and marginal distributions <i>dist</i><sub>1</sub>, \
-<i>dist</i><sub>2</sub>, ... ."|>, <|"label" -> "CopyDatabin", 
-  "type" -> "keyword", "info" -> "CopyDatabin[<i>bin</i>] creates a copy of a \
-databin.\n\nCopyDatabin[<i>bin</i>,<i>options</i>] creates a copy with the \
-specified options."|>, <|"label" -> "CopyDirectory", "type" -> "keyword", 
+<i>dist</i><sub>2</sub>, ... ."|>, <|"label" -> "CopyDirectory", "type" -> "keyword",
   "info" -> "CopyDirectory[<i>dir</i><sub>1</sub>,<i>dir</i><sub>2</sub>] \
 copies the directory <i>dir</i><sub>1</sub> to <i>dir</i><sub>2</sub>. "|>, 
  <|"label" -> "CopyToClipboard", "type" -> "keyword", 
@@ -4726,15 +4644,9 @@ considered equivalent."|>, <|"label" -> "CountDistinctBy",
 /i><sub>2</sub>,...},<i>f</i>] gives the number of distinct values of \
 <i>f</i>[<i>e</i><sub><i>i</i></sub>] that \
 occur.\n\nCountDistinctBy[<i>f</i>] represents an operator form of \
-CountDistinctBy that can be applied to an expression."|>, 
- <|"label" -> "CounterAssignments", "type" -> "keyword", 
-  "info" -> "CounterAssignments is an option for selections that sets the \
-value of a specified counter."|>, <|"label" -> "CounterFunction", 
+CountDistinctBy that can be applied to an expression."|>, <|"label" -> "CounterFunction",
   "type" -> "keyword", "info" -> "CounterFunction is an option for counters \
 that specifies the symbols used to display the value of the counter."|>, 
- <|"label" -> "CounterIncrements", "type" -> "keyword", 
-  "info" -> "CounterIncrements is an option for selections that specifies \
-whether the value of a specified counter is incremented by one."|>, 
  <|"label" -> "CountRoots", "type" -> "keyword", 
   "info" -> "CountRoots[<i>f</i>,<i>x</i>] gives the number of real roots of \
 the univariate function <i>f</i> in \
@@ -4805,19 +4717,9 @@ returns the value of \"<i>property</i>\"."|>, <|"label" -> "CreateArchive",
 compressed archive in the current directory from \
 <i>source</i>.\n\nCreateArchive[<i>source</i>,<i>path</i>] creates a \
 compressed archive in the directory or file specified by <i>path</i>."|>, 
- <|"label" -> "CreateChannel", "type" -> "keyword", 
-  "info" -> "CreateChannel[] creates a new channel for channel communication, \
-with a generated name.\n\nCreateChannel[\"<i>path</i>\"] creates a channel \
-with the specified path relative to the home area of the currently \
-authenticated user.\n\nCreateChannel[<i>object</i>] creates a channel based \
-on the given ChannelObject specification."|>, 
  <|"label" -> "CreateCompilerEnvironment", "type" -> "keyword", 
   "info" -> "CreateCompilerEnvironment[] creates a compiler environment that \
 can be used in FunctionCompile and related functions."|>, 
- <|"label" -> "CreateDatabin", "type" -> "keyword", 
-  "info" -> "CreateDatabin[] creates a databin in the Wolfram Data Drop and \
-returns the corresponding Databin object.\n\nCreateDatabin[<i>options</i>] \
-creates a databin with the specified options."|>, 
  <|"label" -> "CreateDataStructure", "type" -> "keyword", 
   "info" -> "CreateDataStructure[\"<i>type</i>\",<i>arg</i><sub>1</sub>,<i>ar\
 g</i><sub>2</sub>,...] creates a data structure with the specified \
@@ -4845,12 +4747,7 @@ associated with a registered manager with name <i>mname</i>."|>,
   "info" -> "CreatePacletArchive[<i>source</i>] creates a paclet archive file \
 from <i>source</i>.\n\nCreatePacletArchive[<i>source</i>,<i>destdir</i>] \
 creates a paclet archive file from <i>source</i> and places it in \
-<i>destdir</i>."|>, <|"label" -> "CreatePermissionsGroup", 
-  "type" -> "keyword", "info" -> "CreatePermissionsGroup[\"<i>name</i>\"] \
-creates a permissions group with the specified \
-name.\n\nCreatePermissionsGroup[\"<i>name</i>\",{<i>user</i><sub>1</sub>,<i>u\
-ser</i><sub>2</sub>,...}] creates a permissions group consisting of \
-the specified initial users."|>, <|"label" -> "CreateScheduledTask", 
+<i>destdir</i>."|>, <|"label" -> "CreateScheduledTask",
   "type" -> "keyword", "info" -> "CreateScheduledTask[<i>expr</i>] creates a \
 local scheduled task that will repeatedly evaluate <i>expr</i> once per \
 second.\n\nCreateScheduledTask[<i>expr</i>,<i>time</i>] creates a task that \
@@ -5193,45 +5090,6 @@ reference to a local file-based SQL \
 database.\n\nDatabaseReference[URL[\"<i>url</i>\"]] represents a reference to \
 a server-based SQL database.\n\nDatabaseReference[<i>assoc</i>] represents a \
 fully specified reference to any SQL database."|>, 
- <|"label" -> "Databin", "type" -> "keyword", "info" -> "Databin[\"<i>id</i>\
-\"] represents a databin in the Wolfram Data \
-Drop.\n\nDatabin[\"<i>id</i>\",<i>n</i>] represents the first <i>n</i> \
-entries in a databin.\n\nDatabin[\"<i>id</i>\",-<i>n</i>] represents the most \
-recent <i>n</i> entries in a \
-databin.\n\nDatabin[\"<i>id</i>\",{<i>m</i>,<i>n</i>}] represents entries \
-<i>m</i> through <i>n</i> in a databin, with negative numbers counting from \
-the end.\n\nDatabin[\"<i>id</i>\",{<i>m</i>,<i>n</i>,<i>s</i>}] represents \
-entries <i>m</i> through <i>n</i> with step \
-<i>s</i>.\n\nDatabin[\"<i>id</i>\",<i>time</i>] represents entries going back \
-for the quantity of time specified by \
-<i>time</i>.\n\nDatabin[\"<i>id</i>\",<i>date</i>] represents the entries in \
-a databin from the specified date to \
-now.\n\nDatabin[\"<i>id</i>\",{<i>date</i><sub>1</sub>,<i>date</i><sub>2</sub\
->}] represents the entries in a databin from <i>date</i><sub>1</sub> to \
-<i>date</i><sub>2</sub>.\n\nDatabin[\"<i>id</i>\",<i>range</i>,{<i>key</i><su\
-b>1</sub>,<i>key</i><sub>2</sub>,...}] represents only elements with \
-keys <i>key</i><sub><i>i</i></sub> within each entry in a databin."|>, 
- <|"label" -> "DatabinAdd", "type" -> "keyword", 
-  "info" -> 
-   "DatabinAdd[<i>bin</i>,<i>data</i>] adds the specified data to a databin."\
-|>, <|"label" -> "DatabinRemove", "type" -> "keyword", 
-  "info" -> "DatabinRemove[<i>bin</i>,<i>i</i>] removes the \
-<i>i</i><sup>th</sup>entry from a \
-databin.\n\nDatabinRemove[<i>bin</i>,<i>uuid</i>] removes the entry with the \
-specified UUID from a \
-databin.\n\nDatabinRemove[<i>bin</i>,{<i>i</i>,<i>j</i>}] removes the span of \
-entries with indices from <i>i</i> through <i>j</i>."|>, 
- <|"label" -> "Databins", "type" -> "keyword", "info" -> "Databins[] gives a \
-list of databins associated with the currently connected user."|>, 
- <|"label" -> "DatabinSubmit", "type" -> "keyword", 
-  "info" -> "DatabinSubmit[<i>bin</i>,<i>data</i>] submits the specified \
-<i>data</i> to be added to the databin <i>bin</i> asynchronously."|>, 
- <|"label" -> "DatabinUpload", "type" -> "keyword", 
-  "info" -> "DatabinUpload[<i>bin</i>,{<i>entry</i><sub>1</sub>,<i>entry</i><\
-sub>2</sub>,...}] bulk uploads all the entries \
-<i>entry</i><sub><i>i</i></sub> to a \
-databin.\n\nDatabinUpload[<i>bin</i>,EventSeries[...]] bulk uploads \
-all entries in an event series to a databin."|>, 
  <|"label" -> "DataDistribution", "type" -> "keyword", 
   "info" -> "DataDistribution[<i>ddist</i>,<i>...</i>] represents a \
 probability distribution of type <i>ddist</i>, estimated from a set of data."\
@@ -5562,9 +5420,7 @@ which specifies what to insert when a new element is interactively created."|>\
 , <|"label" -> "DefaultFaceGridsStyle", "type" -> "keyword", 
   "info" -> "DefaultFaceGridsStyle is a low-level option for 3D graphics \
 functions that specifies the default style to use in rendering face grids."|>\
-, <|"label" -> "DefaultFieldHintStyle", "type" -> "keyword", 
-  "info" -> "DefaultFieldHintStyle is a low-level option for InputField that \
-specifies the default style to use for displaying the field hint."|>, 
+,
  <|"label" -> "DefaultFontProperties", "type" -> "keyword", 
   "info" -> "DefaultFontProperties is a global option that allows overriding \
 properties of specified font families."|>, <|"label" -> "DefaultFrameStyle", 
@@ -5587,9 +5443,6 @@ be specified for particular formatting and related constructs. "|>,
   "info" -> "DefaultPrintPrecision is an option for NumberForm, DecimalForm \
 and related functions that specifies the default number of digits of \
 precision with which to print machine numbers."|>, 
- <|"label" -> "DefaultStyleDefinitions", "type" -> "keyword", 
-  "info" -> "DefaultStyleDefinitions is a global option that specifies the \
-default stylesheet for all new notebooks."|>, 
  <|"label" -> "DefaultTicksStyle", "type" -> "keyword", 
   "info" -> "DefaultTicksStyle is a low-level option for graphics functions \
 that specifies the default style to use in rendering ticks."|>, 
@@ -5702,13 +5555,7 @@ parts of <i>expr</i> on levels specified by <i>levelspec</i> that match \
 \n\nDeleteCases[<i>expr</i>,<i>pattern</i>,<i>levelspec</i>,<i>n</i>] removes \
 the first <i>n</i> parts of <i>expr</i> that match <i>pattern</i>. \
 \n\nDeleteCases[<i>pattern</i>] represents an operator form of DeleteCases \
-that can be applied to an expression."|>, <|"label" -> "DeleteChannel", 
-  "type" -> "keyword", "info" -> "DeleteChannel[<i>channel</i>] deletes the \
-specified channel from the channel broker \
-server.\n\nDeleteChannel[{<i>channel</i><sub>1</sub>,<i>channel</i><sub>2</su\
-b>,...}] deletes all the \
-<i>channel</i><sub><i>i</i></sub>.\n\nDeleteChannel[All] deletes all channels \
-owned by the currently authenticated user."|>, 
+that can be applied to an expression."|>,
  <|"label" -> "DeleteContents", "type" -> "keyword", 
   "info" -> "DeleteContents is an option for DeleteDirectory that specifies \
 whether the contents of directories should automatically be deleted."|>, 
@@ -5740,11 +5587,6 @@ element at level <i>n</i> to be missing if Missing occurs within the first \
   "type" -> "keyword", "info" -> "DeleteObject[<i>obj</i>] deletes the object \
 <i>obj</i>.\n\nDeleteObject[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</sub>,\
 ...}] deletes all the <i>obj</i><sub><i>i</i></sub>."|>, 
- <|"label" -> "DeletePermissionsKey", "type" -> "keyword", 
-  "info" -> "DeletePermissionsKey[<i>key</i>] deletes a permissions key, \
-rendering it \
-invalid.\n\nDeletePermissionsKey[{<i>key</i><sub>1</sub>,<i>key</i><sub>2</su\
-b>,...}] deletes several permissions keys."|>, 
  <|"label" -> "DeleteSearchIndex", "type" -> "keyword", 
   "info" -> "DeleteSearchIndex[<i>obj</i>] deletes the search index \
 represented by the search index object \
@@ -5769,13 +5611,7 @@ functions.\n\nDelimitedSequence[<i>form</i>,<i>sep</i>] assumes a separator \
 that matches \
 <i>sep</i>.\n\nDelimitedSequence[<i>form</i>,{<i>left</i>,<i>sep</i>,<i>right\
 </i>}] assumes left and right delimiters matching <i>left</i> and \
-<i>right</i>, respectively."|>, <|"label" -> "Delimiter", 
-  "type" -> "keyword", "info" -> "Delimiter represents a delimiter to be \
-displayed in objects such as PopupMenu, Manipulate, and FormObject. "|>, 
- <|"label" -> "DelimiterMatching", "type" -> "keyword", 
-  "info" -> "DelimiterMatching is an option for selections that specifies \
-whether an opening delimiter will match only its respective closing delimiter \
-or any closing delimiter."|>, <|"label" -> "Delimiters", "type" -> "keyword", 
+<i>right</i>, respectively."|>, <|"label" -> "Delimiters", "type" -> "keyword",
   "info" -> "Delimiters is an option to various functions that specifies what \
 delimiters to use or look for."|>, <|"label" -> "DeliveryFunction", 
   "type" -> "keyword", "info" -> "DeliveryFunction is an option that \
@@ -6002,10 +5838,7 @@ of Gaussian wavelet of derivative order 2.\n\nDGaussianWavelet[<i>n</i>] \
 represents a derivative of Gaussian wavelet of derivative order <i>n</i>."|>, 
  <|"label" -> "DiagonalizableMatrixQ", "type" -> "keyword", 
   "info" -> "DiagonalizableMatrixQ[<i>m</i>] gives True if <i>m</i> is \
-diagonalizable, and False otherwise. "|>, <|"label" -> "Dialog", 
-  "type" -> "keyword", "info" -> "Dialog[] initiates a dialog. \
-\n\nDialog[<i>expr</i>] initiates a dialog with <i>expr</i> as the current \
-value of %. "|>, <|"label" -> "Diamond", "type" -> "keyword", 
+diagonalizable, and False otherwise. "|>, <|"label" -> "Diamond", "type" -> "keyword",
   "info" -> "Diamond[<i>x</i>,<i>y</i>,...] displays as \
 <i>x</i>\[Diamond]<i>y</i>\[Diamond]...."|>, 
  <|"label" -> "DiceDissimilarity", "type" -> "keyword", 
@@ -6438,15 +6271,10 @@ cells, or notebook expressions in the specified format. "|>,
   "info" -> "DisplayAllSteps is an option to Animate and related functions \
 that specifies whether all frames should be displayed in an animation, even \
 if to do so would slow the animation down."|>, 
- <|"label" -> "DisplayEndPacket", "type" -> "keyword", 
-  "info" -> "DisplayEndPacket[] is a WSTP packet that indicates the end of a \
-series of expressions relating to a postscript graphic."|>, 
  <|"label" -> "DisplayFunction", "type" -> "keyword", 
   "info" -> "DisplayFunction is an option for graphics and sound functions \
 that specifies a function to apply to graphics and sound objects before \
-returning them."|>, <|"label" -> "DisplayPacket", "type" -> "keyword", 
-  "info" -> "DisplayPacket[] is a WSTP packet that indicates the beginning of \
-a series of expressions related to a PostScript graphic."|>, 
+returning them."|>,
  <|"label" -> "DisplayString", "type" -> "keyword", 
   "info" -> "DisplayString[<i>graphics</i>] generates a string giving \
 graphics or sound in PostScript format. \
@@ -6592,11 +6420,6 @@ document generator with template <i>template</i> to be evaluated on the \
 schedule defined by \
 <i>timespec</i>.\n\nDocumentGenerator[<i>template</i>,<i>driver</i>,<i>timesp\
 ec</i>] takes parameters for filling the template from <i>driver</i>."|>, 
- <|"label" -> "DocumentGeneratorInformation", "type" -> "keyword", 
-  "info" -> "DocumentGeneratorInformation[<i>cloudobj</i>] returns the \
-properties of the DocumentGenerator \
-<i>cloudobj</i>.\n\nDocumentGeneratorInformation[<i>cloudobj</i>,<i>property<\
-/i>] returns the value of the property <i>property</i>."|>, 
  <|"label" -> "DocumentWeightingRules", "type" -> "keyword", 
   "info" -> "DocumentWeightingRules is an option for TextSearch and related \
 functions that allows the specification of weights for documents based on the \
@@ -7174,10 +6997,7 @@ estimates the empty space function F(r) for point data <i>pdata</i> at radius \
 <i>r</i>.\n\nEmptySpaceF[<i>pproc</i>,<i>r</i>] computes F(r) for point \
 process <i>pproc</i>.\n\nEmptySpaceF[<i>bdata</i>,<i>r</i>] computes F(r) for \
 binned data <i>bdata</i>. \n\nEmptySpaceF[<i>pspec</i>] generates the \
-function F that can be applied repeatedly to different radii <i>r</i>."|>, 
- <|"label" -> "Enabled", "type" -> "keyword", "info" -> "Enabled is an option \
-for objects such as Slider that specifies whether the objects should be \
-enabled for interactive manipulation. "|>, <|"label" -> "Enclose", 
+function F that can be applied repeatedly to different radii <i>r</i>."|>, <|"label" -> "Enclose",
   "type" -> "keyword", "info" -> "Enclose[<i>expr</i>] attempts to evaluate \
 <i>expr</i> and return the result, but stops if it catches an error and \
 returns a failure object. \n\nEnclose[<i>expr</i>,<i>f</i>] applies <i>f</i> \
@@ -7210,10 +7030,7 @@ encrypts using the cryptographic key specification <i>keyspec</i>."|>,
    "End[] returns the present context, and reverts to the previous one. "|>, 
  <|"label" -> "EndAdd", "type" -> "keyword", "info" -> "EndAdd[ ] returns the \
 present context, and reverts to the previous one, prepending the present \
-context to $ContextPath."|>, <|"label" -> "EndDialogPacket", 
-  "type" -> "keyword", "info" -> "EndDialogPacket[<i>integer</i>] is a WSTP \
-packet indicating the end of the Dialog subsession referenced by \
-<i>integer</i>."|>, <|"label" -> "EndOfBuffer", "type" -> "keyword", 
+context to $ContextPath."|>, <|"label" -> "EndOfBuffer", "type" -> "keyword",
   "info" -> "EndOfBuffer is a symbol that represents the end of currently \
 available data in the buffer for a process or stream."|>, 
  <|"label" -> "EndOfFile", "type" -> "keyword", 
@@ -7230,12 +7047,7 @@ list $ContextPath. "|>, <|"label" -> "EngineeringForm", "type" -> "keyword",
   "info" -> "EngineeringForm[<i>expr</i>] prints with all real numbers in \
 <i>expr</i> given in engineering notation. \
 \n\nEngineeringForm[<i>expr</i>,<i>n</i>] prints with numbers given to \
-<i>n</i>\[Hyphen]digit precision. "|>, <|"label" -> "EnterExpressionPacket", 
-  "type" -> "keyword", "info" -> "EnterExpressionPacket[<i>expr</i>] is a \
-WSTP packet that requests the evaluation of <i>expr</i>."|>, 
- <|"label" -> "EnterTextPacket", "type" -> "keyword", 
-  "info" -> "EnterTextPacket[<i>string</i>] is a WSTP packet that requests \
-the parsing and evaluation of <i>string</i> as an expression."|>, 
+<i>n</i>\[Hyphen]digit precision. "|>,
  <|"label" -> "Entity", "type" -> "keyword", "info" -> "Entity[\"<i>type</i>\
 \",<i>name</i>] represents an entity of the specified type, identified by \
 <i>name</i>.\n\nEntity[<i>cspec</i>,<i>name</i>] represents an entity from \
@@ -7497,10 +7309,7 @@ axis, and finally by \[Gamma] around the current <i>c</i> axis."|>,
    "EulerPhi[<i>n</i>] gives the Euler totient function \[Phi](n). "|>, 
  <|"label" -> "Evaluate", "type" -> "keyword", "info" -> "Evaluate[<i>expr</i\
 >] causes <i>expr</i> to be evaluated even if it appears as the argument of a \
-function whose attributes specify that it should be held unevaluated. "|>, 
- <|"label" -> "EvaluatePacket", "type" -> "keyword", 
-  "info" -> "EvaluatePacket[<i>expr</i>] is a WSTP packet requesting \
-evaluation of <i>expr</i>."|>, <|"label" -> "EvaluateScheduledTask", 
+function whose attributes specify that it should be held unevaluated. "|>, <|"label" -> "EvaluateScheduledTask",
   "type" -> "keyword", "info" -> "EvaluateScheduledTask[<i>expr</i>] triggers \
 immediate local execution of the specified task object."|>, 
  <|"label" -> "EvaluationData", "type" -> "keyword", 
@@ -8160,21 +7969,7 @@ returns the value for a property at the specified age and percentile."|>,
   "info" -> "Fibonacci[<i>n</i>] gives the Fibonacci number F<sub>n</sub>. \
 \n\nFibonacci[<i>n</i>,<i>x</i>] gives the Fibonacci polynomial \
 F<sub>n</sub>(x). "|>, <|"label" -> "Fibonorial", "type" -> "keyword", 
-  "info" -> "Fibonorial[<i>n</i>] gives the fibonorial n!<sub>F</sub>."|>, 
- <|"label" -> "FieldCompletionFunction", "type" -> "keyword", 
-  "info" -> "FieldCompletionFunction is an option for InputField that \
-specifies a function to apply to the input field's contents to generate a \
-list of completions."|>, <|"label" -> "FieldHint", "type" -> "keyword", 
-  "info" -> "FieldHint is an option for InputField that specifies contents to \
-display when the input field is empty."|>, <|"label" -> "FieldHintStyle", 
-  "type" -> "keyword", "info" -> "FieldHintStyle is an option for InputField \
-that specifies the style to use for displaying the field hint."|>, 
- <|"label" -> "FieldMasked", "type" -> "keyword", 
-  "info" -> "FieldMasked is an option to InputField that determines whether \
-to mask user input."|>, <|"label" -> "FieldSize", "type" -> "keyword", 
-  "info" -> "FieldSize is an option for InputField, PopupMenu, and related \
-functions that specifies the size of the field allowed for input or contents. \
-"|>, <|"label" -> "File", "type" -> "keyword", "info" -> "File[\"<i>path</i>\
+  "info" -> "Fibonorial[<i>n</i>] gives the fibonorial n!<sub>F</sub>."|>, <|"label" -> "File", "type" -> "keyword", "info" -> "File[\"<i>path</i>\
 \"] is a symbolic representation of a location in the local file system. "|>, 
  <|"label" -> "FileBaseName", "type" -> "keyword", 
   "info" -> "FileBaseName[\"<i>file</i>\"] gives the base name for a file \
@@ -8231,9 +8026,7 @@ bytes.\n\nFileHash[{<i>filespec</i><sub>1</sub>,<i>filespec</i><sub>2</sub>,\
 ...},...] gives the hash codes for a list of files."|>, 
  <|"label" -> "FileNameDepth", "type" -> "keyword", 
   "info" -> "FileNameDepth[\"<i>name</i>\"] gives the number of path elements \
-in the file name \"<i>file</i>\"."|>, <|"label" -> "FileNameDialogSettings", 
-  "type" -> "keyword", "info" -> "FileNameDialogSettings is a global option \
-that specifies settings for the Insert File Path dialog box."|>, 
+in the file name \"<i>file</i>\"."|>,
  <|"label" -> "FileNameDrop", "type" -> "keyword", 
   "info" -> "FileNameDrop[\"<i>name</i>\",<i>n</i>] drops the first <i>n</i> \
 path elements in the file name \
@@ -8429,16 +8222,7 @@ a local minimum of a function of several variables. \
 subject to the constraints \
 <i>cons</i>.\n\nFindArgMin[{<i>f</i>,<i>cons</i>},{<i>x</i>,<i>y</i>,\
 ...}] starts from a point within the region defined by the \
-constraints."|>, <|"label" -> "FindChannels", "type" -> "keyword", 
-  "info" -> "FindChannels[] gives a list of channels in your home area on the \
-channel broker server.\n\nFindChannels[None] gives a list of your unnamed \
-channels.\n\nFindChannels[All] gives a list of all channels owned by \
-you.\n\nFindChannels[<i>form</i>] gives a list of channels in your home area \
-whose names match the string pattern \
-<i>form</i>.\n\nFindChannels[<i>\"/\[UnknownGlyph]</i>] gives a list of \
-channels whose names match the string pattern \
-\"/<i>abspath</i>\".\n\nFindChannels[\"mqtts://...\"] gives a list of \
-channels whose names match the specified pattern representing a URL."|>, 
+constraints."|>,
  <|"label" -> "FindClique", "type" -> "keyword", 
   "info" -> "FindClique[<i>g</i>] finds a largest clique in the graph \
 <i>g</i>.\n\nFindClique[<i>g</i>,<i>n</i>] finds a clique containing at most \
@@ -9198,15 +8982,7 @@ properties for a flight or selection of flights with specifications \
 the value of the property <i>prop</i> for specifications \
 <i>spec</i>.\n\nFlightData[<i>spec</i>,<i>prop</i>,<i>datespec</i>,<i>options\
 </i>] returns the value of the property <i>prop</i> for a specific time or \
-time range <i>datespec</i>."|>, <|"label" -> "FlipView", "type" -> "keyword", 
-  "info" -> "FlipView[{<i>expr</i><sub>1</sub>,<i>expr</i><sub>2</sub>}] \
-represents an object which flips between displaying <i>expr</i><sub>1</sub> \
-and <i>expr</i><sub>2</sub> each time it is \
-clicked.\n\nFlipView[{<i>expr</i><sub>1</sub>,<i>expr</i><sub>2</sub>,\
-...}] cyclically flips through successive \
-<i>expr</i><sub><i>i</i></sub>.\n\nFlipView[{<i>expr</i><sub>1</sub>,<i>expr<\
-/i><sub>2</sub>,...},<i>i</i>] makes <i>expr</i><sub><i>i</i></sub> \
-be the object currently displayed."|>, <|"label" -> "Floor", 
+time range <i>datespec</i>."|>, <|"label" -> "Floor",
   "type" -> "keyword", "info" -> "Floor[<i>x</i>] gives the greatest integer \
 less than or equal to <i>x</i>. \n\nFloor[<i>x</i>,<i>a</i>] gives the \
 greatest multiple of <i>a</i> less than or equal to <i>x</i>. "|>, 
@@ -9349,11 +9125,7 @@ Fortran language version of <i>expr</i>. "|>,
 that represents the forward direction for purposes of motion and animation."|>\
 , <|"label" -> "ForwardBackward", "type" -> "keyword", 
   "info" -> "ForwardBackward is a symbol that represents alternate forward \
-and backward motion or animation."|>, <|"label" -> "ForwardCloudCredentials", 
-  "type" -> "keyword", "info" -> "ForwardCloudCredentials is an option for \
-remote evaluation and submission functions that specifies whether Wolfram \
-Cloud credentials from the local session should be copied into remote \
-sessions."|>, <|"label" -> "Fourier", "type" -> "keyword", 
+and backward motion or animation."|>, <|"label" -> "Fourier", "type" -> "keyword",
   "info" -> "Fourier[<i>list</i>] finds the discrete Fourier transform of a \
 list of complex \
 numbers.\n\nFourier[<i>list</i>,{<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,\
@@ -9951,13 +9723,7 @@ sub>,...},<i>property</i>] gives a list of property values for the \
 specified galaxy \
 entities.\n\nGalaxyData[<i>entity</i>,<i>property</i>,<i>annotation</i>] \
 gives the specified <i>annotation</i> associated with the given \
-<i>property</i>."|>, <|"label" -> "GalleryView", "type" -> "keyword", 
-  "info" -> "GalleryView[{<i>expr</i><sub>1</sub>,<i>expr</i><sub>2</sub>,\
-...}] represents an object in which the \
-<i>expr</i><sub><i>i</i></sub> are displayed in a browsable gallery \
-layout.\n\nGalleryView[{<i>assoc</i><sub>1</sub>,<i>assoc</i><sub>2</sub>,\
-...}] uses each of the associations <i>assoc</i><sub><i>i</i></sub> \
-to define the display of an item in the gallery."|>, 
+<i>property</i>."|>,
  <|"label" -> "Gamma", "type" -> "keyword", "info" -> "Gamma[<i>z</i>] is the \
 Euler gamma function \[CapitalGamma](z). \n\nGamma[<i>a</i>,<i>z</i>] is the \
 incomplete gamma function \[CapitalGamma](a,z). \
@@ -10131,9 +9897,6 @@ x</i>] gives the generating function in <i>x</i> for the sequence whose \
 given by <i>expr</i>."|>, <|"label" -> "GeneratorDescription", 
   "type" -> "keyword", "info" -> "GeneratorDescription is an option for \
 providing a textual description for a DocumentGenerator."|>, 
- <|"label" -> "GeneratorHistoryLength", "type" -> "keyword", 
-  "info" -> "GeneratorHistoryLength is an option for document generators \
-controlling the number of runs archived in the cloud."|>, 
  <|"label" -> "GeneratorOutputType", "type" -> "keyword", 
   "info" -> "GeneratorOutputType is an option controlling the file format of \
 documents produced by a DocumentGenerator."|>, 
@@ -10781,23 +10544,7 @@ otherwise.\n\nGeoWithinQ[<i>reg</i>] represents an operator form of \
 GeoWithinQ that can be applied to a location."|>, 
  <|"label" -> "GeoZoomLevel", "type" -> "keyword", 
   "info" -> "GeoZoomLevel is an option for specifying the resolution at which \
-to render a map."|>, <|"label" -> "GestureHandler", "type" -> "keyword", 
-  "info" -> "GestureHandler[<i>expr</i>,{<i>gesture</i><sub>1</sub>\
-\[RuleDelayed]<i>fun</i><sub>1</sub>,<i>gesture</i><sub>2</sub>\[RuleDelayed]\
-<i>fun</i><sub>2</sub>,...}] displays as <i>expr</i>, evaluating \
-<i>fun</i><sub><i>i</i></sub>[<i>value</i>,<i>velocity</i>] whenever \
-\"<i>gesture</i><sub><i>i</i></sub>\" occurs within the screen space occupied \
-by \
-<i>expr</i>.\n\nGestureHandler[<i>expr</i>,{\"<i>gesture</i>\"\[RuleDelayed]{\
-<i>fun</i>,<i>fun</i><sub><i>end</i></sub>},...}] evaluates \
-<i>fun</i> as updates are received for \"<i>gesture</i>\", followed by \
-<i>fun</i><sub><i>end</i></sub>[<i>value</i>,<i>velocity</i>] when the \
-gesture \
-ends.\n\nGestureHandler[<i>expr</i>,{\"<i>gesture</i>\"\[RuleDelayed]{<i>fun<\
-/i><sub><i>start</i></sub>,<i>fun</i>,<i>fun</i><sub><i>end</i></sub>},\
-...}] also evaluates \
-<i>f</i><sub><i>start</i></sub>[<i>value</i>,<i>velocity</i>] when \
-\"<i>gesture</i>\" begins."|>, <|"label" -> "Get", "type" -> "keyword", 
+to render a map."|>, <|"label" -> "Get", "type" -> "keyword",
   "info" -> "<<<i>name</i> reads in a file, evaluating each expression in it \
 and returning the last one. \n\nGet[<i>stream</i>] reads from a stream, \
 evaluating each expression in it and returning the last \
@@ -11999,9 +11746,7 @@ given. "|>, <|"label" -> "Iconize", "type" -> "keyword",
   "info" -> "Iconize[<i>expr</i>] gives an iconized form that can be used to \
 stand in for <i>expr</i> in notebook \
 input.\n\nIconize[<i>expr</i>,\"<i>name</i>\"] displays with the specified \
-name in the icon."|>, <|"label" -> "IconRules", "type" -> "keyword", 
-  "info" -> "IconRules is an option for CloudObject and related objects that \
-specifies icons to use in different environments to represent an object."|>, 
+name in the icon."|>,
  <|"label" -> "Icosahedron", "type" -> "keyword", 
   "info" -> "Icosahedron[] represents a regular icosahedron centered at the \
 origin with unit edge length.\n\nIcosahedron[<i>l</i>] represents an \
@@ -12877,13 +12622,7 @@ input, displaying <i>prompt</i> as a \
   "info" -> "InputAssumptions is an option for WolframAlpha that specifies \
 assumptions for current query input."|>, <|"label" -> "InputForm", 
   "type" -> "keyword", "info" -> "InputForm[<i>expr</i>] prints as a version \
-of <i>expr</i> suitable for input to the Wolfram Language. "|>, 
- <|"label" -> "InputNamePacket", "type" -> "keyword", 
-  "info" -> "InputNamePacket[<i>string</i>] is a WSTP packet that contains in \
-<i>string</i> the name to be assigned to the next input."|>, 
- <|"label" -> "InputPacket", "type" -> "keyword", 
-  "info" -> "InputPacket[] is a WSTP packet that indicates a prompt for input \
-as generated by Input."|>, <|"label" -> "InputPorts", "type" -> "keyword", 
+of <i>expr</i> suitable for input to the Wolfram Language. "|>, <|"label" -> "InputPorts", "type" -> "keyword",
   "info" -> "InputPorts is an option to specify the number, names or shapes \
 of input ports for some neural net layers."|>, 
  <|"label" -> "InputStream", "type" -> "keyword", 
@@ -12893,11 +12632,7 @@ represents an input stream for functions such as Read and Find. "|>,
   "info" -> "InputString[] interactively reads in a character string. \
 \n\nInputString[<i>prompt</i>] requests input, displaying <i>prompt</i> as a \
 \"prompt\". \n\nInputString[<i>prompt</i>,<i>init</i>] in a notebook front \
-end uses <i>init</i> as the initial contents of the input field."|>, 
- <|"label" -> "InputStringPacket", "type" -> "keyword", 
-  "info" -> 
-   "InputStringPacket[] is a WSTP packet that requests input in string form."\
-|>, <|"label" -> "Insert", "type" -> "keyword", 
+end uses <i>init</i> as the initial contents of the input field."|>, <|"label" -> "Insert", "type" -> "keyword",
   "info" -> "Insert[<i>list</i>,<i>elem</i>,<i>n</i>] inserts <i>elem</i> at \
 position <i>n</i> in <i>list</i>. If <i>n</i> is negative, the position is \
 counted from the end. \
@@ -14405,11 +14140,7 @@ ub>}-&gt;{<i>x</i><sub>1</sub><sup>*</sup>,...,<i>x</i><sub><i>n</i\
 \[Limit]+{<i>x</i><sub>1</sub>,...,<i>x</i><sub><i>n</i></sub>}\
 -&gt;{<i>x</i><sub>1</sub><sup>*</sup>,...,<i>x</i><sub><i>n</i></s\
 ub><sup>*</sup>}<i>f</i>\[InvisibleApplication]<i>(</i><i>x</i><sub>1</sub>,\
-...,<i>x<sub>n</sub></i>)."|>, 
- <|"label" -> "LimitsPositioningTokens", "type" -> "keyword", 
-  "info" -> "LimitsPositioningTokens is an option for selections that \
-specifies a set of characters for which the option LimitsPositioning is set \
-to True by default."|>, <|"label" -> "LindleyDistribution", 
+...,<i>x<sub>n</sub></i>)."|>, <|"label" -> "LindleyDistribution",
   "type" -> "keyword", "info" -> "LindleyDistribution[\[Delta]] represents a \
 Lindley distribution with shape parameter \[Delta]."|>, 
  <|"label" -> "Line", "type" -> "keyword", "info" -> "Line[{<i>p</i><sub>1</s\
@@ -14559,11 +14290,7 @@ can be applied repeatedly to different <i>b</i>. \n\nLinearSolve[<i>a,b</i>] \
 finds an <i>x</i> that solves the array equation <i>a</i>.<i>x</i>==<i>b</i>. \
 "|>, <|"label" -> "LinearSolveFunction", "type" -> "keyword", 
   "info" -> "LinearSolveFunction[<i>dimensions</i>,<i>data</i>] represents a \
-function for providing solutions to a matrix equation. "|>, 
- <|"label" -> "LinebreakAdjustments", "type" -> "keyword", 
-  "info" -> "LinebreakAdjustments is an option for selections that sets \
-parameters used for calculating where automatic line breaks should be \
-inserted."|>, <|"label" -> "LineBreakChart", "type" -> "keyword", 
+function for providing solutions to a matrix equation. "|>, <|"label" -> "LineBreakChart", "type" -> "keyword",
   "info" -> "LineBreakChart[{{<i>date</i><sub>1</sub>,<i>p</i><sub>1</sub>},{\
 <i>date</i><sub>2</sub>,<i>p</i><sub>2</sub>},...}] makes a line \
 break chart with prices <i>p</i><sub><i>i</i></sub> at date \
@@ -15082,10 +14809,7 @@ the list of local clustering coefficients of all vertices in the graph \
 clustering coefficient of the vertex <i>v</i> in the graph \
 <i>g</i>.\n\nLocalClusteringCoefficient[{<i>v</i>-&gt;<i>w</i>,...}\
 ,...] uses rules <i>v</i>-&gt;<i>w</i> to specify the graph \
-<i>g</i>."|>, <|"label" -> "LocalizeVariables", "type" -> "keyword", 
-  "info" -> "LocalizeVariables is an option to Manipulate that determines \
-whether the values of variables associated with controls should be \
-localized."|>, <|"label" -> "LocalObject", "type" -> "keyword", 
+<i>g</i>."|>, <|"label" -> "LocalObject", "type" -> "keyword",
   "info" -> "LocalObject[] represents a new anonymous local \
 object.\n\nLocalObject[\"file:///...\"] represents a local object \
 with a given file path.\n\nLocalObject[\"<i>relpath</i>\"] represents a local \
@@ -15137,14 +14861,7 @@ whether the means or medians of <i>data</i><sub>1</sub> and \
 equal.\n\nLocationTest[<i>dspec</i>,\[Mu]<sub>0</sub>] tests a location \
 measure against \
 \[Mu]<sub>0</sub>.\n\nLocationTest[<i>dspec</i>,\[Mu]<sub>0</sub>,\"<i>proper\
-ty</i>\"] returns the value of \"<i>property</i>\"."|>, 
- <|"label" -> "LocatorAutoCreate", "type" -> "keyword", 
-  "info" -> "LocatorAutoCreate is an option for LocatorPane, Manipulate, and \
-related functions that specifies whether new locators should be created when \
-clicking away from existing locators."|>, <|"label" -> "LocatorRegion", 
-  "type" -> "keyword", "info" -> "LocatorRegion is an option for Locator that \
-specifies where the locator object should by default be allowed to go when it \
-is dragged."|>, <|"label" -> "Locked", "type" -> "keyword", 
+ty</i>\"] returns the value of \"<i>property</i>\"."|>, <|"label" -> "Locked", "type" -> "keyword",
   "info" -> "Locked is an attribute that, once assigned, prevents \
 modification of any attributes of a symbol. "|>, 
  <|"label" -> "Log", "type" -> "keyword", "info" -> "Log[<i>z</i>] gives the \
@@ -16186,11 +15903,7 @@ button.\n\nMessageDialog[<i>expr</i>,{<i>lbl</i><sub>1</sub>:><i>act</i><sub>\
 buttons with labels <i>lbl</i><sub><i>i</i></sub> that evaluate the \
 corresponding <i>act</i><sub><i>i</i></sub> if clicked."|>, 
  <|"label" -> "MessageName", "type" -> "keyword", 
-  "info" -> "<i>symbol</i>::<i>tag</i> is a name for a message. "|>, 
- <|"label" -> "MessagePacket", "type" -> "keyword", 
-  "info" -> "MessagePacket[<i>symbol</i>,<i>string</i>] is a WSTP packet \
-containing a Wolfram Language message identifier of the form \
-<i>symbol</i>::<i>string</i>."|>, <|"label" -> "Messages", 
+  "info" -> "<i>symbol</i>::<i>tag</i> is a name for a message. "|>, <|"label" -> "Messages",
   "type" -> "keyword", "info" -> "Messages[<i>symbol</i>] gives all the \
 messages assigned to a particular symbol. "|>, 
  <|"label" -> "MetaCharacters", "type" -> "keyword", 
@@ -18277,9 +17990,6 @@ state-space model <i>ssm</i> is output controllable, and False otherwise."|>,
  <|"label" -> "OutputForm", "type" -> "keyword", 
   "info" -> "OutputForm[<i>expr</i>] prints as a two-dimensional \
 representation of <i>expr</i> using only keyboard characters. "|>, 
- <|"label" -> "OutputNamePacket", "type" -> "keyword", 
-  "info" -> "OutputNamePacket[<i>string</i>] is a WSTP packet that contains \
-in <i>string</i> the name assigned to the next output."|>, 
  <|"label" -> "OutputPorts", "type" -> "keyword", 
   "info" -> "OutputPorts is an option to specify the number, names or shapes \
 of output ports for some neural net layers."|>, 
@@ -18297,10 +18007,7 @@ a function of time \
 <i>t</i>.\n\nOutputResponse[<i>sys</i>,{<i>u</i><sub>1</sub>[<i>t</i>],\
 ...,<i>u</i><sub><i>m</i></sub>[<i>t</i>]},...] gives the \
 output response for multiple inputs <i>u</i><sub><i>i</i></sub>[<i>t</i>]. "|>\
-, <|"label" -> "OutputSizeLimit", "type" -> "keyword", 
-  "info" -> "OutputSizeLimit is an option for notebooks that specifies the \
-maximum size in bytes of expressions that will automatically be output in \
-their entirety."|>, <|"label" -> "OutputStream", "type" -> "keyword", 
+, <|"label" -> "OutputStream", "type" -> "keyword",
   "info" -> "OutputStream[\"<i>name</i>\",<i>n</i>] is an object that \
 represents an output stream for functions such as Write. "|>, 
  <|"label" -> "OverBar", "type" -> "keyword", 
@@ -18975,13 +18682,7 @@ distribution with parameters <i>n</i> and <i>p</i>."|>,
 ><sub>1</sub>,<i>event</i><sub>2</sub>:><i>action</i><sub>2</sub>,...\
 }] displays as <i>expr</i>, evaluating <i>action</i><sub><i>i</i></sub> \
 whenever \"<i>event</i><sub><i>i</i></sub>\" occurs in connection with \
-<i>expr</i>. "|>, <|"label" -> "PassEventsDown", "type" -> "keyword", 
-  "info" -> "PassEventsDown is an option to EventHandler which specifies \
-whether events handled by a particular event handler should be passed down to \
-event handlers nested inside."|>, <|"label" -> "PassEventsUp", 
-  "type" -> "keyword", "info" -> "PassEventsUp is an option to EventHandler \
-that specifies whether events handled by a particular event handler should be \
-passed up to event handlers in outer expressions."|>, 
+<i>expr</i>. "|>,
  <|"label" -> "Paste", "type" -> "keyword", "info" -> "Paste[<i>expr</i>] \
 pastes <i>expr</i> at the current insertion point in the input notebook. \
 \n\nPaste[<i>notebook</i>,<i>expr</i>] pastes <i>expr</i> to the specified \
@@ -19150,19 +18851,7 @@ squared power spectrum of the first audio track in <i>video</i>."|>,
  <|"label" -> "Permanent", "type" -> "keyword", 
   "info" -> 
    "Permanent[<i>m</i>] gives the permanent of the square matrix <i>m</i>. "|>\
-, <|"label" -> "PermissionsGroup", "type" -> "keyword", 
-  "info" -> "PermissionsGroup[\"<i>name</i>\"] represents a permissions group \
-with the specified name, owned by the current \
-user.\n\nPermissionsGroup[<i>user</i>,\"<i>name</i>\"] represents a \
-permissions group owned by the specified user."|>, 
- <|"label" -> "PermissionsGroupMemberQ", "type" -> "keyword", 
-  "info" -> "PermissionsGroupMemberQ[<i>group</i>,<i>user</i>] returns True \
-if <i>user</i> is a member of the permissions group <i>group</i>, and False \
-otherwise."|>, <|"label" -> "PermissionsGroups", "type" -> "keyword", 
-  "info" -> "PermissionsGroups[] gives a list of permissions groups belonging \
-to the current user."|>, <|"label" -> "PermissionsKeys", "type" -> "keyword", 
-  "info" -> "PermissionsKeys[] gives a list of all valid permissions keys \
-created by the currently authenticated user."|>, 
+,
  <|"label" -> "PermutationCycles", "type" -> "keyword", 
   "info" -> "PermutationCycles[<i>perm</i>] gives a disjoint cycle \
 representation of permutation <i>perm</i>."|>, 
@@ -19826,10 +19515,7 @@ represents a layer performing three-dimensional pooling with kernels of size \
 <i>h</i>\[Times]<i>w</i>\[Times]<i>d</i>.\n\nPoolingLayer[<i>kernel</i>,<i>st\
 ride</i>] represents a layer that uses <i>stride</i> as the step size between \
 kernel applications.\n\nPoolingLayer[<i>kernel</i>,<i>opts</i>] includes \
-options for other pooling methods, padding and other parameters."|>, 
- <|"label" -> "PopupWindow", "type" -> "keyword", 
-  "info" -> "PopupWindow[<i>expr</i>,<i>contents</i>] displays as \
-<i>expr</i>, but pops up a window containing <i>contents</i> when clicked."|>\
+options for other pooling methods, padding and other parameters."|>\
 , <|"label" -> "Position", "type" -> "keyword", 
   "info" -> "Position[<i>expr</i>,<i>pattern</i>] gives a list of the \
 positions at which objects matching <i>pattern</i> appear in <i>expr</i>. \
@@ -20049,26 +19735,7 @@ the Cauchy principal value should be found for a definite integral. "|>,
   "info" -> "Print[<i>expr</i>] prints <i>expr</i> as output. "|>, 
  <|"label" -> "PrintableASCIIQ", "type" -> "keyword", 
   "info" -> "PrintableASCIIQ[<i>string</i>] yields True if the string \
-contains only printable ASCII characters, and yields False otherwise. "|>, 
- <|"label" -> "PrintAction", "type" -> "keyword", 
-  "info" -> "PrintAction is an option for notebooks that specifies the action \
-taken when a Print[] command is evaluated by the kernel."|>, 
- <|"label" -> "PrintingCopies", "type" -> "keyword", 
-  "info" -> "PrintingCopies is an option for notebooks that specifies the \
-number of copies of a notebook printed when a print command is given."|>, 
- <|"label" -> "PrintingOptions", "type" -> "keyword", 
-  "info" -> 
-   "PrintingOptions is an option that specifies settings for printing."|>, 
- <|"label" -> "PrintingPageRange", "type" -> "keyword", 
-  "info" -> "PrintingPageRange is an option for notebooks that specifies the \
-range of pages of a notebook to be printed."|>, 
- <|"label" -> "PrintingStartingPageNumber", "type" -> "keyword", 
-  "info" -> "PrintingStartingPageNumber is an option for notebooks that \
-specifies what number to assign to the first page of a notebook when \
-printed."|>, <|"label" -> "PrintingStyleEnvironment", "type" -> "keyword", 
-  "info" -> "PrintingStyleEnvironment is an option for notebooks that \
-specifies the style environment to be used in printing the notebook on paper. \
-"|>, <|"label" -> "Printout3D", "type" -> "keyword", 
+contains only printable ASCII characters, and yields False otherwise. "|>, <|"label" -> "Printout3D", "type" -> "keyword",
   "info" -> "Printout3D[<i>model</i>] prints out the 3D <i>model</i> using a \
 3D print previewer.\n\nPrintout3D[<i>model</i>,<i>service</i>] prints out the \
 3D <i>model</i> using the specified 3D printing \
@@ -20077,20 +19744,11 @@ a print-ready form of the model to a file in the format indicated by the file \
 extension <i>ext</i>."|>, <|"label" -> "Printout3DPreviewer", 
   "type" -> "keyword", "info" -> "Printout3DPreviewer is an option for \
 Printout3D that specifies a previewer for generating outputs to print."|>, 
- <|"label" -> "PrintPrecision", "type" -> "keyword", 
-  "info" -> "PrintPrecision is an option for selections that specifies the \
-maximum number of digits used for displaying a machine-precision number."|>, 
  <|"label" -> "Prism", "type" -> "keyword", "info" -> "Prism[{<i>p</i><sub>1<\
 /sub>,...,<i>p</i><sub>6</sub>}] represents a filled prism connecting \
 the triangles \
 {<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,<i>p</i><sub>3</sub>} and \
-{<i>p</i><sub>4</sub>,<i>p</i><sub>5</sub>,<i>p</i><sub>6</sub>}."|>, 
- <|"label" -> "PrivateEvaluationOptions", "type" -> "keyword", 
-  "info" -> "PrivateEvaluationOptions is an option for selections that \
-specifies settings for evaluation-related suboptions."|>, 
- <|"label" -> "PrivateFontOptions", "type" -> "keyword", 
-  "info" -> "PrivateFontOptions is an option for selections that specifies \
-settings for various font suboptions."|>, <|"label" -> "PrivateKey", 
+{<i>p</i><sub>4</sub>,<i>p</i><sub>5</sub>,<i>p</i><sub>6</sub>}."|>, <|"label" -> "PrivateKey",
   "type" -> "keyword", "info" -> "PrivateKey[<i>assoc</i>] represents the \
 private part of a key pair for a public-key cryptographic system."|>, 
  <|"label" -> "Probability", "type" -> "keyword", 
@@ -21455,22 +21113,7 @@ objects stemming from <i>audio</i>."|>, <|"label" -> "RemoveBackground",
 image with an alpha channel where the background is transparent. \
 \n\nRemoveBackground[<i>image</i>,<i>model</i>] uses foreground or background \
 <i>model</i> specification.\n\nRemoveBackground[<i>video</i>,...] \
-performs background removal on frames of <i>video</i>."|>, 
- <|"label" -> "RemoveChannelListener", "type" -> "keyword", 
-  "info" -> "RemoveChannelListener[<i>obj</i>] removes <i>obj</i> from the \
-list of currently active channel \
-listeners.\n\nRemoveChannelListener[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2<\
-/sub>,...}] removes all the \
-<i>obj</i><sub><i>i</i></sub>.\n\nRemoveChannelListener[] removes all \
-currently active channel listeners."|>, 
- <|"label" -> "RemoveChannelSubscribers", "type" -> "keyword", 
-  "info" -> "RemoveChannelSubscribers[<i>channel</i>] removes all subscribers \
-from the specified \
-channel.\n\nRemoveChannelSubscribers[<i>channel</i>,<i>user</i>] removes the \
-specified user from the subscriber \
-list.\n\nRemoveChannelSubscribers[<i>channel</i>,{<i>user</i><sub>1</sub>,<i>\
-user</i><sub>2</sub>,...}] removes the specified subscribers \
-<i>user</i><sub><i>i</i></sub>."|>, <|"label" -> "Removed", 
+performs background removal on frames of <i>video</i>."|>, <|"label" -> "Removed",
   "type" -> "keyword", "info" -> "Removed[<i>string</i>] is printed to \
 indicate a symbol that has been removed."|>, <|"label" -> "RemoveDiacritics", 
   "type" -> "keyword", "info" -> "RemoveDiacritics[<i>string</i>] replaces \
@@ -21726,25 +21369,13 @@ restricted according to the conditions <i>cond</i>."|>,
 </i>] computes the resultant of the polynomials <i>poly</i><sub>1</sub> and \
 <i>poly</i><sub>2</sub> with respect to the variable <i>var</i>. \
 \n\nResultant[<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,<i>var</i>,Modu\
-lus-&gt;<i>p</i>] computes the resultant modulo the prime <i>p</i>. "|>, 
- <|"label" -> "ResumePacket", "type" -> "keyword", 
-  "info" -> "ResumePacket[] is a WSTP packet used for synchronization with \
-the Wolfram Language kernel."|>, <|"label" -> "Return", "type" -> "keyword", 
+lus-&gt;<i>p</i>] computes the resultant modulo the prime <i>p</i>. "|>, <|"label" -> "Return", "type" -> "keyword",
   "info" -> "Return[<i>expr</i>] returns the value <i>expr</i> from a \
 function. \n\nReturn[] returns the value Null. "|>, 
- <|"label" -> "ReturnExpressionPacket", "type" -> "keyword", 
-  "info" -> "ReturnExpressionPacket[<i>expr</i>] is a WSTP packet that \
-contains the expression <i>expr</i>, the result of an EnterExpressionPacket \
-evaluation."|>, <|"label" -> "ReturnPacket", "type" -> "keyword", 
-  "info" -> "ReturnPacket[<i>expr</i>] is a WSTP packet that contains the \
-expression <i>expr</i>, the result of an EvaluatePacket evaluation."|>, 
  <|"label" -> "ReturnReceiptFunction", "type" -> "keyword", 
   "info" -> "ReturnReceiptFunction is an option for MailReceiverFunction that \
 specifies what function to apply if a return receipt is requested for mail \
-received by a MailReceiverFunction."|>, <|"label" -> "ReturnTextPacket", 
-  "type" -> "keyword", "info" -> "ReturnTextPacket[<i>string</i>] is a WSTP \
-packet containing <i>string</i>, the result of an EnterTextPacket \
-evaluation."|>, <|"label" -> "Reverse", "type" -> "keyword", 
+received by a MailReceiverFunction."|>, <|"label" -> "Reverse", "type" -> "keyword",
   "info" -> "Reverse[<i>expr</i>] reverses the order of the elements in \
 <i>expr</i>. \n\nReverse[<i>expr</i>,<i>n</i>] reverses elements at level \
 <i>n</i> in \
@@ -22242,15 +21873,10 @@ associated with all symbols whose names match the string pattern \
 definitions associated with all symbols in the specified context. \
 \n\nSave[\"<i>filename</i>\",{<i>object</i><sub>1</sub>,<i>object</i><sub>2</\
 sub>,...}] appends definitions associated with several objects. "|>, 
- <|"label" -> "Saveable", "type" -> "keyword", "info" -> "Saveable is an \
-option for notebooks that specifies whether a notebook can be saved."|>, 
  <|"label" -> "SaveConnection", "type" -> "keyword", 
   "info" -> "SaveConnection is an option for ServiceConnect that determines \
 whether the connection should be saved in the authenticated user's account."|>\
-, <|"label" -> "SaveDefinitions", "type" -> "keyword", 
-  "info" -> "SaveDefinitions is an option to Manipulate and related functions \
-that specifies whether current definitions relevant for the evaluation of the \
-expression being manipulated should automatically be saved."|>, 
+,
  <|"label" -> "SawtoothWave", "type" -> "keyword", 
   "info" -> "SawtoothWave[<i>x</i>] gives a sawtooth wave that varies from 0 \
 to 1 with unit period.\n\nSawtoothWave[{<i>min</i>,<i>max</i>},<i>x</i>] \
@@ -22349,19 +21975,10 @@ function Gi<sup>\[Prime]</sup>(z)."|>, <|"label" -> "ScorerHi",
    "ScorerHi[<i>z</i>] gives the Scorer function Hi(z)."|>, 
  <|"label" -> "ScorerHiPrime", "type" -> "keyword", 
   "info" -> "ScorerHiPrime[<i>z</i>] gives the derivative of the Scorer \
-function Hi<sup>\[Prime]</sup>(z)."|>, <|"label" -> "ScreenRectangle", 
-  "type" -> "keyword", "info" -> "ScreenRectangle is a global option that \
-specifies the position of the primary screen by giving the coordinates of two \
-diagonally opposite corners."|>, <|"label" -> "ScreenStyleEnvironment", 
-  "type" -> "keyword", "info" -> "ScreenStyleEnvironment is an option for \
-notebooks that specifies the style environment to be used in displaying a \
-notebook on the screen. "|>, <|"label" -> "ScriptBaselineShifts", 
+function Hi<sup>\[Prime]</sup>(z)."|>, <|"label" -> "ScriptBaselineShifts",
   "type" -> "keyword", "info" -> "ScriptBaselineShifts is an option for Style \
 that specifies the minimum distance in <i>x</i>\[Hyphen]heights to shift \
-subscripts and superscripts. "|>, <|"label" -> "ScriptLevel", 
-  "type" -> "keyword", "info" -> "ScriptLevel is an option for selections \
-that is used in determining the font size of modifiers such as subscripts and \
-superscripts in a nested expression."|>, <|"label" -> "ScriptMinSize", 
+subscripts and superscripts. "|>, <|"label" -> "ScriptMinSize",
   "type" -> "keyword", "info" -> "ScriptMinSize is an option for Style which \
 specifies the minimum font size to use in rendering subscripts, etc. "|>, 
  <|"label" -> "ScriptSizeMultipliers", "type" -> "keyword", 
@@ -22369,9 +21986,7 @@ specifies the minimum font size to use in rendering subscripts, etc. "|>,
 much smaller to render each successive level of subscripts, etc. "|>, 
  <|"label" -> "Scrollbars", "type" -> "keyword", 
   "info" -> "Scrollbars is an option for Pane that specifies whether \
-scrollbars should be displayed."|>, <|"label" -> "ScrollingOptions", 
-  "type" -> "keyword", "info" -> "ScrollingOptions is an option for notebooks \
-that specifies settings for scrolling."|>, <|"label" -> "ScrollPosition", 
+scrollbars should be displayed."|>, <|"label" -> "ScrollPosition",
   "type" -> "keyword", "info" -> "ScrollPosition is an option for Pane that \
 specifies the scroll position of the contents of the pane."|>, 
  <|"label" -> "SearchAdjustment", "type" -> "keyword", 
@@ -22833,9 +22448,6 @@ of \"<i>property</i>\"."|>, <|"label" -> "Share", "type" -> "keyword",
   "info" -> "Share[<i>expr</i>] changes the way <i>expr</i> is stored \
 internally, to try and minimize the amount of memory used. \n\nShare[] tries \
 to minimize the memory used to store all expressions. "|>, 
- <|"label" -> "SharingList", "type" -> "keyword", 
-  "info" -> "SharingList is an option for CloudObject and related constructs \
-that specifies with whom the object has been shared."|>, 
  <|"label" -> "Sharpen", "type" -> "keyword", "info" -> "Sharpen[<i>image</i>\
 ] gives a sharpened version of \
 <i>image</i>.\n\nSharpen[<i>image</i>,<i>r</i>] gives a version of \
@@ -23462,13 +23074,7 @@ through <i>j</i> in steps of <i>k</i>.\n\n<i>i</i>;;;;<i>k</i> represents a \
 span from <i>i</i> to the end in steps of <i>k</i>.\n\n;;<i>j</i>;;<i>k</i> \
 represents a span from the beginning to <i>j</i> in steps of \
 <i>k</i>.\n\n;;;;<i>k</i> represents a span from the beginning to the end in \
-steps of <i>k</i>. "|>, <|"label" -> "SpanAdjustments", "type" -> "keyword", 
-  "info" -> "SpanAdjustments is an option for selections that specifies the \
-height and width of spanning characters."|>, 
- <|"label" -> "SpanCharacterRounding", "type" -> "keyword", 
-  "info" -> "SpanCharacterRounding is an option for selections that specifies \
-the method used for rounding a spanning character when its size is to be \
-adjusted."|>, <|"label" -> "SpanFromAbove", "type" -> "keyword", 
+steps of <i>k</i>. "|>, <|"label" -> "SpanFromAbove", "type" -> "keyword",
   "info" -> "SpanFromAbove is a symbol that can appear at a particular \
 position in a Grid or related construct to indicate that the corresponding \
 position is occupied by a spanning element that appears above it."|>, 
@@ -23479,21 +23085,7 @@ position is occupied by a spanning element that appears above and to its \
 left."|>, <|"label" -> "SpanFromLeft", "type" -> "keyword", 
   "info" -> "SpanFromLeft is a symbol that can appear at a particular \
 position in a Grid or related construct to indicate that the corresponding \
-position is occupied by a spanning element that appears to its left."|>, 
- <|"label" -> "SpanLineThickness", "type" -> "keyword", 
-  "info" -> "SpanLineThickness is an option for selections that specifies the \
-thickness in printer's points of line-spanning characters such as \
-\[Backslash][VerticalLine] and \[Backslash][HorizontalLine]."|>, 
- <|"label" -> "SpanMaxSize", "type" -> "keyword", 
-  "info" -> "SpanMaxSize is an option for selections that specifies the \
-maximum size of spanning characters such as parentheses and brackets."|>, 
- <|"label" -> "SpanMinSize", "type" -> "keyword", 
-  "info" -> "SpanMinSize is an option for selections that specifies the \
-minimum size of spanning characters such as parentheses and brackets."|>, 
- <|"label" -> "SpanSymmetric", "type" -> "keyword", 
-  "info" -> "SpanSymmetric is an option for selections that specifies whether \
-vertically expandable characters are symmetric about the axis of the \
-selection."|>, <|"label" -> "SparseArray", "type" -> "keyword", 
+position is occupied by a spanning element that appears to its left."|>, <|"label" -> "SparseArray", "type" -> "keyword",
   "info" -> "SparseArray[{<i>pos</i><sub>1</sub>-&gt;<i>v</i><sub>1</sub>,<\
 i>pos</i><sub>2</sub>-&gt;<i>v</i><sub>2</sub>,...}] yields a \
 sparse array with all elements zero except for values \
@@ -24864,9 +24456,7 @@ model obtained from functions like SurvivalModelFit."|>,
  <|"label" -> "SurvivalModelFit", "type" -> "keyword", 
   "info" -> "SurvivalModelFit[{<i>e</i><sub>1</sub>,<i>e</i><sub>2</sub>,\
 ...}] creates a survival model for event times \
-<i>e</i><sub><i>i</i></sub>."|>, <|"label" -> "SuspendPacket", 
-  "type" -> "keyword", "info" -> "SuspendPacket[] is a WSTP packet used for \
-synchronization with the Wolfram Language kernel."|>, 
+<i>e</i><sub><i>i</i></sub>."|>,
  <|"label" -> "SuzukiDistribution", "type" -> "keyword", 
   "info" -> "SuzukiDistribution[\[Mu],\[Nu]] represents the Suzuki \
 distribution with shape parameters \[Mu] and \[Nu]."|>, 
@@ -24962,11 +24552,7 @@ information used to generate syntax coloring and other advisories when \
  <|"label" -> "SyntaxLength", "type" -> "keyword", 
   "info" -> "SyntaxLength[\"<i>string</i>\"] finds the number of characters \
 starting at the beginning of a string that correspond to syntactically \
-correct input for a single Wolfram Language expression. "|>, 
- <|"label" -> "SyntaxPacket", "type" -> "keyword", 
-  "info" -> "SyntaxPacket[<i>integer</i>] is a WSTP packet where \
-<i>integer</i> indicates the position at which a syntax error was detected in \
-the input line."|>, <|"label" -> "SyntaxQ", "type" -> "keyword", 
+correct input for a single Wolfram Language expression. "|>, <|"label" -> "SyntaxQ", "type" -> "keyword",
   "info" -> "SyntaxQ[\"<i>string</i>\"] returns True if the string \
 corresponds to syntactically correct input for a single Wolfram Language \
 expression, and returns False otherwise. \
@@ -24977,9 +24563,6 @@ corresponding to the specified form."|>,
 i><sub>2</sub>,...}] replaces missing values in each example by \
 generated values.\n\nSynthesizeMissingValues[<i>dist</i>,<i>data</i>] uses \
 the distribution <i>dist</i> to generate values."|>, 
- <|"label" -> "TabFilling", "type" -> "keyword", 
-  "info" -> "TabFilling is an option for character selections that specifies \
-how a Tab character is represented on the screen."|>, 
  <|"label" -> "Table", "type" -> "keyword", "info" -> "Table[<i>expr</i>,<i>n\
 </i>] generates a list of <i>n</i> copies of <i>expr</i>. \
 \n\nTable[<i>expr</i>,{<i>i</i>,<i>i</i><sub><i>max</i></sub>}] generates a \
@@ -25015,12 +24598,6 @@ column. "|>, <|"label" -> "TableView", "type" -> "keyword",
 ...},{<i>expr</i><sub>21</sub>,<i>expr</i><sub>22</sub>,...},\
 ...}] displays as a spreadsheet-like table view for editing and \
 viewing <i>expr</i><sub><i>ij</i></sub>."|>, 
- <|"label" -> "TabSpacings", "type" -> "keyword", 
-  "info" -> "TabSpacings is an option for character selections that specifies \
-the number of spaces in ems that the cursor advances when the Tab key is \
-pressed."|>, <|"label" -> "TaggingRules", "type" -> "keyword", 
-  "info" -> "TaggingRules is an option for selections that specifies a list \
-of strings to be associated with a selection."|>, 
  <|"label" -> "TagSet", "type" -> "keyword", "info" -> "<i>f</i>/:<i>lhs</i>=\
 <i>rhs</i> assigns <i>rhs</i> to be the value of <i>lhs</i>, and associates \
 the assignment with the symbol <i>f</i>. "|>, <|"label" -> "TagSetDelayed", 
@@ -25770,15 +25347,7 @@ regularization parameter value <i>param</i>."|>,
   "info" -> "TotalWidth is an option that can be set for output streams to \
 specify the maximum total number of characters of text that should be printed \
 for each output expression. Short forms of expressions are given if the \
-number of characters needed to print the whole expression is too large. "|>, 
- <|"label" -> "TouchscreenAutoZoom", "type" -> "keyword", 
-  "info" -> "TouchscreenAutoZoom is an option for Manipulate and Graphics3D \
-that determines whether the interface zooms to full-screen when it is \
-activated by touching it on supported touch screen platforms."|>, 
- <|"label" -> "TouchscreenControlPlacement", "type" -> "keyword", 
-  "info" -> "TouchscreenControlPlacement is an option for Manipulate that \
-determines the placement of the slide-out control panel on supported \
-touchscreen platforms."|>, <|"label" -> "ToUpperCase", "type" -> "keyword", 
+number of characters needed to print the whole expression is too large. "|>, <|"label" -> "ToUpperCase", "type" -> "keyword",
   "info" -> "ToUpperCase[<i>string</i>] yields a string in which all letters \
 have been converted to uppercase. "|>, <|"label" -> "TourVideo", 
   "type" -> "keyword", "info" -> "TourVideo[<i>input</i>,{<i>step</i><sub>1</\
@@ -25856,13 +25425,7 @@ expressions which match <i>form</i>. \
 use transformation rules associated with the symbol <i>s</i>. \
 \n\nTraceScan[<i>f</i>,<i>expr</i>,<i>form</i>,<i>fp</i>] applies <i>f</i> \
 before evaluation and <i>fp</i> after evaluation to expressions used in the \
-evaluation of <i>expr</i>. "|>, <|"label" -> "TrackedSymbols", 
-  "type" -> "keyword", "info" -> "TrackedSymbols is an option to Refresh, \
-Manipulate, and related functions that specifies which symbols should trigger \
-updates when their values are changed."|>, <|"label" -> "TrackingFunction", 
-  "type" -> "keyword", "info" -> "TrackingFunction is an option for \
-Manipulate controls that specifies functions to use during interactive \
-changing or editing."|>, <|"label" -> "TracyWidomDistribution", 
+evaluation of <i>expr</i>. "|>, <|"label" -> "TracyWidomDistribution",
   "type" -> "keyword", "info" -> "TracyWidomDistribution[\[Beta]] represents \
 a Tracy-Widom distribution with Dyson index \[Beta]."|>, 
  <|"label" -> "TradingChart", "type" -> "keyword", 
@@ -25878,10 +25441,6 @@ financial chart for the financial entity \"<i>name</i>\" over the \
  <|"label" -> "TraditionalForm", "type" -> "keyword", 
   "info" -> "TraditionalForm[<i>expr</i>] prints as an approximation to the \
 traditional mathematical notation for <i>expr</i>. "|>, 
- <|"label" -> "TraditionalFunctionNotation", "type" -> "keyword", 
-  "info" -> "TraditionalFunctionNotation is an option for selections that \
-specifies whether input of the form <i>f</i>(<i>x</i>) is interpreted by the \
-kernel as a function or as a product."|>, 
  <|"label" -> "TrainingProgressCheckpointing", "type" -> "keyword", 
   "info" -> "TrainingProgressCheckpointing is an option for NetTrain that \
 specifies how to save copies of the net during training."|>, 
@@ -25988,15 +25547,7 @@ follow the processes <i>proc</i><sub>1</sub>, <i>proc</i><sub>2</sub>, \
 ...."|>, <|"label" -> "TransformedRegion", "type" -> "keyword", 
   "info" -> "TransformedRegion[<i>reg</i>,<i>f</i>] represents the \
 transformed region {f(p)|p\[Element]reg}, where <i>reg</i> is a region and \
-<i>f</i> is a function."|>, <|"label" -> "TransitionDirection", 
-  "type" -> "keyword", "info" -> "TransitionDirection is an option for \
-PaneSelector that specifies the direction in which a transition moves."|>, 
- <|"label" -> "TransitionDuration", "type" -> "keyword", 
-  "info" -> "TransitionDuration is an option for PaneSelector that specifies \
-the duration in seconds that a transition effect should last."|>, 
- <|"label" -> "TransitionEffect", "type" -> "keyword", 
-  "info" -> "TransitionEffect is an option for PaneSelector that specifies \
-the visual effect used when transitioning between states."|>, 
+<i>f</i> is a function."|>,
  <|"label" -> "TransitiveClosureGraph", "type" -> "keyword", 
   "info" -> "TransitiveClosureGraph[<i>g</i>] gives the transitive closure of \
 the graph \
@@ -27428,11 +26979,7 @@ object <i>vstream</i>."|>, <|"label" -> "VideoPlay", "type" -> "keyword",
 playing a VideoStream object <i>vstream</i>."|>, 
  <|"label" -> "VideoQ", "type" -> "keyword", "info" -> "VideoQ[<i>video</i>] \
 yields True if <i>video</i> has the form of a valid Video object, and False \
-otherwise."|>, <|"label" -> "VideoRecord", "type" -> "keyword", 
-  "info" -> "VideoRecord[<i>source</i>] creates a VideoStream object and \
-records from <i>source</i>.\n\nVideoRecord[<i>vstream</i>] starts recording a \
-VideoStream object <i>vstream</i> that is connected to an imaging device, a \
-screen or a notebook."|>, <|"label" -> "VideoReplace", "type" -> "keyword", 
+otherwise."|>, <|"label" -> "VideoReplace", "type" -> "keyword",
   "info" -> "VideoReplace[<i>video</i>,{<i>t</i><sub>1</sub>,<i>t</i><sub>2</\
 sub>}-&gt;<i>new</i>] replaces the video between <i>t</i><sub>1</sub> and \
 <i>t</i><sub>2</sub> with the new video \
@@ -27784,10 +27331,7 @@ web search specified by <i>elems</i>."|>, <|"label" -> "WebSessionObject",
   "type" -> "keyword", "info" -> "WebSessionObject[...] represents a \
 web browser session started by StartWebSession for use with WebExecute."|>, 
  <|"label" -> "WebSessions", "type" -> "keyword", 
-  "info" -> "WebSessions[] gives the list of all active web sessions."|>, 
- <|"label" -> "WebWindowObject", "type" -> "keyword", 
-  "info" -> "WebWindowObject[...] represents an open window or tab in \
-a web browser."|>, <|"label" -> "Wedge", "type" -> "keyword", 
+  "info" -> "WebSessions[] gives the list of all active web sessions."|>, <|"label" -> "Wedge", "type" -> "keyword",
   "info" -> "Wedge[<i>x</i>,<i>y</i>,...] displays as \
 <i>x</i>\[Wedge]<i>y</i>\[Wedge]...."|>, 
  <|"label" -> "Wednesday", "type" -> "keyword", 
@@ -28259,9 +27803,6 @@ tensor in the slots <i>s</i><sub><i>i</i></sub>."|>,
  <|"label" -> "ZeroTest", "type" -> "keyword", "info" -> "ZeroTest is an \
 option to various linear algebra functions that gives a function to use in \
 testing whether symbolic expressions should be treated as zero."|>, 
- <|"label" -> "ZeroWidthTimes", "type" -> "keyword", 
-  "info" -> "ZeroWidthTimes is an option for selections that specifies \
-whether blank spaces representing multiplication are explicitly shown."|>, 
  <|"label" -> "Zeta", "type" -> "keyword", "info" -> "Zeta[<i>s</i>] gives \
 the Riemann zeta function \[Zeta](s). \n\nZeta[<i>s</i>,<i>a</i>] gives the \
 generalized Riemann zeta function \[Zeta](s,a). "|>, 
@@ -29226,19 +28767,13 @@ instances of SemanticSearchIndex.\n\nSemanticSearchIndices[<i>patt</i>] \
 returns a list of indices with the name matching the pattern <i>patt</i>."|>, 
  <|"label" -> "SequenceType", "type" -> "keyword", 
   "info" -> "SequenceType[<i>var</i>] represents a type parameterized by \
-<i>var</i> that refers to a sequence of zero or more types."|>, 
- <|"label" -> "ShowContents", "type" -> "keyword", 
-  "info" -> "ShowContents is an option for selections that specifies whether \
-an object represented by a StyleBox should be displayed on the screen or \
-replaced by blank space."|>, <|"label" -> "SinDegrees", "type" -> "keyword", 
+<i>var</i> that refers to a sequence of zero or more types."|>, <|"label" -> "SinDegrees", "type" -> "keyword",
   "info" -> 
    "SinDegrees[<i>\[Theta]</i>] gives the sine of \[Theta] degrees. "|>, 
  <|"label" -> "SowVideo", "type" -> "keyword", "info" -> "SowVideo[<i>frame</\
 i>] specifies that <i>frame</i> should be collected by the nearest enclosing \
 ReapVideo.\n\nSowVideo[<i>frame</i>,<i>n</i>] repeats frame <i>n</i> times \
-when reaped."|>, <|"label" -> "SpellingOptions", "type" -> "keyword", 
-  "info" -> "SpellingOptions is an option for notebooks that specifies \
-settings for spellchecking."|>, <|"label" -> "SphericalAngle", 
+when reaped."|>, <|"label" -> "SphericalAngle",
   "type" -> "keyword", "info" -> "SphericalAngle[<i>{\[Theta]<sub>0</sub>,\
 \[Phi]<sub>0</sub>}</i>-&gt;{{\[Theta]<sub>1</sub>,\[Phi]<sub>1</sub>},{\
 \[Theta]<sub>2</sub>,\[Phi]<sub>2</sub>}}] gives the signed angle in radians \
@@ -29272,11 +28807,7 @@ arbitrary-dimensional points on the surface of a unit hypersphere. "|>,
  <|"label" -> "Squiggled", "type" -> "keyword", 
   "info" -> "Squiggled[<i>expr</i>] displays <i>expr</i> with text underlined \
 with a squiggly red underline.\n\nSquiggled[<i>expr</i>,<i>color</i>] \
-displays squiggly using the specified color."|>, 
- <|"label" -> "StatusArea", "type" -> "keyword", 
-  "info" -> "StatusArea[<i>expr</i>,<i>string</i>] displays <i>string</i> in \
-the status area of the current notebook when the mouse pointer is in the \
-region where <i>expr</i> appears. "|>, <|"label" -> "StringApply", 
+displays squiggly using the specified color."|>, <|"label" -> "StringApply",
   "type" -> "keyword", "info" -> "StringApply[<i>f</i>,<i>string</i>] applies \
 <i>f</i> to the code points in <i>string</i>.\n\nStringApply[<i>f</i>] \
 represents an operator form of StringApply that can be applied to an \
