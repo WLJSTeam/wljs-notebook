@@ -193,7 +193,7 @@ import { processGreeks } from "../sugar/misc";
             if (itemDesc) {  //stylize the text
               //td.innerHTML = itemDesc[1];
               processGreeks(td, itemDesc[1], false);
-              td.classList.add('selectable');
+              td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
               const decoded = Mma.DecompressDecode(itemDesc[2]);
@@ -205,7 +205,7 @@ import { processGreeks } from "../sugar/misc";
 
             } else {
               processGreeks(td, text.slice(1,-1), false);
-              td.classList.add('selectable');
+              td.classList.add('selectable', 'sm-controls');
             }
           }
 

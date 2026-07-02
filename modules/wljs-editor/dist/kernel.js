@@ -33020,7 +33020,7 @@ var compactCMEditor$2;
             if (itemDesc) {  //stylize the text
               //td.innerHTML = itemDesc[1];
               processGreeks(td, itemDesc[1], false);
-              td.classList.add('selectable');
+              td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
               const decoded = Mma.DecompressDecode(itemDesc[2]);
@@ -33032,7 +33032,7 @@ var compactCMEditor$2;
 
             } else {
               processGreeks(td, text.slice(1,-1), false);
-              td.classList.add('selectable');
+              td.classList.add('selectable', 'sm-controls');
             }
           }
 
@@ -33655,7 +33655,7 @@ let EditorWidget$1 = class EditorWidget {
             stringOnly: true
           };
           const aa = document.createElement('span');
-          this.aa;
+          aa.classList.add('sm-controls');
           aa.onkeydown = function(e) {
             // User hits enter key and is not holding shift
             if (e.keyCode === 13) {
@@ -33663,7 +33663,7 @@ let EditorWidget$1 = class EditorWidget {
              }
          };
           //aa.contentEditable = "plaintext-only";
-          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset), false);
+          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
           //aa.addEventListener('input', console.log);
           /*aa.addEventListener("input", () => {
             console.log('Update');

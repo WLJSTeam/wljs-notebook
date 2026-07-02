@@ -27,6 +27,30 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## `Deploy` support
+Now Mathematica's `Deploy` wrapper works on any decorated expression. What it does:
+- triverse all tree of expresions
+- make them non-selectable / non-editable
+
+A typical use  case is constructing GUI using `Panel`, `Row` and `Grid` blocks:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## `Deploy` support
+Now Mathematica's `Deploy` wrapper works on any decorated expression. What it does:
+- triverse all tree of expresions
+- make them non-selectable / non-editable
+
+A typical use  case is constructing GUI using `Panel`, `Row` and `Grid` blocks:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Frontend support for string operators
 We extended the tiny WL interpreter that runs on the frontend with more string-related operators, such as `ToString`, `NumberForm`, `StringJoin`, and `Round`. Can you guess the use case?
 

@@ -1,6 +1,7 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+  <|"label"->"Alignment", "type"->"keyword", "info"->"Alignment->{Left, Top} sets hortisontal and vertical items aligment in Row, Column and Grid.\nAlignment->{{Left,Right}, Baseline} aligns first and second items to Left/Right and all items to Baseline vertically"|>,
   <|"label"->"Deploy", "type"->"keyword", "info"->"Deploy[expr] renders expression with disabled editing/selection, where expr can be Panel, Row, Column or nested decorations"|>,
   <|"label" -> "GPUArray", "type" -> "keyword", "info" -> "GPUArray[array] yields an array stored in GPU-accessible memory for GPU-accelerated computation.\nGPUArray[array, type] stores data with the specified numeric type.\nUse Normal[g] to retrieve the data back from the GPU."|>,
   <|"label" -> "GPUArrayQ", "type" -> "keyword", "info" -> "GPUArrayQ[g] gives True if g is a valid GPUArray object and False otherwise."|>,
@@ -1794,17 +1795,7 @@ is autocorrelated.\n\nAutocorrelationTest[<i>data</i>,<i>k</i>] tests whether \
 the <i>data</i> is autocorrelated up to lag \
 <i>k</i>.\n\nAutocorrelationTest[<i>data</i>,<i>k</i>,\"<i>property</i>\"] \
 returns the value of \"<i>property</i>\" for a given model."|>, 
- <|"label" -> "AutoIndent", "type" -> "keyword", 
-  "info" -> "AutoIndent is an option for Style and Cell that specifies what \
-automatic indentation should be done at the beginning of a new line after an \
-explicit return character has been entered. "|>, 
- <|"label" -> "AutoItalicWords", "type" -> "keyword", 
-  "info" -> "AutoItalicWords is an option for Cell that gives a list of words \
-that should automatically be put in italics when they are entered. "|>, 
- <|"label" -> "AutoloadPath", "type" -> "keyword", 
-  "info" -> "AutoloadPath is a global option that specifies from which \
-directories packages are automatically loaded when the Wolfram System is \
-started."|>, <|"label" -> "Automatic", "type" -> "keyword", 
+ <|"label" -> "Automatic", "type" -> "keyword", 
   "info" -> "Automatic represents an option or other value that is to be \
 chosen automatically by a built\[Hyphen]in function. "|>, <|"label" -> "Axes", "type" -> "keyword", 
   "info" -> "Axes is an option for graphics functions that specifies whether \
@@ -3467,9 +3458,6 @@ pane.\n\nClickPane[<i>image</i>,{{<i>x</i><sub><i>min</i></sub>,<i>y</i><sub>\
   "info" -> "ClickToCopy[<i>expr</i>] represents a button that copies \
 <i>expr</i> whenever it is clicked.\n\nClickToCopy[<i>label</i>,<i>expr</i>] \
 displays with <i>label</i> on the button."|>, 
- <|"label" -> "ClickToCopyEnabled", "type" -> "keyword", 
-  "info" -> "ClickToCopyEnabled is an option for Cell that specifies whether \
-to show a click-to-copy overlay when hovering over a cell."|>, 
  <|"label" -> "Clip", "type" -> "keyword", "info" -> "Clip[<i>x</i>] gives \
 <i>x</i> clipped to be between -1 and +1. \
 \n\nClip[<i>x</i>,{<i>min</i>,<i>max</i>}] gives <i>x</i> for \
@@ -4525,13 +4513,7 @@ uses model parameters <i>pars</i>."|>, <|"label" -> "Convergents",
 the convergents corresponding to the continued fraction terms \
 <i>list</i>.\n\nConvergents[<i>x</i>,<i>n</i>] gives the first <i>n</i> \
 convergents for a number <i>x</i>.\n\nConvergents[<i>x</i>] gives if possible \
-all convergents leading to the number <i>x</i>."|>, 
- <|"label" -> "ConversionOptions", "type" -> "keyword", 
-  "info" -> "ConversionOptions is an option to Import and Export used to pass \
-special options to a particular format."|>, <|"label" -> "ConversionRules", 
-  "type" -> "keyword", "info" -> "ConversionRules is an option for Cell that \
-can be set to a list of rules specifying how the contents of the cell are to \
-be converted to external formats. "|>, <|"label" -> "ConvexHullMesh", 
+all convergents leading to the number <i>x</i>."|>,  <|"label" -> "ConvexHullMesh", 
   "type" -> "keyword", "info" -> "ConvexHullMesh[{<i>p</i><sub>1</sub>,<i>p</\
 i><sub>2</sub>,...}] gives a BoundaryMeshRegion representing the \
 convex hull from the points <i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, \
@@ -9317,29 +9299,15 @@ FoldWhileList that can be applied to expressions."|>,
  <|"label" -> "FollowRedirects", "type" -> "keyword", 
   "info" -> "FollowRedirects is an option for URLRead and related functions \
 that specifies whether to follow HTTP redirects when retrieving a URL."|>, 
- <|"label" -> "FontColor", "type" -> "keyword", 
-  "info" -> "FontColor is an option for Style, Cell, and related constructs \
-that specifies the default color in which to render text. "|>, 
  <|"label" -> "FontFamily", "type" -> "keyword", 
-  "info" -> "FontFamily is an option for Style and Cell that specifies the \
+  "info" -> "FontFamily is an option for Style and Directive that specifies the \
 font family in which text should be rendered. "|>, 
  <|"label" -> "FontSize", "type" -> "keyword", "info" -> "FontSize is an \
-option for Style and Cell that specifies the default size in printer's points \
+option for Style and Directive that specifies the default size in printer's points \
 of the font in which to render text. "|>, <|"label" -> "FontSlant", 
-  "type" -> "keyword", "info" -> "FontSlant is an option for Style, Cell, and \
+  "type" -> "keyword", "info" -> "FontSlant is an option for Style, Directive, and \
 related constructs that specifies how slanted characters in text should be. "\
-|>, <|"label" -> "FontSubstitutions", "type" -> "keyword", 
-  "info" -> "FontSubstitutions is a global option that gives a list of \
-substitutions to try for font family names. "|>, 
- <|"label" -> "FontTracking", "type" -> "keyword", 
-  "info" -> "FontTracking is an option for Style and Cell that specifies how \
-condensed or expanded you want the font in which text is rendered to be. "|>, 
- <|"label" -> "FontVariations", "type" -> "keyword", 
-  "info" -> "FontVariations is an option for Style, Cell, and related \
-constructs that specifies what font variations should be used."|>, 
- <|"label" -> "FontWeight", "type" -> "keyword", 
-  "info" -> "FontWeight is an option for Style, Cell, and related constructs \
-that specifies how heavy the characters in a font should be. "|>, 
+|>, 
  <|"label" -> "For", "type" -> "keyword", "info" -> "For[<i>start</i>,<i>test\
 </i>,<i>incr</i>,<i>body</i>] executes <i>start</i>, then repeatedly \
 evaluates <i>body</i> and <i>incr</i> until <i>test</i> fails to give True. "\
@@ -9350,11 +9318,7 @@ evaluates <i>body</i> and <i>incr</i> until <i>test</i> fails to give True. "\
 for all <i>x</i> satisfying the condition <i>cond</i>. \
 \n\nForAll[{<i>x</i><sub>1</sub>,<i>x</i><sub>2</sub>,...},<i>expr</i\
 >] states that <i>expr</i> is True for all values of all the \
-<i>x</i><sub>i</sub>. "|>, <|"label" -> "ForceVersionInstall", 
-  "type" -> "keyword", "info" -> "ForceVersionInstall is an option to \
-PacletInstall and PacletInstallSubmit that specifies whether an older version \
-of a paclet is allowed to be installed if a newer version is already \
-installed."|>, <|"label" -> "Format", "type" -> "keyword", 
+<i>x</i><sub>i</sub>. "|>,  <|"label" -> "Format", "type" -> "keyword", 
   "info" -> "Format[<i>expr</i>] prints as the formatted form of <i>expr</i>. \
 Assigning values to Format[<i>expr</i>] defines print forms for expressions. \
 \n\nFormat[<i>expr</i>,<i>form</i>] gives a format for the specified form of \
@@ -9365,69 +9329,7 @@ outputting expressions. "|>, <|"label" -> "FormatValues",
   "type" -> "keyword", "info" -> "FormatValues[<i>f</i>] gives a list of \
 transformation rules corresponding to all printing formats (values for \
 Format[<i>f</i>[<i>x</i>,...],...], etc.) defined for the \
-symbol <i>f</i>."|>, <|"label" -> "FormFunction", "type" -> "keyword", 
-  "info" -> "FormFunction[<i>formspec</i>,<i>func</i>] represents an active \
-form that, when submitted, applies <i>func</i> to the values obtained from \
-the form specified by \
-<i>formspec</i>.\n\nFormFunction[{<i>name</i><sub>1</sub>-&gt;<i>type</i><s\
-ub>1</sub>,...},<i>func</i>] represents an active form with fields \
-named <i>name</i><sub><i>i</i></sub> interpreted as types \
-<i>type</i><sub><i>i</i></sub>.\n\nFormFunction[{{<i>name</i><sub>1</sub>,<i>\
-label</i><sub>1</sub>}-&gt;<i>type</i><sub>1</sub>,...},<i>func</i>\
-] uses <i>label</i><sub><i>i</i></sub> as the label for the field named \
-<i>name</i><sub><i>i</i></sub>.\n\nFormFunction[{<i>namespec</i><sub>1</sub>\
--&gt;<i>type</i><sub>1</sub>-&gt;<i>default</i><sub>1</sub>,...},\
-<i>func</i>] uses <i>default</i><sub><i>i</i></sub> as the default for the \
-field specified by \
-<i>namespec</i><sub><i>i</i></sub>.\n\nFormFunction[<i>formspec</i>,<i>func</\
-i>,<i>fmt</i>] specifies that in the cloud, the result from applying \
-<i>func</i> should be returned in format \
-<i>fmt</i>.\n\nFormFunction[{<i>formspec</i><sub>1</sub>,<i>formspec</i><sub>\
-2</sub>,...},<i>func</i>,...] represents a multipage form, in \
-which the successive <i>formspec</i><sub><i>i</i></sub> can be functions that \
-are applied to the values obtained so far."|>, 
- <|"label" -> "FormLayoutFunction", "type" -> "keyword", 
-  "info" -> "FormLayoutFunction is an option for FormObject and FormFunction \
-that can be used to specify how to lay out a form."|>, 
- <|"label" -> "FormObject", "type" -> "keyword", 
-  "info" -> "FormObject[{<i>name</i><sub>1</sub>-&gt;<i>type</i><sub>1</sub\
->,<i>name</i><sub>2</sub>-&gt;<i>type</i><sub>2</sub>,...}] \
-represents a form with fields having names <i>name</i><sub><i>i</i></sub> \
-that take data of type \
-<i>type</i><sub><i>i</i></sub>.\n\nFormObject[{{<i>name</i><sub>1</sub>,<i>la\
-bel</i><sub>1</sub>}-&gt;<i>type</i><sub>1</sub>,...}] uses \
-<i>label</i><sub><i>i</i></sub> as the label for the field named \
-<i>name</i><sub><i>i</i></sub>.\n\nFormObject[{<i>name</i><sub>1</sub>-&gt;\
-<i>assoc</i><sub>1</sub>,...,<i>obj</i><sub><i>j</i></sub>,\
-...}] uses full specification <i>assoc</i><sub><i>i</i></sub> for a \
-field, and <i>obj</i><sub><i>j</i></sub> as part of the layout of the form."|>\
-, <|"label" -> "FormPage", "type" -> "keyword", 
-  "info" -> "FormPage[<i>formspec</i>,<i>func</i>] represents an active page \
-that takes input from a form and generates results on the same page by \
-applying <i>func</i> to the values obtained from the form whose structure is \
-defined by \
-<i>formspec</i>.\n\nFormPage[{<i>name</i><sub>1</sub>-&gt;<i>type</i><sub>1\
-</sub>,...},<i>func</i>] represents an active form page with fields \
-named <i>name</i><sub><i>i</i></sub> interpreted as types \
-<i>type</i><sub><i>i</i></sub>.\n\nFormPage[{{<i>name</i><sub>1</sub>,<i>labe\
-l</i><sub>1</sub>}-&gt;<i>type</i><sub>1</sub>,...},<i>func</i>] \
-uses <i>label</i><sub><i>i</i></sub> as the label for the field named \
-<i>name</i><sub><i>i</i></sub>.\n\nFormPage[{<i>namespec</i><sub>1</sub>\
--&gt;<i>type</i><sub>1</sub>-&gt;<i>default</i><sub>1</sub>,...},\
-<i>func</i>] uses <i>default</i><sub><i>i</i></sub> as the default for the \
-field specified by \
-<i>namespec</i><sub><i>i</i></sub>.\n\nFormPage[<i>formspec</i>,<i>func</i>,<\
-i>form</i>] lays out the page according to the layout specification \
-<i>form</i>.\n\nFormPage[<i>formspec</i>,<i>func</i>,<i>initform</i>-&gt;<i\
->resform</i>] uses <i>initform</i> as the initial layout specification and \
-<i>resform</i> as the layout specification for result pages."|>, 
- <|"label" -> "FormProtectionMethod", "type" -> "keyword", 
-  "info" -> "FormProtectionMethod is an option for form generation functions \
-that specifies what method to use for protecting the form against spam and \
-other undesired submissions."|>, <|"label" -> "FormTheme", 
-  "type" -> "keyword", "info" -> "FormTheme is an option for FormObject and \
-related functions that specifies an overall theme for a form and its \
-elements."|>, <|"label" -> "FormulaData", "type" -> "keyword", 
+symbol <i>f</i>."|>,  <|"label" -> "FormulaData", "type" -> "keyword", 
   "info" -> "FormulaData[<i>name</i>] gives the equations for the formula \
 <i>name</i>.\n\nFormulaData[<i>name</i>,{<i>var</i><sub>1</sub>-&gt;<i>quan\
 tity</i><sub>1</sub>,<i>var</i><sub>2</sub>-&gt;<i>quantity</i><sub>2</sub>\
@@ -11416,10 +11318,7 @@ ub>,...}] returns the orbits of the points \
 <i>f</i>."|>, <|"label" -> "GroupOrder", "type" -> "keyword", 
   "info" -> 
    "GroupOrder[<i>group</i>] returns the number of elements of <i>group</i>."\
-|>, <|"label" -> "GroupPageBreakWithin", "type" -> "keyword", 
-  "info" -> "GroupPageBreakWithin is an option for Cell that specifies \
-whether a page break should be allowed within the group of cells if the \
-notebook that contains the group is printed. "|>, 
+|>, 
  <|"label" -> "GroupSetwiseStabilizer", "type" -> "keyword", 
   "info" -> "GroupSetwiseStabilizer[<i>group</i>,{<i>p</i><sub>1</sub>,\
 ...,<i>p</i><sub><i>n</i></sub>}] returns the subgroup of \
@@ -12085,9 +11984,6 @@ a hyperlink to be displayed as <i>label</i>. "|>,
 normal <i>n</i> passing through the point \
 <i>p</i>.\n\nHyperplane[<i>n</i>,<i>c</i>] represents the hyperplane with \
 normal <i>n</i> given by the points x that satisfy n.x\[LongEqual]c. "|>, 
- <|"label" -> "Hyphenation", "type" -> "keyword", 
-  "info" -> "Hyphenation is an option for Cell that specifies whether to \
-allow hyphenation for words of text. "|>, 
  <|"label" -> "HypoexponentialDistribution", "type" -> "keyword", 
   "info" -> "HypoexponentialDistribution[{\[Lambda]<sub>1</sub>,...,\
 \[Lambda]<sub><i>m</i></sub>}] represents an <i>m</i>-phase hypoexponential \
@@ -14069,10 +13965,6 @@ distribution with location parameter \[Mu] and scale parameter \
 location parameter 0 and scale parameter 1."|>, 
  <|"label" -> "Language", "type" -> "keyword", 
   "info" -> "Language is an option that specifies the language to use."|>, 
- <|"label" -> "LanguageCategory", "type" -> "keyword", 
-  "info" -> "LanguageCategory is an option for Cell that determines in what \
-category of language the contents of the cell should be assumed to be for \
-purposes of spell checking and hyphenation. "|>, 
  <|"label" -> "LanguageData", "type" -> "keyword", 
   "info" -> "LanguageData[<i>entity</i>,<i>property</i>] gives the value of \
 the specified <i>property</i> for the language \
@@ -14680,17 +14572,11 @@ ge</i>}] makes a line break chart of closing prices for the financial entity \
 \"<i>name</i>\" over the date range \
 <i>daterange</i>.\n\nLineBreakChart[{...},<i>n</i>] makes a line \
 break chart where <i>n</i> bars in a row cause a reversal."|>, 
- <|"label" -> "LineBreakWithin", "type" -> "keyword", 
-  "info" -> "LineBreakWithin is an option for selections that specifies \
-whether line breaks occur automatically when the end of a line is reached."|>\
-, <|"label" -> "LineGraph", "type" -> "keyword", 
+ <|"label" -> "LineGraph", "type" -> "keyword", 
   "info" -> "LineGraph[<i>g</i>] gives the line graph of the graph \
 <i>g</i>.\n\nLineGraph[{<i>v</i>-&gt;<i>w</i>,...}] uses rules \
 <i>v</i>-&gt;<i>w</i> to specify the graph <i>g</i>."|>, 
- <|"label" -> "LineIndent", "type" -> "keyword", 
-  "info" -> "LineIndent is an option for Style and Cell that specifies how \
-many ems of indentation to add at the beginnings of lines for each level of \
-nesting in an expression. "|>, <|"label" -> "LineIntegralConvolutionPlot", 
+ <|"label" -> "LineIntegralConvolutionPlot", 
   "type" -> "keyword", "info" -> "LineIntegralConvolutionPlot[{{<i>v</i><sub>\
 <i>x</i></sub>,<i>v</i><sub><i>y</i></sub>},<i>image</i>},{<i>x</i>,<i>x</i><\
 sub><i>min</i></sub>,<i>x</i><sub><i>max</i></sub>},{<i>y</i>,<i>y</i><sub><i\
@@ -14716,9 +14602,7 @@ of the line integral convolution to be used."|>,
 colors \
 <i>col</i><sub><i>i</i></sub>.\n\nLineLegend[{<i>lbl</i><sub>1</sub>,\
 ...}] represents a legend with inherited colors within visualization \
-functions."|>, <|"label" -> "LineSpacing", "type" -> "keyword", 
-  "info" -> "LineSpacing is an option for Style and Cell that specifies the \
-spacing between successive lines of text. "|>, 
+functions."|>, 
  <|"label" -> "LinkActivate", "type" -> "keyword", 
   "info" -> "LinkActivate[<i>lnk</i>] activates a WSTP connection, waiting \
 for the program at the other end to respond."|>, 
@@ -15554,8 +15438,7 @@ otherwise. "|>, <|"label" -> "MachinePrecision", "type" -> "keyword",
 machine\[Hyphen]number precision. "|>, <|"label" -> "Magenta", 
   "type" -> "keyword", "info" -> "Magenta represents the color magenta in \
 graphics or style specifications. "|>, <|"label" -> "Magnification", 
-  "type" -> "keyword", "info" -> "Magnification is an option for Style and \
-Cell that specifies what magnification to use for display. "|>, 
+  "type" -> "keyword", "info" -> "Magnification is an option for Style that  specifies what magnification to use for display. "|>, 
  <|"label" -> "Magnify", "type" -> "keyword", "info" -> "Magnify[<i>expr</i>,\
 <i>r</i>] represents an object to be displayed with magnification <i>r</i>. \
 \n\nMagnify[<i>expr</i>] displays with <i>expr</i> magnified by a fixed \
@@ -18618,42 +18501,7 @@ by padding <i>list</i> with zeros on the right. \
 \n\nPadRight[<i>list</i>,{<i>n</i><sub>1</sub>,<i>n</i><sub>2</sub>,\
 ...}] makes a nested list with length <i>n</i><sub><i>i</i></sub> at \
 level <i>i</i>. \n\nPadRight[<i>list</i>] pads a ragged array <i>list</i> \
-with zeros to make it full. "|>, <|"label" -> "PageBreakAbove", 
-  "type" -> "keyword", "info" -> "PageBreakAbove is an option for Cell which \
-specifies whether a page break should be made immediately above the cell if \
-the notebook that contains the cell is printed. "|>, 
- <|"label" -> "PageBreakBelow", "type" -> "keyword", 
-  "info" -> "PageBreakBelow is an option for Cell which specifies whether a \
-page break should be made immediately below the cell if the notebook that \
-contains the cell is printed. "|>, <|"label" -> "PageBreakWithin", 
-  "type" -> "keyword", "info" -> "PageBreakWithin is an option for Cell which \
-specifies whether a page break should be allowed within the cell if the \
-notebook that contains the cell is printed. "|>, 
- <|"label" -> "PageFooterLines", "type" -> "keyword", 
-  "info" -> "PageFooterLines is an option for notebooks that specifies \
-whether a horizontal line is inserted at the bottom of each page when the \
-notebook is printed."|>, <|"label" -> "PageFooters", "type" -> "keyword", 
-  "info" -> "PageFooters is an option for notebooks that specifies what \
-should be inserted as the footer of each page of a notebook when it is \
-printed."|>, <|"label" -> "PageHeaderLines", "type" -> "keyword", 
-  "info" -> "PageHeaderLines is an option for notebooks that specifies \
-whether a horizontal line is inserted at the top of each page when the \
-notebook is printed."|>, <|"label" -> "PageHeaders", "type" -> "keyword", 
-  "info" -> "PageHeaders is an option for notebooks that specifies what \
-should be inserted as the header of each page of a notebook when it is \
-printed."|>, <|"label" -> "PageRankCentrality", "type" -> "keyword", 
-  "info" -> "PageRankCentrality[<i>g</i>,\[Alpha]] gives a list of page-rank \
-centralities for the vertices in the graph <i>g</i> and weight \
-\[Alpha].\n\nPageRankCentrality[<i>g</i>,\[Alpha],\[Beta]] gives a list of \
-page-rank centralities, using weight \[Alpha] and initial centralities \
-\[Beta].\n\nPageRankCentrality[{<i>v</i>-&gt;<i>w</i>,...},\
-...] uses rules <i>v</i>-&gt;<i>w</i> to specify the graph \
-<i>g</i>. "|>, <|"label" -> "PageTheme", "type" -> "keyword", 
-  "info" -> "PageTheme is an option for FormObject, GalleryView, and related \
-functions that specifies an overall theme for a webpage and its elements."|>, 
- <|"label" -> "Pagination", "type" -> "keyword", 
-  "info" -> "Pagination is an option for GalleryView and related functions \
-that specifies how pagination should be done in displayed output."|>, 
+with zeros to make it full. "|>, 
  <|"label" -> "PairCorrelationG", "type" -> "keyword", 
   "info" -> "PairCorrelationG[<i>pdata</i>,<i>r</i>] estimates the pair \
 correlation function g(r) for point data <i>pdata</i> at radius \
@@ -21649,12 +21497,6 @@ renames the directory <i>dir</i><sub>1</sub> to <i>dir</i><sub>2</sub>. "|>,
  <|"label" -> "RenameFile", "type" -> "keyword", 
   "info" -> "RenameFile[<i>file</i><sub>1</sub>,<i>file</i><sub>2</sub>] \
 renames <i>file</i><sub>1</sub> to <i>file</i><sub>2</sub>. "|>, 
- <|"label" -> "RenderAll", "type" -> "keyword", 
-  "info" -> "RenderAll is an option for Graphics3D that specifies whether or \
-not PostScript should be generated for <i>all</i> polygons. "|>, 
- <|"label" -> "RenderingOptions", "type" -> "keyword", 
-  "info" -> "RenderingOptions is an option for Style, Cell and related \
-constructs that specifies options related to 3D rendering."|>, 
  <|"label" -> "RenewalProcess", "type" -> "keyword", 
   "info" -> "RenewalProcess[<i>rdist</i>] represents a renewal process with \
 interarrival times distributed according to <i>rdist</i>."|>, 
@@ -23070,26 +22912,7 @@ of a signal."|>, <|"label" -> "ShortUpArrow", "type" -> "keyword",
  <|"label" -> "Show", "type" -> "keyword", "info" -> "Show[<i>graphics</i>,<i\
 >options</i>] shows graphics with the specified options added. \
 \n\nShow[<i>g</i><sub>1</sub>,<i>g</i><sub>2</sub>,...] shows several \
-graphics combined. "|>, <|"label" -> "ShowAutoSpellCheck", 
-  "type" -> "keyword", "info" -> "ShowAutoSpellCheck is an option for Cell \
-that specifies whether to highlight misspelled words."|>, 
- <|"label" -> "ShowAutoStyles", "type" -> "keyword", 
-  "info" -> "ShowAutoStyles is an option for Cell that specifies whether \
-styles that are specified to be automatically used for various syntactic and \
-other constructs should be shown. "|>, <|"label" -> "ShowCellBracket", 
-  "type" -> "keyword", "info" -> "ShowCellBracket is an option for Cell that \
-specifies whether to display the bracket that indicates the extent of the \
-cell. "|>, <|"label" -> "ShowCursorTracker", "type" -> "keyword", 
-  "info" -> "ShowCursorTracker is an option for Cell that specifies whether \
-an elliptical spot should appear momentarily to guide the eye if the cursor \
-position jumps. "|>, <|"label" -> "ShowPageBreaks", "type" -> "keyword", 
-  "info" -> "ShowPageBreaks is a notebook option that specifies whether to \
-indicate in the on\[Hyphen]screen display of a notebook where page breaks \
-would occur if the notebook were printed. "|>, 
- <|"label" -> "ShrinkingDelay", "type" -> "keyword", 
-  "info" -> "ShrinkingDelay is an option for dynamic objects that specifies \
-how long to delay before shrinking the size of the region in which the object \
-is displayed to the actual size of the object. "|>, 
+graphics combined. "|>, 
  <|"label" -> "SiderealTime", "type" -> "keyword", 
   "info" -> "SiderealTime[] gives the right ascension of the local meridian \
 for the current date and location.\n\nSiderealTime[<i>date</i>] gives the \
@@ -23185,9 +23008,6 @@ and returns the simplest form it finds. \
   "info" -> "SinghMaddalaDistribution[<i>q</i>,<i>a</i>,<i>b</i>] represents \
 the Singh-Maddala distribution with shape parameters <i>q</i> and \
 <i>a</i> and scale parameter <i>b</i>."|>, 
- <|"label" -> "SingleLetterItalics", "type" -> "keyword", 
-  "info" -> "SingleLetterItalics is an option for Cell that specifies whether \
-single\[Hyphen]letter names should be displayed in italics. "|>, 
  <|"label" -> "SingularValueDecomposition", "type" -> "keyword", 
   "info" -> "SingularValueDecomposition[<i>m</i>] gives the singular value \
 decomposition for a numerical matrix <i>m</i> as a list of matrices \
@@ -24740,10 +24560,7 @@ the Boolean expression <i>bexpr</i>."|>, <|"label" -> "StructuredArray",
 sub>,<i>d</i><sub>2</sub>,...},<i>data</i>] represents a \
 <i>d</i><sub>1</sub>\[Times]<i>d</i><sub>2</sub>\[Times]... array \
 with structure type <i>st</i> and specific content <i>data</i>. "|>, 
- <|"label" -> "StructuredSelection", "type" -> "keyword", 
-  "info" -> "StructuredSelection is an option for Cell that specifies whether \
-to allow only complete subexpressions in the cell to be selected \
-interactively using the front end."|>, <|"label" -> "StruveH", 
+  <|"label" -> "StruveH", 
   "type" -> "keyword", "info" -> 
    "StruveH[<i>n</i>,<i>z</i>] gives the Struve function H<sub>n</sub>(z). "|>\
 , <|"label" -> "StruveL", "type" -> "keyword", "info" -> "StruveL[<i>n</i>,<i\
@@ -25451,9 +25268,7 @@ filled tetrahedron with corners <i>p</i><sub>1</sub>, <i>p</i><sub>2</sub>, \
 displays with <i>expr</i> in plain text format. \
 \n\nText[<i>expr</i>,<i>coords</i>] is a graphics primitive that displays the \
 textual form of <i>expr</i> centered at the point specified by <i>coords</i>. \
-"|>, <|"label" -> "TextAlignment", "type" -> "keyword", 
-  "info" -> "TextAlignment is an option for Cell, Style and related \
-constructs which specifies how successive lines of text should be aligned. "|>\
+"|>
 , <|"label" -> "TextCases", "type" -> "keyword", 
   "info" -> "TextCases[<i>text</i>,<i>form</i>] gives a list of all cases of \
 text identified as being of type <i>form</i> that appear in \
@@ -25486,10 +25301,7 @@ are specified. "|>, <|"label" -> "TextGrid", "type" -> "keyword",
 ...},{<i>expr</i><sub>21</sub>,<i>expr</i><sub>22</sub>,...},\
 ...}] is an object that formats <i>expr</i><sub><i>ij</i></sub> \
 textually and arranged in a two-dimensional grid. "|>, 
- <|"label" -> "TextJustification", "type" -> "keyword", 
-  "info" -> "TextJustification is an option for Cell and Inset which \
-specifies how much lines of text can be stretched in order to make them be \
-the same length. "|>, <|"label" -> "TextPosition", "type" -> "keyword", 
+  <|"label" -> "TextPosition", "type" -> "keyword", 
   "info" -> "TextPosition[<i>text</i>,<i>form</i>] gives a list of the \
 starting and ending positions at which instances of <i>form</i> occur in \
 <i>text</i>.\n\nTextPosition[<i>text</i>,{<i>form</i><sub>1</sub>,<i>form</i>\
@@ -26202,11 +26014,7 @@ graphics primitives <i>g</i> translated by the vector \
 \n\nTranslate[<i>g</i>,{{<i>x</i><sub>1</sub>,<i>y</i><sub>1</sub>,\
 ...},{<i>x</i><sub>2</sub>,<i>y</i><sub>2</sub>,...}, \
 ...}] represents multiple copies of <i>g</i> translated by a \
-collection of vectors."|>, <|"label" -> "TranslationOptions", 
-  "type" -> "keyword", "info" -> "TranslationOptions-&gt;{<i>opt</i><sub>1<\
-/sub>-&gt;<i>val</i><sub>1</sub>,<i>opt</i><sub>2</sub>-&gt;<i>val</i><su\
-b>2</sub>,...} is an option for Style and Cell that controls how code \
-translations are displayed."|>, <|"label" -> "TranslationTransform", 
+collection of vectors."|>,  <|"label" -> "TranslationTransform", 
   "type" -> "keyword", "info" -> "TranslationTransform[<i>v</i>] gives a \
 TransformationFunction that represents translation of points by a vector \
 <i>v</i>."|>, <|"label" -> "Transliterate", "type" -> "keyword", 

@@ -330,6 +330,18 @@ RowBox[{first___, SubsuperscriptBox["\[Sum]", RowBox[{iterator_, "=", initial_}]
 Unprotect[TagBox]
 TagBox[x_, opts___] := x
 
+(* TEXT *)
+Unprotect[Text];
+FormatValues[Text] = {}
+Text /: MakeBoxes[Text[expr_, ___], StandardForm] := With[{m = Style[TextString[expr], 12]}, 
+  MakeBoxes[m, StandardForm]
+]
+Text /: MakeBoxes[Text[Column[list_List], ___], StandardForm] := With[{r = Column[Text/@list]},
+  MakeBoxes[r, StandardForm]
+]
+Text /: MakeBoxes[Text[Grid[list_List], ___], StandardForm] := With[{r = Grid[Map[Text, list, {2}]]},
+  MakeBoxes[r, StandardForm]
+]
 
 (* :::Grid Decorators::: aka TableForm, MatrixForm and many more *)
 (* we do support only one(two) option*)
@@ -596,13 +608,13 @@ FormatValues[Hyperlink] = {};
 
 Hyperlink /: MakeBoxes[Hyperlink[str_String], StandardForm] := MakeBoxes[Hyperlink[str, str], StandardForm]
 
-Hyperlink /: MakeBoxes[Hyperlink[label_, url_String], f: StandardForm] := With[{uid = CreateUUID[], labelBox = MakeBoxes[label, f]}, 
-  EventHandler[uid, SystemOpen[url]&];
-BoxBox[labelBox, ViewDecorator["Pane", "Event"->uid] ] ]
+Hyperlink /: MakeBoxes[Hyperlink[label_, url_String], f: StandardForm] := With[{labelBox = MakeBoxes[label, f]}, 
 
-Hyperlink /: MakeBoxes[Hyperlink[label_String, url_String], f: StandardForm] := With[{uid = CreateUUID[], labelBox = MakeBoxes[label, f]}, 
-  EventHandler[uid, SystemOpen[url]&];
-BoxBox[labelBox, {StyleDecorator["Underlined"->True], ViewDecorator["Pane", "Event"->uid]}, "String"->True]]
+BoxBox[labelBox, StyleDecorator["URL"->url] ] ]
+
+Hyperlink /: MakeBoxes[Hyperlink[label_String, url_String], f: StandardForm] := With[{labelBox = MakeBoxes[label, f]}, 
+ 
+BoxBox[labelBox, StyleDecorator["URL"->url], "String"->True]]
 
 (*if a string, then remove quotes*)
 
@@ -1290,6 +1302,16 @@ EventObject /: Inset[EventObject[a_?BoxForm`EventObjectHasView], rest___ ] := If
 (* :: Row, Column adaptation for WLXForm :: *)
 
 Unprotect[Row]
+
+FormatValues[Row] = {};
+Row /: MakeBoxes[Row[expr_List, opts:OptionsPattern[]], StandardForm] := With[{g = Grid[{expr}, opts]},
+    MakeBoxes[g, StandardForm]
+]
+
+Row /: MakeBoxes[Row[expr_List, sep_, opts:OptionsPattern[]], StandardForm] := With[{g = Grid[{Riffle[expr, sep]}, opts]},
+    MakeBoxes[g, StandardForm]
+]
+
 
 Row /: MakeBoxes[Row[expr__, OptionsPattern[] ], WLXForm] := With[{list = List[expr]},
   With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},

@@ -1639,6 +1639,15 @@
       env.element.style.fontSize = String(options.FontSize) + 'pt';
     } 
 
+    if ('URL' in options) {
+      const wrapper = document.createElement('a');
+      wrapper.href = options.URL;
+      wrapper.target="_blank";
+      wrapper.style.textDecoration = "underline";
+      env.element.appendChild(wrapper);
+      env.global.element = wrapper;
+    }
+
     if ('FontFamily' in options) {
       env.element.style.fontFamily = options.FontFamily.toLowerCase();
     }
