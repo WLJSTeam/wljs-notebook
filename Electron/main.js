@@ -3635,13 +3635,22 @@ Wolfram Engine is proprietary and distributed by Wolfram Research.
 }
 
 function default_error_handling(success, reject, s, program, window) {
+    if (new RegExp('Wolfram ID', 'i').exec(s)) {
+        windows.log.info('Activation required');
+        activate_wl(program, success, () => {
+            windows.log.clear();
+            reject();
+        }, window);
+        return true;
+    }
+
     //1# activation issues
     if (new RegExp('Wolfram product is not activated').exec(s)) {
         windows.log.print("Automatic activation in 3 seconds...", '\x1b[44m');
         windows.log.info("Automatic activation in 3 seconds...");
 
         setTimeout(() => {
-            server.wolfram.args.push('-activate');
+            if (!server.wolfram.args.includes('-activate')) server.wolfram.args.push('-activate');
             windows.log.clear();
             reject();
         }, 3000);

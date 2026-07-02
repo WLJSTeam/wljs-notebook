@@ -126,7 +126,7 @@ ClearAll[CurrentScreenImage]
 CurrentNotebookImage::noelectron = "CurrentNotebookImage requires desktop application"
 
 CurrentNotebookImage[] := CurrentNotebookImage[1]
-CurrentNotebookImage[_] := With[{res = FrontFetch[ takeScreenshot[], "Window"->OptionValue["Window"] ]},
+CurrentNotebookImage[___, OptionsPattern[]] := With[{res = FrontFetch[ takeScreenshot[], "Window"->OptionValue["Window"] ]},
   If[StringQ[res],
     ImportString[StringDrop[res, StringLength["data:image/png;base64,"] ], "Base64"]
   ,
