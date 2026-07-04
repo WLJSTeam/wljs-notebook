@@ -279,6 +279,7 @@ g3d.RGBColor = async (args, env) => {
 
   if (args.length === 1) {
     a = await interpretate(args[0], env); // return [r, g, b] , 0<=r, g, b<=1
+    if (NumericArrayObject.Q(a)) a = a.normal();
   }
 
   const r = await interpretate(a[0], env);
@@ -858,6 +859,8 @@ g3d.Arrow = async (args, env) => {
   } else {
     arr = await interpretate(args[0], env);
   }
+
+  if (arr instanceof NumericArrayObject) arr = arr.normal();
   
   if (arr.length === 1) arr = arr[0];
 
@@ -1230,7 +1233,8 @@ g3d.Cube = async (args, env) => {
   let rotation = new THREE.Euler(0, 0, 0);
 
   for (const arg of args) {
-    const val = await interpretate(arg, env);
+    let val = await interpretate(arg, env);
+    if (NumericArrayObject.Q(val)) val = val.normal();
 
     if (typeof val === "number") {
       scale.set(val, val, val);
@@ -1362,9 +1366,15 @@ g3d.Cuboid = async (args, env) => {
   var p;
 
   if (args.length === 2) {
+    
+    let first = await interpretate(args[1], env);
+    let second = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(first)) first = first.normal();
+    if (NumericArrayObject.Q(second)) second = second.normal();
+
     var points = [
-      new THREE.Vector4(...(await interpretate(args[1], env)), 1),
-      new THREE.Vector4(...(await interpretate(args[0], env)), 1),
+      new THREE.Vector4(...(first), 1),
+      new THREE.Vector4(...(second), 1),
     ];
 
     origin = points[0]
@@ -1374,6 +1384,8 @@ g3d.Cuboid = async (args, env) => {
     diff = points[0].clone().add(points[1].clone().negate());
   } else if (args.length === 1) {
     p = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(p)) p = p.normal();
+    
     origin = new THREE.Vector4(...p, 1);
     diff = new THREE.Vector4(1, 1, 1, 1);
 
@@ -1457,9 +1469,14 @@ g3d.Cuboid.update = async (args, env) => {
   var p;
 
   if (args.length === 2) {
+    let first = await interpretate(args[1], env);
+    let second = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(first)) first = first.normal();
+    if (NumericArrayObject.Q(second)) second = second.normal();
+
     var points = [
-      new THREE.Vector4(...(await interpretate(args[1], env)), 1),
-      new THREE.Vector4(...(await interpretate(args[0], env)), 1),
+      new THREE.Vector4(...(first), 1),
+      new THREE.Vector4(...(second), 1),
     ];
   
     origin = points[0]
@@ -1469,6 +1486,7 @@ g3d.Cuboid.update = async (args, env) => {
     diff = points[0].clone().add(points[1].clone().negate());
   } else {
     p = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(p)) p = p.normal();
     origin = new THREE.Vector4(...p, 1);
     diff = new THREE.Vector4(1, 1, 1, 1);
   
@@ -1504,10 +1522,13 @@ g3d.Center = (args, env) => {
 g3d.Cylinder = async (args, env) => {
   let radius = 1;
   if (args.length > 1) radius = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(radius)) radius = radius.normal();
   /**
    * @type {THREE.Vector3}}
    */
   let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
+  
   if (coordinates.length === 1) {
     coordinates = coordinates[0];
   }
@@ -1593,6 +1614,8 @@ matte: env.matte
 
 g3d.Cylinder.update = async (args, env) => {
   let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
+  
   if (coordinates.length === 1) {
     coordinates = coordinates[0];
   }
@@ -1872,8 +1895,8 @@ g3d.Translate.destroy = (args, env) => {
 
 g3d.LookAt = async (args, env) => {
   const group = new THREE.Group();
-  const dir = await interpretate(args[1], env);
-
+  let dir = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(dir)) dir = dir.normal();
 
 
   await interpretate(args[0], {...env, mesh:group});
@@ -1910,7 +1933,8 @@ g3d.LookAt = async (args, env) => {
 
 g3d.LookAt.update = async (args, env) => {
   env.wake(true);
-  const dir = await interpretate(args[1], env);
+  let dir = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(dir)) dir = dir.normal();
   env.local.group.lookAt(...dir);
 }  
 
@@ -2053,6 +2077,8 @@ const decodeTransformation = (arrays, env) => {
 
 g3d.Rotate = async (args, env) => {
   let angle = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(angle)) angle = angle.normal();
+  
   let dir = [0,0,1];
 
   if (args.length > 2) dir = await interpretate(args[2], env);
@@ -2076,6 +2102,7 @@ g3d.Rotate = async (args, env) => {
 
 g3d.Rotate.update = async (args, env) => {
   let angle = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(angle)) angle = angle.normal();
   const deltAngle = angle - env.local.angle;
   env.local.angle = angle;
 
@@ -2510,8 +2537,11 @@ g3d.GraphicsComplex.virtual = true
 g3dComplex.Cylinder = async (args, env) => {
   let radius = 1;
   if (args.length > 1) radius = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(radius)) radius = radius.normal();
 
   let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
+  
   if (coordinates.length === 1) {
     coordinates = coordinates[0];
   }
@@ -2596,6 +2626,7 @@ matte: env.matte
 g3dComplex.Sphere = async (args, env) => {
   var radius = 1;
   if (args.length > 1) radius = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(radius)) radius = radius.normal();
 
   const material = new env.material({
     color: env.color,
@@ -4057,7 +4088,8 @@ g3dComplex.Arrow = async (args, env) => {
     env.radius = (await interpretate(args[1], env)) * 0.7;
 
   if (args[0][0] == 'Tube') {
-    const points = await interpretate(args[0][1], env);
+    let points = await interpretate(args[0][1], env);
+    if (NumericArrayObject.Q(points)) points = points.normal();
 
     if (Array.isArray(points[0])) {
       points.forEach((p) => {

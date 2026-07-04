@@ -25,26 +25,26 @@ const _handlers = [
   /*20*/(refs, ctx, join)                  => { ctx.lineJoin    = join; },
   /*21*/(refs, ctx, m)                     => { ctx.miterLimit  = m; },
   /*22*/(refs, ctx, fontSpec)              => { ctx.font        = fontSpec; },
-  /*23*/(refs, ctx)                        => { ctx.save() },
-  /*24*/(refs, ctx)                        => { ctx.restore() },
-  /*25*/(refs, ctx, dx, dy)                => { ctx.translate(dx, dy) },
-  /*26*/(refs, ctx, angle)                 => { ctx.rotate(angle) },
-  /*27*/(refs, ctx, sx, sy)                => { ctx.scale(sx, sy) },
-  /*28*/(refs, ctx)                        => { ctx.clip() },
+  /*23*/(refs, ctx)                        => { ctx.save(); },
+  /*24*/(refs, ctx)                        => { ctx.restore(); },
+  /*25*/(refs, ctx, dx, dy)                => { ctx.translate(dx, dy); },
+  /*26*/(refs, ctx, angle)                 => { ctx.rotate(angle); },
+  /*27*/(refs, ctx, sx, sy)                => { ctx.scale(sx, sy); },
+  /*28*/(refs, ctx)                        => { ctx.clip(); },
   /*29*/(refs, ctx, a)                     => { ctx.globalAlpha = a; },
   /*30*/(refs, ctx, align)                 => { ctx.textAlign   = align; },
   /*31*/(refs, ctx, baseline)              => { ctx.textBaseline= baseline; },
-  /*32*/ (refs, ctx, ...dashArray)              => { ctx.setLineDash(dashArray) },
+  /*32*/ (refs, ctx, ...dashArray)              => { ctx.setLineDash(dashArray); },
   /*33*/ (refs, ctx, offset)                    => { ctx.lineDashOffset = offset; },
 
-  /*34*/ (refs, ctx, x, y, w, h)                => { ctx.clearRect(x, y, w, h) },
+  /*34*/ (refs, ctx, x, y, w, h)                => { ctx.clearRect(x, y, w, h); },
 
-  /*35*/ (refs, ctx, x1, y1, x2, y2, r)         => { ctx.arcTo(x1, y1, x2, y2, r) },
-  /*36*/ (refs, ctx, x, y, w, h, r)             => { ctx.roundRect(x, y, w, h, r) },
+  /*35*/ (refs, ctx, x1, y1, x2, y2, r)         => { ctx.arcTo(x1, y1, x2, y2, r); },
+  /*36*/ (refs, ctx, x, y, w, h, r)             => { ctx.roundRect(x, y, w, h, r); },
 
-  /*37*/ (refs, ctx, a, b, c, d, e, f)          => { ctx.transform(a, b, c, d, e, f) },
-  /*38*/ (refs, ctx, a, b, c, d, e, f)          => { ctx.setTransform(a, b, c, d, e, f) },
-  /*39*/ (refs, ctx)                            => { ctx.resetTransform() },
+  /*37*/ (refs, ctx, a, b, c, d, e, f)          => { ctx.transform(a, b, c, d, e, f); },
+  /*38*/ (refs, ctx, a, b, c, d, e, f)          => { ctx.setTransform(a, b, c, d, e, f); },
+  /*39*/ (refs, ctx)                            => { ctx.resetTransform(); },
 
   /*40*/ (refs, ctx, op)                        => { ctx.globalCompositeOperation = op; },
   /*41*/ (refs, ctx, filt)                      => { ctx.filter = filt; },
@@ -57,10 +57,10 @@ const _handlers = [
   /*46*/ (refs, ctx, blur)                      => { ctx.shadowBlur    = blur; },
   /*47*/ (refs, ctx, color)                     => { ctx.shadowColor   = color; },
 
-  /*48*/ (refs, ctx, x0, y0, x1, y1, any1, any2, index)            => { refs.set(index, ctx.createLinearGradient(x0, y0, x1, y1)) },
-  /*49*/ (refs, ctx, x0, y0, r0, x1, y1,    r1,  index)    => { refs.set(index, ctx.createRadialGradient(x0, y0, r0, x1, y1, r1)) },
-  /*50*/ (refs, ctx, angle, x, y, any1, any2, any3, index)               => { refs.set(index, ctx.createConicGradient(angle, x, y) ) } ,
-  /*51*/ (refs, ctx, grad, offset, color) => { refs.get(grad).addColorStop(offset, color) },
+  /*48*/ (refs, ctx, x0, y0, x1, y1, any1, any2, index)            => { refs.set(index, ctx.createLinearGradient(x0, y0, x1, y1)); },
+  /*49*/ (refs, ctx, x0, y0, r0, x1, y1,    r1,  index)    => { refs.set(index, ctx.createRadialGradient(x0, y0, r0, x1, y1, r1)); },
+  /*50*/ (refs, ctx, angle, x, y, any1, any2, any3, index)               => { refs.set(index, ctx.createConicGradient(angle, x, y) ); } ,
+  /*51*/ (refs, ctx, grad, offset, color) => { refs.get(grad).addColorStop(offset, color); },
 
   /*52*/(refs, ctx, grad)                 => { ctx.fillStyle   = refs.get(grad); },
   /*53*/(refs, ctx, grad)                 => { ctx.strokeStyle = refs.get(grad); },
@@ -94,9 +94,10 @@ async function loadImage(id) {
     loadedImages.set(id, env);
 }
 
-export async function runOptcodes(ctx, codes, refs) {
+async function runOptcodes(ctx, codes, refs) {
   // flatten NumericArrayObject or Array-of-Arrays
-  let data = (codes instanceof NumericArrayObject ? codes.buffer : codes.flat());
+  console.warn(codes);
+  let data = (codes instanceof NumericArrayObject ? codes.buffer : codes).flat();
   let index=0;
   
   for (let i = 0, n = data.length; i < n; i += 7) {
@@ -122,3 +123,5 @@ export async function runOptcodes(ctx, codes, refs) {
     
   }
 }
+
+export { runOptcodes };

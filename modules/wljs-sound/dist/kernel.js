@@ -629,9 +629,11 @@ sound.SoundNote = async (args, env) => {
     };
     
     let notes = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(notes)) notes = notes.normal();
     //console.warn(notes);
 
     let duration = (await interpretate(args[1], env));
+    if (NumericArrayObject.Q(duration)) duration = duration.normal();
     if (!duration) duration = '4n';    
 
     const makeNote = (raw) => {
@@ -766,8 +768,15 @@ sound.Sound = async (args, env) => {
     //console.log(data);
     
     data.length / rate;
-    const buffer = env.Tone.context.createBuffer(1, data.length, rate);
-    buffer.copyToChannel(new Float32Array(data), 0);
+    let buffer;
+
+    if (NumericArrayObject.Q(data)) {
+      buffer  = env.Tone.context.createBuffer(1, data.buffer.length, rate);
+      buffer.copyToChannel(new Float32Array(data.buffer), 0);      
+    } else {
+      buffer  = env.Tone.context.createBuffer(1, data.length, rate);
+      buffer.copyToChannel(new Float32Array(data), 0);
+    }
     //console.log(buffer.getChannelData(0)[110]);
 
     return buffer;

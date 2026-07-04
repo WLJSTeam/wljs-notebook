@@ -53,7 +53,8 @@ function padIntegerPart(str, targetIntDigits) {
 }
 
 core.NumberForm = async (args, env) => {
-  const val = await interpretate(args[0], env);
+  let val = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(val)) val = val.normal();
   const spec = args.length > 1 ? await interpretate(args[1], env) : undefined;
 
   if (spec === undefined) return String(val);
@@ -66,7 +67,8 @@ core.NumberForm = async (args, env) => {
 core.NumberForm.update = core.NumberForm;
 
 core.ToString = async (args, env) => {
-  const val = await interpretate(args[0], env);
+  let val = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(val)) val = val.normal();
   return String(val);
 }
 core.ToString.update = core.ToString

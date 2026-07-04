@@ -54,7 +54,7 @@ ExportString[0, "ExpressionJSON"];
 ClearAll[expressionJSONPackableArrayQ, expressionJSONPackedWXF, toExpressionJSONPackedWXF];
 
 expressionJSONPackableArrayQ[x_] :=
-  NumericArrayQ[x] || (ListQ[x] && Developer`PackedArrayQ[x]);
+  NumericArrayQ[x] || (ListQ[x] && If[Developer`PackedArrayQ[x], ByteCount[x]> 1024, False]);
 
 expressionJSONPackedWXF[x_] :=
   Internal`PackedArrayWXF[Developer`WriteWXFByteArray[x]];
@@ -84,7 +84,7 @@ toExpressionJSONPackedWXF[x_NumericArray] :=
   expressionJSONPackedWXF[x];
 
 toExpressionJSONPackedWXF[x_List] :=
-  expressionJSONPackedWXF[x] /; Developer`PackedArrayQ[x];
+  expressionJSONPackedWXF[x] /; If[Developer`PackedArrayQ[x], ByteCount[x] >  1024, False];
 
 toExpressionJSONPackedWXF[x_?AtomQ] := x;
 

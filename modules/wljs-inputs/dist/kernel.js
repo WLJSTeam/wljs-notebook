@@ -71,6 +71,7 @@ core['CoffeeLiqueur`Extensions`InputsOutputs`Tools`AnonymousJavascript'] = core[
 core.HTMLView = async (args, env) => {
   
   let html = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(html)) html = html.normal();
   //env.uiInstanceId = uuidv4();
   const options = await core._getRules(args, {...env, hold:true});
 
@@ -104,7 +105,7 @@ core.HTMLView = async (args, env) => {
   }
 };   
 
-core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView; // a bug
+core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView; // an alias
 
 
 core.Prolog = () => "Prolog";
@@ -128,7 +129,8 @@ core["Notebook`Kernel`Inputs`Private`HandleGroup"] = core["CoffeeLiqueur`Extensi
 
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"] = async (args, env) => {
-  const data = await interpretate(args[1], env);
+  let data = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   const uid = await interpretate(args[0], env);
 
   env.local.uid = uid;
@@ -141,7 +143,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"] =
 };
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].update = async (args, env) => {
-  const data = await interpretate(args[1], env);
+  let data = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   env.local.el.update(data, env);
 };
 
@@ -154,7 +157,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].d
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].virtual = true;
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"] = async (args, env) => {
-  const data = await interpretate(args[0], env);
+  let data = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   const name = await interpretate(args[1], env);
   const field = await interpretate(args[2], env);
 
@@ -164,7 +168,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"] = a
 };
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"].update = async (args, env) => {
-  const data = await interpretate(args[0], env);
+  let data = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   env.local.element[env.local.field] = data;
 };
 
