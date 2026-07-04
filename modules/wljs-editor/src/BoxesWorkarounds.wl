@@ -349,8 +349,24 @@ Text /: MakeBoxes[Text[Grid[list_List], ___], StandardForm] := With[{r = Grid[Ma
 
 
 Unprotect[GridBox]
-GridBox[list_List, opts___] := With[{rls = FilterRules[List[opts], {BaselinePosition, Selectable, GridBoxDividers, GridBoxAlignment, GridBoxSpacings, ImageSize}]},
-        If[Association[List[opts]][DefaultBaseStyle] === "Matrix",
+gridBoxCanonicalRules[opts_List] := Module[{assoc = Association[opts], spacings, alignments},
+    spacings = {
+        If[KeyExistsQ[assoc, ColumnSpacings], "Columns" -> assoc[ColumnSpacings], Nothing],
+        If[KeyExistsQ[assoc, RowSpacings], "Rows" -> assoc[RowSpacings], Nothing]
+    };
+    alignments = {
+        If[KeyExistsQ[assoc, ColumnAlignments], "Columns" -> assoc[ColumnAlignments], Nothing],
+        If[KeyExistsQ[assoc, RowAlignments], "Rows" -> assoc[RowAlignments], Nothing]
+    };
+    Join[
+        opts,
+        If[spacings =!= {} && !KeyExistsQ[assoc, GridBoxSpacings], {GridBoxSpacings -> spacings}, {}],
+        If[alignments =!= {} && !KeyExistsQ[assoc, GridBoxAlignment], {GridBoxAlignment -> alignments}, {}]
+    ]
+]
+GridBox[list_List, opts___] := With[{optList = gridBoxCanonicalRules[List[opts]]},
+    With[{rls = FilterRules[optList, {BaselinePosition, Selectable, GridBoxDividers, GridBoxAlignment, GridBoxSpacings, ImageSize}]},
+        If[Association[optList][DefaultBaseStyle] === "Matrix",
             RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
                 Riffle[
                     (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
@@ -362,6 +378,7 @@ GridBox[list_List, opts___] := With[{rls = FilterRules[List[opts], {BaselinePosi
                         If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", Sequence@@rls]  ], "*)(*]GB*)"]}}]))
 
         ]
+    ]
 ]
 
 MakeBoxes[TableForm[{{1,2}, {3,4}}], StandardForm]; (* trigger symbol fetch *)
