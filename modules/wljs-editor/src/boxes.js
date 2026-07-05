@@ -1692,7 +1692,11 @@
     const editor = document.createElement('span');
     env.global.element = editor;
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+    if (options.Appearance == 'Frameless') {
+         env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left flex-row'.split(' ')));  
+    } else {
+          env.element.classList.add(...('sm-controls cursor-default 0 rounded-md py-1 px-2 bg-gray-50 text-left ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+    }
   
     env.element.style.display = "inline-flex";
     env.element.style.alignItems = "baseline";
