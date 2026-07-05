@@ -1175,7 +1175,8 @@
   gridContext.Selectable = () => "Selectable"
 
 
-  const gridDividerBorder = 'solid 1px darkgray';
+  const gridDividerColor = 'darkgray';
+  const gridDividerBorder = 'solid 1px ' + gridDividerColor;
 
   const gridRows = (element) => {
     if (!element) return [];
@@ -1256,6 +1257,135 @@
 
   const gridDividerQ = (value) => {
     return value === true || value === "All";
+  }
+
+  const clearGridDividerOverlay = (wrapper) => {
+    if (!wrapper) return;
+
+    if (wrapper._wljsGridDividerObserver) {
+      wrapper._wljsGridDividerObserver.disconnect();
+      delete wrapper._wljsGridDividerObserver;
+    }
+
+    if (wrapper._wljsGridDividerFrame) {
+      cancelAnimationFrame(wrapper._wljsGridDividerFrame);
+      delete wrapper._wljsGridDividerFrame;
+    }
+
+    wrapper.querySelectorAll('.wljs-grid-divider-overlay').forEach((overlay) => overlay.remove());
+  }
+
+  const gridCells = (row) => {
+    return Array.from(row.cells || row.children || []);
+  }
+
+  const gridRowBounds = (row) => {
+    const cells = gridCells(row);
+    if (cells.length == 0) return undefined;
+
+    const bounds = cells.map((cell) => cell.getBoundingClientRect());
+    return {
+      top: Math.min(...bounds.map((rect) => rect.top)),
+      bottom: Math.max(...bounds.map((rect) => rect.bottom)),
+      left: Math.min(...bounds.map((rect) => rect.left)),
+      right: Math.max(...bounds.map((rect) => rect.right))
+    };
+  }
+
+  const applyGridDividerOverlay = (element, columnSpec, rowSpec) => {
+    const table = gridTable(element);
+    const wrapper = gridWrapper(element);
+    const rows = gridRows(element);
+
+    if (!table || !wrapper || wrapper === table || rows.length == 0) return false;
+
+    clearGridDividerOverlay(wrapper);
+
+    if (!wrapper.style.position) wrapper.style.position = 'relative';
+
+    const overlay = document.createElement('div');
+    overlay.classList.add('wljs-grid-divider-overlay');
+    overlay.style.position = 'absolute';
+    overlay.style.inset = '0';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.zIndex = '1';
+    wrapper.appendChild(overlay);
+
+    const addLine = (left, top, width, height) => {
+      if (![left, top, width, height].every(Number.isFinite)) return;
+      if (width <= 0 || height <= 0) return;
+
+      const line = document.createElement('div');
+      line.style.position = 'absolute';
+      line.style.left = left + 'px';
+      line.style.top = top + 'px';
+      line.style.width = width + 'px';
+      line.style.height = height + 'px';
+      line.style.backgroundColor = gridDividerColor;
+      overlay.appendChild(line);
+    }
+
+    const render = () => {
+      delete wrapper._wljsGridDividerFrame;
+      overlay.replaceChildren();
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const rowBounds = rows.map(gridRowBounds);
+      const visibleBounds = rowBounds.filter(Boolean);
+
+      if (visibleBounds.length == 0) return;
+
+      const contentTop = Math.min(...visibleBounds.map((rect) => rect.top)) - wrapperRect.top;
+      const contentBottom = Math.max(...visibleBounds.map((rect) => rect.bottom)) - wrapperRect.top;
+      const contentLeft = Math.min(...visibleBounds.map((rect) => rect.left)) - wrapperRect.left;
+      const contentRight = Math.max(...visibleBounds.map((rect) => rect.right)) - wrapperRect.left;
+
+      columnSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        let x;
+        for (const row of rows) {
+          const cells = gridCells(row);
+          if (index < cells.length) {
+            x = cells[index].getBoundingClientRect().left - wrapperRect.left;
+            break;
+          }
+          if (index == cells.length && cells[index - 1]) {
+            x = cells[index - 1].getBoundingClientRect().right - wrapperRect.left;
+            break;
+          }
+        }
+
+        addLine(x, contentTop, 1, contentBottom - contentTop);
+      });
+
+      rowSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        let y;
+        if (index < rowBounds.length && rowBounds[index]) {
+          y = rowBounds[index].top - wrapperRect.top;
+        } else if (index == rowBounds.length && rowBounds[index - 1]) {
+          y = rowBounds[index - 1].bottom - wrapperRect.top;
+        }
+
+        addLine(contentLeft, y, contentRight - contentLeft, 1);
+      });
+    }
+
+    const renderSoon = () => {
+      if (wrapper._wljsGridDividerFrame) cancelAnimationFrame(wrapper._wljsGridDividerFrame);
+      wrapper._wljsGridDividerFrame = requestAnimationFrame(render);
+    }
+
+    renderSoon();
+
+    if (typeof ResizeObserver != 'undefined') {
+      wrapper._wljsGridDividerObserver = new ResizeObserver(renderSoon);
+      wrapper._wljsGridDividerObserver.observe(table);
+    }
+
+    return true;
   }
 
   const gridHorizontalAlign = (value) => {
@@ -1356,6 +1486,24 @@
 
     const columnSpec = expandGridSpec(columnRawSpec, columnCount + 1);
     const rowSpec = expandGridSpec(rowRawSpec, rows.length + 1);
+
+    if (applyGridDividerOverlay(element, columnSpec, rowSpec)) {
+      rows.forEach((row) => {
+        const cells = Array.from(row.cells || row.children || []);
+
+        columnSpec.forEach((value, index) => {
+          if (!gridDividerQ(value)) return;
+
+          if (index < cells.length) {
+            if (index > 0 && cells[index - 1]) cells[index - 1].classList.add('pr-2');
+            cells[index].classList.add('pl-2');
+          } else if (index == cells.length && cells[index - 1]) {
+            cells[index - 1].classList.add('pr-2');
+          }
+        });
+      });
+      return;
+    }
 
     rows.forEach((row) => {
       const cells = Array.from(row.cells || row.children || []);
