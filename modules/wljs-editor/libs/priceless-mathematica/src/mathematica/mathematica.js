@@ -212,9 +212,6 @@ function tokenBase(stream, state) {
       if (builtinsLocalQ[bmatch]) return "labelName";
       return "keyword";
     }
-    if (stream.current() in state.localVars) return "atom";
-
-    state.localVars[stream.current()] = true;
 
     return "function";
   }
