@@ -44,8 +44,8 @@ Component[value_:"", OptionsPattern[]] := With[{
     EditableQ = OptionValue["Editable"]
 },{
     ClassName = With[{c=If[OptionValue[Appearance] === Automatic, 
-        "relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs sm:leading-6 bg-white",
-        "relative cursor-default slbl rounded-md 0 pl-3 pr-2 text-left focus:outline-none border-0 sm:text-xs sm:leading-6"
+        "relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs py-1 bg-white",
+        "relative cursor-default slbl rounded-md 0 pl-3 pr-2 text-left focus:outline-none border-0 sm:text-xs py-1"
     ]}, If[EditableQ === True, StringJoin[c," h-6 "], c]],
     CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
     LabelClass = OptionValue["LabelClass"],
