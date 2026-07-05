@@ -540,13 +540,29 @@ EventHandler[NotebookEditorChannel // EventClone,
                 With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], If[cell`InputCellQ[cell`HashMap[hash]], EventClone[hash], hash]]},
                     (* cellClonedEvents[callback] = w; *)
 
+                    (* FWD events if all already happend and subscribe *)
+                    If[TrueQ[win`HashMap[hash]["WebSocketQ"]],
+                        
+                        GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", Null ] ];
+                        With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["KernelWebSocket"]|>]},
+                            GenericKernel`SendAsync[kernel, EventFire[callback, "Ready", winO] ];
+                        ];
+
+                        With[{ev = EventClone[win`HashMap[hash]["Socket"] ]}, EventHandler[ev, {
+                            "Closed" -> Function[Null,
+                                EventRemove[ev];
+                                GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", True ] ];
+                            ]
+                        }]];
+                    ];
+                    
                     EventHandler[w, {
                         "OnWebSocketConnected" -> Function[assoc,
                             With[{socket = assoc["Client"] , ev = EventClone[assoc["Client"] ] },
                                 EventHandler[ev, {
                                     "Closed" -> Function[Null,
                                         EventRemove[ev];
-                                        GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
+                                        GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", True ] ];
                                     ]
                                 }];
 
