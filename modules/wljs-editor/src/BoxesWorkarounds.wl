@@ -346,14 +346,16 @@ Text /: MakeBoxes[Text[Grid[list_List], ___], StandardForm] := With[{r = Grid[Ma
 (* :::Grid Decorators::: aka TableForm, MatrixForm and many more *)
 (* we do support only one(two) option*)
 
-
+halfNumber[n_?NumberQ] := Floor[n/2];
+halfNumber[expr_] := expr
 
 Unprotect[GridBox]
 gridBoxCanonicalRules[opts_List] := Module[{assoc = Association[opts], spacings, alignments},
     spacings = {
-        If[KeyExistsQ[assoc, ColumnSpacings], "Columns" -> assoc[ColumnSpacings], Nothing],
-        If[KeyExistsQ[assoc, RowSpacings], "Rows" -> assoc[RowSpacings], Nothing]
+        If[KeyExistsQ[assoc, ColumnSpacings], "Columns" -> halfNumber[assoc[ColumnSpacings]], Nothing],
+        If[KeyExistsQ[assoc, RowSpacings], "Rows" -> halfNumber[assoc[RowSpacings]], Nothing]
     };
+
     alignments = {
         If[KeyExistsQ[assoc, ColumnAlignments], "Columns" -> assoc[ColumnAlignments], Nothing],
         If[KeyExistsQ[assoc, RowAlignments], "Rows" -> assoc[RowAlignments], Nothing]
@@ -364,6 +366,7 @@ gridBoxCanonicalRules[opts_List] := Module[{assoc = Association[opts], spacings,
         If[alignments =!= {} && !KeyExistsQ[assoc, GridBoxAlignment], {GridBoxAlignment -> alignments}, {}]
     ]
 ]
+
 GridBox[list_List, opts___] := With[{optList = gridBoxCanonicalRules[List[opts]]},
     With[{rls = FilterRules[optList, {BaselinePosition, Selectable, GridBoxDividers, GridBoxAlignment, GridBoxSpacings, ImageSize}]},
         If[Association[optList][DefaultBaseStyle] === "Matrix",
