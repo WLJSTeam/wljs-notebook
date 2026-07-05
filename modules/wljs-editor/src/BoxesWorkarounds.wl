@@ -587,16 +587,24 @@ Unprotect[StyleBox]
 (* FIXME!!! *)
 (* FIXME!!! *)
 (* FIXME!!! *)
+With[{c = Uncompress["1:eJxTTMoPCmZjYGCIsXIzdjQAABpPAx4="]}, 
+    BoxForm`emptyCharacterQ[c] = True;
+    BoxForm`emptyCharacterQ[]  = True;
+    BoxForm`emptyCharacterQ[_] = False;
+];
 
-StyleBox[x_, opts__]  := With[{list = Association[Cases[List[opts], _Rule] ]},
+StyleBox[px_, popts__]  := With[{
+    x = If[BoxForm`emptyCharacterQ[px], "None", px],
+    opts = If[BoxForm`emptyCharacterQ[px], {popts, "ShowContents"->False}, {popts}]
+}, {list = Association[Cases[opts, _Rule] ]},
   If[KeyExistsQ[list, ShowStringCharacters], 
     If[!list[ShowStringCharacters],
-      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[Compress[StyleDecorator[opts]  ] , InputForm], "*)(*]BB*)"}]  
+      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts]  ] , InputForm], "*)(*]BB*)"}]  
     ,
-      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[opts] ], InputForm], "*)(*]BB*)"}]
+      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
     ]
   ,
-    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[opts] ], InputForm], "*)(*]BB*)"}]
+    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
   ]
 ]
 
