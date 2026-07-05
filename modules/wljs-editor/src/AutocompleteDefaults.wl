@@ -16387,9 +16387,6 @@ result."|>, <|"label" -> "MultiplySides", "type" -> "keyword",
 equation or inequality <i>rel</i> by \
 <i>x</i>.\n\nMultiplySides[<i>rel</i><sub>1</sub>,<i>rel</i><sub>2</sub>] \
 multiplies the corresponding sides of two equations or inequalities."|>, 
- <|"label" -> "Multiselection", "type" -> "keyword", 
-  "info" -> "Multiselection is an option to ListPicker that specifies whether \
-multiple values may be selected."|>, 
  <|"label" -> "MultivariateHypergeometricDistribution", "type" -> "keyword", 
   "info" -> "MultivariateHypergeometricDistribution[<i>n</i>,{<i>m</i><sub>1<\
 /sub>,<i>m</i><sub>2</sub>,...,<i>m</i><sub><i>k</i></sub>}] \

@@ -5,5 +5,10 @@
   height: 4px;
 }
 
+.slbl::selection {
+  color: var(--system-accent-color);
+  background-color: yellow;
+}
+
 .sm-frange::-webkit-slider-thumb { transform: scale(0.85); }
 .sm-frange::-moz-range-thumb     { transform: scale(0.85); }
