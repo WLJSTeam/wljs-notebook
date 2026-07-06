@@ -102,6 +102,7 @@
     env.thickness = size;
   }  
 
+  boxes.Transparent = () => "transparent"
   legends.RGBColor = async (args, env) => {      
   if (args.length == 3) {
     const r = (await interpretate(args[0], env)) * 255;
@@ -2574,6 +2575,10 @@
 
   boxes.GrayLevel = async (args, env) => {
     const r = Math.round((await interpretate(args[0], env)) * 255);
+    if (args.length > 1) {
+      const o = await interpretate(args[1], env);
+      return "rgb("+r+","+r+","+r+","+o+")";
+    }
     return "rgb("+r+","+r+","+r+")";
   }
 
