@@ -80,7 +80,7 @@ Array.prototype.max = function() {
       layout.width = imageSize[0];
       layout.height = imageSize[1];
     }
-
+    env.element.classList.add('rounded-md');
     Plotly.newPlot(env.element, data, layout);
     env.local.instance = env.element;
 

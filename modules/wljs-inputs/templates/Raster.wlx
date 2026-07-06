@@ -13,17 +13,17 @@ Component[OptionsPattern[]] := With[{
   <fieldset>
         <div class="mt-2 flex-row gap-x-2 flex">
           
-          <div class="flex items-center"><input name="#instanceId-colorRadio" value="black" checked="true" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm font-medium  leading-6 text-gray-900">Black</label></div>
+          <div class="flex items-center"><input name="#instanceId-colorRadio" value="black" checked="true" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Black</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="white" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm font-medium  leading-6 text-gray-900">White</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="white" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">White</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="red" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm font-medium  leading-6 text-gray-900">Red</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="red" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Red</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="green" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm font-medium  leading-6 text-gray-900">Green</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="green" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Green</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="blue" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm font-medium  leading-6 text-gray-900">Blue</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="blue" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Blue</label></div>
 
-          <div class="flex items-center ml-auto"><button class="sm-controls rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="#instanceId-clear">Clear</button></div>
+          <div class="flex items-center ml-auto"><button class="sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900" id="#instanceId-clear">Clear</button></div>
         </div>
       
         
@@ -36,7 +36,7 @@ Component[OptionsPattern[]] := With[{
 
   <script type="module">
     core['<TemporalHandler/>'] = async (args, env) => {
-      env.element.classList.add(...(("sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 gap-y-1").split(" ")));
+      env.element.classList.add(...(("sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card gap-y-1").split(" ")));
       env.element.style.flexDirection = "column-reverse";
       
       const sizeElement = document.getElementById("#instanceId-sizeRange");
@@ -122,7 +122,7 @@ Component[OptionsPattern[]] := With[{
           }
         }
 
-        canvasElement.classList.add("rounded-md", "shadow");
+        canvasElement.classList.add("rounded-md", "bg-white");
         const context = canvasElement.getContext("2d");
       
         const uploadImage = () => {

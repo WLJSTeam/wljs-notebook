@@ -483,7 +483,7 @@ atoms.List = async (data, env, element, store, hashFunction) => {
   if (reqursionDepth > 2) {
     const button = document.createElement('button');
     button.innerText = "...";
-    button.className = 'sm-controls rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50';
+    button.className = 'sm-controls bg-white px-2 py-1 text-xs font-semibold text-gray-900 wljs-card hover:bg-gray-50';
     button.addEventListener('click', () => {
       button.remove();
       atoms.List(data, {...env, reqursionDepth: reqursionDepth-2}, element, store, hashFunction);
@@ -532,7 +532,7 @@ atoms.Association = async (data, env, element, store, hashFunction) => {
   if (reqursionDepth > 2) {
     const button = document.createElement('button');
     button.innerText = "...";
-    button.className = 'sm-controls rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50';
+    button.className = 'sm-controls bg-white px-2 py-1 text-xs font-semibold text-gray-900 wljs-card hover:bg-gray-50';
     button.addEventListener('click', () => {
       button.remove();
       atoms.Association(data, {...env, reqursionDepth: reqursionDepth-2}, element, store, hashFunction);
@@ -1019,7 +1019,7 @@ core.Dataset = async (args, env) => {
   }
 
   const element = env.element;
-  element.classList.add(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  element.classList.add(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
 
   const container_1 = document.createElement('div');
   container_1.classList.add(...("-m-1.5 overflow-x-auto".split(' ')));
@@ -1063,7 +1063,7 @@ core.Dataset = async (args, env) => {
 
   if (headerCols) {
     thead = document.createElement('thead');
-    thead.classList.add(...("sticky top-0 bg-gray-100".split(' ')));
+    thead.classList.add(...("sticky top-0 bg-gray-50".split(' ')));
     const tr = document.createElement('tr');
     thead.appendChild(tr);
 
@@ -1241,7 +1241,7 @@ core.Dataset = async (args, env) => {
   if (pagination > 1 || env?.options?.Parts) {
     const paginator = document.createElement('div');
     paginator.classList.add(...('py-1 border-solid items-center h-6 px-1 mb-1 w-full flex flex-row-reverse gap-x-2'.split(' ')));
-    paginator.style.borderTop = "1px solid #999";
+    paginator.style.borderTop = "1px solid rgb(201 201 201)";
     const prevButton = document.createElement('button');
     prevButton.style.transform = "rotate(180deg)";
     prevButton.innerHTML = `<svg class="w-3 h-3 text-gray-500 hover:text-gray-400" viewBox="0 0 24 24" fill="none" >
@@ -1432,7 +1432,7 @@ core.Dataset = async (args, env) => {
 };
 
 core.Dataset.destroy = (args, env) => {
-  env.element.classList.remove(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  env.element.classList.remove(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
   env.local.container_1.remove();
   env.local.store.instances.forEach((el) => {
     el.dispose();
@@ -1475,7 +1475,7 @@ const tbView = async (args, env) => {
   rows.length;
   
   const element = env.element;
-  element.classList.add(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  element.classList.add(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
 
   const container_1 = document.createElement('div');
   container_1.classList.add(...("-m-1.5 overflow-x-auto".split(' ')));
@@ -1508,7 +1508,7 @@ const tbView = async (args, env) => {
   let thead;
 
   thead = document.createElement('thead');
-  thead.classList.add(...("sticky top-0 bg-gray-100".split(' ')));
+  thead.classList.add(...("sticky top-0 bg-gray-50".split(' ')));
   const tr = document.createElement('tr');
   thead.appendChild(tr);
 
@@ -1682,7 +1682,7 @@ const tbView = async (args, env) => {
   {
     const paginator = document.createElement('div');
     paginator.classList.add(...('py-1 border-solid items-center h-6 px-1 mb-1 w-full flex flex-row-reverse gap-x-2'.split(' ')));
-    paginator.style.borderTop = "1px solid #999";
+    paginator.style.borderTop = "1px solid rgb(201 201 201)";
     const prevButton = document.createElement('button');
     prevButton.style.transform = "rotate(180deg)";
     prevButton.innerHTML = `<svg class="w-3 h-3 text-gray-500 hover:text-gray-400" viewBox="0 0 24 24" fill="none" >
@@ -1914,7 +1914,7 @@ const tbView = async (args, env) => {
 
 tbView.virtual = true;
 tbView.destroy = (args, env) => {
-  env.element.classList.remove(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  env.element.classList.remove(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
   env.local.container_1.remove();
   env.local.store.instances.forEach((el) => {
     el.dispose();

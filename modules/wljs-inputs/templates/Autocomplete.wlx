@@ -10,7 +10,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 <div>
   <label class="ml-1 block text-gray-600 sm-controls"><Label/></label>
   <div class="relative mt-2">
-    <input id="#instanceId-text" style="padding-left:0.5rem" value="{Default}" type="text" class="sm-controls block w-full rounded-md bg-white border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys" role="combobox" aria-controls="options" aria-expanded="false"/>
+    <input id="#instanceId-text" style="padding-left:0.5rem" value="{Default}" type="text" class="sm-controls block w-full rounded-md bg-white text-sm border-0 py-1 px-1 pr-10 text-gray-600 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys" role="combobox" aria-controls="options" aria-expanded="false"/>
     <button id="#instanceId-search" class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden">
       <svg class="w-4 h-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
         <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"></path>
@@ -31,7 +31,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
     const construct = () => {
       const ul = document.createElement('ul');
-      ul.classList.add(...("hidden fixed z-10 pl-0 mt-1 max-h-60 overflow-auto rounded-md dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm ring-1 ring-inset ring-gray-300".split(' ')));
+      ul.classList.add(...("hidden fixed z-10 pl-0 mt-1 max-h-60 overflow-auto text-sm dark:bg-gray-700 dark:ring-gray-500 bg-white py-1 border-0 text-base focus:outline-hidden sm:text-sm wljs-card".split(' ')));
 
       const rect = inputField.getBoundingClientRect();
       const dropdownMaxHeight = 240;

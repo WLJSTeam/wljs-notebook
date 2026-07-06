@@ -138,7 +138,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
 
     With[{
         (* build a cell list *)
-        initCells = {
+        initCellsPre = {
             If[!sessions[session, uid], Select[Select[notebook["Cells"], cell`InputCellQ], (#["Props"]["InitGroup"] === True) &], {} ], 
             If[mode === "Module",
                 SelectFirst[notebook["Cells"] // Reverse, (cell`InputCellQ[#] && wolframCellQ[#])&] /. {_Missing -> Nothing}
@@ -147,17 +147,24 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             ]
         } // Flatten, 
         generated = "rm"<>ToString[ Hash[notebook] ]<>"G`"
+    }, {
+        initCells = If[Length[initCellsPre] == 1, Append[initCellsPre, <|"Data"->"Null"|>], initCellsPre]
     },
-        
+
+    
         Echo["Cells to evaluate:"];
         Echo[Length[initCells] ];
         Echo["Context:"];
         Echo[evalContext];
         Echo["Mode:"];
         Echo[mode];
+
+        If[Length[initCellsPre] == 1, 
+            Echo["[FIXME] Only a single cell was found. Padding list of cells with Null"];
+        ];
         
         If[sessions[session, uid] === True,
-            Echo["Was already evaluated. Skipping init cells"];
+            Echo["Was already evaluated. Init cells were skipped"];
         ];
 
         sessions[session, uid] = True;
@@ -175,6 +182,8 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
                     $ContextPath = Append[$ContextPath, generated];
                 ];
             ];
+
+            
 
             (* evaluate notebook in the context of a caller notebook if provided *)
             With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ Drop[initCells,-1],

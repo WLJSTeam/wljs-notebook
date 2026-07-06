@@ -44,15 +44,15 @@ Component[value_:"", OptionsPattern[]] := With[{
     EditableQ = OptionValue["Editable"]
 },{
     ClassName = With[{c=If[OptionValue[Appearance] === Automatic, 
-        "relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs py-1 bg-white",
-        "relative cursor-default slbl rounded-md text-left focus:outline-none border-0 sm:text-xs"
-    ]}, If[EditableQ === True, StringJoin[c," h-6 "], c]],
+        "relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none text-xs py-1 bg-white",
+        "relative cursor-default slbl rounded-md text-left focus:outline-none border-0 text-xs"
+    ]}, If[EditableQ === True, StringJoin[c," h-6 wljs-card "], c]],
     CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
     LabelClass = OptionValue["LabelClass"],
     LabelStyle = OptionValue["LabelStyle"]
 },
 {
-    FinalCSS = StringJoin[StringTemplate["width: ``px;"][Round[size]], CSSStyle]
+    FinalCSS = StringJoin[StringTemplate["width: ``px;"][Round[size]], If[EditableQ, "border:1px solid #e1e1e1;", ""] , CSSStyle]
 },
 {
     InitialValue = ToString[value]
@@ -60,7 +60,7 @@ Component[value_:"", OptionsPattern[]] := With[{
   {
     If[EditableQ === True,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+            <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="{ClassName}" placeholder="{Placeholder}"/>
             </div>
@@ -68,7 +68,7 @@ Component[value_:"", OptionsPattern[]] := With[{
         </div>
     ,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+            <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <div id="#instanceId" style="{FinalCSS}" data-type="text-string" class="{ClassName}">...</div>
             </div>

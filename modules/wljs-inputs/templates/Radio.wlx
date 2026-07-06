@@ -17,11 +17,11 @@ Component[OptionsPattern[]] := With[{
         OptionsList = Table[With[{Name = OptionValue["List"][[index, 1]], Val = OptionValue["List"][[index, 2]], UId = UIDList[[index]]},
             If[selected === Val,
                 <div class="flex items-center">
-                    <input name="{OnChange}" value="{index}" checked="true" type="radio" class="h-4 w-4 border-gray-300  text-sys focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm  font-medium leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
+                    <input name="{OnChange}" value="{index}" checked="true" type="radio" class="h-4 w-4 border-gray-300  text-sys focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm   leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
                 </div>
             ,
                 <div class="flex items-center">
-                    <input name="{OnChange}" value="{index}" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm font-medium  leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
+                    <input name="{OnChange}" value="{index}" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys {ButtonClass}" style="{ButtonStyle}" /><label for="{UId}" class="ml-3 block text-sm   leading-6 text-gray-900 {ItemLabelClass}" style="{ItemLabelStyle}"><Name/></label>
                 </div>    
             ]
         ], {index, 1, Length @ OptionValue["List"]}]

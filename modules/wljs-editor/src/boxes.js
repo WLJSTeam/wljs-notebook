@@ -524,7 +524,7 @@
 
   boxes.ViewDecorator.Date = async (args, env) => {
     const element = document.createElement('span');
-    element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    element.classList.add(...('sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
     element.style.verticalAlign = "baseline";
     //env.element.classList.add('frame-box');
     env.context = boxes;
@@ -632,7 +632,7 @@
     
     if (opts.File) {
 
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card  text-xs'.split(' ')));
       const count = await interpretate(args[0], env);
 
       if (opts.Label && opts.Label != 'None') {
@@ -648,7 +648,7 @@
     } else {
 
       
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
       const count = await interpretate(args[0], env);
       
 
@@ -699,7 +699,7 @@
     const outer = document.createElement('span');
 
     outer.style.alignItems = "baseline";
-    outer.classList.add(...(('flex flex-row gap-x-2 text-sm rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-gray-500 ring-1 ring-inset ring-gray-400').split(' ')));
+    outer.classList.add(...(('flex flex-row gap-x-2 text-sm py-1 pl-3 pr-2 text-gray-500 bg-gray-50 wljs-card').split(' ')));
 
     const textNode = document.createElement('span');
     textNode.innerText = "if";
@@ -735,7 +735,7 @@
     const type = await interpretate(args[0], env);
     const value = await interpretate(args[1], env);
 
-    env.element.classList.add(...('sm-controls gap-x-1 cursor-default rounded-md 0 py-1 px-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
     env.element.style.backgroundColor = "#fff291";
     env.element.style.verticalAlign = "baseline";
 
@@ -755,7 +755,7 @@
   boxes.ViewDecorator.Root = async (args, env) => {
     const approx = await interpretate(args[0], env);
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row items-center'.split(' '))); 
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row items-center'.split(' '))); 
     
     
     const logo = document.createElement('span');
@@ -1694,9 +1694,9 @@
     env.global.element = editor;
 
     if (options.Appearance == 'Frameless') {
-         env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left flex-row'.split(' ')));  
+         env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left flex-row'.split(' ')));  
     } else {
-          env.element.classList.add(...('sm-controls cursor-default 0 rounded-md py-1 px-2 bg-gray-50 text-left ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+          env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left wljs-card flex-row'.split(' '))); 
     }
   
     env.element.style.display = "inline-flex";
@@ -1992,7 +1992,7 @@
   boxes.RootBox = async (args, env) => {
     const approx = await interpretate(args[0], env);
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row items-center'.split(' '))); 
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row items-center'.split(' '))); 
     
     
     const logo = document.createElement('span');
@@ -2110,7 +2110,7 @@
     const outer = document.createElement('span');
 
     outer.style.alignItems = "baseline";
-    outer.classList.add(...(('flex flex-row gap-x-2 text-sm rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-gray-500 ring-1 ring-inset ring-gray-400').split(' ')));
+    outer.classList.add(...(('flex flex-row gap-x-2 text-sm py-1 pl-3 bg-gray-50 pr-2 text-gray-500 wljs-card').split(' ')));
 
     const textNode = document.createElement('span');
     textNode.innerText = "if";
@@ -2281,7 +2281,7 @@
 
   boxes.IconizeFileBox = async (args, env) => {
     env.context = boxes;
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     const count = await interpretate(args[0], env);
     const opts = await core._getRules(args, env);
     if (opts.Label && opts.Label != 'None') {
@@ -2300,7 +2300,7 @@
     const type = await interpretate(args[0], env);
     const value = await interpretate(args[1], env);
 
-    env.element.classList.add(...('sm-controls gap-x-1 cursor-default rounded-md 0 py-1 px-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     env.element.style.backgroundColor = "#fff291";
     env.element.style.verticalAlign = "baseline";
 
@@ -2318,7 +2318,7 @@
 
   boxes.IconizeBox = async (args, env) => {
     env.context = boxes;
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     const count = await interpretate(args[0], env);
     const opts = await core._getRules(args, env);
 
@@ -2529,7 +2529,7 @@
 
   boxes.DateObjectTemplate = async (args, env) => {
       const element = document.createElement('span');
-      element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      element.classList.add(...('sm-controls cursor-default py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 wljs-card text-xs'.split(' ')));
       element.style.verticalAlign = "baseline";
       //env.element.classList.add('frame-box');
       env.context = boxes;
@@ -2767,7 +2767,7 @@
       const editor = document.createElement('span');
       env.global.element = editor;
 
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card flex-row'.split(' '))); 
     
       env.element.style.display = "inline-flex";
       env.element.style.alignItems = "baseline";
@@ -2951,7 +2951,7 @@
       //console.log(args);
 
       env.element.style.verticalAlign = 'middle';
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row'.split(' ')));
     
       let iconElement = document.createElement('span');
       iconElement.classList.add(...('text-gray-500 inline-block mt-auto mb-auto pr-1'.split(' ')));
@@ -2997,7 +2997,7 @@
 
     //console.warn({labels, values, init});
 
-    env.element.classList.add(...('subscript-tail sm-controls cursor-default rounded-md 0 py-1 px-1 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' ')));
+    env.element.classList.add(...('subscript-tail sm-controls cursor-default py-1 px-1 bg-gray-50 wljs-card text-left text-gray-500 flex-row'.split(' ')));
 
     const uid = uuidv4();
 

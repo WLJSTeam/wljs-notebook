@@ -2,7 +2,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
     s = StringTemplate["width:``px; height:``px; font-size:small"][ww, hh]
 },
 
-    <div class="rounded-md slbl border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300" style="-webkit-app-region: no-drag; -webkit-user-select: text; user-select: text;">
+    <div class="slbl border-0 py-1 px-1 pr-10 text-gray-900 wljs-card" style="-webkit-app-region: no-drag; -webkit-user-select: text; user-select: text;">
         <div id="#instanceId" style="{s}; -webkit-app-region: no-drag; -webkit-user-select: text; user-select: text;" draggable="false"></div>
         <script type="module">
             /*credits: https://github.com/mkrl/ttty */

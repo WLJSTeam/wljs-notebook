@@ -7,15 +7,12 @@ Component[OptionsPattern[]] := With[{
     Style = OptionValue["Style"]
 },
     {
-        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset ring-gray-300 {Class}">
+        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
             <Label/>
         </button>
     ,
         <script type="module">
             const el = document.getElementById('#instanceId');
-            el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px 0px 3px 2px rgba(15, 15, 15, 0.2)'});
-            el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});
-            el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});
             el.addEventListener('click', (event)=>{
                 server.kernel.io.fire('<Event/>', true, '<Topic/>');     
             });

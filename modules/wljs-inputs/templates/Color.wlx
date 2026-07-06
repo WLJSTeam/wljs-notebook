@@ -14,7 +14,7 @@ Component[OptionsPattern[]] := With[{
 {
     PLabel = If[Label =!= "",
         <div>
-                <label class="font-medium text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
+                <label class=" text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
               </div>
     ,
         ""
