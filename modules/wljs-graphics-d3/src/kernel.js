@@ -4980,8 +4980,15 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (level.length) {
       level = level[0]
     }
-
     level = Math.floor(level * 255);
+    
+    if (args.length > 1) {
+      const opacity = await interpretate(args[1], env);
+      env.color = `rgba(${level},${level},${level},${opacity})`;
+      return env.color;
+    }
+
+    
 
     env.color = `rgb(${level},${level},${level})`;
     return env.color;
