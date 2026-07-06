@@ -1135,6 +1135,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   
       if (options.Background) {
         svg.node().style.backgroundColor = options.Background;
+        svg.node().classList.add('rounded-md');
         console.log('Background color:'+options.Background);
       }
     }
