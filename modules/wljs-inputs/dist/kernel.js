@@ -1206,7 +1206,7 @@ core.Dataset = async (args, env) => {
   viewPort.operate = async (rows, initial, window, offset, effect) => {
     for (let i=initial; i<window && (i+offset)<rows.length; ++i) {
       const row = document.createElement('tr');
-      row.classList.add("hover:bg-gray-200");
+      row.classList.add("hover:bg-gray-50");
 
       if (headerRows) {
         const td = document.createElement('td');
@@ -1653,7 +1653,7 @@ const tbView = async (args, env) => {
   viewPort.operate = async (rows, initial, window, offset, effect) => {
     for (let i=initial; i<window && (i+offset)<rows.length; ++i) {
       const row = document.createElement('tr');
-      row.classList.add("hover:bg-gray-200");
+      row.classList.add("hover:bg-gray-50");
 
       const td = document.createElement('td');
       td.classList.add(...("px-2 py-1 text-start text-xs font-medium text-gray-500".split(' ')));

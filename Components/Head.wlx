@@ -16,7 +16,7 @@ Component[Children__, OptionsPattern[]] := With[{
     theme = Lookup[OptionValue["Settings"], "Theme", Null],
     Title = OptionValue["Title"], Merged = ToStringRiffle[{Children}],
     EditorTintColor = With[{h = hexColor[ OptionValue["AccentColor"] ]}, 
-        StringTemplate["rgb(`` `` `` / 5%)"][h[[1]], h[[2]], h[[3]]]
+        StringTemplate["rgb(`` `` `` / 3.5%)"][h[[1]], h[[2]], h[[3]]]
     ],
     AccentColor25 = With[{h = hexColor[ OptionValue["AccentColor"] ]}, 
         StringTemplate["rgb(`` `` `` / 25%)"][h[[1]], h[[2]], h[[3]]]

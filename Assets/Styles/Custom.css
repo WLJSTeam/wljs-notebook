@@ -121,7 +121,7 @@ input::selection {
 
 .bg-gray-454-half {
   --tw-text-opacity: 1;
-  background: rgb(154 154 154 / 50%);
+  background: rgb(154 154 154 / 38%)
 }
 
 @media (min-width: 1024px) {
@@ -366,7 +366,8 @@ input::selection {
 
 .ttint {
   transition: height 0.2s;
-  background: #0056880f;
+  opacity: 0.18;
+  background: var(--system-accent-color-25);
 }
 
 .h-fade-20 {
@@ -510,4 +511,23 @@ input::selection {
 
  .wljs-button:active {
     box-shadow: 0px 0px 0px 2px var(--system-accent-color);
+ }
+
+ .wljs-ui-root {
+   color: #4b5563;
+   background: linear-gradient(135deg, #fff7ed 0%, #ffffff 45%, #eff6ff 100%);
+ }
+
+ .wljs-ui-root::after {
+   content: "";
+   position: fixed;
+   inset: 0;
+   z-index: -1;
+   pointer-events: none;
+   background-image:
+     linear-gradient(to right, rgba(120, 113, 108, 0.16) 1px, transparent 1px),
+     linear-gradient(to bottom, rgba(120, 113, 108, 0.12) 1px, transparent 1px);
+   background-size: 4rem 4rem;
+   mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
+   -webkit-mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
  }

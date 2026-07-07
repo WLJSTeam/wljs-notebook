@@ -1,374 +1,592 @@
-<|"Notebook" -> <|"Controller" -> "2500544a-d9ef-4ead-b48f-4fdf9c6e1374", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$359], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "6d7a4253-3bbf-4b32-a9a3-64780a6e7aec", "Objects" -> <||>, 
-   "Path" -> "/users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/\
-library/textformat.wln", "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Format text", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$356]]}|>, 
- "Cells" -> 
-  {<|"Data" -> 
-     ".md\n# Format text\nA toolbar for formatting markdown, WL and HTML", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c5ec6d3e-f0a0-41e0-9de0-27e8c5538f1f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> 
-     "# Format text\nA toolbar for formatting markdown, WL and HTML", 
-    "Display" -> "markdown", "Hash" -> 
-     "8cb6f5aa-2bf1-47a7-867c-74383c00da36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "bb6a9a1d-8d09-47bb-9661-a690417b2b83", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "4c285102-72d2-4487-8596-3bbb67bfccb5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> ".wlx\n\nFormattingToolbar`Button[Child_, OptionsPattern[]] := \
-With[{\n  UId = CreateUUID[],\n  Event = OptionValue[\"Event\"],\n  Pattern = \
-OptionValue[\"Pattern\"]\n},\n  {\n    <button id=\"{UId}\" \
-class=\"hover:bg-gray-100 p-1 rounded\">\n      <Child/>\n    </button>\n  \
-,\n    <script type=\"module\">\n      const uid = '<UId/>';\n      \
-document.getElementById(uid).addEventListener('click', () => {\n        \
-server.kernel.emitt('<Event/>', 'True', '<Pattern/>');\n      })\n    \
-</script>\n  }\n]\n\nOptions[FormattingToolbar`Button] = {\"Event\"->\"\", \
-\"Pattern\"->\"\"};\n\nFormattingToolbar`ColorSelector[Child_, \
-OptionsPattern[]] := With[{\n  UId = CreateUUID[],\n  Event = \
-OptionValue[\"Event\"],\n  Pattern = OptionValue[\"Pattern\"]\n},\n  {\n<div \
-class=\"relative\">\n    <button id=\"{UId}\" class=\"hover:bg-gray-100 p-1 \
-rounded\">\n      <Child/>\n    </button>\n  <div id=\"{UId}-picker\" \
-class=\"absolute left-0 z-10 mt-2 origin-top-right backdrop-blur rounded-md \
-ring-1 ring-black ring-opacity-5 focus:outline-none hidden\" role=\"menu\" \
-aria-orientation=\"vertical\" aria-labelledby=\"menu-button\" \
-tabindex=\"-1\">\n    <div class=\"flex gap-x-2 gap-2 p-2\" role=\"none\">\n  \
-    <button class=\"w-5 h-5 rounded\" style=\"background: \
-#FA8072\"></button>\n      <button class=\"w-5 h-5 rounded\" \
-style=\"background: #FFE787\"></button>\n      <button class=\"w-5 h-5 \
-rounded\" style=\"background: #6CCFF6\"></button>\n      <button class=\"w-5 \
-h-5 rounded\" style=\"background: #6ffc8e\"></button>\n      <button \
-class=\"w-5 h-5 rounded\" style=\"background: #ffe4fb\"></button>\n    \
-</div>\n  </div>\n </div> \n  ,\n    <script type=\"module\">\n      const \
-uid = '<UId/>';\n      const picker = document.getElementById(uid + \
-'-picker');\n      let state = false;\n\n      function RGBToHex(rgb) {\n  // \
-Choose correct separator\n  let sep = rgb.indexOf(\",\") > -1 ? \",\" : \" \
-\";\n  // Turn \"rgb(r,g,b)\" into [r,g,b]\n  rgb = \
-rgb.substr(4).split(\")\")[0].split(sep);\n\n  let r = \
-(+rgb[0]).toString(16),\n      g = (+rgb[1]).toString(16),\n      b = \
-(+rgb[2]).toString(16);\n\n  if (r.length == 1)\n    r = \"0\" + r;\n  if \
-(g.length == 1)\n    g = \"0\" + g;\n  if (b.length == 1)\n    b = \"0\" + \
-b;\n\n  return \"#\" + r + g + b;\n}\n\n      let close;\n      \n      close \
-= () => {\n        if (!state) return;\n        state = false;\n        \
-picker.classList.add('hidden');\n        window.removeEventListener('click', \
-close);\n      }\n      \n      const list = \
-picker.getElementsByTagName('button');\n      for (let i=0; i<list.length; \
-++i) {\n        const el = list[i];\n        const color = \
-el.style.background;\n        el.addEventListener('click', () => {\n          \
-server.kernel.emitt('<Event/>', '\"' + RGBToHex(color) + '\"', \
-'<Pattern/>');\n          close();\n        })\n      }\n      \n      \
-document.getElementById(uid).addEventListener('click', () => {\n        \
-console.log('clicked');\n        \n        \
-picker.classList.remove('hidden');\n        console.log(picker.classList);\n  \
-      state = true; \n        setTimeout(() => \
-window.addEventListener('click', close), 30);\n      })\n    </script>\n  \
-}\n]\n\nOptions[FormattingToolbar`ColorSelector] = {\"Event\"->\"\", \
-\"Pattern\"->\"\"};\n\nFormattingToolbar`makeFormattedString[x_String, \
-style__] := StringJoin[{\"(*BB[*)(\", x, \")(*,*)(*\", \
-ToString[Compress[ProvidedOptions[Hold[StringBox[style] ], \"String\"->True ] \
-], InputForm], \"*)(*]BB*)\"}];\nFormattingToolbar`makeFormattedWL[x_String, \
-style__] := StringJoin[{\"(*BB[*)(\", x, \")(*,*)(*\", \
-ToString[Compress[Hold[StyleBox[style]]], InputForm], \
-\"*)(*]BB*)\"}];\n\nFormattingToolbar`format[\"Wolfram\", style_, _, \
-piece_String, win_] := With[{\n  s = StringTrim[piece]\n},\n  With[{result = \
-If[StringTake[s, 1] === \"\\\"\",\n    \
-FormattingToolbar`makeFormattedString[s, ToExpression[style]]\n  ,\n    \
-FormattingToolbar`makeFormattedWL[s, ToExpression[style]]\n  ]},\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`format[\"Wolfram\", \"H1\", _, piece_String, win_] \
-:= With[{\n  s = StringTrim[piece]\n},\n  With[{result = If[StringTake[s, 1] \
-=== \"\\\"\",\n    FormattingToolbar`makeFormattedString[s, 24, Bold]\n  ,\n  \
-  FormattingToolbar`makeFormattedWL[s, 24, Bold]\n  ]},\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`format[\"Wolfram\", \"H2\", _, piece_String, win_] \
-:= With[{\n  s = StringTrim[piece]\n},\n  With[{result = If[StringTake[s, 1] \
-=== \"\\\"\",\n    FormattingToolbar`makeFormattedString[s, 18, Bold]\n  ,\n  \
-  FormattingToolbar`makeFormattedWL[s, 18, Bold]\n  ]},\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`format[\"Wolfram\", \"H3\", _, piece_String, win_] \
-:= With[{\n  s = StringTrim[piece]\n},\n  With[{result = If[StringTake[s, 1] \
-=== \"\\\"\",\n    FormattingToolbar`makeFormattedString[s, 16]\n  ,\n    \
-FormattingToolbar`makeFormattedWL[s, 16]\n  ]},\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`hexToRGB = RGBColor @@ (IntegerDigits[# \
-~StringDrop~ 1 ~FromDigits~ 16, 256, 3]/255.) \
-&;\n\nFormattingToolbar`format[\"Wolfram\", \"Color\", color_, piece_String, \
-win_] := With[{\n  s = StringTrim[piece]\n},\n  With[{result = \
-If[StringTake[s, 1] === \"\\\"\",\n    \
-FormattingToolbar`makeFormattedString[s, \
-FormattingToolbar`hexToRGB[StringTrim[color]]]\n  ,\n    \
-FormattingToolbar`makeFormattedWL[s, \
-FormattingToolbar`hexToRGB[StringTrim[color]]]\n  ]},\n  \n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`format[\"Wolfram\", \"Bg\", color_, piece_String, \
-win_] := With[{\n  s = StringTrim[piece]\n},\n  With[{result = \
-If[StringTake[s, 1] === \"\\\"\",\n    \
-FormattingToolbar`makeFormattedString[s, \
-Background->FormattingToolbar`hexToRGB[StringTrim[color]]]\n  ,\n    \
-FormattingToolbar`makeFormattedWL[s, \
-Background->FormattingToolbar`hexToRGB[StringTrim[color]]]\n  ]},\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", result], \"Window\"->win]\n  \
-]\n]\n\nFormattingToolbar`dummy := <div></div>", "Display" -> "codemirror", 
-    "Hash" -> "dfa25afc-8e2a-4b92-b3ae-4b3204daa042", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "FormattingToolbar`format[\"Markdown\", \"Bold\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"__\", piece, \"__\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"Markdown\", \"Italic\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"*\", piece, \"*\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \"Window\"->win]\n] \
-\n\nFormattingToolbar`format[\"Markdown\", \"H1\", _, piece_String, win_] := \
-With[{\n  s = StringJoin[\"# \", piece, \"\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"Markdown\", \"H2\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"## \", piece, \"\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"Markdown\", \"H3\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"### \", piece, \"\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"Markdown\", \"Color\", \
-color_String, piece_String, win_] := With[{\n  s = StringJoin[\"<span \
-style=\\\"color:\", color, \"\\\">\", piece, \"</span>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"Markdown\", \"Bg\", \
-color_String, piece_String, win_] := With[{\n  s = StringJoin[\"<span \
-style=\\\"background:\", color, \"\\\">\", piece, \"</span>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\n\n\n\n\n\nFormattingToolbar`format[\"HTML\", \
-\"Bold\", _, piece_String, win_] := With[{\n  s = StringJoin[\"<b>\", piece, \
-\"</b>\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\nFormattingToolbar`format[\"HTML\", \"Italic\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"<i>\", piece, \
-\"</i>\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n] \n\nFormattingToolbar`format[\"HTML\", \"H1\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"<h1 class=\\\"text-3xl \
-font-bold\\\">\", piece, \"</h1>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"HTML\", \"H2\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"<h2 class=\\\"text-2xl \
-font-semibold\\\">\", piece, \"</h2>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"HTML\", \"H3\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"<h3 class=\\\"text-1xl \
-font-medium\\\">\", piece, \"</h3>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\nFormattingToolbar`format[\"HTML\", \"Color\", \
-color_String, piece_String, win_] := With[{\n  s = StringJoin[\"<div \
-style=\\\"color:\", color, \"\\\">\", piece, \"</div>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nFormattingToolbar`format[\"HTML\", \"Bg\", \
-color_String, piece_String, win_] := With[{\n  s = StringJoin[\"<div \
-style=\\\"background:\", color, \"\\\">\", piece, \"</div>\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\n\nFormattingToolbar`apply[style_, data_, window_] := \
-Then[FrontFetchAsync[{FrontEditorSelected[\"GetDoc\"], \
-FrontEditorSelected[\"Cursor\"]}, \"Window\" -> window], Function[result,\n  \
-With[{\n    text   = result[[1]],\n    cursor = result[[2]]\n  },\n    \
-If[cursor[[1]] === cursor[[2]], Notify[\"Nothing is selected\", \
-\"Topic\"->\"Warning\"]; Return[]];\n    Which[\n      StringMatchQ[text, \
-\".md\"~~\"\n\"~~___],\n      FormattingToolbar`format[\"Markdown\", style, \
-data, StringTake[text, cursor + {1,0}], window],\n      \n      \
-StringMatchQ[text, \".html\"~~\"\n\"~~___],\n      \
-FormattingToolbar`format[\"HTML\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n      \n      StringMatchQ[text, \".wlx\"~~\"\n\"~~___],\n  \
-    FormattingToolbar`format[\"HTML\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n      \n      StringMatchQ[text, \
-\".slide\"~~\"\n\"~~___],\n      FormattingToolbar`format[\"Markdown\", \
-style, data, StringTake[text, cursor + {1,0}], window],\n      \n      \
-StringMatchQ[text, \".slides\"~~\"\n\"~~___],\n      \
-FormattingToolbar`format[\"Markdown\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n\n      StringMatchQ[text, \".wl\"~~\"\n\"~~___],\n      \
-FormattingToolbar`format[\"Wolfram\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n\n      StringMatchQ[text, \
-\".\"~~WordCharacter..~~\"\n\"~~___],\n      Notify[\"Unknown cell type\", \
-\"Topic\"->\"Warning\"],\n\n      True,\n      \
-FormattingToolbar`format[\"Wolfram\", style, data, StringTake[text, cursor + \
-{1,0}], window]\n    ];\n  ]\n]]", "Display" -> "codemirror", 
-    "Hash" -> "feb047ff-bb4a-4a8b-b4ef-303bab8e54cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> ".md\nActual widget", "Display" -> "codemirror", 
-    "Hash" -> "ed930be4-4206-41fe-944b-9fdcf8164a67", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "Actual widget", "Display" -> "markdown", 
-    "Hash" -> "6e15e4e5-9056-4d37-b4a5-0b229010be37", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> ".wlx\n\nwidget[self_] := With[{\n  FormattingToolbarButton = \
-FormattingToolbar`Button, \n  FormattingToolbarColorSelector = \
-FormattingToolbar`ColorSelector,\n  act = CreateUUID[],\n  parent = self,\n  \
-win = CurrentWindow[]\n},\n\nEventHandler[win, {\"Closed\" -> \
-Function[Null,\n  Delete[parent];\n]}];\n\nEventHandler[act, {\n  \"Close\" \
--> Function[Null,\n    Delete[parent]\n  ],\n\n  s_String :> Function[data, \
-FormattingToolbar`apply[s, data, win]]\n}];\n\n<div class=\"flex \
-flex-row\">\n<ul class=\"p-0 flex flex-row pr-1\">\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Pattern={\"Bold\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\">\n        <path \
-d=\"M8 12H12.5M8 12V5H12.5C14.433 5 16 6.567 16 8.5C16 10.433 14.433 12 12.5 \
-12M8 12V19H13.5C15.433 19 17 17.433 17 15.5C17 13.567 15.433 12 13.5 \
-12H12.5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    </FormattingToolbarButton>\n  \
-</li>\n  <li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Pattern={\"Italic\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\">\n        <path \
-d=\"M8 19H10M10 19H12M10 19L14 5M12 5H14M14 5H16\" stroke=\"currentColor\" \
-stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n     \
- </svg>\n    </FormattingToolbarButton>\n  </li>    \n</ul>\n<ul class=\"p-0 \
-flex flex-row pr-1\"> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Pattern={\"H1\"}>\n      <svg \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n        <path d=\"M16 10L19 9L19 19M3 5V12M3 12V19M3 12H11M11 \
-5V12M11 12V19\" stroke=\"currentColor\" stroke-width=\"2\" \
-stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    \
-</FormattingToolbarButton>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Pattern={\"H2\"}>\n      <svg \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n        <path d=\"M15 12.5V12C15 10.3431 16.3431 9 18 \
-9H18.1716C19.7337 9 20.9996 10.2665 20.9996 11.8286C20.9996 12.5788 20.702 \
-13.2982 20.1716 13.8286L15 19.0002L21 19M3 5V12M3 12V19M3 12H11M11 5V12M11 \
-12V19\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    </FormattingToolbarButton>\n  \
-</li> \n  <li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Pattern={\"H3\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\">\n        <path \
-d=\"M15 9H21L17 13H18C19.6569 13 21 14.3431 21 16C21 17.6569 19.6569 19 18 \
-19C17.3793 19 16.7738 18.8077 16.2671 18.4492C15.7604 18.0907 15.3775 17.5838 \
-15.1709 16.9985M3 5V12M3 12V19M3 12H11M11 5V12M11 12V19\"  \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    </FormattingToolbarButton>\n  \
-</li>   \n</ul>\n<ul class=\"p-0 flex flex-row\"> \n  <li \
-class=\"list-none\">\n    <FormattingToolbarColorSelector Event={act} \
-Pattern={\"Color\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\">\n        <path \
-d=\"M4 20.0001H20M4 20.0001V16.0001L12 8.00012M4 20.0001L8 20.0001L16 \
-12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 \
-4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 \
-4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 \
-6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 \
-19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 \
-9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001\" \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    \
-</FormattingToolbarColorSelector>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarColorSelector Event={act} Pattern={\"Bg\"}>\n      <svg \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n        <path d=\"M6.5 21H20.4706C20.763 21 21.0002 20.7631 \
-21.0002 20.4707L21 14.5293M7.98047 20.6713L20.6421 14.7671C20.9071 14.6435 \
-21.0217 14.3285 20.8981 14.0635L18.3872 8.6792C18.2636 8.41421 17.9486 \
-8.29914 17.6836 8.42271L12.0303 11.0591M9.88182 18.4048C9.38152 20.2719 \
-7.46235 21.38 5.59521 20.8797C3.72808 20.3794 2.61982 18.4604 3.12011 \
-16.5933L6.73596 3.09863C6.81163 2.81621 7.10168 2.64855 7.3841 \
-2.72422L13.1231 4.26171C13.4055 4.33738 13.5731 4.6276 13.4974 \
-4.91002L9.88182 18.4048ZM6.5 17.6001H6.502L6.50195 17.6021L6.5 \
-17.6021V17.6001Z\" stroke=\"currentColor\" stroke-width=\"2\" \
-stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    \
-</FormattingToolbarColorSelector>\n  </li>   \n</ul> \n  <div \
-class=\"ml-auto\">\n    <FormattingToolbarButton Event={act} \
-Pattern={\"Close\"}>\n      <svg class=\"w-4 h-4 text-gray-500 \
-hover:text-red-300\" viewBox=\"0 0 24 24\" fill=\"none\">\n        <path \
-d=\"M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001\" \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    </FormattingToolbarButton>\n  \
-</div>\n</div>\n]\n", "Display" -> "codemirror", 
-    "Hash" -> "99e73b1c-03a3-4ae0-a88b-b0923a78c347", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "outputQ[c_] := c[[2]] === \"Output\";\n\nlastAfterFocused = \
-With[{\n  focused = NotebookFocusedCell[]\n},\n{\n  rawCells = \
-SequenceCases[Cells[], {focused, Repeated[_, 4]}][[1]]\n},\n{\n  cells = \
-NotebookRead[rawCells]}, \n  rawCells[[Position[cells, SequenceCases[cells, \
-{cells[[1]], ___?outputQ}][[1]][[-1]]][[1,1]]]]\n] // \
-Quiet;\n\nIf[Head[lastAfterFocused] =!= RemoteCellObj, \n  lastAfterFocused = \
-Cells[] // Last;\n];\n\nModule[{self, f = lastAfterFocused},\n  self = \
-NotebookWrite[NotebookLocationSpecifier[f, \"After\"], Cell[\" \", \"Input\", \
-CellOpen->False]];\n  NotebookWrite[NotebookLocationSpecifier[self, \
-\"After\"], Cell[widget[self], \"Output\", \"WLX\"]];\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "55d122bf-bc39-4951-b9fd-6b8133674a55", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> ".md\n__template__", "Display" -> "codemirror", 
-    "Hash" -> "aa1b01c6-82a5-4523-979d-243513a3a7dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "__template__", "Display" -> "markdown", 
-    "Hash" -> "fc850e7d-e455-453b-b706-e4ddae63ae8c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"list-none nooline rounded-sm group \
-flex cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n             <svg class=\"h-3 ml-1 mr-1 w-3 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"currentColor\" \
-viewBox=\"0 0 190 190\"><path \
-d=\"M175,0H15C6.716,0,0,6.716,0,15v38.99c0,8.284,6.716,15,15,15c8.284,0,15-6.\
-716,15-15V30h50v130H56.836\n\tc-8.284,0-15,6.716-15,15s6.716,15,15,15h76.328c\
-8.284,0,15-6.716,15-15s-6.716-15-15-15H110V30h50v23.99c0,8.284,6.716,15,15,15\
-\n\tc8.284,0,15-6.716,15-15V15C190,6.716,183.284,0,175,0z\" stroke=\"none\" \
-stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"></path></svg>\n              <span class=\"ml-3 \
-flex-auto truncate\"><Title/></span><span class=\"ml-3 flex-none text-xs \
-font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-        <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>                 \
- \n                </button>\n              </span>\n    </li>    \
-\n]\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0cdad665-d3c3-45d4-a156-4af0b6285587", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "6c66a85b-faf7-4e93-a3d2-db71739ddbfa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "436f887d-b5cb-40be-83a5-7391cf9d33b7"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Format text
+A toolbar for formatting markdown, WL and HTML
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Format text
+A toolbar for formatting markdown, WL and HTML
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+FormattingToolbar`Button[Child_, OptionsPattern[]] := With[{
+  UId = CreateUUID[],
+  Event = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"]
+},
+  {
+    <button id="{UId}" class="hover:bg-gray-100 p-1 rounded">
+      <Child/>
+    </button>
+  ,
+    <script type="module">
+      const uid = '<UId/>';
+      document.getElementById(uid).addEventListener('click', () => {
+        server.kernel.emitt('<Event/>', 'True', '<Pattern/>');
+      })
+    </script>
+  }
+]
+
+Options[FormattingToolbar`Button] = {"Event"->"", "Pattern"->""};
+
+FormattingToolbar`ColorSelector[Child_, OptionsPattern[]] := With[{
+  UId = CreateUUID[],
+  Event = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"]
+},
+  {
+<div class="relative">
+    <button id="{UId}" class="hover:bg-gray-100 p-1 rounded">
+      <Child/>
+    </button>
+  <div id="{UId}-picker" class="absolute left-0 z-10 mt-2 origin-top-right backdrop-blur rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div class="flex gap-x-2 gap-2 p-2" role="none">
+      <button class="w-5 h-5 rounded" style="background: #FA8072"></button>
+      <button class="w-5 h-5 rounded" style="background: #FFE787"></button>
+      <button class="w-5 h-5 rounded" style="background: #6CCFF6"></button>
+      <button class="w-5 h-5 rounded" style="background: #6ffc8e"></button>
+      <button class="w-5 h-5 rounded" style="background: #ffe4fb"></button>
+    </div>
+  </div>
+ </div> 
+  ,
+    <script type="module">
+      const uid = '<UId/>';
+      const picker = document.getElementById(uid + '-picker');
+      let state = false;
+
+      function RGBToHex(rgb) {
+  // Choose correct separator
+  let sep = rgb.indexOf(",") > -1 ? "," : " ";
+  // Turn "rgb(r,g,b)" into [r,g,b]
+  rgb = rgb.substr(4).split(")")[0].split(sep);
+
+  let r = (+rgb[0]).toString(16),
+      g = (+rgb[1]).toString(16),
+      b = (+rgb[2]).toString(16);
+
+  if (r.length == 1)
+    r = "0" + r;
+  if (g.length == 1)
+    g = "0" + g;
+  if (b.length == 1)
+    b = "0" + b;
+
+  return "#" + r + g + b;
+}
+
+      let close;
+      
+      close = () => {
+        if (!state) return;
+        state = false;
+        picker.classList.add('hidden');
+        window.removeEventListener('click', close);
+      }
+      
+      const list = picker.getElementsByTagName('button');
+      for (let i=0; i<list.length; ++i) {
+        const el = list[i];
+        const color = el.style.background;
+        el.addEventListener('click', () => {
+          server.kernel.emitt('<Event/>', '"' + RGBToHex(color) + '"', '<Pattern/>');
+          close();
+        })
+      }
+      
+      document.getElementById(uid).addEventListener('click', () => {
+        console.log('clicked');
+        
+        picker.classList.remove('hidden');
+        console.log(picker.classList);
+        state = true; 
+        setTimeout(() => window.addEventListener('click', close), 30);
+      })
+    </script>
+  }
+]
+
+Options[FormattingToolbar`ColorSelector] = {"Event"->"", "Pattern"->""};
+
+FormattingToolbar`makeFormattedString[x_String, style__] := StringJoin[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[StringBox[style] ], "String"->True ] ], InputForm], "*)(*]BB*)"}];
+FormattingToolbar`makeFormattedWL[x_String, style__] := StringJoin[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[Hold[StyleBox[style]]], InputForm], "*)(*]BB*)"}];
+
+FormattingToolbar`format["Wolfram", style_, _, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, ToExpression[style]]
+  ,
+    FormattingToolbar`makeFormattedWL[s, ToExpression[style]]
+  ]},
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`format["Wolfram", "H1", _, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, 24, Bold]
+  ,
+    FormattingToolbar`makeFormattedWL[s, 24, Bold]
+  ]},
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`format["Wolfram", "H2", _, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, 18, Bold]
+  ,
+    FormattingToolbar`makeFormattedWL[s, 18, Bold]
+  ]},
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`format["Wolfram", "H3", _, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, 16]
+  ,
+    FormattingToolbar`makeFormattedWL[s, 16]
+  ]},
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`hexToRGB = RGBColor @@ (IntegerDigits[# ~StringDrop~ 1 ~FromDigits~ 16, 256, 3]/255.) &;
+
+FormattingToolbar`format["Wolfram", "Color", color_, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, FormattingToolbar`hexToRGB[StringTrim[color]]]
+  ,
+    FormattingToolbar`makeFormattedWL[s, FormattingToolbar`hexToRGB[StringTrim[color]]]
+  ]},
+  
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`format["Wolfram", "Bg", color_, piece_String, win_] := With[{
+  s = StringTrim[piece]
+},
+  With[{result = If[StringTake[s, 1] === "\"",
+    FormattingToolbar`makeFormattedString[s, Background->FormattingToolbar`hexToRGB[StringTrim[color]]]
+  ,
+    FormattingToolbar`makeFormattedWL[s, Background->FormattingToolbar`hexToRGB[StringTrim[color]]]
+  ]},
+    FrontSubmit[FrontEditorSelected["Set", result], "Window"->win]
+  ]
+]
+
+FormattingToolbar`dummy := <div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+FormattingToolbar`format["Markdown", "Bold", _, piece_String, win_] := With[{
+  s = StringJoin["__", piece, "__"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["Markdown", "Italic", _, piece_String, win_] := With[{
+  s = StringJoin["*", piece, "*"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+] 
+
+FormattingToolbar`format["Markdown", "H1", _, piece_String, win_] := With[{
+  s = StringJoin["# ", piece, ""]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["Markdown", "H2", _, piece_String, win_] := With[{
+  s = StringJoin["## ", piece, ""]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["Markdown", "H3", _, piece_String, win_] := With[{
+  s = StringJoin["### ", piece, ""]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["Markdown", "Color", color_String, piece_String, win_] := With[{
+  s = StringJoin["<span style=\"color:", color, "\">", piece, "</span>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["Markdown", "Bg", color_String, piece_String, win_] := With[{
+  s = StringJoin["<span style=\"background:", color, "\">", piece, "</span>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+
+
+
+
+
+FormattingToolbar`format["HTML", "Bold", _, piece_String, win_] := With[{
+  s = StringJoin["<b>", piece, "</b>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+FormattingToolbar`format["HTML", "Italic", _, piece_String, win_] := With[{
+  s = StringJoin["<i>", piece, "</i>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+] 
+
+FormattingToolbar`format["HTML", "H1", _, piece_String, win_] := With[{
+  s = StringJoin["<h1 class=\"text-3xl font-bold\">", piece, "</h1>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["HTML", "H2", _, piece_String, win_] := With[{
+  s = StringJoin["<h2 class=\"text-2xl font-semibold\">", piece, "</h2>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["HTML", "H3", _, piece_String, win_] := With[{
+  s = StringJoin["<h3 class=\"text-1xl font-medium\">", piece, "</h3>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+FormattingToolbar`format["HTML", "Color", color_String, piece_String, win_] := With[{
+  s = StringJoin["<div style=\"color:", color, "\">", piece, "</div>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+FormattingToolbar`format["HTML", "Bg", color_String, piece_String, win_] := With[{
+  s = StringJoin["<div style=\"background:", color, "\">", piece, "</div>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+
+FormattingToolbar`apply[style_, data_, window_] := Then[FrontFetchAsync[{FrontEditorSelected["GetDoc"], FrontEditorSelected["Cursor"]}, "Window" -> window], Function[result,
+  With[{
+    text   = result[[1]],
+    cursor = result[[2]]
+  },
+    If[cursor[[1]] === cursor[[2]], Notify["Nothing is selected", "Topic"->"Warning"]; Return[]];
+    Which[
+      StringMatchQ[text, ".md"~~"
+"~~___],
+      FormattingToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".html"~~"
+"~~___],
+      FormattingToolbar`format["HTML", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".wlx"~~"
+"~~___],
+      FormattingToolbar`format["HTML", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".slide"~~"
+"~~___],
+      FormattingToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".slides"~~"
+"~~___],
+      FormattingToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+
+      StringMatchQ[text, ".wl"~~"
+"~~___],
+      FormattingToolbar`format["Wolfram", style, data, StringTake[text, cursor + {1,0}], window],
+
+      StringMatchQ[text, "."~~WordCharacter..~~"
+"~~___],
+      Notify["Unknown cell type", "Topic"->"Warning"],
+
+      True,
+      FormattingToolbar`format["Wolfram", style, data, StringTake[text, cursor + {1,0}], window]
+    ];
+  ]
+]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Actual widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Actual widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+widget[self_] := With[{
+  FormattingToolbarButton = FormattingToolbar`Button, 
+  FormattingToolbarColorSelector = FormattingToolbar`ColorSelector,
+  act = CreateUUID[],
+  parent = self,
+  win = CurrentWindow[]
+},
+
+EventHandler[win, {"Closed" -> Function[Null,
+  Delete[parent];
+]}];
+
+EventHandler[act, {
+  "Close" -> Function[Null,
+    Delete[parent]
+  ],
+
+  s_String :> Function[data, FormattingToolbar`apply[s, data, win]]
+}];
+
+<div class="flex flex-row">
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Pattern={"Bold"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M8 12H12.5M8 12V5H12.5C14.433 5 16 6.567 16 8.5C16 10.433 14.433 12 12.5 12M8 12V19H13.5C15.433 19 17 17.433 17 15.5C17 13.567 15.433 12 13.5 12H12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Pattern={"Italic"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M8 19H10M10 19H12M10 19L14 5M12 5H14M14 5H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </li>    
+</ul>
+<ul class="p-0 flex flex-row pr-1"> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Pattern={"H1"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M16 10L19 9L19 19M3 5V12M3 12V19M3 12H11M11 5V12M11 12V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Pattern={"H2"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M15 12.5V12C15 10.3431 16.3431 9 18 9H18.1716C19.7337 9 20.9996 10.2665 20.9996 11.8286C20.9996 12.5788 20.702 13.2982 20.1716 13.8286L15 19.0002L21 19M3 5V12M3 12V19M3 12H11M11 5V12M11 12V19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Pattern={"H3"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M15 9H21L17 13H18C19.6569 13 21 14.3431 21 16C21 17.6569 19.6569 19 18 19C17.3793 19 16.7738 18.8077 16.2671 18.4492C15.7604 18.0907 15.3775 17.5838 15.1709 16.9985M3 5V12M3 12V19M3 12H11M11 5V12M11 12V19"  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </li>   
+</ul>
+<ul class="p-0 flex flex-row"> 
+  <li class="list-none">
+    <FormattingToolbarColorSelector Event={act} Pattern={"Color"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M4 20.0001H20M4 20.0001V16.0001L12 8.00012M4 20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarColorSelector>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarColorSelector Event={act} Pattern={"Bg"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+        <path d="M6.5 21H20.4706C20.763 21 21.0002 20.7631 21.0002 20.4707L21 14.5293M7.98047 20.6713L20.6421 14.7671C20.9071 14.6435 21.0217 14.3285 20.8981 14.0635L18.3872 8.6792C18.2636 8.41421 17.9486 8.29914 17.6836 8.42271L12.0303 11.0591M9.88182 18.4048C9.38152 20.2719 7.46235 21.38 5.59521 20.8797C3.72808 20.3794 2.61982 18.4604 3.12011 16.5933L6.73596 3.09863C6.81163 2.81621 7.10168 2.64855 7.3841 2.72422L13.1231 4.26171C13.4055 4.33738 13.5731 4.6276 13.4974 4.91002L9.88182 18.4048ZM6.5 17.6001H6.502L6.50195 17.6021L6.5 17.6021V17.6001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarColorSelector>
+  </li>   
+</ul> 
+  <div class="ml-auto">
+    <FormattingToolbarButton Event={act} Pattern={"Close"}>
+      <svg class="w-4 h-4 text-gray-500 hover:text-red-300" viewBox="0 0 24 24" fill="none">
+        <path d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </div>
+</div>
+]
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+outputQ[c_] := c[[2]] === "Output";
+
+lastAfterFocused = With[{
+  focused = NotebookFocusedCell[]
+},
+{
+  rawCells = SequenceCases[Cells[], {focused, Repeated[_, 4]}][[1]]
+},
+{
+  cells = NotebookRead[rawCells]}, 
+  rawCells[[Position[cells, SequenceCases[cells, {cells[[1]], ___?outputQ}][[1]][[-1]]][[1,1]]]]
+] // Quiet;
+
+If[Head[lastAfterFocused] =!= RemoteCellObj, 
+  lastAfterFocused = Cells[] // Last;
+];
+
+Module[{self, f = lastAfterFocused},
+  self = NotebookWrite[NotebookLocationSpecifier[f, "After"], Cell[" ", "Input", CellOpen->False]];
+  NotebookWrite[NotebookLocationSpecifier[self, "After"], Cell[widget[self], "Output", "WLX"]];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__template__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="list-none nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+             <svg class="h-3 ml-1 mr-1 w-3 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="currentColor" viewBox="0 0 190 190"><path d="M175,0H15C6.716,0,0,6.716,0,15v38.99c0,8.284,6.716,15,15,15c8.284,0,15-6.716,15-15V30h50v130H56.836
+	c-8.284,0-15,6.716-15,15s6.716,15,15,15h76.328c8.284,0,15-6.716,15-15s-6.716-15-15-15H110V30h50v23.99c0,8.284,6.716,15,15,15
+	c8.284,0,15-6.716,15-15V15C190,6.716,183.284,0,175,0z" stroke="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

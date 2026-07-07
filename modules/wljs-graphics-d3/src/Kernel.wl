@@ -55,7 +55,7 @@ listener[p_, list_] := With[{uid = CreateUUID[]}, With[{
     EventListener[p, rules]
 ] ]
 
-Unprotect[Point, Rectangle, Text, Disk, Polygon];
+Unprotect[Point, Rectangle, Text, Disk, Polygon, Locator];
 
 Point      /: EventHandler[p_Point, list_List] := listener[p, list]
 Rectangle  /: EventHandler[p_Rectangle, list_List] := listener[p, list]
@@ -63,10 +63,13 @@ Polygon  /: EventHandler[p_Polygon, list_List] := listener[p, list]
 Text       /: EventHandler[p_Text, list_List] := listener[p, list]
 Disk       /: EventHandler[p_Disk, list_List] := listener[p, list]
 
+ClearAll[Locator];
+Locator       /: EventHandler[p_Locator, list_List] := listener[p, list]
+
 (* depricated!!! only is used for backward compatibillity *)
 Graphics`Canvas  /: EventHandler[p_Graphics`Canvas, list_List] := listener[p, list]
 
-Protect[Point, Rectangle, Text, Disk, Polygon];
+Protect[Point, Rectangle, Text, Disk, Polygon, Locator];
 
 (*Unprotect[Rasterize]
 Rasterize[g_Graphics, any___] := With[{svg = FrontFetch[Graphics`Serialize[g, "TemporalDOM"->True] ]},

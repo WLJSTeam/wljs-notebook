@@ -1005,7 +1005,6 @@ const EditorExtensions = [
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
-  () => placeholder('Type WL Expression / .md / .js'),
 
   () => EditorState.allowMultipleSelections.of(true),
   

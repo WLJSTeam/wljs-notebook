@@ -10,8 +10,10 @@ BeginPackage["CoffeeLiqueur`Extensions`Manipulate`Diff`", {
 
 Begin["`Private`"]
 
+tableEntries[table_] := Select[DownValues[table][[All,2]], AssociationQ];
+
 clearTable[table_] := With[{},
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     ClearAll[table];
 ]
 
@@ -19,21 +21,30 @@ save[table_] := DownValues[table];
 restore[table_, values_] := DownValues[table] = values;
 
 resetAll[table_] := (
-  (#["Reset"][]) &/@ SortBy[DownValues[table][[All,2]], Function[s, s["Priority"] ] ];
+  (#["Reset"][]) &/@ SortBy[tableEntries[table], Function[s, s["Priority"] ] ];
 )
-
 
 failureMessage[msg_, payload_] := (
   CoffeeLiqueur`Extensions`Manipulate`Diff`$lastJITFailure = {msg, payload};
 )
 
+transpileDiff[diff_] := With[{assoc = transpile @@ diff},
+  If[AssociationQ[assoc],
+    assoc
+  ,
+    failureMessage["Cannot transpile diff object", diff];
+    $Failed
+  ]
+]
+
+
 (* Normal diff processor *)
 (* works incrementally from diff to diff *)
 
-processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{},
+processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{e, rebuilt},
   If[MatchQ[diffs, {___, $Failed, ___}], (* Fallback! *)
     forceUpdate[expr2];
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     DownValues[table] = {};
     
     Return[];
@@ -44,21 +55,27 @@ processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{},
   ];
 
   If[Or @@ Map[(!AssociationQ[table[#[[3]]]])&, diffs], (* Fallback and rebuild dynamic expression *)
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     DownValues[table] = {};
     
-    Module[{e = expr2},
-      With[
-        {assoc = transpile @@ #, hash = #[[4]]},
-        
-        e = ReplaceAll[e, assoc["Rule"]];
-        table[hash] = assoc;
-        
-      ] &/@ Reverse[diffs];
+    e = expr2;
+    rebuilt = Map[{#, transpileDiff[#]} &, Reverse[diffs]];
 
-      forceUpdate[e];
+    If[MatchQ[rebuilt, {___, {_, $Failed}, ___}],
+      forceUpdate[expr2];
       Return[];
     ];
+
+    With[
+      {assoc = #[[2]], hash = #[[1,4]]},
+
+        e = ReplaceAll[e, assoc["Rule"]];
+        table[hash] = assoc;
+
+    ] &/@ rebuilt;
+
+    forceUpdate[e];
+    Return[];
   ];
   
   Map[With[ (* Update changed parts and move hashes *)
@@ -88,7 +105,12 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
   ];
 
   If[Length[diffs] == 0,
-    If[Select[DownValues[table][[All,2]], AssociationQ] === {}, reset[originalExpr],  resetAll[table] ];    
+    If[TrueQ[table["$Failed"] ],
+      table["$Failed"] = .;
+      reset[originalExpr];
+    ,
+      If[tableEntries[table] === {}, reset[originalExpr],  resetAll[table] ];
+    ];
     Return[]; 
   ];
 
@@ -98,22 +120,21 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
     Return[];
   ];
   
+  If[TrueQ[table["$Failed"] ], (* detect fallback and restore the original expression *)
+    table["$Failed"] = .;
+    reset[originalExpr];
+  ];
 
   With[{  (* Reset unaffected and update affected *)
     toUpdate = Map[With[
       {oldHash = #[[3]]}, 
       {data = table[oldHash]},
 
-      If[TrueQ[table["$Failed"] ], (* detect fallback and restore the original expression *)
-        table["$Failed"] = False;
-        reset[originalExpr];
-      ];
-
       {data, #}
 
     ]&, diffs],
 
-    allEntries = DownValues[table][[All,2]]
+    allEntries = tableEntries[table]
   },
     
     Map[
@@ -216,7 +237,7 @@ diff[Line[data1_List, m_], Line[data2_List, u_], level_, attributes_] :=
 
 diff[Polygon[data1_List], Polygon[data2_List], level_, attributes_] := 
   If[Lookup[attributes, "GraphicsQ", False] && !Lookup[attributes, "GraphicsComplexQ", False],
-    diffObject[Line[data1], Line[data2], Hash[Line[data1]], Hash[Line[data2]]]
+    diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
   ,
     If[Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False],
       diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
@@ -279,23 +300,6 @@ diff[i1_Image, i2_Image, level_, attributes_] := With[{
         $Failed
     ]
 ]
-
-transpile[head2_[_], head2_[d_], hash1_, hash2_] := With[{
-  symbol = Unique["cmpled"]
-},
-  symbol = d;
-  
-  <|
-    "Priority"->1, "Rule" -> (head2[d] -> head2[Offload[symbol] ]),
-    "Reset" -> Function[Null, symbol = d],
-    "Update" -> Function[{e1, e2, h1, h2},
-      symbol = e2[[1]];
-    ],
-    "Destroy" -> Function[Null,
-      ClearAll[symbol] // Quiet;
-    ]
-  |>
-];
 
 Do[With[{head2 = head},
   transpile[head2[_], head2[d_], hash1_, hash2_] := With[{
@@ -376,7 +380,7 @@ transpile[Rule[PlotLabel, x_], Rule[PlotLabel, y_], hash1_, hash2_] := With[{
   
   <|
     "Priority"->1, "Rule" -> (Rule[PlotLabel, y] -> Rule[PlotLabel, HoldForm[EditorView[symbol//Offload, Appearance->None] ] ]),
-    "Reset" -> Function[Null, symbol = y],
+    "Reset" -> Function[Null, symbol = ToString[y, StandardForm]],
     "Update" -> Function[{e1, e2, h1, h2},
       symbol = ToString[e2[[2]], StandardForm];
     ],
@@ -542,7 +546,7 @@ Do[With[{pattern=pattern},
           Map[Function[item, item ], list]
         ]
       , rest ]),
-      "Reset" -> Function[Null, symbol = (# &/@ {b2}) ],
+      "Reset" -> Function[Null, symbol = ToString[#, StandardForm] &/@ {b2} ],
       "Update" -> Function[{e1, e2, h1, h2},
         symbol = # &/@ (e2[[2]]);
       ],
@@ -778,7 +782,7 @@ textureLessQ[expr_] := MatchQ[
   GraphicsComplex[_, _] |
   GraphicsComplex[_, _, Rule[VertexColors, _] ] |
   GraphicsComplex[_, _, Rule[VertexNormals, _] ] |
-  GraphicsComplex[_, _, Rule[VertexColors, _], Rule[VertexNormals, _] |
+  GraphicsComplex[_, _, Rule[VertexColors, _], Rule[VertexNormals, _] ] |
   GraphicsComplex[_, _, Rule[VertexNormals, _], Rule[VertexColors, _] ]
 ] ];
 

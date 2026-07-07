@@ -1109,6 +1109,66 @@ g3d.Point.destroy = async (args, env) => {
 
 g3d.Point.virtual = true;
 
+const locator3DPosition = async (args, env) => {
+  let pos = args.length ? await interpretate(args[0], env) : [0, 0, 0];
+  if (pos instanceof NumericArrayObject) pos = pos.normal();
+  return Array.isArray(pos) && pos.length >= 3 ? pos : [0, 0, 0];
+};
+
+const makeLocator3DGeometry = (size) => {
+  const pts = [
+    -size, 0, 0, size, 0, 0,
+    0, -size, 0, 0, size, 0,
+    0, 0, -size, 0, 0, size
+  ];
+
+  for (let i = 0; i < 32; ++i) {
+    const a = i * Math.PI / 16, b = (i + 1) * Math.PI / 16;
+    pts.push(
+      size*Math.cos(a), size*Math.sin(a), 0, size*Math.cos(b), size*Math.sin(b), 0,
+      size*Math.cos(a), 0, size*Math.sin(a), size*Math.cos(b), 0, size*Math.sin(b),
+      0, size*Math.cos(a), size*Math.sin(a), 0, size*Math.cos(b), size*Math.sin(b)
+    );
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  return geometry;
+};
+
+g3d.Locator = async (args, env) => {
+  const group = new THREE.Group();
+  const material = new THREE.LineBasicMaterial({
+    color: env.color,
+    opacity: env.opacity,
+    transparent: env.opacity < 1.0,
+    depthTest: false
+  });
+
+  env.local.geometry = makeLocator3DGeometry(Math.max(0.05, env.pointSize || 0.08) * 3);
+  env.local.material = material;
+  env.local.group = group;
+
+  group.add(new THREE.LineSegments(env.local.geometry, material));
+  group.position.fromArray(await locator3DPosition(args, env));
+  env.mesh.add(group);
+  return group;
+};
+
+g3d.Locator.update = async (args, env) => {
+  env.local.group.position.fromArray(await locator3DPosition(args, env));
+  env.wake(true);
+  return env.local.group;
+};
+
+g3d.Locator.destroy = async (args, env) => {
+  env.mesh.remove(env.local.group);
+  env.local.geometry.dispose();
+  env.local.material.dispose();
+};
+
+g3d.Locator.virtual = true;
+
 
 g3d.Sphere = async (args, env) => {
   var radius = 1;

@@ -19,7 +19,53 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 # Release Notes for *3.0.9*
-Sun 5 Jul 2026 22:20:53
+Tue 7 Jul 2026 20:01:15
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## UI Revision
+Refreshing lighter colors, better UI elements, less blocky panels...
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## UI Revision
+Refreshing lighter colors, better UI elements, less blocky panels...
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NumericArray[{1,2,4}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+NumericArray[(*VB[*) {1, 2, 4}, "UnsignedInteger8" (*,*)(*"1:eJydUMtqAkEQ3MQ8JeAtAU/JwR8wB8WbskoEUdhVz45O7zIw0x16Zkn279PjGpKcEnIpuqqarqKf9pQVrSRJfFdgQu8zYrcbMyssQeeVc4prkYuzuNMRmDFhmKLeGg6Vso1xIfBCVh+HJSEU55/ywvjQsIdvCafL8wBua+AtvxJvXb/C6LHZbQtMtQnE0f4Z0rBbgU22SOFAGvJ7Yb1+f4PelAh6jgFK4KFIX02yykJ+EwdQeoW2PqprruD3fnfipcaB3Cf0/215HVsOJs+9QfqXWv4y/ltZDx8CVGil"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Panel[1+1]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*BB[*)(Panel[2])(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCV4gEZaZWu6SmpxflFiSXxTMClKamJeaA9HJAiSCSnNSg0EMj9TEFIQCAH5qF00="*)(*]BB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Quantity[1, "Meters"/"Kilograms"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Quantity[1, "Meters"/"Kilograms"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8K5gCKBJYm5pVkllRmgnSkMYEUsgKJkMzc1GIENyC/PLUomBPI8s7MyU8vSswtzvwPBMFsQCHf1JLUomIAZKEe9w=="*)(*]VB*)
 
 %-------------------------------------------------------------------------%
 Props:
@@ -414,6 +460,48 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## `Locator` Primitive
+We added `Locator[]` symbol for easier 2D coordinates manipulation, here is an example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## `Locator` Primitive
+We added `Locator[]` symbol for easier 2D coordinates manipulation, here is an example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+location = {0.3,0.7};
+Plot[x, {x,0,1}, Epilog->{
+  EventHandler[Locator[location], {
+    "drag"->Function[xy, location = xy]
+  }]
+}]
+
+Refresh[NumberForm[location, {3,2}], 1/2]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As you can see it generates `drag` event as `Disk`, `Polygon`, `Text` and `Rectangle`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As you can see it generates `drag` event as `Disk`, `Polygon`, `Text` and `Rectangle`.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Improved `TextView`
 `TextView` now applies fewer default styles and supports multiple lines, as well as the `ImageSize` option:
 
@@ -644,6 +732,36 @@ Now `a["key"]` works when `a` is an `Association`. Try it yourself!
 Type: Input
 %-------------------------------------------------------------------------%
 a = <|"a"->-1, "b"->0.8|>;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Fixed bugs
+- [x] `Animate`, `Refresh`, `Manipulate` major bugs related to JIT-unsupported data structures and formatting
+- [x] **Insert Matrix** snippet is broken
+- [x] `Transparent` is unsupported in the context of 2D and 3D graphics
+- [x] Invisible text selection 
+- [x] Minor bugs related to MCP server and CLI
+- [x] `CreateWindow` event generation issues
+- [x] `InputTerminal` always adds `\n` character
+- [x] Accent colors are not reflected in separators 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Fixed bugs
+- [x] `Animate`, `Refresh`, `Manipulate` major bugs related to JIT-unsupported data structures and formatting
+- [x] **Insert Matrix** snippet is broken
+- [x] `Transparent` is unsupported in the context of 2D and 3D graphics
+- [x] Invisible text selection 
+- [x] Minor bugs related to MCP server and CLI
+- [x] `CreateWindow` event generation issues
+- [x] `InputTerminal` always adds `\n` character
+- [x] Accent colors are not reflected in separators 
 
 %------------------------------%EndOfCells%-------------------------------%
 

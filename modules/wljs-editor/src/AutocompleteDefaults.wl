@@ -1,6 +1,7 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+<|"label"->"Locator", "type"->"keyword", "info"->"Locator[] represents a locator graphics primitive.\nLocator[{x,y}] sets the initial position to {x,y}\nEventHandler[Locator[], {\"drag\"->handler}] attaches event handler on drag"|>,
   <|"label"->"Alignment", "type"->"keyword", "info"->"Alignment->{Left, Top} sets hortisontal and vertical items aligment in Row, Column and Grid.\nAlignment->{{Left,Right}, Baseline} aligns first and second items to Left/Right and all items to Baseline vertically"|>,
   <|"label"->"Deploy", "type"->"keyword", "info"->"Deploy[expr] renders expression with disabled editing/selection, where expr can be Panel, Row, Column or nested decorations"|>,
   <|"label" -> "GPUArray", "type" -> "keyword", "info" -> "GPUArray[array] yields an array stored in GPU-accessible memory for GPU-accelerated computation.\nGPUArray[array, type] stores data with the specified numeric type.\nUse Normal[g] to retrieve the data back from the GPU."|>,

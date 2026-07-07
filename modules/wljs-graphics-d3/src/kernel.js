@@ -3965,12 +3965,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     env.local.object = object;
 
-    if (env.colorRefs) {
-      env.colorRefs[env.root.uid] = env.root;
-    }
-    if (env.opacityRefs) {
-      env.opacityRefs[env.root.uid] = env.root;
-    }
+    if (env.colorRefs) env.colorRefs[env.root.uid] = env.root;
+    if (env.opacityRefs) env.opacityRefs[env.root.uid] = env.root;
 
     return object;
   }
@@ -6814,6 +6810,114 @@ return object;
 
   g2dComplex.Disk.virtual = true;
 
+  const locatorDefault = (env) => [
+    0.5*env.plotRange[0][0] + 0.5*env.plotRange[0][1],
+    0.5*env.plotRange[1][0] + 0.5*env.plotRange[1][1]
+  ];
+
+  const locatorPosition = async (args, env) => {
+    let pos = args.length ? await interpretate(args[0], env) : undefined;
+    if (pos instanceof NumericArrayObject) pos = pos.normal();
+    return Array.isArray(pos) && pos.length >= 2 ? pos : locatorDefault(env);
+  };
+
+  const locatorZoom = (env) =>
+    env.local.currentZoomTransform ||
+    (env.panZoomEntites?.canvas?.node ? d3.zoomTransform(env.panZoomEntites.canvas.node()) : d3.zoomIdentity);
+
+  const locatorTranslate = (env, pos) => `translate(${env.xAxis(pos[0])}, ${env.yAxis(pos[1])})`;
+
+  const locatorDraggedPosition = (env) => {
+    const m = env.local.object?.attr("transform")?.match(/translate\(\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*,?\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*\)/i);
+    return m && [env.xAxis.invert(Number(m[1])), env.yAxis.invert(Number(m[2]))];
+  };
+
+  const syncLocator = (env, pos = env.local.pos, transition = false, transform = locatorZoom(env)) => {
+    env.local.pos = pos;
+    env.local.locatorTransform = locatorTranslate(env, pos);
+    env.local.visual?.attr("transform", `scale(${1/(transform?.k || 1)})`);
+    return (transition ? env.local.object.maybeTransition(env.transitionType, env.transitionDuration) : env.local.object)
+      .attr("transform", env.local.locatorTransform);
+  };
+
+  g2d.Locator = async (args, env) => {
+    const pos = await locatorPosition(args, env);
+    const group = env.svg.append("g")
+      .attr("opacity", env.opacity)
+      .attr("fill", "none")
+      .attr("stroke", env.color)
+      .attr("stroke-width", Math.max(1, env.strokeWidth || 1.5))
+      .attr("stroke-linecap", "round")
+      .attr("stroke-linejoin", "round");
+
+    const visual = group.append("g");
+
+    visual.append("circle")
+      .attr("r", 8)
+      .attr("vector-effect", "non-scaling-stroke");
+
+    visual.append("path")
+      .attr("d", "M -12 0 L -4 0 M 4 0 L 12 0 M 0 -12 L 0 -4 M 0 4 L 0 12")
+      .attr("vector-effect", "non-scaling-stroke");
+
+    const dot = visual.append("circle")
+      .attr("r", 2)
+      .attr("stroke", "none")
+      .attr("fill", env.color);
+
+    env.local.object = group;
+    env.local.visual = visual;
+    env.local.dot = dot;
+    syncLocator(env, pos);
+
+    if (env.onZoom) {
+      env.local.onZoom = (transform) => {
+        if (env.local.object) {
+          if (env.local.object.attr("transform") !== env.local.locatorTransform) {
+            env.local.pos = locatorDraggedPosition(env) || env.local.pos;
+          }
+          syncLocator(env, env.local.pos, false, transform);
+        }
+      };
+      env.onZoom.push(env.local.onZoom);
+    }
+
+    if (env.colorRefs) {
+      env.colorRefs[env.root.uid] = env.root;
+    }
+    if (env.opacityRefs) {
+      env.opacityRefs[env.root.uid] = env.root;
+    }
+
+    return group;
+  }
+
+  g2d.Locator.update = async (args, env) => {
+    return syncLocator(env, await locatorPosition(args, env), true);
+  }
+
+  g2d.Locator.updateColor = (args, env) => {
+    env.local.object.attr("stroke", env.color);
+    env.local.dot.attr("fill", env.color);
+  }
+
+  g2d.Locator.updateOpacity = (args, env) => {
+    env.local.object.attr("opacity", env.opacity);
+  }
+
+  g2d.Locator.destroy = (args, env) => {
+    if (!env.local) return;
+
+    const index = env.onZoom?.indexOf(env.local.onZoom);
+    if (index >= 0) env.onZoom.splice(index, 1);
+    if (env.colorRefs) delete env.colorRefs[env.root.uid];
+    if (env.opacityRefs) delete env.opacityRefs[env.root.uid];
+
+    env.local.object?.remove();
+    delete env.local.object;
+  }
+
+  g2d.Locator.virtual = true;
 
   g2d.Disk = async (args, env) => {
     if (args.length > 2) {
