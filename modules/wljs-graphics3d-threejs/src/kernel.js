@@ -22,6 +22,7 @@ interpretate.contextExpand(g3d);
 
 g3d.VertexNormals.update = () => "VertexNormals"
 g3d.VertexColors.update = () => "VertexColors"
+g3d.VertexTextureCoordinates.update = () => "VertexTextureCoordinates"
 
 g3d.Void = (args, env) => {console.log(args); console.warn('went to the void...');}
 g3d.Void.update = () => {}

@@ -448,6 +448,18 @@ Do[With[{head2 = head},
   ];  
 
 
+rgbColorValues[colors_] := N[Map[Function[x, List @@ (RGBColor[x])], colors]];
+
+numericArrayWithRGBColorGuard[data_, colorIndex_Integer] := Module[{
+  array = NumericArray[data] // Quiet
+},
+  If[NumericArrayQ[array],
+    array
+  ,
+    NumericArray[ReplacePart[data, colorIndex -> rgbColorValues[data[[colorIndex]]]]]
+  ]
+]
+
 transpile[GraphicsComplex[_,_], GraphicsComplex[vertices2_, objects_], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
@@ -482,16 +494,16 @@ transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[Ver
   |>
 ];
 
-transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, normals2_] ], hash1_, hash2_] := With[{
+transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, colors2}, 2];
   
   <|
-    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, normals2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexColors, Offload[symbol[[2]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2}],
+    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexColors, Offload[symbol[[2]] ] ], Rule["VertexFence", True] ]),
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, colors2}, 2]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[3,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[3,2]]}, 2];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
@@ -502,13 +514,13 @@ transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[Ver
 transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexNormals, normals2_], Rule[VertexColors, colors2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2, colors2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
   
   <|
     "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexNormals, normals2], Rule[VertexColors, colors2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2, colors2}],
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[3,2]], e2[[4,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[3,2]], e2[[4,2]]}, 3];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
@@ -520,16 +532,40 @@ transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[V
 transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_], Rule[VertexNormals, normals2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2, colors2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
   
   <|
     "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2], Rule[VertexNormals, normals2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2, colors2}],
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[4,2]], e2[[3,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[4,2]], e2[[3,2]]}, 3];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
+transpile[GraphicsComplex[_,_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_], Rule[VertexNormals, normals2_], Rule[VertexTextureCoordinates, tex2_] ], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"],
+  texSymbol = Unique["cmpled"]
+},
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
+  texSymbol = NumericArray[tex2];
+
+  <|
+    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2], Rule[VertexNormals, normals2], Rule[VertexTextureCoordinates, tex2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule[VertexTextureCoordinates, Offload[texSymbol ] ], Rule["VertexFence", True] ]),
+    "Reset" -> Function[Null,
+        symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
+        texSymbol = tex2//NumericArray;
+    ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[4,2]], e2[[3,2]]}, 3];
+      texSymbol = e2[[5,2]]//NumericArray;
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+      ClearAll[texSymbol] // Quiet;
     ]
   |>
 ];
@@ -777,14 +813,7 @@ Do[With[{a=a},
   |>
 ];*)
 
-textureLessQ[expr_] := MatchQ[
-  expr,
-  GraphicsComplex[_, _] |
-  GraphicsComplex[_, _, Rule[VertexColors, _] ] |
-  GraphicsComplex[_, _, Rule[VertexNormals, _] ] |
-  GraphicsComplex[_, _, Rule[VertexColors, _], Rule[VertexNormals, _] ] |
-  GraphicsComplex[_, _, Rule[VertexNormals, _], Rule[VertexColors, _] ]
-] ];
+textureLessQ[expr_] := True; (*supported*)
 
 diff[g: GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] := If[textureLessQ[g], With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
@@ -812,11 +841,26 @@ diff[Annotation[args1_, _], Annotation[args2_, _], level_, attributes_] := With[
   diff[args1,args2, level+1, attributes]
 ]
 
+diff[Annotation[args1_, ___], Annotation[args2_, ___], level_, attributes_] := With[{},
+  diff[args1,args2, level+1, attributes]
+]
+
 diff[head_[args1__], head_[args2__], level_, attributes_] := With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
     MapThread[Function[{a,b},
       diff[a,b, level+1, attributes]
     ], {list1, list2}] 
+ ,
+   failureMessage[ToString[head]<>" expression differs in args length", {list1, list2}];
+   $Failed
+ ]
+]
+
+diff[head_[args1_List], head_[args2_List], level_, attributes_] := With[{list1 = args1, list2 = args2},
+  If[Length[list1] == Length[list2],
+    MapThread[Function[{a,b},
+      diff[a,b, level+1, attributes]
+    ], {list1, list2}]
  ,
    failureMessage[ToString[head]<>" expression differs in args length", {list1, list2}];
    $Failed

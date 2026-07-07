@@ -397,22 +397,6 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
             <ControlsScript/>   
           </script>         
           <script type="module">
-            const jsonstorage = document.getElementById('json-objects');
-            const store = JSON.parse(jsonstorage.innerText)["storage"];
-
-            const a = async () => {
-              const assoc = await interpretate(store, {hold:true});
-
-              Object.keys(assoc).forEach(element => {
-                const o = new ObjectStorage(element);
-                o.cached = true;
-                o.cache = assoc[element];
-              });
-            }
-
-            await a();
-          </script>
-          <script type="module">
           const jsonstorage2 = document.getElementById('json-symbols');
           const store2 = JSON.parse(jsonstorage2.innerText)["storage"];
 
@@ -425,7 +409,7 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
                 console.log('IE: calling our symbol...');
                 if (env.root && !env.novirtual) core[element].instances[env.root.uid] = env.root;
                 const data = await interpretate(core[element].data, env);
-                if (args.length > 0) {
+                if (args) if (args.length > 0) {
                     const key = await interpretate(args[0], env);
                     return data[key];
                 }
@@ -434,7 +418,7 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
             
               core[element].update = async (args, env) => {
                 const data = await interpretate(core[element].data, env);
-                if (args.length > 0) {
+                if (args) if (args.length > 0) {
                     const key = await interpretate(args[0], env);
                     return data[key];
                 }
@@ -457,6 +441,22 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
            await a();           
           </script>
           <GetMachineData MachineData={MachineData}/>  
+          <script type="module">
+            const jsonstorage = document.getElementById('json-objects');
+            const store = JSON.parse(jsonstorage.innerText)["storage"];
+
+            const a = async () => {
+              const assoc = await interpretate(store, {hold:true});
+
+              Object.keys(assoc).forEach(element => {
+                const o = new ObjectStorage(element);
+                o.cached = true;
+                o.cache = assoc[element];
+              });
+            }
+
+            await a();
+          </script>          
           <script type="module">
             const jsonstorage = document.getElementById('cells-data');
             const store = JSON.parse(jsonstorage.innerText)["storage"];

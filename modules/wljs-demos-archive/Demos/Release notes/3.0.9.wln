@@ -741,6 +741,10 @@ Type: Input
 .md
 ## Fixed bugs
 - [x] `Animate`, `Refresh`, `Manipulate` major bugs related to JIT-unsupported data structures and formatting
+- [x] JIT transpiler (`Manipulate` and etc) fails on `VertexTextureCoordinates`
+- [x] JIT transpiler fails silently when `VertexColors` is `RGBColor` list instead of converting it to plain triples of numbers
+- [x] JIT transpiler silently overwrites its own table with `$Failed`
+- [x] JIT transpiler converts 2D polygons incorrectly (replaces with lines - a typo)   
 - [x] **Insert Matrix** snippet is broken
 - [x] `Transparent` is unsupported in the context of 2D and 3D graphics
 - [x] Invisible text selection 
@@ -755,6 +759,10 @@ Type: Output
 %-------------------------------------------------------------------------%
 ## Fixed bugs
 - [x] `Animate`, `Refresh`, `Manipulate` major bugs related to JIT-unsupported data structures and formatting
+- [x] JIT transpiler (`Manipulate` and etc) fails on `VertexTextureCoordinates`
+- [x] JIT transpiler fails silently when `VertexColors` is `RGBColor` list instead of converting it to plain triples of numbers
+- [x] JIT transpiler silently overwrites its own table with `$Failed`
+- [x] JIT transpiler converts 2D polygons incorrectly (replaces with lines - a typo)   
 - [x] **Insert Matrix** snippet is broken
 - [x] `Transparent` is unsupported in the context of 2D and 3D graphics
 - [x] Invisible text selection 

@@ -1,6 +1,8 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+  <|"label" -> "EditorView", "type" -> "keyword", "info" -> "EditorView[string] represents a virtual editor, that renders string expression as in input cell"|>,
+  <|"label" -> "CellView", "type" -> "keyword", "info" -> "CellView[Cell[\"Hello World\", \"Output\", \"markdown\"]] renders cell expression as markdown or other subtype"|>,
 <|"label"->"Locator", "type"->"keyword", "info"->"Locator[] represents a locator graphics primitive.\nLocator[{x,y}] sets the initial position to {x,y}\nEventHandler[Locator[], {\"drag\"->handler}] attaches event handler on drag"|>,
   <|"label"->"Alignment", "type"->"keyword", "info"->"Alignment->{Left, Top} sets hortisontal and vertical items aligment in Row, Column and Grid.\nAlignment->{{Left,Right}, Baseline} aligns first and second items to Left/Right and all items to Baseline vertically"|>,
   <|"label"->"Deploy", "type"->"keyword", "info"->"Deploy[expr] renders expression with disabled editing/selection, where expr can be Panel, Row, Column or nested decorations"|>,

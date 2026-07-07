@@ -257,7 +257,7 @@ interpretate.anonymous = async (d, org) => {
       // 
       const data = await interpretate(core[name].data, env);
 
-      if (args.length > 0) {
+      if (args) if (args.length > 0) {
           const key = await interpretate(args[0], env);
           return data[key];
       }
@@ -271,7 +271,7 @@ interpretate.anonymous = async (d, org) => {
     core[name].update = async (args, env) => {
       //evaluate in the context
       //console.log('IE: update was called...');
-      if (args.length > 0) {
+      if (args) if (args.length > 0) {
           const data = await interpretate(core[element].data, env);
           const key = await interpretate(args[0], env);
           return data[key];

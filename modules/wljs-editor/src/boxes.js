@@ -735,7 +735,7 @@
     const type = await interpretate(args[0], env);
     const value = await interpretate(args[1], env);
 
-    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card text-sm'.split(' ')));
+    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
     env.element.style.backgroundColor = "#fff291";
     env.element.style.verticalAlign = "baseline";
 
@@ -822,7 +822,7 @@
     const units = await interpretate(args[1], {...env, context:quantity});
 
     
-    env.element.classList.add(...('text-gray-500 wljs-card text-sm px-2'.split(' ')));
+    env.element.classList.add(...('text-gray-500 wljs-card text-xs px-2'.split(' ')));
     env.element.style.verticalAlign = 'baseline';
 
     const add = (nn, nunits, gap = false) => {
