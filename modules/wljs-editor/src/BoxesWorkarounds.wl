@@ -669,7 +669,7 @@ Unprotect[Panel];
 Options[Panel] = Join[Options[Panel], {Selectable->True}]
 
 Panel /: MakeBoxes[Panel[expr_, ___], WLXForm] := With[{
-  Content = MakeBoxes[expr, WLXForm]
+  Content = ToString[MakeBoxes[expr, WLXForm]]
 },
   StringJoin["<div class=\"rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400\">", Content, "</div>"]
 ]
