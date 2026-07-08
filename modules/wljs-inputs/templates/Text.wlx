@@ -44,8 +44,8 @@ Component[value_:"", OptionsPattern[]] := With[{
     EditableQ = OptionValue["Editable"]
 },{
     ClassName = With[{c=If[OptionValue[Appearance] === Automatic, 
-        "relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none text-xs py-1 bg-white",
-        "relative cursor-default slbl rounded-md text-left focus:outline-none border-0 text-xs"
+        "relative cursor-default rounded-md pl-3 pr-2 text-left text-gray-900 slbl text-xs py-1 bg-white wljs-card",
+        "relative cursor-default slbl rounded-md text-left border-0 text-xs"
     ]}, If[EditableQ === True, StringJoin[c," h-6 wljs-card "], c]],
     CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
     LabelClass = OptionValue["LabelClass"],
@@ -62,7 +62,7 @@ Component[value_:"", OptionsPattern[]] := With[{
         <div class="sm-controls">
             <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
-              <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="{ClassName}" placeholder="{Placeholder}"/>
+              <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="focus:ring-2 {ClassName}" placeholder="{Placeholder}"/>
             </div>
             <p class="mt-1 text-sm text-gray-500"><Descp/></p>
         </div>
