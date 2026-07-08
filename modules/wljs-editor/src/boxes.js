@@ -2834,17 +2834,6 @@
      return Obj instanceof Element; 
  } 
 
-
-    core.URLDecode = async (args, env) => {
-      const str = await interpretate(args[0], env);
-      return decodeURIComponent(str)
-    }
-
-    core.URLEncode = async (args, env) => {
-      const str = await interpretate(args[0], env);
-      return encodeURIComponent(str)
-    }
-
     boxes.MixedMagnitude = core.List
     quantity.MixedUnit = core.List
 

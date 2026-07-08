@@ -5,7 +5,8 @@ BeginPackage["CoffeeLiqueur`Extensions`Manipulate`Diff`", {
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Extensions`EditorView`",
-    "CoffeeLiqueur`Extensions`InputsOutputs`"  
+    "CoffeeLiqueur`Extensions`InputsOutputs`",
+    "CoffeeLiqueur`Extensions`MarkdownCells`"  
 }]
 
 Begin["`Private`"]
@@ -338,6 +339,29 @@ transpile[Line[_,_], Line[d_, u_], hash1_, hash2_] := With[{
     ]
   |>
 ];
+
+With[{r = #},
+    diff[r[data1_, m___], r[data2_, m___], level_, attributes_] := 
+        diffObject[r[data1, m], r[data2, m], Hash[r[data1, m]], Hash[r[data2, m]]
+    ];
+
+    transpile[r[_,___], r[d_, m___], hash1_, hash2_] := With[{
+      symbol = Unique["cmpled"]
+    },
+      symbol = d;
+      
+      <|
+        "Priority"->1, "Rule" -> (r[d, m] -> r[Offload[symbol], m]),
+        "Reset" -> Function[Null, symbol = d ],
+        "Update" -> Function[{e1, e2, h1, h2},
+          symbol = e2[[1]];
+        ],
+        "Destroy" -> Function[Null,
+          ClearAll[symbol] // Quiet;
+        ]
+      |>
+    ];
+] &/@ {TextView, HTMLView, TeXView, EditorView};
 
 transpile[Inset[_,_], Inset[d_, u_], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]

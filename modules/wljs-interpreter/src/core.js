@@ -231,6 +231,20 @@ core.Sec = async (args, env) => {
 
 core.Sec.update = core.Sec
 
+core.URLDecode = async (args, env) => {
+  const str = await interpretate(args[0], env);
+  return decodeURIComponent(str)
+}
+
+core.URLDecode.update = core.URLDecode;
+
+core.URLEncode = async (args, env) => {
+  const str = await interpretate(args[0], env);
+  return encodeURIComponent(str)
+}
+
+core.URLEncode.update = core.URLEncode;
+
 core.ReadClipboard = async(args, env) => {
     const clipText = await navigator.clipboard.readText();
     return clipText;

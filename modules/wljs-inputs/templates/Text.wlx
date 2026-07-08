@@ -52,7 +52,7 @@ Component[value_:"", OptionsPattern[]] := With[{
     LabelStyle = OptionValue["LabelStyle"]
 },
 {
-    FinalCSS = StringJoin[StringTemplate["width: ``px;"][Round[size]], If[EditableQ, "border:1px solid #e1e1e1;", ""] , CSSStyle]
+FinalCSS = StringJoin[If[ListQ[size], StringTemplate["width: ``px;height: ``px;overflow:auto;"][Round[size[[1]]], Round[size[[2]]]], StringTemplate["width: ``px;overflow:auto;"][Round[size]]], If[EditableQ, "border:1px solid #e1e1e1;", ""] , CSSStyle]
 },
 {
     InitialValue = ToString[value]
