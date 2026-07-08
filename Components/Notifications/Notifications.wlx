@@ -76,15 +76,12 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
         ],
 
         _Notifications`Beeper (*`*) -> Function[type,
-            Print["BEEE!P!"];
-            If[Now - beepTimeout > Quantity[0.2, "Seconds"], 
+            Print["BEEEP!"];
+            If[Now - beepTimeout > Quantity[0.1, "Seconds"], 
                 beepTimeout = Now;
-                Print["BEEEP!"];
-
                 With[{},
                     WebUISubmit[Hold[Beep[type]], client]
                 ];
-
             ,
                 Print["Too many. Suppressed"];
             ]
@@ -120,26 +117,34 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
     ,
         <script type="module">
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+            const chime = async () => {
+                if (audioCtx.state === "suspended") await audioCtx.resume();
+
+                const t = audioCtx.currentTime, f = audioCtx.createBiquadFilter(), v = audioCtx.createGain();
+                f.type = "lowpass"; f.frequency.value = 3200; f.Q.value = .8;
+                v.gain.setValueAtTime(.0001, t); v.gain.linearRampToValueAtTime(.16, t + .02); v.gain.exponentialRampToValueAtTime(.0001, t + .55);
+                f.connect(v).connect(audioCtx.destination);
+
+                [[523.25, 0, .26], [659.25, .12, .38]].forEach(([hz, delay, duration]) => {
+                    const o = audioCtx.createOscillator(), g = audioCtx.createGain(), s = t + delay, e = s + duration;
+                    o.type = "sine"; o.frequency.setValueAtTime(hz, s);
+                    g.gain.setValueAtTime(.0001, s); g.gain.linearRampToValueAtTime(1, s + .015); g.gain.exponentialRampToValueAtTime(.0001, e);
+                    o.connect(g).connect(f); o.start(s); o.stop(e + .02);
+                    o.onended = () => [o, g].forEach(n => n.disconnect());
+                });
+
+                setTimeout(() => [f, v].forEach(n => n.disconnect()), 650);
+            };
+
             core.Beep = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                if (type === "System") {
-                    window.electronAPI.beep();
-                    return;
+                if (type === "System") return window.electronAPI.beep();
+                try {
+                    await chime();
+                } catch (error) {
+                    console.warn("Unable to play notification chime", error);
                 }
-                const oscillator = audioCtx.createOscillator();
-                oscillator.frequency.setValueAtTime(2*440, audioCtx.currentTime);
-                const gainNode = audioCtx.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start(audioCtx.currentTime);
-                gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-                const fadeOutTime = 0.5;
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + fadeOutTime);
-                setTimeout(() => {
-                    oscillator.stop();
-                    oscillator.disconnect();
-                    gainNode.disconnect();
-                }, fadeOutTime * 1000);
                 if (typeof type == 'string') interpretate.alert('Why the Beep? '+type);
             }
             core.HapticFeedback = () => {
