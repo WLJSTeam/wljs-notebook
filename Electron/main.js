@@ -1127,6 +1127,11 @@ callFakeMenu["zoomOut"] = () => {
     windows.focused.call('zoomOut', true);
 }
 
+callFakeMenu["zoomReset"] = () => {
+    windows.focused.call('zoomReset', true);
+}
+
+
 callFakeMenu["locateExamples"] = async(ev) => {
     create_window({url: server.url.default('local') + `/folder/` + encodeURIComponent(path.join(app.getPath('documents'), 'WLJS Notebooks', 'Demos')), title: 'Examples'});
 }
