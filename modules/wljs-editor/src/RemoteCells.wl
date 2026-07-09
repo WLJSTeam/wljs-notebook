@@ -148,7 +148,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
         } // Flatten, 
         generated = "rm"<>ToString[ Hash[notebook] ]<>"G`"
     }, {
-        initCells = If[Length[initCellsPre] == 1, Append[initCellsPre, <|"Data"->"Null"|>], initCellsPre]
+        initCells = initCellsPre
     },
 
     
@@ -159,9 +159,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
         Echo["Mode:"];
         Echo[mode];
 
-        If[Length[initCellsPre] == 1, 
-            Echo["[FIXME] Only a single cell was found. Padding list of cells with Null"];
-        ];
+
         
         If[sessions[session, uid] === True,
             Echo["Was already evaluated. Init cells were skipped"];
@@ -186,9 +184,9 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             
 
             (* evaluate notebook in the context of a caller notebook if provided *)
-            With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ Drop[initCells,-1],
+            With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ initCells,
                 {Transaction[
-                    "Data"->"CoffeeLiqueur`Extensions`RemoteCells`Private`$cachedOutput[\""<>uid<>"\"] = "<>(initCells[[-1]]["Data"])<>";"
+                    "Data"->"CoffeeLiqueur`Extensions`RemoteCells`Private`$cachedOutput[\""<>uid<>"\"] = %;"
                 ]}
             ] },
 
