@@ -29399,7 +29399,7 @@ const stateTracker = ViewPlugin.fromClass(
   },
 );
 
-wolframLanguage.of = (vocabulary) => {
+wolframLanguage.of = (vocabulary, trackedQ=true) => {
 
   return [
     StreamLanguage.define(mathematica),
@@ -29409,7 +29409,7 @@ wolframLanguage.of = (vocabulary) => {
         //snippetCompletion('mySnippet(${one}, ${two})', {label: 'mySnippet'})
       ]
     }),
-    stateTracker,
+    ...(trackedQ ? [stateTracker] : []),
     keymap.of([{ key: "Escape", run: newESC() }])
   ];  
 };
@@ -34871,7 +34871,7 @@ compactWLEditor = (args) => {
     editorCustomThemeCompact,  
     tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
-    wolframLanguage.of(EditorAutocomplete),
+    wolframLanguage.of(EditorAutocomplete, false),
     FractionBoxWidget(compactWLEditor),
     SqrtBoxWidget(compactWLEditor),
     SubscriptBoxWidget(compactWLEditor),
@@ -34936,7 +34936,7 @@ compactWLEditor.state = (args) => {
       minimalSetup,
       editorCustomThemeCompact,  
       syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
-      wolframLanguage.of(EditorAutocomplete),
+      wolframLanguage.of(EditorAutocomplete, false),
       FractionBoxWidget(compactWLEditor),
       SqrtBoxWidget(compactWLEditor),
       SubscriptBoxWidget(compactWLEditor),
@@ -35442,6 +35442,58 @@ class CodeMirrorCell {
 
   //I HATE YOU WOLFRAM!!!
 
+  const keepMaxSizeDebounce = 100;
+
+  function updateEditorMaxSize(env) {
+    env.local.keepMaxSizeLastCheck = performance.now();
+
+    if (env.local.keepMaxHeight) {
+      const height = env.element.offsetHeight;
+      const newHeight = Math.max(env.local.height || 0, height);
+      if (height && env.local.height != newHeight && newHeight > 50) {
+        env.local.height = newHeight;
+        env.element.style.minHeight = env.local.height + 'px';
+      }
+    }
+
+    if (env.local.keepMaxWidth) {
+      const width = env.element.offsetWidth;
+      const newWidth = Math.max(env.local.width || 0, width);
+      if (width && env.local.width != newWidth && newWidth > 50) {
+        env.local.width = newWidth;
+        env.element.style.minWidth = env.local.width + 'px';
+      }
+    }
+  }
+
+  function keepEditorMaxSize(env) {
+    if (!env.local.keepMaxHeight && !env.local.keepMaxWidth) return;
+    
+    const now = performance.now();
+    const lastCheck = env.local.keepMaxSizeLastCheck || 0;
+    const elapsed = now - lastCheck;
+
+    
+
+    if (lastCheck && elapsed < keepMaxSizeDebounce) {
+      if (!env.local.keepMaxSizeTimeout) {
+        env.local.keepMaxSizeTimeout = setTimeout(() => {
+          env.local.keepMaxSizeTimeout = null;
+          if (!env.local.editor) return;
+          updateEditorMaxSize(env);
+        }, keepMaxSizeDebounce - elapsed);
+      }
+      return;
+    }
+
+    if (env.local.keepMaxSizeTimeout) {
+      clearTimeout(env.local.keepMaxSizeTimeout);
+      env.local.keepMaxSizeTimeout = null;
+    }
+
+    updateEditorMaxSize(env);
+  }
+
   //for dynamics
   core.EditorView = async (args, env) => {
     //cm6 inline editor (editable or read-only)
@@ -35497,29 +35549,19 @@ class CodeMirrorCell {
       }
     }
 
-    if (options.KeepMaxHeight) {
+    env.local.keepMaxHeight = Boolean(options.KeepMaxHeight);
+    env.local.keepMaxWidth = Boolean(options.KeepMaxWidth);
+
+
+    if (env.local.keepMaxHeight) {
       env.local.height = 0;
-      env.local.heightKeeper = setInterval(() => {
-        const newHeight = Math.max(env.local.height, env.element.offsetHeight);
-        if (!env.element.offsetHeight) return;
-        if (env.local.height != newHeight && newHeight > 100) {
-          env.local.height = newHeight;
-          env.element.style.minHeight = env.local.height + 'px';
-        }
-      }, 1000);
     }
 
-    if (options.KeepMaxWidth) {
+    if (env.local.keepMaxWidth) {
       env.local.width = 0;
-      env.local.widthKeeper = setInterval(() => {
-        const newWidth = Math.max(env.local.width, env.element.offsetWidth);
-        if (!env.element.offsetWidth) return;
-        if (env.local.width != newWidth && newWidth > 100) {
-          env.local.width = newWidth;
-          env.element.style.minWidth = env.local.width + 'px';
-        }
-      }, 1000);
     }    
+
+    env.local.keepMaxSizeLastCheck = 0;
 
     if (options.Event) {
       //then it means this is like a slider
@@ -35562,6 +35604,7 @@ class CodeMirrorCell {
     if (!env.local.editor) return;
     const textData = unicodeToChar2(await interpretate(args[0], env));
     console.log('editor view: dispatch');
+    keepEditorMaxSize(env);
     if (env.local.forceUpdate && false) { //option was removed since we fixed it
       env.local.editor.dispatch({
         changes: {from: 0, to: env.local.editor.state.doc.length, insert: ''}
@@ -35585,14 +35628,10 @@ class CodeMirrorCell {
   };
 
   core.EditorView.destroy = async (args, env) => {
-    if (env.local.heightKeeper) {
-      clearInterval(env.local.heightKeeper);
+    if (env.local.keepMaxSizeTimeout) {
+      clearTimeout(env.local.keepMaxSizeTimeout);
     }
 
-    if (env.local.widthKeeper) {
-      clearInterval(env.local.widthKeeper);
-    }
-    
     env.local.editor.destroy();
 
   };

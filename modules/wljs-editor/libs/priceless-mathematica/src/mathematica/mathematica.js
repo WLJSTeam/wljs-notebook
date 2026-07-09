@@ -324,7 +324,7 @@ const stateTracker = ViewPlugin.fromClass(
   },
 );
 
-wolframLanguage.of = (vocabulary) => {
+wolframLanguage.of = (vocabulary, trackedQ=true) => {
 
   return [
     StreamLanguage.define(mathematica),
@@ -334,7 +334,7 @@ wolframLanguage.of = (vocabulary) => {
         //snippetCompletion('mySnippet(${one}, ${two})', {label: 'mySnippet'})
       ]
     }),
-    stateTracker,
+    ...(trackedQ ? [stateTracker] : []),
     keymap.of([{ key: "Escape", run: newESC() }])
   ];  
 }

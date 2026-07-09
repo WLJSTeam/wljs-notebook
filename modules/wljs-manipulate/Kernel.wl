@@ -472,7 +472,7 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
     ] ];
 
     With[{
-      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True] 
+      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True] 
     },
     
         Switch[form,
@@ -535,7 +535,7 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPatt
   ];
 
     With[{
-      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True] 
+      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True,"KeepMaxHeight"->True, "KeepMaxWidth"->True] 
     },
 
       Switch[form,
