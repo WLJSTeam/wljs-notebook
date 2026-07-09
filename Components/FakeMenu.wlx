@@ -55,6 +55,7 @@ LayoutView = ExportString[{
     <|"type"->"separator"|>,
     <|"label"->"Zoom in", "name"->"zoomIn"|>,
     <|"label"->"Zoom out", "name"->"zoomOut"|>,
+    <|"label"->"Actual size", "name"->"zoomReset"|>,
     <|"type"->"separator"|>,
     <|"label"->"Dev Tools", "name"->"devTools"|>
    }
