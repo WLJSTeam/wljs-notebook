@@ -795,6 +795,22 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## More Examples!
+Check out new examples in *Interactive Evaluation*, *For Physicists* and *Mini Apps*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## More Examples!
+Check out new examples in *Interactive Evaluation*, *For Physicists* and *Mini Apps*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Fixed bugs
 - [x] `Animate`, `Refresh`, `Manipulate` major bugs related to JIT-unsupported data structures and formatting
 - [x] JIT transpiler (`Manipulate` and etc) fails on `VertexTextureCoordinates`
@@ -865,16 +881,6 @@ Key: 94766904-6b81-4bf0-92a3-d782c3467c31
 Key: a87d7cba-d1af-438d-8260-3e4f16529314
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[HTMLView["<div class=\"sm-controls\"><label class=\"block text-sm font-medium leading-6 text-gray-900 \" style=\"\" for=\"#instanceId\"></label><div class=\"mt-1\"><div style=\"width: 100px; \" class=\"relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs py-1 bg-white\" id=\"#instanceId\" data-type=\"text-string\">...</div></div><p class=\"mt-1 text-sm text-gray-500\"></p></div>\n", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]], Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate["A very long line here", "text-string", "innerText", True]]]|>
-
-%-------------------------------------------------------------------------%
-Key: 94366611-2ec1-48a0-af7f-c0f341ae8aeb
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[HTMLView["<div class=\"sm-controls\"><label class=\"block text-sm font-medium leading-6 text-gray-900 \" style=\"\" for=\"#instanceId\">Before</label><div class=\"mt-1\"><div style=\"width: Round[Automatic]px; \" class=\"relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs py-1 bg-white\" id=\"#instanceId\" data-type=\"text-string\">...</div></div><p class=\"mt-1 text-sm text-gray-500\"></p></div>\n", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]], Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate[Offload[sqval], "text-string", "innerText", True]]]|>
-
-%-------------------------------------------------------------------------%
-Key: e59be242-5112-4b9e-9f5b-5cd702cf8b08
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[HTMLView["<div class=\"sm-controls\"><label class=\"block text-sm font-medium leading-6 text-gray-900 \" style=\"\" for=\"#instanceId\">After</label><div class=\"mt-1\"><div style=\"width: Round[Automatic]px; \" class=\"relative cursor-default rounded-md 0 pl-3 pr-2 text-left text-gray-900 slbl focus:outline-none sm:text-xs py-1 bg-white\" id=\"#instanceId\" data-type=\"text-string\">...</div></div><p class=\"mt-1 text-sm text-gray-500\"></p></div>\n", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]], Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate[Offload[StringJoin["sqval = ", ToString[NumberForm[sqval, {4, 2}]]]], "text-string", "innerText", True]]]|>
 
 %-------------------------------------------------------------------------%
 Key: ba89cb44-04a0-4060-8bbe-9c1967a41efd
