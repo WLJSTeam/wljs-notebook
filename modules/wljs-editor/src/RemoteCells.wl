@@ -549,6 +549,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                     (* FWD events if all already happend and subscribe *)
                     If[TrueQ[win`HashMap[hash]["WebSocketQ"]],
+                        Echo["Simulate all events to already mounted window"];
                         
                         GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", Null ] ];
                         With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["KernelWebSocket"]|>]},

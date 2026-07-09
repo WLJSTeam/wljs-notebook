@@ -199,7 +199,7 @@ Component[OptionsPattern[] ] := With[{
             (* /* reset WS connection for sure, in a case of incorrect closed socket */*)
             window["WebSocketQ"] = False; 
             window["Opened"] = True;
-            window["Socket"] = $Client;
+            window["Socket"] = Global`$Client;
             window["ModalsChannel"] = modals;
             window["MessagerChannel"] = log;
 
