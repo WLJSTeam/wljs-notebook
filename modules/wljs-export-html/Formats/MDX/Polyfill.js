@@ -97,7 +97,7 @@ server.loadObjects = (result) => {
 
             if (env.root && !env.novirtual) core[oName].instances[env.root.uid] = env.root; //if it was evaluated insdide the container, then, add it to the tracking list
             //if (env.hold) return ['JSObject', core[name].data];
-            if (args.length > 0) {
+            if (args) if (args.length > 0) {
               const key = await interpretate(args[0], env);
               return data[key];
             }
@@ -108,7 +108,9 @@ server.loadObjects = (result) => {
           core[oName].update = async (args, env) => {
             //evaluate in the context
             //console.log('IE: update was called...');
-            const aQ = args.length > 0;
+            let aQ = false;
+
+            if (args) aQ = args.length > 0;
         
             //cache good for numerics
             if (env.useCache && !aQ) {
