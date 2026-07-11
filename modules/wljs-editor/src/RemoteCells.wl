@@ -138,7 +138,7 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
 
     With[{
         (* build a cell list *)
-        initCells = {
+        initCellsPre = {
             If[!sessions[session, uid], Select[Select[notebook["Cells"], cell`InputCellQ], (#["Props"]["InitGroup"] === True) &], {} ], 
             If[mode === "Module",
                 SelectFirst[notebook["Cells"] // Reverse, (cell`InputCellQ[#] && wolframCellQ[#])&] /. {_Missing -> Nothing}
@@ -147,17 +147,22 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
             ]
         } // Flatten, 
         generated = "rm"<>ToString[ Hash[notebook] ]<>"G`"
+    }, {
+        initCells = initCellsPre
     },
-        
+
+    
         Echo["Cells to evaluate:"];
         Echo[Length[initCells] ];
         Echo["Context:"];
         Echo[evalContext];
         Echo["Mode:"];
         Echo[mode];
+
+
         
         If[sessions[session, uid] === True,
-            Echo["Was already evaluated. Skipping init cells"];
+            Echo["Was already evaluated. Init cells were skipped"];
         ];
 
         sessions[session, uid] = True;
@@ -176,10 +181,12 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
                 ];
             ];
 
+            
+
             (* evaluate notebook in the context of a caller notebook if provided *)
-            With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ Drop[initCells,-1],
+            With[{transactions = Join[cell`ToTransaction[#, "Notebook"->Null] &/@ initCells,
                 {Transaction[
-                    "Data"->"CoffeeLiqueur`Extensions`RemoteCells`Private`$cachedOutput[\""<>uid<>"\"] = "<>(initCells[[-1]]["Data"])<>";"
+                    "Data"->"CoffeeLiqueur`Extensions`RemoteCells`Private`$cachedOutput[\""<>uid<>"\"] = %;"
                 ]}
             ] },
 
@@ -540,13 +547,30 @@ EventHandler[NotebookEditorChannel // EventClone,
                 With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], If[cell`InputCellQ[cell`HashMap[hash]], EventClone[hash], hash]]},
                     (* cellClonedEvents[callback] = w; *)
 
+                    (* FWD events if all already happend and subscribe *)
+                    If[TrueQ[win`HashMap[hash]["WebSocketQ"]],
+                        Echo["Simulate all events to already mounted window"];
+                        
+                        GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", Null ] ];
+                        With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["KernelWebSocket"]|>]},
+                            GenericKernel`SendAsync[kernel, EventFire[callback, "Ready", winO] ];
+                        ];
+
+                        With[{ev = EventClone[win`HashMap[hash]["Socket"] ]}, EventHandler[ev, {
+                            "Closed" -> Function[Null,
+                                EventRemove[ev];
+                                GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", True ] ];
+                            ]
+                        }]];
+                    ];
+                    
                     EventHandler[w, {
                         "OnWebSocketConnected" -> Function[assoc,
                             With[{socket = assoc["Client"] , ev = EventClone[assoc["Client"] ] },
                                 EventHandler[ev, {
                                     "Closed" -> Function[Null,
                                         EventRemove[ev];
-                                        GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> socket|>] ] ];
+                                        GenericKernel`SendAsync[kernel, EventFire[callback, "Closed", True ] ];
                                     ]
                                 }];
 

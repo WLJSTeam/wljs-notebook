@@ -1,204 +1,297 @@
-<|"Notebook" -> <|"Controller" -> "591f2be3-baf4-4ad1-b489-0a275322cc61", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$340], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "26b81963-406f-4c35-87f2-637bd71f76b1", "Objects" -> <||>, 
-   "Path" -> "/Applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/New \
-Folder With Items/showopts.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Show options", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$333]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Show options\nAnalyzes the code from the \
-left of the cursor, finds a function and prints its options. You can pick up \
-and edit options you need. \n\nAt the end it will paste selected ones to the \
-editor, where your cursor was", "Display" -> "codemirror", 
-    "Hash" -> "dd2cba7d-b2d4-4851-a78d-d190fa002b5e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "# Show options\nAnalyzes the code from the left of the \
-cursor, finds a function and prints its options. You can pick up and edit \
-options you need. \n\nAt the end it will paste selected ones to the editor, \
-where your cursor was", "Display" -> "markdown", 
-    "Hash" -> "1c2dc077-243b-4864-84a3-c1220fd5feea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> ".md\n\n![](attachments/ShowOptions%20video%20to%20APNG.png)\n\
-", "Display" -> "codemirror", "Hash" -> 
-     "47d6ccea-dd95-4006-8f0a-5b309343835f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "\n![](attachments/ShowOptions%20video%20to%20APNG.png)\n", 
-    "Display" -> "markdown", "Hash" -> 
-     "6925ca4b-900c-4940-80c2-dd4a2ff9ffa7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> ".md\n__Source code__", "Display" -> "codemirror", 
-    "Hash" -> "51fb282f-f260-4222-ae29-930e62be1a83", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "__Source code__", "Display" -> "markdown", 
-    "Hash" -> "7b5d61c5-a884-49db-a441-5c532056fcbb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> ".wlx\nOptionsHelper`Component[name_, o_List,  promise_] := \
-Module[{array = {}, garbage = {}}, With[{\n  ListUID = CreateUUID[], \
-ButtonSubmit = CreateUUID[], ButtonCancel = CreateUUID[],\n  Usage   = \
-Information[name, \"Usage\"],\n  Title = name,\n  ListOpts = Table[ With[{e = \
-CreateUUID[], item = o[[i]], j=i, type = Head[o[[i]]] === Rule},\n\n    \
-AppendTo[array, StringJoin[ToString[item[[1]], InputForm], If[type, \"->\", \
-\":>\"], ToString[Extract[item, 2, HoldForm], StandardForm]]];\n    \
-EventHandler[e, Function[data, array[[j]] = StringJoin[ToString[item[[1]], \
-InputForm], If[type, \"->\", \":>\"], data] ]];\n\n    AppendTo[garbage, \
-e];\n\n    With[{\n        Label = item[[1]],\n        Field = \
-EditorView[ToString[Extract[item, 2, HoldForm], StandardForm], \"Event\"->e] \
-// CreateFrontEndObject\n    },\n                  <div class=\"py-2 px-2 \
-my-1 columns-2 rounded-md\">\n                    <dt class=\"text-sm \
-font-medium leading-6 text-gray-900\"><Label/></dt>\n                    <dd \
-class=\"mt-1 text-sm leading-6 text-gray-700 col-span-2 \
-sm:mt-0\"><Field/></dd>\n                  </div>    \n    ]\n   ], {i, \
-Length[o]}] \n},\n\n EventHandler[ListUID, {\n  \"Cancel\" -> \
-Function[Null,\n    EventFire[promise, Reject, False];\n    \
-Print[\"Cancelled\"];\n    EventRemove /@ garbage;\n    \
-EventRemove[ListUID];\n  ],\n\n  \"Submit\" -> Function[data,\n    \
-EventFire[promise, Resolve, StringRiffle[Select[Transpose[{data, array}], \
-First][[All,2]], \", \"]];\n    EventRemove /@ garbage;\n    \
-EventRemove[ListUID];\n  ]\n }];\n\n <div>\n  <div class=\"px-2\">\n    <div \
-class=\"flex flex-row\">\n      <h3 class=\"text-base font-semibold leading-7 \
-text-gray-900\"><Title/></h3>\n      <button id=\"{ButtonSubmit}\" \
-type=\"button\" class=\"ml-auto relative rounded-md text-green-500 \
-hover:text-green-300  focus:outline-none focus:ring-2 focus:ring-white\"><svg \
-class=\"h-5 w-5\" viewBox=\"0 0 20 20\" fill=\"currentColor\" \
-aria-hidden=\"true\"><svg fill=\"currentColor\" stroke-width=\"1.5\" \
-class=\"w-5 h-5\" viewBox=\"0 0 24 24\"><path \
-d=\"M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21Z\
-M8,11.5l3,3,5-5\" fill=\"none\" \
-stroke=\"currentColor\"></path></svg></svg></button>\n      <button \
-id=\"{ButtonCancel}\" type=\"button\" class=\"ml-4 relative rounded-md \
-text-red-500 hover:text-red-300 focus:outline-none focus:ring-2 \
-focus:ring-white\">\n              <span class=\"absolute \
--inset-2.5\"></span>\n              <span class=\"sr-only\">Close \
-panel</span>\n              <svg class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 \
-0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\" \
-aria-hidden=\"true\">\n                <path stroke-linecap=\"round\" \
-stroke-linejoin=\"round\" d=\"M6 18L18 6M6 6l12 12\" />\n              \
-</svg>\n      </button>\n    </div>\n    <p class=\"mt-1 text-sm leading-6 \
-text-gray-500\"><Usage/></p>\n  </div>\n  <div class=\"mt-2 border-t \
-border-gray-100\">\n    <dl class=\"divide-y divide-gray-100\" \
-id=\"{ListUID}\">\n      <ListOpts/>\n    </dl>\n  </div>\n  <script \
-type=\"module\">\n    const list = document.getElementById('<ListUID/>');\n   \
- const selected = [];\n    for (let i=0; i<list.children.length; ++i) {\n     \
- const child = list.children[i];\n      selected.push(false);\n      \
-child.addEventListener('click', (e) => {\n        if (e.target.nodeName !== \
-'DIV') {\n          child.classList.toggle('bg-teal-500/15');\n          \
-selected[i] = !selected[i];\n        } else {\n          \
-child.classList.add('bg-teal-500/15');\n          selected[i] = true;\n       \
- }\n      });\n    };\n\n    const submit = \
-document.getElementById('<ButtonSubmit/>');\n    const cancel = \
-document.getElementById('<ButtonCancel/>');\n    \
-submit.addEventListener('click', () => {\n      \
-server.kernel.emitt('<ListUID/>', '{'+selected.map((e)=>{\n        if (e) \
-return 'True'; else return 'False';\n      }).join(',')+'}', 'Submit');\n    \
-});\n    cancel.addEventListener('click', () => {\n      \
-server.kernel.emitt('<ListUID/>', 'False', 'Cancel');\n    });\n  </script>\n \
-</div>\n]];", "Display" -> "codemirror", 
-    "Hash" -> "20597391-c4d8-4bdd-bc05-3bd02c75123e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> ".wlx\nmakeWidget[self_] := Module[{piece, cursor, editor, \
-cell = self, win = CurrentWindow[], destroy, promise},\n  destroy := \
-SetTimeout[Delete[cell], 300];\n  \n  \
-If[FrontFetch[FrontEditorSelected[\"Type\"]] =!= \"mathematica\", \
-Notify[\"Only Wolfram Language is supported\", \"Topic\"->\"Warning\"]; \
-destroy; Return[Null, Module]];\n  \n  {cursor, editor} = \
-FrontFetch[{FrontEditorSelected[\"Cursor\"], \
-FrontEditorSelected[\"Editor\"]}];\n  \n  piece = \
-FrontFetch[FrontEditorSelected[\"GetDoc\"]];\n\n  piece = StringTake[piece, \
-cursor//First] // StringReverse;\n\n  (* remove all string expressions *)\n  \
-piece =  StringReplace[piece, \"\\\"\"~~Except[\"\\\"\"]..~~\"\\\"\" -> \
-\"\"];\n\n  (* collapce matching brackets *)\n  While[piece =!= (piece = \
-StringReplace[piece, \"]\"~~(Except[\"]\"|\"[\"]..| \"\")~~\"[\" -> \"\"]),\n \
-   Null;\n  ];\n\n  piece = StringCases[piece, (Except[\"]\"|\"[\"]..| \
-\"\")~~\"[\"~~name:WordCharacter.. :> name, 1];\n  If[Length[piece] == 0, \
-Notify[\"No valid symbol found\", \"Topic\"->\"Warning\"]; destroy; \
-Return[Null, Module]];\n  piece = piece // First // StringReverse;\n  \n  \
-With[{ opts = ToExpression[piece, InputForm, Options]},\n    If[Length[opts] \
-== 0, Notify[StringJoin[\"No options defined for \", piece], \
-\"Topic\"->\"Warning\"]; destroy; Return[Null, Module]];\n    \n    promise = \
-Promise[];\n    Then[promise, Function[data,\n      FrontSubmit[ \
-FrontEditorSelected[\"Set\", data, \"Editor\"->editor], \"Window\"->win];\n   \
-   destroy\n    ], (destroy)&];\n    \n    With[{Layout = \
-OptionsHelper`Component[piece, opts, promise]},\n      \
-<Identity><Layout/></Identity>\n    ]\n  ]  \n  \n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4c22fd20-7739-4ea5-8dac-dde85574b4c0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "Module[{f = NotebookFocusedCell[], v},\n  v = \
-NotebookWrite[NotebookLocationSpecifier[f, \"After\"], Cell[makeWidget[v], \
-\"Output\", \"WLX\"]];\n];", "Display" -> "codemirror", 
-    "Hash" -> "3f9bc16a-0004-49b5-96b3-e68f1db2ad63", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> ".md\nButton template", "Display" -> "codemirror", 
-    "Hash" -> "e65b4d7b-12c9-49a8-bd8b-1b3734e2ade2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "Button template", "Display" -> "markdown", 
-    "Hash" -> "d8389ba5-004d-4818-9608-203776b0b1ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n              <svg class=\"h-5 w-5 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"currentColor\" \
-viewBox=\"0 0 24 24\"><path d=\"M19 9a3 3 0 0 0-2.82 2H3a1 1 0 0 0 0 \
-2h13.18A3 3 0 1 0 19 9zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z\"></path>\n\n<path \
-d=\"M3 7h1.18a3 3 0 0 0 5.64 0H21a1 1 0 0 0 0-2H9.82a3 3 0 0 0-5.64 0H3a1 1 0 \
-0 0 0 2zm4-2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z\"></path>\n\n<path d=\"M21 \
-17h-7.18a3 3 0 0 0-5.64 0H3a1 1 0 0 0 0 2h5.18a3 3 0 0 0 5.64 0H21a1 1 0 0 0 \
-0-2zm-10 2a1 1 0 1 1 1-1 1 1 0 0 1-1 1z\"></path>\n\n</svg>\n              \
-<span class=\"ml-3 flex-auto truncate\"><Title/></span><span class=\"ml-3 \
-flex-none text-xs font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-             <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>         \n      \
-          </button>\n              </span>\n    </li>    \
-\n]\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "215db19e-4948-44c6-a6a6-83b116391d44", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "942233aa-e9ff-4534-aa69-fd9e42d673d5"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Show options
+Analyzes the code from the left of the cursor, finds a function and prints its options. You can pick up and edit options you need. 
+
+At the end it will paste selected ones to the editor, where your cursor was
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Show options
+Analyzes the code from the left of the cursor, finds a function and prints its options. You can pick up and edit options you need. 
+
+At the end it will paste selected ones to the editor, where your cursor was
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+![](attachments/ShowOptions%20video%20to%20APNG.png)
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+![](attachments/ShowOptions%20video%20to%20APNG.png)
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+OptionsHelper`Component[name_, o_List,  promise_] := Module[{array = {}, garbage = {}}, With[{
+  ListUID = CreateUUID[], ButtonSubmit = CreateUUID[], ButtonCancel = CreateUUID[],
+  Usage   = Information[name, "Usage"],
+  Title = name,
+  ListOpts = Table[ With[{e = CreateUUID[], item = o[[i]], j=i, type = Head[o[[i]]] === Rule},
+
+    AppendTo[array, StringJoin[ToString[item[[1]], InputForm], If[type, "->", ":>"], ToString[Extract[item, 2, HoldForm], StandardForm]]];
+    EventHandler[e, Function[data, array[[j]] = StringJoin[ToString[item[[1]], InputForm], If[type, "->", ":>"], data] ]];
+
+    AppendTo[garbage, e];
+
+    With[{
+        Label = item[[1]],
+        Field = EditorView[ToString[Extract[item, 2, HoldForm], StandardForm], "Event"->e] // CreateFrontEndObject
+    },
+                  <div class="py-2 px-2 my-1 columns-2 rounded-md">
+                    <dt class="text-sm font-medium leading-6 text-gray-900"><Label/></dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 col-span-2 sm:mt-0"><Field/></dd>
+                  </div>    
+    ]
+   ], {i, Length[o]}] 
+},
+
+ EventHandler[ListUID, {
+  "Cancel" -> Function[Null,
+    EventFire[promise, Reject, False];
+    Print["Cancelled"];
+    EventRemove /@ garbage;
+    EventRemove[ListUID];
+  ],
+
+  "Submit" -> Function[data,
+    EventFire[promise, Resolve, StringRiffle[Select[Transpose[{data, array}], First][[All,2]], ", "]];
+    EventRemove /@ garbage;
+    EventRemove[ListUID];
+  ]
+ }];
+
+ <div>
+  <div class="px-2">
+    <div class="flex flex-row">
+      <h3 class="text-base font-semibold leading-7 text-gray-900"><Title/></h3>
+      <button id="{ButtonSubmit}" type="button" class="ml-auto relative rounded-md text-green-500 hover:text-green-300  focus:outline-none focus:ring-2 focus:ring-white"><svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><svg fill="currentColor" stroke-width="1.5" class="w-5 h-5" viewBox="0 0 24 24"><path d="M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21ZM8,11.5l3,3,5-5" fill="none" stroke="currentColor"></path></svg></svg></button>
+      <button id="{ButtonCancel}" type="button" class="ml-4 relative rounded-md text-red-500 hover:text-red-300 focus:outline-none focus:ring-2 focus:ring-white">
+              <span class="absolute -inset-2.5"></span>
+              <span class="sr-only">Close panel</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+      </button>
+    </div>
+    <p class="mt-1 text-sm leading-6 text-gray-500"><Usage/></p>
+  </div>
+  <div class="mt-2 border-t border-gray-100">
+    <dl class="divide-y divide-gray-100" id="{ListUID}">
+      <ListOpts/>
+    </dl>
+  </div>
+  <script type="module">
+    const list = document.getElementById('<ListUID/>');
+    const selected = [];
+    for (let i=0; i<list.children.length; ++i) {
+      const child = list.children[i];
+      selected.push(false);
+      child.addEventListener('click', (e) => {
+        if (e.target.nodeName !== 'DIV') {
+          child.classList.toggle('bg-teal-500/15');
+          selected[i] = !selected[i];
+        } else {
+          child.classList.add('bg-teal-500/15');
+          selected[i] = true;
+        }
+      });
+    };
+
+    const submit = document.getElementById('<ButtonSubmit/>');
+    const cancel = document.getElementById('<ButtonCancel/>');
+    submit.addEventListener('click', () => {
+      server.kernel.emitt('<ListUID/>', '{'+selected.map((e)=>{
+        if (e) return 'True'; else return 'False';
+      }).join(',')+'}', 'Submit');
+    });
+    cancel.addEventListener('click', () => {
+      server.kernel.emitt('<ListUID/>', 'False', 'Cancel');
+    });
+  </script>
+ </div>
+]];
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+makeWidget[self_] := Module[{piece, cursor, editor, cell = self, win = CurrentWindow[], destroy, promise},
+  destroy := SetTimeout[Delete[cell], 300];
+  
+  If[FrontFetch[FrontEditorSelected["Type"]] =!= "mathematica", Notify["Only Wolfram Language is supported", "Topic"->"Warning"]; destroy; Return[Null, Module]];
+  
+  {cursor, editor} = FrontFetch[{FrontEditorSelected["Cursor"], FrontEditorSelected["Editor"]}];
+  
+  piece = FrontFetch[FrontEditorSelected["GetDoc"]];
+
+  piece = StringTake[piece, cursor//First] // StringReverse;
+
+  (* remove all string expressions *)
+  piece =  StringReplace[piece, "\""~~Except["\""]..~~"\"" -> ""];
+
+  (* collapce matching brackets *)
+  While[piece =!= (piece = StringReplace[piece, "]"~~(Except["]"|"["]..| "")~~"[" -> ""]),
+    Null;
+  ];
+
+  piece = StringCases[piece, (Except["]"|"["]..| "")~~"["~~name:WordCharacter.. :> name, 1];
+  If[Length[piece] == 0, Notify["No valid symbol found", "Topic"->"Warning"]; destroy; Return[Null, Module]];
+  piece = piece // First // StringReverse;
+  
+  With[{ opts = ToExpression[piece, InputForm, Options]},
+    If[Length[opts] == 0, Notify[StringJoin["No options defined for ", piece], "Topic"->"Warning"]; destroy; Return[Null, Module]];
+    
+    promise = Promise[];
+    Then[promise, Function[data,
+      FrontSubmit[ FrontEditorSelected["Set", data, "Editor"->editor], "Window"->win];
+      destroy
+    ], (destroy)&];
+    
+    With[{Layout = OptionsHelper`Component[piece, opts, promise]},
+      <Identity><Layout/></Identity>
+    ]
+  ]  
+  
+]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{f = NotebookFocusedCell[], v},
+  v = NotebookWrite[NotebookLocationSpecifier[f, "After"], Cell[makeWidget[v], "Output", "WLX"]];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Button template
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Button template
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+              <svg class="h-5 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9a3 3 0 0 0-2.82 2H3a1 1 0 0 0 0 2h13.18A3 3 0 1 0 19 9zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+
+<path d="M3 7h1.18a3 3 0 0 0 5.64 0H21a1 1 0 0 0 0-2H9.82a3 3 0 0 0-5.64 0H3a1 1 0 0 0 0 2zm4-2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"></path>
+
+<path d="M21 17h-7.18a3 3 0 0 0-5.64 0H3a1 1 0 0 0 0 2h5.18a3 3 0 0 0 5.64 0H21a1 1 0 0 0 0-2zm-10 2a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"></path>
+
+</svg>
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                       <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>         
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

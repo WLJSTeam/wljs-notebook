@@ -1,0 +1,321 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Lorentz Fitting of an Absorption Spectrum
+
+This notebook builds a compact WLJS app for fitting absorption spectra with Lorentz oscillator line shapes. It imports measured data, initializes the resonance frequency, amplitude, and linewidth parameters, and exposes an interactive widget for tuning the model before reading out the fitted parameters and response function.
+
+## Model and response functions
+
+Each absorption feature is represented by the dissipative part of a damped Lorentz oscillator, $A \Gamma^2 \omega / [\Gamma^2 \omega^2 + (\omega_0^2 - \omega^2)^2]$. Here $\omega_0$ is the resonance frequency, $A$ controls oscillator strength, and $\Gamma$ (`width`) sets the linewidth.
+
+:::warning
+Multiple resonances are added linearly assuming that $\\varepsilon_{\\infty}$ is much larger than total contribution of the oscillators. 
+:::
+
+The `sample` helper evaluates the summed response on a chosen frequency grid, with a constant background and scale/path factor used later by the fitting widget.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Lorentz Fitting of an Absorption Spectrum
+
+This notebook builds a compact WLJS app for fitting absorption spectra with Lorentz oscillator line shapes. It imports measured data, initializes the resonance frequency, amplitude, and linewidth parameters, and exposes an interactive widget for tuning the model before reading out the fitted parameters and response function.
+
+## Model and response functions
+
+Each absorption feature is represented by the dissipative part of a damped Lorentz oscillator, $A \Gamma^2 \omega / [\Gamma^2 \omega^2 + (\omega_0^2 - \omega^2)^2]$. Here $\omega_0$ is the resonance frequency, $A$ controls oscillator strength, and $\Gamma$ (`width`) sets the linewidth.
+
+:::warning
+Multiple resonances are added linearly assuming that $\\varepsilon_{\\infty}$ is much larger than total contribution of the oscillators. 
+:::
+
+The `sample` helper evaluates the summed response on a chosen frequency grid, with a constant background and scale/path factor used later by the fitting widget.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+lorentz[\[Omega]0_, A_, width_][\[Omega]_] :=  (*FB[*)((\[Omega])(*,*)/(*,*)(1))(*]FB*) (*FB[*)((A width \[Omega] width)(*,*)/(*,*)(((*SpB[*)Power[width(*|*),(*|*)2](*]SpB*)) ((*SpB[*)Power[\[Omega](*|*),(*|*)2](*]SpB*))+(*SpB[*)Power[(-((*SpB[*)Power[\[Omega](*|*),(*|*)2](*]SpB*))+(*SpB[*)Power[\[Omega]0(*|*),(*|*)2](*]SpB*))(*|*),(*|*)2](*]SpB*)))(*]FB*);
+
+sample[model_List, c_, L_, {min_, max_, step_}] := Module[{\[Omega]}, 
+  Table[{\[Omega], L(\[Omega] c  + Sum[i[\[Omega]], {i,model}])}, {\[Omega], min, max, step}]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Some helper functions for the widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Some helper functions for the widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+makeBadge[title_, color_] := Row[{
+  Graphics[{color, Disk[]}, ImageSize->{18,18}, PlotRange->1.8], 
+  Style[title, Black, 10]
+}, Alignment->{{Right, Left},Baseline}]
+
+testIfReal[any_] := $Failed;
+testIfReal[list_List] := With[{l = Select[list, MatchQ[{_?NumberQ, _?NumberQ, ___}]]},
+  If[Length[l] < 10, Return[$Failed]];
+  l[[All, {1,2}]]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Import and fit
+__Let's import experimental data__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Import and fit
+__Let's import experimental data__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+experimentalData = testIfReal[Import[SystemDialogInput["FileOpen"], HeaderLines->1]];
+
+lorentzParameters = (*GB[*){{(*BB[*)(None)(*,*)(*"1:eJxTTMoPSmNiYGAo5gMSwSWVOakuqcn5RYkl+UUQcRYgEVSak1osAlKQkV8eXFKUmZfunJFYlJhcklpUXMwKlHBLzClORdUQzAPV4JyfV5KaV4KkEAAnBR+D"*)(*]BB*)(*|*),(*|*)"\[Omega]"(*|*),(*|*)"S"(*|*),(*|*)"\[Gamma]"}(*||*),(*||*){"I"(*|*),(*|*)40.0(*|*),(*|*)80.0(*|*),(*|*)1.0}(*||*),(*||*){"II"(*|*),(*|*)90.4(*|*),(*|*)140.0(*|*),(*|*)1.0}}(*||*)(*1:eJytj8EOgjAMhqfR6MXoK/goItGLJzDeJ3SkydjMuomP7wYiiiHh4KX5+/dL/3Z71YmYMcZo5csFoYoh04ZbbdJgHw3mYhrmoUucBFq/7Eg/YrxjDoY64oRkv/l04cVeS1cqapJajuZeHLgkqK2zcSAmA8Bb9ZbXQlf/3/z5ZnrjGapi9JsYsgYORfYzo00XtZNYqBKUHZvVICD6SJtHSy8iTiBRwRPvv20n*)(*]GB*);
+
+If[FailureQ[experimentalData],
+  experimentalData = NotebookRead[NotebookStore["nuptse-3ac"]] ;
+  MessageDialog["Failed to import. Test data will be used"];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Define an interactive widget structure with all event handlers and computing logic:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Define an interactive widget structure with all event handlers and computing logic:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+makeWidget[experimentalData_, lorentzParameters_, background_:0., L2c_:1.0] := With[{
+  first = Unique[],
+  second = Unique[],
+  model = Unique[],
+  bg = Unique[],
+  L = Unique[],
+  rebuild = Unique[],
+  instance = CreateUUID[]
+}, {
+  ranges = {MinMax[experimentalData[[All,1]]], 1.1 MinMax[experimentalData[[All,2]]]}
+}, {
+  step = (ranges[[1,2]]-ranges[[1,1]])/500.0,
+  inital\[Gamma] = lorentzParameters[[2;;,2;;]][[All,3]]
+},
+
+  bg = background;
+  L = L2c;
+  
+  first  = lorentzParameters[[2;;,2;;]][[1]];
+  second = lorentzParameters[[2;;,2;;]][[2]];
+
+  rebuild := (
+    lorentzParameters[[2;;,2;;]] = {first, second};
+    model = sample[{lorentz@@first, lorentz@@second}, bg, L, {ranges[[1,1]], ranges[[1,2]], step}];
+  );
+
+  rebuild;
+
+ Deploy@Column[{
+  Row[{Panel[Graphics[{
+    Point[experimentalData],
+    ColorData[97][4], Line[model//Offload],
+    ColorData[97][1], EventHandler[Locator[first[[{1,2}]]], {
+      "drag" -> Function[xy,
+        first = {xy[[1]], xy[[2]]/L - bg, first[[3]]};
+        rebuild;
+      ],
+      "zoom" -> Function[z,
+        first = {first[[1]], first[[2]], z inital\[Gamma][[1]]};
+        rebuild;
+      ]
+    }],
+    ColorData[97][2], EventHandler[Locator[second[[{1,2}]]], {
+      "drag" -> Function[xy,
+        second = {xy[[1]], xy[[2]]/L - bg, second[[3]]};
+        rebuild;
+      ],
+      "zoom" -> Function[z,
+        second = {second[[1]], second[[2]], z inital\[Gamma][[2]]};
+        rebuild;
+      ]
+    }]
+  }, ImageSize->{1.5 323, 300}, Frame->True, 
+     FrameLabel->{"frequency", "absorption"},
+     "TransitionDuration"->150, PlotRange->ranges,
+     PlotLabel->"Use wheel on locators to adjust \[Gamma]"
+  ]]}],
+  
+  Row[{
+  
+    Panel[Column[{
+      makeBadge["Oscillator 1", ColorData[97][1]],
+      TextView[StringJoin["  \[Omega] = ", ToString[NumberForm[first[[1]], {6,3}]], " cm⁻¹"]//Offload, Appearance->None],
+      TextView[StringJoin["  \[Gamma] = ", ToString[NumberForm[first[[3]], {6,3}]], " cm⁻¹"]//Offload, Appearance->None]
+    }, Spacings->0, Alignment->Left]],
+    
+    Panel[Column[{
+      makeBadge["Oscillator 2", ColorData[97][2]],
+      TextView[StringJoin["  \[Omega] = ", ToString[NumberForm[second[[1]], {6,3}]], " cm⁻¹"]//Offload, Appearance->None],
+      TextView[StringJoin["  \[Gamma] = ", ToString[NumberForm[second[[3]], {6,3}]], " cm⁻¹"]//Offload, Appearance->None]
+    }, Spacings->0, Alignment->Left]]
+    
+  }, Alignment->{{Left, Right}}, ImageSize->1.55 350],
+  
+  Column[{
+      Panel[EventHandler[InputGroup[{
+        InputRange[0,2,0.01,bg, "Label"->"Background"], 
+        InputRange[0,2,0.01,L,  "Label"->"L/c"]
+      }, "Layout"->"Horisontal"], Function[d,
+        {bg, L} = d;
+        rebuild;
+      ]]]
+  }, Spacings->0, Alignment->Left] 
+ }, Spacings->{0,1}, Alignment->Left]
+];
+
+SetAttributes[makeWidget, HoldRest];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Create a widget using imported experimental data and initial parameters__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Create a widget using imported experimental data and initial parameters__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+makeWidget[experimentalData, lorentzParameters, 0.0, 1.0]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Get back the fitted parameters as a table
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Get back the fitted parameters as a table
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TableForm[lorentzParameters[[2;;,2;;]], TableHeadings->{
+  lorentzParameters[[2;;,1]], lorentzParameters[[1,2;;]]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{(*BB[*)(None)(*,*)(*"1:eJxTTMoPSmNiYGAo5gMSwSWVOakuqcn5RYkl+UUQcRYgEVSak1osAlKQkV8eXFKUmZfunJFYlJhcklpUXMwKlHBLzClORdUQzAPV4JyfV5KaV4KkEAAnBR+D"*)(*]BB*)(*|*),(*|*)"\[Omega]"(*|*),(*|*)"S"(*|*),(*|*)"\[Gamma]"}(*||*),(*||*){"I"(*|*),(*|*)41.545983068117735`(*|*),(*|*)97.0286216736019`(*|*),(*|*)0.6634556366515547`}(*||*),(*||*){"II"(*|*),(*|*)88.69298786903781`(*|*),(*|*)138.63090920569186`(*|*),(*|*)1.7507826593885292`}}(*||*)(*1:eJytj8EOgjAMhqfR6MXoK/goItGLJzDeJ3SkydjMuomP7wYiiiHh4KX5+/dL/3Z71YmYMcZo5csFoYoh04ZbbdJgHw3mYhrmoUucBFq/7Eg/YrxjDoY64oRkv/l04cVeS1cqapJajuZeHLgkqK2zcSAmA8Bb9ZbXQlf/3/z5ZnrjGapi9JsYsgYORfYzo00XtZNYqBKUHZvVICD6SJtHSy8iTiBRwRPvv20n*)(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Get exact equation
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Get exact equation
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Sum[(lorentz@@i)[\[Omega]], {i, lorentzParameters[[2;;,2;;]]}] // NumberForm 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*FB[*)((((*VB[*)(42.70941653392008)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cE9QK6GlpNTtJamhomRnrmBpYmmhpYOkKelZGiV6lUREuKbHxCc65cd6e6Yb5ruG1weHB7mn5hdWpicZxoUmZ2jHRpWEOLsVOGW6RgU5lUYEp5Z7hxa4BwUUWGaHFoQHJWjbZacHZYZmutWGRyeE5Rc5VgYmuxa5usdauLm6BiZ6xaWb6sEsi/WyUlLE+JIFiARVJqTGswBYqQmpvjn5VSCRUOKSlMBI606Ag=="*)(*]VB*)) ((*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*)))(*,*)/(*,*)(((*VB[*)(0.44017338180471977)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cG9QK6GlpNTtJamhoGeiYmBobmxpoaWDpCrpWRolepVERLimx8QnOuXHenumG+a7htcHhwe5p+YXVqYnGcaFJmdox0aVhDi7FThlukYFOZVGBKeWe4cWuAcFFFhmhxaEByVo22WnB2WGZrrVhkcnhOUXOVYGJrsWubrHWri5ugYmesWlm+rBLIv1slJSxPiShYgEVSakxrMAWKkJqb45+VUgkVDikpTAUhEOiw="*)(*]VB*)) ((*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*))+(*SpB[*)Power[((*VB[*)(1726.0687090963256)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cE9QK6GlpNTtJamhqG5kZmegbmmhpYOkKelZGiV6lUREuKbHxCc65cd6e6Yb5ruG1weHB7mn5hdWpicZxoUmZ2jHRpWEOLsVOGW6RgU5lUYEp5Z7hxa4BwUUWGaHFoQHJWjbZacHZYZmutWGRyeE5Rc5VgYmuxa5usdauLm6BiZ6xaWb6sEsi/WyUlLE+JIFiARVJqTGswBYqQmpvjn5VSCRUOKSlMBIc45/w=="*)(*]VB*)-(*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*))(*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*)))(*]FB*)+(*FB[*)((((*VB[*)(424.9369971007931)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cE9QK6GlpNTtJamhomRiZ6lsbmmhpYOkKelZGiV6lUREuKbHxCc65cd6e6Yb5ruG1weHB7mn5hdWpicZxoUmZ2jHRpWEOLsVOGW6RgU5lUYEp5Z7hxa4BwUUWGaHFoQHJWjbZacHZYZmutWGRyeE5Rc5VgYmuxa5usdauLm6BiZ6xaWb6sEsi/WyUlLE+JIFiARVJqTGswBYqQmpvjn5VSCRUOKSlMBJZw6BQ=="*)(*]VB*)) ((*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*)))(*,*)/(*,*)(((*VB[*)(3.0652399204155705)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cE9QK6GlpNTtJamhrGegZmpkYmmhpYOkKelZGiV6lUREuKbHxCc65cd6e6Yb5ruG1weHB7mn5hdWpicZxoUmZ2jHRpWEOLsVOGW6RgU5lUYEp5Z7hxa4BwUUWGaHFoQHJWjbZacHZYZmutWGRyeE5Rc5VgYmuxa5usdauLm6BiZ6xaWb6sEsi/WyUlLE+JIFiARVJqTGswBYqQmpvjn5VSCRUOKSlMBH885/A=="*)(*]VB*)) ((*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*))+(*SpB[*)Power[((*VB[*)(7866.446097137287)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cE9QK6GlpNTtJamhrmFmZmeiammhpYOkKelZGiV6lUREuKbHxCc65cd6e6Yb5ruG1weHB7mn5hdWpicZxoUmZ2jHRpWEOLsVOGW6RgU5lUYEp5Z7hxa4BwUUWGaHFoQHJWjbZacHZYZmutWGRyeE5Rc5VgYmuxa5usdauLm6BiZ6xaWb6sEsi/WyUlLE+JIFiARVJqTGswBYqQmpvjn5VSCRUOKSlMBKkU6DA=="*)(*]VB*)-(*SpB[*)Power[\[Omega](*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*))(*|*),(*|*)(*VB[*)(2)(*,*)(*"1:eJwljssOwUAARRuxEH/Bqh02RC0kFjONSkiReVWJBWPIpFPTolo+wHcrNuc+Nve2DgafapZl3ZoVJkd1N1euZEHeVbQBQlvg2H3HBt1KQbs3krOS0sCsSLKIoyk07jkgBQn5ch/nmbi4OIp1h/GUeqj0FcR8ltFQFR5LPbwuXcFSstGdoYi5Yon/JKHG4gUzJiaPYM4GPoRR4nMzbn/3dggB53+vXgHnWpLG18j9cXnRz19Lr7n8ACLsOMY="*)(*]VB*)](*]SpB*)))(*]FB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+Key: nuptse-3ac
+%-------------------------------------------------------------------------%
+"1:eJxt2nk4VevbB3CznwYZSkpsZUrs1EEqZMtGRIbIXMlQGWsbo1KEKIUSiUjKUSF1kJQMUbYGlbIlR4OpyBBCkfeu9c97Pff50/W51trrGdezvrelu/ytPY24ubgC+Li4uMz2BgR68nD9v79YdaHnHtewtRmssNbT7+TDbusRfkduW1MBrw6DxTy/0HvG//UDwq8/W8BJ0wEfM2xwGLXnqSL84oHXHVFB4AcUVJ9/aX5N3j9JPqXHrxDc1a3OTbRmgPTo5zaDDj3gPMlf7vENDpEeGjZ/nCmry2A5Wq1RKr/LyyDcW6H5l5oD+KvTe1RCa0VJ3950RkAqGbxe1J+5oqWHbJ9V+FZhgUZwtT2vflo0c5HtM1QUlxjm3cBg+aZOW53KnEv62hcvpd/pgPO2djH6896R91c5mKzwKAh85+vLNy9bTJAuo2RNv1UIvqJ61uFM5X/J9ou+FNXM7AFP91bfevgj6j/+Qy90jsvqMVh1u7Na38T8In1CKYkZ4AA+2yvtnHMrN/n8fS8tzbYng8fWvspbyTuH9H8PidiYNIKf0P4S3W8jQvre+b30xTwMBuvYuS3bAtobyN//9PlR8WkZ8A3GX6RNBdH4Oj/I0+TXBpfO41tzl3eS9DdnY8vD7MDFjJ1WdNCRW3jt1h0KABfKyrD3PYe8Qc+42iMR3GdvZEzgZDfpBguUDNtugG9NZX+NlkHPd++LQINlA/hdXk8NboMf5Pitqeo2q+8CNxr6cDFCYIy8viilvkmbR5/BypCt3DdXjpucn8reV22KZcCd8ifSj2pPkNfnMGI4itrgVpP2Lo8+T5EuLeHpnGEH7r16i8BoMmr/uT7D96KB4FNy8h1Bj9D8EalWcI9NBI/a8Pmv3rER0uPO8fdO3QD/Znz4aKMvmr+8Pl3erAZwZyf52BDvb+T1B/XrBnu6wPe12raH3R8m/bvElQAXno0M1mCOmF2R6TPS/fuPjb+UAWc6cqfR7LnI/vtc7R6+SRtc6eiK6k3j4+T1u1KZM/ftwPltRqyUnNH4tvvIR6kHgl9VXNkgkcdD3n/bRj7B/MSNv+fvghtt64XI+d+0sDNepgD8qcqKivMf2eT9Tb7WCp9tAGdtfFUi1dhLem3N5WShbvC0fJ8DyUM/SNdJi5KI4DFgsDxotDseLaj9pb5u6aMy4JUuO9+bL0Ljp2ZgIOOlDe5r23pBn43mf76kXE6HHfh6ycoH0zxofsgN8CjaBoIb6++sLbrygBz/zNqP+exE8Lz2K0v7Fs0in0/ifA2dUQCuaXyX1333/0hP9MspLmkAT/hR/25V7xzShZiRmird4JYK2ZOevr3k70ct2lWezcOE/c9F1+Um/3zy+qkBfV0JGrjjQFeU12th0oMfLq0+of37+s41ET9L5UgfPM9tyG0P3u6hrHVTT4V0L/8Pj4MDwee7lI8/UNhIeiez2qw/EXyYw153dbMF6S6LLzW5FoDzHVEL+lpvQ3rL4BGblgZwq3k2DabTVqRb1u3kmHWDL9yrJfDDEf0+O53hXMNj+Lt9D/c9aVcn3WCf7HstGvid5rYy1yIa6fcNudwLtMHZYiPNHjnLSF8j9b5nmT241fpdB5kmS0m/OfTAOy0Q/ELDgWXL8heTvqI+a3BuEnjt4BJr63MLSM+9EBEQVQBuONw+VMY9j3Tp/TvGJxrAE+puW3UY95HzN9VIL9yvG9yp21ODPoT2B5EltJlPPEYMlp9GlJXMfbS+4od/RTrQwPf6PAxQCkD7M++jfwWea4P/rXXo8XsHPvL6QxmV8Ux7cDpH+Z9TGmj//r7/ovDdQPCV2cITu1Jekr7f+HCyWhL4R4WPETO96P3yZcl2iSsF4KvZb00GW4fJ9eH+TTd9MRv81Jy4k4066P3T/khaJrEbvKxWsNdOH+1/dpnTl/h5jRms28/SznCOo/Y3sdoVwmngzPvu8duOov3LdNP9/CFt8B9dfAU8iWh/qpXOpHvag8cnfApy+tFPuu7IweK2QHCW+mvFuTPo/VL62FnTKgl8ejoroZuvjPTVF3XK6wvA3ZfdLezwQ+N7LWCJrg4bXH722n2796HxkzeZqiruBnf6R/+RRgMav0yZd0wl3k0MVlXm1XoJa9T+haMVjzNo4OqlSZvDTUdJT2y4YCamA+4vNW/B4nUfSZ+VFd4Uaw/+MV/p1K9K9P6MCnSymQ4EvyvdNJkthvpv2kSbw0oC1xBNdZdu4yfbF0KTcu4tAC/I3/95+o4g6cOjPzpc2ODLUt68iL6F2ufFfuv2qhvcxnyhr0YkOp93Zt3t2cRrwmCVxGf5b4tB5xOXoHTvShp42Nt/+pKNUPtbTMMG1XXARR693zyljMbPUtYxIN8eXL7FOqt+Beof9ti6cZkg8Inj67dlDqH2GzQuCj+bBM7lv+XRp+Po/XQ/e/KXUOHv5xM04O/xnibvvza4NTKCDc6zz3G0FJ9fizeXC4x1gw882hJ9YTfqP5Wl5+O9eE0ZrBCp17uXpz4hPfd7qPB7Gnj02Q9ifkI/SZd5Yp9sqwO+X1r54ccMtL+lXlor0WgPrqivy+ebNptsn2iIZDojCFzPj7E1fBK9f+PNJqRLk8C1tcyWMevQ/sG3jHNJpRCcn/uXcXYUWj+Hx8sULrHBbzO79Xd4o/kx8SQ1X6IH/EKiZaCyzgu0/+WE0E/ybmaw5qwR8cuWFCCv7wuxK+aWBXebDjpWkYjmh7u5lmaIDrhBrpv2iZXofPLvsoXl/fbgb2rDO8z1RND+N/FdZ1cQ+A4BR3WePnT/F0/fVLUkgUuZx1pvSEZuermUaV4IfvDe/EmHTNQ/1Pc5OEtEIyw/uols/4YtwWZre8BDaT5KA1fQ+YX6fjdjsM4VPNBIFUPnu9WTmjZysuA7F8WVWw7MJa+nvu/BSxYOhEgPofbL5445CTuAh+TKRDXNRv1Pff+DZ7M+JORfFyJ9oUWJ22QSePCeutoLXGj+UPkAuFNeZjvXPDS/Z/0I9O5kg8ueVvWP1Z757/wAfCiplKN8C63vX7kaAc95zRmsA13pChbm6HxI5QvgX16arpljhNo/bDEadlcH/EpK61hqCNofqPwB/JFrqKysMmpf54/bkVeCwM9yhivO96Pxp/IJ8LDJOuaCMvT93nIlID6xEDypZG7TVybaf6j8Anx/VdN2lT4x8v6NlurJ4T3g2eqFbJs41D4q39jCYHWuNdguOY7mV+XPb+c9ZcEtePqe2OD1TeUf4E77Y5YIM9H7sfjqrUtWDuALM+bS+zeg/qHyEfAv08lcN7TQ+sm1YuXrJIOX9FUrsO/3oP3vT34CXrs31OOBLmp/6tTqYqVG8OjbvOsdfqH9h8pXwH2c5EVjtNH6OJk3fEeMz4LBqra+7G58BJ2PqPwF/MKBuJaYZ6h9EdbFVdM64Ct5NQQ/taP+o/IZcJMN9WcMHVH7WdP7HvcGgXMxJzYv3/mcbD+V34DPzHEPib2J8i+Pv1c1vSoEL9nD5TB8Aq0fKt8BP7r3w6y6TjQ/7LcOtVT2gL+TMM05+T+0vqj8x5LBqlGhZa+JQP2jONMyaCMC7mRXWbNsCp0vqHwIXLhLbU2LK+q/rOayALYqeKGhmO2t4VTyfEvlR+DP1cp8IvvR+C+6ljquZwLekFIQ6fUYjT+VL4FHCjOSagXFSU+OCAkv8QAfHUoKvEVD7afyJ/Czf1tzKWug/p1jazezIhJ8YO+Twn8iUfupfApcs6Z8ha4Eer6YFVpR2RfBae0jFV+PHP3v/Oq3c9HuFTWh/W1mRkJQogL8qBzb8KYymn9UvgUeKOZ7bGURGv8Dr7/Hn2gB5561S/WuI3o+Kv8C1/j85IfQWbT+v117I8w9Ct58Nc8rrAX1H5WPWTFYgwIzbYmh6P4+R0qTg0XAD/2t7HrmQjF5fyo/Ax9oNHbVf4HGr8v2nES/KrjW8ubskU50fypfA59dOH00Owqdj3aoBKe7moDniP81FHcQXU/lb+BmV7aeb6ah9rdybZNp8QDXywzMzpFD708qnwNPdN7lMRCC+mfrG80cs0jwrr7yxgtiZ/87vwPXVJgVrd+Jxv/J9QWKNRfBeeLsmTECaP5R+R74O6NFUttmo/E3OjqWr1UBbusrM3pMHJ0PqfwPfBO3VlCcKGrfg22v6QUt4E/YlXdqUtH+SuWD4L9m0qYOZqHz2TrVkuJlo+BHnfJXRomj73sqP7SG7ytJuqTxGSny+lvcKZppIuCeottHfRzR/kjli+CDXq/ai+JRvqDaElg+lw5u5CY995c7mh9U/gj+rVuZV7EW9e/VGza6USbgtu1qf5/0QOcjKp8E/yto/Zp6K3S9bKRG9YQH+PsZ0TrvQvz9/ie/BDfXqVKQvLGQ9HS7+YZ+keB6tAyHeVKo/VS+Ca6w6tBVv29o/MTpo48/XQRP2Fg4L+02en4q/wSP+PXvvKzLyBN4ms0cKsA3CialZuHzE5WPgvtdl5ndJIHyDQHO7aZnLeDX7NfOU+ZC85PKT8FZm60W6WxC6/9IwRkb5ij4gaNBT7leofGl8tWt8P4Ves6kz0HPPxkZwCkXAbd1K+IY8aL5SeWv4DRX585+PXR+CrDf6qxGB+d6a5N2xxjtv1Q+C94cviVPfAP6fuynq7/PNQH/Kqm6OskHtY/Kb8HvDe7xD5VE62s3r7j7Yk/w2IRrnzfMRvkale+Cj9X0JuUcQPP7Pedbz+lIcP/qc63j8qj/qPwXXKGjfY7TFTS/HAtfevNngW8Ln9carYe+T6l8GHxKwmSoGn9/vYq6NRhWAV4puu5r58Ml/50fgzurOExbHUa/b+6QHDDUAv62brLp+Am0Pqh8GZw1cihV1xn9fv1K1rjHKLhm0QaGfya6P5U/2zBY3i6znFvK0PmDwWcd3iYCLps8YBa4F53fqXwa3LpsjHahDeWj5a2rZyzp4Pvb1c30f6Lxo/Lr3/78o54pPv+qF4lG1ZuARz+1fty1SJJ0Kt8Gdy/QfF6gie5/49iwgI4n+NSYwbngUrQ+qPwbPHPqenYeDa0PJccX8cWR4BbqYWwTUzR/qXwcPD0ndX+UOZq/2WrFwkpZ4Lkfq8QGeyVIp/Jz8IAveUWq4uj5F/MnJWdUgFfe+jlyJhI5la+Da4et1qvG8//M230SYhzwtqQ9tuNpaP1S+Ts4e3pzIl0AzZ+5Ny3TY0fBS76HSu6fhfqfyudtGayyBxtN146g+RkTvUpmWgScEXpkwSorNP+p/B48lytfuPo7mj9cTiI5LDq41YvZ+jEFaPyofB/8dJVzZCNbFp3/Vg0p9JqAP/48LVcqqIDOf3/yf/AqTy2h4bnKpI/wN+W7eIIrFqvVre1QJZ2qD4Cn7M+vFZyF3LetiP4qElzi6/o37wpWkU7VD8C1AiZSnL01Se+5ebp4Uxb4p/iiqks+a9H35Z/6AvhCo8lci551pO+M8desrAA/7iDUIFioh85/f+oP4MVcmhrrLYxIf+tkUa7OAT/i7+fWu9oEfZ/+qU+AC7x1G7keZYrOf6vVdPNHwWvjNF+bHd9MOlW/2Abr62Dot90u9qQ/FZhXLSMK3vYscmIzrwvpVH0DPHZFAsdO3hWd/94NMM/SwTsb+3bfSndG578/9Q9w7/otK3Uuo/pVVfGzx0Km4BMPv+t6HbEjnaqPgG88HOxj+wU9/7rYQrMIT3ADzc7yTFFr0qn6CXjjSe6p4XWoPnbb+VTTaCQ494txc916A9Kp+gq4YBKN19cWzR/6X342Xlngqvdcrj//qUQ6VX8BP8NZt09/OZq/eYJbOB0V4CHHjJ8npKD1RdVnwF0z1lzvEZdB5792urMtB7xPratv+thydP77U78BZ38rG48LVkTnv1tz37NHwf18f25vKkT7G1XfsYP3k2PB8Y4TaH8WP/7VjSEK/mZ4T9msnJXo/Pen/gN+qkFxfXAcqh8muDztKaGDR8/mUeREofogVR8CT/OW6WMao/eroHqBt4op+KKM6TyXcPT/B1T9CHyT02GP7Z/Q/nTkfwmD2Z7gY2GRdZ980P5J1ZfA77X7RTA80f75o90nQCLq9/NveeOVYrkInf/+1J/AT5befjPiiepbgbfNxk9kgQdKurVqc9D7gapPgb9cqSc2bobmx8Bx1XDue+BXR8pvSdDR+4GqX4GrGv+qEmOg59+9fc5MMAe8oG73h8wUdD1V3wK/onBVuWLBd/L5P6j3R/aPgseVDvcmLkHPT9W/7BksywPN3yey0PM7Cj0R2CUKzu58LqX2AH2fUvUx8B2X2YZO3tKkN/97Pb6FDj6kYxJ4hoben1T9DHz59e/tuXXo+8X8nxPC5qbgJevCiuva0Pym6mvgk8eKrgXfQOeLR3HeyTWe4HE/Qg+m7ULXU/U3cDH+pRn7alD7GTs2S6yNAt/lnS9yxw3NP6o+B+5bvue8zSZ0fruroZJekAVu1lGpq5aExpeq34E7CzgmaA6j9aUxa7aM3L3f7Y+XcZWSlyedqu+B+5hufC3eg64v7PhyKY0DHrT04406DTQ+VP0P3HRIjRNfifpPqYStIDwGLms7b3WyDtofqPqgA4MVc/JGx2SbHOP/AE5NW5Q="
+
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

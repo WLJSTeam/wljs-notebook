@@ -11,6 +11,10 @@ ipcRenderer.on('zoomOut', () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() / 1.5)
 })
 
+ipcRenderer.on('zoomReset', () => {
+  webFrame.setZoomFactor(1.0)
+})
+
 let loadingstyle = null;
 
 ipcRenderer.on('will-navigate', () => {

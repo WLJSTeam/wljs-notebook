@@ -1,179 +1,297 @@
-<|"Notebook" -> <|"Controller" -> "2912cae0-a532-4ba4-993d-580bc82cb62d", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$294], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "fc8c23fa-074b-438c-a460-118fda1b4ba8", "Objects" -> <||>, 
-   "Path" -> "/Applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/New \
-Folder With Items/record.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Record Voice", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$290]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Record Voice\nCapture microphone audio", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2c722768-4ce4-4f12-b7ee-751bf7295ca1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> "# Record Voice\nCapture microphone audio", 
-    "Display" -> "markdown", "Hash" -> 
-     "b940ca83-3774-4ca3-a896-1f1d3d3568db", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "ce2f2332-8af2-4360-907f-1e03299e73ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "ad935c63-a120-4817-bcc1-75cb53530eb8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> ".wlx\n\nComponent[current_, parent_] := With[{\n  UId = \
-CreateUUID[],\n  Channel = CreateUUID[]\n},\n\nEventHandler[Channel, \
-Function[data,\n  With[{audio = ImportString[data, \"Base64\"]},\n    \
-NotebookDelete[current];\n    NotebookWrite[NotebookLocationSpecifier[parent, \
-\"After\"], ExpressionCell[audio, \"Output\"]];\n  ]\n]];\n\n<span \
-class=\"frontend-view sm-controls cursor-default rounded-md 0 py-1 px-2 \
-bg-gray-100 text-left text-gray-500 ring-1 ring-inset ring-gray-400 \
-text-xs\">\n  <button id=\"{UId}-btn\" style=\"background: #ffb6b6;outline: \
-#ffb6b6;outline-offset: 2px;outline-width: 1px;outline-style: solid;margin: \
-auto;margin-right: 0.2rem;\" class=\"w-3 h-3 mr-1 rounded-full\"></button>\n  \
-<svg id=\"{UId}-icon\" class=\"hidden w-4 h-4 inline-block mt-auto mb-auto \
-ml-1 mr-1\" viewBox=\"0 4 24 24\" fill=\"none\">\n     <style>\n    .g-stripe \
-{\n      transform-origin: bottom center;\n      animation: growShrink 1s \
-infinite;\n    }\n    /* Stagger the animation for each stripe */\n    \
-.g-stripe:nth-child(1) {\n      animation-delay: 0s;\n    }\n    \
-.g-stripe:nth-child(2) {\n      animation-delay: 0.2s;\n    }\n    \
-.g-stripe:nth-child(3) {\n      animation-delay: 0.4s;\n    }\n    \
-.g-stripe:nth-child(4) {\n      animation-delay: 0.6s;\n    }\n    \
-.g-stripe:nth-child(5) {\n      animation-delay: 0.8s;\n    }\n    \
-.g-stripe:nth-child(6) {\n      animation-delay: 1s;\n    }\n    \
-.g-stripe:nth-child(7) {\n      animation-delay: 1.2s;\n    }\n    @keyframes \
-growShrink {\n      0%, 100% {\n        transform: scaleY(1);\n      }\n      \
-50% {\n        transform: scaleY(0);\n      }\n    }\n  </style>\n\n  <!-- \
-First stripe -->\n  <path class=\"g-stripe\" d=\"M3 11 V13\" \
-stroke=\"currentColor\" stroke-width=\"1.5\"\n        \
-stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  \n  <!-- Second \
-stripe -->\n  <path class=\"g-stripe\" d=\"M6 10 V14\" \
-stroke=\"currentColor\" stroke-width=\"1.5\"\n        \
-stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  \n  <!-- Third stripe \
--->\n  <path class=\"g-stripe\" d=\"M9 11 V13\" stroke=\"currentColor\" \
-stroke-width=\"1.5\"\n        stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n  \n  <!-- Fourth stripe -->\n  <path \
-class=\"g-stripe\" d=\"M12 9 V15\" stroke=\"currentColor\" \
-stroke-width=\"1.5\"\n        stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n  \n  <!-- Fifth stripe -->\n  <path \
-class=\"g-stripe\" d=\"M15 6 V18\" stroke=\"currentColor\" \
-stroke-width=\"1.5\"\n        stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n  \n  <!-- Sixth stripe -->\n  <path \
-class=\"g-stripe\" d=\"M18 10 V14\" stroke=\"currentColor\" \
-stroke-width=\"1.5\"\n        stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n  \n  <!-- Seventh stripe -->\n  <path \
-class=\"g-stripe\" d=\"M21 11 V13\" stroke=\"currentColor\" \
-stroke-width=\"1.5\"\n        stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n     </svg><span id=\"{UId}-text\" \
-class=\"leading-normal pl-1\">Click to record</span>\n\n  <script \
-type=\"module\">\n    const btn = document.getElementById('<UId/>-btn');\n    \
-const text = document.getElementById('<UId/>-text');\n    const icon = \
-document.getElementById('<UId/>-icon');\n\n    const channel = \
-\"<Channel/>\";\n\n    let recording = false;\n    let interval = false;\n    \
-let mediaRecorder;\n\n    btn.addEventListener('click', () => {\n      if \
-(recording) {\n        clearInterval(interval);\n        btn.remove();\n      \
-  icon.remove();\n        mediaRecorder.stop();\n        return;\n      }\n   \
-   \n      recording = true;\n      \nnavigator.mediaDevices.getUserMedia({ \
-audio: true })\n  .then(stream => {\n    mediaRecorder = new \
-MediaRecorder(stream);\n    let chunks = [];\n\n    \
-mediaRecorder.ondataavailable = event => {\n      chunks.push(event.data);\n  \
-  };\n\n    mediaRecorder.onstop = () => {\n      const audioBlob = new \
-Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });\n      const reader = \
-new FileReader();\n      \n\n      reader.onloadend = () => {\n        \
-console.log(interval);\n        text.innerText = \"Piping data...\";\n        \
-\n        const base64data = reader.result.split(',')[1];\n        \
-server.kernel.emitt(channel, '\"'+base64data+'\"');\n      };\n\n      \
-reader.readAsDataURL(audioBlob);\n    };\n\n    mediaRecorder.start();\n    \
-btn.classList.remove('rounded-full');\n    text.innerText = \"0 sec\";\n    \
-icon.classList.remove('hidden');\n    \n    let time = 0.0;\n\n    interval = \
-setInterval(() => {\n      time += 0.1;\n      text.innerText = \
-time.toFixed(1) + \" sec\";\n    }, 100);\n  })\n  .catch(error => {\n    \
-console.error('Error accessing microphone:', error);\n    alert('Error \
-accessing microphone (Are you using a secured connection?)');\n    \
-btn.remove();\n    icon.remove();\n    text.innerText = \"Error accessing \
-microphone\";\n    clearInterval(interval);\n  });\n      \n    });\n  \
-</script>\n\n</span>\n\n];", "Display" -> "codemirror", 
-    "Hash" -> "d2c39857-45f3-4dfc-8292-03105e4f5462", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> "Module[{cell, f = NotebookFocusedCell[]},\n  cell = \
-NotebookWrite[NotebookLocationSpecifier[f, \"After\"], Cell[Component[cell, \
-f], \"Output\", \"WLX\"]];\n];", "Display" -> "codemirror", 
-    "Hash" -> "597ee601-d821-45d1-b4ac-1792aa0803fb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> ".md\n__template__", "Display" -> "codemirror", 
-    "Hash" -> "2dd35f6d-42e2-4b8e-bf9c-6beac2c5717b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> "__template__", "Display" -> "markdown", 
-    "Hash" -> "af0fbe9e-fada-4660-b3ac-04bdf3f1837a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\"><svg class=\"h-5 w-5 flex-none text-gray-900  \
-dark:text-gray-400 text-opacity-40\" viewBox=\"0 0 24 24\" \
-fill=\"currentColor\" stroke=\"none\"><path d=\"M19.0707,12.01 \
-C19.6175,12.0882 19.9973,12.5948 19.9191,13.1415 C19.411,16.6935 \
-16.5716,19.4928 13,19.938 L13,21 C13,21.5523 12.5523,22 12,22 C11.4477,22 \
-11,21.5523 11,21 L11,19.938 C7.42844,19.4927 4.58908,16.6935 4.081,13.1415 \
-C4.0028,12.5948 4.38261,12.0882 4.92933,12.01 C5.47605,11.9318 \
-5.98265,12.3116 6.06085,12.8583 C6.47663,15.765 8.97821,17.9999 12,17.9999 \
-C15.0219,17.9999 17.5234,15.765 17.9392,12.8583 C18.0174,12.3116 \
-18.524,11.9318 19.0707,12.01 Z M12,2 C14.7614,2 17,4.23858 17,7 L17,12 \
-C17,14.7614 14.7614,17 12,17 C9.23858,17 7,14.7614 7,12 L7,7 C7,4.23858 \
-9.23858,2 12,2 Z M12,4 C10.3431,4 9,5.34315 9,7 L9,12 C9,13.6569 10.3431,15 \
-12,15 C13.6569,15 15,13.6569 15,12 L15,7 C15,5.34315 13.6569,4 12,4 \
-Z\"></path></svg>\n              \n              <span class=\"ml-3 flex-auto \
-truncate\"><Title/></span><span class=\"ml-3 flex-none text-xs font-semibold \
-text-gray-500\">\n                <kbd class=\"font-sans\"><Kbd/></kbd>\n     \
-           <button class=\"p-0.5 rounded hover:bg-gray-100 \
-dark:hover:bg-gray-200\" btag=\"{Btn}\">\n                  <svg class=\"w-4 \
-h-4 text-gray-400\" viewBox=\"0 0 24 24\" fill=\"none\">\n                    \
-<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 \
-2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 \
-17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 \
-6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 \
-17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 \
-7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 \
-9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 \
-6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 \
-13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 \
-11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 \
-13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 \
-10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 \
-9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 \
-17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 \
-15.4477 11 16C11 16.5523 11.4477 17 12 17Z\" fill=\"currentColor\"/>\n        \
-          </svg>                  \n                </button>\n              \
-</span>\n    </li>    \n]\n\nOptions[Component] = {\"Title\"->\"Example\", \
-\"Shortcut\"->\"\", \"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2ca29bdb-5e3b-4413-b8f5-7b98b8d16d15", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "de563b5b-4350-4185-9676-83ca1638fece", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "025cc8d8-ed2a-49f0-8bf2-757466ff963f"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Record Voice
+Capture microphone audio
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Record Voice
+Capture microphone audio
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+Component[current_, parent_] := With[{
+  UId = CreateUUID[],
+  Channel = CreateUUID[]
+},
+
+EventHandler[Channel, Function[data,
+  With[{audio = ImportString[data, "Base64"]},
+    NotebookDelete[current];
+    NotebookWrite[NotebookLocationSpecifier[parent, "After"], ExpressionCell[audio, "Output"]];
+  ]
+]];
+
+<span class="frontend-view sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs">
+  <button id="{UId}-btn" style="background: #ffb6b6;outline: #ffb6b6;outline-offset: 2px;outline-width: 1px;outline-style: solid;margin: auto;margin-right: 0.2rem;" class="w-3 h-3 mr-1 rounded-full"></button>
+  <svg id="{UId}-icon" class="hidden w-4 h-4 inline-block mt-auto mb-auto ml-1 mr-1" viewBox="0 4 24 24" fill="none">
+     <style>
+    .g-stripe {
+      transform-origin: bottom center;
+      animation: growShrink 1s infinite;
+    }
+    /* Stagger the animation for each stripe */
+    .g-stripe:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .g-stripe:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .g-stripe:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    .g-stripe:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+    .g-stripe:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+    .g-stripe:nth-child(6) {
+      animation-delay: 1s;
+    }
+    .g-stripe:nth-child(7) {
+      animation-delay: 1.2s;
+    }
+    @keyframes growShrink {
+      0%, 100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(0);
+      }
+    }
+  </style>
+
+  <!-- First stripe -->
+  <path class="g-stripe" d="M3 11 V13" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Second stripe -->
+  <path class="g-stripe" d="M6 10 V14" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Third stripe -->
+  <path class="g-stripe" d="M9 11 V13" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Fourth stripe -->
+  <path class="g-stripe" d="M12 9 V15" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Fifth stripe -->
+  <path class="g-stripe" d="M15 6 V18" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Sixth stripe -->
+  <path class="g-stripe" d="M18 10 V14" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Seventh stripe -->
+  <path class="g-stripe" d="M21 11 V13" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+     </svg><span id="{UId}-text" class="leading-normal pl-1">Click to record</span>
+
+  <script type="module">
+    const btn = document.getElementById('<UId/>-btn');
+    const text = document.getElementById('<UId/>-text');
+    const icon = document.getElementById('<UId/>-icon');
+
+    const channel = "<Channel/>";
+
+    let recording = false;
+    let interval = false;
+    let mediaRecorder;
+
+    btn.addEventListener('click', () => {
+      if (recording) {
+        clearInterval(interval);
+        btn.remove();
+        icon.remove();
+        mediaRecorder.stop();
+        return;
+      }
+      
+      recording = true;
+      
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(stream => {
+    mediaRecorder = new MediaRecorder(stream);
+    let chunks = [];
+
+    mediaRecorder.ondataavailable = event => {
+      chunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+      const reader = new FileReader();
+      
+
+      reader.onloadend = () => {
+        console.log(interval);
+        text.innerText = "Piping data...";
+        
+        const base64data = reader.result.split(',')[1];
+        server.kernel.emitt(channel, '"'+base64data+'"');
+      };
+
+      reader.readAsDataURL(audioBlob);
+    };
+
+    mediaRecorder.start();
+    btn.classList.remove('rounded-full');
+    text.innerText = "0 sec";
+    icon.classList.remove('hidden');
+    
+    let time = 0.0;
+
+    interval = setInterval(() => {
+      time += 0.1;
+      text.innerText = time.toFixed(1) + " sec";
+    }, 100);
+  })
+  .catch(error => {
+    console.error('Error accessing microphone:', error);
+    alert('Error accessing microphone (Are you using a secured connection?)');
+    btn.remove();
+    icon.remove();
+    text.innerText = "Error accessing microphone";
+    clearInterval(interval);
+  });
+      
+    });
+  </script>
+
+</span>
+
+];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{cell, f = NotebookFocusedCell[]},
+  cell = NotebookWrite[NotebookLocationSpecifier[f, "After"], Cell[Component[cell, f], "Output", "WLX"]];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__template__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25"><svg class="h-5 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19.0707,12.01 C19.6175,12.0882 19.9973,12.5948 19.9191,13.1415 C19.411,16.6935 16.5716,19.4928 13,19.938 L13,21 C13,21.5523 12.5523,22 12,22 C11.4477,22 11,21.5523 11,21 L11,19.938 C7.42844,19.4927 4.58908,16.6935 4.081,13.1415 C4.0028,12.5948 4.38261,12.0882 4.92933,12.01 C5.47605,11.9318 5.98265,12.3116 6.06085,12.8583 C6.47663,15.765 8.97821,17.9999 12,17.9999 C15.0219,17.9999 17.5234,15.765 17.9392,12.8583 C18.0174,12.3116 18.524,11.9318 19.0707,12.01 Z M12,2 C14.7614,2 17,4.23858 17,7 L17,12 C17,14.7614 14.7614,17 12,17 C9.23858,17 7,14.7614 7,12 L7,7 C7,4.23858 9.23858,2 12,2 Z M12,4 C10.3431,4 9,5.34315 9,7 L9,12 C9,13.6569 10.3431,15 12,15 C13.6569,15 15,13.6569 15,12 L15,7 C15,5.34315 13.6569,4 12,4 Z"></path></svg>
+              
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

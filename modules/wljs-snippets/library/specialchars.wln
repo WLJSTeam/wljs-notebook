@@ -1,702 +1,951 @@
-<|"Notebook" -> <|"Controller" -> "43bdad49-6c77-4ebd-8a61-8bd5c8d10ac0", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$430], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "5db10569-a843-4107-9636-e7756d451848", "Objects" -> <||>, 
-   "Path" -> "/users/kirill/Github/wolfram-js-frontend/modules/wljs-snippets/\
-library/specialchars.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Special characters", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$421]]}|>, 
- "Cells" -> 
-  {<|"Data" -> 
-     ".md\n# Special characters\nInsert Greek letter, math, colors", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fb03455b-76a9-4f06-a98e-97c0905314e8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "># Special characters\nInsert Greek letter, math, colors", 
-    "Display" -> "markdown", "Hash" -> 
-     "5257cb25-0022-421a-b02b-8040a3c30ad2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "02c745ff-c433-494b-ab9d-3fa89b791c8a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "66248e8b-b421-4faf-9795-531d08f4ab8b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> ".wlx\n\nMacroToolbar`Button[Child_, OptionsPattern[]] := \
-With[{\n  UId = CreateUUID[],\n  Title = OptionValue[\"Title\"],\n  Event = \
-OptionValue[\"Event\"],\n  Pattern = OptionValue[\"Pattern\"]\n},\n  {\n    \
-<button title=\"{Title}\" id=\"{UId}\" class=\"hover:bg-gray-100 p-1 \
-rounded\">\n      <Child/>\n    </button>\n  ,\n    <script \
-type=\"module\">\n      const uid = '<UId/>';\n      \
-document.getElementById(uid).addEventListener('click', () => {\n        \
-server.kernel.emitt('<Event/>', 'True', '<Pattern/>');\n      })\n    \
-</script>\n  }\n]\n\nOptions[MacroToolbar`Button] = {\"Event\"->\"\", \
-\"Pattern\"->\"\", \"Title\"->\"\"};\n\nMacroToolbar`Color[Child_, \
-OptionsPattern[]] := With[{\n  UId = CreateUUID[],\n  Title = \
-OptionValue[\"Title\"],\n  Event = OptionValue[\"Event\"],\n  Pattern = \
-OptionValue[\"Pattern\"],\n  Letters = {\"\\\\[Alpha]\", \"\\\\[Beta]\", \
-\"\\\\[Gamma]\", \"\\\\[Delta]\", \"\\\\[Epsilon]\", \"\\\\[Zeta]\", \
-\"\\\\[Eta]\", \"\\\\[Theta]\", \"\\\\[Iota]\", \"\\\\[Kappa]\", \
-\"\\\\[Lambda]\", \"\\\\[Mu]\", \"\\\\[Nu]\", \"\\\\[Xi]\", \
-\"\\\\[Omicron]\", \"\\\\[Pi]\", \"\\\\[Rho]\", \"\\\\[Sigma]\", \
-\"\\\\[Tau]\", \"\\\\[Upsilon]\", \"\\\\[Phi]\", \"\\\\[Chi]\", \
-\"\\\\[Psi]\", \"\\\\[Omega]\"}\n},\nWith[{\n  \n},\n  {\n<div \
-class=\"relative\">\n    <button title=\"{Title}\" id=\"{UId}\" \
-class=\"hover:bg-gray-100 p-1 rounded\">\n      <Child/>\n    </button>\n  \
-<div id=\"{UId}-cpicker\" class=\"absolute left-0 z-10 mt-2 origin-top-right \
-backdrop-blur rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none \
-hidden\" role=\"menu\" aria-orientation=\"vertical\" \
-aria-labelledby=\"menu-button\" tabindex=\"-1\">\n    <div class=\"flex \
-flex-row flex-wrap gap-x-2 gap-2 p-2\" role=\"none\" style=\"\n    position: \
-relative;\n    height: 10%;\n    flex-wrap: wrap;\n\">\n      <input \
-type=\"color\" value=\"#e66465\" />\n      \n    </div>\n  </div>\n </div> \n \
- ,\n    <script type=\"module\">\n      const uid = '<UId/>';\n      const \
-picker = document.getElementById(uid + '-cpicker');\n      let state = \
-false;\n\n    \n\n      let close;\n      \n      close = () => {\n        if \
-(!state) return;\n        state = false;\n        \
-picker.classList.add('hidden');\n        window.removeEventListener('click', \
-close);\n      }\n      \n      const color = \
-picker.getElementsByTagName('input')[0];\n      \
-color.addEventListener(\"change\", (event) => {\n        \
-server.kernel.emitt('<Event/>', '\"' + event.target.value + '\"', \
-'<Pattern/>');\n      }, false);\n      \n      \
-document.getElementById(uid).addEventListener('click', () => {\n        \
-console.log('clicked');\n        \n        \
-picker.classList.remove('hidden');\n        console.log(picker.classList);\n  \
-      state = true; \n        setTimeout(() => \
-window.addEventListener('click', close), 30);\n      })\n    </script>\n  \
-}\n] ]\n\nOptions[MacroToolbar`Color] = {\"Event\"->\"\", \"Pattern\"->\"\", \
-\"Title\"->\"\"};\n\nMacroToolbar`Greek[Child_, OptionsPattern[]] := With[{\n \
- UId = CreateUUID[],\n  Title = OptionValue[\"Title\"],\n  Event = \
-OptionValue[\"Event\"],\n  Pattern = OptionValue[\"Pattern\"],\n  Letters = \
-{\"\\\\[Alpha]\", \"\\\\[Beta]\", \"\\\\[Gamma]\", \"\\\\[Delta]\", \
-\"\\\\[Epsilon]\", \"\\\\[Zeta]\", \"\\\\[Eta]\", \"\\\\[Theta]\", \
-\"\\\\[Iota]\", \"\\\\[Kappa]\", \"\\\\[Lambda]\", \"\\\\[Mu]\", \
-\"\\\\[Nu]\", \"\\\\[Xi]\", \"\\\\[Omicron]\", \"\\\\[Pi]\", \"\\\\[Rho]\", \
-\"\\\\[Sigma]\", \"\\\\[Tau]\", \"\\\\[Upsilon]\", \"\\\\[Phi]\", \
-\"\\\\[Chi]\", \"\\\\[Psi]\", \"\\\\[Omega]\"}\n},\nWith[{\n  GreekList = \
-Table[With[{\n    HTMLEntity = StringJoin[\"&\", \
-ToLowerCase[StringDrop[StringDrop[Item, 2], -1]], \";\"]\n  },\n    <button \
-class=\"w-5 h-5 rounded\" name=\"{Item}\"><HTMLEntity/></button>\n  ], {Item, \
-Letters}]\n},\n  {\n<div class=\"relative\">\n    <button title=\"{Title}\" \
-id=\"{UId}\" class=\"hover:bg-gray-100 p-1 rounded\">\n      <Child/>\n    \
-</button>\n  <div id=\"{UId}-fpicker\" class=\"absolute left-0 z-10 mt-2 \
-origin-top-right backdrop-blur rounded-md ring-1 ring-black ring-opacity-5 \
-focus:outline-none hidden\" role=\"menu\" aria-orientation=\"vertical\" \
-aria-labelledby=\"menu-button\" tabindex=\"-1\">\n    <div class=\"flex \
-flex-row flex-wrap gap-x-2 gap-2 p-2\" role=\"none\" style=\"\n    width: \
-11rem;\n    position: relative;\n    height: 10%;\n    flex-wrap: \
-wrap;\n\">\n      \n      <GreekList/>\n    </div>\n  </div>\n </div> \n  ,\n \
-   <script type=\"module\">\n      const uid = '<UId/>';\n      const picker \
-= document.getElementById(uid + '-fpicker');\n      let state = false;\n\n    \
-\n\n      let close;\n      \n      close = () => {\n        if (!state) \
-return;\n        state = false;\n        picker.classList.add('hidden');\n    \
-    window.removeEventListener('click', close);\n      }\n      \n      const \
-list = picker.getElementsByTagName('button');\n      for (let i=0; \
-i<list.length; ++i) {\n        const el = list[i];\n        const value = \
-el.name;\n        el.addEventListener('click', () => {\n          \
-server.kernel.emitt('<Event/>', '\"\\\\' + value + '\"', '<Pattern/>');\n     \
-     close();\n        })\n      }\n      \n      \
-document.getElementById(uid).addEventListener('click', () => {\n        \
-console.log('clicked');\n        \n        \
-picker.classList.remove('hidden');\n        console.log(picker.classList);\n  \
-      state = true; \n        setTimeout(() => \
-window.addEventListener('click', close), 30);\n      })\n    </script>\n  \
-}\n] ]\n\nOptions[MacroToolbar`Greek] = {\"Event\"->\"\", \"Pattern\"->\"\", \
-\"Title\"->\"\"};\n\nMacroToolbar`format[\"Wolfram\", \"Superscript\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*SpB[*)Power[\", \
-If[StringLength[piece]==0, \"_\", piece], \"(*|*),(*|*)\",  \"_\", \
-\"](*]SpB*)\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \
-\"ConjugateTranspose\", _, piece_String, win_] := With[{\n  s = \
-StringJoin[\"(*BB[*)(ConjugateTranspose[\",If[StringLength[piece]==0, \"_\", \
-piece],\"])(*,*)(*\\\"1:eJxTTMoPSmNmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfk\
-wLh8QCJkKLEvOKC/OJUp/yKYA6ggFpKYnp6apF1GhNMQ1BpTmowWGdqYkqwEJDhnJ+XVZqeWJIK14\
-2mmhXIcC1LzSsBC/mV5uQAAMyPJpk=\\\"*)(*]BB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Transpose\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*BB[*)(Transpose[\", \
-If[StringLength[piece]==0, \"_\", piece], \
-\"])(*,*)(*\\\"1:eJxTTMoPSmNmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh8QCJ\
-kKLEvOKC/OJUp/yKYJBoSBoTTGVQaU5qMFhLamJKMCeyajRFrECGa1lqXglYyK80JwcAFSsgcg==\
-\\\"*)(*]BB*)\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Invisible comma\", \
-_, _, win_] := With[{},\n  FrontSubmit[FrontEditorSelected[\"Set\", \
-\"\\\\[InvisibleComma]\"], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Infinity\", _, _, \
-win_] := With[{},\n  FrontSubmit[FrontEditorSelected[\"Set\", \
-\"\[Infinity]\"], \"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \
-\"Degree\", _, _, win_] := With[{},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", \"\[Degree]\"], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", f_String, _, _, win_] \
-:= With[{},\n  FrontSubmit[FrontEditorSelected[\"Set\", \
-StringJoin[\"\\\\[Formal\", StringDrop[f,7], \"]\"]], \"Window\"->win]\n] /; \
-TrueQ[StringMatchQ[f, \"Formal\"~~__]]\n\nMacroToolbar`format[\"Wolfram\", \
-f_String, _, _, win_] := With[{},\n  FrontSubmit[FrontEditorSelected[\"Set\", \
-StringJoin[\"\\\\[Script\", StringDrop[f,7], \"]\"]], \"Window\"->win]\n] /; \
-TrueQ[StringMatchQ[f, \"Script\"~~__]]\n\nMacroToolbar`format[\"Wolfram\", \
-f_String, _, _, win_] := With[{},\n  FrontSubmit[FrontEditorSelected[\"Set\", \
-StringJoin[\"\\\\[DoubleStruck\", StringDrop[f,7], \"]\"]], \
-\"Window\"->win]\n] /; TrueQ[StringMatchQ[f, \
-\"Double\"~~__]]\n\n\nMacroToolbar`format[\"Wolfram\", \"Subscript\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*SbB[*)Subscript[\", \
-If[StringLength[piece]==0, \"_\", piece], \"(*|*),(*|*)\",  \"_\", \
-\"](*]SbB*)\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n] \n\nMacroToolbar`format[\"Wolfram\", \"Indexed\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*TB[*)Indexed[(*|*)\", \
-If[StringLength[piece]==0, \"_\", piece], \"(*|*), \
-{(*|*)1,2(*|*)}](*|*)(*1:eJxTTMoPSmMAgmIuIOGZl5JakZrilF8BAECTBhI=*)(*]TB*)\"]\
-\n},\n\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \"Window\"->win]\n] \
-\n\nMacroToolbar`format[\"Wolfram\", \"Fraction\", _, piece_String, win_] := \
-With[{\n  s = StringJoin[\"(*FB[*)((\", If[StringLength[piece]==0, \"_\", \
-piece], \")(*,*)/(*,*)(\", \"_\", \"))(*]FB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Root\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*SqB[*)Sqrt[\", \
-If[StringLength[piece]==0, \"_\", piece], \"](*]SqB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Integral\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*TB[*)Integrate[(*|*)\", \
-If[StringLength[piece]==0, \"_\", piece],\"(*|*), \
-(*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNiYGAo5gESnnklqelFiSWpTvkVmYwgUVYg4ZaYU5wKAMfB\
-CcU=*)(*]TB*)\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"IntegralBound\", _, \
-piece_String, win_] := With[{\n  s = \
-StringJoin[\"(*TB[*)Integrate[(*|*)\",If[StringLength[piece]==0, \"_\", \
-piece],\"(*|*), \
-{(*|*)x(*|*),(*|*)xmin(*|*),(*|*)xmax(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAo5gESnnkl\
-qelFiSWpTvkVmYwgURYgEVJUmgoAvmMJeQ==*)(*]TB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Sum\", _, \
-piece_String, win_] := With[{\n  s = \
-StringJoin[\"(*TB[*)Sum[(*|*)\",If[StringLength[piece]==0, \"_\", \
-piece],\"(*|*), \
-{(*|*)x(*|*),(*|*)xmin(*|*),(*|*)xmax(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAoZgMSwaW5\
-TvkVmYwgPguQCCkqTQUAeAcHBQ==*)(*]TB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\nMacroToolbar`format[\"Wolfram\", \"Piecewise\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"(*TB[*)Piecewise[{{(*|*)\", \
-If[StringLength[piece]==0, \"_\", piece], \"(*|*),(*|*)x > \
-0(*|*)},{(*|*)0(*|*),(*|*)True(*|*)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmc\
-WpTvkVmUxAAQBzVQdd*)(*]TB*)\"]\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\n\nMacroToolbar`format[\"Wolfram\", \"Greek\", \
-letter_String, piece_String, win_] := With[{\n  s = letter\n},\n  \
-FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Wolfram\", \"Color\", \
-color_String, piece_String, win_] := With[{\n  s = ToString[RGBColor[color], \
-StandardForm]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`dummy := <div></div>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dc6dec60-df02-458e-a602-59b3064dce59", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "MacroToolbar`format[\"Markdown\" | \"HTML\", \"Superscript\", \
-_, piece_String, win_] := With[{\n  s = StringJoin[\"<sup>\", piece, \
-\"</sup>\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Markdown\" | \"HTML\", \
-\"Subscript\", _, piece_String, win_] := With[{\n  s = StringJoin[\"<sub>\", \
-piece, \"</sub>\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n] \n\nMacroToolbar`format[\"Markdown\", \"Fraction\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"$\\\\\\\\frac{\", piece, \
-\"}{}$\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Markdown\", \"Root\", _, \
-piece_String, win_] := With[{\n  s = StringJoin[\"$\\\\\\\\sqrt{\", piece, \
-\"}$\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`format[\"Markdown\" | \"HTML\", \
-\"Greek\", letter_String, piece_String, win_] := With[{\n  s = \
-StringJoin[\"&\", StringDrop[StringDrop[letter // ToLowerCase,-1], 2], \
-\";\"]\n},\n  FrontSubmit[FrontEditorSelected[\"Set\", s], \
-\"Window\"->win]\n]\n\nMacroToolbar`apply[style_, data_, window_] := \
-Then[FrontFetchAsync[{FrontEditorSelected[\"GetDoc\"], \
-FrontEditorSelected[\"Cursor\"]}, \"Window\" -> window], Function[result,\n  \
-With[{\n    text   = result[[1]],\n    cursor = result[[2]]\n  },\n\n    \
-Which[\n      StringMatchQ[text, \".md\"~~\"\n\"~~___],\n      \
-MacroToolbar`format[\"Markdown\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n      \n      StringMatchQ[text, \".html\"~~\"\n\"~~___],\n \
-     MacroToolbar`format[\"HTML\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n      \n      StringMatchQ[text, \".wlx\"~~\"\n\"~~___],\n  \
-    MacroToolbar`format[\"HTML\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n      \n      StringMatchQ[text, \
-\".slide\"~~\"\n\"~~___],\n      MacroToolbar`format[\"Markdown\", style, \
-data, StringTake[text, cursor + {1,0}], window],\n      \n      \
-StringMatchQ[text, \".slides\"~~\"\n\"~~___],\n      \
-MacroToolbar`format[\"Markdown\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n\n      StringMatchQ[text, \".wl\"~~\"\n\"~~___],\n      \
-MacroToolbar`format[\"Wolfram\", style, data, StringTake[text, cursor + \
-{1,0}], window],\n\n      StringMatchQ[text, \
-\".\"~~WordCharacter..~~\"\n\"~~___],\n      Notify[\"Unknown cell type\", \
-\"Topic\"->\"Warning\"],\n\n      True,\n      \
-MacroToolbar`format[\"Wolfram\", style, data, StringTake[text, cursor + \
-{1,0}], window]\n    ];\n  ]\n]]", "Display" -> "codemirror", 
-    "Hash" -> "e0c8c2da-fc25-4a80-b303-04a83d642f9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> ".md\nActual widget", "Display" -> "codemirror", 
-    "Hash" -> "740c0136-a21d-4ada-8e4d-b16d30c05f04", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "Actual widget", "Display" -> "markdown", 
-    "Hash" -> "0412bbbb-9d49-4e0e-a1b6-87f1307b82bb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> ".wlx\n\nwidget[self_] := With[{\n  FormattingToolbarButton = \
-MacroToolbar`Button, \n  FormattingToolbarLetterSelector = \
-MacroToolbar`Greek,\n  FormattingToolbarColorSelector = MacroToolbar`Color,\n \
- act = CreateUUID[],\n  parent = self,\n  win = \
-CurrentWindow[]\n},\n\nEventHandler[win, {\"Closed\" -> Function[Null,\n  \
-Delete[parent];\n]}];\n\nEventHandler[act, {\n  \"Close\" -> Function[Null,\n \
-   Delete[parent]\n  ],\n\n  s_String :> Function[data, MacroToolbar`apply[s, \
-data, win]]\n}];\n\n<div class=\"flex flex-col\">\n<div class=\"text-left \
-items-center text-xs text-gray-500\"><span>Operators</span></div>\n<div \
-class=\"flex flex-row\">\n<ul class=\"p-0 flex flex-row pr-1\">\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Power\"} Pattern={\"Superscript\"}>\n      <svg class=\"w-5 h-5 \
-text-gray-500 hover:text-teal-600\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" \
-d=\"M17.3181 6.04842C17.6174 5.75945 18.1021 5.79767 18.3524 6.12997C18.5536 \
-6.39707 18.5353 6.76978 18.3088 7.01579L15.2643 10.3227C14.9955 10.6147 \
-14.9248 11.0382 15.0842 11.4017C15.2437 11.7652 15.6031 12 16 12H20C20.5523 \
-12 21 11.5523 21 11C21 10.4477 20.5523 10 20 10H18.2799L19.7802 \
-8.37041C20.6607 7.41399 20.7321 5.96504 19.95 4.92665C18.9769 3.63478 17.0925 \
-3.48621 15.929 4.60962L15.3054 5.21165C14.9081 5.59526 14.897 6.22833 15.2806 \
-6.62564C15.6642 7.02296 16.2973 7.03406 16.6946 6.65045L17.3181 \
-6.04842ZM4.7433 8.33104C4.37384 7.92053 3.74155 7.88725 3.33104 \
-8.25671C2.92053 8.62616 2.88726 9.25845 3.25671 9.66896L7.15465 14L3.25671 \
-18.331C2.88726 18.7415 2.92053 19.3738 3.33104 19.7433C3.74155 20.1128 \
-4.37384 20.0795 4.7433 19.669L8.50001 15.4948L12.2567 19.669C12.6262 20.0795 \
-13.2585 20.1128 13.669 19.7433C14.0795 19.3738 14.1128 18.7415 13.7433 \
-18.331L9.84537 14L13.7433 9.66896C14.1128 9.25845 14.0795 8.62616 13.669 \
-8.25671C13.2585 7.88725 12.6262 7.92053 12.2567 8.33104L8.50001 \
-12.5052L4.7433 8.33104Z\" fill=\"currentColor\"/>\n</svg>\n    \
-</FormattingToolbarButton>\n  </li>   \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Subscript\"} \
-Pattern={\"Subscript\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\"><path \
-fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.7433 5.33104C4.37384 \
-4.92053 3.74155 4.88726 3.33104 5.25671C2.92053 5.62617 2.88726 6.25846 \
-3.25671 6.66897L7.15465 11L3.25671 15.331C2.88726 15.7416 2.92053 16.3738 \
-3.33104 16.7433C3.74155 17.1128 4.37384 17.0795 4.7433 16.669L8.50001 \
-12.4949L12.2567 16.669C12.6262 17.0795 13.2585 17.1128 13.669 16.7433C14.0795 \
-16.3738 14.1128 15.7416 13.7433 15.331L9.84537 11L13.7433 6.66897C14.1128 \
-6.25846 14.0795 5.62617 13.669 5.25671C13.2585 4.88726 12.6262 4.92053 \
-12.2567 5.33104L8.50001 9.50516L4.7433 5.33104ZM17.3181 14.0484C17.6174 \
-13.7595 18.1021 13.7977 18.3524 14.13C18.5536 14.3971 18.5353 14.7698 18.3088 \
-15.0158L15.2643 18.3227C14.9955 18.6147 14.9248 19.0382 15.0842 \
-19.4017C15.2437 19.7652 15.6031 20 16 20H20C20.5523 20 21 19.5523 21 19C21 \
-18.4477 20.5523 18 20 18H18.2799L19.7802 16.3704C20.6607 15.414 20.7321 \
-13.965 19.95 12.9267C18.9769 11.6348 17.0925 11.4862 15.929 12.6096L15.3054 \
-13.2116C14.9081 13.5953 14.897 14.2283 15.2806 14.6256C15.6642 15.023 16.2973 \
-15.0341 16.6946 14.6505L17.3181 14.0484Z\" fill=\"currentColor\"/>\n</svg>\n  \
-  </FormattingToolbarButton>\n  </li>  \n<li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Indexed\"} \
-Pattern={\"Indexed\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\"><path \
-fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.7433 5.33104C4.37384 \
-4.92053 3.74155 4.88726 3.33104 5.25671C2.92053 5.62617 2.88726 6.25846 \
-3.25671 6.66897L7.15465 11L3.25671 15.331C2.88726 15.7416 2.92053 16.3738 \
-3.33104 16.7433C3.74155 17.1128 4.37384 17.0795 4.7433 16.669L8.50001 \
-12.4949L12.2567 16.669C12.6262 17.0795 13.2585 17.1128 13.669 16.7433C14.0795 \
-16.3738 14.1128 15.7416 13.7433 15.331L9.84537 11L13.7433 6.66897C14.1128 \
-6.25846 14.0795 5.62617 13.669 5.25671C13.2585 4.88726 12.6262 4.92053 \
-12.2567 5.33104L8.50001 9.50516L4.7433 5.33104ZM17.3181 14.0484C17.6174 \
-13.7595 18.1021 13.7977 18.3524 14.13C18.5536 14.3971 18.5353 14.7698 18.3088 \
-15.0158L15.2643 18.3227C14.9955 18.6147 14.9248 19.0382 15.0842 \
-19.4017C15.2437 19.7652 15.6031 20 16 20H20C20.5523 20 21 19.5523 21 19C21 \
-18.4477 20.5523 18 20 18H18.2799L19.7802 16.3704C20.6607 15.414 20.7321 \
-13.965 19.95 12.9267C18.9769 11.6348 17.0925 11.4862 15.929 12.6096L15.3054 \
-13.2116C14.9081 13.5953 14.897 14.2283 15.2806 14.6256C15.6642 15.023 16.2973 \
-15.0341 16.6946 14.6505L17.3181 14.0484Z\" fill=\"currentColor\"/>\n</svg>\n  \
-  </FormattingToolbarButton>\n  </li>  \n<li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Fraction\"} \
-Pattern={\"Fraction\"}>\n      <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" fill=\"currentColor\" viewBox=\"-8 0 32 32\">\n<path \
-d=\"M14.84 16.84h-14c-0.48 0-0.84-0.36-0.84-0.84s0.36-0.84 0.84-0.84h14c0.48 \
-0 0.84 0.36 0.84 0.84s-0.36 0.84-0.84 0.84zM7.84 12.56c-1.36 \
-0-2.48-1.12-2.48-2.48s1.12-2.48 2.48-2.48 2.48 1.12 2.48 2.48c0 1.36-1.12 \
-2.48-2.48 2.48zM7.84 9.28c-0.44 0-0.8 0.36-0.8 0.8s0.36 0.8 0.8 0.8 0.8-0.36 \
-0.8-0.8c0-0.44-0.36-0.8-0.8-0.8zM7.84 24.4c-1.36 \
-0-2.48-1.12-2.48-2.48s1.12-2.48 2.48-2.48 2.48 1.12 2.48 2.48c0 1.4-1.12 \
-2.48-2.48 2.48zM7.84 21.12c-0.44 0-0.8 0.36-0.8 0.8s0.36 0.8 0.8 0.8 0.8-0.36 \
-0.8-0.8-0.36-0.8-0.8-0.8z\"></path>\n</svg>\n    </FormattingToolbarButton>\n \
- </li> \n\n<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Square root\"} Pattern={\"Root\"}>\n      <svg class=\"w-5 h-5 \
-text-gray-500 hover:text-teal-600\" viewBox=\"0 0 24 24\" ><path \
-d=\"M3,12H4.31a1,1,0,0,1,.93.65L8,20,10.85,4.82a1,1,0,0,1,1-.82H21\" \
-stroke=\"currentColor\" style=\"fill: none; stroke-linecap: round; \
-stroke-linejoin: round; stroke-width: 2;\"></path></svg>\n    \
-</FormattingToolbarButton>\n  </li>   \n</ul>\n\n<ul class=\"p-0 flex \
-flex-row pr-1\">\n<li class=\"list-none\">\n    <FormattingToolbarButton \
-Event={act} Title={\"Transpose\"} Pattern={\"Transpose\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\"><sup>T</sup></div>\n    \
-</FormattingToolbarButton>\n  </li> \n<li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Conjugate transpose\"} \
-Pattern={\"ConjugateTranspose\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\"><sup>&dagger;</sup></div>\n    \
-</FormattingToolbarButton>\n  </li>  \n</ul>\n\n<ul class=\"p-0 flex flex-row \
-pr-1\">\n<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Invisible comma\"} Pattern={\"Invisible comma\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\"><sup>,</sup></div>\n    \
-</FormattingToolbarButton>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Degree\"} \
-Pattern={\"Degree\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">&deg;</div>\n    </FormattingToolbarButton>\n  </li>  \
-\n  <li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Infinity\"} Pattern={\"Infinity\"}>\n      <div class=\"w-5 h-5 \
-text-gray-500 hover:text-teal-600\">&infin;</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n</ul>\n\n<ul class=\"p-0 flex flex-row \
-pr-1\">\n<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Indefinite Integral\"} Pattern={\"Integral\"}>\n      <svg \
-fill=\"currentColor\" viewBox=\"0 0 24 24\" class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\"><path stroke=\"currentColor\" \
-d=\"M5,19l.38.76a2.24,2.24,0,0,0,2,1.24h0a2.24,2.24,0,0,0,2.13-1.53L12,12l2.4\
-9-7.47A2.24,2.24,0,0,1,16.62,3h0a2.24,2.24,0,0,1,2,1.24L19,5\" style=\"fill: \
-none; stroke-linecap: round; stroke-linejoin: round; stroke-width: \
-2;\"></path></svg>\n    </FormattingToolbarButton>\n  </li>\n<li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Integral\"} Pattern={\"IntegralBound\"}>\n     <svg \
-fill=\"currentColor\" viewBox=\"0 0 24 24\" class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\"><path stroke=\"currentColor\" d=\"M 5 19 l 0.38 0.76 a \
-2.24 2.24 0 0 0 2 1.24 h 0 a 2.24 2.24 0 0 0 2.13 -1.53 L 12 12 l 2.49 -7.47 \
-A 2.24 2.24 0 0 1 16.62 3 h 0 a 2.24 2.24 0 0 1 2 1.24 L 19 5 M 18 8 L 20 10 \
-M 20 8 L 18 10 M 15 18 L 17 20 M 17 18 L 15 20\" style=\"fill: none; \
-stroke-linecap: round; stroke-linejoin: round; stroke-width: \
-2;\"></path></svg>\n    </FormattingToolbarButton>\n  </li>  \n<li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Sum\"} Pattern={\"Sum\"}>\n      <svg fill=\"currentColor\" \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\"  viewBox=\"0 0 56 \
-56\"><path d=\"M 17.4531 53.7695 L 39.3906 53.7695 C 40.6094 53.7695 41.5234 \
-52.9961 41.5234 51.8008 C 41.5234 50.6055 40.6094 49.8086 39.3906 49.8086 L \
-19.3984 49.8086 L 19.3984 49.5977 L 32.3828 30.0039 C 32.9922 29.0664 33.2500 \
-28.5742 33.2500 27.8008 C 33.2500 26.9571 32.8515 26.2305 32.0547 25.0586 L \
-19.4218 6.4024 L 19.4218 6.1914 L 39.4140 6.1914 C 40.6328 6.1914 41.5469 \
-5.4180 41.5469 4.2227 C 41.5469 3.0273 40.6328 2.2305 39.4140 2.2305 L \
-17.4766 2.2305 C 15.7187 2.2305 14.4766 3.3320 14.4766 4.9492 C 14.4766 \
-5.8633 14.7109 6.5195 15.3672 7.5039 L 28.9140 27.6367 L 28.9140 27.8945 L \
-15.3437 48.4961 C 14.6875 49.4805 14.4531 50.1367 14.4531 51.0508 C 14.4531 \
-52.6445 15.7187 53.7695 17.4531 53.7695 Z\"/></svg>\n    \
-</FormattingToolbarButton>\n  </li>\n<li class=\"list-none\">\n    \
-<FormattingToolbarButton Title={\"Piecewise function\"} Event={act} \
-Pattern={\"Piecewise\"}>\n     <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\">\n<path d=\"M14 \
-21C12.8954 21 12 20.1046 12 19V15.3255C12 14.8363 12 14.5917 11.9447 \
-14.3615C11.8957 14.1575 11.8149 13.9624 11.7053 13.7834C11.5816 13.5816 \
-11.4086 13.4086 11.0627 13.0627L10 12L11.0627 10.9373C11.4086 10.5914 11.5816 \
-10.4184 11.7053 10.2166C11.8149 10.0376 11.8957 9.84254 11.9447 9.63846C12 \
-9.40829 12 9.1637 12 8.67452V5C12 3.89543 12.8954 3 14 3\" \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n</svg>\n    </FormattingToolbarButton>\n  </li>  \
-\n</ul>\n\n\n<ul class=\"p-0 flex flex-row\"> \n  <li class=\"list-none\">\n  \
-  <FormattingToolbarColorSelector Title={\"Color Picker\"} Event={act} \
-Pattern={\"Color\"}>\n        <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M6.5 \
-21H20.4706C20.763 21 21.0002 20.7631 21.0002 20.4707L21 14.5293M7.98047 \
-20.6713L20.6421 14.7671C20.9071 14.6435 21.0217 14.3285 20.8981 \
-14.0635L18.3872 8.6792C18.2636 8.41421 17.9486 8.29914 17.6836 \
-8.42271L12.0303 11.0591M9.88182 18.4048C9.38152 20.2719 7.46235 21.38 5.59521 \
-20.8797C3.72808 20.3794 2.61982 18.4604 3.12011 16.5933L6.73596 \
-3.09863C6.81163 2.81621 7.10168 2.64855 7.3841 2.72422L13.1231 \
-4.26171C13.4055 4.33738 13.5731 4.6276 13.4974 4.91002L9.88182 18.4048ZM6.5 \
-17.6001H6.502L6.50195 17.6021L6.5 17.6021V17.6001Z\" stroke=\"currentColor\" \
-stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"></path></svg>\n    \
-</FormattingToolbarColorSelector>\n  </li>  \n \n  \n</ul> \n  \n  <div \
-class=\"ml-auto\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Close\"} Pattern={\"Close\"}>\n      <svg class=\"w-4 h-4 \
-text-gray-500 hover:text-red-300\" viewBox=\"0 0 24 24\" fill=\"none\">\n     \
-   <path d=\"M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001\" \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"/>\n      </svg>\n    </FormattingToolbarButton>\n  \
-</div>\n</div>\n<div class=\"text-left items-center text-xs \
-text-gray-500\"><span>Formal Symbols</span></div>\n<div class=\"flex \
-flex-row\">\n<ul class=\"p-0 flex flex-row pr-1\">\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalA\"} Pattern={\"Formal CapitalA\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">A</div>\n    \
-</FormattingToolbarButton>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal A\"} Pattern={\"Formal \
-A\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">a</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalB\"} Pattern={\"Formal CapitalB\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">B</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal B\"} Pattern={\"Formal \
-B\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">b</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalH\"} Pattern={\"Formal CapitalH\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">H</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal H\"} Pattern={\"Formal \
-H\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">h</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalK\"} Pattern={\"Formal CapitalK\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">K</div>\n    \
-</FormattingToolbarButton>\n  </li>   \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal K\"} Pattern={\"Formal \
-K\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">k</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalP\"} Pattern={\"Formal CapitalP\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">P</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal P\"} Pattern={\"Formal \
-P\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">p</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalU\"} Pattern={\"Formal CapitalU\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">U</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal U\"} Pattern={\"Formal \
-U\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">u</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalV\"} Pattern={\"Formal CapitalV\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">V</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal V\"} Pattern={\"Formal \
-V\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">v</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalW\"} Pattern={\"Formal CapitalW\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">W</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal W\"} Pattern={\"Formal \
-W\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">w</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Formal CapitalX\"} Pattern={\"Formal CapitalX\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">X</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Formal X\"} Pattern={\"Formal \
-X\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">x</div>\n    </FormattingToolbarButton>\n  </li>   \
-\n</ul>\n<ul class=\"p-0 flex flex-row pr-1\">\n  <li class=\"list-none\">\n  \
-  <FormattingToolbarLetterSelector Title={\"Greek letters\"} Event={act} \
-Pattern={\"Greek\"}>\n     \n        <svg class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\" viewBox=\"0 0 32 32\">\n  <path fill=\"currentColor\" \
-d=\"M22.7373,25A14.3093,14.3093,0,0,0,27,15C27,8.42,22.58,4,16,4S5,8.42,5,15A\
-14.3093,14.3093,0,0,0,9.2627,25H4v2h8V24.7617A12.5683,12.5683,0,0,1,7,15c0-5.\
-4673,3.5327-9,9-9s9,3.5327,9,9a12.5683,12.5683,0,0,1-5,9.7617V27h8V25Z\"/>\n<\
-/svg>\n    </FormattingToolbarLetterSelector>\n  </li>\n</ul>\n</div>\n<div \
-class=\"text-left items-center text-xs text-gray-500\"><span>Script \
-Symbols</span></div>\n<div class=\"flex flex-row\" style=\"font-family: \
-cursive\">\n<ul class=\"p-0 flex flex-row pr-1\">\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalA\"} Pattern={\"Script CapitalA\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">A</div>\n    \
-</FormattingToolbarButton>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script A\"} Pattern={\"Script \
-A\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">a</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalB\"} Pattern={\"Script CapitalB\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">B</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script B\"} Pattern={\"Script \
-B\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">b</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalH\"} Pattern={\"Script CapitalH\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">H</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script H\"} Pattern={\"Script \
-H\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">h</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalK\"} Pattern={\"Script CapitalK\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">K</div>\n    \
-</FormattingToolbarButton>\n  </li>   \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script K\"} Pattern={\"Script \
-K\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">k</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalP\"} Pattern={\"Script CapitalP\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">P</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script P\"} Pattern={\"Script \
-P\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">p</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalU\"} Pattern={\"Script CapitalU\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">U</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script U\"} Pattern={\"Script \
-U\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">u</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalV\"} Pattern={\"Script CapitalV\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">V</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script V\"} Pattern={\"Script \
-V\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">v</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalW\"} Pattern={\"Script CapitalW\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">W</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script W\"} Pattern={\"Script \
-W\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">w</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Script CapitalX\"} Pattern={\"Script CapitalX\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">X</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Script X\"} Pattern={\"Script \
-X\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">x</div>\n    </FormattingToolbarButton>\n  </li>   \
-\n</ul>\n</div>\n<div class=\"text-left items-center text-xs \
-text-gray-500\"><span>Double-Struck Symbols</span></div>\n<div class=\"flex \
-flex-row\" style=\"font-family: math\">\n<ul class=\"p-0 flex flex-row \
-pr-1\">\n  <li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalA\"} Pattern={\"Double CapitalA\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">A</div>\n    \
-</FormattingToolbarButton>\n  </li> \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double A\"} Pattern={\"Double \
-A\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">a</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalB\"} Pattern={\"Double CapitalB\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">B</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double B\"} Pattern={\"Double \
-B\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">b</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalH\"} Pattern={\"Double CapitalH\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">H</div>\n    \
-</FormattingToolbarButton>\n  </li>    \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double H\"} Pattern={\"Double \
-H\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">h</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalK\"} Pattern={\"Double CapitalK\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">K</div>\n    \
-</FormattingToolbarButton>\n  </li>   \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double K\"} Pattern={\"Double \
-K\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">k</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalP\"} Pattern={\"Double CapitalP\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">P</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double P\"} Pattern={\"Double \
-P\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">p</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalU\"} Pattern={\"Double CapitalU\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">U</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double U\"} Pattern={\"Double \
-U\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">u</div>\n    </FormattingToolbarButton>\n  </li>  \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalV\"} Pattern={\"Double CapitalV\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">V</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n    <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double V\"} Pattern={\"Double \
-V\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">v</div>\n    </FormattingToolbarButton>\n  </li> \n  \
-<li class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalW\"} Pattern={\"Double CapitalW\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">W</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double W\"} Pattern={\"Double \
-W\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">w</div>\n    </FormattingToolbarButton>\n  </li>\n  <li \
-class=\"list-none\">\n    <FormattingToolbarButton Event={act} \
-Title={\"Double CapitalX\"} Pattern={\"Double CapitalX\"}>\n      <div \
-class=\"w-5 h-5 text-gray-500 hover:text-teal-600\">X</div>\n    \
-</FormattingToolbarButton>\n  </li>  \n  <li class=\"list-none\">\n    \
-<FormattingToolbarButton Event={act} Title={\"Double X\"} Pattern={\"Double \
-X\"}>\n      <div class=\"w-5 h-5 text-gray-500 \
-hover:text-teal-600\">x</div>\n    </FormattingToolbarButton>\n  </li>   \
-\n</ul>\n</div>\n</div>\n]\n", "Display" -> "codemirror", 
-    "Hash" -> "b7bfa5b2-7a59-4f84-ada3-806743cfec13", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "outputQ[c_] := c[[2]] === \"Output\";\n\nlastAfterFocused = \
-With[{\n  focused = NotebookFocusedCell[]\n},\n{\n  rawCells = \
-SequenceCases[Cells[], {focused, Repeated[_, 4]}][[1]]\n},\n{\n  cells = \
-NotebookRead[rawCells]}, \n  rawCells[[Position[cells, SequenceCases[cells, \
-{cells[[1]], ___?outputQ}][[1]][[-1]]][[1,1]]]]\n] // \
-Quiet;\n\nIf[Head[lastAfterFocused] =!= RemoteCellObj, \n  lastAfterFocused = \
-Cells[] // Last;\n];\n\nModule[{self, f = lastAfterFocused},\n  self = \
-NotebookWrite[NotebookLocationSpecifier[f, \"After\"], Cell[\" \", \"Input\", \
-CellOpen->False]];\n  NotebookWrite[NotebookLocationSpecifier[self, \
-\"After\"], Cell[widget[self], \"Output\", \"WLX\"]];\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e79024bb-42d5-433e-bf15-d1d300fd8bb8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> ".md\n__template__", "Display" -> "codemirror", 
-    "Hash" -> "8d11ca7f-2840-411a-9a9d-5dc6eb870852", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "__template__", "Display" -> "markdown", 
-    "Hash" -> "57017db4-010e-4e66-9620-a9dee67042ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"list-none nooline rounded-sm group \
-flex cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n             <svg class=\"h-4 ml-1  w-4 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"none\" viewBox=\"1 \
-1 23 23\"><path d=\"M3 5L13 15M13 5L3 15M21 19.0001H17C17 17.5001 17.44 \
-17.0001 18.5 16.5001C19.56 16.0001 21 15.3301 21 14.0001C21 13.5301 20.83 \
-13.0701 20.52 12.7101C20.1999 12.3476 19.7649 12.1061 19.2879 12.026C18.811 \
-11.9459 18.321 12.0321 17.9 12.2701C17.48 12.5101 17.16 12.8901 17 13.3401\" \
-stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" \
-stroke-linejoin=\"round\"></path></svg> \n              <span class=\"ml-3 \
-flex-auto truncate\"><Title/></span><span class=\"ml-3 flex-none text-xs \
-font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-        <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>                 \
- \n                </button>\n              </span>\n    </li>    \
-\n]\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5a9884b2-0f69-4cea-944b-c635ffd74e9b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "c96c60e8-3b92-4faa-a5d7-af3466e7ee06"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Special characters
+Insert Greek letter, math, colors
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+># Special characters
+Insert Greek letter, math, colors
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+MacroToolbar`Button[Child_, OptionsPattern[]] := With[{
+  UId = CreateUUID[],
+  Title = OptionValue["Title"],
+  Event = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"]
+},
+  {
+    <button title="{Title}" id="{UId}" class="hover:bg-gray-100 p-1 rounded">
+      <Child/>
+    </button>
+  ,
+    <script type="module">
+      const uid = '<UId/>';
+      document.getElementById(uid).addEventListener('click', () => {
+        server.kernel.emitt('<Event/>', 'True', '<Pattern/>');
+      })
+    </script>
+  }
+]
+
+Options[MacroToolbar`Button] = {"Event"->"", "Pattern"->"", "Title"->""};
+
+MacroToolbar`Color[Child_, OptionsPattern[]] := With[{
+  UId = CreateUUID[],
+  Title = OptionValue["Title"],
+  Event = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"],
+  Letters = {"\\[Alpha]", "\\[Beta]", "\\[Gamma]", "\\[Delta]", "\\[Epsilon]", "\\[Zeta]", "\\[Eta]", "\\[Theta]", "\\[Iota]", "\\[Kappa]", "\\[Lambda]", "\\[Mu]", "\\[Nu]", "\\[Xi]", "\\[Omicron]", "\\[Pi]", "\\[Rho]", "\\[Sigma]", "\\[Tau]", "\\[Upsilon]", "\\[Phi]", "\\[Chi]", "\\[Psi]", "\\[Omega]"}
+},
+With[{
+  
+},
+  {
+<div class="relative">
+    <button title="{Title}" id="{UId}" class="hover:bg-gray-100 p-1 rounded">
+      <Child/>
+    </button>
+  <div id="{UId}-cpicker" class="absolute left-0 z-10 mt-2 origin-top-right backdrop-blur rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div class="flex flex-row flex-wrap gap-x-2 gap-2 p-2" role="none" style="
+    position: relative;
+    height: 10%;
+    flex-wrap: wrap;
+">
+      <input type="color" value="#e66465" />
+      
+    </div>
+  </div>
+ </div> 
+  ,
+    <script type="module">
+      const uid = '<UId/>';
+      const picker = document.getElementById(uid + '-cpicker');
+      let state = false;
+
+    
+
+      let close;
+      
+      close = () => {
+        if (!state) return;
+        state = false;
+        picker.classList.add('hidden');
+        window.removeEventListener('click', close);
+      }
+      
+      const color = picker.getElementsByTagName('input')[0];
+      color.addEventListener("change", (event) => {
+        server.kernel.emitt('<Event/>', '"' + event.target.value + '"', '<Pattern/>');
+      }, false);
+      
+      document.getElementById(uid).addEventListener('click', () => {
+        console.log('clicked');
+        
+        picker.classList.remove('hidden');
+        console.log(picker.classList);
+        state = true; 
+        setTimeout(() => window.addEventListener('click', close), 30);
+      })
+    </script>
+  }
+] ]
+
+Options[MacroToolbar`Color] = {"Event"->"", "Pattern"->"", "Title"->""};
+
+MacroToolbar`Greek[Child_, OptionsPattern[]] := With[{
+  UId = CreateUUID[],
+  Title = OptionValue["Title"],
+  Event = OptionValue["Event"],
+  Pattern = OptionValue["Pattern"],
+  Letters = {"\\[Alpha]", "\\[Beta]", "\\[Gamma]", "\\[Delta]", "\\[Epsilon]", "\\[Zeta]", "\\[Eta]", "\\[Theta]", "\\[Iota]", "\\[Kappa]", "\\[Lambda]", "\\[Mu]", "\\[Nu]", "\\[Xi]", "\\[Omicron]", "\\[Pi]", "\\[Rho]", "\\[Sigma]", "\\[Tau]", "\\[Upsilon]", "\\[Phi]", "\\[Chi]", "\\[Psi]", "\\[Omega]"}
+},
+With[{
+  GreekList = Table[With[{
+    HTMLEntity = StringJoin["&", ToLowerCase[StringDrop[StringDrop[Item, 2], -1]], ";"]
+  },
+    <button class="w-5 h-5 rounded" name="{Item}"><HTMLEntity/></button>
+  ], {Item, Letters}]
+},
+  {
+<div class="relative">
+    <button title="{Title}" id="{UId}" class="hover:bg-gray-100 p-1 rounded">
+      <Child/>
+    </button>
+  <div id="{UId}-fpicker" class="absolute left-0 z-10 mt-2 origin-top-right backdrop-blur rounded-md ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+    <div class="flex flex-row flex-wrap gap-x-2 gap-2 p-2" role="none" style="
+    width: 11rem;
+    position: relative;
+    height: 10%;
+    flex-wrap: wrap;
+">
+      
+      <GreekList/>
+    </div>
+  </div>
+ </div> 
+  ,
+    <script type="module">
+      const uid = '<UId/>';
+      const picker = document.getElementById(uid + '-fpicker');
+      let state = false;
+
+    
+
+      let close;
+      
+      close = () => {
+        if (!state) return;
+        state = false;
+        picker.classList.add('hidden');
+        window.removeEventListener('click', close);
+      }
+      
+      const list = picker.getElementsByTagName('button');
+      for (let i=0; i<list.length; ++i) {
+        const el = list[i];
+        const value = el.name;
+        el.addEventListener('click', () => {
+          server.kernel.emitt('<Event/>', '"\\' + value + '"', '<Pattern/>');
+          close();
+        })
+      }
+      
+      document.getElementById(uid).addEventListener('click', () => {
+        console.log('clicked');
+        
+        picker.classList.remove('hidden');
+        console.log(picker.classList);
+        state = true; 
+        setTimeout(() => window.addEventListener('click', close), 30);
+      })
+    </script>
+  }
+] ]
+
+Options[MacroToolbar`Greek] = {"Event"->"", "Pattern"->"", "Title"->""};
+
+MacroToolbar`format["Wolfram", "Superscript", _, piece_String, win_] := With[{
+  s = StringJoin["(*SpB[*)Power[", If[StringLength[piece]==0, "_", piece], "(*|*),(*|*)",  "_", "](*]SpB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "ConjugateTranspose", _, piece_String, win_] := With[{
+  s = StringJoin["(*BB[*)(ConjugateTranspose[",If[StringLength[piece]==0, "_", piece],"])(*,*)(*\"1:eJxTTMoPSmNmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh8QCJkKLEvOKC/OJUp/yKYA6ggFpKYnp6apF1GhNMQ1BpTmowWGdqYkqwEJDhnJ+XVZqeWJIK142mmhXIcC1LzSsBC/mV5uQAAMyPJpk=\"*)(*]BB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Transpose", _, piece_String, win_] := With[{
+  s = StringJoin["(*BB[*)(Transpose[", If[StringLength[piece]==0, "_", piece], "])(*,*)(*\"1:eJxTTMoPSmNmYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh8QCJkKLEvOKC/OJUp/yKYJBoSBoTTGVQaU5qMFhLamJKMCeyajRFrECGa1lqXglYyK80JwcAFSsgcg==\"*)(*]BB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Invisible comma", _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", "\\[InvisibleComma]"], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Infinity", _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", "∞"], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Degree", _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", "°"], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", f_String, _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", StringJoin["\\[Formal", StringDrop[f,7], "]"]], "Window"->win]
+] /; TrueQ[StringMatchQ[f, "Formal"~~__]]
+
+MacroToolbar`format["Wolfram", f_String, _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", StringJoin["\\[Script", StringDrop[f,7], "]"]], "Window"->win]
+] /; TrueQ[StringMatchQ[f, "Script"~~__]]
+
+MacroToolbar`format["Wolfram", f_String, _, _, win_] := With[{},
+  FrontSubmit[FrontEditorSelected["Set", StringJoin["\\[DoubleStruck", StringDrop[f,7], "]"]], "Window"->win]
+] /; TrueQ[StringMatchQ[f, "Double"~~__]]
+
+
+MacroToolbar`format["Wolfram", "Subscript", _, piece_String, win_] := With[{
+  s = StringJoin["(*SbB[*)Subscript[", If[StringLength[piece]==0, "_", piece], "(*|*),(*|*)",  "_", "](*]SbB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+] 
+
+MacroToolbar`format["Wolfram", "Indexed", _, piece_String, win_] := With[{
+  s = StringJoin["(*TB[*)Indexed[(*|*)", If[StringLength[piece]==0, "_", piece], "(*|*), {(*|*)1,2(*|*)}](*|*)(*1:eJxTTMoPSmMAgmIuIOGZl5JakZrilF8BAECTBhI=*)(*]TB*)"]
+},
+
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+] 
+
+MacroToolbar`format["Wolfram", "Fraction", _, piece_String, win_] := With[{
+  s = StringJoin["(*FB[*)((", If[StringLength[piece]==0, "_", piece], ")(*,*)/(*,*)(", "_", "))(*]FB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Root", _, piece_String, win_] := With[{
+  s = StringJoin["(*SqB[*)Sqrt[", If[StringLength[piece]==0, "_", piece], "](*]SqB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Integral", _, piece_String, win_] := With[{
+  s = StringJoin["(*TB[*)Integrate[(*|*)", If[StringLength[piece]==0, "_", piece],"(*|*), (*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNiYGAo5gESnnklqelFiSWpTvkVmYwgUVYg4ZaYU5wKAMfBCcU=*)(*]TB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "IntegralBound", _, piece_String, win_] := With[{
+  s = StringJoin["(*TB[*)Integrate[(*|*)",If[StringLength[piece]==0, "_", piece],"(*|*), {(*|*)x(*|*),(*|*)xmin(*|*),(*|*)xmax(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAo5gESnnklqelFiSWpTvkVmYwgURYgEVJUmgoAvmMJeQ==*)(*]TB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Sum", _, piece_String, win_] := With[{
+  s = StringJoin["(*TB[*)Sum[(*|*)",If[StringLength[piece]==0, "_", piece],"(*|*), {(*|*)x(*|*),(*|*)xmin(*|*),(*|*)xmax(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAoZgMSwaW5TvkVmYwgPguQCCkqTQUAeAcHBQ==*)(*]TB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+MacroToolbar`format["Wolfram", "Piecewise", _, piece_String, win_] := With[{
+  s = StringJoin["(*TB[*)Piecewise[{{(*|*)", If[StringLength[piece]==0, "_", piece], "(*|*),(*|*)x > 0(*|*)},{(*|*)0(*|*),(*|*)True(*|*)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmcWpTvkVmUxAAQBzVQdd*)(*]TB*)"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+
+MacroToolbar`format["Wolfram", "Greek", letter_String, piece_String, win_] := With[{
+  s = letter
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Wolfram", "Color", color_String, piece_String, win_] := With[{
+  s = ToString[RGBColor[color], StandardForm]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`dummy := <div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+MacroToolbar`format["Markdown" | "HTML", "Superscript", _, piece_String, win_] := With[{
+  s = StringJoin["<sup>", piece, "</sup>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Markdown" | "HTML", "Subscript", _, piece_String, win_] := With[{
+  s = StringJoin["<sub>", piece, "</sub>"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+] 
+
+MacroToolbar`format["Markdown", "Fraction", _, piece_String, win_] := With[{
+  s = StringJoin["$\\\\frac{", piece, "}{}$"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Markdown", "Root", _, piece_String, win_] := With[{
+  s = StringJoin["$\\\\sqrt{", piece, "}$"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`format["Markdown" | "HTML", "Greek", letter_String, piece_String, win_] := With[{
+  s = StringJoin["&", StringDrop[StringDrop[letter // ToLowerCase,-1], 2], ";"]
+},
+  FrontSubmit[FrontEditorSelected["Set", s], "Window"->win]
+]
+
+MacroToolbar`apply[style_, data_, window_] := Then[FrontFetchAsync[{FrontEditorSelected["GetDoc"], FrontEditorSelected["Cursor"]}, "Window" -> window], Function[result,
+  With[{
+    text   = result[[1]],
+    cursor = result[[2]]
+  },
+
+    Which[
+      StringMatchQ[text, ".md"~~"
+"~~___],
+      MacroToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".html"~~"
+"~~___],
+      MacroToolbar`format["HTML", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".wlx"~~"
+"~~___],
+      MacroToolbar`format["HTML", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".slide"~~"
+"~~___],
+      MacroToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+      
+      StringMatchQ[text, ".slides"~~"
+"~~___],
+      MacroToolbar`format["Markdown", style, data, StringTake[text, cursor + {1,0}], window],
+
+      StringMatchQ[text, ".wl"~~"
+"~~___],
+      MacroToolbar`format["Wolfram", style, data, StringTake[text, cursor + {1,0}], window],
+
+      StringMatchQ[text, "."~~WordCharacter..~~"
+"~~___],
+      Notify["Unknown cell type", "Topic"->"Warning"],
+
+      True,
+      MacroToolbar`format["Wolfram", style, data, StringTake[text, cursor + {1,0}], window]
+    ];
+  ]
+]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Actual widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Actual widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+widget[self_] := With[{
+  FormattingToolbarButton = MacroToolbar`Button, 
+  FormattingToolbarLetterSelector = MacroToolbar`Greek,
+  FormattingToolbarColorSelector = MacroToolbar`Color,
+  act = CreateUUID[],
+  parent = self,
+  win = CurrentWindow[]
+},
+
+EventHandler[win, {"Closed" -> Function[Null,
+  Delete[parent];
+]}];
+
+EventHandler[act, {
+  "Close" -> Function[Null,
+    Delete[parent]
+  ],
+
+  s_String :> Function[data, MacroToolbar`apply[s, data, win]]
+}];
+
+<div class="flex flex-col">
+<div class="text-left items-center text-xs text-gray-500"><span>Operators</span></div>
+<div class="flex flex-row">
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Power"} Pattern={"Superscript"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M17.3181 6.04842C17.6174 5.75945 18.1021 5.79767 18.3524 6.12997C18.5536 6.39707 18.5353 6.76978 18.3088 7.01579L15.2643 10.3227C14.9955 10.6147 14.9248 11.0382 15.0842 11.4017C15.2437 11.7652 15.6031 12 16 12H20C20.5523 12 21 11.5523 21 11C21 10.4477 20.5523 10 20 10H18.2799L19.7802 8.37041C20.6607 7.41399 20.7321 5.96504 19.95 4.92665C18.9769 3.63478 17.0925 3.48621 15.929 4.60962L15.3054 5.21165C14.9081 5.59526 14.897 6.22833 15.2806 6.62564C15.6642 7.02296 16.2973 7.03406 16.6946 6.65045L17.3181 6.04842ZM4.7433 8.33104C4.37384 7.92053 3.74155 7.88725 3.33104 8.25671C2.92053 8.62616 2.88726 9.25845 3.25671 9.66896L7.15465 14L3.25671 18.331C2.88726 18.7415 2.92053 19.3738 3.33104 19.7433C3.74155 20.1128 4.37384 20.0795 4.7433 19.669L8.50001 15.4948L12.2567 19.669C12.6262 20.0795 13.2585 20.1128 13.669 19.7433C14.0795 19.3738 14.1128 18.7415 13.7433 18.331L9.84537 14L13.7433 9.66896C14.1128 9.25845 14.0795 8.62616 13.669 8.25671C13.2585 7.88725 12.6262 7.92053 12.2567 8.33104L8.50001 12.5052L4.7433 8.33104Z" fill="currentColor"/>
+</svg>
+    </FormattingToolbarButton>
+  </li>   
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Subscript"} Pattern={"Subscript"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.7433 5.33104C4.37384 4.92053 3.74155 4.88726 3.33104 5.25671C2.92053 5.62617 2.88726 6.25846 3.25671 6.66897L7.15465 11L3.25671 15.331C2.88726 15.7416 2.92053 16.3738 3.33104 16.7433C3.74155 17.1128 4.37384 17.0795 4.7433 16.669L8.50001 12.4949L12.2567 16.669C12.6262 17.0795 13.2585 17.1128 13.669 16.7433C14.0795 16.3738 14.1128 15.7416 13.7433 15.331L9.84537 11L13.7433 6.66897C14.1128 6.25846 14.0795 5.62617 13.669 5.25671C13.2585 4.88726 12.6262 4.92053 12.2567 5.33104L8.50001 9.50516L4.7433 5.33104ZM17.3181 14.0484C17.6174 13.7595 18.1021 13.7977 18.3524 14.13C18.5536 14.3971 18.5353 14.7698 18.3088 15.0158L15.2643 18.3227C14.9955 18.6147 14.9248 19.0382 15.0842 19.4017C15.2437 19.7652 15.6031 20 16 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H18.2799L19.7802 16.3704C20.6607 15.414 20.7321 13.965 19.95 12.9267C18.9769 11.6348 17.0925 11.4862 15.929 12.6096L15.3054 13.2116C14.9081 13.5953 14.897 14.2283 15.2806 14.6256C15.6642 15.023 16.2973 15.0341 16.6946 14.6505L17.3181 14.0484Z" fill="currentColor"/>
+</svg>
+    </FormattingToolbarButton>
+  </li>  
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Indexed"} Pattern={"Indexed"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.7433 5.33104C4.37384 4.92053 3.74155 4.88726 3.33104 5.25671C2.92053 5.62617 2.88726 6.25846 3.25671 6.66897L7.15465 11L3.25671 15.331C2.88726 15.7416 2.92053 16.3738 3.33104 16.7433C3.74155 17.1128 4.37384 17.0795 4.7433 16.669L8.50001 12.4949L12.2567 16.669C12.6262 17.0795 13.2585 17.1128 13.669 16.7433C14.0795 16.3738 14.1128 15.7416 13.7433 15.331L9.84537 11L13.7433 6.66897C14.1128 6.25846 14.0795 5.62617 13.669 5.25671C13.2585 4.88726 12.6262 4.92053 12.2567 5.33104L8.50001 9.50516L4.7433 5.33104ZM17.3181 14.0484C17.6174 13.7595 18.1021 13.7977 18.3524 14.13C18.5536 14.3971 18.5353 14.7698 18.3088 15.0158L15.2643 18.3227C14.9955 18.6147 14.9248 19.0382 15.0842 19.4017C15.2437 19.7652 15.6031 20 16 20H20C20.5523 20 21 19.5523 21 19C21 18.4477 20.5523 18 20 18H18.2799L19.7802 16.3704C20.6607 15.414 20.7321 13.965 19.95 12.9267C18.9769 11.6348 17.0925 11.4862 15.929 12.6096L15.3054 13.2116C14.9081 13.5953 14.897 14.2283 15.2806 14.6256C15.6642 15.023 16.2973 15.0341 16.6946 14.6505L17.3181 14.0484Z" fill="currentColor"/>
+</svg>
+    </FormattingToolbarButton>
+  </li>  
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Fraction"} Pattern={"Fraction"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" fill="currentColor" viewBox="-8 0 32 32">
+<path d="M14.84 16.84h-14c-0.48 0-0.84-0.36-0.84-0.84s0.36-0.84 0.84-0.84h14c0.48 0 0.84 0.36 0.84 0.84s-0.36 0.84-0.84 0.84zM7.84 12.56c-1.36 0-2.48-1.12-2.48-2.48s1.12-2.48 2.48-2.48 2.48 1.12 2.48 2.48c0 1.36-1.12 2.48-2.48 2.48zM7.84 9.28c-0.44 0-0.8 0.36-0.8 0.8s0.36 0.8 0.8 0.8 0.8-0.36 0.8-0.8c0-0.44-0.36-0.8-0.8-0.8zM7.84 24.4c-1.36 0-2.48-1.12-2.48-2.48s1.12-2.48 2.48-2.48 2.48 1.12 2.48 2.48c0 1.4-1.12 2.48-2.48 2.48zM7.84 21.12c-0.44 0-0.8 0.36-0.8 0.8s0.36 0.8 0.8 0.8 0.8-0.36 0.8-0.8-0.36-0.8-0.8-0.8z"></path>
+</svg>
+    </FormattingToolbarButton>
+  </li> 
+
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Square root"} Pattern={"Root"}>
+      <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" ><path d="M3,12H4.31a1,1,0,0,1,.93.65L8,20,10.85,4.82a1,1,0,0,1,1-.82H21" stroke="currentColor" style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+    </FormattingToolbarButton>
+  </li>   
+</ul>
+
+<ul class="p-0 flex flex-row pr-1">
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Transpose"} Pattern={"Transpose"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600"><sup>T</sup></div>
+    </FormattingToolbarButton>
+  </li> 
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Conjugate transpose"} Pattern={"ConjugateTranspose"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600"><sup>&dagger;</sup></div>
+    </FormattingToolbarButton>
+  </li>  
+</ul>
+
+<ul class="p-0 flex flex-row pr-1">
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Invisible comma"} Pattern={"Invisible comma"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600"><sup>,</sup></div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Degree"} Pattern={"Degree"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">&deg;</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Infinity"} Pattern={"Infinity"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">&infin;</div>
+    </FormattingToolbarButton>
+  </li>  
+</ul>
+
+<ul class="p-0 flex flex-row pr-1">
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Indefinite Integral"} Pattern={"Integral"}>
+      <svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500 hover:text-teal-600"><path stroke="currentColor" d="M5,19l.38.76a2.24,2.24,0,0,0,2,1.24h0a2.24,2.24,0,0,0,2.13-1.53L12,12l2.49-7.47A2.24,2.24,0,0,1,16.62,3h0a2.24,2.24,0,0,1,2,1.24L19,5" style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+    </FormattingToolbarButton>
+  </li>
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Integral"} Pattern={"IntegralBound"}>
+     <svg fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5 text-gray-500 hover:text-teal-600"><path stroke="currentColor" d="M 5 19 l 0.38 0.76 a 2.24 2.24 0 0 0 2 1.24 h 0 a 2.24 2.24 0 0 0 2.13 -1.53 L 12 12 l 2.49 -7.47 A 2.24 2.24 0 0 1 16.62 3 h 0 a 2.24 2.24 0 0 1 2 1.24 L 19 5 M 18 8 L 20 10 M 20 8 L 18 10 M 15 18 L 17 20 M 17 18 L 15 20" style="fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+    </FormattingToolbarButton>
+  </li>  
+<li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Sum"} Pattern={"Sum"}>
+      <svg fill="currentColor" class="w-5 h-5 text-gray-500 hover:text-teal-600"  viewBox="0 0 56 56"><path d="M 17.4531 53.7695 L 39.3906 53.7695 C 40.6094 53.7695 41.5234 52.9961 41.5234 51.8008 C 41.5234 50.6055 40.6094 49.8086 39.3906 49.8086 L 19.3984 49.8086 L 19.3984 49.5977 L 32.3828 30.0039 C 32.9922 29.0664 33.2500 28.5742 33.2500 27.8008 C 33.2500 26.9571 32.8515 26.2305 32.0547 25.0586 L 19.4218 6.4024 L 19.4218 6.1914 L 39.4140 6.1914 C 40.6328 6.1914 41.5469 5.4180 41.5469 4.2227 C 41.5469 3.0273 40.6328 2.2305 39.4140 2.2305 L 17.4766 2.2305 C 15.7187 2.2305 14.4766 3.3320 14.4766 4.9492 C 14.4766 5.8633 14.7109 6.5195 15.3672 7.5039 L 28.9140 27.6367 L 28.9140 27.8945 L 15.3437 48.4961 C 14.6875 49.4805 14.4531 50.1367 14.4531 51.0508 C 14.4531 52.6445 15.7187 53.7695 17.4531 53.7695 Z"/></svg>
+    </FormattingToolbarButton>
+  </li>
+<li class="list-none">
+    <FormattingToolbarButton Title={"Piecewise function"} Event={act} Pattern={"Piecewise"}>
+     <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none">
+<path d="M14 21C12.8954 21 12 20.1046 12 19V15.3255C12 14.8363 12 14.5917 11.9447 14.3615C11.8957 14.1575 11.8149 13.9624 11.7053 13.7834C11.5816 13.5816 11.4086 13.4086 11.0627 13.0627L10 12L11.0627 10.9373C11.4086 10.5914 11.5816 10.4184 11.7053 10.2166C11.8149 10.0376 11.8957 9.84254 11.9447 9.63846C12 9.40829 12 9.1637 12 8.67452V5C12 3.89543 12.8954 3 14 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+    </FormattingToolbarButton>
+  </li>  
+</ul>
+
+
+<ul class="p-0 flex flex-row"> 
+  <li class="list-none">
+    <FormattingToolbarColorSelector Title={"Color Picker"} Event={act} Pattern={"Color"}>
+        <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 24 24" fill="none"><path d="M6.5 21H20.4706C20.763 21 21.0002 20.7631 21.0002 20.4707L21 14.5293M7.98047 20.6713L20.6421 14.7671C20.9071 14.6435 21.0217 14.3285 20.8981 14.0635L18.3872 8.6792C18.2636 8.41421 17.9486 8.29914 17.6836 8.42271L12.0303 11.0591M9.88182 18.4048C9.38152 20.2719 7.46235 21.38 5.59521 20.8797C3.72808 20.3794 2.61982 18.4604 3.12011 16.5933L6.73596 3.09863C6.81163 2.81621 7.10168 2.64855 7.3841 2.72422L13.1231 4.26171C13.4055 4.33738 13.5731 4.6276 13.4974 4.91002L9.88182 18.4048ZM6.5 17.6001H6.502L6.50195 17.6021L6.5 17.6021V17.6001Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </FormattingToolbarColorSelector>
+  </li>  
+ 
+  
+</ul> 
+  
+  <div class="ml-auto">
+    <FormattingToolbarButton Event={act} Title={"Close"} Pattern={"Close"}>
+      <svg class="w-4 h-4 text-gray-500 hover:text-red-300" viewBox="0 0 24 24" fill="none">
+        <path d="M21 21L12 12M12 12L3 3M12 12L21.0001 3M12 12L3 21.0001" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </FormattingToolbarButton>
+  </div>
+</div>
+<div class="text-left items-center text-xs text-gray-500"><span>Formal Symbols</span></div>
+<div class="flex flex-row">
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalA"} Pattern={"Formal CapitalA"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">A</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal A"} Pattern={"Formal A"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">a</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalB"} Pattern={"Formal CapitalB"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">B</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal B"} Pattern={"Formal B"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">b</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalH"} Pattern={"Formal CapitalH"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">H</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal H"} Pattern={"Formal H"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">h</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalK"} Pattern={"Formal CapitalK"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">K</div>
+    </FormattingToolbarButton>
+  </li>   
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal K"} Pattern={"Formal K"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">k</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalP"} Pattern={"Formal CapitalP"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">P</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal P"} Pattern={"Formal P"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">p</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalU"} Pattern={"Formal CapitalU"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">U</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal U"} Pattern={"Formal U"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">u</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalV"} Pattern={"Formal CapitalV"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">V</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal V"} Pattern={"Formal V"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">v</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalW"} Pattern={"Formal CapitalW"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">W</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal W"} Pattern={"Formal W"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">w</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal CapitalX"} Pattern={"Formal CapitalX"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">X</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Formal X"} Pattern={"Formal X"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">x</div>
+    </FormattingToolbarButton>
+  </li>   
+</ul>
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarLetterSelector Title={"Greek letters"} Event={act} Pattern={"Greek"}>
+     
+        <svg class="w-5 h-5 text-gray-500 hover:text-teal-600" viewBox="0 0 32 32">
+  <path fill="currentColor" d="M22.7373,25A14.3093,14.3093,0,0,0,27,15C27,8.42,22.58,4,16,4S5,8.42,5,15A14.3093,14.3093,0,0,0,9.2627,25H4v2h8V24.7617A12.5683,12.5683,0,0,1,7,15c0-5.4673,3.5327-9,9-9s9,3.5327,9,9a12.5683,12.5683,0,0,1-5,9.7617V27h8V25Z"/>
+</svg>
+    </FormattingToolbarLetterSelector>
+  </li>
+</ul>
+</div>
+<div class="text-left items-center text-xs text-gray-500"><span>Script Symbols</span></div>
+<div class="flex flex-row" style="font-family: cursive">
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalA"} Pattern={"Script CapitalA"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">A</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script A"} Pattern={"Script A"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">a</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalB"} Pattern={"Script CapitalB"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">B</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script B"} Pattern={"Script B"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">b</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalH"} Pattern={"Script CapitalH"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">H</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script H"} Pattern={"Script H"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">h</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalK"} Pattern={"Script CapitalK"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">K</div>
+    </FormattingToolbarButton>
+  </li>   
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script K"} Pattern={"Script K"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">k</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalP"} Pattern={"Script CapitalP"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">P</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script P"} Pattern={"Script P"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">p</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalU"} Pattern={"Script CapitalU"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">U</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script U"} Pattern={"Script U"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">u</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalV"} Pattern={"Script CapitalV"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">V</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script V"} Pattern={"Script V"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">v</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalW"} Pattern={"Script CapitalW"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">W</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script W"} Pattern={"Script W"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">w</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script CapitalX"} Pattern={"Script CapitalX"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">X</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Script X"} Pattern={"Script X"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">x</div>
+    </FormattingToolbarButton>
+  </li>   
+</ul>
+</div>
+<div class="text-left items-center text-xs text-gray-500"><span>Double-Struck Symbols</span></div>
+<div class="flex flex-row" style="font-family: math">
+<ul class="p-0 flex flex-row pr-1">
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalA"} Pattern={"Double CapitalA"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">A</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double A"} Pattern={"Double A"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">a</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalB"} Pattern={"Double CapitalB"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">B</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double B"} Pattern={"Double B"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">b</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalH"} Pattern={"Double CapitalH"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">H</div>
+    </FormattingToolbarButton>
+  </li>    
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double H"} Pattern={"Double H"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">h</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalK"} Pattern={"Double CapitalK"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">K</div>
+    </FormattingToolbarButton>
+  </li>   
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double K"} Pattern={"Double K"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">k</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalP"} Pattern={"Double CapitalP"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">P</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double P"} Pattern={"Double P"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">p</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalU"} Pattern={"Double CapitalU"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">U</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double U"} Pattern={"Double U"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">u</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalV"} Pattern={"Double CapitalV"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">V</div>
+    </FormattingToolbarButton>
+  </li>  
+    <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double V"} Pattern={"Double V"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">v</div>
+    </FormattingToolbarButton>
+  </li> 
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalW"} Pattern={"Double CapitalW"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">W</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double W"} Pattern={"Double W"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">w</div>
+    </FormattingToolbarButton>
+  </li>
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double CapitalX"} Pattern={"Double CapitalX"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">X</div>
+    </FormattingToolbarButton>
+  </li>  
+  <li class="list-none">
+    <FormattingToolbarButton Event={act} Title={"Double X"} Pattern={"Double X"}>
+      <div class="w-5 h-5 text-gray-500 hover:text-teal-600">x</div>
+    </FormattingToolbarButton>
+  </li>   
+</ul>
+</div>
+</div>
+]
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+outputQ[c_] := c[[2]] === "Output";
+
+lastAfterFocused = With[{
+  focused = NotebookFocusedCell[]
+},
+{
+  rawCells = SequenceCases[Cells[], {focused, Repeated[_, 4]}][[1]]
+},
+{
+  cells = NotebookRead[rawCells]}, 
+  rawCells[[Position[cells, SequenceCases[cells, {cells[[1]], ___?outputQ}][[1]][[-1]]][[1,1]]]]
+] // Quiet;
+
+If[Head[lastAfterFocused] =!= RemoteCellObj, 
+  lastAfterFocused = Cells[] // Last;
+];
+
+Module[{self, f = lastAfterFocused},
+  self = NotebookWrite[NotebookLocationSpecifier[f, "After"], Cell[" ", "Input", CellOpen->False]];
+  NotebookWrite[NotebookLocationSpecifier[self, "After"], Cell[widget[self], "Output", "WLX"]];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__template__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="list-none nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+             <svg class="h-4 ml-1  w-4 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="none" viewBox="1 1 23 23"><path d="M3 5L13 15M13 5L3 15M21 19.0001H17C17 17.5001 17.44 17.0001 18.5 16.5001C19.56 16.0001 21 15.3301 21 14.0001C21 13.5301 20.83 13.0701 20.52 12.7101C20.1999 12.3476 19.7649 12.1061 19.2879 12.026C18.811 11.9459 18.321 12.0321 17.9 12.2701C17.48 12.5101 17.16 12.8901 17 13.3401" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg> 
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -12,7 +12,7 @@ notRule[_] = True
 Unprotect[Beep]
 ClearAll[Beep]
 Beep[]  := EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`Beeper[], True]; 
-Beep["System"] := EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`Beeper[], "System"]; 
+Beep[s_String] := EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`Beeper[], s]; 
 Beep[_] := Beep[]
 
 

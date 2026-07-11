@@ -1,246 +1,323 @@
-<|"Notebook" -> <|"Controller" -> "7762583d-944b-4c5b-8e09-738534aedbfa", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$314], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "bc992e83-02ba-418b-93fa-c7a8e4555e36", "Objects" -> <||>, 
-   "Path" -> "/applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/place\
-ment.wln", "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Inline navigation gizmo drag", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$301]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Usage", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$303]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Inline navigation gizmo drag\nA helper tool \
-for manipulation 2D/3D parameters with a visible cursor on `Graphics` or \
-`Graphics3D` primitives", "Display" -> "codemirror", 
-    "Hash" -> "3b9305eb-9b87-49e0-b4db-b1d30b9d6fb2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "# Inline navigation gizmo drag\nA helper tool for \
-manipulation 2D/3D parameters with a visible cursor on `Graphics` or \
-`Graphics3D` primitives", "Display" -> "markdown", 
-    "Hash" -> "544100eb-a216-44ae-8bc2-02508bf6fd23", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\n## Usage\n1. Select a list with two coordinates in your \
-graphics primitive", "Display" -> "codemirror", 
-    "Hash" -> "f6483757-daf1-4b7a-a2a7-fc7f1c269881", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "## Usage\n1. Select a list with two coordinates in your \
-graphics primitive", "Display" -> "markdown", 
-    "Hash" -> "632fb7c3-f35f-4d50-b0d3-34431f57a0fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "Plot[Sin[(*SqB[*)Sqrt[x](*]SqB*)], {x,0,36}, \
-Epilog->{Text[Style[\"Chirp pulse\", FontSize->16], \
-(*BB[*)({0.`,0.`})(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkAguqcxJdcqvgIiA\
-5INKc1KLuYAMp8Tk7PSi/NK8lDRmmPIgdyfn/Jz8okyQcRACiBnQdPOADS7KLPDP88wrKC0pZgUKu\
-CXmFKcCANSAHe4=\"*)(*]BB*)]}]", "Display" -> "codemirror", 
-    "Hash" -> "67d86a62-0b66-4e4c-97fc-eb6526df58c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\n2. Call this snippet from the palette menu using \
-<kbd>Cmd/Ctrl + P</kbd>\n3. Evaluate this cell\n4. A gizmo should appear \
-under the text. Now you can manipulate it using a mouse.\n5. Move it to the \
-place you want and copy the given coordinates from the text-box", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f0f9b1a6-049d-424a-98c1-55d83a6cf59f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "2. Call this snippet from the palette menu using <kbd \
->Cmd/Ctrl + P</kbd>\n3. Evaluate this cell\n4. A gizmo should appear under \
-the text. Now you can manipulate it using a mouse.\n5. Move it to the place \
-you want and copy the given coordinates from the text-box", 
-    "Display" -> "markdown", "Hash" -> 
-     "3f4f9eba-70bb-4cab-b061-247ddd73dd3a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\n![](assets/placement-assist.gif)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8556db51-de0f-438e-bc94-8a64c9241587", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "![](assets/placement-assist.gif)", "Display" -> "markdown", 
-    "Hash" -> "9b0d1737-917d-4bed-8565-0c315af05411", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "04cdd3d7-ce79-44aa-8e93-6cf8efca9187", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "ecdcbf97-a904-4b76-9a17-0c3973ce2719", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\nTemplate of a widget", "Display" -> "codemirror", 
-    "Hash" -> "a4a1c883-93f8-4bba-bca0-49ec6a39a76e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "Template of a widget", "Display" -> "markdown", 
-    "Hash" -> "1acf13cd-882b-4761-b0f3-3b88e7872850", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".wlx\ngizmo`Component3;\ngizmo`Component3 /: \
-MakeBoxes[gizmo`Component3[sym_, pointerGraphics_, EventButton_, \
-viewBoxEvent_], StandardForm] := With[{UId = CreateUUID[]}, Module[{\n  \
-System`Handler\n},\n\n  With[{HandlerSymbol = System`Handler}, {Template = \
-\n<span style=\"top: -0.25rem\" class=\"sm-controls flex relative \
-cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-500  \
-focus:outline-none focus:ring-2 focus:ring-teal-600 sm:text-xs sm:leading-6 \
-bg-gray-100 border-1 border-gray-800\">\n    <div class=\"relative flex \
-flex-grow items-stretch\">\n      <input id=\"{UId}\" type=\"text\" \
-class=\"text-left text-gray-500 bg-gray-100 border-0 sm:text-xs\" \
-placeholder=\"...\"/>\n    </div>\n    <button id=\"{UId}-button\" \
-type=\"button\" class=\"relative -ml-px inline-flex items-center px-2 text-sm \
-hover:bg-gray-50\">\n      <svg class=\"h-5 w-5 text-gray-500\" viewBox=\"0 0 \
-20 20\" fill=\"currentColor\" aria-hidden=\"true\">\n        <svg \
-fill=\"currentColor\" stroke-width=\"1.5\" class=\"w-5 h-5\" viewBox=\"0 0 24 \
-24\"><path \
-d=\"M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21Z\
-M8,11.5l3,3,5-5\" fill=\"none\" stroke=\"currentColor\"></path></svg>\n      \
-</svg>\n    </button>\n\n    <script type=\"module\">\n      const b = \
-document.getElementById('<UId/>-button');\n      const inputField = \
-document.getElementById('<UId/>');\n      \n      b.addEventListener('click', \
-() => {\n        server.kernel.io.fire('<EventButton/>', true);\n      });\n  \
-    \n      core['<HandlerSymbol/>'] = async (args, env) => {\n        const \
-data = await interpretate(args[0], env);\n        inputField.value = '{' + \
-data.join(',') + '}';        \n      }\n\n      \
-core['<HandlerSymbol/>'].update = async (args, env) => {\n        const data \
-= await interpretate(args[0], env);\n        inputField.value = '{' + \
-data.join(',') + '}';\n      }\n\n      core['<HandlerSymbol/>'].destroy = () \
-=> {\n        delete core['<HandlerSymbol/>'];\n      }\n\n      \
-core['<HandlerSymbol/>'].virtual = true;\n    </script>\n  </span>\n  },\n    \
-With[{w = HTMLView[Template, Epilog->(HandlerSymbol[Offload[sym]])]},\n      \
-ViewBox[Offload[Offload[pointerGraphics, \"Static\"->True, \
-\"Volatile\"->False]; sym], w // CreateFrontEndObject, \
-\"Event\"->viewBoxEvent]\n    ]\n  ]\n] ]\n\nSetAttributes[gizmo`Component3, \
-HoldFirst];", "Display" -> "codemirror", 
-    "Hash" -> "3f2bc479-eca7-4d95-adab-0458754dbeeb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\nLogic of a widget", "Display" -> "codemirror", 
-    "Hash" -> "3835184d-02da-472e-8555-f1a714d5198b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "Logic of a widget", "Display" -> "markdown", 
-    "Hash" -> "19cb4a65-8a41-4945-bc93-13c5e0974156", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "Module[{init = {0,0}, input = \
-FrontFetch[FrontEditorSelected[\"Get\"]], result},\n  If[StringLength[input] \
-=== 0, Print[\"Assumming {0.,0.}...\"],\n    init = ToExpression[input, \
-InputForm];\n    If[!ListQ[init], EchoLabel[\"Warning\"][\"Selected \
-expression is not a list\"]; Return[$Failed]];\n    If[Length[init] =!= 2 && \
-Length[init] =!= 3, EchoLabel[\"Warning\"][\"The list length must be 2 or \
-3\"]; Return[$Failed]];  \n  ];\n\n  With[{eventFinish = CreateUUID[], \
-viewBoxEvent = CreateUUID[]},\n\tLeakyModule[{System`variable = init, \
-gizmo},\n\n      EventHandler[viewBoxEvent, {\"Mounted\" -> Function[assoc,\n \
-       EventHandler[eventFinish, Function[Null,\n          \
-FrontSubmit[ViewBox`OuterExpression[ToString[System`variable, StandardForm]], \
-FrontInstanceReference[assoc[\"Instance\"]]];\n          Notify[\"Done!\", \
-\"Topic\"->\"Gizmo\"];\n        ]];      \n      ]}];\n    \n\n       \
-Switch[Length[init]\n         ,2\n         ,gizmo[var_] := With[{v = var // \
-Evaluate},\n        \t{\n        \t\tPointSize[0.05], Red, \n        \
-\t\tEventHandler[\n        \t\t\tPoint[v], \n        \t\t\t{\n        \
-\t\t\t\t\"drag\"->Function[xy, var = xy; ]\n        \t\t\t}\n        \t\t]\n  \
-      \t}\n        ]\n\n        ,3\n        ,gizmo[var_] := With[{v = var // \
-Evaluate},\n        \t{\n        \t\tRed, \n        \t\tEventHandler[\n       \
- \t\t\tSphere[v, 0.02], \n        \t\t\t{\n        \
-\t\t\t\t\"transform\"->Function[assoc, var = assoc[\"position\"]; ]\n        \
-\t\t\t}\n        \t\t]\n        \t}\n        ];\n      ];\n        \n        \
-SetAttributes[gizmo, HoldAll];\n\n        With[{pointer = \
-gizmo[System`variable]},\n    \t  With[{widget = \
-gizmo`Component3[System`variable, pointer, eventFinish, viewBoxEvent]},\n     \
-         FrontSubmit[FrontEditorSelected[\"Set\", ToString[widget, \
-StandardForm]]]\n          ]\n        ]\n\t]\n  ]\n    \n \n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "02b17b81-3d8f-472e-b6af-b2fa8ec2496c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> ".md\n__icon snippet template__", "Display" -> "codemirror", 
-    "Hash" -> "85e76ef1-a6ef-4ede-aba3-5fef4a04046c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "__icon snippet template__", "Display" -> "markdown", 
-    "Hash" -> "492b84bf-b7c3-46bd-b6da-2f19de12903f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n              <svg class=\"h-5 w-5 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"currentColor\" \
-viewBox=\"-2 0 29 24\"><path d=\"M16.1924 5.65683C16.5829 5.2663 16.5829 \
-4.63314 16.1924 4.24261L13.364 1.41419C12.5829 0.633139 11.3166 0.633137 \
-10.5355 1.41419L7.70711 4.24261C7.31658 4.63314 7.31658 5.2663 7.70711 \
-5.65683C8.09763 6.04735 8.73079 6.04735 9.12132 5.65683L11 \
-3.77812V11.0503H3.72784L5.60655 9.17157C5.99707 8.78104 5.99707 8.14788 \
-5.60655 7.75735C5.21602 7.36683 4.58286 7.36683 4.19234 7.75735L1.36391 \
-10.5858C0.582863 11.3668 0.582859 12.6332 1.36391 13.4142L4.19234 \
-16.2426C4.58286 16.6332 5.21603 16.6332 5.60655 16.2426C5.99707 15.8521 \
-5.99707 15.219 5.60655 14.8284L3.8284 13.0503H11V20.2219L9.12132 \
-18.3432C8.73079 17.9526 8.09763 17.9526 7.7071 18.3432C7.31658 18.7337 \
-7.31658 19.3669 7.7071 19.7574L10.5355 22.5858C11.3166 23.3669 12.5829 \
-23.3669 13.364 22.5858L16.1924 19.7574C16.5829 19.3669 16.5829 18.7337 \
-16.1924 18.3432C15.8019 17.9526 15.1687 17.9526 14.7782 18.3432L13 \
-20.1213V13.0503H20.071L18.2929 14.8284C17.9024 15.219 17.9024 15.8521 18.2929 \
-16.2426C18.6834 16.6332 19.3166 16.6332 19.7071 16.2426L22.5355 \
-13.4142C23.3166 12.6332 23.3166 11.3668 22.5355 10.5858L19.7071 \
-7.75735C19.3166 7.36683 18.6834 7.36683 18.2929 7.75735C17.9024 8.14788 \
-17.9024 8.78104 18.2929 9.17157L20.1716 11.0503H13V3.87867L14.7782 \
-5.65683C15.1687 6.04735 15.8019 6.04735 16.1924 5.65683Z\" \
-fill=\"currentColor\"></path></svg>\n              <span class=\"ml-3 \
-flex-auto truncate\"><Title/></span><span class=\"ml-3 flex-none text-xs \
-font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-        <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>                 \
- \n                </button>\n              </span>\n    </li>    \
-\n]\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b614d981-8269-4b20-8a0f-6910982d9668", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ddbbc896-872c-47f7-9142-c6e8c02b085f"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Inline navigation gizmo drag
+A helper tool for manipulation 2D/3D parameters with a visible cursor on `Graphics` or `Graphics3D` primitives
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Inline navigation gizmo drag
+A helper tool for manipulation 2D/3D parameters with a visible cursor on `Graphics` or `Graphics3D` primitives
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Usage
+1. Select a list with two coordinates in your graphics primitive
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Usage
+1. Select a list with two coordinates in your graphics primitive
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[Sin[(*SqB[*)Sqrt[x](*]SqB*)], {x,0,36}, Epilog->{Text[Style["Chirp pulse", FontSize->16], (*BB[*)({0.`,0.`})(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkAguqcxJdcqvgIiA5INKc1KLuYAMp8Tk7PSi/NK8lDRmmPIgdyfn/Jz8okyQcRACiBnQdPOADS7KLPDP88wrKC0pZgUKuCXmFKcCANSAHe4="*)(*]BB*)]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+2. Call this snippet from the palette menu using <kbd>Cmd/Ctrl + P</kbd>
+3. Evaluate this cell
+4. A gizmo should appear under the text. Now you can manipulate it using a mouse.
+5. Move it to the place you want and copy the given coordinates from the text-box
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+2. Call this snippet from the palette menu using <kbd >Cmd/Ctrl + P</kbd>
+3. Evaluate this cell
+4. A gizmo should appear under the text. Now you can manipulate it using a mouse.
+5. Move it to the place you want and copy the given coordinates from the text-box
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+![](assets/placement-assist.gif)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+![](assets/placement-assist.gif)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Template of a widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Template of a widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+gizmo`Component3;
+gizmo`Component3 /: MakeBoxes[gizmo`Component3[sym_, pointerGraphics_, EventButton_, viewBoxEvent_, offset_], StandardForm] := With[{UId = CreateUUID[]}, Module[{
+  System`Handler
+},
+
+  With[{HandlerSymbol = System`Handler}, {Template = 
+<span style="top: -0.25rem" class="sm-controls flex relative cursor-default rounded-md 0 h-6 pl-3 pr-2 text-left text-gray-500  focus:outline-none focus:ring-2 focus:ring-teal-600 sm:text-xs sm:leading-6 bg-gray-100 border-1 border-gray-800">
+    <div class="relative flex flex-grow items-stretch">
+      <input id="{UId}" type="text" class="text-left text-gray-500 bg-gray-100 border-0 sm:text-xs" placeholder="..."/>
+    </div>
+    <button id="{UId}-button" type="button" class="relative -ml-px inline-flex items-center px-2 text-sm hover:bg-gray-50">
+      <svg class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <svg fill="currentColor" stroke-width="1.5" class="w-5 h-5" viewBox="0 0 24 24"><path d="M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21ZM8,11.5l3,3,5-5" fill="none" stroke="currentColor"></path></svg>
+      </svg>
+    </button>
+
+    <script type="module">
+      const b = document.getElementById('<UId/>-button');
+      const inputField = document.getElementById('<UId/>');
+      
+      b.addEventListener('click', () => {
+        server.kernel.io.fire('<EventButton/>', true);
+      });
+      
+      core['<HandlerSymbol/>'] = async (args, env) => {
+        let data = await interpretate(args[0], env);
+        data = data.map((el)=>el.toFixed(2));
+        inputField.value = '{' + data.join(',') + '}';        
+      }
+
+      core['<HandlerSymbol/>'].update = async (args, env) => {
+        let data = await interpretate(args[0], env);
+        data = data.map((el)=>el.toFixed(2));
+        inputField.value = '{' + data.join(',') + '}';
+      }
+
+      core['<HandlerSymbol/>'].destroy = () => {
+        delete core['<HandlerSymbol/>'];
+      }
+
+      core['<HandlerSymbol/>'].virtual = true;
+    </script>
+  </span>
+  },
+    With[{w = HTMLView[Template, Epilog->(HandlerSymbol[Offload[sym]])]},
+      ViewBox[Offload[Offload[pointerGraphics, "Static"->True, "Volatile"->False]; sym offset], w // CreateFrontEndObject, "Event"->viewBoxEvent]
+    ]
+  ]
+] ]
+
+SetAttributes[gizmo`Component3, HoldFirst];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Logic of a widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Logic of a widget
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{init = {0,0}, input = FrontFetch[FrontEditorSelected["Get"]], result},
+  If[StringLength[input] === 0, Print["Assumming {0.,0.}..."],
+    init = ToExpression[input, InputForm];
+    If[!ListQ[init], EchoLabel["Warning"]["Selected expression is not a list"]; Return[$Failed]];
+    If[Length[init] =!= 2 && Length[init] =!= 3, EchoLabel["Warning"]["The list length must be 2 or 3"]; Return[$Failed]];  
+  ];
+
+  With[{eventFinish = CreateUUID[], viewBoxEvent = CreateUUID[]},
+	LeakyModule[{System`variable = init, gizmo},
+
+      EventHandler[viewBoxEvent, {"Mounted" -> Function[assoc,
+        EventHandler[eventFinish, Function[Null,
+          FrontSubmit[ViewBox`OuterExpression[ToString[System`variable If[Length[init]==2, 1.1, 1], StandardForm]], FrontInstanceReference[assoc["Instance"]]];
+          Notify["Done!", "Topic"->"Gizmo"];
+        ]];      
+      ]}];
+    
+
+       Switch[Length[init]
+         ,2
+         ,gizmo[var_] := With[{v = var // Evaluate},
+        	{
+        		EventHandler[
+        			Locator[v], 
+        			{
+        				"drag"->Function[xy, var = xy; ]
+        			}
+        		]
+        	}
+        ]
+
+        ,3
+        ,gizmo[var_] := With[{v = var // Evaluate},
+        	{
+        		EventHandler[
+        			Locator[v], 
+        			{
+        				"transform"->Function[assoc, var = assoc["position"]; ]
+        			}
+        		]
+        	}
+        ];
+      ];
+        
+        SetAttributes[gizmo, HoldAll];
+
+        With[{pointer = gizmo[System`variable]},
+    	  With[{widget = gizmo`Component3[System`variable, pointer, eventFinish, viewBoxEvent, If[Length[init]==2, 1.1, 1]]},
+              FrontSubmit[FrontEditorSelected["Set", ToString[widget, StandardForm]]]
+          ]
+        ]
+	]
+  ]
+    
+ 
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__icon snippet template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__icon snippet template__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+              <svg class="h-5 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="currentColor" viewBox="-2 0 29 24"><path d="M16.1924 5.65683C16.5829 5.2663 16.5829 4.63314 16.1924 4.24261L13.364 1.41419C12.5829 0.633139 11.3166 0.633137 10.5355 1.41419L7.70711 4.24261C7.31658 4.63314 7.31658 5.2663 7.70711 5.65683C8.09763 6.04735 8.73079 6.04735 9.12132 5.65683L11 3.77812V11.0503H3.72784L5.60655 9.17157C5.99707 8.78104 5.99707 8.14788 5.60655 7.75735C5.21602 7.36683 4.58286 7.36683 4.19234 7.75735L1.36391 10.5858C0.582863 11.3668 0.582859 12.6332 1.36391 13.4142L4.19234 16.2426C4.58286 16.6332 5.21603 16.6332 5.60655 16.2426C5.99707 15.8521 5.99707 15.219 5.60655 14.8284L3.8284 13.0503H11V20.2219L9.12132 18.3432C8.73079 17.9526 8.09763 17.9526 7.7071 18.3432C7.31658 18.7337 7.31658 19.3669 7.7071 19.7574L10.5355 22.5858C11.3166 23.3669 12.5829 23.3669 13.364 22.5858L16.1924 19.7574C16.5829 19.3669 16.5829 18.7337 16.1924 18.3432C15.8019 17.9526 15.1687 17.9526 14.7782 18.3432L13 20.1213V13.0503H20.071L18.2929 14.8284C17.9024 15.219 17.9024 15.8521 18.2929 16.2426C18.6834 16.6332 19.3166 16.6332 19.7071 16.2426L22.5355 13.4142C23.3166 12.6332 23.3166 11.3668 22.5355 10.5858L19.7071 7.75735C19.3166 7.36683 18.6834 7.36683 18.2929 7.75735C17.9024 8.14788 17.9024 8.78104 18.2929 9.17157L20.1716 11.0503H13V3.87867L14.7782 5.65683C15.1687 6.04735 15.8019 6.04735 16.1924 5.65683Z" fill="currentColor"></path></svg>
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -362,7 +362,7 @@ core.PCMPlayer = async (args, env) => {
 
   if (opts.NoGUI) return; 
   if (!opts.GUI) return; 
-  env.element.classList.add(...('sm-controls cursor-pointer rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-col'.split(' ')));
+  env.element.classList.add(...('sm-controls cursor-pointer py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-col'.split(' ')));
   env.element.style.verticalAlign = "middle";
 
   if ((initial.length || initial instanceof NumericArrayObject) && !opts.DataOnKernel) {
@@ -629,9 +629,11 @@ sound.SoundNote = async (args, env) => {
     };
     
     let notes = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(notes)) notes = notes.normal();
     //console.warn(notes);
 
     let duration = (await interpretate(args[1], env));
+    if (NumericArrayObject.Q(duration)) duration = duration.normal();
     if (!duration) duration = '4n';    
 
     const makeNote = (raw) => {
@@ -699,7 +701,7 @@ sound.Sound = async (args, env) => {
     });
   
     if (env.element) {
-        env.element.classList.add(...('sm-controls cursor-pointer rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+        env.element.classList.add(...('sm-controls cursor-pointer py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
           env.element.style.verticalAlign = "middle";
         env.element.innerHTML = `
          <svg class="w-4 h-4 text-gray-500 inline-block mt-auto mb-auto" viewBox="0 0 24 24" fill="none">
@@ -762,14 +764,21 @@ sound.Sound = async (args, env) => {
   sound.SampledSoundList = async (args, env) => {
     //assume 32bit float
 
-    const data = await interpretate(args[0], env);
+    let data = await interpretate(args[0], env);
     const rate = await interpretate(args[1], env) | 8000;
   
     //console.log(data);
     
     const length = data.length / rate;
-    const buffer = env.Tone.context.createBuffer(1, data.length, rate);
-    buffer.copyToChannel(new Float32Array(data), 0);
+    let buffer;
+
+    if (NumericArrayObject.Q(data)) {
+      buffer  = env.Tone.context.createBuffer(1, data.buffer.length, rate);
+      buffer.copyToChannel(new Float32Array(data.buffer), 0);      
+    } else {
+      buffer  = env.Tone.context.createBuffer(1, data.length, rate);
+      buffer.copyToChannel(new Float32Array(data), 0);
+    }
     //console.log(buffer.getChannelData(0)[110]);
 
     return buffer;

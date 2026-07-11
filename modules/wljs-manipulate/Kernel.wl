@@ -439,6 +439,7 @@ FormatValues[Refresh] = {};
 Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?NumericQ, OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   interval = If[MatchQ[updateInterval, _Quantity], UnitConvert[updateInterval, "Milliseconds"] // QuantityMagnitude, updateInterval 1000],
   event = CreateUUID[],
+  selectable = False,
   evaluated = expr,
   diffTable = Unique["diffTable"]
 },
@@ -471,7 +472,7 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
     ] ];
 
     With[{
-      editor = EditorView[str // Offload, "ReadOnly"->True, "FullReset"->True] 
+      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True] 
     },
     
         Switch[form,
@@ -497,6 +498,7 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
 Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPattern[] ], form: StandardForm | WLXForm ] := With[{
   event = CreateUUID[],
   evaluated = expr,
+  selectable = False,
   diffTable = Unique["diffTable"],
   bypassJIT = TrueQ[OptionValue[Refresh, opts, "JIT"] === False || OptionValue[Refresh, opts, PerformanceGoal] === "Quality"]
 },
@@ -533,7 +535,7 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPatt
   ];
 
     With[{
-      editor = EditorView[str // Offload, "ReadOnly"->True, "FullReset"->True] 
+      editor = EditorView[str // Offload, "ReadOnly"->True, Selectable->selectable, "FullReset"->True,"KeepMaxHeight"->True, "KeepMaxWidth"->True] 
     },
 
       Switch[form,

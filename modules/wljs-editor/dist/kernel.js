@@ -12460,38 +12460,6 @@ class TabWidget extends WidgetType {
     ignoreEvent() { return false; }
 }
 
-class Placeholder extends WidgetType {
-    constructor(content) {
-        super();
-        this.content = content;
-    }
-    toDOM() {
-        let wrap = document.createElement("span");
-        wrap.className = "cm-placeholder";
-        wrap.style.pointerEvents = "none";
-        wrap.appendChild(typeof this.content == "string" ? document.createTextNode(this.content) : this.content);
-        if (typeof this.content == "string")
-            wrap.setAttribute("aria-label", "placeholder " + this.content);
-        else
-            wrap.setAttribute("aria-hidden", "true");
-        return wrap;
-    }
-    ignoreEvent() { return false; }
-}
-/**
-Extension that enables a placeholder—a piece of example content
-to show when the editor is empty.
-*/
-function placeholder$8(content) {
-    return ViewPlugin.fromClass(class {
-        constructor(view) {
-            this.view = view;
-            this.placeholder = Decoration.set([Decoration.widget({ widget: new Placeholder(content), side: 1 }).range(0)]);
-        }
-        get decorations() { return this.view.state.doc.length ? Decoration.none : this.placeholder; }
-    }, { decorations: v => v.decorations });
-}
-
 const Outside = "-10000px";
 class TooltipViewManager {
     constructor(view, facet, createTooltipView) {
@@ -29321,9 +29289,6 @@ function tokenBase(stream, state) {
       if (builtinsLocalQ[bmatch]) return "labelName";
       return "keyword";
     }
-    if (stream.current() in state.localVars) return "atom";
-
-    state.localVars[stream.current()] = true;
 
     return "function";
   }
@@ -29434,7 +29399,7 @@ const stateTracker = ViewPlugin.fromClass(
   },
 );
 
-wolframLanguage.of = (vocabulary) => {
+wolframLanguage.of = (vocabulary, trackedQ=true) => {
 
   return [
     StreamLanguage.define(mathematica),
@@ -29444,7 +29409,7 @@ wolframLanguage.of = (vocabulary) => {
         //snippetCompletion('mySnippet(${one}, ${two})', {label: 'mySnippet'})
       ]
     }),
-    stateTracker,
+    ...(trackedQ ? [stateTracker] : []),
     keymap.of([{ key: "Escape", run: newESC() }])
   ];  
 };
@@ -32909,6 +32874,8 @@ var compactCMEditor$2;
           if (j == cols.length-1 && i == this.args.length-1) text = text.slice(0,-2);
           if (j == cols.length-1 && i != this.args.length-1) text = text.slice(0,-1);
 
+          
+          
           if (text.charAt(0) != '"') {
     
             cols[j].editor = compactCMEditor$2({
@@ -32924,8 +32891,10 @@ var compactCMEditor$2;
               extensions: [
                 keymap.of([
                   { key: "ArrowLeft", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
+                        if (cols[j-2].editor.stringOnly) return;
                         cols[j-2].editor.dispatch({selection:{anchor:cols[j-2].editor.state.doc.length}});
                         cols[j-2].editor.focus();
                         
@@ -32941,8 +32910,10 @@ var compactCMEditor$2;
                     
                   } }, 
                   { key: "ArrowRight", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
+                        if (cols[j+2].editor.stringOnly) return;
                         cols[j+2].editor.dispatch({selection:{anchor:0}});
                         cols[j+2].editor.focus();
                   
@@ -32959,6 +32930,7 @@ var compactCMEditor$2;
                      
                   } },             
                   { key: "ArrowUp", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i - 2 >= 0) {
                         args[i-2].body[j].editor.focus();
@@ -32969,6 +32941,7 @@ var compactCMEditor$2;
                     //editor.editorLastCursor = editor.state.selection.ranges[0].to;  
                   } },             
                   { key: "ArrowDown", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i + 2 < args.length) {
                         args[i+2].body[j].editor.focus();
@@ -32988,7 +32961,10 @@ var compactCMEditor$2;
              
                     },
                     focus: (ev,v) => {
-  
+                      if (globalScope.disableCellSelecting) {
+                        v.contentDOM.setAttribute("contenteditable","false");
+                        return;
+                      }
                       if (!globalScope.allowCellHighlighting) return;
                       const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                       td.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
@@ -33007,8 +32983,9 @@ var compactCMEditor$2;
             const itemDesc = text.match(itemBox);
 
             if (itemDesc) {  //stylize the text
-              td.innerHTML = itemDesc[1];
-              td.classList.add('selectable');
+              //td.innerHTML = itemDesc[1];
+              processGreeks(td, itemDesc[1], false);
+              td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
               const decoded = Mma.DecompressDecode(itemDesc[2]);
@@ -33019,8 +32996,8 @@ var compactCMEditor$2;
               interpretate(json, env);    
 
             } else {
-              td.innerHTML = text.slice(1,-1);
-              td.classList.add('selectable');
+              processGreeks(td, text.slice(1,-1), false);
+              td.classList.add('selectable', 'sm-controls');
             }
           }
 
@@ -33639,24 +33616,25 @@ let EditorWidget$1 = class EditorWidget {
           self.editor = {
             destroy: () => {
               console.log('Nothing to destroy, this is just a text field.');
-            }
+            },
+            stringOnly: true
           };
           const aa = document.createElement('span');
-          this.aa;
+          aa.classList.add('sm-controls');
           aa.onkeydown = function(e) {
             // User hits enter key and is not holding shift
             if (e.keyCode === 13) {
                  e.preventDefault();
              }
          };
-          aa.contentEditable = "plaintext-only";
-          aa.innerText = self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset);
-          aa.addEventListener('input', console.log);
-          aa.addEventListener("input", () => {
+          //aa.contentEditable = "plaintext-only";
+          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
+          //aa.addEventListener('input', console.log);
+          /*aa.addEventListener("input", () => {
             console.log('Update');
             console.log(aa.innerText);
             this.applyChanges(aa.innerText);
-          });  
+            });  */
 
           env.global.element.appendChild(aa);
 
@@ -33673,21 +33651,25 @@ let EditorWidget$1 = class EditorWidget {
           parent: env.global.element,
           update: (upd) => this.applyChanges(upd),
           eval: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.eval();
           },
           evalNext: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.evalNext();
           },
           extensions: [
             keymap.of([
               { key: "ArrowLeft", run: function (editor, key) {  
+                if (env.global.disableCellSelecting) return;
                 if (editor.state.selection.main.head == 0) {
                   view.dispatch({selection: {anchor: self.visibleValue.pos}});
                   view.focus();
                   return;
                 }
               } }, 
-              { key: "ArrowRight", run: function (editor, key) {  
+              { key: "ArrowRight", run: function (editor, key) { 
+               if (env.global.disableCellSelecting) return; 
                 if (editor.state.selection.main.head === editor.state.doc.length) {
               
                   view.dispatch({selection: {anchor: self.visibleValue.pos + self.visibleValue.length}});
@@ -33701,9 +33683,15 @@ let EditorWidget$1 = class EditorWidget {
 
             EditorView.domEventHandlers({
               blur: (ev, v) => {
+                if (env.global.disableCellSelecting) return;
                 el.style.backgroundColor = '';
               },
               focus: (ev,v) => {
+                
+                if (env.global.disableCellSelecting) {
+                  v.contentDOM.setAttribute("contenteditable","false");
+                  return;
+                }
                 const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                 el.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
               }
@@ -33816,6 +33804,9 @@ let Widget$1 = class Widget extends WidgetType {
 
   skipPosition(pos, oldPos, selected) {
     if (oldPos.from != oldPos.to || selected) return pos;
+    const editor = this.DOMElement.EditorWidget.editor;
+    if (editor.stringOnly) return pos;
+    
     //this.DOMElement.EditorWidget.wantedPosition = pos;
     if (pos.from - oldPos.from > 0) {
       //this.DOMElement.EditorWidget.topEditor.dispatch()
@@ -33823,7 +33814,6 @@ let Widget$1 = class Widget extends WidgetType {
       this.DOMElement.EditorWidget.editor.focus();
       //this.DOMElement.EditorWidget.topEditor.focus();
     } else {
-      const editor = this.DOMElement.EditorWidget.editor;
       editor.dispatch({selection: {anchor: editor.state.doc.length}});
       editor.focus();
       //this.DOMElement.EditorWidget.bottomEditor.focus();
@@ -34881,7 +34871,7 @@ compactWLEditor = (args) => {
     editorCustomThemeCompact,  
     tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
-    wolframLanguage.of(EditorAutocomplete),
+    wolframLanguage.of(EditorAutocomplete, false),
     FractionBoxWidget(compactWLEditor),
     SqrtBoxWidget(compactWLEditor),
     SubscriptBoxWidget(compactWLEditor),
@@ -34946,7 +34936,7 @@ compactWLEditor.state = (args) => {
       minimalSetup,
       editorCustomThemeCompact,  
       syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
-      wolframLanguage.of(EditorAutocomplete),
+      wolframLanguage.of(EditorAutocomplete, false),
       FractionBoxWidget(compactWLEditor),
       SqrtBoxWidget(compactWLEditor),
       SubscriptBoxWidget(compactWLEditor),
@@ -35253,7 +35243,6 @@ const EditorExtensions = [
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
-  () => placeholder$8('Type WL Expression / .md / .js'),
 
   () => EditorState.allowMultipleSelections.of(true),
   
@@ -35453,6 +35442,58 @@ class CodeMirrorCell {
 
   //I HATE YOU WOLFRAM!!!
 
+  const keepMaxSizeDebounce = 100;
+
+  function updateEditorMaxSize(env) {
+    env.local.keepMaxSizeLastCheck = performance.now();
+
+    if (env.local.keepMaxHeight) {
+      const height = env.element.offsetHeight;
+      const newHeight = Math.max(env.local.height || 0, height);
+      if (height && env.local.height != newHeight && newHeight > 50) {
+        env.local.height = newHeight;
+        env.element.style.minHeight = env.local.height + 'px';
+      }
+    }
+
+    if (env.local.keepMaxWidth) {
+      const width = env.element.offsetWidth;
+      const newWidth = Math.max(env.local.width || 0, width);
+      if (width && env.local.width != newWidth && newWidth > 50) {
+        env.local.width = newWidth;
+        env.element.style.minWidth = env.local.width + 'px';
+      }
+    }
+  }
+
+  function keepEditorMaxSize(env) {
+    if (!env.local.keepMaxHeight && !env.local.keepMaxWidth) return;
+    
+    const now = performance.now();
+    const lastCheck = env.local.keepMaxSizeLastCheck || 0;
+    const elapsed = now - lastCheck;
+
+    
+
+    if (lastCheck && elapsed < keepMaxSizeDebounce) {
+      if (!env.local.keepMaxSizeTimeout) {
+        env.local.keepMaxSizeTimeout = setTimeout(() => {
+          env.local.keepMaxSizeTimeout = null;
+          if (!env.local.editor) return;
+          updateEditorMaxSize(env);
+        }, keepMaxSizeDebounce - elapsed);
+      }
+      return;
+    }
+
+    if (env.local.keepMaxSizeTimeout) {
+      clearTimeout(env.local.keepMaxSizeTimeout);
+      env.local.keepMaxSizeTimeout = null;
+    }
+
+    updateEditorMaxSize(env);
+  }
+
   //for dynamics
   core.EditorView = async (args, env) => {
     //cm6 inline editor (editable or read-only)
@@ -35478,8 +35519,17 @@ class CodeMirrorCell {
     }
     //console.warn(options);
     if ('Selectable' in options) {
-      if (!options.Selectable)
+      if (!options.Selectable) {
         ext.push(EditorView.editable.of(false));
+        ext.push(EditorView.domEventHandlers({
+          blur: (ev, v) => {
+            return;
+          },
+          focus: (ev,v) => {
+            v.contentDOM.setAttribute("contenteditable","false");
+          }
+        }));
+      }
     }
 
     if (options.ForceUpdate) {
@@ -35499,29 +35549,19 @@ class CodeMirrorCell {
       }
     }
 
-    if (options.KeepMaxHeight) {
+    env.local.keepMaxHeight = Boolean(options.KeepMaxHeight);
+    env.local.keepMaxWidth = Boolean(options.KeepMaxWidth);
+
+
+    if (env.local.keepMaxHeight) {
       env.local.height = 0;
-      env.local.heightKeeper = setInterval(() => {
-        const newHeight = Math.max(env.local.height, env.element.offsetHeight);
-        if (!env.element.offsetHeight) return;
-        if (env.local.height != newHeight && newHeight > 100) {
-          env.local.height = newHeight;
-          env.element.style.minHeight = env.local.height + 'px';
-        }
-      }, 1000);
     }
 
-    if (options.KeepMaxWidth) {
+    if (env.local.keepMaxWidth) {
       env.local.width = 0;
-      env.local.widthKeeper = setInterval(() => {
-        const newWidth = Math.max(env.local.width, env.element.offsetWidth);
-        if (!env.element.offsetWidth) return;
-        if (env.local.width != newWidth && newWidth > 100) {
-          env.local.width = newWidth;
-          env.element.style.minWidth = env.local.width + 'px';
-        }
-      }, 1000);
     }    
+
+    env.local.keepMaxSizeLastCheck = 0;
 
     if (options.Event) {
       //then it means this is like a slider
@@ -35564,6 +35604,7 @@ class CodeMirrorCell {
     if (!env.local.editor) return;
     const textData = unicodeToChar2(await interpretate(args[0], env));
     console.log('editor view: dispatch');
+    keepEditorMaxSize(env);
     if (env.local.forceUpdate && false) { //option was removed since we fixed it
       env.local.editor.dispatch({
         changes: {from: 0, to: env.local.editor.state.doc.length, insert: ''}
@@ -35587,14 +35628,10 @@ class CodeMirrorCell {
   };
 
   core.EditorView.destroy = async (args, env) => {
-    if (env.local.heightKeeper) {
-      clearInterval(env.local.heightKeeper);
+    if (env.local.keepMaxSizeTimeout) {
+      clearTimeout(env.local.keepMaxSizeTimeout);
     }
 
-    if (env.local.widthKeeper) {
-      clearInterval(env.local.widthKeeper);
-    }
-    
     env.local.editor.destroy();
 
   };

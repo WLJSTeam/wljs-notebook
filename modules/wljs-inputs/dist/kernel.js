@@ -71,6 +71,7 @@ core['CoffeeLiqueur`Extensions`InputsOutputs`Tools`AnonymousJavascript'] = core[
 core.HTMLView = async (args, env) => {
   
   let html = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(html)) html = html.normal();
   //env.uiInstanceId = uuidv4();
   const options = await core._getRules(args, {...env, hold:true});
 
@@ -104,7 +105,7 @@ core.HTMLView = async (args, env) => {
   }
 };   
 
-core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView; // a bug
+core['CoffeeLiqueur`Extensions`InputsOutputs`HTMLView'] = core.HTMLView; // an alias
 
 
 core.Prolog = () => "Prolog";
@@ -128,7 +129,8 @@ core["Notebook`Kernel`Inputs`Private`HandleGroup"] = core["CoffeeLiqueur`Extensi
 
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"] = async (args, env) => {
-  const data = await interpretate(args[1], env);
+  let data = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   const uid = await interpretate(args[0], env);
 
   env.local.uid = uid;
@@ -141,7 +143,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"] =
 };
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].update = async (args, env) => {
-  const data = await interpretate(args[1], env);
+  let data = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   env.local.el.update(data, env);
 };
 
@@ -154,7 +157,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].d
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"].virtual = true;
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"] = async (args, env) => {
-  const data = await interpretate(args[0], env);
+  let data = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   const name = await interpretate(args[1], env);
   const field = await interpretate(args[2], env);
 
@@ -164,7 +168,8 @@ core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"] = a
 };
 
 core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate"].update = async (args, env) => {
-  const data = await interpretate(args[0], env);
+  let data = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
   env.local.element[env.local.field] = data;
 };
 
@@ -478,7 +483,7 @@ atoms.List = async (data, env, element, store, hashFunction) => {
   if (reqursionDepth > 2) {
     const button = document.createElement('button');
     button.innerText = "...";
-    button.className = 'sm-controls rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50';
+    button.className = 'sm-controls bg-white px-2 py-1 text-xs font-semibold text-gray-900 wljs-card hover:bg-gray-50';
     button.addEventListener('click', () => {
       button.remove();
       atoms.List(data, {...env, reqursionDepth: reqursionDepth-2}, element, store, hashFunction);
@@ -527,7 +532,7 @@ atoms.Association = async (data, env, element, store, hashFunction) => {
   if (reqursionDepth > 2) {
     const button = document.createElement('button');
     button.innerText = "...";
-    button.className = 'sm-controls rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50';
+    button.className = 'sm-controls bg-white px-2 py-1 text-xs font-semibold text-gray-900 wljs-card hover:bg-gray-50';
     button.addEventListener('click', () => {
       button.remove();
       atoms.Association(data, {...env, reqursionDepth: reqursionDepth-2}, element, store, hashFunction);
@@ -1014,7 +1019,7 @@ core.Dataset = async (args, env) => {
   }
 
   const element = env.element;
-  element.classList.add(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  element.classList.add(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
 
   const container_1 = document.createElement('div');
   container_1.classList.add(...("-m-1.5 overflow-x-auto".split(' ')));
@@ -1058,7 +1063,7 @@ core.Dataset = async (args, env) => {
 
   if (headerCols) {
     thead = document.createElement('thead');
-    thead.classList.add(...("sticky top-0 bg-gray-100".split(' ')));
+    thead.classList.add(...("sticky top-0 bg-gray-50".split(' ')));
     const tr = document.createElement('tr');
     thead.appendChild(tr);
 
@@ -1201,7 +1206,7 @@ core.Dataset = async (args, env) => {
   viewPort.operate = async (rows, initial, window, offset, effect) => {
     for (let i=initial; i<window && (i+offset)<rows.length; ++i) {
       const row = document.createElement('tr');
-      row.classList.add("hover:bg-gray-200");
+      row.classList.add("hover:bg-gray-50");
 
       if (headerRows) {
         const td = document.createElement('td');
@@ -1236,7 +1241,7 @@ core.Dataset = async (args, env) => {
   if (pagination > 1 || env?.options?.Parts) {
     const paginator = document.createElement('div');
     paginator.classList.add(...('py-1 border-solid items-center h-6 px-1 mb-1 w-full flex flex-row-reverse gap-x-2'.split(' ')));
-    paginator.style.borderTop = "1px solid #999";
+    paginator.style.borderTop = "1px solid rgb(201 201 201)";
     const prevButton = document.createElement('button');
     prevButton.style.transform = "rotate(180deg)";
     prevButton.innerHTML = `<svg class="w-3 h-3 text-gray-500 hover:text-gray-400" viewBox="0 0 24 24" fill="none" >
@@ -1427,7 +1432,7 @@ core.Dataset = async (args, env) => {
 };
 
 core.Dataset.destroy = (args, env) => {
-  env.element.classList.remove(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  env.element.classList.remove(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
   env.local.container_1.remove();
   env.local.store.instances.forEach((el) => {
     el.dispose();
@@ -1470,7 +1475,7 @@ const tbView = async (args, env) => {
   rows.length;
   
   const element = env.element;
-  element.classList.add(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  element.classList.add(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
 
   const container_1 = document.createElement('div');
   container_1.classList.add(...("-m-1.5 overflow-x-auto".split(' ')));
@@ -1503,7 +1508,7 @@ const tbView = async (args, env) => {
   let thead;
 
   thead = document.createElement('thead');
-  thead.classList.add(...("sticky top-0 bg-gray-100".split(' ')));
+  thead.classList.add(...("sticky top-0 bg-gray-50".split(' ')));
   const tr = document.createElement('tr');
   thead.appendChild(tr);
 
@@ -1648,7 +1653,7 @@ const tbView = async (args, env) => {
   viewPort.operate = async (rows, initial, window, offset, effect) => {
     for (let i=initial; i<window && (i+offset)<rows.length; ++i) {
       const row = document.createElement('tr');
-      row.classList.add("hover:bg-gray-200");
+      row.classList.add("hover:bg-gray-50");
 
       const td = document.createElement('td');
       td.classList.add(...("px-2 py-1 text-start text-xs font-medium text-gray-500".split(' ')));
@@ -1677,7 +1682,7 @@ const tbView = async (args, env) => {
   {
     const paginator = document.createElement('div');
     paginator.classList.add(...('py-1 border-solid items-center h-6 px-1 mb-1 w-full flex flex-row-reverse gap-x-2'.split(' ')));
-    paginator.style.borderTop = "1px solid #999";
+    paginator.style.borderTop = "1px solid rgb(201 201 201)";
     const prevButton = document.createElement('button');
     prevButton.style.transform = "rotate(180deg)";
     prevButton.innerHTML = `<svg class="w-3 h-3 text-gray-500 hover:text-gray-400" viewBox="0 0 24 24" fill="none" >
@@ -1909,7 +1914,7 @@ const tbView = async (args, env) => {
 
 tbView.virtual = true;
 tbView.destroy = (args, env) => {
-  env.element.classList.remove(...("sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs".split(' ')));
+  env.element.classList.remove(...("sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 wljs-card text-xs".split(' ')));
   env.local.container_1.remove();
   env.local.store.instances.forEach((el) => {
     el.dispose();

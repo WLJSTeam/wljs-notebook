@@ -6,6 +6,8 @@ import {
     MatchDecorator
   } from "@codemirror/view";
   import { isCursorInside } from "./utils";
+
+import { processGreeks } from "../sugar/misc";
   
   import { BallancedMatchDecorator2, matchArguments  } from "./matcher";
   
@@ -76,6 +78,8 @@ import {
           if (j == cols.length-1 && i == this.args.length-1) text = text.slice(0,-2);
           if (j == cols.length-1 && i != this.args.length-1) text = text.slice(0,-1);
 
+          
+          
           if (text.charAt(0) != '"') {
     
             cols[j].editor = compactCMEditor({
@@ -91,8 +95,10 @@ import {
               extensions: [
                 keymap.of([
                   { key: "ArrowLeft", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == 0 && !editor.stringOnly)
                       if (j - 2 >= 0) {
+                        if (cols[j-2].editor.stringOnly) return;
                         cols[j-2].editor.dispatch({selection:{anchor:cols[j-2].editor.state.doc.length}});
                         cols[j-2].editor.focus();
                         
@@ -108,8 +114,10 @@ import {
                     
                   } }, 
                   { key: "ArrowRight", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     if (editor.state.selection.main.head == editor.state.doc.length && !editor.stringOnly)
                       if (j + 2 < cols.length) {
+                        if (cols[j+2].editor.stringOnly) return;
                         cols[j+2].editor.dispatch({selection:{anchor:0}});
                         cols[j+2].editor.focus();
                   
@@ -126,6 +134,7 @@ import {
                      
                   } },             
                   { key: "ArrowUp", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i - 2 >= 0) {
                         args[i-2].body[j].editor.focus();
@@ -138,6 +147,7 @@ import {
                     //editor.editorLastCursor = editor.state.selection.ranges[0].to;  
                   } },             
                   { key: "ArrowDown", run: function (editor, key) {  
+                    if (globalScope.disableCellSelecting) return;
                     //if (editor?.editorLastCursor === editor.state.selection.ranges[0].to)
                       if (i + 2 < args.length) {
                         args[i+2].body[j].editor.focus();
@@ -159,7 +169,10 @@ import {
              
                     },
                     focus: (ev,v) => {
-  
+                      if (globalScope.disableCellSelecting) {
+                        v.contentDOM.setAttribute("contenteditable","false");
+                        return;
+                      }
                       if (!globalScope.allowCellHighlighting) return;
                       const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                       td.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
@@ -178,8 +191,9 @@ import {
             const itemDesc = text.match(itemBox);
 
             if (itemDesc) {  //stylize the text
-              td.innerHTML = itemDesc[1];
-              td.classList.add('selectable');
+              //td.innerHTML = itemDesc[1];
+              processGreeks(td, itemDesc[1], false);
+              td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
               const decoded = Mma.DecompressDecode(itemDesc[2]);
@@ -190,8 +204,8 @@ import {
               interpretate(json, env);    
 
             } else {
-              td.innerHTML = text.slice(1,-1);
-              td.classList.add('selectable');
+              processGreeks(td, text.slice(1,-1), false);
+              td.classList.add('selectable', 'sm-controls');
             }
           }
 

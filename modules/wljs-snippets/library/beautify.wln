@@ -1,199 +1,277 @@
-<|"Notebook" -> <|"Controller" -> "d1a8efe8-5f27-4b3e-a88e-9d7b18033590", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$973], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "d095ed5f-d24d-458b-b529-5f972fc7262e", "Objects" -> <||>, 
-   "Path" -> "/applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/beaut\
-ify.wln", "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Beautify code", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$968]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Beautify code\nSelect the code in the editor \
-for formatting or drop a cursor to the editor, where the whole content is \
-needed to be formatted", "Display" -> "codemirror", 
-    "Hash" -> "aa99bee1-3d73-48f8-b5e4-d2b4514c86f7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "# Beautify code\nSelect the code in the editor for formatting \
-or drop a cursor to the editor, where the whole content is needed to be \
-formatted", "Display" -> "markdown", 
-    "Hash" -> "26b12ee1-dad1-4e8c-80b7-c3311d83463a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> ".md\n\n![](attachments/FormatCode%20optimizer.png)\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ecdafafd-c570-4e47-aa32-25a87fd88974", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "\n![](attachments/FormatCode%20optimizer.png)\n", 
-    "Display" -> "markdown", "Hash" -> 
-     "82750500-c176-4b9b-a183-49b15d8edbc2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> ".md\n__Source code__", "Display" -> "codemirror", 
-    "Hash" -> "4e1f1613-1e3c-4e57-973a-4edd8779d66b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "__Source code__", "Display" -> "markdown", 
-    "Hash" -> "d3ef6c9e-38fe-4102-9697-28f406e2cfad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "Needs[\"CodeFormatter`\"];\nNeeds[\"CodeParser`\"];\nNeeds[\"\
-CoffeeLiqueur`Extensions`CommandPalette`VFX`\"->\"vfx`\", \
-\"VFX.wl\"]\n\nCodeParser`SplitAllExpression[astr_] := With[{str = \
-StringReplace[astr, {\"$Pi$\"->\"\\[Pi]\"}]},\n  \
-Select[Select[(StringTake[str, Partition[Join[{1}, #, {StringLength[str]}], \
-2]] &@\n   Flatten[{#1 - 1, #2 + 1} & @@@ \n     Sort@\n      Cases[\n       \
-CodeParser`CodeConcreteParse[str, \n         CodeParser`SourceConvention -> \
-\"SourceCharacterIndex\"][[2]], \n       LeafNode[Token`Newline, _, a_] :> \
-Lookup[a, Source, Nothing]]]), StringQ], (StringLength[#]>0) \
-&]\n];\n\nCodeFormatter`$DefaultLineWidth = \
-120;\nSetOptions[CodeFormatter`CodeFormatCST, CodeFormatter`Airiness -> \
--0.75, CodeFormatter`BreakLinesMethod -> \
-\"LineBreakerV2\"];\n\nCodeFormatter`balancedBracesQ[str_String] := \
-StringCount[str, \"[*)\"] === StringCount[str, \
-\"(*]\"]\n\nCodeFormatter`testQuestionMarks[s_String] := \
-StringMatchQ[StringTrim[s], StartOfString~~(\"?\" | \
-\"??\")~~__]\nCodeFormatter`testQuestionMarks[_] := \
-False\n\nCodeFormatter`CheckAllSyntax[_?CodeFormatter`testQuestionMarks] := \
-True\n\nCodeFormatter`CheckAllSyntax[str_String] := \n    \
-Module[{syntaxErrors = \
-Cases[CodeParser`CodeParse[str],(ErrorNode|AbstractSyntaxErrorNode|Unterminat\
-edGroupNode|UnterminatedCallNode)[___],Infinity]},\n        \
-If[Length[syntaxErrors]=!=0 ,\n            \n\n            \
-Return[StringRiffle[\n                TemplateApply[\"Syntax error `` at line \
-`` column ``\",\n                    \
-{ToString[#1],Sequence@@#3[CodeParser`Source][[1]]}\n                \
-]&@@@syntaxErrors\n\n            , \"\\n\"], Module];\n        ];\n        \
-Return[True, Module];\n    ];\n\nCodeFormatter`beaufity[expr_] := \
-StringReplace[ToString[HoldForm[expr] /. {\n  Graphics -> \
-CodeFormatter`escape`Graphics,\n  Graphics3D -> \
-CodeFormatter`escape`Graphics3D,\n  Image -> CodeFormatter`escape`Image,\n  \
-Image3D -> CodeFormatter`escape`Image3D\n  Dataset -> \
-CodeFormatter`escape`Dataset,\n  Sound -> CodeFormatter`escape`Sound,\n  \
-Audio -> CodeFormatter`escape`Audio,\n  Video -> \
-CodeFormatter`escape`Video\n}, StandardForm], {\n  \
-\"CodeFormatter`escape`Graphics\" -> \"Graphics\",\n  \
-\"CodeFormatter`escape`Graphics3D\" -> \"Graphics3D\",\n  \
-\"CodeFormatter`escape`Image\" -> \"Image\",\n  \
-\"CodeFormatter`escape`Image3D\" -> \"Image3D\"\n  \
-\"CodeFormatter`escape`Dataset\" -> \"Dataset\",\n  \
-\"CodeFormatter`escape`Audio\" -> \"Audio\",\n  \
-\"CodeFormatter`escape`Sound\" -> \"Sound\",\n  \
-\"CodeFormatter`escape`Video\" -> \
-\"Video\"\n}];\n\nSetAttributes[CodeFormatter`beaufity, \
-Listable]\nSetAttributes[CodeFormatter`beaufity, \
-HoldAll]\nSetAttributes[CodeFormatter`beaufity, HoldAllComplete]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bf2931f7-72d5-4ab3-8de0-1131251d05a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "de355f30-8c57-4efd-8075-137179a448ad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "e57c108c-9ed8-4a7e-8e2b-80aee54297af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "", "Display" -> "codemirror", 
-    "Hash" -> "5241107d-b5c7-4b74-90e4-99440b72c0ad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "Module[{string, inline, rules},\n  \
-If[FrontFetch[FrontEditorSelected[\"Type\"]] =!= \"mathematica\", \n    \
-EchoLabel[\"Warning\"][\"Only formatting of Wolfram Language is \
-supported\"];\n    Return[Null, Module];\n  ];\n  \n  inline = \
-!MatchQ[FrontFetch[FrontEditorSelected[\"Cursor\"]], {a_, a_}];\n  \n  string \
-= If[inline,\n    FrontFetch[FrontEditorSelected[\"Get\"]]\n  ,\n    \
-FrontFetch[FrontEditorSelected[\"GetDoc\"]]\n  ];\n\n  \
-If[!TrueQ[CodeFormatter`CheckAllSyntax[string]],\n    \
-EchoLabel[\"Warning\"][\"Syntax error! Cannot parse\"];\n    Return[Null, \
-Module];\n  ];\n\n  string = StringRiffle[With[{res = ToExpression[#, \
-InputForm, CodeFormatter`beaufity]}, \n    If[res === \"Null\",\n      #\n    \
-,\n      res\n    ]\n  \n  ] &/@ \
-Flatten[{CodeParser`SplitAllExpression[string]}], \"\\n\"];\n  \n  {string, \
-rules} = Module[{index = 0}, With[{r = StringCases[\n    string\n    , \n    \
-d:Shortest[\n        \"(*\" ~~ (c: WordCharacter..) ~~ \"[*)\" ~~ (arg1__ /; \
-CodeFormatter`balancedBracesQ[arg1]) ~~ \"(*]\" ~~ (c: WordCharacter..) ~~ \
-\"*)\"\n    ] :> (d -> (index++; StringTemplate[\"$UC[``]\"][index]))\n]},\n  \
-{StringReplace[string, r], r}\n]] // Quiet;\n\nstring = \
-CodeFormat[string];\n\nstring = StringReplace[string, Map[(Rule[#[[2]], \
-#[[1]]])&, rules]];\n\n  \n  If[inline,\n    \
-FrontSubmit[FrontEditorSelected[\"Set\", string]]\n  ,\n    \
-FrontSubmit[FrontEditorSelected[\"SetDoc\", string]]\n  ];\n\n  \
-FrontSubmit[vfx`MagicWand[\"body\"]];\n]", "Display" -> "codemirror", 
-    "Hash" -> "e7314626-f200-4fae-9324-be6740ebace6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> ".md\n__icon__", "Display" -> "codemirror", 
-    "Hash" -> "411fbc9a-8e01-4f7a-a7ae-4cced3ee8262", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "__icon__", "Display" -> "markdown", 
-    "Hash" -> "c8c1de7d-48e5-461b-8e2b-9bb7d38e1f80", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n              <svg class=\"h-5 w-5 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"currentColor\" \
-viewBox=\"0 0 1024 1024\"><path d=\"M 786 112 V 235 M 709 171 H 861 Z\" \
-stroke=\"currentColor\" stroke-width=\"2\" \
-vector-effect=\"non-scaling-stroke\" fill=\"none\"></path><path d=\"M 899.1 \
-869.6 l -53 -305.6 H 864 c 14.4 0 26 -11.6 26 -26 V 346 c 0 -14.4 -11.6 -26 \
--26 -26 H 618 V 138 c 0 -14.4 -11.6 -26 -26 -26 H 432 c -14.4 0 -26 11.6 -26 \
-26 v 182 H 160 c -14.4 0 -26 11.6 -26 26 v 192 c 0 14.4 11.6 26 26 26 h 17.9 \
-l -53 305.6 c -0.3 1.5 -0.4 3 -0.4 4.4 c 0 14.4 11.6 26 26 26 h 723 c 1.5 0 3 \
--0.1 4.4 -0.4 c 14.2 -2.4 23.7 -15.9 21.2 -30 z M 204 390 h 272 V 182 h 72 v \
-208 h 272 v 104 H 204 V 390 z m 468 440 V 674 c 0 -4.4 -3.6 -8 -8 -8 h -48 c \
--4.4 0 -8 3.6 -8 8 v 156 H 416 V 674 c 0 -4.4 -3.6 -8 -8 -8 h -48 c -4.4 0 -8 \
-3.6 -8 8 v 156 H 202.8 l 45.1 -260 H 776 l 45.1 260 H 672 Z M 786 112 V 235 M \
-709 171 H 861\" fill=\"currentColor\"></path></svg> \n              <span \
-class=\"ml-3 flex-auto truncate\"><Title/></span><span class=\"ml-3 flex-none \
-text-xs font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-             <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>         \n      \
-          </button>\n              </span>\n    </li>    \
-\n];\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null};\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0d074e91-df75-48de-8e37-81a450579c35", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b75c4ce8-f819-4a6c-bd7b-239037b97d04"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Beautify code
+Select the code in the editor for formatting or drop a cursor to the editor, where the whole content is needed to be formatted
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Beautify code
+Select the code in the editor for formatting or drop a cursor to the editor, where the whole content is needed to be formatted
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+![](attachments/FormatCode%20optimizer.png)
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+![](attachments/FormatCode%20optimizer.png)
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Source code__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Source code__
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+Needs["CodeFormatter`"];
+Needs["CodeParser`"];
+Needs["CoffeeLiqueur`Extensions`CommandPalette`VFX`"->"vfx`", "VFX.wl"]
+
+CodeParser`SplitAllExpression[astr_] := With[{str = StringReplace[astr, {"$Pi$"->"\[Pi]"}]},
+  Select[Select[(StringTake[str, Partition[Join[{1}, #, {StringLength[str]}], 2]] &@
+   Flatten[{#1 - 1, #2 + 1} & @@@ 
+     Sort@
+      Cases[
+       CodeParser`CodeConcreteParse[str, 
+         CodeParser`SourceConvention -> "SourceCharacterIndex"][[2]], 
+       LeafNode[Token`Newline, _, a_] :> Lookup[a, Source, Nothing]]]), StringQ], (StringLength[#]>0) &]
+];
+
+CodeFormatter`$DefaultLineWidth = 120;
+SetOptions[CodeFormatter`CodeFormatCST, CodeFormatter`Airiness -> -0.75, CodeFormatter`BreakLinesMethod -> "LineBreakerV2"];
+
+CodeFormatter`balancedBracesQ[str_String] := StringCount[str, "[*)"] === StringCount[str, "(*]"]
+
+CodeFormatter`testQuestionMarks[s_String] := StringMatchQ[StringTrim[s], StartOfString~~("?" | "??")~~__]
+CodeFormatter`testQuestionMarks[_] := False
+
+CodeFormatter`CheckAllSyntax[_?CodeFormatter`testQuestionMarks] := True
+
+CodeFormatter`CheckAllSyntax[str_String] := 
+    Module[{syntaxErrors = Cases[CodeParser`CodeParse[str],(ErrorNode|AbstractSyntaxErrorNode|UnterminatedGroupNode|UnterminatedCallNode)[___],Infinity]},
+        If[Length[syntaxErrors]=!=0 ,
+            
+
+            Return[StringRiffle[
+                TemplateApply["Syntax error `` at line `` column ``",
+                    {ToString[#1],Sequence@@#3[CodeParser`Source][[1]]}
+                ]&@@@syntaxErrors
+
+            , "\n"], Module];
+        ];
+        Return[True, Module];
+    ];
+
+CodeFormatter`beaufity[expr_] := StringReplace[ToString[HoldForm[expr] /. {
+  Graphics -> CodeFormatter`escape`Graphics,
+  Graphics3D -> CodeFormatter`escape`Graphics3D,
+  Image -> CodeFormatter`escape`Image,
+  Image3D -> CodeFormatter`escape`Image3D
+  Dataset -> CodeFormatter`escape`Dataset,
+  Sound -> CodeFormatter`escape`Sound,
+  Audio -> CodeFormatter`escape`Audio,
+  Video -> CodeFormatter`escape`Video
+}, StandardForm], {
+  "CodeFormatter`escape`Graphics" -> "Graphics",
+  "CodeFormatter`escape`Graphics3D" -> "Graphics3D",
+  "CodeFormatter`escape`Image" -> "Image",
+  "CodeFormatter`escape`Image3D" -> "Image3D"
+  "CodeFormatter`escape`Dataset" -> "Dataset",
+  "CodeFormatter`escape`Audio" -> "Audio",
+  "CodeFormatter`escape`Sound" -> "Sound",
+  "CodeFormatter`escape`Video" -> "Video"
+}];
+
+SetAttributes[CodeFormatter`beaufity, Listable]
+SetAttributes[CodeFormatter`beaufity, HoldAll]
+SetAttributes[CodeFormatter`beaufity, HoldAllComplete]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{string, inline, rules},
+  If[FrontFetch[FrontEditorSelected["Type"]] =!= "mathematica", 
+    EchoLabel["Warning"]["Only formatting of Wolfram Language is supported"];
+    Return[Null, Module];
+  ];
+  
+  inline = !MatchQ[FrontFetch[FrontEditorSelected["Cursor"]], {a_, a_}];
+  
+  string = If[inline,
+    FrontFetch[FrontEditorSelected["Get"]]
+  ,
+    FrontFetch[FrontEditorSelected["GetDoc"]]
+  ];
+
+  If[!TrueQ[CodeFormatter`CheckAllSyntax[string]],
+    EchoLabel["Warning"]["Syntax error! Cannot parse"];
+    Return[Null, Module];
+  ];
+
+  string = Check[StringRiffle[With[{res = ToExpression[#, InputForm, CodeFormatter`beaufity]}, 
+    If[res === "Null",
+      #
+    ,
+      res
+    ]
+  
+  ] &/@ Flatten[{CodeParser`SplitAllExpression[string]}], "\n"], $Failed];
+
+  If[FailureQ[string],
+    EchoLabel["Warning"]["Could not parse. Please use Format Snippet"];
+    Return[Null, Module];  
+  ];
+  
+  {string, rules} = Module[{index = 0}, With[{r = StringCases[
+    string
+    , 
+    d:Shortest[
+        "(*" ~~ (c: WordCharacter..) ~~ "[*)" ~~ (arg1__ /; CodeFormatter`balancedBracesQ[arg1]) ~~ "(*]" ~~ (c: WordCharacter..) ~~ "*)"
+    ] :> (d -> (index++; StringTemplate["$UC[``]"][index]))
+]},
+  {StringReplace[string, r], r}
+]] // Quiet;
+
+string = CodeFormat[string];
+
+string = StringReplace[string, Map[(Rule[#[[2]], #[[1]]])&, rules]];
+
+  
+  If[inline,
+    FrontSubmit[FrontEditorSelected["Set", string]]
+  ,
+    FrontSubmit[FrontEditorSelected["SetDoc", string]]
+  ];
+
+  FrontSubmit[vfx`MagicWand["body"]];
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__icon__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__icon__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+              <svg class="h-5 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="currentColor" viewBox="0 0 1024 1024"><path d="M 786 112 V 235 M 709 171 H 861 Z" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" fill="none"></path><path d="M 899.1 869.6 l -53 -305.6 H 864 c 14.4 0 26 -11.6 26 -26 V 346 c 0 -14.4 -11.6 -26 -26 -26 H 618 V 138 c 0 -14.4 -11.6 -26 -26 -26 H 432 c -14.4 0 -26 11.6 -26 26 v 182 H 160 c -14.4 0 -26 11.6 -26 26 v 192 c 0 14.4 11.6 26 26 26 h 17.9 l -53 305.6 c -0.3 1.5 -0.4 3 -0.4 4.4 c 0 14.4 11.6 26 26 26 h 723 c 1.5 0 3 -0.1 4.4 -0.4 c 14.2 -2.4 23.7 -15.9 21.2 -30 z M 204 390 h 272 V 182 h 72 v 208 h 272 v 104 H 204 V 390 z m 468 440 V 674 c 0 -4.4 -3.6 -8 -8 -8 h -48 c -4.4 0 -8 3.6 -8 8 v 156 H 416 V 674 c 0 -4.4 -3.6 -8 -8 -8 h -48 c -4.4 0 -8 3.6 -8 8 v 156 H 202.8 l 45.1 -260 H 776 l 45.1 260 H 672 Z M 786 112 V 235 M 709 171 H 861" fill="currentColor"></path></svg> 
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                       <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>         
+                </button>
+              </span>
+    </li>    
+];
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null};
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

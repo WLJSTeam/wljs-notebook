@@ -14,7 +14,7 @@ Component[OptionsPattern[]] := With[{
 {
     PLabel = If[Label =!= "",
         <div>
-                <label class="font-medium text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
+                <label class=" text-gray-900 {labelClass}" style="{labelStyle}"><Label/></label>
               </div>
     ,
         ""
@@ -37,7 +37,7 @@ Component[OptionsPattern[]] := With[{
             <div class="flex flex-col gap-2">
               <PLabel/>
               <div class="flex gap-3 flex-col gap-y-2">
-                <input id="color-#instanceId" type="color" class="{class}" style="cursor: pointer; width: 60px; height: 40px; border: 1px solid #ccc; border-radius: 4px; {style}"></input>
+                <input id="color-#instanceId" type="color" class="{class}" style="cursor: pointer; width: 60px; height: 30px; {style}"></input>
                 <PAlpha/>
               </div>
               <PDesc/>

@@ -102,6 +102,7 @@
     env.thickness = size;
   }  
 
+  boxes.Transparent = () => "transparent"
   legends.RGBColor = async (args, env) => {      
   if (args.length == 3) {
     const r = (await interpretate(args[0], env)) * 255;
@@ -211,7 +212,6 @@
 
   boxes.GeneralLegend = async (args, env, markerFunction) => {
     //const copy = {...env, context: legends, color: black, thickness: 1, pointSize: 1};
- 
 
     const markers = await interpretate(args[0], {...env, hold:true});
     const labels = await interpretate(args[1], {...env, hold:true});
@@ -524,7 +524,7 @@
 
   boxes.ViewDecorator.Date = async (args, env) => {
     const element = document.createElement('span');
-    element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    element.classList.add(...('sm-controls cursor-default py-1 pl-3 pr-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
     element.style.verticalAlign = "baseline";
     //env.element.classList.add('frame-box');
     env.context = boxes;
@@ -586,10 +586,12 @@
   }
 
   boxes.ViewDecorator.Pane = async (args, env) => {
+    
     env.element.classList.add(...('sm-controls cursor-default 0 py-1 text-left text-gray-500 flex flex-row'.split(' '))); 
    // console.warn(args);
     
     const opts = await core._getRules(args, {...env, context: boxes});
+
     if (opts.ImageSize) {
       const size = opts.ImageSize;
       if (size instanceof Object === true) {
@@ -610,6 +612,9 @@
     }
 
     if (opts.Background) env.element.style.backgroundColor = opts.Background;
+    if ('Selectable' in opts && !opts.Selectable) {
+      env.global.disableCellSelecting = true;
+    }
     //if (opts.Background) env.element.style.backgroundColor = opts.Background;
 
     if (opts.Event) {
@@ -627,7 +632,7 @@
     
     if (opts.File) {
 
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
       const count = await interpretate(args[0], env);
 
       if (opts.Label && opts.Label != 'None') {
@@ -643,7 +648,7 @@
     } else {
 
       
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
       const count = await interpretate(args[0], env);
       
 
@@ -694,7 +699,7 @@
     const outer = document.createElement('span');
 
     outer.style.alignItems = "baseline";
-    outer.classList.add(...(('flex flex-row gap-x-2 text-sm rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-gray-500 ring-1 ring-inset ring-gray-400').split(' ')));
+    outer.classList.add(...(('flex flex-row gap-x-2 text-sm py-1 pl-3 pr-2 text-gray-500 bg-gray-50 wljs-card').split(' ')));
 
     const textNode = document.createElement('span');
     textNode.innerText = "if";
@@ -730,7 +735,7 @@
     const type = await interpretate(args[0], env);
     const value = await interpretate(args[1], env);
 
-    env.element.classList.add(...('sm-controls gap-x-1 cursor-default rounded-md 0 py-1 px-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card text-xs'.split(' ')));
     env.element.style.backgroundColor = "#fff291";
     env.element.style.verticalAlign = "baseline";
 
@@ -750,7 +755,7 @@
   boxes.ViewDecorator.Root = async (args, env) => {
     const approx = await interpretate(args[0], env);
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row items-center'.split(' '))); 
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row items-center'.split(' '))); 
     
     
     const logo = document.createElement('span');
@@ -817,7 +822,7 @@
     const units = await interpretate(args[1], {...env, context:quantity});
 
     
-    env.element.classList.add(...('text-gray-500 ring-gray-300 ring-1 rounded-lg px-2'.split(' ')));
+    env.element.classList.add(...('text-gray-500 wljs-card text-xs px-2'.split(' ')));
     env.element.style.verticalAlign = 'baseline';
 
     const add = (nn, nunits, gap = false) => {
@@ -876,6 +881,10 @@
       }
     }
 
+    if (opts.DefaultBaseStyle === "Panel") {
+      env.global.disableCellSelecting = true;
+    }
+
     if (opts.Alignment) {
       const align = opts.Alignment;
       if (Array.isArray(align)) {
@@ -884,6 +893,7 @@
         el.style.textAlign = align;
       }
     }
+    
     //console.log(env.global.EditorWidget.view.dom.parentNode);
     //mutate the outer editor
 
@@ -1119,7 +1129,10 @@
 
   boxes.ViewDecorator.Intergate = boxes.ViewDecorator.Integrate;
 
-
+  boxes.ViewDecorator.NS = async (args, env) => {
+    env.global.allowCellHighlighting = false;
+    env.global.disableCellSelecting = true;
+  }
 
   boxes.ViewDecorator.Matrix = async (args, env) => {
     env.global.allowCellHighlighting = true;
@@ -1135,65 +1148,443 @@
     element.style.borderRight = 'solid #303030 0.15rem';
   }
 
+  const gridContext = {};
+  gridContext.Left = () => "Left"
+  gridContext.Right = () => "Right"
+  gridContext.Baseline = () => "Baseline"
+  gridContext.Automatic = () => undefined
+  gridContext.Axis = () => "Axis"
+  gridContext.Top = () => "Top"
+  gridContext.None = () => undefined
+  gridContext.All = () => "All"
+  gridContext.Columns = () => "Columns"
+  gridContext.Rows = () => "Rows"
+
+  gridContext.Bottom = () => "Bottom"
+  gridContext.Center = () => "Center"
+  gridContext.Tiny = () => 50
+  gridContext.Small = () => 200
+  gridContext.Medium = () => 500
+  gridContext.Large = () => 1000
+
+  gridContext.ImageSize = () => "ImageSize"
+  gridContext.BaselinePosition = () => "BaselinePosition"
+  gridContext.GridBoxDividers = () => "GridBoxDividers"
+  gridContext.GridBoxAlignment = () => "GridBoxAlignment"
+  gridContext.GridBoxSpacings = () => "GridBoxSpacings"
+  gridContext.GridBoxSpacing = () => "GridBoxSpacings"
+  gridContext.Selectable = () => "Selectable"
+
+
+  const gridDividerColor = 'darkgray';
+  const gridDividerBorder = 'solid 1px ' + gridDividerColor;
+
+  const gridRows = (element) => {
+    if (!element) return [];
+    return Array.from(element.rows || element.children || []);
+  }
+
+  const gridTable = (element) => {
+    if (!element) return undefined;
+    if (element.tagName === 'TABLE') return element;
+    return element.closest ? element.closest('table') : element.parentNode;
+  }
+
+  const gridWrapper = (element) => {
+    const table = gridTable(element);
+    return table && table.parentElement ? table.parentElement : table;
+  }
+
+  const gridColumnCount = (rows) => {
+    return rows.reduce((acc, row) => Math.max(acc, row.cells ? row.cells.length : row.children.length), 0);
+  }
+
+  const isGridRule = (value) => {
+    return value && typeof value === 'object' && !Array.isArray(value) && 'lhs' in value && 'rhs' in value;
+  }
+
+  const gridRules = (value) => {
+    if (isGridRule(value)) return [value];
+    if (Array.isArray(value) && value.every(isGridRule)) return value;
+    return [];
+  }
+
+  const gridRuleValue = (rules, lhs) => {
+    const rule = rules.find((item) => item.lhs === lhs);
+    return rule ? rule.rhs : undefined;
+  }
+
+  const repeatedGridPattern = (pattern, count) => {
+    if (!Array.isArray(pattern) || pattern.length == 0) return [];
+    return Array.from({length: count}, (_, index) => pattern[index % pattern.length]);
+  }
+
+  const expandGridSpec = (spec, count) => {
+    if (count <= 0) return [];
+    if (!Array.isArray(spec)) return Array.from({length: count}, () => spec);
+    if (spec.length == 0) return [];
+    if (spec.length == 1 && Array.isArray(spec[0])) return repeatedGridPattern(spec[0], count);
+
+    const patternIndex = spec.findIndex(Array.isArray);
+    if (patternIndex >= 0) {
+      const prefix = spec.slice(0, patternIndex);
+      const suffix = spec.slice(patternIndex + 1);
+      const repeatCount = Math.max(0, count - prefix.length - suffix.length);
+      return prefix.concat(repeatedGridPattern(spec[patternIndex], repeatCount), suffix).slice(0, count);
+    }
+
+    return spec.slice(0, count);
+  }
+
+  const gridNumber = (value) => {
+    return (typeof value == 'number' && Number.isFinite(value)) ? value : undefined;
+  }
+
+  const gridNumberFromSpec = (spec) => {
+    if (typeof spec == 'number') return gridNumber(spec);
+    if (!Array.isArray(spec)) return undefined;
+
+    const expanded = expandGridSpec(spec, 3);
+    const middle = expanded.length > 1 ? gridNumber(expanded[1]) : undefined;
+    if (typeof middle == 'number') return middle;
+
+    for (let i=0; i<expanded.length; ++i) {
+      const value = gridNumber(expanded[i]);
+      if (typeof value == 'number') return value;
+    }
+
+    return undefined;
+  }
+
+  const gridDividerQ = (value) => {
+    return value === true || value === "All";
+  }
+
+  const clearGridDividerOverlay = (wrapper) => {
+    if (!wrapper) return;
+
+    if (wrapper._wljsGridDividerObserver) {
+      wrapper._wljsGridDividerObserver.disconnect();
+      delete wrapper._wljsGridDividerObserver;
+    }
+
+    if (wrapper._wljsGridDividerFrame) {
+      cancelAnimationFrame(wrapper._wljsGridDividerFrame);
+      delete wrapper._wljsGridDividerFrame;
+    }
+
+    wrapper.querySelectorAll('.wljs-grid-divider-overlay').forEach((overlay) => overlay.remove());
+  }
+
+  const gridCells = (row) => {
+    return Array.from(row.cells || row.children || []);
+  }
+
+  const gridRowBounds = (row) => {
+    const cells = gridCells(row);
+    if (cells.length == 0) return undefined;
+
+    const bounds = cells.map((cell) => cell.getBoundingClientRect());
+    return {
+      top: Math.min(...bounds.map((rect) => rect.top)),
+      bottom: Math.max(...bounds.map((rect) => rect.bottom)),
+      left: Math.min(...bounds.map((rect) => rect.left)),
+      right: Math.max(...bounds.map((rect) => rect.right))
+    };
+  }
+
+  const applyGridDividerOverlay = (element, columnSpec, rowSpec) => {
+    const table = gridTable(element);
+    const wrapper = gridWrapper(element);
+    const rows = gridRows(element);
+
+    if (!table || !wrapper || wrapper === table || rows.length == 0) return false;
+
+    clearGridDividerOverlay(wrapper);
+
+    if (!wrapper.style.position) wrapper.style.position = 'relative';
+
+    const overlay = document.createElement('div');
+    overlay.classList.add('wljs-grid-divider-overlay');
+    overlay.style.position = 'absolute';
+    overlay.style.inset = '0';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.zIndex = '1';
+    wrapper.appendChild(overlay);
+
+    const addLine = (left, top, width, height) => {
+      if (![left, top, width, height].every(Number.isFinite)) return;
+      if (width <= 0 || height <= 0) return;
+
+      const line = document.createElement('div');
+      line.style.position = 'absolute';
+      line.style.left = left + 'px';
+      line.style.top = top + 'px';
+      line.style.width = width + 'px';
+      line.style.height = height + 'px';
+      line.style.backgroundColor = gridDividerColor;
+      overlay.appendChild(line);
+    }
+
+    const render = () => {
+      delete wrapper._wljsGridDividerFrame;
+      overlay.replaceChildren();
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const rowBounds = rows.map(gridRowBounds);
+      const visibleBounds = rowBounds.filter(Boolean);
+
+      if (visibleBounds.length == 0) return;
+
+      const contentTop = Math.min(...visibleBounds.map((rect) => rect.top)) - wrapperRect.top;
+      const contentBottom = Math.max(...visibleBounds.map((rect) => rect.bottom)) - wrapperRect.top;
+      const contentLeft = Math.min(...visibleBounds.map((rect) => rect.left)) - wrapperRect.left;
+      const contentRight = Math.max(...visibleBounds.map((rect) => rect.right)) - wrapperRect.left;
+
+      columnSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        let x;
+        for (const row of rows) {
+          const cells = gridCells(row);
+          if (index < cells.length) {
+            x = cells[index].getBoundingClientRect().left - wrapperRect.left;
+            break;
+          }
+          if (index == cells.length && cells[index - 1]) {
+            x = cells[index - 1].getBoundingClientRect().right - wrapperRect.left;
+            break;
+          }
+        }
+
+        addLine(x, contentTop, 1, contentBottom - contentTop);
+      });
+
+      rowSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        let y;
+        if (index < rowBounds.length && rowBounds[index]) {
+          y = rowBounds[index].top - wrapperRect.top;
+        } else if (index == rowBounds.length && rowBounds[index - 1]) {
+          y = rowBounds[index - 1].bottom - wrapperRect.top;
+        }
+
+        addLine(contentLeft, y, contentRight - contentLeft, 1);
+      });
+    }
+
+    const renderSoon = () => {
+      if (wrapper._wljsGridDividerFrame) cancelAnimationFrame(wrapper._wljsGridDividerFrame);
+      wrapper._wljsGridDividerFrame = requestAnimationFrame(render);
+    }
+
+    renderSoon();
+
+    if (typeof ResizeObserver != 'undefined') {
+      wrapper._wljsGridDividerObserver = new ResizeObserver(renderSoon);
+      wrapper._wljsGridDividerObserver.observe(table);
+    }
+
+    return true;
+  }
+
+  const gridHorizontalAlign = (value) => {
+    switch(value) {
+      case 'Left': return 'left';
+      case 'Right': return 'right';
+      case 'Center': return 'center';
+      default: return undefined;
+    }
+  }
+
+  const gridVerticalAlign = (value) => {
+    switch(value) {
+      case 'Top': return 'top';
+      case 'Bottom': return 'bottom';
+      case 'Center':
+      case 'Axis':
+        return 'middle';
+      case 'Baseline': return 'baseline';
+      default: return undefined;
+    }
+  }
+
+  const applyGridImageSize = (element, imageSize) => {
+    if (typeof imageSize == 'undefined') return;
+    const target = gridTable(element) || element;
+
+    if (Array.isArray(imageSize)) {
+      const width = gridNumber(imageSize[0]);
+      const height = gridNumber(imageSize[1]);
+
+      if (typeof width == 'number') target.style.width = width + 'px';
+      if (typeof height == 'number') target.style.height = height + 'px';
+      return;
+    }
+
+    const width = gridNumber(imageSize);
+    if (typeof width == 'number') target.style.width = width + 'px';
+  }
+
+  const applyGridBaselinePosition = (element, baselinePosition) => {
+    const align = gridVerticalAlign(baselinePosition);
+    if (!align) return;
+
+    const target = gridWrapper(element);
+    if (!target) return;
+
+    target.style.verticalAlign = align;
+  }
+
+  const applyGridSpacings = (element, spacings) => {
+    if (typeof spacings == 'undefined') return;
+
+    let x;
+    let y;
+    const rules = gridRules(spacings);
+
+    if (rules.length > 0) {
+      x = gridNumberFromSpec(gridRuleValue(rules, 'Columns'));
+      y = gridNumberFromSpec(gridRuleValue(rules, 'Rows'));
+    } else if (Array.isArray(spacings)) {
+      x = gridNumberFromSpec(spacings[0]);
+      y = gridNumberFromSpec(spacings[1]);
+    } else {
+      const value = gridNumber(spacings);
+      x = value;
+      y = value;
+    }
+
+    if (typeof x != 'number' && typeof y != 'number') return;
+
+    const table = gridTable(element);
+    if (!table) return;
+
+    table.style.borderCollapse = 'separate';
+    table.style.borderSpacing = (typeof x == 'number' ? x : 0) + 'em ' + (typeof y == 'number' ? y : 0) + 'em';
+  }
+
+  const applyGridDividers = (element, dividers) => {
+    const rules = gridRules(dividers);
+    const rows = gridRows(element);
+    const columnCount = gridColumnCount(rows);
+    let columnRawSpec;
+    let rowRawSpec;
+
+    if (rules.length > 0) {
+      columnRawSpec = gridRuleValue(rules, 'Columns');
+      rowRawSpec = gridRuleValue(rules, 'Rows');
+    } else if (Array.isArray(dividers) && dividers.length == 2) {
+      columnRawSpec = dividers[0];
+      rowRawSpec = dividers[1];
+    } else if (gridDividerQ(dividers)) {
+      columnRawSpec = dividers;
+      rowRawSpec = dividers;
+    } else {
+      return;
+    }
+
+    const columnSpec = expandGridSpec(columnRawSpec, columnCount + 1);
+    const rowSpec = expandGridSpec(rowRawSpec, rows.length + 1);
+
+    if (applyGridDividerOverlay(element, columnSpec, rowSpec)) {
+      rows.forEach((row) => {
+        const cells = Array.from(row.cells || row.children || []);
+
+        columnSpec.forEach((value, index) => {
+          if (!gridDividerQ(value)) return;
+
+          if (index < cells.length) {
+            if (index > 0 && cells[index - 1]) cells[index - 1].classList.add('pr-2');
+            cells[index].classList.add('pl-2');
+          } else if (index == cells.length && cells[index - 1]) {
+            cells[index - 1].classList.add('pr-2');
+          }
+        });
+      });
+      return;
+    }
+
+    rows.forEach((row) => {
+      const cells = Array.from(row.cells || row.children || []);
+
+      columnSpec.forEach((value, index) => {
+        if (!gridDividerQ(value)) return;
+
+        if (index < cells.length) {
+          cells[index].style.borderLeft = gridDividerBorder;
+          if (index > 0 && cells[index - 1]) cells[index - 1].classList.add('pr-2');
+          cells[index].classList.add('pl-2');
+        } else if (index == cells.length && cells[index - 1]) {
+          cells[index - 1].style.borderRight = gridDividerBorder;
+          cells[index - 1].classList.add('pr-2');
+        }
+      });
+    });
+
+    rowSpec.forEach((value, index) => {
+      if (!gridDividerQ(value)) return;
+
+      if (index < rows.length) {
+        rows[index].style.borderTop = gridDividerBorder;
+      } else if (index == rows.length && rows[index - 1]) {
+        rows[index - 1].style.borderBottom = gridDividerBorder;
+      }
+    });
+  }
+
+  const applyGridAlignment = (element, alignment) => {
+    if (typeof alignment == 'undefined') return;
+
+    const rows = gridRows(element);
+    const columnCount = gridColumnCount(rows);
+    let columnSpec;
+    let rowSpec;
+
+    const rules = gridRules(alignment);
+    if (rules.length > 0) {
+      columnSpec = gridRuleValue(rules, 'Columns');
+      rowSpec = gridRuleValue(rules, 'Rows');
+    } else if (Array.isArray(alignment) && alignment.length == 2 && !isGridRule(alignment[0])) {
+      columnSpec = alignment[0];
+      rowSpec = alignment[1];
+    } else {
+      columnSpec = alignment;
+    }
+
+    const columns = expandGridSpec(columnSpec, columnCount);
+    const rowAlignments = expandGridSpec(rowSpec, rows.length);
+
+    rows.forEach((row, rowIndex) => {
+      const vertical = gridVerticalAlign(rowAlignments[rowIndex]);
+      const cells = Array.from(row.cells || row.children || []);
+
+      cells.forEach((cell, columnIndex) => {
+        const horizontal = gridHorizontalAlign(columns[columnIndex]);
+
+        if (horizontal) cell.style.textAlign = horizontal;
+        if (vertical) cell.style.verticalAlign = vertical;
+      });
+    });
+  }
+
+
+
   boxes.ViewDecorator.Grid = async (args, env) => {
-    const opts = await core._getRules(args, {...env, context:boxes});
+    const opts = await core._getRules(args, {...env, context:[gridContext, boxes]});
    // console.warn(env);
    // console.warn(opts);
-    if (opts.GridBoxDividers) {
-      console.warn(opts.GridBoxDividers);
-      if (!Array.isArray(opts.GridBoxDividers)) return;
-      const rows = env.element.children;
-      opts.GridBoxDividers.forEach((item) => {
-        switch(item.lhs) {
-          case 'Columns':
-            if (!Array.isArray(item.rhs)) {
-              break;
-            }
-
-            if (item.rhs.length == 1) {
-              Array.from(rows).forEach((ch, index) => {
-
-                Array.from(ch.cells).forEach((cell ,index) => {
-                  if (index == 0) return;
-                  cell.style.borderLeft = 'solid 1px darkgray';
-                });
-              });
-              break;
-            }
-        
-            for (let i=0; i<item.rhs.length; ++i) {
-              if (item.rhs[i] == true) {
-                for(let j=0; j<rows.length; ++j) {
-                  if (i>0) {
-                    rows[j].children[i-1].classList.add('pr-2');
-                  }
-                  rows[j].children[i].style.borderLeft = 'solid 1px darkgray';
-                  rows[j].children[i].classList.add('pl-2');
-                } 
-              }
-            }
-          break;
-
-          case 'Rows':
-            if (!Array.isArray(item.rhs)) break;
-
-            if (item.rhs.length == 1) {
-              Array.from(rows).forEach((ch, index) => {
-                if (index == 0) return;
-                ch.style.borderTop = 'solid 1px darkgray';
-              });
-              break;
-            }
-
-            for (let i=0; i<item.rhs.length; ++i) {
-              if (item.rhs[i] == true) {
-                rows[i].style.borderTop = 'solid 1px darkgray';
-              }
-            }
-          break;
-        }
-      })
+    if (!opts.Selectable && 'Selectable' in opts) {
+      env.global.allowCellHighlighting = false;
+      env.global.disableCellSelecting = true;
     }
+
+    applyGridImageSize(env.element, opts.ImageSize);
+    applyGridBaselinePosition(env.element, opts.BaselinePosition);
+    applyGridSpacings(env.element, opts.GridBoxSpacings);
+    applyGridAlignment(env.element, opts.GridBoxAlignment);
+    applyGridDividers(env.element, opts.GridBoxDividers);
   }
 
   boxes.ViewDecorator.Over = async (args, env) => {
@@ -1274,6 +1665,7 @@
   }
 
   boxes.ViewDecorator.Panel = async (args, env) => {
+    
     const options = await core._getRules(args, {...env, context: boxes});
 
     let title = undefined;
@@ -1287,12 +1679,13 @@
     if (options.FrameMargins) margin = Math.round(10.0 * options.FrameMargins / 10.0)/10.0;
 
     if (options.ImageSize) {
-      const size = await interpretate(options.ImageSize, env);
-      if (size instanceof Object === true) {
+      const size = options.ImageSize;
+      if (Array.isArray(size)) {
+       
         env.element.style.width = size[0] + 'px';
         env.element.style.height = size[1] + 'px';
       } else {
-        env.element.style.maxWidth = size + 'px';
+        env.element.style.width = size + 'px';
       }
     }
 
@@ -1300,14 +1693,21 @@
     const editor = document.createElement('span');
     env.global.element = editor;
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+    if (options.Appearance == 'Frameless') {
+         env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left flex-row'.split(' ')));  
+    } else {
+          env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left wljs-card flex-row'.split(' '))); 
+    }
   
     env.element.style.display = "inline-flex";
     env.element.style.alignItems = "baseline";
     env.element.style.padding = margin + "em";
 
-    if (options.Background) env.element.style.backgroundColor = opts.Background;
+    if (options.Background) env.element.style.backgroundColor = options.Background;
 
+    if ('Selectable' in options && !options.Selectable) {
+      env.global.disableCellSelecting = true;
+    }
 
     if (title) {
       const t = document.createElement('span');
@@ -1392,6 +1792,15 @@
       env.element.style.fontSize = String(options.FontSize) + 'pt';
     } 
 
+    if ('URL' in options) {
+      const wrapper = document.createElement('a');
+      wrapper.href = options.URL;
+      wrapper.target="_blank";
+      wrapper.style.textDecoration = "underline";
+      env.element.appendChild(wrapper);
+      env.global.element = wrapper;
+    }
+
     if ('FontFamily' in options) {
       env.element.style.fontFamily = options.FontFamily.toLowerCase();
     }
@@ -1448,6 +1857,8 @@
 
     if ('ShowContents' in options) {
       if (!options.ShowContents) env.element.style.opacity = 0;
+      env.global.disableCellSelecting = true;
+      env.global.allowCellHighlighting = false;
     }
 
     const data = [];
@@ -1581,7 +1992,7 @@
   boxes.RootBox = async (args, env) => {
     const approx = await interpretate(args[0], env);
 
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row items-center'.split(' '))); 
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row items-center'.split(' '))); 
     
     
     const logo = document.createElement('span');
@@ -1699,7 +2110,7 @@
     const outer = document.createElement('span');
 
     outer.style.alignItems = "baseline";
-    outer.classList.add(...(('flex flex-row gap-x-2 text-sm rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-gray-500 ring-1 ring-inset ring-gray-400').split(' ')));
+    outer.classList.add(...(('flex flex-row gap-x-2 text-sm py-1 pl-3 bg-gray-50 pr-2 text-gray-500 wljs-card').split(' ')));
 
     const textNode = document.createElement('span');
     textNode.innerText = "if";
@@ -1870,7 +2281,7 @@
 
   boxes.IconizeFileBox = async (args, env) => {
     env.context = boxes;
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     const count = await interpretate(args[0], env);
     const opts = await core._getRules(args, env);
     if (opts.Label && opts.Label != 'None') {
@@ -1889,7 +2300,7 @@
     const type = await interpretate(args[0], env);
     const value = await interpretate(args[1], env);
 
-    env.element.classList.add(...('sm-controls gap-x-1 cursor-default rounded-md 0 py-1 px-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls gap-x-1 cursor-default py-1 px-2 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     env.element.style.backgroundColor = "#fff291";
     env.element.style.verticalAlign = "baseline";
 
@@ -1907,7 +2318,7 @@
 
   boxes.IconizeBox = async (args, env) => {
     env.context = boxes;
-    env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+    env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
     const count = await interpretate(args[0], env);
     const opts = await core._getRules(args, env);
 
@@ -2118,7 +2529,7 @@
 
   boxes.DateObjectTemplate = async (args, env) => {
       const element = document.createElement('span');
-      element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs'.split(' ')));
+      element.classList.add(...('sm-controls cursor-default py-1 pl-3 bg-gray-50 pr-2 text-left text-gray-500 wljs-card text-xs'.split(' ')));
       element.style.verticalAlign = "baseline";
       //env.element.classList.add('frame-box');
       env.context = boxes;
@@ -2164,6 +2575,10 @@
 
   boxes.GrayLevel = async (args, env) => {
     const r = Math.round((await interpretate(args[0], env)) * 255);
+    if (args.length > 1) {
+      const o = await interpretate(args[1], env);
+      return "rgb("+r+","+r+","+r+","+o+")";
+    }
     return "rgb("+r+","+r+","+r+")";
   }
 
@@ -2352,7 +2767,7 @@
       const editor = document.createElement('span');
       env.global.element = editor;
 
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' '))); 
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 text-left text-gray-500 bg-gray-50 wljs-card flex-row'.split(' '))); 
     
       env.element.style.display = "inline-flex";
       env.element.style.alignItems = "baseline";
@@ -2418,17 +2833,6 @@
       // object is of type Element 
      return Obj instanceof Element; 
  } 
-
-
-    core.URLDecode = async (args, env) => {
-      const str = await interpretate(args[0], env);
-      return decodeURIComponent(str)
-    }
-
-    core.URLEncode = async (args, env) => {
-      const str = await interpretate(args[0], env);
-      return encodeURIComponent(str)
-    }
 
     boxes.MixedMagnitude = core.List
     quantity.MixedUnit = core.List
@@ -2536,7 +2940,7 @@
       //console.log(args);
 
       env.element.style.verticalAlign = 'middle';
-      env.element.classList.add(...('sm-controls cursor-default rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 text-xs flex flex-row'.split(' ')));
+      env.element.classList.add(...('sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs flex flex-row'.split(' ')));
     
       let iconElement = document.createElement('span');
       iconElement.classList.add(...('text-gray-500 inline-block mt-auto mb-auto pr-1'.split(' ')));
@@ -2582,7 +2986,7 @@
 
     //console.warn({labels, values, init});
 
-    env.element.classList.add(...('subscript-tail sm-controls cursor-default rounded-md 0 py-1 px-1 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400 flex-row'.split(' ')));
+    env.element.classList.add(...('subscript-tail sm-controls cursor-default py-1 px-1 bg-gray-50 wljs-card text-left text-gray-500 flex-row'.split(' ')));
 
     const uid = uuidv4();
 

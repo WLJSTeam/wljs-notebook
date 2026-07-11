@@ -1,0 +1,95 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Webcam Heightfield: 90s Retro Future
+Turn a live webcam feed into a glowing 3D point field: each pixel's brightness becomes height, creating a retro-futuristic effect inspired by 90s computer-graphics scenes.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Webcam Heightfield: 90s Retro Future
+Turn a live webcam feed into a glowing 3D point field: each pixel's brightness becomes height, creating a retro-futuristic effect inspired by 90s computer-graphics scenes.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Open the default webcam and use it as the live video source.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Open the default webcam and use it as the live video source.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+cam = DeviceOpen["Camera"];
+cam["FrameRate"] = 60;
+cam 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Capture each frame as quickly as possible, convert it to grayscale, and map brightness values to 3D vertex heights with low-level `GraphicsComplex`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Capture each frame as quickly as possible, convert it to grayscale, and map brightness values to 3D vertex heights with low-level `GraphicsComplex`.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Refresh[Module[{img, length},
+  img = ImageData[
+    ImageResize[ColorConvert[DeviceRead[cam], "GrayScale"], 100],
+    "Real32"
+  ];
+  length = Length[img] Length[img[[1]]];
+  vertices = MapIndexed[Join[#2, {50.0 #1}]&, img, {2}];
+  vertices = Flatten[vertices, 1];
+
+  Graphics3D[GraphicsComplex[vertices, {
+    Red, PointSize[0.0003],
+    Point[Range[length]]
+  }], ViewProjection->"Perspective", ImageSize->Medium]
+], 1/60.0]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

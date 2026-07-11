@@ -94,9 +94,13 @@ server.loadObjects = (result) => {
             console.log('IE: calling our symbol...');
             //evaluate in the context
             const data = await interpretate(core[oName].data, env);
-        
+
             if (env.root && !env.novirtual) core[oName].instances[env.root.uid] = env.root; //if it was evaluated insdide the container, then, add it to the tracking list
             //if (env.hold) return ['JSObject', core[name].data];
+            if (args) if (args.length > 0) {
+              const key = await interpretate(args[0], env);
+              return data[key];
+            }
         
             return data;
           }
@@ -104,9 +108,12 @@ server.loadObjects = (result) => {
           core[oName].update = async (args, env) => {
             //evaluate in the context
             //console.log('IE: update was called...');
+            let aQ = false;
+
+            if (args) aQ = args.length > 0;
         
             //cache good for numerics
-            if (env.useCache) {
+            if (env.useCache && !aQ) {
               if (!core[oName].cached || core[oName].currentData != core[oName].data) {
                 core[oName].cached = await interpretate(core[oName].data, env);
                 core[oName].currentData = core[oName].data; //just copy the reference
@@ -117,6 +124,10 @@ server.loadObjects = (result) => {
             }
         
             const data = await interpretate(core[oName].data, env);
+            if (aQ) {
+              const key = await interpretate(args[0], env);
+              return data[key];
+            }
             //if (env.hold) return ['JSObject', data];
             return data;
           }  
@@ -222,11 +233,11 @@ interpretate.anonymous = async (d, org) => {
     console.log('Anonimous symbol: ' + JSON.stringify(d));  
   
     let name;
+    let associationQ = false;
     //check it is a plain symbol
     if (d instanceof Array) {
-      console.error(d);
-      //console.error(jsonStringifyRecursive(org.global.stack));
-      throw('unknown WL expression. Error at '+d[0]);
+      name = d[0];
+      associationQ = true;
     } else {
       name = d;   //symbol
     }
@@ -245,7 +256,13 @@ interpretate.anonymous = async (d, org) => {
     core[name] = async (args, env) => {
       console.log('IE: calling our symbol...');
       //evaluate in the context
+      // 
       const data = await interpretate(core[name].data, env);
+
+      if (args) if (args.length > 0) {
+          const key = await interpretate(args[0], env);
+          return data[key];
+      }
   
       if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; //if it was evaluated insdide the container, then, add it to the tracking list
       //if (env.hold) return ['JSObject', core[name].data];
@@ -256,6 +273,11 @@ interpretate.anonymous = async (d, org) => {
     core[name].update = async (args, env) => {
       //evaluate in the context
       //console.log('IE: update was called...');
+      if (args) if (args.length > 0) {
+          const data = await interpretate(core[element].data, env);
+          const key = await interpretate(args[0], env);
+          return data[key];
+      }
   
       //cache good for numerics
       if (env.useCache) {

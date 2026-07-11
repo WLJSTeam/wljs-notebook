@@ -9,6 +9,8 @@ import { isCursorInside } from "./utils";
 
 import { Mma } from "./../mma-uncompress/src/mma";
 
+import { processGreeks } from "../sugar/misc";
+
 import { BallancedMatchDecorator2, matchArguments } from "./matcher";
 
 import { keymap } from "@codemirror/view";
@@ -159,24 +161,25 @@ class EditorWidget {
           self.editor = {
             destroy: () => {
               console.log('Nothing to destroy, this is just a text field.');
-            }
+            },
+            stringOnly: true
           };
           const aa = document.createElement('span');
-          this.aa;
+          aa.classList.add('sm-controls');
           aa.onkeydown = function(e) {
             // User hits enter key and is not holding shift
             if (e.keyCode === 13) {
                  e.preventDefault()
              }
          };
-          aa.contentEditable = "plaintext-only";
-          aa.innerText = self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset);
-          aa.addEventListener('input', console.log);
-          aa.addEventListener("input", () => {
+          //aa.contentEditable = "plaintext-only";
+          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
+          //aa.addEventListener('input', console.log);
+          /*aa.addEventListener("input", () => {
             console.log('Update');
             console.log(aa.innerText);
             this.applyChanges(aa.innerText);
-          });  
+            });  */
 
           env.global.element.appendChild(aa);
 
@@ -193,21 +196,25 @@ class EditorWidget {
           parent: env.global.element,
           update: (upd) => this.applyChanges(upd),
           eval: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.eval();
           },
           evalNext: () => {
+            if (env.global.disableCellSelecting) return;
             view.viewState.state.config.evalNext();
           },
           extensions: [
             keymap.of([
               { key: "ArrowLeft", run: function (editor, key) {  
+                if (env.global.disableCellSelecting) return;
                 if (editor.state.selection.main.head == 0) {
                   view.dispatch({selection: {anchor: self.visibleValue.pos}});
                   view.focus();
                   return;
                 }
               } }, 
-              { key: "ArrowRight", run: function (editor, key) {  
+              { key: "ArrowRight", run: function (editor, key) { 
+               if (env.global.disableCellSelecting) return; 
                 if (editor.state.selection.main.head === editor.state.doc.length) {
               
                   view.dispatch({selection: {anchor: self.visibleValue.pos + self.visibleValue.length}});
@@ -221,9 +228,15 @@ class EditorWidget {
 
             EditorView.domEventHandlers({
               blur: (ev, v) => {
+                if (env.global.disableCellSelecting) return;
                 el.style.backgroundColor = '';
               },
               focus: (ev,v) => {
+                
+                if (env.global.disableCellSelecting) {
+                  v.contentDOM.setAttribute("contenteditable","false");
+                  return;
+                }
                 const hue = Math.floor(Math.random() * 360); // Random hue between 0 and 359
                 el.style.backgroundColor = `hsl(${hue}, 100%, 90%)`;
               }
@@ -337,6 +350,9 @@ class Widget extends WidgetType {
 
   skipPosition(pos, oldPos, selected) {
     if (oldPos.from != oldPos.to || selected) return pos;
+    const editor = this.DOMElement.EditorWidget.editor;
+    if (editor.stringOnly) return pos;
+    
     //this.DOMElement.EditorWidget.wantedPosition = pos;
     if (pos.from - oldPos.from > 0) {
       //this.DOMElement.EditorWidget.topEditor.dispatch()
@@ -344,7 +360,6 @@ class Widget extends WidgetType {
       this.DOMElement.EditorWidget.editor.focus();
       //this.DOMElement.EditorWidget.topEditor.focus();
     } else {
-      const editor = this.DOMElement.EditorWidget.editor;
       editor.dispatch({selection: {anchor: editor.state.doc.length}});
       editor.focus();
       //this.DOMElement.EditorWidget.bottomEditor.focus();

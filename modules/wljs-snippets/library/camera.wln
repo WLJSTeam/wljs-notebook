@@ -1,167 +1,286 @@
-<|"Notebook" -> <|"Controller" -> "ddd30904-2915-4a7e-ad25-d999a0a05eca", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$236], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "30b487f4-4d2e-46f3-90de-f8812ac43d85", "Objects" -> <||>, 
-   "Path" -> "/applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/camer\
-a.wln", "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Take a picture", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$230]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Take a picture\nCapture camera image", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9e8627de-0d56-446d-b2bb-53b640799546", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> "# Take a picture\nCapture camera image", 
-    "Display" -> "markdown", "Hash" -> 
-     "8ec00c0f-3e2d-4736-ae6c-65bf01644558", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "583e93cc-38b1-4abc-9ac8-9e6c7ce7e726", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "eba98177-11ff-44c4-8219-48de016889ba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> ".wlx\ncreateCanvas[self_, parent_] := With[{CanvasUId = \
-CreateUUID[], win = CurrentWindow[]},\n\nEventHandler[win, {\"Closed\" -> \
-Function[Null,\n  FrontSubmit[jswebcam`cam[\"Stop\", CanvasUId], \"Window\" \
--> win];\n  NotebookDelete[self];\n]}];\n\nEventHandler[CanvasUId, {\n  \
-\"Capture\" -> Function[Null,\n    \
-Then[FrontFetchAsync[jswebcam`cam[\"Capture\", CanvasUId], \
-\"Format\"->\"JSON\", \"Window\" -> win],\n      Function[raw,\n        \
-With[{img = Partition[Take[#, 3]&/@ Partition[raw, 4], 320] // NumericArray \
-// Image},\n          NotebookWrite[NotebookLocationSpecifier[parent, \
-\"After\"], ExpressionCell[img, \"Input\"]];\n          \
-FrontSubmit[jswebcam`cam[\"Stop\", CanvasUId], \"Window\" -> win];\n          \
-NotebookDelete[self];\n        ]\n      ]\n    ]\n  ],\n\n  \"Cancel\" -> \
-Function[Null,\n    FrontSubmit[jswebcam`cam[\"Stop\", CanvasUId], \"Window\" \
--> win];\n    NotebookDelete[self];\n  ]\n}];\n\n<div class=\"flex flex-1 \
-flex-row p-2\" style=\"width: fit-content\">\n      <canvas \
-id=\"{CanvasUId}\" style=\"display: inline-block\" \
-class=\"rounded\"></canvas>\n      <dl class=\"ml-4 flex flex-grow flex-col \
-justify-between\">\n        <dd class=\"flex flex-col gap-y-2\">\n          \
-<button id=\"{CanvasUId}-capture\" class=\"inline-flex items-center \
-rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 \
-ring-inset ring-green-600/20\">Capture</button>\n          <button \
-id=\"{CanvasUId}-cancel\" class=\"inline-flex items-center rounded-full \
-bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset \
-ring-red-600/20\">Cancel</button>          \n        </dd>\n      \
-</dl>\n<script type=\"module\">\n/* =========================\n   Constants & \
-DOM references\n   ========================= */\nconst uid = \
-'<CanvasUId/>';\nconst canvas = document.getElementById(uid);\nconst ctx = \
-canvas.getContext('2d');\n\nconst video = \
-document.createElement('video');\nvideo.playsInline = true;   // iOS \
-safety\nvideo.muted = true;\n\n/* =========================\n   State\n   \
-========================= */\nconst webcam = {\n  stream: null,\n  video,\n  \
-ctx,\n  rafId: null\n};\n\ncanvas.width = 320;\ncanvas.height = 240;\n\n/* \
-=========================\n   Camera setup\n   ========================= \
-*/\nasync function startCamera() {\n  if \
-(!navigator.mediaDevices?.getUserMedia) {\n    alert('getUserMedia is not \
-supported in this browser.');\n    return;\n  }\n\n  try {\n    webcam.stream \
-= await navigator.mediaDevices.getUserMedia({ video: true });\n    \
-video.srcObject = webcam.stream;\n    await video.play();\n    drawLoop();\n  \
-} catch (err) {\n    console.error(err);\n    alert('Error accessing webcam \
-(HTTPS required).');\n  }\n}\n\nfunction drawLoop() {\n  webcam.rafId = \
-requestAnimationFrame(drawLoop);\n  ctx.drawImage(video, 0, 0, canvas.width, \
-canvas.height);\n}\n\n/* =========================\n   Cleanup\n   \
-========================= */\nfunction stopCamera() {\n  if (webcam.rafId) \
-{\n    cancelAnimationFrame(webcam.rafId);\n    webcam.rafId = null;\n  }\n\n \
- if (webcam.stream) {\n    webcam.stream.getTracks().forEach(t => \
-t.stop());\n    webcam.stream = null;\n  }\n\n  video.srcObject = \
-null;\n}\n\n/* =========================\n   UI events\n   \
-========================= */\ndocument.getElementById(`${uid}-capture`)\n  \
-.addEventListener('click', () =>\n    server.kernel.emitt(uid, 'True', \
-'Capture')\n  );\n\ndocument.getElementById(`${uid}-cancel`)\n  \
-.addEventListener('click', () =>\n    server.kernel.emitt(uid, 'True', \
-'Cancel')\n  );\n\n/* =========================\n   Kernel bridge\n   \
-========================= */\ncore['jswebcam`cam'] ??= async (args, env) => \
-{\n  const op = await interpretate(args[0], env);\n  return \
-core['jswebcam`cam'][op](args.slice(1), \
-env);\n};\n\ncore['jswebcam`cam'].cached ??= \
-{};\ncore['jswebcam`cam'].cached[uid] = webcam;\n\ncore['jswebcam`cam'].Stop \
-= async (args, env) => {\n  stopCamera();\n};\n\ncore['jswebcam`cam'].Capture \
-= async () => {\n  return Array.from(\n    ctx.getImageData(0, 0, \
-canvas.width, canvas.height).data\n  );\n};\n\n/* =========================\n \
-  Init\n   ========================= */\nstartCamera();\n</script>\n\n    \
-</div>\n]", "Display" -> "codemirror", 
-    "Hash" -> "65271020-683e-48cf-a15d-cc7ca194cc7e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> "With[{cell = Unique[], parent = Unique[]}, \n  parent = \
-NotebookFocusedCell[];\n  \n  cell = \
-NotebookWrite[NotebookLocationSpecifier[parent, \"After\"], \
-Cell[createCanvas[cell, parent], \"Output\", \"WLX\"]];\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7ee9e8ad-fd09-464e-a0dd-85015e5b8366", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> ".md\n__template__", "Display" -> "codemirror", 
-    "Hash" -> "3ad225c9-a5d1-45ef-93ac-242b70a9a42b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> "__template__", "Display" -> "markdown", 
-    "Hash" -> "e1c064b8-9588-4e64-88a3-bdfa00abe88f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\"><svg class=\"h-4 w-5 flex-none text-gray-900  \
-dark:text-gray-400 text-opacity-40\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M12 \
-23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 \
-1 12C1 18.0751 5.92487 23 12 23ZM11.1662 17L13.4885 20.8706C15.9801 20.4555 \
-18.1251 19.0162 19.4762 17H11.1662ZM6.87657 13.7379L11.2091 20.9589C8.47823 \
-20.7209 6.09696 19.2624 4.61389 17.1319L6.87657 13.7379ZM7.63148 \
-9H3.51936C3.18745 9.93827 3.00683 10.948 3.00683 12C3.00683 13.0929 3.20176 \
-14.1402 3.55875 15.1091L7.63148 9ZM20.4806 15H16.3143L20.3393 8.62714C20.761 \
-9.6687 20.9932 10.8072 20.9932 12C20.9932 13.052 20.8126 14.0617 20.4806 \
-15ZM12.8338 7H4.52377C5.87486 4.9838 8.01991 3.54446 10.5115 3.12945L12.8338 \
-7ZM12.7909 3.04113L17.0347 10.1141L19.2257 6.64495C17.7345 4.6361 15.4254 \
-3.27066 12.7909 3.04113ZM8.17925 12L10.0542 9H13.9458L15.8208 12L13.9458 \
-15H10.0542L8.17925 12Z\" fill=\"currentColor\"/>\n</svg>\n              \n    \
-          <span class=\"ml-3 flex-auto truncate\"><Title/></span><span \
-class=\"ml-3 flex-none text-xs font-semibold text-gray-500\">\n               \
- <kbd class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-        <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>                 \
- \n                </button>\n              </span>\n    </li>    \
-\n];\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null};\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5af021b7-563f-4401-83c8-9d598a6269b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "dd855dba-32de-4d59-b843-a85ed0ac8192"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Take a picture
+Capture camera image
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Take a picture
+Capture camera image
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+createCanvas[self_, parent_] := With[{CanvasUId = CreateUUID[], win = CurrentWindow[]},
+
+EventHandler[win, {"Closed" -> Function[Null,
+  FrontSubmit[jswebcam`cam["Stop", CanvasUId], "Window" -> win];
+  NotebookDelete[self];
+]}];
+
+EventHandler[CanvasUId, {
+  "Capture" -> Function[Null,
+    Then[FrontFetchAsync[jswebcam`cam["Capture", CanvasUId], "Format"->"JSON", "Window" -> win],
+      Function[raw,
+        With[{img = Partition[Take[#, 3]&/@ Partition[raw, 4], 320] // NumericArray // Image},
+          NotebookWrite[NotebookLocationSpecifier[parent, "After"], ExpressionCell[img, "Input"]];
+          FrontSubmit[jswebcam`cam["Stop", CanvasUId], "Window" -> win];
+          NotebookDelete[self];
+        ]
+      ]
+    ]
+  ],
+
+  "Cancel" -> Function[Null,
+    FrontSubmit[jswebcam`cam["Stop", CanvasUId], "Window" -> win];
+    NotebookDelete[self];
+  ]
+}];
+
+<div class="flex flex-1 flex-row p-2" style="width: fit-content">
+      <canvas id="{CanvasUId}" style="display: inline-block" class="rounded"></canvas>
+      <dl class="ml-4 flex flex-grow flex-col justify-between">
+        <dd class="flex flex-col gap-y-2">
+          <button id="{CanvasUId}-capture" class="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Capture</button>
+          <button id="{CanvasUId}-cancel" class="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Cancel</button>          
+        </dd>
+      </dl>
+<script type="module">
+/* =========================
+   Constants & DOM references
+   ========================= */
+const uid = '<CanvasUId/>';
+const canvas = document.getElementById(uid);
+const ctx = canvas.getContext('2d');
+
+const video = document.createElement('video');
+video.playsInline = true;   // iOS safety
+video.muted = true;
+
+/* =========================
+   State
+   ========================= */
+const webcam = {
+  stream: null,
+  video,
+  ctx,
+  rafId: null
+};
+
+canvas.width = 320;
+canvas.height = 240;
+
+/* =========================
+   Camera setup
+   ========================= */
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    alert('getUserMedia is not supported in this browser.');
+    return;
+  }
+
+  try {
+    webcam.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    video.srcObject = webcam.stream;
+    await video.play();
+    drawLoop();
+  } catch (err) {
+    console.error(err);
+    alert('Error accessing webcam (HTTPS required).');
+  }
+}
+
+function drawLoop() {
+  webcam.rafId = requestAnimationFrame(drawLoop);
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+}
+
+/* =========================
+   Cleanup
+   ========================= */
+function stopCamera() {
+  if (webcam.rafId) {
+    cancelAnimationFrame(webcam.rafId);
+    webcam.rafId = null;
+  }
+
+  if (webcam.stream) {
+    webcam.stream.getTracks().forEach(t => t.stop());
+    webcam.stream = null;
+  }
+
+  video.srcObject = null;
+}
+
+/* =========================
+   UI events
+   ========================= */
+document.getElementById(`${uid}-capture`)
+  .addEventListener('click', () =>
+    server.kernel.emitt(uid, 'True', 'Capture')
+  );
+
+document.getElementById(`${uid}-cancel`)
+  .addEventListener('click', () =>
+    server.kernel.emitt(uid, 'True', 'Cancel')
+  );
+
+/* =========================
+   Kernel bridge
+   ========================= */
+core['jswebcam`cam'] ??= async (args, env) => {
+  const op = await interpretate(args[0], env);
+  return core['jswebcam`cam'][op](args.slice(1), env);
+};
+
+core['jswebcam`cam'].cached ??= {};
+core['jswebcam`cam'].cached[uid] = webcam;
+
+core['jswebcam`cam'].Stop = async (args, env) => {
+  stopCamera();
+};
+
+core['jswebcam`cam'].Capture = async () => {
+  return Array.from(
+    ctx.getImageData(0, 0, canvas.width, canvas.height).data
+  );
+};
+
+/* =========================
+   Init
+   ========================= */
+startCamera();
+</script>
+
+    </div>
+]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{cell = Unique[], parent = Unique[]}, 
+  parent = NotebookFocusedCell[];
+  
+  cell = NotebookWrite[NotebookLocationSpecifier[parent, "After"], Cell[createCanvas[cell, parent], "Output", "WLX"]];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__template__
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25"><svg class="h-4 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23ZM11.1662 17L13.4885 20.8706C15.9801 20.4555 18.1251 19.0162 19.4762 17H11.1662ZM6.87657 13.7379L11.2091 20.9589C8.47823 20.7209 6.09696 19.2624 4.61389 17.1319L6.87657 13.7379ZM7.63148 9H3.51936C3.18745 9.93827 3.00683 10.948 3.00683 12C3.00683 13.0929 3.20176 14.1402 3.55875 15.1091L7.63148 9ZM20.4806 15H16.3143L20.3393 8.62714C20.761 9.6687 20.9932 10.8072 20.9932 12C20.9932 13.052 20.8126 14.0617 20.4806 15ZM12.8338 7H4.52377C5.87486 4.9838 8.01991 3.54446 10.5115 3.12945L12.8338 7ZM12.7909 3.04113L17.0347 10.1141L19.2257 6.64495C17.7345 4.6361 15.4254 3.27066 12.7909 3.04113ZM8.17925 12L10.0542 9H13.9458L15.8208 12L13.9458 15H10.0542L8.17925 12Z" fill="currentColor"/>
+</svg>
+              
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+];
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null};
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

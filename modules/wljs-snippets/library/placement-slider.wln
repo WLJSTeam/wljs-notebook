@@ -1,201 +1,259 @@
-<|"Notebook" -> <|"Controller" -> "cb3c42c5-114b-4d52-8065-50862598aa4a", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$286], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "7de2730e-d94a-4456-8ee5-bd393873b0dc", "Objects" -> <||>, 
-   "Path" -> "/applications/WLJS \
-Notebook.app/Contents/Resources/app/wljs_packages/wljs-snippets/library/place\
-ment-slider.wln", "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Inline navigation gizmo slider", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$274]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Usage", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$276]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Inline navigation gizmo slider\nA helper \
-tool for manipulation 1D parameters", "Display" -> "codemirror", 
-    "Hash" -> "c2bc702d-9b0b-4f5c-adf0-c58a12fbdd8a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "# Inline navigation gizmo slider\nA helper tool for \
-manipulation 1D parameters", "Display" -> "markdown", 
-    "Hash" -> "57eb5858-8923-4758-af56-57bcb92fc031", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\n## Usage\n1. Select a number inside a graphics primitive \
-(for example)", "Display" -> "codemirror", 
-    "Hash" -> "73330996-24e3-43e7-b951-0e1896509299", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> 
-     "## Usage\n1. Select a number inside a graphics primitive (for example)"\
-, "Display" -> "markdown", "Hash" -> "9a4ec55b-fadc-4251-8039-4a462a5d6c73", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\n2. Call this snippet from the palette menu using \
-<kbd>Cmd/Ctrl + P</kbd>\n3. A slider will appear on the selected place\n4. \
-Evaluate this cell\n5. Manipualte the parameter\n6. Once you are done, click \
-on a mark symbol", "Display" -> "codemirror", 
-    "Hash" -> "a95738e3-4ad0-4668-a7f7-be21ecfdb38b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "2. Call this snippet from the palette menu using <kbd \
->Cmd/Ctrl + P</kbd>\n3. A slider will appear on the selected place\n4. \
-Evaluate this cell\n5. Manipualte the parameter\n6. Once you are done, click \
-on a mark symbol", "Display" -> "markdown", 
-    "Hash" -> "3b7bb7f4-0c70-4b90-8b16-ade3c931f21e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\n__source code__", "Display" -> "codemirror", 
-    "Hash" -> "808ab8b1-a537-4619-a9f3-1b2d1c85b726", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "__source code__", "Display" -> "markdown", 
-    "Hash" -> "5171c8d1-1732-4e5d-929c-046f6e8d7969", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\nTemplate of a widget", "Display" -> "codemirror", 
-    "Hash" -> "f11fc574-24a0-4abc-9df1-1818fe5163b8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "Template of a widget", "Display" -> "markdown", 
-    "Hash" -> "6a9905a7-cbe7-4ba8-b002-c79d4279474c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".wlx\ngizmo`SliderComponent;\ngizmo`SliderComponent /: \
-MakeBoxes[gizmo`SliderComponent[sym_, object_, EventButton_, viewBoxEvent_], \
-StandardForm] := With[{UId = CreateUUID[]}, Module[{},\n\n  With[{Template = \
-\n<span style=\"top: -0.25rem\" class=\"sm-controls flex relative \
-cursor-default rounded-md 0 pl-3 py-2 pr-2 text-left text-gray-500  \
-focus:outline-none focus:ring-2 focus:ring-teal-600 sm:text-xs sm:leading-6 \
-bg-gray-100 border-1 border-gray-800\">\n    <div class=\"relative flex \
-flex-grow items-stretch\" id=\"{UId}\">\n\n    </div>\n    <button \
-id=\"{UId}-button\" type=\"button\" class=\"relative -ml-px inline-flex \
-items-center px-2 text-sm hover:bg-gray-50\">\n      <svg class=\"h-5 w-5 \
-text-gray-500\" viewBox=\"0 0 20 20\" fill=\"currentColor\" \
-aria-hidden=\"true\">\n        <svg fill=\"currentColor\" \
-stroke-width=\"1.5\" class=\"w-5 h-5\" viewBox=\"0 0 24 24\"><path \
-d=\"M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21Z\
-M8,11.5l3,3,5-5\" fill=\"none\" stroke=\"currentColor\"></path></svg>\n      \
-</svg>\n    </button>\n\n    <script type=\"module\">\n      const b = \
-document.getElementById('<UId/>-button');\n\n      \
-b.addEventListener('click', () => {\n        \
-server.kernel.io.fire('<EventButton/>', true);\n      });\n    </script>\n  \
-</span>\n  },\n    With[{w = HTMLView[Template, Epilog->{AttachDOM[UId], \
-object}]},\n      ViewBox[Offload[sym], w // CreateFrontEndObject, \
-\"Event\"->viewBoxEvent]\n    ]\n  ]\n] \
-]\n\nSetAttributes[gizmo`SliderComponent, HoldFirst];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "637840ea-f249-4ce7-999d-5c2c3dc332c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\nLogic of a widget", "Display" -> "codemirror", 
-    "Hash" -> "13e0770a-32b5-4db6-bb2a-058d277596ca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "Logic of a widget", "Display" -> "markdown", 
-    "Hash" -> "a85663df-7c1e-495e-b870-fcd2483e5eee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "Module[{init = 1.0, input = \
-FrontFetch[FrontEditorSelected[\"Get\"]], result},\n  If[StringLength[input] \
-=== 0, Null,\n    init = ToExpression[input, InputForm];\n    \
-If[!NumericQ[init], EchoLabel[\"Warning\"][\"Selected expression must be a \
-number\"]; Return[$Failed]];\n  ];\n\n  With[{eventButton = CreateUUID[], \
-viewBoxEvent = CreateUUID[], min = 0.4 init, max = 1.6 \
-init},\n\tLeakyModule[{System`variable = init},\n\n      \
-EventHandler[viewBoxEvent, {\"Mounted\" -> Function[assoc,\n        \
-EventHandler[eventButton, Function[Null,\n          \
-FrontSubmit[ViewBox`OuterExpression[ToString[System`variable, InputForm]], \
-FrontInstanceReference[assoc[\"Instance\"]]];\n          Notify[\"Done!\", \
-\"Topic\"->\"Gizmo\"];\n        ]];        \n      ]}];\n      \n        \
-With[{slider = InputRange[min, max, (max-min)/60.0, init]},\n          \
-EventHandler[slider, Function[value, System`variable = value]];\n          \n \
-         With[{wrapper = gizmo`SliderComponent[System`variable, \
-slider[[1]][\"View\"], eventButton, viewBoxEvent]},\n            \
-FrontSubmit[FrontEditorSelected[\"Set\", ToString[wrapper, StandardForm]]];\n \
-         ]\n        ]\n\t]\n  ];\n    \n \n];", "Display" -> "codemirror", 
-    "Hash" -> "157b6375-fc09-4cc4-b381-c5af93267667", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> ".md\n__icon snippet template__", "Display" -> "codemirror", 
-    "Hash" -> "9e3b325f-8be2-41f9-ba7b-821cec9e8451", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "__icon snippet template__", "Display" -> "markdown", 
-    "Hash" -> "b210e856-dcc2-454d-9b1f-fa071193761a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>, 
-   <|"Data" -> "icon.wlx\nComponent[OptionsPattern[]] := With[{Title = \
-OptionValue[\"Title\"], Kbd = OptionValue[\"Shortcut\"], UTag = \
-OptionValue[\"Tag\"], Btn = OptionValue[\"Button\"]},\n    <li \
-tabindex=\"-1\" tag=\"{UTag}\" class=\"nooline rounded-sm group flex \
-cursor-default select-none items-center rounded-md px-2 py-1 \
-focus:bg-sys-25\">\n              <svg class=\"h-5 w-5 flex-none \
-text-gray-900  dark:text-gray-400 text-opacity-40\" fill=\"currentColor\" \
-viewBox=\"-2 0 29 24\"><path d=\"M16.1924 5.65683C16.5829 5.2663 16.5829 \
-4.63314 16.1924 4.24261L13.364 1.41419C12.5829 0.633139 11.3166 0.633137 \
-10.5355 1.41419L7.70711 4.24261C7.31658 4.63314 7.31658 5.2663 7.70711 \
-5.65683C8.09763 6.04735 8.73079 6.04735 9.12132 5.65683L11 \
-3.77812V11.0503H3.72784L5.60655 9.17157C5.99707 8.78104 5.99707 8.14788 \
-5.60655 7.75735C5.21602 7.36683 4.58286 7.36683 4.19234 7.75735L1.36391 \
-10.5858C0.582863 11.3668 0.582859 12.6332 1.36391 13.4142L4.19234 \
-16.2426C4.58286 16.6332 5.21603 16.6332 5.60655 16.2426C5.99707 15.8521 \
-5.99707 15.219 5.60655 14.8284L3.8284 13.0503H11V20.2219L9.12132 \
-18.3432C8.73079 17.9526 8.09763 17.9526 7.7071 18.3432C7.31658 18.7337 \
-7.31658 19.3669 7.7071 19.7574L10.5355 22.5858C11.3166 23.3669 12.5829 \
-23.3669 13.364 22.5858L16.1924 19.7574C16.5829 19.3669 16.5829 18.7337 \
-16.1924 18.3432C15.8019 17.9526 15.1687 17.9526 14.7782 18.3432L13 \
-20.1213V13.0503H20.071L18.2929 14.8284C17.9024 15.219 17.9024 15.8521 18.2929 \
-16.2426C18.6834 16.6332 19.3166 16.6332 19.7071 16.2426L22.5355 \
-13.4142C23.3166 12.6332 23.3166 11.3668 22.5355 10.5858L19.7071 \
-7.75735C19.3166 7.36683 18.6834 7.36683 18.2929 7.75735C17.9024 8.14788 \
-17.9024 8.78104 18.2929 9.17157L20.1716 11.0503H13V3.87867L14.7782 \
-5.65683C15.1687 6.04735 15.8019 6.04735 16.1924 5.65683Z\" \
-fill=\"currentColor\"></path></svg>\n              <span class=\"ml-3 \
-flex-auto truncate\"><Title/></span><span class=\"ml-3 flex-none text-xs \
-font-semibold text-gray-500\">\n                <kbd \
-class=\"font-sans\"><Kbd/></kbd>\n                <button class=\"p-0.5 \
-rounded hover:bg-gray-100 dark:hover:bg-gray-200\" btag=\"{Btn}\">\n          \
-        <svg class=\"w-4 h-4 text-gray-400\" viewBox=\"0 0 24 24\" \
-fill=\"none\">\n                    <path fill-rule=\"evenodd\" \
-clip-rule=\"evenodd\" d=\"M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 \
-17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 \
-6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 \
-1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 \
-22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 \
-10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 \
-9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 \
-7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 \
-11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 \
-11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 \
-11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 \
-12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 \
-8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 \
-16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 \
-17 12 17Z\" fill=\"currentColor\"/>\n                  </svg>                 \
- \n                </button>\n              </span>\n    </li>    \
-\n]\n\nOptions[Component] = {\"Title\"->\"Example\", \"Shortcut\"->\"\", \
-\"Tag\"->\"generic\", \"Button\"->Null}\n\nComponent", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e56eacc6-1888-4921-8687-cc312d0cb3e4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "8260feb1-317c-4c34-b21b-7987e6b72795"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Inline navigation gizmo slider
+A helper tool for manipulation 1D parameters
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Inline navigation gizmo slider
+A helper tool for manipulation 1D parameters
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Usage
+1. Select a number inside a graphics primitive (for example)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Usage
+1. Select a number inside a graphics primitive (for example)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+2. Call this snippet from the palette menu using <kbd>Cmd/Ctrl + P</kbd>
+3. A slider will appear on the selected place
+4. Evaluate this cell
+5. Manipualte the parameter
+6. Once you are done, click on a mark symbol
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+2. Call this snippet from the palette menu using <kbd >Cmd/Ctrl + P</kbd>
+3. A slider will appear on the selected place
+4. Evaluate this cell
+5. Manipualte the parameter
+6. Once you are done, click on a mark symbol
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__source code__
+
+:::warning
+This is a legacy snippet. Please, do not use methods from here. It will be rewritten in the near future
+:::
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Template of a widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Template of a widget
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+gizmo`SliderComponent;
+gizmo`SliderComponent /: MakeBoxes[gizmo`SliderComponent[sym_, object_, EventButton_, viewBoxEvent_], StandardForm] := With[{UId = CreateUUID[]}, Module[{},
+
+  With[{Template = 
+<span style="top: -0.25rem" class="sm-controls flex relative cursor-default rounded-md 0 pl-3 py-2 pr-2 text-left text-gray-500  focus:outline-none focus:ring-2 focus:ring-teal-600 sm:text-xs sm:leading-6 bg-gray-100 border-1 border-gray-800">
+    <div class="relative flex flex-grow items-stretch" id="{UId}">
+
+    </div>
+    <button id="{UId}-button" type="button" class="relative -ml-px inline-flex items-center px-2 text-sm hover:bg-gray-50">
+      <svg class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <svg fill="currentColor" stroke-width="1.5" class="w-5 h-5" viewBox="0 0 24 24"><path d="M12,21h0a9,9,0,0,1-9-9H3a9,9,0,0,1,9-9h0a9,9,0,0,1,9,9h0A9,9,0,0,1,12,21ZM8,11.5l3,3,5-5" fill="none" stroke="currentColor"></path></svg>
+      </svg>
+    </button>
+
+    <script type="module">
+      const b = document.getElementById('<UId/>-button');
+
+      b.addEventListener('click', () => {
+        server.kernel.io.fire('<EventButton/>', true);
+      });
+    </script>
+  </span>
+  },
+    With[{w = HTMLView[Template, Epilog->{AttachDOM[UId], object}]},
+      ViewBox[Offload[sym], w // CreateFrontEndObject, "Event"->viewBoxEvent]
+    ]
+  ]
+] ]
+
+SetAttributes[gizmo`SliderComponent, HoldFirst];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Logic of a widget
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Logic of a widget
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{init = 1.0, input = FrontFetch[FrontEditorSelected["Get"]], result},
+  If[StringLength[input] === 0, Null,
+    init = ToExpression[input, InputForm];
+    If[!NumericQ[init], EchoLabel["Warning"]["Selected expression must be a number"]; Return[$Failed]];
+  ];
+
+  With[{eventButton = CreateUUID[], viewBoxEvent = CreateUUID[], min = 0.4 init, max = 1.6 init},
+	LeakyModule[{System`variable = init},
+
+      EventHandler[viewBoxEvent, {"Mounted" -> Function[assoc,
+        EventHandler[eventButton, Function[Null,
+          FrontSubmit[ViewBox`OuterExpression[ToString[System`variable, InputForm]], FrontInstanceReference[assoc["Instance"]]];
+          Notify["Done!", "Topic"->"Gizmo"];
+        ]];        
+      ]}];
+      
+        With[{slider = InputRange[min, max, (max-min)/60.0, init]},
+          EventHandler[slider, Function[value, System`variable = value]];
+          
+          With[{wrapper = gizmo`SliderComponent[System`variable, slider[[1]]["View"], eventButton, viewBoxEvent]},
+            FrontSubmit[FrontEditorSelected["Set", ToString[wrapper, StandardForm]]];
+          ]
+        ]
+	]
+  ];
+    
+ 
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__icon snippet template__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__icon snippet template__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+icon.wlx
+Component[OptionsPattern[]] := With[{Title = OptionValue["Title"], Kbd = OptionValue["Shortcut"], UTag = OptionValue["Tag"], Btn = OptionValue["Button"]},
+    <li tabindex="-1" tag="{UTag}" class="nooline rounded-sm group flex cursor-default select-none items-center rounded-md px-2 py-1 focus:bg-sys-25">
+              <svg class="h-5 w-5 flex-none text-gray-900  dark:text-gray-400 text-opacity-40" fill="currentColor" viewBox="-2 0 29 24"><path d="M16.1924 5.65683C16.5829 5.2663 16.5829 4.63314 16.1924 4.24261L13.364 1.41419C12.5829 0.633139 11.3166 0.633137 10.5355 1.41419L7.70711 4.24261C7.31658 4.63314 7.31658 5.2663 7.70711 5.65683C8.09763 6.04735 8.73079 6.04735 9.12132 5.65683L11 3.77812V11.0503H3.72784L5.60655 9.17157C5.99707 8.78104 5.99707 8.14788 5.60655 7.75735C5.21602 7.36683 4.58286 7.36683 4.19234 7.75735L1.36391 10.5858C0.582863 11.3668 0.582859 12.6332 1.36391 13.4142L4.19234 16.2426C4.58286 16.6332 5.21603 16.6332 5.60655 16.2426C5.99707 15.8521 5.99707 15.219 5.60655 14.8284L3.8284 13.0503H11V20.2219L9.12132 18.3432C8.73079 17.9526 8.09763 17.9526 7.7071 18.3432C7.31658 18.7337 7.31658 19.3669 7.7071 19.7574L10.5355 22.5858C11.3166 23.3669 12.5829 23.3669 13.364 22.5858L16.1924 19.7574C16.5829 19.3669 16.5829 18.7337 16.1924 18.3432C15.8019 17.9526 15.1687 17.9526 14.7782 18.3432L13 20.1213V13.0503H20.071L18.2929 14.8284C17.9024 15.219 17.9024 15.8521 18.2929 16.2426C18.6834 16.6332 19.3166 16.6332 19.7071 16.2426L22.5355 13.4142C23.3166 12.6332 23.3166 11.3668 22.5355 10.5858L19.7071 7.75735C19.3166 7.36683 18.6834 7.36683 18.2929 7.75735C17.9024 8.14788 17.9024 8.78104 18.2929 9.17157L20.1716 11.0503H13V3.87867L14.7782 5.65683C15.1687 6.04735 15.8019 6.04735 16.1924 5.65683Z" fill="currentColor"></path></svg>
+              <span class="ml-3 flex-auto truncate"><Title/></span><span class="ml-3 flex-none text-xs font-semibold text-gray-500">
+                <kbd class="font-sans"><Kbd/></kbd>
+                <button class="p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-200" btag="{Btn}">
+                  <svg class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75ZM1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.83834 14.1056 10.6796 13.3353 11.1354C13.1385 11.2518 12.9761 11.3789 12.8703 11.5036C12.7675 11.6246 12.75 11.7036 12.75 11.75V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V11.75C11.25 11.2441 11.4715 10.8336 11.7266 10.533C11.9786 10.236 12.2929 10.0092 12.5715 9.84439C12.9044 9.64739 13.125 9.28655 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75ZM12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="currentColor"/>
+                  </svg>                  
+                </button>
+              </span>
+    </li>    
+]
+
+Options[Component] = {"Title"->"Example", "Shortcut"->"", "Tag"->"generic", "Button"->Null}
+
+Component
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

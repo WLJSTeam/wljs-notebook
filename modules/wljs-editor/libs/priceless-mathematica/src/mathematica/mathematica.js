@@ -212,9 +212,6 @@ function tokenBase(stream, state) {
       if (builtinsLocalQ[bmatch]) return "labelName";
       return "keyword";
     }
-    if (stream.current() in state.localVars) return "atom";
-
-    state.localVars[stream.current()] = true;
 
     return "function";
   }
@@ -327,7 +324,7 @@ const stateTracker = ViewPlugin.fromClass(
   },
 );
 
-wolframLanguage.of = (vocabulary) => {
+wolframLanguage.of = (vocabulary, trackedQ=true) => {
 
   return [
     StreamLanguage.define(mathematica),
@@ -337,7 +334,7 @@ wolframLanguage.of = (vocabulary) => {
         //snippetCompletion('mySnippet(${one}, ${two})', {label: 'mySnippet'})
       ]
     }),
-    stateTracker,
+    ...(trackedQ ? [stateTracker] : []),
     keymap.of([{ key: "Escape", run: newESC() }])
   ];  
 }

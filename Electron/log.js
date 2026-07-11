@@ -64,6 +64,8 @@ debug.addEventListener('click', () => {
 
 
 const info = document.getElementById("modal_info");
+const modalInfoState = document.getElementById("modal_info_state");
+const modalInfoVersion = document.getElementById("modal_info_version");
 const newsFeed = document.getElementById("news_feed_items");
 
 const escapeHtml = (text) => {
@@ -95,40 +97,68 @@ const renderNewsItems = (items) => {
 };
 
 window.electronAPI.updateInfo((event, info) => {
-    document.getElementById("modal_info_state").innerText = info;
+    if (modalInfoState) modalInfoState.innerText = info;
 })
 
 window.electronAPI.updateVersion((event, info) => {
-    document.getElementById("modal_info_version").innerText = info;
+    if (modalInfoVersion) modalInfoVersion.innerText = info;
 })
 
 window.electronAPI.handleNews((event, items) => {
     renderNewsItems(items);
 });
 
+let activePromptCleanup = null;
+
 window.electronAPI.addPromt((event, id, title) => {
     //well. implement it in a way you like, this is just a simple form
     const modal = document.getElementById('modal_dialog');
-    document.getElementById('modal_dialog_message').innerText = title;
+    const message = document.getElementById('modal_dialog_message');
     const button = document.getElementById('modal_dialog_button');
     const field = document.getElementById('modal_dialog_field');
-    
+    if (!modal || !message || !button || !field || !info) return;
+
+    message.innerText = title;
+    field.type = /password/i.test(title) ? 'password' : 'text';
+
+    if (activePromptCleanup) activePromptCleanup();
 
     let resolve;
-    
+    let keyResolve;
+    let cleanup;
 
     resolve = () => {
-        button.removeEventListener('click', resolve);
+        cleanup();
         window.electronAPI.resolveInput(id, field.value);
         modal.classList.add('hidden');
         info.classList.remove('hidden');
         field.value = "";
+        field.type = 'text';
     };
 
+    keyResolve = (event) => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        resolve();
+    };
+
+    cleanup = () => {
+        button.removeEventListener('click', resolve);
+        field.removeEventListener('keydown', keyResolve);
+        activePromptCleanup = null;
+    };
+
+    activePromptCleanup = cleanup;
+
     button.addEventListener('click', resolve);
+    field.addEventListener('keydown', keyResolve);
 
     info.classList.add('hidden');
     modal.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        field.focus();
+        field.select();
+    });
 });
 
 

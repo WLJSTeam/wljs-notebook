@@ -330,33 +330,59 @@ RowBox[{first___, SubsuperscriptBox["\[Sum]", RowBox[{iterator_, "=", initial_}]
 Unprotect[TagBox]
 TagBox[x_, opts___] := x
 
+(* TEXT *)
+Unprotect[Text];
+FormatValues[Text] = {}
+Text /: MakeBoxes[Text[expr_, ___], StandardForm] := With[{m = Style[TextString[expr], 12]}, 
+  MakeBoxes[m, StandardForm]
+]
+Text /: MakeBoxes[Text[Column[list_List], ___], StandardForm] := With[{r = Column[Text/@list]},
+  MakeBoxes[r, StandardForm]
+]
+Text /: MakeBoxes[Text[Grid[list_List], ___], StandardForm] := With[{r = Grid[Map[Text, list, {2}]]},
+  MakeBoxes[r, StandardForm]
+]
 
 (* :::Grid Decorators::: aka TableForm, MatrixForm and many more *)
 (* we do support only one(two) option*)
 
-Unprotect[GridBox]
-GridBox[list_List, opts___] := With[{sorted = Association[ List[opts] ]},
-If[!KeyExistsQ[sorted, GridBoxDividers],
-If[Lookup[sorted, DefaultBaseStyle, False] === "Matrix",
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
-,
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{"}(*]GB*)"}}]))
+halfNumber[n_?NumberQ] := Floor[n/2];
+halfNumber[expr_] := expr
 
+Unprotect[GridBox]
+gridBoxCanonicalRules[opts_List] := Module[{assoc = Association[opts], spacings, alignments},
+    spacings = {
+        If[KeyExistsQ[assoc, ColumnSpacings], "Columns" -> halfNumber[assoc[ColumnSpacings]], Nothing],
+        If[KeyExistsQ[assoc, RowSpacings], "Rows" -> halfNumber[assoc[RowSpacings]], Nothing]
+    };
+
+    alignments = {
+        If[KeyExistsQ[assoc, ColumnAlignments], "Columns" -> assoc[ColumnAlignments], Nothing],
+        If[KeyExistsQ[assoc, RowAlignments], "Rows" -> assoc[RowAlignments], Nothing]
+    };
+    Join[
+        opts,
+        If[spacings =!= {} && !KeyExistsQ[assoc, GridBoxSpacings], {GridBoxSpacings -> spacings}, {}],
+        If[alignments =!= {} && !KeyExistsQ[assoc, GridBoxAlignment], {GridBoxAlignment -> alignments}, {}]
+    ]
 ]
-,
-With[{val = sorted[GridBoxDividers]},
- RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
-     Riffle[
-      (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-      If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", GridBoxDividers -> val ]  ], "*)(*]GB*)"]}}]))
+
+GridBox[list_List, opts___] := With[{optList = gridBoxCanonicalRules[List[opts]]},
+    With[{rls = FilterRules[optList, {BaselinePosition, Selectable, GridBoxDividers, GridBoxAlignment, GridBoxSpacings, ImageSize}]},
+        If[Association[optList][DefaultBaseStyle] === "Matrix",
+            RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                Riffle[
+                    (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
+        ,
+            RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
+                Riffle[
+                    (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", Sequence@@rls]  ], "*)(*]GB*)"]}}]))
+
+        ]
+    ]
 ]
-] ]
 
 MakeBoxes[TableForm[{{1,2}, {3,4}}], StandardForm]; (* trigger symbol fetch *)
 
@@ -564,16 +590,24 @@ Unprotect[StyleBox]
 (* FIXME!!! *)
 (* FIXME!!! *)
 (* FIXME!!! *)
+With[{c = Uncompress["1:eJxTTMoPCmZjYGCIsXIzdjQAABpPAx4="]}, 
+    BoxForm`emptyCharacterQ[c] = True;
+    BoxForm`emptyCharacterQ[]  = True;
+    BoxForm`emptyCharacterQ[_] = False;
+];
 
-StyleBox[x_, opts__]  := With[{list = Association[Cases[List[opts], _Rule] ]},
+StyleBox[px_, popts__]  := With[{
+    x = If[BoxForm`emptyCharacterQ[px], "None", px],
+    opts = If[BoxForm`emptyCharacterQ[px], {popts, "ShowContents"->False}, {popts}]
+}, {list = Association[Cases[opts, _Rule] ]},
   If[KeyExistsQ[list, ShowStringCharacters], 
     If[!list[ShowStringCharacters],
-      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[Compress[StyleDecorator[opts]  ] , InputForm], "*)(*]BB*)"}]  
+      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts]  ] , InputForm], "*)(*]BB*)"}]  
     ,
-      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[opts] ], InputForm], "*)(*]BB*)"}]
+      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
     ]
   ,
-    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[opts] ], InputForm], "*)(*]BB*)"}]
+    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
   ]
 ]
 
@@ -602,13 +636,13 @@ FormatValues[Hyperlink] = {};
 
 Hyperlink /: MakeBoxes[Hyperlink[str_String], StandardForm] := MakeBoxes[Hyperlink[str, str], StandardForm]
 
-Hyperlink /: MakeBoxes[Hyperlink[label_, url_String], f: StandardForm] := With[{uid = CreateUUID[], labelBox = MakeBoxes[label, f]}, 
-  EventHandler[uid, SystemOpen[url]&];
-BoxBox[labelBox, ViewDecorator["Pane", "Event"->uid] ] ]
+Hyperlink /: MakeBoxes[Hyperlink[label_, url_String], f: StandardForm] := With[{labelBox = MakeBoxes[label, f]}, 
 
-Hyperlink /: MakeBoxes[Hyperlink[label_String, url_String], f: StandardForm] := With[{uid = CreateUUID[], labelBox = MakeBoxes[label, f]}, 
-  EventHandler[uid, SystemOpen[url]&];
-BoxBox[labelBox, {StyleDecorator["Underlined"->True], ViewDecorator["Pane", "Event"->uid]}, "String"->True]]
+BoxBox[labelBox, StyleDecorator["URL"->url] ] ]
+
+Hyperlink /: MakeBoxes[Hyperlink[label_String, url_String], f: StandardForm] := With[{labelBox = MakeBoxes[label, f]}, 
+ 
+BoxBox[labelBox, StyleDecorator["URL"->url], "String"->True]]
 
 (*if a string, then remove quotes*)
 
@@ -631,18 +665,32 @@ PanelBox[x_, opts___]  := RowBox[{"(*BB[*)(Panel[", x, "])(*,*)(*", ToString[Com
 
 (* Special WLX Form*)
 
+Unprotect[Panel];
+Options[Panel] = Join[Options[Panel], {Selectable->True}]
+
 Panel /: MakeBoxes[Panel[expr_, ___], WLXForm] := With[{
-  Content = MakeBoxes[expr, WLXForm]
+  Content = ToString[MakeBoxes[expr, WLXForm]]
 },
   StringJoin["<div class=\"rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400\">", Content, "</div>"]
 ]
+
+(* Deploy *)
+
+Unprotect[Deploy]
+Deploy[expr_] := expr /. {
+  Panel[f_, a___] :> Panel[Deploy[f],a, Selectable->False],
+  Pane[f_, a___] :> Pane[Deploy[f],a, Selectable->False],
+  Row[f_, a___] :> Row[Deploy[f],a, Selectable->False],
+  Column[f_, a___] :> Column[Deploy[f],a, Selectable->False],
+  Grid[f_, a___] :> Grid[Deploy[f],a, Selectable->False]
+};
 
 (* :::Template Boxes convertion to ViewDecorators ::: *)
 
 Unprotect[TemplateBox]
 
-TemplateBox[list_List, "RowDefault", ___] := GridBox[{list}]
-TemplateBox[list_List, "Row", ___] := GridBox[{list}]
+TemplateBox[list_List, "RowDefault", rest___] := GridBox[{list}, rest]
+TemplateBox[list_List, "Row", rest___] := GridBox[{list}, rest]
 
 TemplateBox[{head_String}, "InactiveHead", __] := head
 
@@ -1283,6 +1331,16 @@ EventObject /: Inset[EventObject[a_?BoxForm`EventObjectHasView], rest___ ] := If
 
 Unprotect[Row]
 
+FormatValues[Row] = {};
+Row /: MakeBoxes[Row[expr_List, opts:OptionsPattern[]], StandardForm] := With[{g = Grid[{expr}, opts]},
+    MakeBoxes[g, StandardForm]
+]
+
+Row /: MakeBoxes[Row[expr_List, sep_, opts:OptionsPattern[]], StandardForm] := With[{g = Grid[{Riffle[expr, sep]}, opts]},
+    MakeBoxes[g, StandardForm]
+]
+
+
 Row /: MakeBoxes[Row[expr__, OptionsPattern[] ], WLXForm] := With[{list = List[expr]},
   With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},
     StringJoin["<div class=\"flex flex-row\">", StringRiffle[Res, "\n"], "</div>"]
@@ -1327,7 +1385,7 @@ General::wljsunsupported = "Symbol `` is not supported in WLJS. We are sorry";
 
 (* abandoned symbols. sorry, someoneelse should do that *)
 
-With[{ unsupported = {GraphicsRow, WordCloud, GraphicsColumn, ClockGauge, GeoListPlot, GeoGraphics, InputField, GraphicsGrid, GalleryView, FormObject, FormFunction, FormPage, Toggler, Opener, Setter, RadioButton, Control, CheckboxBar, RadioButtonBar, Setter, Checkbox, Toggler, SetterBar, RadioButton, Checkbox, PopupMenu, FileNameSetter, ColorSetter, Trigger, HorizontalGauge, Setter, BulletGauge, AngularGauge, ThermometerGauge, Slider, VerticalSlider, Slider2D, IntervalSlider, Manipulator, HorizontalGauge, Locator, Slider2D, ColorSlider, LocatorPane, SlideView, MenuView, FlipView, PopupView, OpenerView, PaneSelector}},
+With[{ unsupported = {GraphicsRow, WordCloud, GraphicsColumn, ClockGauge, GeoListPlot, GeoGraphics, InputField, GraphicsGrid, GalleryView, FormObject, FormFunction, FormPage, Toggler, Opener, Setter, RadioButton, Control, CheckboxBar, RadioButtonBar, Setter, Checkbox, Toggler, SetterBar, RadioButton, Checkbox, PopupMenu, FileNameSetter, ColorSetter, Trigger, HorizontalGauge, Setter, BulletGauge, AngularGauge, ThermometerGauge, Slider, VerticalSlider, Slider2D, IntervalSlider, Manipulator, HorizontalGauge, Slider2D, ColorSlider, LocatorPane, SlideView, MenuView, FlipView, PopupView, OpenerView, PaneSelector}},
   Do[With[{item = i},
     Unprotect[item];
     ClearAll[item];
@@ -1808,7 +1866,7 @@ If[Internal`Kernel`Watchdog["Enabled"],
       DownValues[TemplateBox]//Hash
     ,
       Get[file]
-    , tag];  
+    , tag];
 
     Internal`Kernel`Watchdog["Assertion", "MatrixForm",
       FormatValues[MatrixForm]//Hash

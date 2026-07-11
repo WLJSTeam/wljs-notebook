@@ -77,11 +77,12 @@ listener[p_, list_] := With[{uid = CreateUUID[]}, With[{
     EventListener[p, rules]
 ] ]
 
-Unprotect[Sphere];
+Unprotect[Sphere, Locator];
 
 Sphere      /: EventHandler[p_Sphere, list_List] := listener[p, list]
+Locator      /: EventHandler[p_Locator, list_List] := listener[p, list]
 
-Protect[Sphere];
+Protect[Sphere, Locator];
 
 
 (* CALL A MODAL HERE 

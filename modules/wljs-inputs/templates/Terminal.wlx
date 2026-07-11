@@ -2,15 +2,15 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
     s = StringTemplate["width:``px; height:``px; font-size:small"][ww, hh]
 },
 
-    <div class="rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300">
-        <div id="#instanceId" style="{s}"></div>
+    <div class="slbl border-0 py-1 px-1 pr-10 text-gray-900 wljs-card" style="-webkit-app-region: no-drag; -webkit-user-select: text; user-select: text;">
+        <div id="#instanceId" style="{s}; -webkit-app-region: no-drag; -webkit-user-select: text; user-select: text;" draggable="false"></div>
         <script type="module">
             /*credits: https://github.com/mkrl/ttty */
             var ttty = (function (f) {
                 "use strict";
                 const c = (t, n, e) => {
                         const o = document.createElement(t);
-                        return n && (o.className = n), e && (o.innerHTML = e), o;
+                        return n && (o.className = n), e !== undefined && (o.textContent = e), o;
                     },
                     N = (t, n = !1) => {
                         (t.input.readOnly = !n), (t.inputContainer.style.opacity = n ? "" : "0");
@@ -34,39 +34,106 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                     // Detect whether the terminal is scrolled to (or very near) the bottom
                     isNearBottom = (el, threshold = 8) =>
                         el.scrollHeight - el.scrollTop - el.clientHeight <= threshold,
+
+                    trimOutput = (container, state) => {
+                        while (container.children.length > 1000) {
+                            if (state.currentOutput && state.currentOutput.line === container.firstChild) {
+                                state.currentOutput = null;
+                            }
+                            container.removeChild(container.firstChild);
+                        }
+                    },
+
+                    createOutputLine = (container, state, isError = !1) => {
+                        const line = c("p");
+                        let target = line;
+
+                        if (isError) {
+                            target = c("span", "terminal-error", "");
+                            line.append(target);
+                        }
+
+                        container.append(line);
+                        state.currentOutput = { line, target, text: "", cursor: 0, isError };
+                        trimOutput(container, state);
+                        return state.currentOutput;
+                    },
+
+                    getOutputLine = (container, state, isError = !1) => {
+                        if (!state.currentOutput || state.currentOutput.isError !== isError) {
+                            return createOutputLine(container, state, isError);
+                        }
+
+                        return state.currentOutput;
+                    },
+
+                    renderOutputLine = (line) => {
+                        line.target.textContent = line.text;
+                    },
+
+                    writeOutput = (text, container, state, isError = !1) => {
+                        const str = String(text ?? "");
+                        if (str.length === 0) return;
+
+                        for (const ch of str) {
+                            if (ch === "\r") {
+                                getOutputLine(container, state, isError).cursor = 0;
+                                continue;
+                            }
+
+                            if (ch === "\n") {
+                                if (!state.currentOutput) createOutputLine(container, state, isError);
+                                state.currentOutput = null;
+                                continue;
+                            }
+
+                            if (ch === "\b") {
+                                const line = getOutputLine(container, state, isError);
+                                line.cursor = Math.max(0, line.cursor - 1);
+                                continue;
+                            }
+
+                            const line = getOutputLine(container, state, isError);
+
+                            if (line.cursor >= line.text.length) {
+                                line.text += ch;
+                            } else {
+                                line.text = line.text.slice(0, line.cursor) + ch + line.text.slice(line.cursor + 1);
+                            }
+
+                            line.cursor++;
+                            renderOutputLine(line);
+                        }
+                    },
                 
-                    // Print a line. Supports command echo + error styling.
+                    // Print output. Supports command echo + stream-like writes.
                     T = (t, n, e, o, s, r, aErr = !1) => {
-                        const a = c("p");
-                    
                         if (n) {
                             // Command echo line
-                            a.innerText = r.prompt;
+                            const a = c("p");
+                            const settings = r.settings || r;
+                            a.textContent = settings.prompt;
                             const i = c("span", "terminal-command", t);
                             a.append(i);
-                        } else {
-                            // Output line
-                            if (aErr) {
-                                const i = c("span", "terminal-error", t);
-                                a.append(i);
-                            } else {
-                                a.innerText = t;
-                            }
+                            o.append(a);
+                            r.currentOutput = null;
+                            trimOutput(o, r);
+                            return;
                         }
-                    
-                        o.append(a);
-                        while (o.children.length > 1000) o.removeChild(o.firstChild);
+
+                        writeOutput(t, o, r, aErr);
                     };
                 
                 var p = ((t) => (
-                    // Fired when user submits ANY input (raw string)
-                    (t.ON_COMMAND = "onCommand"),
+                    // Fired when user submits a terminal input line.
+                    (t.ON_INPUT = "terminal:input"),
+                    (t.ON_COMMAND = t.ON_INPUT),
                     (t.ON_PROCESS_START = "onProcessStart"),
                     (t.ON_PROCESS_END = "onProcessStop"),
                     (t.ON_PROCESS_INTERRUPT = "onProcessInterrupt"),
                     // Ctrl+C signal that does NOT automatically interrupt
-                    (t.ON_CTRL_C = "onCtrlC"),
-                    (t.ON_INIT = "onInit"),
+                    (t.ON_CTRL_C = "terminal:interrupt"),
+                    (t.ON_INIT = "terminal:init"),
                     t
                 ))(p || {});
             
@@ -192,9 +259,12 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                         });
                     },
                     A =
-                        '.terminal{border-radius:0.375rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color,#fff);padding:15px;box-sizing:border-box}.terminal *{color:var(--terminal-fg-color,#1a1a1a);font-family:var(--terminal-font,"Hasklig-Regular",monospace)}.terminal::-webkit-scrollbar{width:6px}.terminal::-webkit-scrollbar-track{background:var(--terminal-bg-color,#fff)}.terminal::-webkit-scrollbar-thumb{background:var(--terminal-accent-color,#2563eb);border-radius:3px}.terminal::-webkit-scrollbar-thumb:hover{background:var(--terminal-fg-color,#1a1a1a)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0;line-height:normal}.terminal-type>input:focus{border-radius:0.25rem;box-shadow:none;border:none;outline:none}.terminal-container>p{margin:0;user-select:text}.terminal-container>p *::selection,.terminal-container>p::selection{background-color:var(--terminal-selection-color,#bfdbfe);color:#1a1a1a}span.terminal-command{color:var(--terminal-accent-color,#2563eb)}span.terminal-error{color:var(--terminal-error-color,#cc1010)}',
+                        '.terminal{border-radius:0.375rem;overflow-y:auto;overflow-x:hidden;background-color:var(--terminal-bg-color,#fff);padding:15px;box-sizing:border-box;cursor:text}.terminal,.terminal *{-webkit-app-region:no-drag;-webkit-user-select:text;user-select:text}.terminal *{color:var(--terminal-fg-color,#1a1a1a);font-family:var(--terminal-font,"Hasklig-Regular",monospace)}.terminal::-webkit-scrollbar{width:6px}.terminal::-webkit-scrollbar-track{background:var(--terminal-bg-color,#fff)}.terminal::-webkit-scrollbar-thumb{background:var(--terminal-accent-color,#2563eb);border-radius:3px}.terminal::-webkit-scrollbar-thumb:hover{background:var(--terminal-fg-color,#1a1a1a)}.terminal-type{width:100%;display:inline-block}.terminal-type>span{padding-right:0}.terminal-type>input{width:calc(100% - 1rem);background:transparent;border:0;font-size:inherit;padding:0;line-height:normal}.terminal-type>input:focus{border-radius:0.25rem;box-shadow:none;border:none;outline:none}.terminal-container>p{margin:0}.terminal::selection,.terminal *::selection,.terminal-container::selection,.terminal-container *::selection{background-color:var(--terminal-selection-color,#bfdbfe);color:#1a1a1a}span.terminal-command{color:var(--terminal-accent-color,#2563eb)}span.terminal-error{color:var(--terminal-error-color,#cc1010)}',
                     M = () => {
-                        if (document.head.querySelectorAll('style[data-type="terminal"]').length === 0) {
+                        const existing = document.head.querySelector('style[data-type="terminal"]');
+                        if (existing) {
+                            existing.textContent = A;
+                        } else {
                             const t = c("style", void 0, A);
                             t.setAttribute("data-type", "terminal"), t.setAttribute("type", "text/css"), document.head.append(t);
                         }
@@ -225,10 +295,11 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                                 commandContainer: u,
                                 inputContainer: S,
                                 input: g,
+                                currentOutput: null,
                             
                                 // Backwards-compatible print (stdout)
                                 print: (d, h = !1, O = !0) => {
-                                    T(d, h, O, u, g, i, !1);
+                                    T(d, h, O, u, g, l, !1);
                                     if (l.autoScroll) {
                                         t.scrollTop = t.scrollHeight;
                                     }
@@ -236,7 +307,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                             
                                 // New stdout printer (alias of print)
                                 printstdout: (d, h = !1, O = !0) => {
-                                    T(d, h, O, u, g, i, !1);
+                                    T(d, h, O, u, g, l, !1);
                                     if (l.autoScroll) {
                                         t.scrollTop = t.scrollHeight;
                                     }
@@ -244,7 +315,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                             
                                 // New stderr printer (red)
                                 printstderror: (d, h = !1, O = !0) => {
-                                    T(d, h, O, u, g, i, !0);
+                                    T(d, h, O, u, g, l, !0);
                                     if (l.autoScroll) {
                                         t.scrollTop = t.scrollHeight;
                                     }
@@ -268,6 +339,7 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
                     
                         // Track user scroll to toggle autoscroll
                         t.addEventListener("scroll", updateAutoScroll);
+                        t.addEventListener("dragstart", (event) => event.preventDefault());
                         updateAutoScroll();
                     
                         b(t, l);
@@ -286,19 +358,26 @@ Component[CSymbol_, Event_, hh_, ww_] := With[{
 
             const dom = document.getElementById('#instanceId');
             const term = ttty.initTerminal({host: dom, prompt: "> ", commands:{}});
-            dom.addEventListener('onCommand', e => {
+            const printEach = (chunks, printer) => {
+                chunks.forEach((chunk, index) => {
+                    printer(chunk);
+                    if (index < chunks.length - 1) printer("\n");
+                });
+            };
+
+            dom.addEventListener(ttty.TerminalEvent.ON_INPUT, e => {
                 server.kernel.io.fire('<Event/>', e.detail, 'Command');
             });
-            dom.addEventListener('onCtrlC', e => {
+            dom.addEventListener(ttty.TerminalEvent.ON_CTRL_C, e => {
                 server.kernel.io.fire('<Event/>', true, 'Interrupt');
             });
             core['<CSymbol/>'] = async (args, env) => {
                 const type = await interpretate(args[0], env);
                 const text = await interpretate(args[1], env);
                 if (type == 'error') {
-                    if (Array.isArray(text)) text.forEach((t)=>{term.printstderror(t)}); else term.printstderror(text);
+                    if (Array.isArray(text)) printEach(text, (t)=>{term.printstderror(t)}); else term.printstderror(text);
                 } else {
-                    if (Array.isArray(text)) text.forEach((t)=>{term.printstdout(t)}); else term.printstdout(text);
+                    if (Array.isArray(text)) printEach(text, (t)=>{term.printstdout(t)}); else term.printstdout(text);
                 }
             }
             server.kernel.io.fire('<Event/>', true, 'Mount');

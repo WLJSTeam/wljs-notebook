@@ -1111,6 +1111,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     //   svg = env.inset.append("svg");
     // else
       svg = d3.select(container).append("svg");
+      svg.node().classList.add('focus:outline-none');
 
     if ('Background' in options) {
       
@@ -1118,6 +1119,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   
       if (options.Background) {
         svg.node().style.backgroundColor = options.Background;
+        svg.node().classList.add('rounded-md');
         console.log('Background color:'+options.Background);
       }
     }
@@ -2251,8 +2253,6 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
  
 }
 
-  const icoExport = `<svg fill="currentColor" width="16" height="16" viewBox="0 0 1920 1920"><path d="M790.706 338.824v112.94H395.412c-31.06 0-56.47 25.3-56.47 56.471v744.509c17.73-6.325 36.592-10.391 56.47-10.391h1129.412c19.877 0 38.738 4.066 56.47 10.39V508.236c0-31.171-25.412-56.47-56.47-56.47h-395.295V338.824h395.295c93.402 0 169.411 76.009 169.411 169.411v1242.353c0 93.403-76.01 169.412-169.411 169.412H395.412C302.009 1920 226 1843.99 226 1750.588V508.235c0-93.402 76.01-169.411 169.412-169.411h395.294Zm734.118 1016.47H395.412c-31.06 0-56.47 25.299-56.47 56.47v338.824c0 31.172 25.41 56.47 56.47 56.47h1129.412c31.058 0 56.47-25.298 56.47-56.47v-338.823c0-31.172-25.412-56.47-56.47-56.47ZM1016.622-.023v880.151l246.212-246.325 79.85 79.85-382.532 382.644-382.645-382.644 79.85-79.85L903.68 880.128V-.022h112.941ZM564.824 1468.235c-62.344 0-112.942 50.71-112.942 112.941s50.598 112.942 112.942 112.942c62.343 0 112.94-50.71 112.94-112.942 0-62.23-50.597-112.94-112.94-112.94Z" fill-rule="evenodd"/></svg>`
-
   g2d.Graphics.update = (args, env) => { console.error('root update method for Graphics is not supported'); }
   g2d.Graphics.destroy = (args, env) => { 
     env.local.listenerSVG.remove(); 
@@ -2269,6 +2269,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   const curve = {};
   curve.BezierCurve = async (args, env) => {
     let points = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(points)) points = points.normal();
+    
     var path = env.path; 
 
     const x = env.xAxis;
@@ -2327,6 +2329,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
   curve.Line = async (args, env) => {
     let points = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(points)) points = points.normal();
     var path = env.path; 
 
     const x = env.xAxis;
@@ -2933,7 +2936,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     else 
       lab = await interpretate(args[0], env);
 
-    
+    if (NumericArrayObject.Q(lab)) lab = lab.normal();
     const color = labToRgb({luminance: 100*lab[0], a: 100*lab[1], b: 100*lab[2]});
     //console.log(lab);
     //console.log('LAB color');
@@ -3962,12 +3965,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     env.local.object = object;
 
-    if (env.colorRefs) {
-      env.colorRefs[env.root.uid] = env.root;
-    }
-    if (env.opacityRefs) {
-      env.opacityRefs[env.root.uid] = env.root;
-    }
+    if (env.colorRefs) env.colorRefs[env.root.uid] = env.root;
+    if (env.opacityRefs) env.opacityRefs[env.root.uid] = env.root;
 
     return object;
   }
@@ -4978,8 +4977,15 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (level.length) {
       level = level[0]
     }
-
     level = Math.floor(level * 255);
+    
+    if (args.length > 1) {
+      const opacity = await interpretate(args[1], env);
+      env.color = `rgba(${level},${level},${level},${opacity})`;
+      return env.color;
+    }
+
+    
 
     env.color = `rgb(${level},${level},${level})`;
     return env.color;
@@ -5380,6 +5386,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   g2d.Polygon = async (args, env) => {
 
     let points = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(points)) points = points.normal();
 
     if (points?.lhs) { //LIMITED SUPPORT
       //if this is a rule. Then this is a polygon with holes
@@ -5725,6 +5732,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     const options = await core._getRules(args, env);
 
     let input = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(input)) input = input.normal();
     const x = env.xAxis;
     const y = env.yAxis;
   
@@ -5822,6 +5830,7 @@ g2d.BezierCurve = async (args, env) => {
   const options = await core._getRules(args, env);
 
   let points = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(points)) points = points.normal();
   const path = d3.path();
 
   const degreeOpt = (options && Number.isInteger(options.SplineDegree)) ? options.SplineDegree : 3;
@@ -5906,6 +5915,7 @@ g2d.BezierCurve = async (args, env) => {
 g2d.BezierCurve.update = async (args, env) => {
   const options = await core._getRules(args, env);
   let points = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(points)) points = points.normal();
 
   const degreeOpt = (options && Number.isInteger(options.SplineDegree))
     ? options.SplineDegree
@@ -6503,7 +6513,9 @@ g2d.Annulus = async (args, env) => {
 
 // Interpret the center data, radii, and angles from the arguments
 let data = await interpretate(args[0], env);
+if (NumericArrayObject.Q(data)) data = data.normal();
 let radii = await interpretate(args[1], env);
+if (NumericArrayObject.Q(radii)) radii = radii.normal();
 
 // Ensure radii is an array with [outerRadius, innerRadius]
 if (!Array.isArray(radii)) radii = [radii, radii];
@@ -6576,6 +6588,7 @@ return object;
 
   g2d._arc = async (args, env) => {
     let data = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(data)) data = data.normal();
     let radius = await interpretate(args[1], env);
       if (!Array.isArray(radius)) radius = [radius, radius];
     
@@ -6797,6 +6810,114 @@ return object;
 
   g2dComplex.Disk.virtual = true;
 
+  const locatorDefault = (env) => [
+    0.5*env.plotRange[0][0] + 0.5*env.plotRange[0][1],
+    0.5*env.plotRange[1][0] + 0.5*env.plotRange[1][1]
+  ];
+
+  const locatorPosition = async (args, env) => {
+    let pos = args.length ? await interpretate(args[0], env) : undefined;
+    if (pos instanceof NumericArrayObject) pos = pos.normal();
+    return Array.isArray(pos) && pos.length >= 2 ? pos : locatorDefault(env);
+  };
+
+  const locatorZoom = (env) =>
+    env.local.currentZoomTransform ||
+    (env.panZoomEntites?.canvas?.node ? d3.zoomTransform(env.panZoomEntites.canvas.node()) : d3.zoomIdentity);
+
+  const locatorTranslate = (env, pos) => `translate(${env.xAxis(pos[0])}, ${env.yAxis(pos[1])})`;
+
+  const locatorDraggedPosition = (env) => {
+    const m = env.local.object?.attr("transform")?.match(/translate\(\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*,?\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*\)/i);
+    return m && [env.xAxis.invert(Number(m[1])), env.yAxis.invert(Number(m[2]))];
+  };
+
+  const syncLocator = (env, pos = env.local.pos, transition = false, transform = locatorZoom(env)) => {
+    env.local.pos = pos;
+    env.local.locatorTransform = locatorTranslate(env, pos);
+    env.local.visual?.attr("transform", `scale(${1/(transform?.k || 1)})`);
+    return (transition ? env.local.object.maybeTransition(env.transitionType, env.transitionDuration) : env.local.object)
+      .attr("transform", env.local.locatorTransform);
+  };
+
+  g2d.Locator = async (args, env) => {
+    const pos = await locatorPosition(args, env);
+    const group = env.svg.append("g")
+      .attr("opacity", env.opacity)
+      .attr("fill", "none")
+      .attr("stroke", env.color)
+      .attr("stroke-width", Math.max(1, env.strokeWidth || 1.5))
+      .attr("stroke-linecap", "round")
+      .attr("stroke-linejoin", "round");
+
+    const visual = group.append("g");
+
+    visual.append("circle")
+      .attr("r", 8)
+      .attr("vector-effect", "non-scaling-stroke");
+
+    visual.append("path")
+      .attr("d", "M -12 0 L -4 0 M 4 0 L 12 0 M 0 -12 L 0 -4 M 0 4 L 0 12")
+      .attr("vector-effect", "non-scaling-stroke");
+
+    const dot = visual.append("circle")
+      .attr("r", 2)
+      .attr("stroke", "none")
+      .attr("fill", env.color);
+
+    env.local.object = group;
+    env.local.visual = visual;
+    env.local.dot = dot;
+    syncLocator(env, pos);
+
+    if (env.onZoom) {
+      env.local.onZoom = (transform) => {
+        if (env.local.object) {
+          if (env.local.object.attr("transform") !== env.local.locatorTransform) {
+            env.local.pos = locatorDraggedPosition(env) || env.local.pos;
+          }
+          syncLocator(env, env.local.pos, false, transform);
+        }
+      };
+      env.onZoom.push(env.local.onZoom);
+    }
+
+    if (env.colorRefs) {
+      env.colorRefs[env.root.uid] = env.root;
+    }
+    if (env.opacityRefs) {
+      env.opacityRefs[env.root.uid] = env.root;
+    }
+
+    return group;
+  }
+
+  g2d.Locator.update = async (args, env) => {
+    return syncLocator(env, await locatorPosition(args, env), true);
+  }
+
+  g2d.Locator.updateColor = (args, env) => {
+    env.local.object.attr("stroke", env.color);
+    env.local.dot.attr("fill", env.color);
+  }
+
+  g2d.Locator.updateOpacity = (args, env) => {
+    env.local.object.attr("opacity", env.opacity);
+  }
+
+  g2d.Locator.destroy = (args, env) => {
+    if (!env.local) return;
+
+    const index = env.onZoom?.indexOf(env.local.onZoom);
+    if (index >= 0) env.onZoom.splice(index, 1);
+    if (env.colorRefs) delete env.colorRefs[env.root.uid];
+    if (env.opacityRefs) delete env.opacityRefs[env.root.uid];
+
+    env.local.object?.remove();
+    delete env.local.object;
+  }
+
+  g2d.Locator.virtual = true;
 
   g2d.Disk = async (args, env) => {
     if (args.length > 2) {
@@ -7682,6 +7803,8 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
   g2d.GeometricTransformation = async (args, env) => {
     let matrix = await interpretate(args[1], env);
+    if (NumericArrayObject.Q(matrix)) matrix = matrix.normal();
+    
     const group = env.svg.append("g");
 
    // if (arrdims(pos) > 1) throw 'List arguments for Translate is not supported for now!';
@@ -7851,6 +7974,11 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   g2d.Rectangle = async (args, env) => {
     let from = await interpretate(args[0], env);
     let to = await interpretate(args[1], env);
+
+    if (!from && !to) {
+      from = [-1,-1];
+      to = [1,1];
+    }
 
     const opts = await core._getRules(args, env);
 
@@ -8038,6 +8166,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     // args[0] -> {{x1,y1},{x2,y2}}
     // args[1] -> r
     let pts = await interpretate(args[0], env);
+    
     let r   = await interpretate(args[1], env); 
 
     const opts = await core._getRules(args, env); 

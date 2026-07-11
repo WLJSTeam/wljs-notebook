@@ -22,8 +22,8 @@ With[{
 },
   {
     <div>
-      <label for="#instanceId" class="block text-sm font-medium leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
-      <select id="#instanceId" class="sm-controls mt-1 block rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-1 focus:ring-sys text-xs {SelectClass}" style="{SelectStyle}">
+      <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+      <select id="#instanceId" class="sm-controls mt-1 block rounded-md border-0 py-1 px-1 pr-10 text-gray-900 ring-1 ring-gray-300 focus:ring-2 text-xs {SelectClass}" style="{SelectStyle}">
         <Opts/>
       </select>
     </div>

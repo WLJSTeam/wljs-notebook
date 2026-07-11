@@ -5,13 +5,16 @@ BeginPackage["CoffeeLiqueur`Extensions`Manipulate`Diff`", {
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Extensions`EditorView`",
-    "CoffeeLiqueur`Extensions`InputsOutputs`"  
+    "CoffeeLiqueur`Extensions`InputsOutputs`",
+    "CoffeeLiqueur`Extensions`MarkdownCells`"  
 }]
 
 Begin["`Private`"]
 
+tableEntries[table_] := Select[DownValues[table][[All,2]], AssociationQ];
+
 clearTable[table_] := With[{},
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     ClearAll[table];
 ]
 
@@ -19,21 +22,30 @@ save[table_] := DownValues[table];
 restore[table_, values_] := DownValues[table] = values;
 
 resetAll[table_] := (
-  (#["Reset"][]) &/@ SortBy[DownValues[table][[All,2]], Function[s, s["Priority"] ] ];
+  (#["Reset"][]) &/@ SortBy[tableEntries[table], Function[s, s["Priority"] ] ];
 )
-
 
 failureMessage[msg_, payload_] := (
   CoffeeLiqueur`Extensions`Manipulate`Diff`$lastJITFailure = {msg, payload};
 )
 
+transpileDiff[diff_] := With[{assoc = transpile @@ diff},
+  If[AssociationQ[assoc],
+    assoc
+  ,
+    failureMessage["Cannot transpile diff object", diff];
+    $Failed
+  ]
+]
+
+
 (* Normal diff processor *)
 (* works incrementally from diff to diff *)
 
-processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{},
+processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{e, rebuilt},
   If[MatchQ[diffs, {___, $Failed, ___}], (* Fallback! *)
     forceUpdate[expr2];
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     DownValues[table] = {};
     
     Return[];
@@ -44,21 +56,27 @@ processDiffs[table_, expr1_, expr2_, diffs_List, forceUpdate_] := Module[{},
   ];
 
   If[Or @@ Map[(!AssociationQ[table[#[[3]]]])&, diffs], (* Fallback and rebuild dynamic expression *)
-    (#["Destroy"][]) &/@ DownValues[table][[All,2]];
+    (#["Destroy"][]) &/@ tableEntries[table];
     DownValues[table] = {};
     
-    Module[{e = expr2},
-      With[
-        {assoc = transpile @@ #, hash = #[[4]]},
-        
-        e = ReplaceAll[e, assoc["Rule"]];
-        table[hash] = assoc;
-        
-      ] &/@ Reverse[diffs];
+    e = expr2;
+    rebuilt = Map[{#, transpileDiff[#]} &, Reverse[diffs]];
 
-      forceUpdate[e];
+    If[MatchQ[rebuilt, {___, {_, $Failed}, ___}],
+      forceUpdate[expr2];
       Return[];
     ];
+
+    With[
+      {assoc = #[[2]], hash = #[[1,4]]},
+
+        e = ReplaceAll[e, assoc["Rule"]];
+        table[hash] = assoc;
+
+    ] &/@ rebuilt;
+
+    forceUpdate[e];
+    Return[];
   ];
   
   Map[With[ (* Update changed parts and move hashes *)
@@ -88,7 +106,12 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
   ];
 
   If[Length[diffs] == 0,
-    If[Select[DownValues[table][[All,2]], AssociationQ] === {}, reset[originalExpr],  resetAll[table] ];    
+    If[TrueQ[table["$Failed"] ],
+      table["$Failed"] = .;
+      reset[originalExpr];
+    ,
+      If[tableEntries[table] === {}, reset[originalExpr],  resetAll[table] ];
+    ];
     Return[]; 
   ];
 
@@ -98,22 +121,21 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
     Return[];
   ];
   
+  If[TrueQ[table["$Failed"] ], (* detect fallback and restore the original expression *)
+    table["$Failed"] = .;
+    reset[originalExpr];
+  ];
 
   With[{  (* Reset unaffected and update affected *)
     toUpdate = Map[With[
       {oldHash = #[[3]]}, 
       {data = table[oldHash]},
 
-      If[TrueQ[table["$Failed"] ], (* detect fallback and restore the original expression *)
-        table["$Failed"] = False;
-        reset[originalExpr];
-      ];
-
       {data, #}
 
     ]&, diffs],
 
-    allEntries = DownValues[table][[All,2]]
+    allEntries = tableEntries[table]
   },
     
     Map[
@@ -216,7 +238,7 @@ diff[Line[data1_List, m_], Line[data2_List, u_], level_, attributes_] :=
 
 diff[Polygon[data1_List], Polygon[data2_List], level_, attributes_] := 
   If[Lookup[attributes, "GraphicsQ", False] && !Lookup[attributes, "GraphicsComplexQ", False],
-    diffObject[Line[data1], Line[data2], Hash[Line[data1]], Hash[Line[data2]]]
+    diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
   ,
     If[Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False],
       diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
@@ -280,23 +302,6 @@ diff[i1_Image, i2_Image, level_, attributes_] := With[{
     ]
 ]
 
-transpile[head2_[_], head2_[d_], hash1_, hash2_] := With[{
-  symbol = Unique["cmpled"]
-},
-  symbol = d;
-  
-  <|
-    "Priority"->1, "Rule" -> (head2[d] -> head2[Offload[symbol] ]),
-    "Reset" -> Function[Null, symbol = d],
-    "Update" -> Function[{e1, e2, h1, h2},
-      symbol = e2[[1]];
-    ],
-    "Destroy" -> Function[Null,
-      ClearAll[symbol] // Quiet;
-    ]
-  |>
-];
-
 Do[With[{head2 = head},
   transpile[head2[_], head2[d_], hash1_, hash2_] := With[{
     symbol = Unique["cmpled"]
@@ -334,6 +339,29 @@ transpile[Line[_,_], Line[d_, u_], hash1_, hash2_] := With[{
     ]
   |>
 ];
+
+With[{r = #},
+    diff[r[data1_, m___], r[data2_, m___], level_, attributes_] := 
+        diffObject[r[data1, m], r[data2, m], Hash[r[data1, m]], Hash[r[data2, m]]
+    ];
+
+    transpile[r[_,___], r[d_, m___], hash1_, hash2_] := With[{
+      symbol = Unique["cmpled"]
+    },
+      symbol = d;
+      
+      <|
+        "Priority"->1, "Rule" -> (r[d, m] -> r[Offload[symbol], m]),
+        "Reset" -> Function[Null, symbol = d ],
+        "Update" -> Function[{e1, e2, h1, h2},
+          symbol = e2[[1]];
+        ],
+        "Destroy" -> Function[Null,
+          ClearAll[symbol] // Quiet;
+        ]
+      |>
+    ];
+] &/@ {TextView, HTMLView, TeXView, EditorView};
 
 transpile[Inset[_,_], Inset[d_, u_], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
@@ -376,7 +404,7 @@ transpile[Rule[PlotLabel, x_], Rule[PlotLabel, y_], hash1_, hash2_] := With[{
   
   <|
     "Priority"->1, "Rule" -> (Rule[PlotLabel, y] -> Rule[PlotLabel, HoldForm[EditorView[symbol//Offload, Appearance->None] ] ]),
-    "Reset" -> Function[Null, symbol = y],
+    "Reset" -> Function[Null, symbol = ToString[y, StandardForm]],
     "Update" -> Function[{e1, e2, h1, h2},
       symbol = ToString[e2[[2]], StandardForm];
     ],
@@ -444,6 +472,18 @@ Do[With[{head2 = head},
   ];  
 
 
+rgbColorValues[colors_] := N[Map[Function[x, List @@ (RGBColor[x])], colors]];
+
+numericArrayWithRGBColorGuard[data_, colorIndex_Integer] := Module[{
+  array = NumericArray[data] // Quiet
+},
+  If[NumericArrayQ[array],
+    array
+  ,
+    NumericArray[ReplacePart[data, colorIndex -> rgbColorValues[data[[colorIndex]]]]]
+  ]
+]
+
 transpile[GraphicsComplex[_,_], GraphicsComplex[vertices2_, objects_], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
@@ -478,16 +518,16 @@ transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[Ver
   |>
 ];
 
-transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, normals2_] ], hash1_, hash2_] := With[{
+transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, colors2}, 2];
   
   <|
-    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, normals2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexColors, Offload[symbol[[2]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2}],
+    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexColors, Offload[symbol[[2]] ] ], Rule["VertexFence", True] ]),
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, colors2}, 2]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[3,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[3,2]]}, 2];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
@@ -498,13 +538,13 @@ transpile[GraphicsComplex[_,_,_], GraphicsComplex[vertices2_, objects_, Rule[Ver
 transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexNormals, normals2_], Rule[VertexColors, colors2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2, colors2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
   
   <|
     "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexNormals, normals2], Rule[VertexColors, colors2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2, colors2}],
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[3,2]], e2[[4,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[3,2]], e2[[4,2]]}, 3];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
@@ -516,16 +556,40 @@ transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[V
 transpile[GraphicsComplex[_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_], Rule[VertexNormals, normals2_] ], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]
 },
-  symbol = {vertices2, normals2, colors2}//NumericArray;
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
   
   <|
     "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2], Rule[VertexNormals, normals2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule["VertexFence", True] ]),
-    "Reset" -> Function[Null, symbol = {vertices2, normals2, colors2}],
+    "Reset" -> Function[Null, symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3]],
     "Update" -> Function[{e1, e2, h1, h2},
-      symbol = {e2[[1]], e2[[4,2]], e2[[3,2]]}//NumericArray;
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[4,2]], e2[[3,2]]}, 3];
     ],
     "Destroy" -> Function[Null,
       ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
+transpile[GraphicsComplex[_,_,_,_,_], GraphicsComplex[vertices2_, objects_, Rule[VertexColors, colors2_], Rule[VertexNormals, normals2_], Rule[VertexTextureCoordinates, tex2_] ], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"],
+  texSymbol = Unique["cmpled"]
+},
+  symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
+  texSymbol = NumericArray[tex2];
+
+  <|
+    "Priority"->10, "Rule" -> (GraphicsComplex[vertices2, objects, Rule[VertexColors, colors2], Rule[VertexNormals, normals2], Rule[VertexTextureCoordinates, tex2] ] -> GraphicsComplex[Offload[symbol[[1]] ], objects, Rule[VertexNormals, Offload[symbol[[2]] ] ], Rule[VertexColors, Offload[symbol[[3]] ] ], Rule[VertexTextureCoordinates, Offload[texSymbol ] ], Rule["VertexFence", True] ]),
+    "Reset" -> Function[Null,
+        symbol = numericArrayWithRGBColorGuard[{vertices2, normals2, colors2}, 3];
+        texSymbol = tex2//NumericArray;
+    ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = numericArrayWithRGBColorGuard[{e2[[1]], e2[[4,2]], e2[[3,2]]}, 3];
+      texSymbol = e2[[5,2]]//NumericArray;
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+      ClearAll[texSymbol] // Quiet;
     ]
   |>
 ];
@@ -542,7 +606,7 @@ Do[With[{pattern=pattern},
           Map[Function[item, item ], list]
         ]
       , rest ]),
-      "Reset" -> Function[Null, symbol = (# &/@ {b2}) ],
+      "Reset" -> Function[Null, symbol = ToString[#, StandardForm] &/@ {b2} ],
       "Update" -> Function[{e1, e2, h1, h2},
         symbol = # &/@ (e2[[2]]);
       ],
@@ -773,14 +837,7 @@ Do[With[{a=a},
   |>
 ];*)
 
-textureLessQ[expr_] := MatchQ[
-  expr,
-  GraphicsComplex[_, _] |
-  GraphicsComplex[_, _, Rule[VertexColors, _] ] |
-  GraphicsComplex[_, _, Rule[VertexNormals, _] ] |
-  GraphicsComplex[_, _, Rule[VertexColors, _], Rule[VertexNormals, _] |
-  GraphicsComplex[_, _, Rule[VertexNormals, _], Rule[VertexColors, _] ]
-] ];
+textureLessQ[expr_] := True; (*supported*)
 
 diff[g: GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] := If[textureLessQ[g], With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
@@ -808,11 +865,26 @@ diff[Annotation[args1_, _], Annotation[args2_, _], level_, attributes_] := With[
   diff[args1,args2, level+1, attributes]
 ]
 
+diff[Annotation[args1_, ___], Annotation[args2_, ___], level_, attributes_] := With[{},
+  diff[args1,args2, level+1, attributes]
+]
+
 diff[head_[args1__], head_[args2__], level_, attributes_] := With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
     MapThread[Function[{a,b},
       diff[a,b, level+1, attributes]
     ], {list1, list2}] 
+ ,
+   failureMessage[ToString[head]<>" expression differs in args length", {list1, list2}];
+   $Failed
+ ]
+]
+
+diff[head_[args1_List], head_[args2_List], level_, attributes_] := With[{list1 = args1, list2 = args2},
+  If[Length[list1] == Length[list2],
+    MapThread[Function[{a,b},
+      diff[a,b, level+1, attributes]
+    ], {list1, list2}]
  ,
    failureMessage[ToString[head]<>" expression differs in args length", {list1, list2}];
    $Failed

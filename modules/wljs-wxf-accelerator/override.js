@@ -337,4 +337,7 @@ interpretate.handleMessage = (event) => {
     }
 }
 
-
+core['Internal`PackedArrayWXF'] = async (args, env) => {
+  const byte = await interpretate(args[0], env);
+  return await interpretate(deserializeWXF(byte), env);
+}

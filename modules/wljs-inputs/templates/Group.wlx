@@ -1,7 +1,7 @@
 Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionValue["Label"], Description = OptionValue["Description"], LabelClass = OptionValue["LabelClass"], LabelStyle = OptionValue["LabelStyle"], ContainerClass = OptionValue["ContainerClass"], ContainerStyle = OptionValue["ContainerStyle"]},
 
   If[OptionValue["Layout"] === "Vertical", 
-    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
+    <div class="overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
       <div class="px-2 py-2 {LabelClass}" style="{LabelStyle}">
         <Label/>
       </div>
@@ -12,7 +12,7 @@ Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionVal
       </div>
     </div>
   ,
-    <div class="divide-y divide-gray-200 overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
+    <div class="overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">
       <div class="px-2 py-2 {LabelClass}" style="{LabelStyle}">
         <Label/>
       </div>

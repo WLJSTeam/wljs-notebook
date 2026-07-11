@@ -2,6 +2,86 @@ var core = {};
 core.name = "Core Context";
 interpretate.contextExpand(core);
 
+function roundDeep(x, o) {
+  if (NumericArrayObject.Q(x)) {
+    const buf = x.buffer;
+    const out = new buf.constructor(buf.length);
+    for (let i = 0; i < buf.length; i++) out[i] = roundScalar(buf[i], o);
+    return new NumericArrayObject(out, x.dims);
+  }
+  if (!Array.isArray(x)) return roundScalar(x, o);
+  const result = new Array(x.length);
+  for (let i = 0; i < x.length; i++) result[i] = roundDeep(x[i], o);
+  return result;
+}
+
+// defined once, not per call
+function roundScalar(x, o) {
+  const scaled = x / o;
+  const lower = Math.floor(scaled);
+  const diff = scaled - lower;
+
+  let rounded;
+  if (diff < 0.5) rounded = lower;
+  else if (diff > 0.5) rounded = lower + 1;
+  else rounded = lower % 2 === 0 ? lower : lower + 1; // exact tie -> round to even
+
+  return rounded * o;
+}
+
+core.Round = async (args, env) => {
+  const n = await interpretate(args[0], env);
+  const o = args.length > 1 ? await interpretate(args[1], env) : 1;
+
+  return roundDeep(n, o);
+}
+core.Round.update = core.Round
+
+function formatFixed(val, f) {
+  const factor = Math.pow(10, f);
+  const rounded = roundScalar(val * factor, 1) / factor;
+  return rounded.toFixed(f);
+}
+
+function padIntegerPart(str, targetIntDigits) {
+  const negative = str.startsWith("-");
+  const unsigned = negative ? str.slice(1) : str;
+  const dotIndex = unsigned.indexOf(".");
+  const intLen = dotIndex === -1 ? unsigned.length : dotIndex;
+  const padLen = Math.max(0, targetIntDigits - intLen);
+  return " ".repeat(padLen) + (negative ? "-" : "") + unsigned;
+}
+
+core.NumberForm = async (args, env) => {
+  let val = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(val)) val = val.normal();
+  const spec = args.length > 1 ? await interpretate(args[1], env) : undefined;
+
+  if (spec === undefined) return String(val);
+  if (Array.isArray(spec)) {
+    const [n, f] = spec;
+    return padIntegerPart(formatFixed(val, f), n - f);
+  }
+  return val.toPrecision(spec);
+};
+core.NumberForm.update = core.NumberForm;
+
+core.ToString = async (args, env) => {
+  let val = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(val)) val = val.normal();
+  return String(val);
+}
+core.ToString.update = core.ToString
+
+core.StringJoin = async (args, env) => {
+  let result = '';
+  for (const arg of args) {
+    result += await interpretate(arg, env);
+  }
+  return result;
+}
+core.StringJoin.update = core.StringJoin
+
 core.DefaultWidth = 370;
 
 core.ConsoleLog = [];
@@ -150,6 +230,20 @@ core.Sec = async (args, env) => {
 }
 
 core.Sec.update = core.Sec
+
+core.URLDecode = async (args, env) => {
+  const str = await interpretate(args[0], env);
+  return decodeURIComponent(str)
+}
+
+core.URLDecode.update = core.URLDecode;
+
+core.URLEncode = async (args, env) => {
+  const str = await interpretate(args[0], env);
+  return encodeURIComponent(str)
+}
+
+core.URLEncode.update = core.URLEncode;
 
 core.ReadClipboard = async(args, env) => {
     const clipText = await navigator.clipboard.readText();
@@ -983,6 +1077,7 @@ core.JSObject = (args, env) => {
 }
 
 core.Set = async(args, env) => {
+    console.warn('do not use Set. depricated');
     const data = await interpretate(args[1], {
         ...env,
         novirtual: true,
