@@ -15,7 +15,7 @@ Offload::usage = "Hold expression to be evaluated on a frontend"
 
 Begin["`Private`"]
 
-
+System`WLJSIOImport;
 System`WLJSIOUpdateSymbol;
 System`WLJSIOAddTracking;
 System`WLJSIOGetSymbol;
@@ -29,7 +29,7 @@ System`WLJSIOFetch;
 
 System`SlientPing;
 
-
+WLJSIOImport[data_] := ImportByteArray[URLDecode[data]//StringToByteArray, "RawJSON"]
 
 SetAttributes[Offload, HoldFirst]
 

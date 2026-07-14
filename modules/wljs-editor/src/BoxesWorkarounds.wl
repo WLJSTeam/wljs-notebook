@@ -949,7 +949,7 @@ SwatchLegend;
 Unprotect[SwatchLegend]
 SwatchLegend[{list1_List, list2_List}, {label1_List, label2_List}, rest___] :=SwatchLegend[list2, label2, rest]
 
-BoxForm`LegendMakeLabel[uid_, expressionJSON_] := With[{expr = ImportString[expressionJSON, "ExpressionJSON"]},
+BoxForm`LegendMakeLabel[uid_, expressionJSON_] := With[{expr = ImportByteArray[expressionJSON//StringToByteArray, "ExpressionJSON"]},
   CreateFrontEndObject[EditorView[ToString[expr, StandardForm], "ReadOnly"->True, "Selectable"->False], uid];
   uid
 ];
@@ -1013,7 +1013,7 @@ BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: Sta
   ]
 ]
 
-BoxForm`makeBarLegend[uid_String, JSON_String] := (CreateFrontEndObject[BoxForm`makeBarLegend @@ ImportString[JSON, "ExpressionJSON"], uid]; uid)
+BoxForm`makeBarLegend[uid_String, JSON_String] := (CreateFrontEndObject[BoxForm`makeBarLegend @@ ImportByteArray[JSON//StringToByteArray, "ExpressionJSON"], uid]; uid)
 BoxForm`makeBarLegend[{cf_, range_List}, opts___Rule, ___] :=  BoxForm`makeBarLegend[cf, range, opts]
 BoxForm`makeBarLegend[cf_String, range_List, opts___Rule] := BoxForm`makeBarLegend[ColorData[cf], range, opts]
 BoxForm`makeBarLegend[cf_] := BoxForm`makeBarLegend[cf, {0,1}]

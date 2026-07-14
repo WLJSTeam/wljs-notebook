@@ -30,7 +30,7 @@ class ServerIO {
 
   fire(uid, object, pattern = "Default") { //regular event call
     const data = encodeURIComponent(JSON.stringify(object));
-    this.server.socket.send(this.headSymbol+'["'+uid+'", "'+pattern+'", ImportString[URLDecode["'+data+'"], "RawJSON"]]');
+    this.server.socket.send(this.headSymbol+'["'+uid+'", "'+pattern+'", WLJSIOImport["'+data+'"]]');
   }
 
   poke(uid) { //superfast just send a dummy message (can be used for calling animation frame)
@@ -44,7 +44,7 @@ class ServerIO {
     promises[uid] = promise;
 
     const data = encodeURIComponent(JSON.stringify(object));
-    this.server.socket.send('WLJSIORequest["'+uid+'"]["'+ev+'", "'+pattern+'", ImportString[URLDecode["'+data+'"], "RawJSON"]]');
+    this.server.socket.send('WLJSIORequest["'+uid+'"]["'+ev+'", "'+pattern+'", WLJSIOImport["'+data+'"]]');
 
     return promise.promise     
   }
@@ -57,7 +57,7 @@ class ServerIO {
 
     if (args) {
       const data = encodeURIComponent(JSON.stringify(args));
-      this.server.socket.send('WLJSIOFetch["'+uid+'"]['+symbol+', ImportString[URLDecode["'+data+'"], "RawJSON"]]');
+      this.server.socket.send('WLJSIOFetch["'+uid+'"]['+symbol+', WLJSIOImport["'+data+'"]]');
       return promise.promise     
     }
 

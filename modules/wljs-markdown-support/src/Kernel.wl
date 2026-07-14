@@ -72,7 +72,7 @@ TeXView /: MakeBoxes[TeXView[expr_, opts___], StandardForm] := With[{o = ViewBox
 
 Options[TeXView] = {ImageSize->Automatic, "AnchorPoint"->"Center"};
 
-TeXView[expr_String] := With[{enc = URLEncode[expr]}, TeXView[Offload[URLDecode[enc]]]]
+TeXView[expr_String, opts: OptionsPattern[]] := With[{enc = URLEncode[expr]}, TeXView[Offload[URLDecode[enc]], opts]]
 
 TeXFormAsync[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];

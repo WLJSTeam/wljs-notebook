@@ -131,7 +131,6 @@
     try {
       storage = await obj.get();
     } catch(e) {
-      
       const res = await server.kernel.io.fetch('BoxForm`LegendMakeLabel', [hash, JSON.stringify(label)]);
       console.log('We got the result: ', res);
       storage = await obj.get();
