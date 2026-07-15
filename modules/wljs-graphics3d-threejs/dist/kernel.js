@@ -2772,6 +2772,24 @@ thickness: env.materialThickness,
 
 var earcut;
 
+const polygonIndexArrayConstructor = (source, vertices) => {
+  if (source instanceof Uint32Array || source instanceof Int32Array) {
+    return Uint32Array;
+  }
+
+  const vertexCount =
+    vertices.position.count ??
+    vertices.position.array.length / 3;
+
+  if (vertexCount > 65535) return Uint32Array;
+
+  for (let i = 0; i < source.length; i++) {
+    if (source[i] - 1 > 65535) return Uint32Array;
+  }
+
+  return Uint16Array;
+};
+
 g3dComplex.Polygon = async (args, env) => {
 
   var geometry;
@@ -2802,17 +2820,19 @@ g3dComplex.Polygon = async (args, env) => {
         geometry.setIndex( a.normal().map((e)=>e-1) );
       break;
 
-      case 2: //multiple
+      case 2: { //multiple
+        const IndexArray = polygonIndexArrayConstructor(a.buffer, env.vertices);
+
         switch(a.dims[a.dims.length-1]) {
           case 3: //triangles
-            indexes = new THREE.BufferAttribute( new Uint16Array(a.buffer.map((e)=>e-1)), 1 );
+            indexes = new THREE.BufferAttribute( new IndexArray(a.buffer.map((e)=>e-1)), 1 );
           break;
 
           case 4: {
             const originalLength = a.buffer.length;
             const oldBuffer = a.buffer;
             const newLength = originalLength  * 2;
-            const newBuffer = new Uint16Array(newLength);
+            const newBuffer = new IndexArray(newLength);
             
             let i=0;
             let j=0;
@@ -2836,7 +2856,7 @@ g3dComplex.Polygon = async (args, env) => {
             const originalLength = a.buffer.length;
             const oldBuffer = a.buffer;
             const newLength = originalLength  * 3;
-            const newBuffer = new Uint16Array(newLength);
+            const newBuffer = new IndexArray(newLength);
             
             let i=0;
             let j=0;
@@ -2866,7 +2886,7 @@ g3dComplex.Polygon = async (args, env) => {
             const originalLength = a.buffer.length;
             const oldBuffer = a.buffer;
             const newLength = originalLength  * 4;
-            const newBuffer = new Uint16Array(newLength);
+            const newBuffer = new IndexArray(newLength);
             
             let i=0;
             let j=0;
@@ -2899,6 +2919,7 @@ g3dComplex.Polygon = async (args, env) => {
           default:
             throw 'cannot build such complex polygon'
         }
+      }
       break;
 
       default:
@@ -2935,12 +2956,9 @@ g3dComplex.Polygon = async (args, env) => {
     
       if (a[0].length === 3 && a[a.length-1].length === 3) {
         //geometry.setIndex(  );
-        
-        if (env.vertices.position.array.length > 65535) {
-          indexes = new THREE.BufferAttribute( new Uint32Array(a.flat().map((e)=>e-1)), 1 );
-        } else {
-          indexes = new THREE.BufferAttribute( new Uint16Array(a.flat().map((e)=>e-1)), 1 );
-        }
+        const flatIndexes = a.flat();
+        const IndexArray = polygonIndexArrayConstructor(flatIndexes, env.vertices);
+        indexes = new THREE.BufferAttribute( new IndexArray(flatIndexes.map((e)=>e-1)), 1 );
         
       } else {
 
@@ -3089,12 +3107,8 @@ g3dComplex.Polygon = async (args, env) => {
     extendedIndexes = extendedIndexes.flat();
     env.local.range = extendedIndexes.length;
 
-
-    if (env.vertices.position.array.length > 65535) {
-      indexes = new THREE.Uint32BufferAttribute( new Uint32Array(extendedIndexes.map((e)=>e-1)), 1 );
-    } else {
-      indexes = new THREE.Uint16BufferAttribute( new Uint16Array(extendedIndexes.map((e)=>e-1)), 1 );
-    }
+    const IndexArray = polygonIndexArrayConstructor(extendedIndexes, env.vertices);
+    indexes = new THREE.BufferAttribute( new IndexArray(extendedIndexes.map((e)=>e-1)), 1 );
     
     //geometry.setIndex(  );
     
@@ -3317,17 +3331,18 @@ g3dComplex.Polygon.update = async (args, env) => {
    
     if (a instanceof NumericArrayObject) {
 
+      const IndexArray = polygonIndexArrayConstructor(a.buffer, env.vertices);
     
       switch(a.dims[a.dims.length-1]) {
         case 3: //triangles
-          newBuffer = new Uint16Array(a.buffer.map((e)=>e-1));
+          newBuffer = new IndexArray(a.buffer.map((e)=>e-1));
         break;
 
         case 4: {
           const originalLength = a.buffer.length;
           const oldBuffer = a.buffer;
           const newLength = originalLength  * 2;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3349,7 +3364,7 @@ g3dComplex.Polygon.update = async (args, env) => {
           const originalLength = a.buffer.length;
           const oldBuffer = a.buffer;
           const newLength = originalLength  * 3;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3378,7 +3393,7 @@ g3dComplex.Polygon.update = async (args, env) => {
           const originalLength = a.buffer.length;
           const oldBuffer = a.buffer;
           const newLength = originalLength  * 4;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3413,18 +3428,20 @@ g3dComplex.Polygon.update = async (args, env) => {
       
     } else { 
       if (!a[0][0]) a = [a];
+      const flatIndexes = a.flat(Infinity);
+      const IndexArray = polygonIndexArrayConstructor(flatIndexes, env.vertices);
 
       switch(a[0].length) {
         case 3: //triangles
-          newBuffer = new Uint16Array(a.flat(Infinity).map((e)=>e-1));
+          newBuffer = new IndexArray(flatIndexes.map((e)=>e-1));
         break;
 
         case 4: {
-          a = a.flat(Infinity);
+          a = flatIndexes;
           const originalLength = a.length;
           const oldBuffer = a;
           const newLength = originalLength  * 2;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3443,11 +3460,11 @@ g3dComplex.Polygon.update = async (args, env) => {
         break;
 
         case 5: {
-          a = a.flat(Infinity);
+          a = flatIndexes;
           const originalLength = a.length;
           const oldBuffer = a;
           const newLength = originalLength  * 3;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3472,11 +3489,11 @@ g3dComplex.Polygon.update = async (args, env) => {
         break;
 
         case 6: {
-          a = a.flat(Infinity);
+          a = flatIndexes;
           const originalLength = a.length;
           const oldBuffer = a;
           const newLength = originalLength  * 4;
-          newBuffer = new Uint16Array(newLength);
+          newBuffer = new IndexArray(newLength);
           
           let i=0;
           let j=0;
@@ -3514,14 +3531,14 @@ g3dComplex.Polygon.update = async (args, env) => {
 
       env.local.range = newBuffer.length;
 
+      const oldIndexes = env.local.indexes;
+      const newIs32Bit = newBuffer instanceof Uint32Array;
+      const oldIs32Bit = oldIndexes?.array instanceof Uint32Array;
 
-      if (env.local.indexes.count < newBuffer.length) {
+      if (!oldIndexes || oldIndexes.count < newBuffer.length || (newIs32Bit && !oldIs32Bit)) {
         console.warn('Buffer attribute will be resized x2!');
 
-  
-        // pick 32‑bit if >65 535 points
-        const use32 = newBuffer.length > 30000;
-        const ArrayCtor = use32 ? Uint32Array : Uint16Array;
+        const ArrayCtor = newIs32Bit || oldIs32Bit ? Uint32Array : Uint16Array;
         const AttrCtor  = THREE.BufferAttribute;
       
         // allocate double the required size
