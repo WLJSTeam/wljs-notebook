@@ -30,6 +30,11 @@ class ServerIO {
 
   fire(uid, object, pattern = "Default") { //regular event call
     const data = encodeURIComponent(JSON.stringify(object));
+
+    //!!
+    //!! Send binary structure as optcodes
+    //!! opt-code-fire-event [0] argument-count-[2] WXF-Encoded-Array-Of-2-objects-[...]
+    
     this.server.socket.send(this.headSymbol+'["'+uid+'", "'+pattern+'", WLJSIOImport["'+data+'"]]');
   }
 
