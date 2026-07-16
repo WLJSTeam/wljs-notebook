@@ -120,7 +120,7 @@ App[request_] := With[{
                 <div class="grow h-full" style="-webkit-app-region: drag"></div>       
               </div>              
               <Notifications CachedClient={cachedClient} ElectronQ={isElectron} MessagePort={GlobalMessanger}/>
-              <WindowView Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Window={window} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates}/>
+              <WindowView Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Messanger={GlobalMessanger} Window={window} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates}/>
             </div> 
           </div>
         </div>
