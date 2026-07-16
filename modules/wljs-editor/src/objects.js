@@ -153,7 +153,7 @@ core.FrontEndExecutable = async (args, env) => {
           if (!env.element) return;
           loadingMessage = true;
           env.element.classList.add('floading');
-        }, 50);
+        }, 450);
 
         store = await obj.get();
         clearTimeout(timer);
