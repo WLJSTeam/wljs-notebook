@@ -897,7 +897,7 @@ PaneSelectorBox[list_, opts___] := list[[1]][[2]]
 Unprotect[InterpretationBox]
 
 
-InterpretationBox[placeholder_, expr_, opts___] := With[{data = expr, v = EditorView[ToString[placeholder /. {RowBox->RowBoxFlatten}], "ReadOnly"->True]},
+InterpretationBox[placeholder_, expr_, opts___] := With[{data = expr, v = EditorView[ToString[placeholder /. {RowBox->RowBoxFlatten}], "ReadOnly"->True, "Selectable"->False]},
   RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[v], InputForm], "*)(*]VB*)"}]
 ]
 
@@ -967,7 +967,7 @@ With[{sym = #},
 Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], StandardForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend2", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
@@ -975,7 +975,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], StandardForm] := 
 Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], WLXForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True,"Selectable"->False ]
 },
   With[{o = CreateFrontEndObject[ViewDecorator["Legend2", exprView, legendFunction] ]},
     MakeBoxes[o, WLXForm]
@@ -985,7 +985,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], WLXForm] := With[
 Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], StandardForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
@@ -993,7 +993,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], StandardForm] := With[{
 Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   With[{o = CreateFrontEndObject[ViewDecorator["Legend", exprView, legendFunction] ]},
     MakeBoxes[o, WLXForm]
@@ -1611,11 +1611,11 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], StandardForm] :
     If[StringQ[s],
       s
     ,
-      EditorView[ToString[s, StandardForm], "ReadOnly"->True] // CreateFrontEndObject
+      EditorView[ToString[s, StandardForm], "ReadOnly"->True, "Selectable"->False] // CreateFrontEndObject
     ]
   ] &/@ list,
 
-  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True] &/@ list
+  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True, "Selectable"->False] &/@ list
 },
   ViewBox[Null, BoxForm`TabViewBox[labels, values, default] ]
 ]
@@ -1625,11 +1625,11 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], WLXForm] := Wit
     If[StringQ[s],
       s
     ,
-      EditorView[ToString[s, StandardForm], "ReadOnly"->True] // CreateFrontEndObject
+      EditorView[ToString[s, StandardForm], "ReadOnly"->True, "Selectable"->False] // CreateFrontEndObject
     ]
   ] &/@ list,
 
-  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True] &/@ list
+  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True, "Selectable"->False] &/@ list
 },
   With[{ o = CreateFrontEndObject[BoxForm`TabViewBox[labels, values, default] ]},
     MakeBoxes[o, WLXForm]
@@ -1751,7 +1751,7 @@ Unprotect[Tooltip];
 FormatValues[Tooltip] = {}
 ClearAll[Tooltip]
 
-makeTooltipId[expr_] := BoxForm`TooltipId[ CreateFrontEndObject[EditorView[ToString[expr/.{Charting`iHold -> HoldForm}, StandardForm] ] ][[1]] ]
+makeTooltipId[expr_] := BoxForm`TooltipId[ CreateFrontEndObject[EditorView[ToString[expr/.{Charting`iHold -> HoldForm}, StandardForm], "Selectable"->False, "ReadOnly"->True ] ][[1]] ]
 makeTooltipId[expr_String | expr_Real | expr_Integer] := expr
 
 Tooltip[l1_List, l2_List] := (Tooltip@@#)&/@Transpose[{l1,l2}] /; Length[l1]===Length[l2]
@@ -1798,26 +1798,26 @@ OpenerView /: MakeBoxes[OpenerView[expr:{_, _}], form_] := makeBoxesOpener[expr,
 OpenerView /: MakeBoxes[OpenerView[expr:{_, _}, state_], form_] := makeBoxesOpener[expr, TrueQ[state], form]
 
 
-makeBoxesOpener[{s_String, expr_}, initial_, StandardForm] := With[{eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True ]},
+makeBoxesOpener[{s_String, expr_}, initial_, StandardForm] := With[{eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True, "Selectable"->False ]},
   ViewBox[Null, ViewDecorator["OV", s, eView, initial, True] ]
 ]
 
-makeBoxesOpener[{s_String, expr_}, initial_, WLXForm] := With[{eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ]},
+makeBoxesOpener[{s_String, expr_}, initial_, WLXForm] := With[{eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True,"Selectable"->False ]},
   With[{b = CreateFrontEndObject@ViewDecorator["OV", s, eView, initial, True]},
     MakeBoxes[b, WLXForm]
   ]
 ]
 
 makeBoxesOpener[{s_, expr_}, initial_, StandardForm] := With[{
-  eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True ],
-  sView = CreateFrontEndObject@EditorView[ToString[s, StandardForm], "ReadOnly"->True ]
+  eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True,"Selectable"->False ],
+  sView = CreateFrontEndObject@EditorView[ToString[s, StandardForm], "ReadOnly"->True,"Selectable"->False ]
 },
   ViewBox[Null, ViewDecorator["OV", sView, eView, initial, False] ]
 ]
 
 makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
-  eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ],
-  sView = EditorView[ToString[s, StandardForm], "ReadOnly"->True ]
+  eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ,"Selectable"->False],
+  sView = EditorView[ToString[s, StandardForm], "ReadOnly"->True,"Selectable"->False ]
 },
   With[{b = CreateFrontEndObject@ViewDecorator["OV", sView, eView, initial, False]},
     MakeBoxes[b, WLXForm]
