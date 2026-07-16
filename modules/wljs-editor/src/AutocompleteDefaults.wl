@@ -1811,15 +1811,7 @@ theory.\n\nAxiomaticTheory[<i>theory</i>,\"<i>property</i>\"] gives the \
 specified property of an axiomatic theory."|>, 
  <|"label" -> "Axis", "type" -> "keyword", "info" -> "Axis is a symbol that \
 represents the axis for purposes of alignment and positioning. "|>, 
- <|"label" -> "AxisLabel", "type" -> "keyword", 
-  "info" -> "AxisLabel is an option for AxisObject that specifies a label for \
-the axis."|>, <|"label" -> "AxisObject", "type" -> "keyword", 
-  "info" -> "AxisObject[<i>path</i>] is a Graphics primitive that represents \
-an axis with a quantitative scale along the path \
-<i>path</i>.\n\nAxisObject[<i>path</i>,<i>scale</i>] uses the scale specified \
-by <i>scale</i>."|>, <|"label" -> "AxisStyle", "type" -> "keyword", 
-  "info" -> "AxisStyle is an option for AxisObject that specifies how to \
-style the path of an axis."|>, <|"label" -> "BabyMonsterGroupB", 
+ <|"label" -> "BabyMonsterGroupB",
   "type" -> "keyword", "info" -> 
    "BabyMonsterGroupB[] represents the sporadic simple baby monster group B."\
 |>, <|"label" -> "Back", "type" -> "keyword", "info" -> "Back is a symbol \
@@ -24951,23 +24943,7 @@ stored in a file.\n\nThumbnail[<i>url</i>] gives a thumbnail of an image \
 stored at a URL.\n\nThumbnail[<i>spec</i>,<i>size</i>] gives a thumbnail with \
 the specified maximum pixel size."|>, <|"label" -> "Thursday", 
   "type" -> "keyword", "info" -> "Thursday is a day of the week."|>, 
- <|"label" -> "TickDirection", "type" -> "keyword", 
-  "info" -> "TickDirection is an option for AxisObject that specifies where \
-the ticks are drawn relative to the axis."|>, 
- <|"label" -> "TickLabelOrientation", "type" -> "keyword", 
-  "info" -> "TickLabelOrientation is an option for AxisObject that specifies \
-how the tick labels should be oriented relative to the axis."|>, 
- <|"label" -> "TickLabelPositioning", "type" -> "keyword", 
-  "info" -> "TickLabelPositioning is an option for AxisObject that specifies \
-how the tick labels should be positioned relative to the ticks."|>, 
- <|"label" -> "TickLabels", "type" -> "keyword", 
-  "info" -> "TickLabels is an option for AxisObject that specifies how the \
-tick marks should be labeled."|>, <|"label" -> "TickLengths", 
-  "type" -> "keyword", "info" -> "TickLengths is an option for AxisObject \
-that specifies the lengths of the tick marks."|>, 
- <|"label" -> "TickPositions", "type" -> "keyword", 
-  "info" -> "TickPositions is an option for AxisObject that specifies where \
-the tick marks should be positioned."|>, <|"label" -> "Ticks", 
+ <|"label" -> "Ticks",
   "type" -> "keyword", "info" -> "Ticks is an option for graphics functions \
 that specifies tick marks for axes. "|>, <|"label" -> "TicksStyle", 
   "type" -> "keyword", "info" -> "TicksStyle is an option for graphics \
@@ -28807,17 +28783,6 @@ specifies the representation of the result produced by the function."|>,
  <|"label" -> "TerminatedEvaluation", "type" -> "keyword", 
   "info" -> "TerminatedEvaluation[\"<i>reason</i>\"] represents an expression \
 whose evaluation overran global kernel session limits and was terminated."|>, 
- <|"label" -> "TernaryListPlot", "type" -> "keyword", 
-  "info" -> "TernaryListPlot[{{<i>u</i><sub>1</sub>,<i>v</i><sub>1</sub>,<i>w\
-</i><sub>1</sub>},...,{<i>u</i><sub><i>n</i></sub>,<i>v</i><sub><i>n<\
-/i></sub>,<i>w</i><sub><i>n</i></sub>}}] plots a list of points with \
-specified <i>u</i>, <i>v</i> and <i>w</i> coordinates in a barycentric \
-coordinate \
-system.\n\nTernaryListPlot[{<i>data</i><sub>1</sub>,<i>data</i><sub>2</sub>,\
-...}] plots a ternary plot with several datasets \
-<i>data</i><sub><i>i</i></sub>."|>, <|"label" -> "TernaryPlotCorners", 
-  "type" -> "keyword", "info" -> "TernaryPlotCorners is an option for \
-TernaryListPlot that determines how the triangle and axes are positioned."|>, 
  <|"label" -> "Threaded", "type" -> "keyword", "info" -> "Threaded[<i>list</i\
 >] is an object whose elements will automatically be threaded into the lowest \
 level of an array when used in a listable operation such as \

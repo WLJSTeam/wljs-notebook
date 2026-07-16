@@ -248,6 +248,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     return group;
   };
 
+  g2d.Blurring = () => {
+    console.error('Blurring is not supported');
+  };
+  
   g2d.SVGGroup.virtual = true; 
   
   g2d.SVGGroup.update = async (args, env) => {
