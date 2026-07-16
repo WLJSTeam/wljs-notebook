@@ -3383,6 +3383,12 @@ session cookies for all domains."|>, <|"label" -> "ClebschGordan",
   "info" -> "ClickToCopy[<i>expr</i>] represents a button that copies \
 <i>expr</i> whenever it is clicked.\n\nClickToCopy[<i>label</i>,<i>expr</i>] \
 displays with <i>label</i> on the button."|>, 
+ <|"label" -> "CliffordAlgebra", "type" -> "keyword",
+  "info" -> "CliffordAlgebra[{<i>pvars</i>,<i>nvars</i>,<i>zvars</i>}] gives \
+the Clifford algebra with generators <i>pvars</i>, <i>nvars</i> and \
+<i>zvars</i>.\n\nCliffordAlgebra[{<i>pvars</i>,<i>nvars</i>,<i>zvars</i>},<i>alg</i>] \
+takes the operation names and monomial order settings from the non-commutative \
+algebra <i>alg</i>."|>,
  <|"label" -> "Clip", "type" -> "keyword", "info" -> "Clip[<i>x</i>] gives \
 <i>x</i> clipped to be between -1 and +1. \
 \n\nClip[<i>x</i>,{<i>min</i>,<i>max</i>}] gives <i>x</i> for \
@@ -5055,7 +5061,13 @@ sequences <i>u</i> and <i>v</i>."|>, <|"label" -> "DampingFactor",
   "type" -> "keyword", "info" -> "DampingFactor is an option for FindRoot, \
 which can be used to control convergence behavior. DampingFactor -> <i>n</i> \
 uses a damping factor of <i>n</i> in Newton's method."|>, 
- <|"label" -> "Darker", "type" -> "keyword", "info" -> "Darker[<i>color</i>] \
+ <|"label" -> "DarkBlue", "type" -> "keyword",
+  "info" -> "DarkBlue represents a dark blue color in graphics or style \
+specifications."|>, <|"label" -> "DarkGreen", "type" -> "keyword",
+  "info" -> "DarkGreen represents a dark green color in graphics or style \
+specifications."|>, <|"label" -> "DarkRed", "type" -> "keyword",
+  "info" -> "DarkRed represents a dark red color in graphics or style \
+specifications."|>, <|"label" -> "Darker", "type" -> "keyword", "info" -> "Darker[<i>color</i>] \
 represents a darker version of the specified color. \
 \n\nDarker[<i>color</i>,<i>f</i>] represents a version of the specified color \
 darkened by a fraction <i>f</i>. \n\nDarker[<i>image</i>,...] gives a \
@@ -10818,7 +10830,11 @@ graph union of the graphs <i>g</i><sub>1</sub> and \
 <i>g</i><sub>2</sub>, \
 ....\n\nGraphUnion[{<i>v</i>-&gt;<i>w</i>,...},...] \
 uses rules <i>v</i>-&gt;<i>w</i> to specify the graph <i>g</i>."|>, 
- <|"label" -> "Gray", "type" -> "keyword", 
+ <|"label" -> "GrassmannAlgebra", "type" -> "keyword",
+  "info" -> "GrassmannAlgebra[<i>vars</i>] gives the Grassmann algebra with \
+generators <i>vars</i>.\n\nGrassmannAlgebra[<i>vars</i>,<i>alg</i>] takes the \
+operation names and monomial order settings from the non-commutative algebra \
+<i>alg</i>."|>, <|"label" -> "Gray", "type" -> "keyword",
   "info" -> 
    "Gray represents the color gray in graphics or style specifications. "|>, 
  <|"label" -> "GrayLevel", "type" -> "keyword", 
@@ -12423,7 +12439,13 @@ specifies whether to include tables specified in foreign keys."|>,
 specifies whether the endpoints in the time window should be included."|>, 
  <|"label" -> "Increment", "type" -> "keyword", 
   "info" -> "<i>x</i>++ increases the value of <i>x</i> by 1, returning the \
-old value of <i>x</i>. "|>, <|"label" -> "IndefiniteMatrixQ", 
+old value of <i>x</i>. "|>, <|"label" -> "IncrementalFunction",
+  "type" -> "keyword", "info" -> "IncrementalFunction[<i>fun</i>] represents a \
+compilable function that can pause its execution, storing its state to be resumed \
+later."|>, <|"label" -> "IncrementalObject", "type" -> "keyword",
+  "info" -> "IncrementalObject[<i>type</i>][<i>args</i>] creates an object that \
+incrementally returns values according to the specified incremental object type."|>,
+ <|"label" -> "IndefiniteMatrixQ",
   "type" -> "keyword", "info" -> "IndefiniteMatrixQ[<i>m</i>] gives True if \
 <i>m</i> is explicitly indefinite, and False otherwise. "|>, 
  <|"label" -> "IndependenceTest", "type" -> "keyword", 
@@ -17014,8 +17036,11 @@ next date of the given granularity relative to the specified date."|>,
 <i>x</i>.\n\nNextPrime[<i>x</i>,<i>k</i>] gives the \
 <i>k</i><sup>th</sup>-next prime above <i>x</i>."|>, 
  <|"label" -> "NextScheduledTaskTime", "type" -> "keyword", 
-  "info" -> "NextScheduledTaskTime[<i>obj</i>] gives the next execution time \
+ "info" -> "NextScheduledTaskTime[<i>obj</i>] gives the next execution time \
 of the scheduled task represented by <i>obj</i>."|>, 
+ <|"label" -> "NextValue", "type" -> "keyword",
+  "info" -> "NextValue[<i>inc</i>] returns the next value of the incremental \
+ object <i>inc</i>."|>,
  <|"label" -> "NHoldAll", "type" -> "keyword", "info" -> "NHoldAll is an \
 attribute which specifies that none of the arguments to a function should be \
 affected by N. "|>, <|"label" -> "NHoldFirst", "type" -> "keyword", 
@@ -17118,9 +17143,32 @@ noncentrality parameter \[Lambda] and denominator noncentrality parameter \
   "type" -> "keyword", "info" -> "NoncentralStudentTDistribution[\[Nu],\
 \[Delta]] represents a noncentral Student t distribution with \[Nu] degrees \
 of freedom and noncentrality parameter \[Delta]."|>, 
+ <|"label" -> "NonCommutativeAlgebra", "type" -> "keyword",
+  "info" -> "NonCommutativeAlgebra[<i>alg</i>] represents the special \
+non-commutative algebra <i>alg</i>.\n\nNonCommutativeAlgebra[<i>spec</i>] \
+represents the general non-commutative algebra given by the specification \
+<i>spec</i>."|>, <|"label" -> "NonCommutativeCollect", "type" -> "keyword",
+  "info" -> "NonCommutativeCollect[<i>expr</i>,<i>x</i>,<i>alg</i>] collects \
+together terms involving the same powers of objects matching <i>x</i> over the \
+noncommutative algebra <i>alg</i>.\n\nNonCommutativeCollect[<i>expr</i>,{<i>x</i><sub>1</sub>,<i>x</i><sub>2</sub>,...},<i>alg</i>] \
+successively collects terms involving the same powers of the specified objects."|>,
+ <|"label" -> "NonCommutativeExpand", "type" -> "keyword",
+  "info" -> "NonCommutativeExpand[<i>expr</i>,<i>alg</i>] expands out the non-commutative \
+algebra <i>alg</i> operations in <i>expr</i>."|>,
+ <|"label" -> "NonCommutativeGroebnerBasis", "type" -> "keyword",
+  "info" -> "NonCommutativeGroebnerBasis[{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>vars</i>,<i>alg</i>] \
+attempts to find a list of polynomials that form a reduced Gr\[ODoubleDot]bner basis over \
+the non-commutative algebra <i>alg</i>.\n\nNonCommutativeGroebnerBasis[{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>alg</i>] \
+uses the generators of <i>alg</i>."|>,
  <|"label" -> "NonCommutativeMultiply", "type" -> "keyword", 
   "info" -> "<i>a</i>**<i>b</i>**<i>c</i> is a general associative, but \
 non\[Hyphen]commutative, form of multiplication. "|>, 
+ <|"label" -> "NonCommutativePolynomialReduce", "type" -> "keyword",
+  "info" -> "NonCommutativePolynomialReduce[<i>poly</i>,{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>vars</i>,<i>alg</i>] \
+yields a list representing a reduction of <i>poly</i> modulo the polynomials \
+<i>poly</i><sub>i</sub> in variables <i>vars</i> over the non-commutative \
+algebra <i>alg</i>.\n\nNonCommutativePolynomialReduce[<i>poly</i>,{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>alg</i>] \
+reduces <i>poly</i> modulo the polynomials in the generators of <i>alg</i>."|>,
  <|"label" -> "NonConstants", "type" -> "keyword", 
   "info" -> "NonConstants is an option for D which gives a list of objects to \
 be taken to depend implicitly on the differentiation variables. "|>, 
@@ -23472,6 +23520,9 @@ piecewise symbolic approximation with the range of an atmospheric layer for \
 the \
 property.\n\nStandardAtmosphereData[\"SymbolicApproximation\",<i>property</i>\
 ] returns the full piecewise symbolic approximation for the property."|>, 
+ <|"label" -> "StandardBlue", "type" -> "keyword",
+  "info" -> "StandardBlue represents an aesthetically appealing version of \
+blue in graphics or style specifications."|>,
  <|"label" -> "StandardDeviation", "type" -> "keyword", 
   "info" -> "StandardDeviation[<i>data</i>] gives the standard deviation \
 estimate of the elements in <i>data</i>. \n\nStandardDeviation[<i>dist</i>] \
@@ -23479,6 +23530,9 @@ gives the standard deviation of the distribution <i>dist</i>."|>,
  <|"label" -> "StandardForm", "type" -> "keyword", 
   "info" -> "StandardForm[<i>expr</i>] prints as the standard Wolfram \
 Language two-dimensional representation of <i>expr</i>. "|>, 
+ <|"label" -> "StandardGreen", "type" -> "keyword",
+  "info" -> "StandardGreen represents an aesthetically appealing version of \
+green in graphics or style specifications."|>,
  <|"label" -> "Standardize", "type" -> "keyword", 
   "info" -> "Standardize[<i>list</i>] shifts and rescales the elements of \
 <i>list</i> to have zero mean and unit sample \
@@ -23494,6 +23548,9 @@ whether to standardize the data."|>, <|"label" -> "StandardOceanData",
 thermodynamic properties of seawater for the specified \
 parameters.\n\nStandardOceanData[<i>spec</i>,<i>property</i>] returns the \
 specified property for the given parameters. "|>, 
+ <|"label" -> "StandardRed", "type" -> "keyword",
+  "info" -> "StandardRed represents an aesthetically appealing version of \
+red in graphics or style specifications."|>,
  <|"label" -> "Star", "type" -> "keyword", "info" -> "Star[<i>x</i>,<i>y</i>,\
 ...] displays as <i>x</i>\[Star]<i>y</i>\[Star]...."|>, 
  <|"label" -> "StarClusterData", "type" -> "keyword", 
@@ -24356,7 +24413,11 @@ that the reflection should occur with specular \
 exponent\[NonBreakingSpace]<i>n</i>. \
 \n\nSurfaceColor[<i>dcol</i>,<i>scol</i>,<i>gcol</i>] specifies that a color \
 <i>gcol</i> should be added as if there were an intrinsic glow in the \
-polygon. "|>, <|"label" -> "SurfaceData", "type" -> "keyword", 
+polygon. "|>,
+ <|"label" -> "SurfaceContourPlot3D", "type" -> "keyword",
+  "info" -> "SurfaceContourPlot3D[<i>f</i>,<i>p</i>\[Element]<i>reg</i>] \
+generates a contour plot of <i>f</i> over the surface <i>reg</i> as a function \
+of <i>p</i>."|>, <|"label" -> "SurfaceData", "type" -> "keyword",
   "info" -> "SurfaceData[<i>entity</i>,<i>property</i>] gives the value of \
 the specified <i>property</i> for the surface \
 <i>entity</i>.\n\nSurfaceData[{<i>entity</i><sub>1</sub>,<i>entity</i><sub>2<\
@@ -27359,6 +27420,11 @@ and other functions which specifies weights to associate with data elements."\
 |>, <|"label" -> "WelchWindow", "type" -> "keyword", 
   "info" -> "WelchWindow[<i>x</i>] represents a Welch window function of \
 <i>x</i>.\n\nWelchWindow[<i>x</i>,\[Alpha]] uses the parameter \[Alpha]."|>, 
+ <|"label" -> "WeylAlgebra", "type" -> "keyword",
+  "info" -> "WeylAlgebra[{<i>vars</i>,<i>dvars</i>}] gives the Weyl algebra with \
+variables <i>vars</i> and the corresponding derivatives represented by \
+<i>dvars</i>.\n\nWeylAlgebra[{<i>vars</i>,<i>dvars</i>},<i>alg</i>] takes the operation \
+names and monomial order settings from the non-commutative algebra <i>alg</i>."|>,
  <|"label" -> "WheelGraph", "type" -> "keyword", 
   "info" -> "WheelGraph[<i>n</i>] gives the wheel graph with <i>n</i> \
 vertices W<sub>n</sub>."|>, <|"label" -> "WhenEvent", "type" -> "keyword", 

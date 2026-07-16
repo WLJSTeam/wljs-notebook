@@ -816,12 +816,66 @@ TemplateBox[expr_List, "DateObject", __] := With[{date = expr[[1]][[1]][[1]]},
 
 TemplateBox[expr_List, "SummaryPanel"] := RowBox[expr]
 
-TemplateBox[{expr_, opts__}, "Highlighted"] := StyleBox[expr, Background->Yellow, Frame->True] 
+TemplateBox[{expr_, opts__}, "Highlighted"] := StyleBox[expr, Background->(*VB[*)(RGBColor[1, 1, 0])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDD/boDAYGAO7rEHU="*)(*]VB*), Frame->True] 
+
+(* :: Symbolic Matrix Vectors :: *)
+
+TemplateBox[{name_, dim_}, "VectorSymbol2", ___] := ViewBox[RowBox[{"VectorSymbol[", name, ",", dim, "]"}], ViewDecorator["VS", name, dim]]
+
+TemplateBox[{name_}, "VectorSymbol1", ___] := ViewBox[RowBox[{"VectorSymbol[",name,"]"}], ViewDecorator["VS", name, 0]]
+
+TemplateBox[{name_, rank_, dimensions__}, "ArraySymbol2", ___] := With[{dims = {dimensions}},
+  ViewBox[
+    RowBox[{"ArraySymbol[", name, ",{", Sequence@@Riffle[dims, ","], "}]"}],
+    ViewDecorator["VA", name, dims]
+  ]
+]
+
+TemplateBox[{name_}, "ArraySymbol1", ___] := ViewBox[
+  RowBox[{"ArraySymbol[",name,"]"}],
+  ViewDecorator["VA", name, 0]
+]
+
+TemplateBox[{name_, m_, n_}, "MatrixSymbol2", ___] := ViewBox[
+  RowBox[{"MatrixSymbol[", name, ",{", m, ",", n,"}]"}],
+  ViewDecorator["VM", name]
+]
+
+TemplateBox[{name_}, "MatrixSymbol1", ___] := ViewBox[
+  RowBox[{"MatrixSymbol[", name, "]"}],
+  ViewDecorator["VM", name]
+]
+
+TemplateBox[{boxes_}, "Inverse", ___] := BoxBox[boxes, ViewDecorator["Transpose", "-1"], Head->Inverse]
+
+TemplateBox[{base_, super_}, "Superscript", ___] := RowBox[{"(*SpB[*)Power[", base, "(*|*),(*|*)",  super, "](*]SpB*)"}]
+
+TemplateBox[{TemplateBox[{dimensions__}, "ImplicitList", ___]}, "SymbolicIdentityArray", ___] := With[{},
+  ViewBox[
+    RowBox[{"SymbolicIdentityArray[{",dimensions,"}]"}],
+    ViewDecorator["VI", ToString[List[dimensions] /. {RowBox -> RowBoxFlatten}]]
+  ]
+]
+
+TemplateBox[{TemplateBox[{dimensions__}, "ImplicitList", ___]}, "SymbolicZerosArray" | SymbolicZerosArray, ___] := With[{},
+  ViewBox[
+    RowBox[{"SymbolicZerosArray[{",dimensions,"}]"}],
+    ViewDecorator["VZ", ToString[List[dimensions] /. {RowBox -> RowBoxFlatten}]]
+  ]
+]
 
 (* :: Indexed Box :: *)
 
 TemplateBox[{symbol_, index__}, "IndexedDefault"] := With[{dp = ViewDecorator["Indexed"], indexSym = StringRiffle[ List[index] /. {RowBox -> RowBoxFlatten}, ","]},
       RowBox[{"(*TB[*)Indexed[(*|*)", symbol, "(*|*), {(*|*)", indexSym, "(*|*)}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+]
+
+
+(* FIelds *)
+Unprotect[FiniteFieldElement]
+FormatValues[FiniteFieldElement] = {};
+FiniteFieldElement /: MakeBoxes[o: FiniteFieldElement[\[ScriptCapitalF]_, rank_], StandardForm] := With[{c = Information[\[ScriptCapitalF], "Characteristic"]},
+  ViewBox[o, ViewDecorator["fFE", c, rank]]
 ]
 
 (* :: Custom Iconize function :: *)
@@ -1204,17 +1258,22 @@ SetAttributes[BoxForm`ArrangeSummaryBox, HoldAll]
 (* :: Boxes for Graph Object :: *)
 
 Unprotect[Graph] 
-Graph /: MakeBoxes[g_Graph, StandardForm] := With[{c = Insert[GraphPlot[g, ImageSize->200, AspectRatio->1, ImagePadding->None], "Controls"->False, {2,-1}] }, 
-  If[ByteCount[g] > 3250,
+FormatValues[Graph] = {};
+
+Graph /: MakeBoxes[b_Graph, StandardForm] := With[{g=b}, {r = Insert[GraphPlot[g, ImageSize->70, AspectRatio->1, ImagePadding->None], "Controls"->False, {2,-1}] // CreateFrontEndObject},
+  If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
-      With[{v = ViewBox[temporal, CreateFrontEndObject[c] ]},
+      With[
+        {v = Interpretation[Labeled[r // BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
-        temporal = g;
-        v
+        temporal = b;
+        box
       ]
-    ]    
+    ]
+    
   ,
-    ViewBox[g, c] 
+    ViewBox[b, r]
   ]
   
 ]
@@ -1242,11 +1301,11 @@ FormatValues[BoundaryMeshRegion] = {}
 Unprotect[CSGRegion];
 FormatValues[CSGRegion] = {};
 
-CSGRegion /: MakeBoxes[u_CSGRegion, StandardForm] := With[{b = DiscretizeRegion[u]}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+CSGRegion /: MakeBoxes[u_CSGRegion, StandardForm] := With[{b = DiscretizeRegion[u]}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
   If[ByteCount[u] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = u;
@@ -1260,11 +1319,11 @@ CSGRegion /: MakeBoxes[u_CSGRegion, StandardForm] := With[{b = DiscretizeRegion[
   
 ]
 
-BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {v = Interpretation[Labeled[r // BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;
@@ -1283,11 +1342,11 @@ Unprotect[MeshRegion]
 FormatValues[MeshRegion] = {}
 
 
-MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject },
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;
@@ -1306,19 +1365,22 @@ Unprotect[Region]
 FormatValues[Region] = {}
 
 
-Region /: MakeBoxes[b_Region, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
-  If[ByteCount[b] > 3250,
+Region /: MakeBoxes[u_Region, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+  If[ByteCount[u] > 3250,
     LeakyModule[{temporal},
-      With[{v = ViewBox[temporal, r]},
-        AppendTo[Kernel`Internal`garbage, Hold[temporal]];
-        temporal = b;
-        v
+      With[
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
       ]
     ]
     
   ,
     ViewBox[b, r]
   ]
+  
 ]
 
 (* :: EventObject boxes :: *)
@@ -1656,7 +1718,9 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], WLXForm] := Wit
   ]
 ]
 
-
+Unprotect[CenteredInterval];
+FormatValues[CenteredInterval] = {}
+CenteredInterval /: MakeBoxes[c_CenteredInterval, StandardForm] := ToString[c, InputForm]
 
 
 (* :: Inactivate Workarounds :: *)
@@ -1741,6 +1805,29 @@ Failure /: MakeBoxes[f:Failure[_, command_Association], form: StandardForm] := W
                  {
                    {BoxForm`SummaryItem[{"Error: ", Style[msg, Bold]}]}, 
                    {BoxForm`SummaryItem[{f//First}]}
+                 },    (* always shown content *)
+                 Null (* expandable content. Currently not supported!*)
+    ]
+  ]
+]
+
+Exception["DataConsistencyError"];
+Unprotect[Exception];
+FormatValues[Exception] = {};
+
+Exception /: MakeBoxes[f_Exception, form: StandardForm] := With[{
+  message = f["Message"],
+  tag = f["ExceptionTag"]
+},
+  With[{},
+    BoxForm`ArrangeSummaryBox[
+                 Exception, (* head *)
+                 f,      (* interpretation *)
+                 BoxForm`failureIcon,    (* icon, use None if not needed *)
+                 (* above and below must be in a format suitable for Grid or Column *)
+                 {
+                   {BoxForm`SummaryItem[{"Exception: ", Style[tag, Bold]}]}, 
+                   {BoxForm`SummaryItem[{message}]}
                  },    (* always shown content *)
                  Null (* expandable content. Currently not supported!*)
     ]

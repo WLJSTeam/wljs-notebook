@@ -156,8 +156,7 @@ g3d.LABColor =  async (args, env) => {
     lab = await interpretate(args[0], env);
 
     const color = default_1({luminance: 100*lab[0], a: 100*lab[1], b: 100*lab[2]});
-  console.log('LAB color');
-  console.log(color);
+
   
   env.color = new THREE.Color(color.red / 255.0, color.green / 255.0, color.blue / 255.0);
   if (args.length > 3) env.opacity = await interpretate(args[3], env);
