@@ -4155,6 +4155,11 @@ g3d.Directive = async (args, env) => {
 
 g3d.PlaneGeometry = () => { };
 
+core.Masking = () => "Masking"
+
+g3d.InfinitePlane = async (args, env) => {}
+core.InfiniteLine = async (args, env) => {}
+
 const arrayRange = (start, stop, step) =>
 Array.from(
 { length: (stop - start) / step + 1 },

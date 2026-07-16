@@ -1239,12 +1239,32 @@ Pane /: EventHandler[p_Pane, list_List] := With[{
 Unprotect[BoundaryMeshRegion]
 FormatValues[BoundaryMeshRegion] = {}
 
+Unprotect[CSGRegion];
+FormatValues[CSGRegion] = {};
+
+CSGRegion /: MakeBoxes[u_CSGRegion, StandardForm] := With[{b = DiscretizeRegion[u]}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+  If[ByteCount[u] > 3250,
+    LeakyModule[{temporal},
+      With[
+        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
+      ]
+    ]
+    
+  ,
+    ViewBox[b, r]
+  ]
+  
+]
 
 BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel, temporal]},
+        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;
@@ -1267,7 +1287,7 @@ MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimens
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel, temporal]},
+        {v = Interpretation[Labeled[r, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;

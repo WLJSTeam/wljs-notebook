@@ -8387,18 +8387,7 @@ gives an estimate of the geo location associated with the IP address \
 given.\n\nFindGeoLocation[\"<i>address</i>\"] attempts to find the geo \
 location associated with the street address \
 given.\n\nFindGeoLocation[<i>entity</i>] gives the geo location associated \
-with the specified entity."|>, <|"label" -> "FindGeometricConjectures", 
-  "type" -> "keyword", "info" -> "FindGeometricConjectures[<i>scene</i>] \
-finds conjectures that appear to hold for the GeometricScene object \
-<i>scene</i> and adds these conjectures to the scene \
-object.\n\nFindGeometricConjectures[{<i>scene</i><sub>1</sub>,<i>scene</i><su\
-b>2</sub>,...}] finds conjectures that appear to hold for all \
-instances <i>scene</i><sub><i>i</i></sub> of a geometric scene and returns a \
-combined scene with the conjectures \
-added.\n\nFindGeometricConjectures[<i>scenes</i>,<i>patt</i>] adds only \
-conjectures that match the pattern \
-<i>patt</i>.\n\nFindGeometricConjectures[<i>scenes</i>,<i>patt</i>,<i>n</i>] \
-adds only up to <i>n</i> conjectures."|>, 
+with the specified entity."|>,
  <|"label" -> "FindGeometricTransform", "type" -> "keyword", 
   "info" -> "FindGeometricTransform[<i>pts</i><sub>1</sub>,<i>pts</i><sub>2</\
 sub>] finds a geometric transformation that aligns positions specified by \
@@ -10252,15 +10241,6 @@ GeoGraphics primitive that represents a custom marker at the location \
 <i>loc</i>.\n\nGeoMarker[{<i>loc</i><sub>1</sub>,<i>loc</i><sub>2</sub>,\
 ...},<i>marker</i>] is a GeoGraphics primitive that represents custom \
 markers at locations <i>loc</i><sub><i>i</i></sub>."|>, 
- <|"label" -> "GeometricAssertion", "type" -> "keyword", 
-  "info" -> "GeometricAssertion[<i>obj</i>,<i>prop</i>] represents the \
-assertion that the geometric object <i>obj</i> satisfies \
-<i>prop</i>.\n\nGeometricAssertion[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</\
-sub>,...},<i>prop</i>] represents the assertion that the \
-<i>obj</i><sub><i>i</i></sub> satisfy \
-<i>prop</i>.\n\nGeometricAssertion[<i>objs</i>,<i>prop</i><sub>1</sub>,<i>pro\
-p</i><sub>2</sub>,...] represents the assertion that <i>objs</i> \
-satisfies each of the <i>prop</i><sub><i>i</i></sub>."|>, 
  <|"label" -> "GeometricBrownianMotionProcess", "type" -> "keyword", 
   "info" -> "GeometricBrownianMotionProcess[\[Mu],\[Sigma],<i>x</i><sub>0</su\
 b>] represents a geometric Brownian motion process with drift \[Mu], \
@@ -10270,43 +10250,8 @@ volatility \[Sigma], and initial value <i>x</i><sub>0</sub>."|>,
 distribution with probability parameter <i>p</i>. "|>, 
  <|"label" -> "GeometricMean", "type" -> "keyword", 
   "info" -> "GeometricMean[<i>data</i>] gives the geometric mean of the \
-values in <i>data</i>."|>, <|"label" -> "GeometricScene", 
-  "type" -> "keyword", "info" -> "GeometricScene[{<i>p</i><sub>1</sub>,<i>p</\
-i><sub>2</sub>,...},{<i>hyp</i><sub>1</sub>,<i>hyp</i><sub>2</sub>,\
-...}] represents an abstract 2D geometric scene defined by the \
-hypotheses <i>hyp</i><sub><i>i</i></sub> in terms of the symbolic points \
-<i>p</i><sub><i>i</i></sub>.\n\nGeometricScene[{{<i>p</i><sub>1</sub>,<i>p</i\
-><sub>2</sub>,...},{<i>k</i><sub>1</sub>,<i>k</i><sub>2</sub>,\
-...}},<i>hyps</i>] represents a scene whose hypotheses depend on the \
-symbolic scalar quantities \
-<i>k</i><sub><i>i</i></sub>.\n\nGeometricScene[{{<i>p</i><sub>1</sub>-&gt;{\
-<i>x</i><sub>1</sub>,<i>y</i><sub>1</sub>},...},{<i>k</i><sub>1</sub>\
--&gt;<i>v</i><sub>1</sub>,...}},<i>hyps</i>] represents a specific \
-instance with explicit values for all points and scalar \
-quantities.\n\nGeometricScene[<i>params</i>,<i>hyps</i>,{<i>con</i><sub>1</su\
-b>,<i>con</i><sub>2</sub>,...}] represents a scene together with some \
-conclusions <i>con</i><sub><i>i</i></sub> about \
-it.\n\nGeometricScene[{{{<i>p</i><sub>1</sub>-&gt;{<i>x</i><sub>1</sub>,<i>\
-y</i><sub>1</sub>},...},{<i>k</i><sub>1</sub>-&gt;<i>v</i><sub>1</s\
-ub>,...}},...},<i>hyps</i>] represents a collection of \
-specific instances of the same \
-scene.\n\nGeometricScene[{<i>scene</i><sub>1</sub>,<i>scene</i><sub>2</sub>,\
-...}] combines several scene instances into one scene object."|>, 
- <|"label" -> "GeometricStep", "type" -> "keyword", 
-  "info" -> "GeometricStep[{<i>hyp</i><sub>1</sub>,<i>hyp</i><sub>2</sub>,\
-...}] gives a symbolic representation of a step in the definition of \
-a geometric scene, in which the hypotheses <i>hyp</i><sub><i>i</i></sub> are \
-introduced. \n\nGeometricStep[<i>hyps</i>,<i>label</i>] labels the step with \
-<i>label</i> when displaying an instance of the geometric scene."|>, 
- <|"label" -> "GeometricTest", "type" -> "keyword", 
-  "info" -> "GeometricTest[<i>obj</i>,<i>prop</i>] tests whether the \
-geometric object <i>obj</i> satisfies \
-<i>prop</i>.\n\nGeometricTest[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</sub>,\
-...},<i>prop</i>] tests whether the <i>obj</i><sub><i>i</i></sub> \
-satisfy \
-<i>prop</i>.\n\nGeometricTest[<i>objs</i>,<i>prop</i><sub>1</sub>,<i>prop</i>\
-<sub>2</sub>,...] tests whether <i>objs</i> satisfy each of the \
-<i>prop</i><sub><i>i</i></sub>."|>, <|"label" -> "GeometricTransformation", 
+values in <i>data</i>."|>,
+ <|"label" -> "GeometricTransformation",
   "type" -> "keyword", "info" -> "GeometricTransformation[<i>g</i>,<i>tfun</i\
 >] represents the result of applying the transformation function <i>tfun</i> \
 to the geometric objects corresponding to the primitives \
@@ -20323,10 +20268,7 @@ generates a random image of the specified \
 <i>size</i>.\n\nRandomImage[...,<i>size</i>,\"<i>type</i>\"] gives an \
 image converted to the specified type."|>, <|"label" -> "RandomInstance", 
   "type" -> "keyword", "info" -> "RandomInstance[<i>expr</i>] finds a random \
-instance of an expression such as a geometric \
-scene.\n\nRandomInstance[<i>expr</i>] finds a random instance of an \
-expression such as a geometric scene or biomolecular \
-sequence.\n\nRandomInstance[<i>expr</i>,<i>n</i>] finds <i>n</i> instances."|>\
+instance of <i>expr</i>.\n\nRandomInstance[<i>expr</i>,<i>n</i>] finds <i>n</i> instances."|>\
 , <|"label" -> "RandomInteger", "type" -> "keyword", 
   "info" -> "RandomInteger[{<i>i</i><sub><i>min</i></sub>,<i>i</i><sub><i>max\
 </i></sub>}] gives a pseudorandom integer in the range \
@@ -25981,10 +25923,6 @@ negative unate in the variables <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, \
 compressed string representation generated by \
 Compress.\n\nUncompress[\"<i>string</i>\",<i>h</i>] wraps the head <i>h</i> \
 around the expression produced before evaluating it. "|>, 
- <|"label" -> "UnconstrainedParameters", "type" -> "keyword", 
-  "info" -> "UnconstrainedParameters is an option to functions like \
-GeometricScene that specifies what parameters should be treated as \
-unconstrained, so that they can take on any possible value."|>, 
  <|"label" -> "Undefined", "type" -> "keyword", 
   "info" -> 
    "Undefined is a symbol that represents a quantity with no defined value."|>\

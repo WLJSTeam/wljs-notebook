@@ -4163,6 +4163,11 @@ g3d.Directive = async (args, env) => {
 
 g3d.PlaneGeometry = () => { };
 
+core.Masking = () => "Masking";
+
+g3d.InfinitePlane = async (args, env) => {};
+core.InfiniteLine = async (args, env) => {};
+
 g3dComplex.Arrow = async (args, env) => {
   if (args.length > 1)
     env.radius = (await interpretate(args[1], env)) * 0.7;

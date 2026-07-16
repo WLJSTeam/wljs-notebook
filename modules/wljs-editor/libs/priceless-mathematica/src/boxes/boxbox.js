@@ -45,10 +45,8 @@ function semanticSnippet() {
       //if (atEof) from = to = (to <= line.to ? line : state.doc.lineAt(to)).to
       const prev = state.sliceDoc(from, to);
       if (prev.length === 0) {
-        return {
-          changes: { from, to, insert: '(*BB[*)(SemanticInterpretation[" "])(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCV4gEZaZWu6SmpxflFiSXxTMARQJTs1NzCvJTE5jAqkBmRBUmpMazAaSKinKzEsHi4UUlaaiqeACCSdm5kBUBYMklWKxqPFITUyBqpFAss8zryS1qKAotSQR5MRoJQAneDHG"*)(*]BB*)' },
-          range: EditorSelection.cursor(from)
-        };
+        interpretate.alert('Select prompt text');
+        return {};
       }
       return {
         changes: { from, to, insert: '(*BB[*)(SemanticInterpretation["'+String(prev)+'"])(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCV4gEZaZWu6SmpxflFiSXxTMARQJTs1NzCvJTE5jAqkBmRBUmpMazAaSKinKzEsHi4UUlaaiqeACCSdm5kBUBYMklWKxqPFITUyBqpFAss8zryS1qKAotSQR5MRoJQAneDHG"*)(*]BB*)' },
