@@ -622,20 +622,48 @@ interpretate.contextExpand(sound);
 const isCharDigit = n => n < 10;
 
 const halftonescale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-//TODO: Implement those
-sound.SoundNote = async (args, env) => {
-    if (env.hold) return (env) => {
-        return sound.SoundNote(args, env)
-    };
-    
-    let notes = await interpretate(args[0], env);
-    if (NumericArrayObject.Q(notes)) notes = notes.normal();
-    //console.warn(notes);
+const noteName = note => halftonescale[Math.abs(note % halftonescale.length)] + String(3 + Math.floor(note / 12.0));
+const noteText = note => { try { return String(note) } catch { return '?'; } };
+const notePreview = note => Array.isArray(note) ? note.map(notePreview).join('+') : typeof note == 'number' ? noteName(note) : noteText(note);
+const flattenNotes = notes => Array.isArray(notes) ? notes.flatMap(flattenNotes) : [notes];
+const notePitch = note => {
+    if (typeof note == 'number') return note;
+    const match = noteText(note).match(/^([A-G])([#b]?)(-?\d+)?$/i);
+    if (!match) return null;
+    return 12 * ((match[3] || 4) - 3) + ({C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11}[match[1].toUpperCase()]) + (match[2] == '#' ? 1 : match[2] == 'b' ? -1 : 0);
+};
+const pianoRoll = (sounds) => {
+    const pitches = sounds.map(({notes}) => flattenNotes(notes).map(notePitch).filter((note) => note !== null));
+    const all = pitches.flat();
+    if (!all.length) return;
+    let low = all[0], high = low;
+    for (const pitch of all) { low = Math.min(low, pitch); high = Math.max(high, pitch); }
+    const width = Math.max(24, sounds.length * 8), height = 32;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    for (let i = 0; i < pitches.length; i++) {
+        const group = document.createElementNS(svg.namespaceURI, 'g');
+        const title = document.createElementNS(svg.namespaceURI, 'title');
+        title.textContent = notePreview(sounds[i].notes);
+        group.append(title);
+        for (const pitch of pitches[i]) {
+            const note = document.createElementNS(svg.namespaceURI, 'rect');
+            note.setAttribute('x', i * 8 + 1);
+            note.setAttribute('y', high == low ? 14 : 2 + (high - pitch) * 26 / (high - low));
+            note.setAttribute('width', 6);
+            note.setAttribute('height', 3);
+            note.setAttribute('rx', 1);
+            note.setAttribute('fill', 'currentColor');
+            group.append(note);
+        }
+        svg.append(group);
+    }
+    return svg;
+};
 
-    let duration = (await interpretate(args[1], env));
-    if (NumericArrayObject.Q(duration)) duration = duration.normal();
-    if (!duration) duration = '4n';    
-
+const playSoundNote = (notes, duration, env) => {
     const makeNote = (raw) => {
         let note = raw;
         
@@ -646,7 +674,7 @@ sound.SoundNote = async (args, env) => {
             //console.log((note) % halftonescale.length);
             console.log(note);
             console.log(note);
-            note = (halftonescale[Math.abs((note) % halftonescale.length)] + String(3 + Math.floor(note / 12.0)));
+            note = noteName(note);
             console.log();
             
             
@@ -672,9 +700,20 @@ sound.SoundNote = async (args, env) => {
 
     env.now += 0.5;
 };
-sound.SampledSoundFunction = async (args, env) => {
 
+sound.SoundNote = async (args, env) => {
+    let notes = await interpretate(args[0], env);
+    if (NumericArrayObject.Q(notes)) notes = notes.normal();
+    //console.warn(notes);
+
+    let duration = (await interpretate(args[1], env));
+    if (NumericArrayObject.Q(duration)) duration = duration.normal();
+    if (!duration) duration = '4n';
+
+    if (env.soundPool) return env.soundPool.push({notes, duration});
+    playSoundNote(notes, duration, env);
 };
+sound.SampledSoundFunction = async (args, env) => {};
 
 let Tone;
 
@@ -694,9 +733,11 @@ sound.Sound = async (args, env) => {
     if (!Tone) Tone = (await import('./index-503cf143.js'));
     if (!globalSynth) globalSynth = new Tone.PolySynth(Tone.Synth).set({'volume': -8}).toDestination(); 
 
+    const soundPool = [];
     const object = await interpretate(args[0], {
-        ...env, context:sound, Tone: Tone, hold: true
+        ...env, context:sound, Tone: Tone, soundPool
     });
+    if (isAudioBuffer(object)) soundPool.push({buffer: object});
   
     if (env.element) {
         env.element.classList.add(...('sm-controls cursor-pointer py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card text-xs'.split(' ')));
@@ -706,23 +747,19 @@ sound.Sound = async (args, env) => {
      <path class="group-hover:opacity-0" d="M3 11V13M6 10V14M9 11V13M12 9
   V15M15 6V18M18 10V14M21 11V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
      <path d="M3 11V13M6 8V16M9 10V14M12 7V17M15 4V20M18 9V15M21 11V13" class="opacity-0 group-hover:opacity-100" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-     </svg> <span class="leading-normal pl-1">${object.length} sec</span>`;
+     </svg>`;
+        const notes = soundPool.filter((note) => 'notes' in note);
+        if (notes.length) {
+            const label = document.createElement('span');
+            label.className = 'leading-normal pl-1 inline-block align-middle max-w-80 max-h-12 overflow-auto';
+            const roll = pianoRoll(notes);
+            if (roll) label.append(roll);
+            else label.textContent = notes.map(({notes}) => notePreview(notes)).join(' · ');
+            env.element.append(label);
+        }
     }
   
     //const targetRate = ctx.sampleRate;
-    if (isAudioBuffer(object)) {
-        const player = await new Tone.Player(object).toDestination();
-        player.fadeOut = 0.05;
-        player.fadeIn = 0.01;
-        // play as soon as the buffer is loaded
-        if (env.element)
-            env.element.addEventListener('click', () => player.start());
-        else 
-            player.start();
-
-        return;
-    }
-
     const play = async () => {
         console.log('Play!');
 
@@ -738,16 +775,15 @@ sound.Sound = async (args, env) => {
         env.synth = synth;
         env.now = now;
 
-        if (Array.isArray(object)) {
-            //assumming sound note
-            const copy = {...env, context: sound};
-            for (const note of object) {
-                console.log(note);
-                interpretate(note, copy);
+        for (const sound of soundPool) {
+            if (sound.buffer || sound.data) {
+                const player = new Tone.Player(sound.buffer || sampledBuffer(sound.data, sound.rate, Tone)).toDestination();
+                player.fadeOut = 0.05;
+                player.fadeIn = 0.01;
+                player.start();
+            } else {
+                playSoundNote(sound.notes, sound.duration, env);
             }
-        } else {
-      
-            object({...env, context: sound});
         }
     };
 
@@ -759,25 +795,26 @@ sound.Sound = async (args, env) => {
   };
   
   
-  sound.SampledSoundList = async (args, env) => {
+const sampledBuffer = (data, rate, Tone) => {
     //assume 32bit float
-
-    let data = await interpretate(args[0], env);
-    const rate = await interpretate(args[1], env) | 8000;
-  
-    //console.log(data);
-    
-    data.length / rate;
     let buffer;
 
     if (NumericArrayObject.Q(data)) {
-      buffer  = env.Tone.context.createBuffer(1, data.buffer.length, rate);
+      buffer  = Tone.context.createBuffer(1, data.buffer.length, rate);
       buffer.copyToChannel(new Float32Array(data.buffer), 0);      
     } else {
-      buffer  = env.Tone.context.createBuffer(1, data.length, rate);
+      buffer  = Tone.context.createBuffer(1, data.length, rate);
       buffer.copyToChannel(new Float32Array(data), 0);
     }
     //console.log(buffer.getChannelData(0)[110]);
 
     return buffer;
+};
+
+  sound.SampledSoundList = async (args, env) => {
+    const data = await interpretate(args[0], env);
+    const rate = await interpretate(args[1], env) | 8000;
+
+    if (env.soundPool) env.soundPool.push({data, rate});
+    else return sampledBuffer(data, rate, env.Tone);
 };
