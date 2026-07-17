@@ -1957,7 +1957,7 @@ function create_window(opts, cbk = () => {}) {
                     //scrollBounce: true,
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false,
-                    offscreen: options.offscreen 
+                    offscreen: (options.offscreen) 
                 },
                 ...options.override
 
@@ -2004,7 +2004,7 @@ function create_window(opts, cbk = () => {}) {
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false ,
-                    offscreen: options.offscreen
+                    offscreen: (options.offscreen)
                 },
                 ...options.override
 
@@ -2102,7 +2102,7 @@ function create_window(opts, cbk = () => {}) {
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false ,
-                    offscreen: options.offscreen
+                    offscreen: (options.offscreen)
                 },
                 ...options.override
 
