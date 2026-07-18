@@ -110,7 +110,7 @@ Video /: MakeBoxes[
         gui[Video`VideoGUIDump`video, Video`VideoGUIDump`fmt]
     ]
 
-template = StringTemplate["<video width=\"auto\" height=\"auto\" preload=\"metadata\" controls class=\"rounded\" style=\"vertical-align:middle\"><source src=\"/downloadFile/?path=``\"/></video>"]
+template = StringTemplate["<video width=\"auto\" height=\"auto\" preload=\"metadata\" controls class=\"rounded\" style=\"vertical-align:middle; max-width:1024px;\"><source src=\"/downloadFile/?path=``\"/></video>"]
 
 gui[Video`VideoGUIDump`video_Video, Video`VideoGUIDump`fmt_] := With[{path = URLEncode[FindFile[Information[Video`VideoGUIDump`video, "ResourcePath"] ] ]}, Module[{videoSymbol},
 With[{
