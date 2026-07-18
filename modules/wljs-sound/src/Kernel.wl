@@ -65,7 +65,7 @@ Unprotect[Sound]
 Sound /: MakeBoxes[s_Sound, form: StandardForm] := With[{
 
 },
-  If[ByteCount[s] < 1024,
+  If[ByteCount[s] < 3 1024,
     ViewBox[s, s]
   ,
     With[{
@@ -80,6 +80,111 @@ Sound /: MakeBoxes[s_Sound, form: StandardForm] := With[{
 ]
 
 System`WLXForm;
+
+ClearAll[musicInputBoxes]
+musicInputBoxes[expr_] := ToString[expr, InputForm]
+
+Scan[
+  Function[s,
+    Unprotect[s];
+    FormatValues[s] = {};
+    s /: MakeBoxes[expr_s, form : (StandardForm | WLXForm)] := musicInputBoxes[expr]
+  ],
+  {MusicNote, MusicRest, MusicChord, MusicMeasure, MusicVoice, MusicScore,
+   MusicPitch, MusicDuration, MusicInterval, MusicKeySignature,
+   MusicTimeSignature, MusicScale}
+]
+
+
+PianoViewBox;
+
+MusicScore /: MakeBoxes[m_MusicScore, StandardForm] := With[{},
+If[ByteCount[m] < 3 1024,
+  ViewBox[m, Sound[m]]
+,
+  With[{
+      o = CreateFrontEndObject[m]
+  },{
+      out = MakeBoxes[o, StandardForm]
+  },
+      ViewBox[out,Sound[o]]
+  ]
+]
+]
+
+MusicRest /: MakeBoxes[m_MusicRest, StandardForm] := With[{above = { 
+          {BoxForm`SummaryItem[{"Duration: ", m["Duration"]["Duration"]}]}
+        }},
+      BoxForm`ArrangeSummaryBox[
+           MusicRest, (* head *)
+           m,      (* interpretation *)
+           None,    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
+MusicPitch /: MakeBoxes[m_MusicPitch, StandardForm] := With[{},
+      BoxForm`ArrangeSummaryBox[
+           MusicPitch, (* head *)
+           m,      (* interpretation *)
+           ViewDecorator["RawText", m["Key"]<>m["Octave"]],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           {},    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
+MusicDuration /: MakeBoxes[m_MusicDuration, StandardForm] := With[{},
+      BoxForm`ArrangeSummaryBox[
+           MusicDuration, (* head *)
+           m,      (* interpretation *)
+           ViewDecorator["RawText", ToString@ToString[m["Duration"], InputForm]],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           {},    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
+MusicNote /: MakeBoxes[m_MusicNote, StandardForm] := With[{above={
+{BoxForm`SummaryItem[{"Note: ", Style[StringTemplate["````"][m["Pitch"]["Key"],m["Pitch"]["Octave"]], 9]}]},
+{BoxForm`SummaryItem[{"Duration: ", Style[ToString@ToString[m["Duration"]["Duration"], InputForm], 9]}]}
+}},
+      BoxForm`ArrangeSummaryBox[
+           MusicNote, (* head *)
+           m,      (* interpretation *)
+           PianoViewBox[{m["Pitch"]}],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
+MusicChord /: MakeBoxes[m_MusicChord, StandardForm] := With[{above={
+{BoxForm`SummaryItem[{"Name: ", Style[StringTemplate["``"][m["Name"]], 9]}]},
+{BoxForm`SummaryItem[{"Root: ", Style[StringTemplate["``"][m["Root"]["Key"]], 9]}]},
+{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Key"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
+}},
+      BoxForm`ArrangeSummaryBox[
+           MusicChord, (* head *)
+           m,      (* interpretation *)
+           PianoViewBox[m["PitchList"]],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
+
+MusicScale /: MakeBoxes[m_MusicScale, StandardForm] := With[{above={
+{BoxForm`SummaryItem[{"Name: ", Style[StringTemplate["``"][m["Name"]], 9]}]},
+{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Key"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
+}},
+      BoxForm`ArrangeSummaryBox[
+           MusicScale, (* head *)
+           m,      (* interpretation *)
+           PianoViewBox[m["PitchList"]],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+]
 
 Unprotect[Sound]
 Sound /: MakeBoxes[s_Sound, WLXForm] := With[{o = CreateFrontEndObject[s]},
@@ -320,15 +425,24 @@ $rootPackageDirectory = DirectoryName[$InputFileName] // ParentDirectory;
 
 If[Internal`Kernel`Watchdog["Enabled"],
   With[{file = FileNameJoin[{$rootPackageDirectory, "src", "Kernel.wl"}]},
+    Internal`Kernel`Watchdog["Assertion", "EmitSound",
+      DownValues[EmitSound]//Hash
+    ,
+      Get[file]
+    ];
     Internal`Kernel`Watchdog["Assertion", "Audio",
       FormatValues[Audio]//Hash
     ,
       Get[file]
     ];
+    Internal`Kernel`Watchdog["Assertion", "MusicChord",
+      FormatValues[MusicChord]//Hash
+    ,
+      Get[file]
+    ];  
   ]
 ];
 
 
 End[]
 EndPackage[]
-

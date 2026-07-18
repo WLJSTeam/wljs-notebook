@@ -16367,6 +16367,20 @@ distribution with mean vector \
 \[Nu].\n\nMultivariateTDistribution[\[Mu],\[CapitalSigma],\[Nu]] represents \
 the multivariate Student t distribution with location \[Mu], scale matrix \
 \[CapitalSigma], and \[Nu] degrees of freedom."|>, 
+ <|"label" -> "MusicChord", "type" -> "keyword", "info" -> "MusicChord[notes] represents a musical chord.\n\nMusicChord[notes, duration] specifies the chord duration."|>,
+ <|"label" -> "MusicDuration", "type" -> "keyword", "info" -> "MusicDuration[duration] represents a duration for a musical note or rest."|>,
+ <|"label" -> "MusicInterval", "type" -> "keyword", "info" -> "MusicInterval[spec] represents an interval between two musical pitches."|>,
+ <|"label" -> "MusicKeySignature", "type" -> "keyword", "info" -> "MusicKeySignature[spec] represents a key signature for a musical measure, voice, or score."|>,
+ <|"label" -> "MusicMeasure", "type" -> "keyword", "info" -> "MusicMeasure[events] represents a musical measure."|>,
+ <|"label" -> "MusicNote", "type" -> "keyword", "info" -> "MusicNote[p] represents a musical note with pitch p.\n\nMusicNote[p, duration] specifies the note duration."|>,
+ <|"label" -> "MusicObjectQ", "type" -> "keyword", "info" -> "MusicObjectQ[expr] yields True if expr is a musical object, and False otherwise."|>,
+ <|"label" -> "MusicPitch", "type" -> "keyword", "info" -> "MusicPitch[spec] represents the pitch of a musical note."|>,
+ <|"label" -> "MusicRest", "type" -> "keyword", "info" -> "MusicRest[] represents a musical rest.\n\nMusicRest[duration] specifies the rest duration."|>,
+ <|"label" -> "MusicScale", "type" -> "keyword", "info" -> "MusicScale[spec] represents a musical scale."|>,
+ <|"label" -> "MusicScore", "type" -> "keyword", "info" -> "MusicScore[voices] represents a musical score containing one or more voices."|>,
+ <|"label" -> "MusicTempo", "type" -> "keyword", "info" -> "MusicTempo specifies the musical tempo used during playback."|>,
+ <|"label" -> "MusicTimeSignature", "type" -> "keyword", "info" -> "MusicTimeSignature[spec] represents a time signature for a musical measure, voice, or score."|>,
+ <|"label" -> "MusicVoice", "type" -> "keyword", "info" -> "MusicVoice[events] represents a musical voice."|>,
  <|"label" -> "N", "type" -> "keyword", "info" -> "N[<i>expr</i>] gives the \
 numerical value of <i>expr</i>. \n\nN[<i>expr</i>,<i>n</i>] attempts to give \
 a result with <i>n</i>\[Hyphen]digit precision. "|>, 
