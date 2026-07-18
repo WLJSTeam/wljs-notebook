@@ -20,6 +20,12 @@ MeshLambertMaterial::usage = ""
 MeshPhongMaterial::usage = ""
 MeshFogMaterial::usage = "works only with RTX on"
 
+Unprotect[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading];
+ClearAll[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading];
+
+ToonShading[] = MeshMaterial[MeshToonMaterial[]];
+ToonShading[color_] := Directive[color, MeshMaterial[MeshToonMaterial[]]];
+
 LinearFog::usage = "LinearFog[], LinearFog[col_], LinearFog[col_, {near_, far_}] adds a linear fog to a 3D scene"
 
 Begin["`Tools`"]

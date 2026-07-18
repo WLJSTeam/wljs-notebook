@@ -103,7 +103,7 @@ Graphics /: EventHandler[Graphics[args_, opts:OptionsPattern[] ], list_List ] :=
     ] 
 ]
 
-Options[Graphics] = Join[Options[Graphics], {"Controls"->True}];
+Options[Graphics] = Join[Options[Graphics], {"Controls"->True}];*)
 
 MakeExpressionBox[expr_, uid_] := CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] , StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet
 

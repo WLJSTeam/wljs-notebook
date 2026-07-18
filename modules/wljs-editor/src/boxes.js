@@ -10,6 +10,10 @@
   boxes.UpTo = () => {}
   boxes.LightDarkSwitched = () => {}
 
+  boxes.Replace = () => {
+    console.error('Replace must NOT be evaluated on the frontend. Seek for some errors');
+  }
+  
   boxes.LineBreakWithin = () => {}
 
   boxes.NumberMarks = () => "NumberMarks"
@@ -802,7 +806,7 @@
     env.element.style.alignItems = "baseline";
     env.element.appendChild(editor);
     env.element.appendChild(post); 
-  }
+  } 
 
   boxes.ViewDecorator.Around = async (args, env) => {
     const mean = await interpretate(args[0], env);
@@ -1785,6 +1789,7 @@
 
     if ('Background' in options) {
       env.element.style.backgroundColor = options.Background;
+      env.element.classList.add('rounded-md');
     } 
 
     if ('FontSize' in options) {
@@ -1851,7 +1856,9 @@
     }
 
     if ('Frame' in options) {
-      if (options.Frame) env.element.classList.add('frame-box');
+      if (options.Frame) {
+        env.element.classList.add('frame-box');
+      }
     }
 
     if ('ShowContents' in options) {
@@ -2229,7 +2236,50 @@
     return;
   }
 
+  boxes.ViewDecorator.fFE = async (args, env) => {
+    env.element.classList.add('wljs-card', 'rounded-md', 'flex', 'flex-row', 'gap-x-1', 'text-sm');
+    const base = await interpretate(args[0], env);
+    const rank = await interpretate(args[1], env);
+    const b = document.createElement('span');
+    const r = document.createElement('span');
+    b.innerText = base;
+    r.innerText = rank.join(',');
+    env.element.appendChild(b);
+    env.element.appendChild(r);
+  }
+
   boxes.IntegrateBox = boxes.ViewDecorator.Integrate
+
+  const symbolicArrays = {
+    VS: [null, '→', '', true], VA: [null, '', '', true],
+    VM: [null, '↔'], VMI: [null, '↔', '-1'],
+    VI: ['𝟏', '', '', true], VZ: ['𝟎', '', '', true]
+  };
+  const symbolicArray = async (args, env, [fixed, over = '', suffix = '', hasDims = false]) => {
+    const values = [...args];
+    const name = fixed || await interpretate(values.shift(), env);
+    let dims = hasDims ? values.pop() : 0;
+    if (Array.isArray(dims) && dims[0] === 'List') dims = dims.slice(1);
+    if (dims === '0') dims = 0;
+    const add = (parent, tag, text, classes = '') => {
+      const el = document.createElement(tag);
+      el.textContent = text;
+      el.className = classes;
+      parent.appendChild(el);
+      return el;
+    };
+    env.element.classList.add('inline-flex', 'items-end', 'text-sm');
+    env.element.style.verticalAlign = 'bottom';
+    const stack = add(env.element, 'span', '', 'inline-flex flex-col');
+    if (over) add(stack, 'span', over).style.lineHeight = 0;
+    add(stack, 'span', String(name).replace(/^"|"$/g, ''), 'font-semibold');
+    if (dims) add(env.element, 'sub', [].concat(dims).map(d => String(d).replace(/^'|'$/g, '')).join('×'), 'ml-0.5 text-xs');
+    if (suffix) add(env.element, 'sup', suffix).style.alignSelf = 'flex-start';
+  }
+
+  Object.entries(symbolicArrays).forEach(([name, type]) => {
+    boxes.ViewDecorator[name] = (args, env) => symbolicArray(args, env, type);
+  });
 
   boxes["CoffeeLiqueur`Extensions`Boxes`Tools`InnerExpression"] = async (args, env) => {
     if (args.length == 0) {
@@ -2487,7 +2537,9 @@
       }
 
       if ('Frame' in options) {
-        if (options.Frame) env.element.classList.add('frame-box');
+        if (options.Frame) {
+          env.element.classList.add('frame-box', 'rounded-md');
+        }
       }
 
       if ('ShowContents' in options) {

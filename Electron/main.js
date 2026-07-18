@@ -1957,7 +1957,7 @@ function create_window(opts, cbk = () => {}) {
                     //scrollBounce: true,
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false,
-                    offscreen: options.offscreen 
+                    offscreen: (options.offscreen) 
                 },
                 ...options.override
 
@@ -2004,7 +2004,7 @@ function create_window(opts, cbk = () => {}) {
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false ,
-                    offscreen: options.offscreen
+                    offscreen: (options.offscreen)
                 },
                 ...options.override
 
@@ -2102,7 +2102,7 @@ function create_window(opts, cbk = () => {}) {
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_main.js'),
                     backgroundThrottling:  false ,
-                    offscreen: options.offscreen
+                    offscreen: (options.offscreen)
                 },
                 ...options.override
 
@@ -2934,6 +2934,17 @@ app.whenReady().then(() => {
             
         }
     })
+
+    ipcMain.on('set-min-size', (e, minWidth, minHeight) => {
+        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
+        if (
+            senderWindow &&
+            Number.isFinite(minWidth) && minWidth >= 0 &&
+            Number.isFinite(minHeight) && minHeight >= 0
+        ) {
+            senderWindow.setMinimumSize(Math.round(minWidth), Math.round(minHeight));
+        }
+    });
 
     ipcMain.on('system-window-toggle', (e, p) => {
         const bonds = windows.focused.win.getBounds();

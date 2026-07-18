@@ -816,12 +816,78 @@ TemplateBox[expr_List, "DateObject", __] := With[{date = expr[[1]][[1]][[1]]},
 
 TemplateBox[expr_List, "SummaryPanel"] := RowBox[expr]
 
-TemplateBox[{expr_, opts__}, "Highlighted"] := StyleBox[expr, Background->Yellow, Frame->True] 
+TemplateBox[{expr_, opts__}, "Highlighted"] := StyleBox[expr, Background->(*VB[*)(RGBColor[1, 1, 0])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qYgCDD/boDAYGAO7rEHU="*)(*]VB*), Frame->True] 
+
+(* :: Symbolic Matrix Vectors :: *)
+
+TemplateBox[{name_, dim_}, "VectorSymbol2", ___] := ViewBox[RowBox[{"VectorSymbol[", name, ",", dim, "]"}], ViewDecorator["VS", name, dim]]
+
+TemplateBox[{name_}, "VectorSymbol1", ___] := ViewBox[RowBox[{"VectorSymbol[",name,"]"}], ViewDecorator["VS", name, 0]]
+
+TemplateBox[{name_}, "Transpose", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "T"], Head->Transpose]
+]
+
+TemplateBox[{name_}, "ConjugateTranspose", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "&dagger;"], Head->ConjugateTranspose]
+]
+
+TemplateBox[{name_}, "Norm", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "&#8214;"], Head->Norm]
+]
+
+TemplateBox[{name_, rank_, dimensions__}, "ArraySymbol2", ___] := With[{dims = {dimensions}},
+  ViewBox[
+    RowBox[{"ArraySymbol[", name, ",{", Sequence@@Riffle[dims, ","], "}]"}],
+    ViewDecorator["VA", name, dims]
+  ]
+]
+
+TemplateBox[{name_}, "ArraySymbol1", ___] := ViewBox[
+  RowBox[{"ArraySymbol[",name,"]"}],
+  ViewDecorator["VA", name, 0]
+]
+
+TemplateBox[{name_, m_, n_}, "MatrixSymbol2", ___] := ViewBox[
+  RowBox[{"MatrixSymbol[", name, ",{", m, ",", n,"}]"}],
+  ViewDecorator["VM", name]
+]
+
+TemplateBox[{name_}, "MatrixSymbol1", ___] := ViewBox[
+  RowBox[{"MatrixSymbol[", name, "]"}],
+  ViewDecorator["VM", name]
+]
+
+TemplateBox[{boxes_}, "Inverse", ___] := BoxBox[boxes, ViewDecorator["Transpose", "-1"], Head->Inverse]
+
+TemplateBox[{base_, super_}, "Superscript", ___] := RowBox[{"(*SpB[*)Power[", base, "(*|*),(*|*)",  super, "](*]SpB*)"}]
+
+TemplateBox[{TemplateBox[{dimensions__}, "ImplicitList", ___]}, "SymbolicIdentityArray", ___] := With[{},
+  ViewBox[
+    RowBox[{"SymbolicIdentityArray[{",dimensions,"}]"}],
+    ViewDecorator["VI", ToString[List[dimensions] /. {RowBox -> RowBoxFlatten}]]
+  ]
+]
+
+TemplateBox[{TemplateBox[{dimensions__}, "ImplicitList", ___]}, "SymbolicZerosArray" | SymbolicZerosArray, ___] := With[{},
+  ViewBox[
+    RowBox[{"SymbolicZerosArray[{",dimensions,"}]"}],
+    ViewDecorator["VZ", ToString[List[dimensions] /. {RowBox -> RowBoxFlatten}]]
+  ]
+]
 
 (* :: Indexed Box :: *)
 
 TemplateBox[{symbol_, index__}, "IndexedDefault"] := With[{dp = ViewDecorator["Indexed"], indexSym = StringRiffle[ List[index] /. {RowBox -> RowBoxFlatten}, ","]},
       RowBox[{"(*TB[*)Indexed[(*|*)", symbol, "(*|*), {(*|*)", indexSym, "(*|*)}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+]
+
+
+(* FIelds *)
+Unprotect[FiniteFieldElement]
+FormatValues[FiniteFieldElement] = {};
+FiniteFieldElement /: MakeBoxes[o: FiniteFieldElement[\[ScriptCapitalF]_, rank_], StandardForm] := With[{c = Information[\[ScriptCapitalF], "Characteristic"]},
+  ViewBox[o, ViewDecorator["fFE", c, rank]]
 ]
 
 (* :: Custom Iconize function :: *)
@@ -897,7 +963,7 @@ PaneSelectorBox[list_, opts___] := list[[1]][[2]]
 Unprotect[InterpretationBox]
 
 
-InterpretationBox[placeholder_, expr_, opts___] := With[{data = expr, v = EditorView[ToString[placeholder /. {RowBox->RowBoxFlatten}], "ReadOnly"->True]},
+InterpretationBox[placeholder_, expr_, opts___] := With[{data = expr, v = EditorView[ToString[placeholder /. {RowBox->RowBoxFlatten}], "ReadOnly"->True, "Selectable"->False]},
   RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[v], InputForm], "*)(*]VB*)"}]
 ]
 
@@ -967,7 +1033,7 @@ With[{sym = #},
 Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], StandardForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend2", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
@@ -975,7 +1041,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], StandardForm] := 
 Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], WLXForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True,"Selectable"->False ]
 },
   With[{o = CreateFrontEndObject[ViewDecorator["Legend2", exprView, legendFunction] ]},
     MakeBoxes[o, WLXForm]
@@ -985,7 +1051,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], WLXForm] := With[
 Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], StandardForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
@@ -993,7 +1059,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], StandardForm] := With[{
 Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
   containerUId = ToString[expr, StandardForm] // CreateFrontEndObject // First
 }, With[{
-  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True ]
+  exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
   With[{o = CreateFrontEndObject[ViewDecorator["Legend", exprView, legendFunction] ]},
     MakeBoxes[o, WLXForm]
@@ -1204,17 +1270,22 @@ SetAttributes[BoxForm`ArrangeSummaryBox, HoldAll]
 (* :: Boxes for Graph Object :: *)
 
 Unprotect[Graph] 
-Graph /: MakeBoxes[g_Graph, StandardForm] := With[{c = Insert[GraphPlot[g, ImageSize->200, AspectRatio->1, ImagePadding->None], "Controls"->False, {2,-1}] }, 
-  If[ByteCount[g] > 3250,
+FormatValues[Graph] = {};
+
+Graph /: MakeBoxes[b_Graph, StandardForm] := With[{g=b}, {r = Insert[GraphPlot[g, ImageSize->70, AspectRatio->1, ImagePadding->None], "Controls"->False, {2,-1}] // CreateFrontEndObject},
+  If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
-      With[{v = ViewBox[temporal, CreateFrontEndObject[c] ]},
+      With[
+        {v = Interpretation[Labeled[r // BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
-        temporal = g;
-        v
+        temporal = b;
+        box
       ]
-    ]    
+    ]
+    
   ,
-    ViewBox[g, c] 
+    ViewBox[b, r]
   ]
   
 ]
@@ -1239,12 +1310,32 @@ Pane /: EventHandler[p_Pane, list_List] := With[{
 Unprotect[BoundaryMeshRegion]
 FormatValues[BoundaryMeshRegion] = {}
 
+Unprotect[CSGRegion];
+FormatValues[CSGRegion] = {};
 
-BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+CSGRegion /: MakeBoxes[u_CSGRegion, StandardForm] := With[{b = DiscretizeRegion[u]}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+  If[ByteCount[u] > 3250,
+    LeakyModule[{temporal},
+      With[
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
+      ]
+    ]
+    
+  ,
+    ViewBox[b, r]
+  ]
+  
+]
+
+BoundaryMeshRegion /: MakeBoxes[b_BoundaryMeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel, temporal]},
+        {v = Interpretation[Labeled[r // BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},      
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;
@@ -1263,11 +1354,11 @@ Unprotect[MeshRegion]
 FormatValues[MeshRegion] = {}
 
 
-MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
+MeshRegion /: MakeBoxes[b_MeshRegion, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject },
   If[ByteCount[b] > 3250,
     LeakyModule[{temporal},
       With[
-        {v = Interpretation[Labeled[r, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel, temporal]},
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data in on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
         {box = MakeBoxes[v, StandardForm]},
         AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
         temporal = b;
@@ -1286,19 +1377,22 @@ Unprotect[Region]
 FormatValues[Region] = {}
 
 
-Region /: MakeBoxes[b_Region, StandardForm] := With[{r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->200], Insert[RegionPlot[b, ImageSize->200, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject // BoxForm`ToViewBox},
-  If[ByteCount[b] > 3250,
+Region /: MakeBoxes[u_Region, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+  If[ByteCount[u] > 3250,
     LeakyModule[{temporal},
-      With[{v = ViewBox[temporal, r]},
-        AppendTo[Kernel`Internal`garbage, Hold[temporal]];
-        temporal = b;
-        v
+      With[
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
       ]
     ]
     
   ,
     ViewBox[b, r]
   ]
+  
 ]
 
 (* :: EventObject boxes :: *)
@@ -1611,11 +1705,11 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], StandardForm] :
     If[StringQ[s],
       s
     ,
-      EditorView[ToString[s, StandardForm], "ReadOnly"->True] // CreateFrontEndObject
+      EditorView[ToString[s, StandardForm], "ReadOnly"->True, "Selectable"->False] // CreateFrontEndObject
     ]
   ] &/@ list,
 
-  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True] &/@ list
+  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True, "Selectable"->False] &/@ list
 },
   ViewBox[Null, BoxForm`TabViewBox[labels, values, default] ]
 ]
@@ -1625,18 +1719,20 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], WLXForm] := Wit
     If[StringQ[s],
       s
     ,
-      EditorView[ToString[s, StandardForm], "ReadOnly"->True] // CreateFrontEndObject
+      EditorView[ToString[s, StandardForm], "ReadOnly"->True, "Selectable"->False] // CreateFrontEndObject
     ]
   ] &/@ list,
 
-  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True] &/@ list
+  values = EditorView[ToString[#[[2]], StandardForm], "ReadOnly"->True, "Selectable"->False] &/@ list
 },
   With[{ o = CreateFrontEndObject[BoxForm`TabViewBox[labels, values, default] ]},
     MakeBoxes[o, WLXForm]
   ]
 ]
 
-
+Unprotect[CenteredInterval];
+FormatValues[CenteredInterval] = {}
+CenteredInterval /: MakeBoxes[c_CenteredInterval, StandardForm] := ToString[c, InputForm]
 
 
 (* :: Inactivate Workarounds :: *)
@@ -1727,6 +1823,29 @@ Failure /: MakeBoxes[f:Failure[_, command_Association], form: StandardForm] := W
   ]
 ]
 
+Exception["DataConsistencyError"];
+Unprotect[Exception];
+FormatValues[Exception] = {};
+
+Exception /: MakeBoxes[f_Exception, form: StandardForm] := With[{
+  message = f["Message"],
+  tag = f["ExceptionTag"]
+},
+  With[{},
+    BoxForm`ArrangeSummaryBox[
+                 Exception, (* head *)
+                 f,      (* interpretation *)
+                 BoxForm`failureIcon,    (* icon, use None if not needed *)
+                 (* above and below must be in a format suitable for Grid or Column *)
+                 {
+                   {BoxForm`SummaryItem[{"Exception: ", Style[tag, Bold]}]}, 
+                   {BoxForm`SummaryItem[{message}]}
+                 },    (* always shown content *)
+                 Null (* expandable content. Currently not supported!*)
+    ]
+  ]
+]
+
 Unprotect[Success]
 FormatValues[Success] = {};
 Success /: MakeBoxes[f:Success[__], form: StandardForm] := With[{
@@ -1751,7 +1870,7 @@ Unprotect[Tooltip];
 FormatValues[Tooltip] = {}
 ClearAll[Tooltip]
 
-makeTooltipId[expr_] := BoxForm`TooltipId[ CreateFrontEndObject[EditorView[ToString[expr/.{Charting`iHold -> HoldForm}, StandardForm] ] ][[1]] ]
+makeTooltipId[expr_] := BoxForm`TooltipId[ CreateFrontEndObject[EditorView[ToString[expr/.{Charting`iHold -> HoldForm}, StandardForm], "Selectable"->False, "ReadOnly"->True ] ][[1]] ]
 makeTooltipId[expr_String | expr_Real | expr_Integer] := expr
 
 Tooltip[l1_List, l2_List] := (Tooltip@@#)&/@Transpose[{l1,l2}] /; Length[l1]===Length[l2]
@@ -1798,26 +1917,26 @@ OpenerView /: MakeBoxes[OpenerView[expr:{_, _}], form_] := makeBoxesOpener[expr,
 OpenerView /: MakeBoxes[OpenerView[expr:{_, _}, state_], form_] := makeBoxesOpener[expr, TrueQ[state], form]
 
 
-makeBoxesOpener[{s_String, expr_}, initial_, StandardForm] := With[{eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True ]},
+makeBoxesOpener[{s_String, expr_}, initial_, StandardForm] := With[{eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True, "Selectable"->False ]},
   ViewBox[Null, ViewDecorator["OV", s, eView, initial, True] ]
 ]
 
-makeBoxesOpener[{s_String, expr_}, initial_, WLXForm] := With[{eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ]},
+makeBoxesOpener[{s_String, expr_}, initial_, WLXForm] := With[{eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True,"Selectable"->False ]},
   With[{b = CreateFrontEndObject@ViewDecorator["OV", s, eView, initial, True]},
     MakeBoxes[b, WLXForm]
   ]
 ]
 
 makeBoxesOpener[{s_, expr_}, initial_, StandardForm] := With[{
-  eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True ],
-  sView = CreateFrontEndObject@EditorView[ToString[s, StandardForm], "ReadOnly"->True ]
+  eView = CreateFrontEndObject@EditorView[ToString[expr, StandardForm], "ReadOnly"->True,"Selectable"->False ],
+  sView = CreateFrontEndObject@EditorView[ToString[s, StandardForm], "ReadOnly"->True,"Selectable"->False ]
 },
   ViewBox[Null, ViewDecorator["OV", sView, eView, initial, False] ]
 ]
 
 makeBoxesOpener[{s_, expr_}, initial_, WLXForm] := With[{
-  eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ],
-  sView = EditorView[ToString[s, StandardForm], "ReadOnly"->True ]
+  eView = EditorView[ToString[expr, StandardForm], "ReadOnly"->True ,"Selectable"->False],
+  sView = EditorView[ToString[s, StandardForm], "ReadOnly"->True,"Selectable"->False ]
 },
   With[{b = CreateFrontEndObject@ViewDecorator["OV", sView, eView, initial, False]},
     MakeBoxes[b, WLXForm]

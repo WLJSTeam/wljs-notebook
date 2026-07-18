@@ -230,6 +230,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     return group;
   }
 
+  g2d.Blurring = () => {
+    console.error('Blurring is not supported');
+  }
+  
   g2d.SVGGroup.virtual = true 
   
   g2d.SVGGroup.update = async (args, env) => {
@@ -654,6 +658,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     } else if (typeof ImageSize === 'string'){
       ImageSize = core.DefaultWidth;
     }   
+
+    if (Array.isArray(ImageSize)) {
+      if (!(ImageSize[0] > 0 && ImageSize[1] > 0)) ImageSize = core.DefaultWidth/2.0;
+    }
     
     
     if (!ImageSize) {
@@ -2463,7 +2471,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     if (args.length - oLength > 3) size = await interpretate(args[3], env);
 
     
-
+    if (typeof size == 'number') size = [size, size];
 
     const group = env.svg.append('g');
 
@@ -2531,7 +2539,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     //await instance.execute();   
 
     let fallback = false; //fallback to EditorView
-    if (args[0][0] == 'HoldForm') {
+    try {if (args[0][0] == 'HoldForm') {
       if (Array.isArray(args[0][1])) {
         if (args[0][1][0] == 'Offload') {
 
@@ -2543,6 +2551,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       }
     }
     if (args[0][0] == 'Legended') fallback = true;
+    } catch (et) {
+      fallback = true;
+    }
  
     try {
       if (!fallback) await interpretate(args[0], copy);
@@ -7975,7 +7986,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     let from = await interpretate(args[0], env);
     let to = await interpretate(args[1], env);
 
-    if (!from && !to) {
+    if (!from || !to) {
       from = [-1,-1];
       to = [1,1];
     }

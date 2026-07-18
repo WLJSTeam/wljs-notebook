@@ -1811,15 +1811,7 @@ theory.\n\nAxiomaticTheory[<i>theory</i>,\"<i>property</i>\"] gives the \
 specified property of an axiomatic theory."|>, 
  <|"label" -> "Axis", "type" -> "keyword", "info" -> "Axis is a symbol that \
 represents the axis for purposes of alignment and positioning. "|>, 
- <|"label" -> "AxisLabel", "type" -> "keyword", 
-  "info" -> "AxisLabel is an option for AxisObject that specifies a label for \
-the axis."|>, <|"label" -> "AxisObject", "type" -> "keyword", 
-  "info" -> "AxisObject[<i>path</i>] is a Graphics primitive that represents \
-an axis with a quantitative scale along the path \
-<i>path</i>.\n\nAxisObject[<i>path</i>,<i>scale</i>] uses the scale specified \
-by <i>scale</i>."|>, <|"label" -> "AxisStyle", "type" -> "keyword", 
-  "info" -> "AxisStyle is an option for AxisObject that specifies how to \
-style the path of an axis."|>, <|"label" -> "BabyMonsterGroupB", 
+ <|"label" -> "BabyMonsterGroupB",
   "type" -> "keyword", "info" -> 
    "BabyMonsterGroupB[] represents the sporadic simple baby monster group B."\
 |>, <|"label" -> "Back", "type" -> "keyword", "info" -> "Back is a symbol \
@@ -2911,6 +2903,7 @@ returns the argument of the first Throw generated in the evaluation of \
 first Throw[<i>value</i>,<i>tag</i>] for which <i>form</i> matches \
 <i>tag</i>. \n\nCatch[<i>expr</i>,<i>form</i>,<i>f</i>] returns \
 <i>f</i>[<i>value</i>,<i>tag</i>]. "|>, 
+ <|"label" -> "CatchExceptions", "type" -> "keyword", "info" -> "CatchExceptions[<i>expr</i>,<i>spec</i>] catches and transforms some or all exceptions possibly thrown by <i>expr</i>, according to <i>spec</i>.\n\nCatchExceptions[<i>spec</i>] represents an operator form of CatchExceptions."|>,
  <|"label" -> "CategoricalDistribution", "type" -> "keyword", 
   "info" -> "CategoricalDistribution[{<i>c</i><sub>1</sub>,<i>c</i><sub>2</su\
 b>,...}] represents a uniform categorical distribution over classes \
@@ -3391,6 +3384,12 @@ session cookies for all domains."|>, <|"label" -> "ClebschGordan",
   "info" -> "ClickToCopy[<i>expr</i>] represents a button that copies \
 <i>expr</i> whenever it is clicked.\n\nClickToCopy[<i>label</i>,<i>expr</i>] \
 displays with <i>label</i> on the button."|>, 
+ <|"label" -> "CliffordAlgebra", "type" -> "keyword",
+  "info" -> "CliffordAlgebra[{<i>pvars</i>,<i>nvars</i>,<i>zvars</i>}] gives \
+the Clifford algebra with generators <i>pvars</i>, <i>nvars</i> and \
+<i>zvars</i>.\n\nCliffordAlgebra[{<i>pvars</i>,<i>nvars</i>,<i>zvars</i>},<i>alg</i>] \
+takes the operation names and monomial order settings from the non-commutative \
+algebra <i>alg</i>."|>,
  <|"label" -> "Clip", "type" -> "keyword", "info" -> "Clip[<i>x</i>] gives \
 <i>x</i> clipped to be between -1 and +1. \
 \n\nClip[<i>x</i>,{<i>min</i>,<i>max</i>}] gives <i>x</i> for \
@@ -5063,7 +5062,13 @@ sequences <i>u</i> and <i>v</i>."|>, <|"label" -> "DampingFactor",
   "type" -> "keyword", "info" -> "DampingFactor is an option for FindRoot, \
 which can be used to control convergence behavior. DampingFactor -> <i>n</i> \
 uses a damping factor of <i>n</i> in Newton's method."|>, 
- <|"label" -> "Darker", "type" -> "keyword", "info" -> "Darker[<i>color</i>] \
+ <|"label" -> "DarkBlue", "type" -> "keyword",
+  "info" -> "DarkBlue represents a dark blue color in graphics or style \
+specifications."|>, <|"label" -> "DarkGreen", "type" -> "keyword",
+  "info" -> "DarkGreen represents a dark green color in graphics or style \
+specifications."|>, <|"label" -> "DarkRed", "type" -> "keyword",
+  "info" -> "DarkRed represents a dark red color in graphics or style \
+specifications."|>, <|"label" -> "Darker", "type" -> "keyword", "info" -> "Darker[<i>color</i>] \
 represents a darker version of the specified color. \
 \n\nDarker[<i>color</i>,<i>f</i>] represents a version of the specified color \
 darkened by a fraction <i>f</i>. \n\nDarker[<i>image</i>,...] gives a \
@@ -7391,7 +7396,8 @@ the specified element or property of an example."|>,
  <|"label" -> "Except", "type" -> "keyword", "info" -> "Except[<i>c</i>] is a \
 pattern object which represents any expression except one that matches \
 <i>c</i>. \n\nExcept[<i>c</i>,<i>p</i>] represents any expression that \
-matches <i>p</i> but not <i>c</i>. "|>, <|"label" -> "ExcludedContexts", 
+matches <i>p</i> but not <i>c</i>. "|>,
+ <|"label" -> "Exception", "type" -> "keyword", "info" -> "Exception[<i>spec</i>] creates an Exception object from <i>spec</i>.\n\nException[<i>spec</i>,<i>payload</i>] creates an Exception object from <i>spec</i>, with exception payload <i>payload</i>."|>, <|"label" -> "ExceptionQ", "type" -> "keyword", "info" -> "ExceptionQ[<i>expr</i>] gives True if <i>expr</i> is a valid Exception object, and False otherwise.\n\nExceptionQ[<i>expr</i>,<i>tag</i>] gives True if <i>expr</i> is a valid Exception object of a subtype of <i>tag</i>.\n\nExceptionQ[<i>expr</i>,{<i>tag</i><sub>1</sub>,<i>tag</i><sub>2</sub>,...}] gives True if <i>expr</i> is a valid Exception object of a subtype of any of <i>tag</i><sub>1</sub>, <i>tag</i><sub>2</sub>, ... ."|>, <|"label" -> "ExceptionTypeRegisteredQ", "type" -> "keyword", "info" -> "ExceptionTypeRegisteredQ[<i>sym</i>] gives True if <i>sym</i> is a registered exception type, and False otherwise."|>, <|"label" -> "ExceptionTypes", "type" -> "keyword", "info" -> "ExceptionTypes[] returns a list of all registered exception types.\n\nExceptionTypes[<i>tagspec</i>] returns a list of all registered exception types that are subtypes of the type(s) specified in <i>tagspec</i>."|>, <|"label" -> "ExcludedContexts",
   "type" -> "keyword", "info" -> "ExcludedContexts is an option for \
 FullDefinition, Manipulate and related symbols that gives contexts whose \
 symbols will not have the definitions recursively saved."|>, 
@@ -8387,18 +8393,7 @@ gives an estimate of the geo location associated with the IP address \
 given.\n\nFindGeoLocation[\"<i>address</i>\"] attempts to find the geo \
 location associated with the street address \
 given.\n\nFindGeoLocation[<i>entity</i>] gives the geo location associated \
-with the specified entity."|>, <|"label" -> "FindGeometricConjectures", 
-  "type" -> "keyword", "info" -> "FindGeometricConjectures[<i>scene</i>] \
-finds conjectures that appear to hold for the GeometricScene object \
-<i>scene</i> and adds these conjectures to the scene \
-object.\n\nFindGeometricConjectures[{<i>scene</i><sub>1</sub>,<i>scene</i><su\
-b>2</sub>,...}] finds conjectures that appear to hold for all \
-instances <i>scene</i><sub><i>i</i></sub> of a geometric scene and returns a \
-combined scene with the conjectures \
-added.\n\nFindGeometricConjectures[<i>scenes</i>,<i>patt</i>] adds only \
-conjectures that match the pattern \
-<i>patt</i>.\n\nFindGeometricConjectures[<i>scenes</i>,<i>patt</i>,<i>n</i>] \
-adds only up to <i>n</i> conjectures."|>, 
+with the specified entity."|>,
  <|"label" -> "FindGeometricTransform", "type" -> "keyword", 
   "info" -> "FindGeometricTransform[<i>pts</i><sub>1</sub>,<i>pts</i><sub>2</\
 sub>] finds a geometric transformation that aligns positions specified by \
@@ -10252,15 +10247,6 @@ GeoGraphics primitive that represents a custom marker at the location \
 <i>loc</i>.\n\nGeoMarker[{<i>loc</i><sub>1</sub>,<i>loc</i><sub>2</sub>,\
 ...},<i>marker</i>] is a GeoGraphics primitive that represents custom \
 markers at locations <i>loc</i><sub><i>i</i></sub>."|>, 
- <|"label" -> "GeometricAssertion", "type" -> "keyword", 
-  "info" -> "GeometricAssertion[<i>obj</i>,<i>prop</i>] represents the \
-assertion that the geometric object <i>obj</i> satisfies \
-<i>prop</i>.\n\nGeometricAssertion[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</\
-sub>,...},<i>prop</i>] represents the assertion that the \
-<i>obj</i><sub><i>i</i></sub> satisfy \
-<i>prop</i>.\n\nGeometricAssertion[<i>objs</i>,<i>prop</i><sub>1</sub>,<i>pro\
-p</i><sub>2</sub>,...] represents the assertion that <i>objs</i> \
-satisfies each of the <i>prop</i><sub><i>i</i></sub>."|>, 
  <|"label" -> "GeometricBrownianMotionProcess", "type" -> "keyword", 
   "info" -> "GeometricBrownianMotionProcess[\[Mu],\[Sigma],<i>x</i><sub>0</su\
 b>] represents a geometric Brownian motion process with drift \[Mu], \
@@ -10270,43 +10256,8 @@ volatility \[Sigma], and initial value <i>x</i><sub>0</sub>."|>,
 distribution with probability parameter <i>p</i>. "|>, 
  <|"label" -> "GeometricMean", "type" -> "keyword", 
   "info" -> "GeometricMean[<i>data</i>] gives the geometric mean of the \
-values in <i>data</i>."|>, <|"label" -> "GeometricScene", 
-  "type" -> "keyword", "info" -> "GeometricScene[{<i>p</i><sub>1</sub>,<i>p</\
-i><sub>2</sub>,...},{<i>hyp</i><sub>1</sub>,<i>hyp</i><sub>2</sub>,\
-...}] represents an abstract 2D geometric scene defined by the \
-hypotheses <i>hyp</i><sub><i>i</i></sub> in terms of the symbolic points \
-<i>p</i><sub><i>i</i></sub>.\n\nGeometricScene[{{<i>p</i><sub>1</sub>,<i>p</i\
-><sub>2</sub>,...},{<i>k</i><sub>1</sub>,<i>k</i><sub>2</sub>,\
-...}},<i>hyps</i>] represents a scene whose hypotheses depend on the \
-symbolic scalar quantities \
-<i>k</i><sub><i>i</i></sub>.\n\nGeometricScene[{{<i>p</i><sub>1</sub>-&gt;{\
-<i>x</i><sub>1</sub>,<i>y</i><sub>1</sub>},...},{<i>k</i><sub>1</sub>\
--&gt;<i>v</i><sub>1</sub>,...}},<i>hyps</i>] represents a specific \
-instance with explicit values for all points and scalar \
-quantities.\n\nGeometricScene[<i>params</i>,<i>hyps</i>,{<i>con</i><sub>1</su\
-b>,<i>con</i><sub>2</sub>,...}] represents a scene together with some \
-conclusions <i>con</i><sub><i>i</i></sub> about \
-it.\n\nGeometricScene[{{{<i>p</i><sub>1</sub>-&gt;{<i>x</i><sub>1</sub>,<i>\
-y</i><sub>1</sub>},...},{<i>k</i><sub>1</sub>-&gt;<i>v</i><sub>1</s\
-ub>,...}},...},<i>hyps</i>] represents a collection of \
-specific instances of the same \
-scene.\n\nGeometricScene[{<i>scene</i><sub>1</sub>,<i>scene</i><sub>2</sub>,\
-...}] combines several scene instances into one scene object."|>, 
- <|"label" -> "GeometricStep", "type" -> "keyword", 
-  "info" -> "GeometricStep[{<i>hyp</i><sub>1</sub>,<i>hyp</i><sub>2</sub>,\
-...}] gives a symbolic representation of a step in the definition of \
-a geometric scene, in which the hypotheses <i>hyp</i><sub><i>i</i></sub> are \
-introduced. \n\nGeometricStep[<i>hyps</i>,<i>label</i>] labels the step with \
-<i>label</i> when displaying an instance of the geometric scene."|>, 
- <|"label" -> "GeometricTest", "type" -> "keyword", 
-  "info" -> "GeometricTest[<i>obj</i>,<i>prop</i>] tests whether the \
-geometric object <i>obj</i> satisfies \
-<i>prop</i>.\n\nGeometricTest[{<i>obj</i><sub>1</sub>,<i>obj</i><sub>2</sub>,\
-...},<i>prop</i>] tests whether the <i>obj</i><sub><i>i</i></sub> \
-satisfy \
-<i>prop</i>.\n\nGeometricTest[<i>objs</i>,<i>prop</i><sub>1</sub>,<i>prop</i>\
-<sub>2</sub>,...] tests whether <i>objs</i> satisfy each of the \
-<i>prop</i><sub><i>i</i></sub>."|>, <|"label" -> "GeometricTransformation", 
+values in <i>data</i>."|>,
+ <|"label" -> "GeometricTransformation",
   "type" -> "keyword", "info" -> "GeometricTransformation[<i>g</i>,<i>tfun</i\
 >] represents the result of applying the transformation function <i>tfun</i> \
 to the geometric objects corresponding to the primitives \
@@ -10881,7 +10832,11 @@ graph union of the graphs <i>g</i><sub>1</sub> and \
 <i>g</i><sub>2</sub>, \
 ....\n\nGraphUnion[{<i>v</i>-&gt;<i>w</i>,...},...] \
 uses rules <i>v</i>-&gt;<i>w</i> to specify the graph <i>g</i>."|>, 
- <|"label" -> "Gray", "type" -> "keyword", 
+ <|"label" -> "GrassmannAlgebra", "type" -> "keyword",
+  "info" -> "GrassmannAlgebra[<i>vars</i>] gives the Grassmann algebra with \
+generators <i>vars</i>.\n\nGrassmannAlgebra[<i>vars</i>,<i>alg</i>] takes the \
+operation names and monomial order settings from the non-commutative algebra \
+<i>alg</i>."|>, <|"label" -> "Gray", "type" -> "keyword",
   "info" -> 
    "Gray represents the color gray in graphics or style specifications. "|>, 
  <|"label" -> "GrayLevel", "type" -> "keyword", 
@@ -12486,7 +12441,13 @@ specifies whether to include tables specified in foreign keys."|>,
 specifies whether the endpoints in the time window should be included."|>, 
  <|"label" -> "Increment", "type" -> "keyword", 
   "info" -> "<i>x</i>++ increases the value of <i>x</i> by 1, returning the \
-old value of <i>x</i>. "|>, <|"label" -> "IndefiniteMatrixQ", 
+old value of <i>x</i>. "|>, <|"label" -> "IncrementalFunction",
+  "type" -> "keyword", "info" -> "IncrementalFunction[<i>fun</i>] represents a \
+compilable function that can pause its execution, storing its state to be resumed \
+later."|>, <|"label" -> "IncrementalObject", "type" -> "keyword",
+  "info" -> "IncrementalObject[<i>type</i>][<i>args</i>] creates an object that \
+incrementally returns values according to the specified incremental object type."|>,
+ <|"label" -> "IndefiniteMatrixQ",
   "type" -> "keyword", "info" -> "IndefiniteMatrixQ[<i>m</i>] gives True if \
 <i>m</i> is explicitly indefinite, and False otherwise. "|>, 
  <|"label" -> "IndependenceTest", "type" -> "keyword", 
@@ -16408,6 +16369,21 @@ distribution with mean vector \
 \[Nu].\n\nMultivariateTDistribution[\[Mu],\[CapitalSigma],\[Nu]] represents \
 the multivariate Student t distribution with location \[Mu], scale matrix \
 \[CapitalSigma], and \[Nu] degrees of freedom."|>, 
+ <|"label" -> "MusicChord", "type" -> "keyword", "info" -> "MusicChord[notes] represents a musical chord.\n\nMusicChord[notes, duration] specifies the chord duration."|>,
+ <|"label" -> "MusicDuration", "type" -> "keyword", "info" -> "MusicDuration[duration] represents a duration for a musical note or rest."|>,
+ <|"label" -> "MusicInterval", "type" -> "keyword", "info" -> "MusicInterval[spec] represents an interval between two musical pitches."|>,
+ <|"label" -> "MusicKeySignature", "type" -> "keyword", "info" -> "MusicKeySignature[spec] represents a key signature for a musical measure, voice, or score."|>,
+ <|"label" -> "MusicMeasure", "type" -> "keyword", "info" -> "MusicMeasure[{<i>event</i><sub>1</sub>,<i>event</i><sub>2</sub>,...}] returns a musical measure that contains the musical events <i>event</i><sub>i</sub>.\n\nMusicMeasure[<i>events</i>,<i>ts</i>,<i>ks</i>] returns a musical measure with time signature <i>ts</i> and key signature <i>ks</i>.\n\nMusicMeasure[<i>events</i>,<i>ts</i>,<i>ks</i>,<i>properties</i>] returns a musical measure with the specified property association <i>properties</i>."|>,
+ <|"label" -> "MusicNote", "type" -> "keyword", "info" -> "MusicNote[p] represents a musical note with pitch p.\n\nMusicNote[p, duration] specifies the note duration."|>,
+ <|"label" -> "MusicObjectQ", "type" -> "keyword", "info" -> "MusicObjectQ[expr] yields True if expr is a musical object, and False otherwise."|>,
+ <|"label" -> "MusicPitch", "type" -> "keyword", "info" -> "MusicPitch[<i>p</i>] returns a musical pitch parsed from the pitch specification <i>p</i>.\n\nMusicPitch[<i>p</i>,<i>properties</i>] returns a musical pitch with the specified property association <i>properties</i>.\n\nMusicPitch[<i>music</i>,<i>p</i>,<i>properties</i>] returns a musical pitch with properties inherited from another musical pitch <i>music</i>."|>,
+ <|"label" -> "MusicRest", "type" -> "keyword", "info" -> "MusicRest[] represents a musical rest.\n\nMusicRest[duration] specifies the rest duration."|>,
+ <|"label" -> "MusicScale", "type" -> "keyword", "info" -> "MusicScale[spec] represents a musical scale."|>,
+ <|"label" -> "MusicScore", "type" -> "keyword", "info" -> "MusicScore[voices] represents a musical score containing one or more voices."|>,
+ <|"label" -> "MusicTempo", "type" -> "keyword", "info" -> "MusicTempo specifies the musical tempo used during playback."|>,
+ <|"label" -> "MusicTimeSignature", "type" -> "keyword", "info" -> "MusicTimeSignature[spec] represents a time signature for a musical measure, voice, or score."|>,
+ <|"label" -> "MusicTransform", "type" -> "keyword", "info" -> "MusicTransform[<i>music</i>,<i>tf</i>] applies the transformation <i>tf</i> to the music object <i>music</i>.\n\nMusicTransform[<i>music</i>,{<i>tf</i>,<i>params</i>}] applies <i>tf</i> to <i>music</i> with parameters <i>params</i>.\n\nMusicTransform[<i>tf</i>] represents an operator form of MusicTransform that can be applied to an expression."|>,
+ <|"label" -> "MusicVoice", "type" -> "keyword", "info" -> "MusicVoice[events] represents a musical voice."|>,
  <|"label" -> "N", "type" -> "keyword", "info" -> "N[<i>expr</i>] gives the \
 numerical value of <i>expr</i>. \n\nN[<i>expr</i>,<i>n</i>] attempts to give \
 a result with <i>n</i>\[Hyphen]digit precision. "|>, 
@@ -17077,8 +17053,11 @@ next date of the given granularity relative to the specified date."|>,
 <i>x</i>.\n\nNextPrime[<i>x</i>,<i>k</i>] gives the \
 <i>k</i><sup>th</sup>-next prime above <i>x</i>."|>, 
  <|"label" -> "NextScheduledTaskTime", "type" -> "keyword", 
-  "info" -> "NextScheduledTaskTime[<i>obj</i>] gives the next execution time \
+ "info" -> "NextScheduledTaskTime[<i>obj</i>] gives the next execution time \
 of the scheduled task represented by <i>obj</i>."|>, 
+ <|"label" -> "NextValue", "type" -> "keyword",
+  "info" -> "NextValue[<i>inc</i>] returns the next value of the incremental \
+ object <i>inc</i>."|>,
  <|"label" -> "NHoldAll", "type" -> "keyword", "info" -> "NHoldAll is an \
 attribute which specifies that none of the arguments to a function should be \
 affected by N. "|>, <|"label" -> "NHoldFirst", "type" -> "keyword", 
@@ -17181,9 +17160,32 @@ noncentrality parameter \[Lambda] and denominator noncentrality parameter \
   "type" -> "keyword", "info" -> "NoncentralStudentTDistribution[\[Nu],\
 \[Delta]] represents a noncentral Student t distribution with \[Nu] degrees \
 of freedom and noncentrality parameter \[Delta]."|>, 
+ <|"label" -> "NonCommutativeAlgebra", "type" -> "keyword",
+  "info" -> "NonCommutativeAlgebra[<i>alg</i>] represents the special \
+non-commutative algebra <i>alg</i>.\n\nNonCommutativeAlgebra[<i>spec</i>] \
+represents the general non-commutative algebra given by the specification \
+<i>spec</i>."|>, <|"label" -> "NonCommutativeCollect", "type" -> "keyword",
+  "info" -> "NonCommutativeCollect[<i>expr</i>,<i>x</i>,<i>alg</i>] collects \
+together terms involving the same powers of objects matching <i>x</i> over the \
+noncommutative algebra <i>alg</i>.\n\nNonCommutativeCollect[<i>expr</i>,{<i>x</i><sub>1</sub>,<i>x</i><sub>2</sub>,...},<i>alg</i>] \
+successively collects terms involving the same powers of the specified objects."|>,
+ <|"label" -> "NonCommutativeExpand", "type" -> "keyword",
+  "info" -> "NonCommutativeExpand[<i>expr</i>,<i>alg</i>] expands out the non-commutative \
+algebra <i>alg</i> operations in <i>expr</i>."|>,
+ <|"label" -> "NonCommutativeGroebnerBasis", "type" -> "keyword",
+  "info" -> "NonCommutativeGroebnerBasis[{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>vars</i>,<i>alg</i>] \
+attempts to find a list of polynomials that form a reduced Gr\[ODoubleDot]bner basis over \
+the non-commutative algebra <i>alg</i>.\n\nNonCommutativeGroebnerBasis[{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>alg</i>] \
+uses the generators of <i>alg</i>."|>,
  <|"label" -> "NonCommutativeMultiply", "type" -> "keyword", 
   "info" -> "<i>a</i>**<i>b</i>**<i>c</i> is a general associative, but \
 non\[Hyphen]commutative, form of multiplication. "|>, 
+ <|"label" -> "NonCommutativePolynomialReduce", "type" -> "keyword",
+  "info" -> "NonCommutativePolynomialReduce[<i>poly</i>,{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>vars</i>,<i>alg</i>] \
+yields a list representing a reduction of <i>poly</i> modulo the polynomials \
+<i>poly</i><sub>i</sub> in variables <i>vars</i> over the non-commutative \
+algebra <i>alg</i>.\n\nNonCommutativePolynomialReduce[<i>poly</i>,{<i>poly</i><sub>1</sub>,<i>poly</i><sub>2</sub>,...},<i>alg</i>] \
+reduces <i>poly</i> modulo the polynomials in the generators of <i>alg</i>."|>,
  <|"label" -> "NonConstants", "type" -> "keyword", 
   "info" -> "NonConstants is an option for D which gives a list of objects to \
 be taken to depend implicitly on the differentiation variables. "|>, 
@@ -20323,10 +20325,7 @@ generates a random image of the specified \
 <i>size</i>.\n\nRandomImage[...,<i>size</i>,\"<i>type</i>\"] gives an \
 image converted to the specified type."|>, <|"label" -> "RandomInstance", 
   "type" -> "keyword", "info" -> "RandomInstance[<i>expr</i>] finds a random \
-instance of an expression such as a geometric \
-scene.\n\nRandomInstance[<i>expr</i>] finds a random instance of an \
-expression such as a geometric scene or biomolecular \
-sequence.\n\nRandomInstance[<i>expr</i>,<i>n</i>] finds <i>n</i> instances."|>\
+instance of <i>expr</i>.\n\nRandomInstance[<i>expr</i>,<i>n</i>] finds <i>n</i> instances."|>\
 , <|"label" -> "RandomInteger", "type" -> "keyword", 
   "info" -> "RandomInteger[{<i>i</i><sub><i>min</i></sub>,<i>i</i><sub><i>max\
 </i></sub>}] gives a pseudorandom integer in the range \
@@ -20924,7 +20923,7 @@ luator</i>] registers the <i>evaluator</i> for use as an external evaluator \
 with the language or system \
 <i>sys</i>.\n\nRegisterExternalEvaluator[<i>sys</i>,<i>evaluator</i>,<i>name<\
 /i>] registers the <i>evaluator</i> using the assigned name <i>name</i>."|>, 
- <|"label" -> "RegularExpression", "type" -> "keyword", 
+ <|"label" -> "RegisterExceptionType", "type" -> "keyword", "info" -> "RegisterExceptionType[<i>sym</i>] registers <i>sym</i> as a symbolic exception type.\n\nRegisterExceptionType[<i>sym</i>,<i>parent</i>] registers <i>sym</i> as a symbolic exception type with the parent exception type <i>parent</i>.\n\nRegisterExceptionType[<i>sym</i>,{<i>parent</i><sub>1</sub>,...}] registers <i>sym</i> as a symbolic exception type with the parent exception types <i>parent</i><sub>1</sub>, ... ."|>, <|"label" -> "RegularExpression", "type" -> "keyword",
   "info" -> "RegularExpression[\"<i>regex</i>\"] represents the generalized \
 regular expression specified by the string \"<i>regex</i>\". "|>, 
  <|"label" -> "Regularization", "type" -> "keyword", 
@@ -23538,6 +23537,9 @@ piecewise symbolic approximation with the range of an atmospheric layer for \
 the \
 property.\n\nStandardAtmosphereData[\"SymbolicApproximation\",<i>property</i>\
 ] returns the full piecewise symbolic approximation for the property."|>, 
+ <|"label" -> "StandardBlue", "type" -> "keyword",
+  "info" -> "StandardBlue represents an aesthetically appealing version of \
+blue in graphics or style specifications."|>,
  <|"label" -> "StandardDeviation", "type" -> "keyword", 
   "info" -> "StandardDeviation[<i>data</i>] gives the standard deviation \
 estimate of the elements in <i>data</i>. \n\nStandardDeviation[<i>dist</i>] \
@@ -23545,6 +23547,9 @@ gives the standard deviation of the distribution <i>dist</i>."|>,
  <|"label" -> "StandardForm", "type" -> "keyword", 
   "info" -> "StandardForm[<i>expr</i>] prints as the standard Wolfram \
 Language two-dimensional representation of <i>expr</i>. "|>, 
+ <|"label" -> "StandardGreen", "type" -> "keyword",
+  "info" -> "StandardGreen represents an aesthetically appealing version of \
+green in graphics or style specifications."|>,
  <|"label" -> "Standardize", "type" -> "keyword", 
   "info" -> "Standardize[<i>list</i>] shifts and rescales the elements of \
 <i>list</i> to have zero mean and unit sample \
@@ -23560,6 +23565,9 @@ whether to standardize the data."|>, <|"label" -> "StandardOceanData",
 thermodynamic properties of seawater for the specified \
 parameters.\n\nStandardOceanData[<i>spec</i>,<i>property</i>] returns the \
 specified property for the given parameters. "|>, 
+ <|"label" -> "StandardRed", "type" -> "keyword",
+  "info" -> "StandardRed represents an aesthetically appealing version of \
+red in graphics or style specifications."|>,
  <|"label" -> "Star", "type" -> "keyword", "info" -> "Star[<i>x</i>,<i>y</i>,\
 ...] displays as <i>x</i>\[Star]<i>y</i>\[Star]...."|>, 
  <|"label" -> "StarClusterData", "type" -> "keyword", 
@@ -24422,7 +24430,11 @@ that the reflection should occur with specular \
 exponent\[NonBreakingSpace]<i>n</i>. \
 \n\nSurfaceColor[<i>dcol</i>,<i>scol</i>,<i>gcol</i>] specifies that a color \
 <i>gcol</i> should be added as if there were an intrinsic glow in the \
-polygon. "|>, <|"label" -> "SurfaceData", "type" -> "keyword", 
+polygon. "|>,
+ <|"label" -> "SurfaceContourPlot3D", "type" -> "keyword",
+  "info" -> "SurfaceContourPlot3D[<i>f</i>,<i>p</i>\[Element]<i>reg</i>] \
+generates a contour plot of <i>f</i> over the surface <i>reg</i> as a function \
+of <i>p</i>."|>, <|"label" -> "SurfaceData", "type" -> "keyword",
   "info" -> "SurfaceData[<i>entity</i>,<i>property</i>] gives the value of \
 the specified <i>property</i> for the surface \
 <i>entity</i>.\n\nSurfaceData[{<i>entity</i><sub>1</sub>,<i>entity</i><sub>2<\
@@ -25000,7 +25012,7 @@ enclosing Catch.\n\nThrow[<i>value</i>,<i>tag</i>] is caught only by \
 Catch[<i>expr</i>,<i>form</i>], where <i>tag</i> matches \
 <i>form</i>.\n\nThrow[<i>value</i>,<i>tag</i>,<i>f</i>] returns \
 <i>f</i>[<i>value</i>,<i>tag</i>] as the top-level value if no appropriate \
-Catch is found."|>, <|"label" -> "ThueMorse", "type" -> "keyword", 
+Catch is found."|>, <|"label" -> "ThrowException", "type" -> "keyword", "info" -> "ThrowException[<i>spec</i>] creates and throws an Exception object from <i>spec</i>.\n\nThrowException[<i>spec</i>,<i>payload</i>] creates and throws an Exception object from <i>spec</i>, with exception payload <i>payload</i>."|>, <|"label" -> "ThueMorse", "type" -> "keyword",
   "info" -> "ThueMorse[<i>n</i>] gives the <i>n</i><sup>th</sup> term \
 in the Thue-Morse sequence."|>, <|"label" -> "Thumbnail", 
   "type" -> "keyword", "info" -> "Thumbnail[<i>image</i>] gives a thumbnail \
@@ -25009,23 +25021,7 @@ stored in a file.\n\nThumbnail[<i>url</i>] gives a thumbnail of an image \
 stored at a URL.\n\nThumbnail[<i>spec</i>,<i>size</i>] gives a thumbnail with \
 the specified maximum pixel size."|>, <|"label" -> "Thursday", 
   "type" -> "keyword", "info" -> "Thursday is a day of the week."|>, 
- <|"label" -> "TickDirection", "type" -> "keyword", 
-  "info" -> "TickDirection is an option for AxisObject that specifies where \
-the ticks are drawn relative to the axis."|>, 
- <|"label" -> "TickLabelOrientation", "type" -> "keyword", 
-  "info" -> "TickLabelOrientation is an option for AxisObject that specifies \
-how the tick labels should be oriented relative to the axis."|>, 
- <|"label" -> "TickLabelPositioning", "type" -> "keyword", 
-  "info" -> "TickLabelPositioning is an option for AxisObject that specifies \
-how the tick labels should be positioned relative to the ticks."|>, 
- <|"label" -> "TickLabels", "type" -> "keyword", 
-  "info" -> "TickLabels is an option for AxisObject that specifies how the \
-tick marks should be labeled."|>, <|"label" -> "TickLengths", 
-  "type" -> "keyword", "info" -> "TickLengths is an option for AxisObject \
-that specifies the lengths of the tick marks."|>, 
- <|"label" -> "TickPositions", "type" -> "keyword", 
-  "info" -> "TickPositions is an option for AxisObject that specifies where \
-the tick marks should be positioned."|>, <|"label" -> "Ticks", 
+ <|"label" -> "Ticks",
   "type" -> "keyword", "info" -> "Ticks is an option for graphics functions \
 that specifies tick marks for axes. "|>, <|"label" -> "TicksStyle", 
   "type" -> "keyword", "info" -> "TicksStyle is an option for graphics \
@@ -25981,10 +25977,6 @@ negative unate in the variables <i>x</i><sub>1</sub>, <i>x</i><sub>2</sub>, \
 compressed string representation generated by \
 Compress.\n\nUncompress[\"<i>string</i>\",<i>h</i>] wraps the head <i>h</i> \
 around the expression produced before evaluating it. "|>, 
- <|"label" -> "UnconstrainedParameters", "type" -> "keyword", 
-  "info" -> "UnconstrainedParameters is an option to functions like \
-GeometricScene that specifies what parameters should be treated as \
-unconstrained, so that they can take on any possible value."|>, 
  <|"label" -> "Undefined", "type" -> "keyword", 
   "info" -> 
    "Undefined is a symbol that represents a quantity with no defined value."|>\
@@ -27445,6 +27437,11 @@ and other functions which specifies weights to associate with data elements."\
 |>, <|"label" -> "WelchWindow", "type" -> "keyword", 
   "info" -> "WelchWindow[<i>x</i>] represents a Welch window function of \
 <i>x</i>.\n\nWelchWindow[<i>x</i>,\[Alpha]] uses the parameter \[Alpha]."|>, 
+ <|"label" -> "WeylAlgebra", "type" -> "keyword",
+  "info" -> "WeylAlgebra[{<i>vars</i>,<i>dvars</i>}] gives the Weyl algebra with \
+variables <i>vars</i> and the corresponding derivatives represented by \
+<i>dvars</i>.\n\nWeylAlgebra[{<i>vars</i>,<i>dvars</i>},<i>alg</i>] takes the operation \
+names and monomial order settings from the non-commutative algebra <i>alg</i>."|>,
  <|"label" -> "WheelGraph", "type" -> "keyword", 
   "info" -> "WheelGraph[<i>n</i>] gives the wheel graph with <i>n</i> \
 vertices W<sub>n</sub>."|>, <|"label" -> "WhenEvent", "type" -> "keyword", 
@@ -28869,17 +28866,6 @@ specifies the representation of the result produced by the function."|>,
  <|"label" -> "TerminatedEvaluation", "type" -> "keyword", 
   "info" -> "TerminatedEvaluation[\"<i>reason</i>\"] represents an expression \
 whose evaluation overran global kernel session limits and was terminated."|>, 
- <|"label" -> "TernaryListPlot", "type" -> "keyword", 
-  "info" -> "TernaryListPlot[{{<i>u</i><sub>1</sub>,<i>v</i><sub>1</sub>,<i>w\
-</i><sub>1</sub>},...,{<i>u</i><sub><i>n</i></sub>,<i>v</i><sub><i>n<\
-/i></sub>,<i>w</i><sub><i>n</i></sub>}}] plots a list of points with \
-specified <i>u</i>, <i>v</i> and <i>w</i> coordinates in a barycentric \
-coordinate \
-system.\n\nTernaryListPlot[{<i>data</i><sub>1</sub>,<i>data</i><sub>2</sub>,\
-...}] plots a ternary plot with several datasets \
-<i>data</i><sub><i>i</i></sub>."|>, <|"label" -> "TernaryPlotCorners", 
-  "type" -> "keyword", "info" -> "TernaryPlotCorners is an option for \
-TernaryListPlot that determines how the triangle and axes are positioned."|>, 
  <|"label" -> "Threaded", "type" -> "keyword", "info" -> "Threaded[<i>list</i\
 >] is an object whose elements will automatically be threaded into the lowest \
 level of an array when used in a listable operation such as \

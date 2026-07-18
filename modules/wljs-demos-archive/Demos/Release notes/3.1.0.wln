@@ -1,0 +1,1054 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes for *3.1.0*
+<Now/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes for *3.1.0*
+Sat 18 Jul 2026 13:30:41
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Better compatibility with WL 14.0–15.0
+We significantly improved symbol rendering, added various styling options for new plotting functions, and improved the output forms of new symbols.
+
+### Exception objects
+For example, an `Exception` object now shows relevant information:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Better compatibility with WL 14.0–15.0
+We significantly improved symbol rendering, added various styling options for new plotting functions, and improved the output forms of new symbols.
+
+### Exception objects
+For example, an `Exception` object now shows relevant information:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Exception["DataConsistencyError"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Exception[(*VB[*) {"DataConsistencyError"}, <|"ExceptionValidated" -> True, "ExceptionAPIVersion" -> "1"|> (*,*)(*"1:eJyVUl1v2jAUpVsrbevDpL1U2sPEpOWRCQxpw95sSPox1iEMjPBU41yiiMSmTiJC/27/SK+hH7xOsu71Pef46tjX3xd6tHxfq9XyrxiYrgJtsjtqjFAxRLzMMmG2CC+PrOYzhsBoVfgqmiamKEW6J74cEH4FsizEIgX+A+GO9JoRnLcazQviNTrgkobXulg0CLhuE4hsI7d8Z5scYxgkebFv+VrtuLMDd8+urgvIpgls+ClyfiVhXSRa/arvD3yyYJQU2ljNW8srnUb76iOGyWjQB6kj4I9YOcRzCGXMcRlmh3R3AOmLQvS0ytEMKLn1jdEG4Rcehb0DOW5Iy2lTuKnG4z96yLPbJLyk2o0lp5OZO5+v1vdcOYQx/m+OaaYCEW7i3rgT+9OKZ/PhPSrkzB2Fq7Q7eaDXE5mbIQ+vNBte9ri65XFX0d8633rdAQuTIFiLFV23miGPnXbfLuvuwJHbZ883envpUYkD+mA3IKK/Kt3u0LEp4X/f/xtyVNVLtVJ6o+rwMoq6lrI0BqKfvGZ7nNhPItIcngD41qmR"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Throw and catch exceptions:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Throw and catch exceptions:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CatchExceptions[
+  1+ThrowException[Exception["Null"]],
+  All
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Failure[(*VB[*) "Null", <|"ExceptionAPIVersion" -> "1", "ExceptionTagList" -> {"Null"}|> (*,*)(*"1:eJyVUctOwkAUxVd8bEzcmLjSxC5J6ECluOtACygi6bRIWVnaS9PQzsC0DeCH+j3OAApbk8l9nHNyc+behwmzpyelUim7EwGzlcV4+mlw7tMIQlKkqc/XAp4eSc21CBZnNDdpOIx5XvjJlrg5IMwVBEXuTxIgjwKuBXolhCe1XKkjvVwDDZV1tT4pI9C0CqCgKrjpsRxyKkIvzvLtyL9uw90euNu56uaQDmNYknPBmZwz/ny/FV9JIIxzxiW/H9dhSbjtLkVw7V4LAhYC+RadgnQFGRgrGhZZQY0NgNpAgceBqH4hwTUPFKJAqlI14GXlOG9sQNJ+7LUNpkUBMdyRNh7P5gtCFYQx+RiLNKKW7y2jplOLzOGKpOPBQiiCkWZ7s6ThfhldN8j4gHgdhgftJqF9EjWo8cqytd7oYS+2rLk/M+ZqxSORUm3JJ90dONJaePeJ/WLtQtzjQhbgh+80WW9Qhxfw33VLZb9IElKSyjN5eT/J4AdtHZiQ"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Symbolic array, matrix, and vector representations
+...fill in gaps
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Symbolic array, matrix, and vector representations
+...fill in gaps
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ArraySymbol["a", {2,3}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(ArraySymbol["a",{2,3}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgKJOAaDZJUSldKYYHp8MotLgkEmGIFJYwCxxQ9A"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MatrixSymbol["a", {2,3}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(MatrixSymbol["a",{2,3}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4vkAjLTC13SU3OL0osyS8KBgmH+QYzAymlRCUATnQLww=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+and symbolic vectors:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+and symbolic vectors:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+VectorSymbol["a", 45]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(VectorSymbol["a",45])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgKJBAeDZJUSlcBcE1MApEMMiA=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Symbolic tensors respect `+`, `-`, and other operations, whereas WL would usually treat them as scalars.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Symbolic tensors respect `+`, `-`, and other operations, whereas WL would usually treat them as scalars.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+a + {1,2,3}
+(*VB[*)(VectorSymbol["a",45])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgKJBAeDZJUSlcBcE1MApEMMiA=="*)(*]VB*) + {1,2,3}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1+a,2+a,3+a}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{1,2,3}+(*VB[*)(VectorSymbol["a",45])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB4vkAjLTC13SU3OL0osyS8KZgKJBAeDZJUSlcBcE1MApEMMiA=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Non-commutative algebra representations
+We added support for non-commutative algebra symbols. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Non-commutative algebra representations
+We added support for non-commutative algebra symbols. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+alg = CliffordAlgebra[{{x}, {y}, {z}}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+NonCommutativeAlgebra[(*VB[*) <|"Multiplication" -> NonCommutativeMultiply, "Addition" -> Plus, "Unity" -> 1, "Zero" -> 0, "CommutativeVariables" -> {}, "ScalarVariables" -> Automatic, "Generators" -> {{x, y, z}}, "Relations" -> Automatic, "CommutationRelations" -> Automatic, "Structure" -> {"Clifford", {{x}, {y}, {z}}}, "VariableOrder" -> "Increasing", "WordOrder" -> "Lexicographic"|> (*,*)(*"1:eJylkc9LwzAUx+svUC+KF8GTovVW2Lp1bN5a16EwEVrd2TTvVQJpImmC23/vixXsQRAUwpd8v+/l5RNyUemi3gmCoD0jyfR6oU3zkhrD1CtC6ZqGmQ3F9ZbvOSJZGK1srmAljHVMdoWTXiFfI3eWVRLLK4pxPKn5DDCajkbDaAxDFs0G0ziCGCuI62TCB1W97YfskixFazt32uP54ri32KwEvpfHVHtw0oo3KTizQqub8+7UIUkOwmrjGzs4P/dOS+jcAclzsZwj14DlNbkwuQ2TzF/EZBom8zBO/eqlGaXfjIWjp+37DTJ4VHLzmT4Zh7+Te74UCPAfzJc/Mmd/AW73/Mcx2eIH7pWE7Q=="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NonCommutativeExpand[(x + 2 y + 3 z) ** (4 x + 5 y + 6 z), alg]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+-6-3 x**y-6 x**z-3 y**z
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Incremental objects
+A new feature in recent versions of WL is support for incremental functions and objects, similar to JavaScript function generators and the `yield` keyword.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Incremental objects
+A new feature in recent versions of WL is support for incremental functions and objects, similar to JavaScript function generators and the `yield` keyword.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+obj = IncrementalObject["Identity"][{1, 2}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+IncrementalObject[(*VB[*) "Identity", {"Source" :> {1, 2}, "Position" :> 1} (*,*)(*"1:eJydkM1LxDAQxesXuAoKggieFPTYg9lU1JuLLbuwKLTas2kylUCaLPnA9r93Yhfcm+LlMe+9Yfgxl40p250kSdw5ysz0hbHd+6O1TH+AqELXMTtg3G7FnWOUwhrtcy1qaX1gaixONoq8Bx48axRUVxjfE6BTLrI0YxRSetvw9I4Kkk5vMk4y2hIgvN2OR3ZRltL50Z1t8Kw5Fh66WsJntYfdM+vgYVw9QMmF9MbGdiSKx+ZGidFNUN7K5RNwI6A6QndNyEKA9tIPOP4AlAG59+MATLxoNXynrzbA71iH2NVMBbjww+q/cKdrOA3W5/3KgnPS6D8yuviZgikHX+ZoeHE="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Return values from the incremental object:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Return values from the incremental object:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NextValue[obj]
+NextValue[obj]
+NextValue[obj]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+1
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+2
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Failure[(*VB[*) "IncrementalObjectTerminated", <||> (*,*)(*"1:eJyVUlFv2jAQZuumtXuZ1JdJ60srNY9IYMga+hYDoWy0RThQwtOMc0QpiQ2Oo0J/aH/PztC1vE6yvrv7vtPp89kXczVaHFUqleIHAlWbQOn8j681lwnErMxzrrdILz7Ynm8IgVbSdGU8SbUpebYXTg+E7gZEafg8A3aJdFN4tRh+1qu1K+JVm+CSqle/mlcJuG4NiGigtvhoh3xCGKSF2Y98q3ba9wN3r676BvJJCk/sC2pdrZW+Pt83f7VEnBqlrf4+7kZl8b46QRiPBh0QKgb2gpVDPIf4lDouxeiQ1o4gPZCgU4HZPwq19kEHJqTuNHz4tQnDWzVk+V0a9XzlJoL546k7my1XayYdQil7mGGYyoBHT0k7bCbdyYbls+EaO8TUHUXLrDV+9vtjUeghi24UHfbaTN6xpCX936rYeq0BjdIgWPGlv6rXIpY4jY491t2BI7dDXy/xvthRie9xbBPg8b3Mtjs21CX877rPUOtLoSEHaXh2P38EYULQeSq5wT9TsQM+2w/BswL+AuC/oeI="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Standard colors
+WL's new color palette is now available in autocomplete.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Standard colors
+WL's new color palette is now available in autocomplete.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+StandardBlue
+StandardRed 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(RGBColor[0.4, 0.6, 1])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qmjUTBG7aFxmDwWP7IgYw+GAPAFRyFkk="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(RGBColor[0.93, 0.27, 0.27])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qOvxVI6b/0Fv7Io+HVSLr3C8iGAB5sRpI"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Improved formatting of PlotLegends and FrameLabels
+Due to a Unicode decoding issue, it wasn't previously possible to embed LaTeX in plot-axis labels or legends, or to mix it with regular labels.
+
+For example, suppose you want to place a LaTeX equation as a plot legend:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Improved formatting of PlotLegends and FrameLabels
+Due to a Unicode decoding issue, it wasn't previously possible to embed LaTeX in plot-axis labels or legends, or to mix it with regular labels.
+
+For example, suppose you want to place a LaTeX equation as a plot legend:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x x, {x,0,1}, PlotLegends->Placed[{
+  TeXView["x^2"]
+}, {0.2,0.6}]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Legended[ToExpression[FrontEndRef["9a89c92a-8f59-44db-b9c2-3a051a7fc010"], InputForm], Placed[LineLegend[{Directive[Opacity[1.], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, {TeXView[Offload[URLDecode["x%5E2"]]]}, LegendMarkers -> None, LabelStyle -> {}, LegendLayout -> "Column"], {0.2, 0.6}, Identity]])(*,*)(*"1:eJxdUUtOwzAUDNDyEyzgAEhIsIzUr2hWEdCAkAKFpiC2jvMMFsZGjgPNATgEnKRXYMMlWCE2HAF/Sqv2LUbWeN7zvPFuKvpkyfO8fFPDDYWXLmAhkRIyWdFMDHfAs4aTrGuIMqrvjJAsGG5bw4kUXEU8i4aAC4VSBsmepgPUCXDQQH6HtAO/1cpSPw1ww2+iWruODgiu1Wtk0QypaOgXum3VHABlPc5Kyw5kAXMa4yIBBti+lFeNAcRycB6XNVwyhCEj1X/PMeXgFnGeK5bLletY09ClUs+jz+AEZvPeE8JUldKz9Rs6sTV4enQsmJBytPP6czX6DGXT1lco399MfYduzJaGwzQXrFAwuKf4gUOeU7PNnI/JowO4nUZrXRDCBBr7Nk6v+7H5oQwSs95wvx01ZvOxH+m2PUfyAWRury4EnwvSRYNSYIkqGRBvxtKsdGMyM0alKFRiYtYhFI98qjR94wQ+ppnYyM4y4Eqn+QfoJZrg"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we used `TeXView` directly with TeX code inside. Sometimes, if the expression is too large, you may set the size and anchor manually to better position your legend item:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we used `TeXView` directly with TeX code inside. Sometimes, if the expression is too large, you may set the size and anchor manually to better position your legend item:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x x, {x,0,1}, PlotLegends->Placed[{
+  TeXView["x^2~\\text{function}", ImageSize->{150,30}, AlignmentPoint->{Left,Center}]
+}, {0.2,0.6}]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Legended[ToExpression[FrontEndRef["48b501c0-843e-4879-ad8a-d9c307ccc81c"], InputForm], Placed[LineLegend[{Directive[Opacity[1.], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, {TeXView[Offload[URLDecode["x%5E2~%5Ctext%7Bfunction%7D"]], ImageSize -> {150, 30}, AlignmentPoint -> {Left, Center}]}, LegendMarkers -> None, LabelStyle -> {}, LegendLayout -> "Column"], {0.2, 0.6}, Identity]])(*,*)(*"1:eJxtUs1uEzEQXqABWpFKcEWqhNQcI+VX2ZwimqSoUkpCNiCuXnucWnFs5PVCwqG3vkIleJK+Qi99iZ4qLn0ExnZ/2AgfPnnH38x8M9++S/WUP4uiKCsjfBHwYwBUG2K1SV5gZARzUKwRKDsIQybwzRH5Exd7g3BotLJDxYYroLklqYRkH8OtOG3X6rRWjVtNqLbiTrdKWEyqrEubtQ6lNK5T/tQV2UKY5pj20l2AsLGSax+dmRw2OE5FAhKo75SVnAAiMwganyNMJKHAeOle80goCIMEzVs+ltmQsY0wEAbrie8QCG7y8TdChV2byJ/bXiB7gR8O+lpqYy72zv58urjqmaY/1z3z+5c7N71Q5jXC+zTTMrcwOxF0oSDLhJvmfzpc0xl8fVytV8G51OROt1P6eTpyDjFI3uLXqtIeNk4r7b6Fla10DniucAytKp1BcWs+92hJ5pCIn/9s1LUX53gRe05WMWfX6Zdirpag7EQLZYuJ4QLc+q33kQRmo0T54R86JmYBJvNPH7XacDX4RFKQiV1L4FFhP0Xqq4eaI7LWuU18d9zyUhX13dlx+WiQ9++IoVK09i9ZMbzq"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use `Row` to combine LaTeX expressions with normal text labels.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use `Row` to combine LaTeX expressions with normal text labels.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x x, {x,0,1}, PlotLegends->Placed[{
+  Row[{
+    TeXView["x^2"],
+    "function"  
+  }]
+}, {0.2,0.6}]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Legended[ToExpression[FrontEndRef["523b0a2f-4641-402a-a871-e20a60848509"], InputForm], Placed[LineLegend[{Directive[Opacity[1.], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, {Row[{TeXView[Offload[URLDecode["x%5E2"]]], "function"}]}, LegendMarkers -> None, LabelStyle -> {}, LegendLayout -> "Column"], {0.2, 0.6}, Identity]])(*,*)(*"1:eJxdUUtOwzAUDNDyEyzgAEhIsIyUph/KKgIaEFKgkBTE1kmeIaqxkePQ5gAcAk7SK7DhEqwQG46AP4Wo9WIUvzd+mZm3G7MQL1mWlW9KuM1g1IOEcSQYj1ZkJYB7oKlrKOsS/DSTPUXEC6q2LeGUMyp8mvpjSAqBYgLRniy33WbsIBfbrU6rYbccF9moe9CwwXVQx+m2um3nEC+qITUJYSGfraoPQGmfklJXB7yAOY5SEQGBRP8prysBiORgNC5LuCIogRTX/zQHGQVjxGiu6VouzIs1Cb2My3nZMxiCct5/QkkmSm7p8+MZshZ4dnzCCON8svPyfT358HhTn0+Pv72q8+WZMVsSjuKckULA4CFLhhTyPFNu5nTom5ofslHltmopPQO4q1LXAjEmDE0tKRM3YaCWl0KknI/3276rA8UFld4Ync1RL9ykcoH4EHiuW5eMzgVuIkQxkEiUBLA1o2+WuvE/M0AlK0Sk1iHDKh7prK9pUu9Vdjra8xSokKn/At0Poi0="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same can be done with the `FrameLabel` of your plot; you can put `TeXView`, or, in general, any other expression, alongside normal text:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same can be done with the `FrameLabel` of your plot; you can put `TeXView`, or, in general, any other expression, alongside normal text:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x x, {x,0,1}, FrameLabel->
+  {None, Row[{
+    TeXView["x^2"],
+    "function"  
+  }]},
+  Frame->True 
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["ab507822-e047-44d1-8cc4-971193a7df0a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJyaZGphbGBnpphqYmOuamKQY6lokJ5voWpobGloaJ5qnpBkkAgB5UhU+"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For example, with a graphic:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For example, with a graphic:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot[x x, {x,0,1}, FrameLabel->
+  {None, Row[{
+    Graphics[{Red, Line[{{-1,-1}, {1,1}}]}, ImageSize->10],
+    "function"  
+  }]},
+  Frame->True 
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["5610c75c-0442-4ce4-b5fe-3eea3abd6d70"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5oZGiSbmybrGpiYGOmaJKea6CaZpqXqGqemJhonJqWYpZgbAAB/phX2"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Improved `Sound` support
+We have a nice piano-roll preview of a given sequence of notes!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Improved `Sound` support
+We have a nice piano-roll preview of a given sequence of notes!
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Sound[{{SoundNote[{"A4", "C4"}]}, SoundNote["E4"], SoundNote["G4"], SoundNote["C5"]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Sound[{{SoundNote[{"A4", "C4"}]}, SoundNote["E4"], SoundNote["G4"], SoundNote["C5"]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5AIzi/NS0ljgUn6ZBaXIJQieJwwpX75JalpTMgKgkE8RxMw5WyCRTlYxhWnjDtOGWdTAOEWJA0="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We improved our synthesizer pipeline; now we have many instruments!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We improved our synthesizer pipeline; now we have many instruments!
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Sound[{
+  SoundNote["C5", {0., .4}, "Piano"],
+  SoundNote["D5", {.5, .9}, "Guitar"],
+  SoundNote["E5", {1., 1.4}, "Violin"],
+  SoundNote["F5", {1.5, 1.9}, "Flute"],
+  SoundNote["G5", {2., 2.4}, "Trumpet"],
+  SoundNote["A5", {2.5, 2.9}, "Organ"],
+  SoundNote["B5", {3., 3.4}, "Marimba"],
+  SoundNote["C6", {3.5, 3.9}, "Vibraphone"],
+  SoundNote["C2", {4., 4.4}, "Drums"],
+
+  SoundNote["C5", {4.5, 4.9}, "AMSynth"], (*WLJS only*)
+  SoundNote["D5", {5., 5.4}, "FMSynth"], (*WLJS only*)
+  SoundNote["E5", {5.5, 5.9}, "DuoSynth"], (*WLJS only*)
+  SoundNote["F4", {6., 6.4}, "MembraneSynth"], (*WLJS only*)
+  SoundNote["G5", {6.5, 6.9}, "MetalSynth"] (*WLJS only*)
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["874f0eef-496c-4c85-b07a-36a970e76671"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW5ibpBmkpqbpmliaJeuaJFuY6iYZmCfqGpslWpobpJqbmZkbAgCFlBVa"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is how you can write a basic 808-style beat:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is how you can write a basic 808-style beat:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+With[{step = 60/140/2},
+  Sound @ Join[
+    (*BB[*)(* closed hats *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    Table[
+      SoundNote["C6", {t, t + .035}, "MetalSynth"],
+      {t, 0, 15 step, step}
+    ],
+
+    (*BB[*)(* kick *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    {
+      SoundNote["C1", {0, .18}, "Drums"],
+      SoundNote["C1", {3 step, 3 step + .18}, "Drums"],
+      SoundNote["C1", {6 step, 6 step + .18}, "Drums"],
+      SoundNote["C1", {11 step, 11 step + .18}, "Drums"],
+      SoundNote["C1", {14 step, 14 step + .18}, "Drums"]
+    },
+
+    (*BB[*)(* snare / clap on beat 3 *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    {
+      SoundNote["C2", {4 step, 4 step + .12}, "Drums"],
+      SoundNote["C2", {12 step, 12 step + .12}, "Drums"]
+    },
+
+    (*BB[*)(* sliding-feeling 808 bass line *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    {
+      SoundNote["C2", {0, 3 step}, "FMSynth"],
+      SoundNote["G1", {3 step, 4 step}, "FMSynth"],
+      SoundNote["Bb1", {6 step, 8 step}, "FMSynth"],
+      SoundNote["C2", {8 step, 11 step}, "FMSynth"],
+      SoundNote["Eb2", {12 step, 16 step}, "FMSynth"]
+    }
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["c6e66bd4-10e6-4b9c-ad38-8bd62d23182f"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5ulmpklpZjoGhqkmumaJFkm6yamGFvoWiSlmBmlGBkbWhilAQCL6hXV"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Music Framework
+In WL 15, a new framework was added for working with chords, music lines, and scales. You can find all the symbols under `Music*` using `Names[]`.
+
+In particular, we developed nice preview boxes for notes, pitches, chords, and scales. In general, it follows OOP-like patterns while remaining immutable. For example, here is a single *chord*:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Music Framework
+In WL 15, a new framework was added for working with chords, music lines, and scales. You can find all the symbols under `Music*` using `Names[]`.
+
+In particular, we developed nice preview boxes for notes, pitches, chords, and scales. In general, it follows OOP-like patterns while remaining immutable. For example, here is a single *chord*:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MusicChord["CMajor7"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+MusicChord[(*VB[*) <|"Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "C", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtum0AUddv0lU2lbip11UplaYmMwbG7Y2ycNIrzYMAPVp3ANSEGxhmGGP9kv6Dqt/ROSFpv2oWXVSV0Zu45R6PDYcTHK+EtnrVarfI9AhX1SMj8qyMlLxKIWZXnXG6QXjzRnjcIIykK5RbxJJWq4lkjvN0S3BqiSvGrDNgnpM1DK+5ZC97umATaFu/Z7V6XQ3thRf1D3u0Ss9NvEuwhnKalao78NT3V07utdA+pvijIJyms2QvUzngOnz803n0EN06VkFr+fdqxyOJmeo0QeKdDiEQM7DtOBukZxKHUsCmuBunfE2TMb4Q0iMngDgp1jcyjhJ7BlhM35MDoOHBS+/5YXLD8LJ0fOcJOIuYEMzsMl6tbVhiEUjYNcZkVIz5fJwPfStxJzfLw4hYd0cz25ssM9WBzuQyS6jp1vBO68vPVelonk2AaAmRJGQ5SM7t0xjfzae0YnaF+dLatPPaQPrxK04puwKvwo7zSG+DxeZFt7llfVrBL554QatfOv/2588H/lh9bfqlvtlBQ7lrzj7/UbOG9djUcaaDWv1t7+Vz/nnhWwk9MHkqg"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+**Click on it**
+
+It shows you a tiny piano with notes entering the chord. You can extract a bass pitch, which is a `MusicPitch` object.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+**Click on it**
+
+It shows you a tiny piano with notes entering the chord. You can extract a bass pitch, which is a `MusicPitch` object.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MusicChord[(*VB[*) <|"Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "C", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtum0AUddv0lU2lbip11UplaYmMwbG7Y2ycNIrzYMAPVp3ANSEGxhmGGP9kv6Dqt/ROSFpv2oWXVSV0Zu45R6PDYcTHK+EtnrVarfI9AhX1SMj8qyMlLxKIWZXnXG6QXjzRnjcIIykK5RbxJJWq4lkjvN0S3BqiSvGrDNgnpM1DK+5ZC97umATaFu/Z7V6XQ3thRf1D3u0Ss9NvEuwhnKalao78NT3V07utdA+pvijIJyms2QvUzngOnz803n0EN06VkFr+fdqxyOJmeo0QeKdDiEQM7DtOBukZxKHUsCmuBunfE2TMb4Q0iMngDgp1jcyjhJ7BlhM35MDoOHBS+/5YXLD8LJ0fOcJOIuYEMzsMl6tbVhiEUjYNcZkVIz5fJwPfStxJzfLw4hYd0cz25ssM9WBzuQyS6jp1vBO68vPVelonk2AaAmRJGQ5SM7t0xjfzae0YnaF+dLatPPaQPrxK04puwKvwo7zSG+DxeZFt7llfVrBL554QatfOv/2588H/lh9bfqlvtlBQ7lrzj7/UbOG9djUcaaDWv1t7+Vz/nnhWwk9MHkqg"*)(*]VB*)]["Bass"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+MusicPitch[(*VB[*) <|"Accidental" -> 0, "Key" -> "C"|> (*,*)(*"1:eJxTTMoPSmNmYGAolgISTvkVbvlFuQmORUWJeempKcGlubmJRZVA4TRGkBp+IOFWlJ9X4pqXEpZZVFKamAOREEKScK1ITS4tSUzKSQ1WAQonJ1kYGiWlJOumWhgn6ZqYmFvoWpiaJ+smm5iZWFiapqVZJBulMYAMYQESPpnFJcWsINMSc4pTAbwfKnE="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Using pitch and duration objects, you can construct a **note**.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Using pitch and duration objects, you can construct a **note**.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MusicNote[MusicPitch[(*VB[*) <|"Accidental" -> 0, "Key" -> "C"|> (*,*)(*"1:eJxTTMoPSmNmYGAolgISTvkVbvlFuQmORUWJeempKcGlubmJRZVA4TRGkBp+IOFWlJ9X4pqXEpZZVFKamAOREEKScK1ITS4tSUzKSQ1WAQonJ1kYGiWlJOumWhgn6ZqYmFvoWpiaJ+smm5iZWFiapqVZJBulMYAMYQESPpnFJcWsINMSc4pTAbwfKnE="*)(*]VB*)], MusicDuration[1/4]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "C"|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU8tOwkAUxWfUjYkbE1ea2CWJHRge7toCKgGETsujK4d2qJW2A9M2lK808Yu8BRQ2LnRpMjlz7zk3NydnMjdjrk8OcrlcdAWg8rTBRfCiCEFDlzkkCQIqlkBP9rKZc4CG4GFcD52+J+KE+mvhYkeop8xOYjr2GbkF2qmUqljG5byMJixfrCKaHxdZKS/bqFytYNke49JkP1tyCNDyoni98rtbaZc77jaunmIW9D22IMegdXjM7q/Xs2cAdceLucjk7bZH7jvr7hTA1Fs1ZnOHkXfoJFSRkKKqElbhllB1RSCtCPDVAa3tiFAgWSoorJkaRpt3SdDxRg8Kx65NFHOILWs6m5NQQqpKBhZcw7BBRwtXM4puvZ+SwOrOYcIeYn009UE3l72p6SavnqI31ZkRzBaD1O2bA4sx340szbvze0r7bTRIFalQy07mbccPrqkb99tA9QTe4SQrGHWeQ3+5Yg2RsN/GnMVaSwSNPR7+NeqPn6OWJdT4x2lHR9kXoX7EPgFPSub+"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+By grouping individual chords or notes, you can construct a `MusicScore`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+By grouping individual chords or notes, you can construct a `MusicScore`.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MusicScore[{
+  MusicChord[(*VB[*) <|"Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "C", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtum0AUddv0lU2lbip11UplaYmMwbG7Y2ycNIrzYMAPVp3ANSEGxhmGGP9kv6Dqt/ROSFpv2oWXVSV0Zu45R6PDYcTHK+EtnrVarfI9AhX1SMj8qyMlLxKIWZXnXG6QXjzRnjcIIykK5RbxJJWq4lkjvN0S3BqiSvGrDNgnpM1DK+5ZC97umATaFu/Z7V6XQ3thRf1D3u0Ss9NvEuwhnKalao78NT3V07utdA+pvijIJyms2QvUzngOnz803n0EN06VkFr+fdqxyOJmeo0QeKdDiEQM7DtOBukZxKHUsCmuBunfE2TMb4Q0iMngDgp1jcyjhJ7BlhM35MDoOHBS+/5YXLD8LJ0fOcJOIuYEMzsMl6tbVhiEUjYNcZkVIz5fJwPfStxJzfLw4hYd0cz25ssM9WBzuQyS6jp1vBO68vPVelonk2AaAmRJGQ5SM7t0xjfzae0YnaF+dLatPPaQPrxK04puwKvwo7zSG+DxeZFt7llfVrBL554QatfOv/2588H/lh9bfqlvtlBQ7lrzj7/UbOG9djUcaaDWv1t7+Vz/nnhWwk9MHkqg"*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "C"|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU8tOwkAUxWfUjYkbE1ea2CWJHRge7toCKgGETsujK4d2qJW2A9M2lK808Yu8BRQ2LnRpMjlz7zk3NydnMjdjrk8OcrlcdAWg8rTBRfCiCEFDlzkkCQIqlkBP9rKZc4CG4GFcD52+J+KE+mvhYkeop8xOYjr2GbkF2qmUqljG5byMJixfrCKaHxdZKS/bqFytYNke49JkP1tyCNDyoni98rtbaZc77jaunmIW9D22IMegdXjM7q/Xs2cAdceLucjk7bZH7jvr7hTA1Fs1ZnOHkXfoJFSRkKKqElbhllB1RSCtCPDVAa3tiFAgWSoorJkaRpt3SdDxRg8Kx65NFHOILWs6m5NQQqpKBhZcw7BBRwtXM4puvZ+SwOrOYcIeYn009UE3l72p6SavnqI31ZkRzBaD1O2bA4sx340szbvze0r7bTRIFalQy07mbccPrqkb99tA9QTe4SQrGHWeQ3+5Yg2RsN/GnMVaSwSNPR7+NeqPn6OWJdT4x2lHR9kXoX7EPgFPSub+"*)(*]VB*)],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/8|>], "Name" -> "Major", "Root" -> MusicPitch[<|"Key" -> "D", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtO20AUTaGl0E2lbpBYtVK9jBS/SsJunAcPER4eOw+vmNjXxsT2hLGtOD/Jorv+DXcw0GzaRZYIyTp37jlXozNnRv4x43a43Wg08gMEi1cDLtIbIgTLIghomaZMrJAOP8iZrwgDwbOinwWjWBQlS2rh25rQr8AvCzZLgP5EWu/4YKiq2WwdhkbTOIR2sx3qWhP0sK3+UtVZx2C1g48I53Fe1Fu+dluy219z9+zqtIB0FMOS7qB2wVI4+l7PfkHoB3HBhZT/7nbCk6Du9hBc+7wHPg+A/sZO0dqKRixLMS2sitZ5IrQhu+MC6wuBSndNx4WmKjqBs8pxhvyKphfx9JhwM/IpcSem580X9zRTNMuiYw/LJBuw6TLqOkbUH1U09a7uccKfmPZ0nqDurq7nblTexsQ+sxZOuliOq2jkjj2AJMq9btxKrsnwbjquiKL35Ce9rfkxe9bzAeos5LntEq9iVy6ABZdZsnpiHVHCJknbnBebJv3w76R77ym/pPxZvmdeQL5pzH/+E7OhaK2BBGK83cTzT/J/xJIcHgGWPUX9"*)(*]VB*)],
+  MusicTransform[MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "C"|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU8tOwkAUxWfUjYkbE1ea2CWJHRge7toCKgGETsujK4d2qJW2A9M2lK808Yu8BRQ2LnRpMjlz7zk3NydnMjdjrk8OcrlcdAWg8rTBRfCiCEFDlzkkCQIqlkBP9rKZc4CG4GFcD52+J+KE+mvhYkeop8xOYjr2GbkF2qmUqljG5byMJixfrCKaHxdZKS/bqFytYNke49JkP1tyCNDyoni98rtbaZc77jaunmIW9D22IMegdXjM7q/Xs2cAdceLucjk7bZH7jvr7hTA1Fs1ZnOHkXfoJFSRkKKqElbhllB1RSCtCPDVAa3tiFAgWSoorJkaRpt3SdDxRg8Kx65NFHOILWs6m5NQQqpKBhZcw7BBRwtXM4puvZ+SwOrOYcIeYn009UE3l72p6SavnqI31ZkRzBaD1O2bA4sx340szbvze0r7bTRIFalQy07mbccPrqkb99tA9QTe4SQrGHWeQ3+5Yg2RsN/GnMVaSwSNPR7+NeqPn6OWJdT4x2lHR9kXoX7EPgFPSub+"*)(*]VB*)], {"Transpose", 7}],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/8|>], "Name" -> "Major", "Root" -> MusicPitch[<|"Key" -> "A", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVM9P2zAY7cYYsAsSl0k7gbQcK9E0LmQ3p00HiPIjTvojp7mxE9ImcXESNf0nOXDbf7PPBLZexqFHhBS9z997n6znZytHU+GEW41GI/8GYImqL2T6C0tJs4gzUqYplSugww9qZh+gL0VW2BkbxrIoaVILB2uCXfGgLOg04eQ70KxzwviJSZstZoZNI5y2miY6DZsdI0CdsGW0zUCvHXwCuIzzot7yb/dRdV/X3D27Oi94Ooz5knwG7Yqm/MdhPfsFwGZxIaSS/+12JhJWd3sAnnPZ44FgnDxCp+mnmo4tS0MWVE03nwh9QGdCQn0hQOmu6bDQW1ob84vKdQfihqRX8eQnFigKCPbGyPfni3uSabplkZEPZZz16WQZdV0jsocVSf2be5gIxsiZzBPQvdXt3IvKuxg7F9bCTRfLURUNvZHPeRLlfjc+Tm7xYDYZVVhr99SnvK35QT3r+QB1FurcTglXsasWnLLrLFk9sa4s+SZJO0IUmyb98P+k8XvKLynvqPcsCp5vGvPvV2I2NP24iwBs9HYTz7fV/4gmOf8DZEVGnA=="*)(*]VB*)],
+  MusicRest[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJxlkEFPAjEQhVfRRLhwNOGkh/0BbiRZuLEsjSYEk13FK4UOpkm3k8y2Uf690102Clxe533z0tf0cYvFvhdFUT1iyfBHIFWbGZG0X6BKX1WSDoz3VyEzZBGE1i2sWmtyXpp2ccPygkY1wwot/OGlrt2Zuw7u/l/fsefVQbXW8F0OeJd7kk6jnT60+cAWSjukEDmtbV2f5aNY5rBDBeUnuzhJ42Qmsnic8RknkwakT93EaN4txAVJn5uji45zcbylfVAoL7yB8i4MINWbNYeGvpOH+jb8lTQ1/AJZ8VKa"*)(*]VB*)],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/2|>], "Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "F", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtu00AUDe/HBokNEiuQ6mWkZJJRYnbjxKFUTWk9dh5eMfXcuG5sTzq2ifOTfAHiW7hTt5ANLLJESNaZueccjY6PR35/qbzVo1arVbxFcFQ9UTr7wrQWeQySV1km9A7p1QPjeYUw0Sov3VzOEl1WIm2E13uCW0NUleIyBX6EdLcr7EgQaNsSeu3+MKJtezCg7WjYX9mdniRiIJsEjxFOk6Jsjvw1PTTTm710d6k+lZDNEtjyp6idiQw+vGu8LxFcmZRKG/n3accqlc30AiHwTscQKQn8O04WGVqEOY5FHVwtYt8SZCqulbZIh8NXyMsrZO4l9Iz2nLghXavH4KT2/ak659lZsvzIFI0jzoIFDcP15obnFnEcPg9xWeQTsdzGI78fu7OaZ+H5DTqiBfWW6xT1YHexDuLqKmHeibPxs812XsezYB4CpHERjpJOesGm18t5zaze2Dwm214eOnbuXqVpxTTgVfhRnpsNCPk5T3e3rK8rOKRzT6ny0M6//bnzyf+W71t+Zm62KqE4tOYff6m5j/eaGRhRBJf+u7UXT8zvSaQF/AQW+ksI"*)(*]VB*)]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["572c90bd-88cd-4175-ba26-b25edb2060f9"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5AIzi/Ng3KFgIRbUX5eiWteimtFanJpSWJSTmqwClDY1Nwo2dIgKUXXwiI5RdfE0NxUNynRyEw3ycg0NSXJyMDMIM0SAJOJGIk="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+A great thing about WL's Music Framework is that it has all the necessary functions to transpose and invert chords out of the box. In the past, we had to build our own on top of `SoundNote`. Multiple voices can also be added using a `MusicVoice` container.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+A great thing about WL's Music Framework is that it has all the necessary functions to transpose and invert chords out of the box. In the past, we had to build our own on top of `SoundNote`. Multiple voices can also be added using a `MusicVoice` container.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+music = MusicScore[{
+ MusicVoice[{
+  MusicChord[(*VB[*) <|"Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "C", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtum0AUddv0lU2lbip11UplaYmMwbG7Y2ycNIrzYMAPVp3ANSEGxhmGGP9kv6Dqt/ROSFpv2oWXVSV0Zu45R6PDYcTHK+EtnrVarfI9AhX1SMj8qyMlLxKIWZXnXG6QXjzRnjcIIykK5RbxJJWq4lkjvN0S3BqiSvGrDNgnpM1DK+5ZC97umATaFu/Z7V6XQ3thRf1D3u0Ss9NvEuwhnKalao78NT3V07utdA+pvijIJyms2QvUzngOnz803n0EN06VkFr+fdqxyOJmeo0QeKdDiEQM7DtOBukZxKHUsCmuBunfE2TMb4Q0iMngDgp1jcyjhJ7BlhM35MDoOHBS+/5YXLD8LJ0fOcJOIuYEMzsMl6tbVhiEUjYNcZkVIz5fJwPfStxJzfLw4hYd0cz25ssM9WBzuQyS6jp1vBO68vPVelonk2AaAmRJGQ5SM7t0xjfzae0YnaF+dLatPPaQPrxK04puwKvwo7zSG+DxeZFt7llfVrBL554QatfOv/2588H/lh9bfqlvtlBQ7lrzj7/UbOG9djUcaaDWv1t7+Vz/nnhWwk9MHkqg"*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "C"|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU8tOwkAUxWfUjYkbE1ea2CWJHRge7toCKgGETsujK4d2qJW2A9M2lK808Yu8BRQ2LnRpMjlz7zk3NydnMjdjrk8OcrlcdAWg8rTBRfCiCEFDlzkkCQIqlkBP9rKZc4CG4GFcD52+J+KE+mvhYkeop8xOYjr2GbkF2qmUqljG5byMJixfrCKaHxdZKS/bqFytYNke49JkP1tyCNDyoni98rtbaZc77jaunmIW9D22IMegdXjM7q/Xs2cAdceLucjk7bZH7jvr7hTA1Fs1ZnOHkXfoJFSRkKKqElbhllB1RSCtCPDVAa3tiFAgWSoorJkaRpt3SdDxRg8Kx65NFHOILWs6m5NQQqpKBhZcw7BBRwtXM4puvZ+SwOrOYcIeYn009UE3l72p6SavnqI31ZkRzBaD1O2bA4sx340szbvze0r7bTRIFalQy07mbccPrqkb99tA9QTe4SQrGHWeQ3+5Yg2RsN/GnMVaSwSNPR7+NeqPn6OWJdT4x2lHR9kXoX7EPgFPSub+"*)(*]VB*)],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/8|>], "Name" -> "Major", "Root" -> MusicPitch[<|"Key" -> "D", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtO20AUTaGl0E2lbpBYtVK9jBS/SsJunAcPER4eOw+vmNjXxsT2hLGtOD/Jorv+DXcw0GzaRZYIyTp37jlXozNnRv4x43a43Wg08gMEi1cDLtIbIgTLIghomaZMrJAOP8iZrwgDwbOinwWjWBQlS2rh25rQr8AvCzZLgP5EWu/4YKiq2WwdhkbTOIR2sx3qWhP0sK3+UtVZx2C1g48I53Fe1Fu+dluy219z9+zqtIB0FMOS7qB2wVI4+l7PfkHoB3HBhZT/7nbCk6Du9hBc+7wHPg+A/sZO0dqKRixLMS2sitZ5IrQhu+MC6wuBSndNx4WmKjqBs8pxhvyKphfx9JhwM/IpcSem580X9zRTNMuiYw/LJBuw6TLqOkbUH1U09a7uccKfmPZ0nqDurq7nblTexsQ+sxZOuliOq2jkjj2AJMq9btxKrsnwbjquiKL35Ce9rfkxe9bzAeos5LntEq9iVy6ABZdZsnpiHVHCJknbnBebJv3w76R77ym/pPxZvmdeQL5pzH/+E7OhaK2BBGK83cTzT/J/xJIcHgGWPUX9"*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU8tOg0AUrc+oGxM3Jq40kWWTMoC27qAvbdraMtAHK6cwRSww7QAp/UoTv8hLqbYbF7o0mZy595ybm5MzmZsJ06cHhUIhugLQWNpgPHhROSehSx2cBAHhK6Cne9nMOUCDszCuh87A43FC/Fy42BHqKbWTmEx8im+BLlNUlkqlcnF6Z4tFWZZKxcq9OCkikdrIkRSRSJXpfrbkEKDtRXG+8rtba5c77jaunmIaDDy6xMegdVlMH67z2TOAuuPFjGfydtsj8528OwUw9XaN2syh+B06AZUFpGqaoGhwC6iyJlBTBvjqgK7uiFAgUZBU2koNo8N6OOh646bKFNfGqjlSLGs2X+BQQJqGhxZco7BBxku3ashufZDiwOotYMIeKfp45oNurvoz001ePVVvaXMjmC+HqTswhxalvhtZVa/k99XO23iYqoJUy07mbcePUtM27reB6gm8w0lWUOI8h/5qzRo8ob+NOYu1lnASeyz8a9QfP0ctCqjxj9OOjrIvQvyIfgJ8w+a5"*)(*]VB*)],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/8|>], "Name" -> "Major", "Root" -> MusicPitch[<|"Key" -> "A", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVM9P2zAY7cYYsAsSl0k7gbQcK9E0LmQ3p00HiPIjTvojp7mxE9ImcXESNf0nOXDbf7PPBLZexqFHhBS9z997n6znZytHU+GEW41GI/8GYImqL2T6C0tJs4gzUqYplSugww9qZh+gL0VW2BkbxrIoaVILB2uCXfGgLOg04eQ70KxzwviJSZstZoZNI5y2miY6DZsdI0CdsGW0zUCvHXwCuIzzot7yb/dRdV/X3D27Oi94Ooz5knwG7Yqm/MdhPfsFwGZxIaSS/+12JhJWd3sAnnPZ44FgnDxCp+mnmo4tS0MWVE03nwh9QGdCQn0hQOmu6bDQW1ob84vKdQfihqRX8eQnFigKCPbGyPfni3uSabplkZEPZZz16WQZdV0jsocVSf2be5gIxsiZzBPQvdXt3IvKuxg7F9bCTRfLURUNvZHPeRLlfjc+Tm7xYDYZVVhr99SnvK35QT3r+QB1FurcTglXsasWnLLrLFk9sa4s+SZJO0IUmyb98P+k8XvKLynvqPcsCp5vGvPvV2I2NP24iwBs9HYTz7fV/4gmOf8DZEVGnA=="*)(*]VB*)],
+  MusicRest[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJxlkEFPAjEQhVfRRLhwNOGkh/0BbiRZuLEsjSYEk13FK4UOpkm3k8y2Uf690102Clxe533z0tf0cYvFvhdFUT1iyfBHIFWbGZG0X6BKX1WSDoz3VyEzZBGE1i2sWmtyXpp2ccPygkY1wwot/OGlrt2Zuw7u/l/fsefVQbXW8F0OeJd7kk6jnT60+cAWSjukEDmtbV2f5aNY5rBDBeUnuzhJ42Qmsnic8RknkwakT93EaN4txAVJn5uji45zcbylfVAoL7yB8i4MINWbNYeGvpOH+jb8lTQ1/AJZ8VKa"*)(*]VB*)],
+  MusicChord[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/2|>], "Name" -> "Major Seventh", "Root" -> MusicPitch[<|"Key" -> "F", "Accidental" -> 0|>]|> (*,*)(*"1:eJztVMtu00AUDe/HBokNEiuQ6mWkZJJRYnbjxKFUTWk9dh5eMfXcuG5sTzq2ifOTfAHiW7hTt5ANLLJESNaZueccjY6PR35/qbzVo1arVbxFcFQ9UTr7wrQWeQySV1km9A7p1QPjeYUw0Sov3VzOEl1WIm2E13uCW0NUleIyBX6EdLcr7EgQaNsSeu3+MKJtezCg7WjYX9mdniRiIJsEjxFOk6Jsjvw1PTTTm710d6k+lZDNEtjyp6idiQw+vGu8LxFcmZRKG/n3accqlc30AiHwTscQKQn8O04WGVqEOY5FHVwtYt8SZCqulbZIh8NXyMsrZO4l9Iz2nLghXavH4KT2/ak659lZsvzIFI0jzoIFDcP15obnFnEcPg9xWeQTsdzGI78fu7OaZ+H5DTqiBfWW6xT1YHexDuLqKmHeibPxs812XsezYB4CpHERjpJOesGm18t5zaze2Dwm214eOnbuXqVpxTTgVfhRnpsNCPk5T3e3rK8rOKRzT6ny0M6//bnzyf+W71t+Zm62KqE4tOYff6m5j/eaGRhRBJf+u7UXT8zvSaQF/AQW+ksI"*)(*]VB*)]
+ }],
+ 
+ MusicVoice[{
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48|>], "Duration" -> MusicDuration[<|"Duration" -> 1/2|>]|> (*,*)(*"1:eJzdU01PwkAUxM+oFxMvJp40sUeSsm1BvLUFVAII3ZaPnizdpVbaLmzbUH6lib/IV0Dh4kGPJpvZ92ZeXiaz2ZsxMyYHhUIhvgLQWNZgPHxROXcijxKchqHDl0BP9vKZc4AGZ1FSj0jf50nqBGvhYkeoZ9RNE2ccUHwLtDKWiUzKYrEsiqQolytysSq6d0VpopASGleJJFYm+/mSQ4CWHyfrld/dSrvccbdx9ZTQsO/TBT4GrcMSen+9nj0DqBM/YTyXt9seWUDW3SmAZbRq1GWE4nfoBHQnIFXTBEWDW0DVFYF0CeCrA1rfEaFAJUFSaTMzzTbr4rDjjx5UpnguVq2hYtvT2RxHAtI0PLDhGkYNZ7TwdFP26v0Mh3Z3DhPuUDFG0wB0a9mbWl766qtGU5uZ4WwxyLy+NbApDbzY1n0x6Kntt9EgUwWplp/c244fpaZt3G8DNVJ4h5O8oA55joLlijV5Sn8bcx5rLeVO4rPor1F//Bx1SUAN9H/Tjo/yL+IEMf0EFzrm6Q=="*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU01PwkAUxM+oFxMvJp40sUcSaSkUby0tKgGEbstHTy7bpVbaLmzbUH6lib/IV0Dh4kGPJpvZ92ZeXiaz2ZsxMycHhUIhvgLQWNZgPHxROceRR12UhiHmS6Ane/nMOUCDsygxIrfv8yTFwVq42BGMjJI0weOAolugiUsUiSilolSRy8WyJOGiUpLlojIhWFRIpepWa5P9fMkhQMuPk/XK726lXe6427h6SmjY9+kCHYPWYQm9v17PngEYrp8wnsvbbY8scNfdKYBttnRKmEvRO3SCqAiiqmmCrMEtiLUVIeoSwFcHdH1HhEIsCZJKm5lltVkXhR1/9KAy2SNItYey40xncxQJoqahgQPXMGrg0cKrW2XP6GcodLpzmCBD2RxNA9DtZW9qe+mrr5pNbWaFs8Ug8/r2wKE08GKn7t8FPbX9NhpkqiDp+cm97fiRdW3jfhuomcI7nOQFxe5zFCxXrMVT+tuY81j1lOPEZ9Ffo/74OeqSIDbK/zft+Cj/IjiI6SflAecv"*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 55|>], "Duration" -> MusicDuration[<|"Duration" -> 1/8|>]|> (*,*)(*"1:eJzdU01PwkAQxc+oFxMvJp40sUcSWFoC3lo+VAII3ZaPnlzaoVbaLm7bUH6lib/IKaBw8aBHk83bmfcmk5e32ZsJ16cHuVwuukLQeNrkInhWhWChCw5NgoCJJdLTvWzmHKEpeBg3QmfgiThh/lq42BEaKdhJzCY+0Fuk5aIty8AK+YpTLeflKSH5CbMhD+ViQSYFcCoym+5nSw4R2l4Ur1d+dyvtcsfdxtVjDMHAgwU9Rq3LY7i7Xs+eITQcL+Yik7fbHrjvrLtTBFNv18HmDtB37CRSkYiqaZKi4S2R6oog9yWErw7p2o6IBSlKJRVaqWF0eI8GXW98r3LFtalqjhTLms3faCgRTaNDC69R2GTjhVszZLcxSGlg9d5wwh4p+njmo24u+zPTTV48VW9pcyOYL4apOzCHFoDvRlbNK/h9tfM6HqaqVKpnJ/O240epaxv320D1BN/hJCuAOU+hv1yxhkjgtzFnsdYTwWKPh3+N+uPnqIsSaVb+b9rRUfZFmB/BJz8T56c="*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57|>], "Duration" -> MusicDuration[<|"Duration" -> 1/8|>]|> (*,*)(*"1:eJzdU8lOwzAQLauACxIXJE4gkWOl4jS05eZ0YRFrnHTJCSeZhNAkLk6ipl+JxBcxaVl64QBHJOt55r3R6OlZPnKE4a9VKpX0AEEXRU/I+JFKyZMAPJbHMZczpP2VcmYXoSdFknUTrx/KLOfRQthbEroFuHnGnQjYMdL1luq0/DpUOSFOtd7w3WrTOYUqqalOo9ZsQcN3/NVyyTrCdZhmi5Vf3VzbX3L34eoyg7gfwpRtonYrMjg7XMzuIHS9MBOylL+3XYjIW3TbCJZx3QFXeMBesVNIUyFU1xVNx1shrTlBqIrw2SHdXhKxICeKSuGqMM0bcc/i23B0ToUWuIxaQ822x5MXlihE19nAxmuY9PhoGrTNetDtFyy2719wwh1qxmgcoW7NHsZWkD+F1LjSJ2Y8mQ6KoG8NbIAoSO12WIse6M3zaFBQRe2Up/S25Efr6B/uvwM1cnyHrbIA7t0l0WzOmjKH38ZcxtrJJc9Ckfw16refoz5RSK/5f9NON8ovwqMU3gGCWee8"*)(*]VB*)],
+  MusicRest[(*VB[*) <|"Duration" -> MusicDuration[<|"Duration" -> 1/8|>]|> (*,*)(*"1:eJxlkM1LxDAQxesXqBePgif30D/AQqF6a+0GhWWFRrvXjWYqgTQD0wTd/95Ju8Wvy8u83zzyQhav2HRHSZIMVywVfgqkflsSKfcOWoa+V7Rj3B3EzAWLIHR+6XRryAdlp8UxywNaPQ5rdPCNV2bwf9xhdJc/+vY9jx761sCHPOddHUh5g+7uespHttTGI8XI79rJnbG8NKsa3lCD3LBLsyLNSlGlecVnmt2OoLiZJ0b380L8I0UxHnM0r8X+lulBsbwJFuRpHEDpJ2d3I32mAMNJ/CtlB/gCWwlSng=="*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"|>], "Duration" -> MusicDuration[<|"Duration" -> 1/8|>]|> (*,*)(*"1:eJzdU8tOwkAUxWfUjYkbE1ea2CWJTCkPdy0FlQBCp+XRlW1nWittB6ZtKF9p4hd5CyhsXOjSZHLm3nNubk7OZG5sprkHhUIhvgJQWNZiPHyRObcijxKchqHFl0C7e/nMOUCLsyhpRmTo8yS1grVwsSM0M+qkiWUHFN8CbYsViVRQrVglpFos26hSrLslu+i4RCSiS0iparv7+ZJDgI4fJ+uV391Ku9xxt3H1lNBw6NMFPgatxxJ6f72ePQNoEj9hPJe32x5ZQNbdKYChdVTqMELxO3QCqglIVhRBUuAWUH1FILUM8NUB3dgRoUAlQZRpO9P1LuvjsOdPHmQmeQ6WjbFkmtPZHEcCUhQ8MuEaRy1rsvAaetlrDjMcmv05TDhjSZtMA9CN5WBqeOmrL2ttZaaHs8Uo84bGyKQ08GKz4d8FA7n7NhllsiCq+cm97fiRVGXjfhuolsI7nOQFtchzFCxXrM5T+tuY81jVlFuJz6K/Rv3xc9QlAbVq/zft+Cj/IlYQ00+Yrugc"*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38|>], "Duration" -> MusicDuration[<|"Duration" -> 1/2|>]|> (*,*)(*"1:eJzdU8tOg0AUrc+oGxM3Jq40kSWJnYot7qAUtfFVBvpg5bRcEAtMO0BKv9LEL/LS+ujGhS5NJmfuPefm5uRM5mTILX+jUqmkRwg6L0wu4idNCJYE4NE8jpmYI+2vlTP7CKbgSdZKvG4ospxFS+FgRWgVMMozNoyAniINNdVnRG3IAA1VPq8OQVbrNV9mZ1BXyIWnDIH46+WSTYTbMM2WK7+6hXa44u7D1U0GcTeEGd1G7Z5ncHm8nN1DaHlhxkUpf2+75pG37HYRHOvWgBH3gL5iJ5GGRDRdlxQdb4moC4IYBOGzQ7q5ImJBqlJNg3Zh23f8kcb34eBK40owoprTV1x3PJnSRCK6TnsuXv3EZINZ0LTPg1a3oLH7OMWJUV+xBuMIdWfeGTtB/hxqVluf2PFk1iuCrtNzAaIgdZvhWdTR7l4GvUKTakZ5Sm8rfhRD/3D/HaiV4zvslAUw7yGJ5gvWFjn8NuYyViMXLAt58teo336OuioR8x+nnW6VX4RFKbwDomjnwg=="*)(*]VB*)],
+  MusicNote[(*VB[*) <|"Pitch" -> MusicPitch[<|"Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38|>], "Duration" -> MusicDuration[<|"Duration" -> 1/4|>]|> (*,*)(*"1:eJzdU01PwkAQxc+oFxMvJp40sUcSWKhSby0FlShit+WjJxc6rZW2C9s2lF9p4i9yCihcPOjRZPN25r3J5OVt9mLIDXenUCjEZwgaz5pchC+qECzywKFpGDIxR9rdymeOEZqCR0kjcrq+SFIWLIWTDaGRwShN2DAAeok0VBSXEaVWBKgpxWp5CEXluuIWWQmuZXLlyEMg7na+ZBfhwY+T5crvbqGdbrhbubpPIOz6MKP7qLV5Ajfny9kjhIbjJ1zk8nrbHQ+cZXeIYBkPOoy4A/QdO4nUJKJqmiRreEtEWRBEJwhfHdL1DRELUpYqKrQy03zkHRq2/cGtymVvRFWrL9v2eDKlkUQ0jfZsvPpRkw1mXt2seo1uRkO7M8WJUV82BuMAdWv+PLa89NVXjZY2McPJrJd5XatnAwRebNf9UvCsPr4NepkqVfT85N42/Mi6tnK/DtRI8R0O8gKY8xQF8wVrihR+G3Meq54Klvg8+mvUHz9HXZZIs/p/04738i/Cghg+AaQy58Q="*)(*]VB*)]}, "Instrument"->"FMSynth"]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["ee0db1e5-8249-4b0f-9291-91d07a7a5f3a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5AIzi/Ng3KFgIRbUX5eiWteimtFanJpSWJSTmqwClA4NdUgJckw1VTXwsjEUtckySBN19LI0lDX0jDFwDzRPNE0zTgRAJcXGIs="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Neat!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Neat!
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+There is backward compatibility: you can wrap it in `Sound` and use it in `EmitSound`, for example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+There is backward compatibility: you can wrap it in `Sound` and use it in `EmitSound`, for example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EmitSound[music//Sound]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+music//Sound
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["cdbc4a8e-bab1-4d24-bf7b-9b95f209cff4"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6ckJZskWqTqJiUmGeqapBiZ6CalmSfpWiZZmqYZGVgmp6WZAACgDhbD"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+If you need scales, there is a special symbol for that:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+If you need scales, there is a special symbol for that:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MusicScale@RandomChoice@MusicScale["Names"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Construct chords by sampling every third pitch in the list:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Construct chords by sampling every third pitch in the list:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pitches = MusicScale[(*VB[*) <|"Name" -> "Lydian Augmented"|> (*,*)(*"1:eJzdU11v0zAU7fiGB5B4QeIJJPJYKfVidePNTtPB1I0tTvqRJ9zYyULjuHMSNf21/BWu28EqIR7gEck69j3n6Or6WH6/1GH2sNfr1W8BqO7G2qivxBhe5VKwVilutkBnR9bzCmBsdNUElZgWpml5uRdeHwhBJ9O24ctSsg9A4+HAQy4S/ZNTPOh7Kc/6fIBkX7je0s1Sd8mHw+yBbfIIYFLUzb7lr2qnvTmY7m6qz41U00Ju2BPQLrmSH9/tvS8AAlE02lj5vtsnXYp99RwgDicjmWoh2XeoHHTiIEKpgynsDjrdEWiyFQWvHOSSNleyaqQA8qcKNv/ADAc0cI6JPO+i6EJfMXVZLM6IxnnKSDzHSbJa3zJoRimbJbDNqzFfbHI/8vJg2jGVXN2CI53jcLEqQY+316s4b28KEp7TdaTWm1mXT+NZImWZ14lfuOU1ufi2mHXEOR7ZZWc7mAeP6N1t7gMOW3iXZ/YgufhSldsdG5lW/m3sT23supH1v+b+8uiPufseZD6yEFgYO9gHB7vhZg23stTZ7xSxQC34+P99pvqx/Wu8rOUPphj5hQ=="*)(*]VB*)]["PitchList"];
+pitches = 
+  Join[pitches, 
+   MusicTransform[{"Transpose", 12}] /@ Rest@pitches];
+
+Table[MusicChord@pitches[[{i, i + 2, i + 4, i + 6}]], {i, 4}]//TableForm
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{MusicChord[(*VB[*) <|"PitchList" -> {MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "C"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "E"|>], MusicPitch[<|"Accidental" -> 1, "Octave" -> 4, "Key" -> "G"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "B"|>]}|> (*,*)(*"1:eJxdUctO6zAQLY8rHhskNkh3dZHwslLrxojcXZymPMQzTvrICidxQ2gSFydR03/mIxgTEBWSdWbmnJnReOY0lO58p9PplH8BqGxGUuXPllK8SETM6jznag30fEvnHAGMlCwqp4jHqapqnrXC8YbgNCKqKx5mgp0BPe+bwoww6UYh6XeNgYm7Ju71uzwMjXAQx+dG2Gub7ALcpmX1K9rW0cnGdF9TXVciH6dixfZAu5eVKP//a5MPAZw4raTS+k+7K5nFbXQA4Lu3QxHJWLB3iBC+QNiiFBEKFmHzk8C2gXDP0XCJiA0ie+FqichQUxQAf6dCjb1RCQ7uo4ElbhrPu5OPLL9PZ5eWJEnELH9KgmCxfGMFwpSySQBmWoz4bJXYnpE444blweMbZERT4s4WGej++mnhJ/VLark3dOnly9WkScb+JBAiS8rATnvZk3X3Ops0FhoM9dOzbcxDhvTra+2W9EbcGq60rx3B44ciW3+ynqpF+UeflGel+ABO+o8i"*)(*]VB*)]}(*||*),(*||*){MusicChord[(*VB[*) <|"PitchList" -> {MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "D"|>], MusicPitch[<|"Accidental" -> 1, "Octave" -> 4, "Key" -> "F"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "A"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 5, "Key" -> "C"|>]}|> (*,*)(*"1:eJxdUU1P4zAQ7cIiFi4r7QWJE0jrY6XGbYByc9KWDwELcdKPnDDJJA1N4uIkavqf+RGMGxDVytabmfeerfH49EU60W6r1SqOESxZj6TKnplSIo8h5FWWCbVGOvqhPb8RRkrm5TAPx4kqK5E2wp8tYVhDUJXiJQX+F+luBN3wTIi2YQho93rGRVsEnahNoXPex0WNqN9c8hPhLinK/6odXR1tdffZ1U0J2TiBFd9H7UGWUFyeNOZDhGGYlFJp/fu6a5mGTXWA4Dl3AwhkCPwdK0IvCGWWRUwLI6H9DUEHPUI7I2LayPO5UEtibiimwTbR8WXFM/bWSUyoQboMbmvXvZePPHtIZldMmnHAmTc1fX+xfOM5oZbFJz6GaT4Ss1Vsu714OK555j++oSOYms5skaLurZ8WXlzNE+bcWks3W64mdTz2Jj5AGhe+nXTSJ3b/OpvUjHQHeuvetvoxB9bn05op6Yk4Ff7SL52ACP/l6XrDuqqCYk9/qUgL+ABxnI8t"*)(*]VB*)]}(*||*),(*||*){MusicChord[(*VB[*) <|"PitchList" -> {MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "E"|>], MusicPitch[<|"Accidental" -> 1, "Octave" -> 4, "Key" -> "G"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "B"|>], MusicPitch[<|"Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 74|>]}|> (*,*)(*"1:eJxdUVtPgzAUnrd4eTHxxcQnTezjEi0Q0Tc6mJdsXijswpMdFMQBnQUy9p/9EZ6KxsWk+drv0pPT07OZcOOtTqdTngAQ0fSFzF8tKVmR8IjWec7kCuR4Q2UOAfpSFJVTRKNUVjXLWuNozXAaHtYVm2WcnoOsMc00w0uzi5nJuvpVyLumPgMa41hnscZ0M26LbAMM0rL6xzYVO17r7qer+4rno5Qv6S54j6Li5c1pGz4AcKK0ElL5f+XuRBa1bB/Adwc2D0XE6ScwhE2ELUKQQWBH+PpbwI6O8MUtMnqg0zcmF8iwlUQU2AYkfqNwp7d2Ew74EmkWf2g8byieaf6YTm8tYSQhtfyJEQTzxQctECaEjgPYJkWfTZdJz9MTZ9TQPHj+gEQ4MdzpPAPfX73M/aR+Sy33gSy8fLEcN8nIHwecZ0kZ9NKL7MUavk/HjYU0Wy3V21o/hk1+ntZOSU3EreGX9tSBs+ipyFbfqidrXu6oL2VZyb8Ax5CPag=="*)(*]VB*)]}(*||*),(*||*){MusicChord[(*VB[*) <|"PitchList" -> {MusicPitch[<|"Accidental" -> 1, "Octave" -> 4, "Key" -> "F"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 4, "Key" -> "A"|>], MusicPitch[<|"Accidental" -> 0, "Octave" -> 5, "Key" -> "C"|>], MusicPitch[<|"Accidental" -> 0, "Key" -> "E", "MIDINumber" -> 76|>]}|> (*,*)(*"1:eJxdUclOwzAQLZtYLkhckDiBhI+VSBqjlpuTpixijZMuOWFiN4QmceskavrPfARjAqJCst7MvDczGs+cvUlvutVqtYoTAFvWA6myV6IUy2PBaZVlTK2Anm7onEOAgZJ56eZ8mKiyYmkjHK0Jbi2iqmRvqaDnQF9aPcYM3G1Home0LYt1293IMNoRNqacd3inx0TTZBvgPinKf9Gmjo7XpvuZ6rYU2TARS7oL2qMsRXF12iQfALg8KaXS+l+7G5nyJtoHCLz7vogkF/QTImR2kUlsG2EbLDJ734Q5QNgBir4zNUe4byHzgmhwMIALYP6mQo2zVgmOaaAOEXe17z/IZ5o9JpNrInEcURKMcRjO5guaI9O26SgEM84HbLKMHd+K3WFNs/B5ARnRGHuTWQp6sHqZBXH1nhDvzp772Xw5quNhMAqFSOMidJKL9IU8fExGNUGdvn56trV5cN/++VqzJb0Rr4Ir7WlHMP6Up6tv1leVKHb0SVlaiC+/NY9i"*)(*]VB*)]}}(*||*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcEsQBH3osyUNCaQPIgXVJqTWswPFXbKrwguSEzOzEsvTmOEqfDJLC5BVQ82Jii/vDgTSDOgmSWAMMsxJzM9Lzc1rwSvYexAhnN+TmluXjFESWpaCQBkRyz7*)(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Fixed bugs
+- [x] Unicode issues in `PlotLegends` and other elements that rely on the `FrontFetch` function.
+- [x] `Graph` objects are not rendered correctly when their size is less than 1 KB.
+- [x] `Rasterize` and PDF export stop working after a kernel restart.
+- [x] `EmitSound` and `Speak` stop working after a while in the same session.
+- [x] Custom windows cannot be made smaller in the desktop version.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Fixed bugs
+- [x] Unicode issues in `PlotLegends` and other elements that rely on the `FrontFetch` function.
+- [x] `Graph` objects are not rendered correctly when their size is less than 1 KB.
+- [x] `Rasterize` and PDF export stop working after a kernel restart.
+- [x] `EmitSound` and `Speak` stop working after a while in the same session.
+- [x] Custom windows cannot be made smaller in the desktop version.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 3956997714
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["(*GB[*){{(*VB[*)(Graphics[{RGBColor[1, 0, 0], Line[{{-1, -1}, {1, 1}}]}, ImageSize -> 10])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkHAvSizIyEwuhoiA5H0yi0vSmGHyQe5Ozvk5+UWZIP2ZDDACYZxPZl4qmmYUXuZ/IAATaOJgA0EEQjyoNCe1mBPI8MxNTE8NzqxKzeQC8gDE0ymM\"*)(*]VB*)(*|*),(*|*)\"function\"}}(*||*)(*1:eJxTTMoPSmNkYGAo5gUSYZmp5S6pyflFiSX5RcEsQBH3oswUAJ89CUc=*)(*]GB*)", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 4c80de61-0728-4e52-817b-2e550e2c3e61
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{EdgeForm[RGBColor[1, 0, 0]], GrayLevel[1], Triangle[{{-1, -(1/Sqrt[2])}, {0, Sqrt[2]}, {1, -(1/Sqrt[2])}}], {RGBColor[1, 0, 0], Text[Style["!", FontSize -> 16], {0, 0}, {0, 0}]}}, ImageSize -> 30, PlotRange -> {{-1.15, 1.15}, {-0.8131727983645295, 1.6263455967290592}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: e46fc9de-8331-4d1a-9082-d2ebd2f56c0b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Text[Style["\[DoubleStruckCapitalA]", FontSize -> Scaled[0.7]], {0.1, 0}]}, Background -> GrayLevel[0.93], PlotRangePadding -> Scaled[0.1], FrameStyle -> Directive[Thickness[Tiny], GrayLevel[0.7]], PlotRange -> {{-1, 1}, {-1, 1}}, Axes -> False, AspectRatio -> 1, ImageSize -> Dynamic[{Automatic, 3.5*(CurrentValue["FontCapHeight"]/AbsoluteCurrentValue[Magnification])}], Frame -> True, FrameTicks -> None, FrameStyle -> Directive[Opacity[0.5], Thickness[Tiny], RGBColor[0.368417, 0.506779, 0.709798]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 92e43cd5-5a4e-46bc-84d2-315c254f2e2c
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Thickness[0.041666666666666664], {FaceForm[{LightDarkSwitched[RGBColor[0.639, 0.706, 0.8]], Opacity[1]}], FilledCurve[{{Line[{{18, 8}, {6, 8}}], Line[{{6, 8}, {6, 16}}], Line[{{6, 16}, {18, 16}}]}}], FilledCurve[{{Line[{{4, 6}, {4, 18}}], Line[{{4, 18}, {7, 18}}], Line[{{7, 18}, {7, 19}}], Line[{{7, 19}, {3, 19}}], Line[{{3, 19}, {3, 5}}], Line[{{3, 5}, {7, 5}}], Line[{{7, 5}, {7, 6}}]}}], FilledCurve[{{Line[{{20, 18}, {20, 6}}], Line[{{20, 6}, {17, 6}}], Line[{{17, 6}, {17, 5}}], Line[{{17, 5}, {21, 5}}], Line[{{21, 5}, {21, 19}}], Line[{{21, 19}, {17, 19}}], Line[{{17, 19}, {17, 18}}]}}]}, {FaceForm[{LightDarkSwitched[RGBColor[1, 1, 1]], Opacity[1]}], FilledCurve[{{Line[{{17, 9}, {7, 9}}], Line[{{7, 9}, {7, 15}}], Line[{{7, 15}, {17, 15}}]}}]}}, AspectRatio -> Automatic, ImageSize -> {24, 24}, PlotRange -> {{0, 24}, {0, 24}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 9a89c92a-8f59-44db-b9c2-3a051a7fc010
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold["(*VB[*)(FrontEndRef[\"f047c468-2c49-48f0-83c7-3cc9bbbc204c\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKpxmYmCebmFnoGiWbWOqaWKQZ6FoYJ5vrGicnWyYlJSUbGZgkAwB9mhWm\"*)(*]VB*)"]|>
+
+%-------------------------------------------------------------------------%
+Key: 48b501c0-843e-4879-ad8a-d9c307ccc81c
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold["(*VB[*)(FrontEndRef[\"093d51fb-5d1a-4a8e-af67-1b6e2f9d9765\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG1gap5gapiXpmqYYJuqaJFqk6iammZnrGiaZpRqlWaZYmpuZAgCJYBXg\"*)(*]VB*)"]|>
+
+%-------------------------------------------------------------------------%
+Key: 523b0a2f-4641-402a-a871-e20a60848509
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold["(*VB[*)(FrontEndRef[\"1aa59655-bd06-4b3a-bbaf-a7e71505c924\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKGyYmmlqamZrqJqUYmOmaJBkn6iYlJabpJpqnmhuaGpgmWxqZAACI/BXG\"*)(*]VB*)"]|>
+
+%-------------------------------------------------------------------------%
+Key: ab507822-e047-44d1-8cc4-971193a7df0a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{True, True}, {True, True}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{True, True}, {True, True}}, FrameLabel -> {{HoldForm[Row[{TeXView[Offload[URLDecode["x%5E2"]]], "function"}]], None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 5610c75c-0442-4ce4-b5fe-3eea3abd6d70
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{True, True}, {True, True}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{True, True}, {True, True}}, FrameLabel -> {{HoldForm[Row[{Graphics[{RGBColor[1, 0, 0], Line[{{-1, -1}, {1, 1}}]}, ImageSize -> 10], "function"}]], None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 874f0eef-496c-4c85-b07a-36a970e76671
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote["C5", {0, 0.4}, "Piano"], SoundNote["D5", {0.5, 0.9}, "Guitar"], SoundNote["E5", {1, 1.4}, "Violin"], SoundNote["F5", {1.5, 1.9}, "Flute"], SoundNote["G5", {2, 2.4}, "Trumpet"], SoundNote["A5", {2.5, 2.9}, "Organ"], SoundNote["B5", {3, 3.4}, "Marimba"], SoundNote["C6", {3.5, 3.9}, "Vibraphone"], SoundNote["C2", {4, 4.4}, "Drums"], SoundNote["C5", {4.5, 4.9}, "AMSynth"], SoundNote["D5", {5, 5.4}, "FMSynth"], SoundNote["E5", {5.5, 5.9}, "DuoSynth"], SoundNote["F4", {6, 6.4}, "MembraneSynth"], SoundNote["G5", {6.5, 6.9}, "MetalSynth"]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: c6e66bd4-10e6-4b9c-ad38-8bd62d23182f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote["C6", {0, 0.035}, "MetalSynth"], SoundNote["C6", {Rational[3, 14], 0.24928571428571428}, "MetalSynth"], SoundNote["C6", {Rational[3, 7], 0.4635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[9, 14], 0.6778571428571429}, "MetalSynth"], SoundNote["C6", {Rational[6, 7], 0.8921428571428571}, "MetalSynth"], SoundNote["C6", {Rational[15, 14], 1.1064285714285713}, "MetalSynth"], SoundNote["C6", {Rational[9, 7], 1.3207142857142857}, "MetalSynth"], SoundNote["C6", {Rational[3, 2], 1.535}, "MetalSynth"], SoundNote["C6", {Rational[12, 7], 1.749285714285714}, "MetalSynth"], SoundNote["C6", {Rational[27, 14], 1.9635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[15, 7], 2.177857142857143}, "MetalSynth"], SoundNote["C6", {Rational[33, 14], 2.3921428571428573}, "MetalSynth"], SoundNote["C6", {Rational[18, 7], 2.6064285714285718}, "MetalSynth"], SoundNote["C6", {Rational[39, 14], 2.8207142857142857}, "MetalSynth"], SoundNote["C6", {3, 3.035}, "MetalSynth"], SoundNote["C6", {Rational[45, 14], 3.2492857142857146}, "MetalSynth"], SoundNote["C1", {0, 0.18}, "Drums"], SoundNote["C1", {Rational[9, 14], 0.822857142857143}, "Drums"], SoundNote["C1", {Rational[9, 7], 1.4657142857142857}, "Drums"], SoundNote["C1", {Rational[33, 14], 2.5371428571428574}, "Drums"], SoundNote["C1", {3, 3.18}, "Drums"], SoundNote["C2", {Rational[6, 7], 0.9771428571428571}, "Drums"], SoundNote["C2", {Rational[18, 7], 2.6914285714285717}, "Drums"], SoundNote["C2", {0, Rational[9, 14]}, "FMSynth"], SoundNote["G1", {Rational[9, 14], Rational[6, 7]}, "FMSynth"], SoundNote["Bb1", {Rational[9, 7], Rational[12, 7]}, "FMSynth"], SoundNote["C2", {Rational[12, 7], Rational[33, 14]}, "FMSynth"], SoundNote["Eb2", {Rational[18, 7], Rational[24, 7]}, "FMSynth"]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 074d84fa-302e-4a85-86ae-f4c97a662039
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "B"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cb812bdc-e83b-4478-857c-c464895ff8c2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[ViewDecorator["RawText", StringJoin["C", 4]]]|>
+
+%-------------------------------------------------------------------------%
+Key: d8695157-12fe-492a-b4e6-1c279851cb56
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cdbc4a8e-bab1-4d24-bf7b-9b95f209cff4
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote[0, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[0, {0.5, 0.9989583333333333}, "Piano", "SoundVolume" -> 1], SoundNote[4, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {1.25, 1.7489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[11, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[2, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[6, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[13, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[5, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[12, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[-12, {0, 0.9989583333333333}, "FMSynth", "SoundVolume" -> 1], SoundNote[-10, {1, 1.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-5, {1.5, 1.7489583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-3, {1.75, 1.9989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[2, {2.25, 2.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {2.5, 3.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {3.5, 3.9989583333333334}, "FMSynth", "SoundVolume" -> 1]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 5714202d-8951-4caf-a12e-d04b0fc0ba77
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}, True]]|>
+
+%-------------------------------------------------------------------------%
+Key: f19e9c25-cb51-4392-9201-abb4b3dd64b0
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 3fe3d6aa-11ae-4418-ac0f-2e07979721f9
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 3a388c18-2a8a-47ce-84b8-2f2f4af3a48f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 74]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 649aa158-ce91-44a8-8c11-c51fdd3d39ae
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "E", "MIDINumber" -> 76]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: f047c468-2c49-48f0-83c7-3cc9bbbc204c
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 093d51fb-5d1a-4a8e-af67-1b6e2f9d9765
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 1aa59655-bd06-4b3a-bbaf-a7e71505c924
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 4.1649312786339017*^-16}, {0.00030671792055962676, 9.407588279242151*^-8}, {0.0006134154329559882, 3.7627849338858247*^-7}, {0.0009201129453523496, 8.466078322049759*^-7}, {0.0012268104577487112, 1.5050638992416022*^-6}, {0.0015335079701450727, 2.3516466944984614*^-6}, {0.001840205482541434, 3.386356217975552*^-6}, {0.0021469029949377954, 4.609192469672876*^-6}, {0.002453600507334157, 6.020155449590433*^-6}, {0.002760298019730519, 7.619245157728224*^-6}, {0.00306699553212688, 9.406461594086245*^-6}, {0.0033736930445232415, 0.000011381804758664498}, {0.003680390556919603, 0.000013545274651462985}, {0.003987088069315964, 0.0000158968712724817}, {0.0042937855817123255, 0.000018436594621720654}, {0.004907180606505049, 0.00002408042150485926}, {0.005213878118901411, 0.00002718452503875892}, {0.0055205756312977725, 0.0000304767553008788}, {0.006133970656090495, 0.00003762559600977926}, {0.0064406681684868565, 0.000041482206456559836}, {0.006747365680883218, 0.00004552694363156065}, {0.0073607607056759405, 0.00005418079816622297}, {0.007667458218072303, 0.00005878991552588449}, {0.007974155730468665, 0.00006358715961376624}, {0.008587550755261388, 0.00007374602797419042}, {0.009814340804846833, 0.00009632128543368157}, {0.010121038317243194, 0.00010243541661910494}, {0.010427735829639555, 0.00010873767453274854}, {0.011041130854432278, 0.00012190657054469644}, {0.012267920904017723, 0.00015050188330723504}, {0.012574618416414085, 0.00015812102831842025}, {0.012881315928810446, 0.00016592830005782573}, {0.013494710953603169, 0.00018210722372129733}, {0.014721501003188616, 0.00021672259178688342}, {0.015028198515584977, 0.0002258467506238305}, {0.01533489602798134, 0.00023515903618899787}, {0.015948291052774063, 0.0002543479875039932}, {0.017175081102359508, 0.0002949834108726267}, {0.0196286612015304, 0.0003852843405644648}, {0.01996115644971678, 0.0003984477668100697}, {0.020293651697903155, 0.00041183229923580757}, {0.020958642194275914, 0.0004392646826276827}, {0.022288623187021427, 0.0004967827235730292}, {0.024948585172512458, 0.0006224319021101085}, {0.025281080420698838, 0.0006391330272378421}, {0.025613575668885218, 0.0006560552585457088}, {0.026278566165257974, 0.0006905630397018411}, {0.02760854715800349, 0.0007622318761757026}, {0.03026850914349452, 0.0009161826457698114}, {0.0306010043916809, 0.0009364214697796738}, {0.03093349963986728, 0.0009568813999696692}, {0.03159849013624004, 0.000998464578890059}, {0.03292847112898555, 0.001084284210892435}, {0.035588433114476584, 0.0012665365715435735}, {0.040908357085458646, 0.0016734936794313947}, {0.04121881843678198, 0.0016989909933243983}, {0.04152927978810532, 0.001724681079718733}, {0.042150202490751985, 0.0017766395700113949}, {0.043392047896045324, 0.0018828698206126914}, {0.04587573870663201, 0.002104583401879174}, {0.05084312032780537, 0.0025850228846676956}, {0.05115358167912871, 0.0026166889186032922}, {0.051464043030452045, 0.0026485477250402195}, {0.05208496573309871, 0.002712843655418067}, {0.05332681113839205, 0.0028437487861897345}, {0.05581050194897873, 0.003114812127796958}, {0.06077788357015209, 0.0036939511312669635}, {0.0610822549021634, 0.003731041863932865}, {0.06138662623417471, 0.0037683178804142664}, {0.06199536889819733, 0.003843425764823573}, {0.06321285422624258, 0.003995864939428194}, {0.06564782488233308, 0.004309636911781469}, {0.07051776619451407, 0.0049727553490641506}, {0.07082213752652539, 0.005015775163826075}, {0.07112650885853669, 0.0050589802624034985}, {0.07173525152255932, 0.005145946311004849}, {0.07295273685060456, 0.005322101813993557}, {0.07538770750669506, 0.0056833064431150064}, {0.08025764881887605, 0.006441290193934036}, {0.08058781788667738, 0.006494396391736278}, {0.08091798695447872, 0.0065477206127651875}, {0.08157832509008137, 0.0066550231245029986}, {0.0828990013612867, 0.0068722444266986135}, {0.08554035390369732, 0.007317152145969786}, {0.09082305898851858, 0.008248828044031927}, {0.10138846915816112, 0.010279621678235389}, {0.10169660432909941, 0.010342199332069401}, {0.10200473950003769, 0.010404966880470549}, {0.10262100984191426, 0.010531071660974263}, {0.1038535505256674, 0.010785559956787353}, {0.10631863189317368, 0.011303651487636169}, {0.11124879462818625, 0.012376294306224361}, {0.12110912009821138, 0.014667418970962989}, {0.1424808261288228, 0.02030078581435183}, {0.16346277092346467, 0.026720077477977087}, {0.18303454631887175, 0.03350164514615521}, {0.20425737680483996, 0.041721075979194375}, {0.22407003789157337, 0.05020738188073113}, {0.24349293774233727, 0.059288810730393736}, {0.26456689268366235, 0.06999564070428851}, {0.2842306782257526, 0.08078707844467131}, {0.305545518858404, 0.0933580640944513}, {0.32647059825508584, 0.10658305152503365}, {0.34598550825253294, 0.11970597192076354}, {0.3671514733405411, 0.13480020437613005}, {0.3869072690293145, 0.14969723482772235}, {0.408314119808649, 0.1667204204351118}, {0.429331209352014, 0.18432528732366288}, {0.44893812949614426, 0.2015454441154968}, {0.47019610473083556, 0.2210843769040509}, {0.4900439105662921, 0.24014303428310407}, {0.5095019551657791, 0.2595922423177516}, {0.5306110548558273, 0.28154809153521376}, {0.5503099851466406, 0.30284107975209584}, {0.5716599705280151, 0.3267951219040911}, {0.5926201946734201, 0.3511986951347623}, {0.6121702494195903, 0.3747524142744434}, {0.6333713592563216, 0.4011592787262004}, {0.6531622996938181, 0.42662098974131707}, {0.6725634788953451, 0.45234163314380926}, {0.6936157131874332, 0.4811027575805116}, {0.7132577780802865, 0.5087366579920272}, {0.7345508980637009, 0.5395650218461895}, {0.7544338486478805, 0.5691704319856531}, {0.7739270379960906, 0.5989630601414023}, {0.7950712824348619, 0.6321383441526159}, {0.8148053574743983, 0.663907770568982}, {0.8361904876044959, 0.6992145315602446}, {0.857185856498624, 0.7347675925812797}, {0.8767710559935172, 0.7687274846279873}, {0.8980073105789717, 0.8064171298532776}, {0.9178333957651912, 0.8424181423818621}, {0.9372697197154413, 0.8784745274954618}, {0.9583570987562524, 0.9184483287365013}, {0.9780343083978288, 0.9565511084032192}, {0.9783775220102351, 0.9572225755748881}, {0.9787207356226415, 0.9578942783377246}, {0.9794071628474543, 0.9592383906369}, {0.9807800172970798, 0.96192944232926}, {0.9835257261963308, 0.96732285409002}, {0.9890171439948328, 0.9781549111156957}, {0.9893603576072392, 0.9788339172047241}, {0.9897035712196455, 0.9795131588849199}, {0.9903899984444582, 0.9808723490188139}, {0.9917628528940837, 0.983593556380612}, {0.9945085617933347, 0.989047279480247}, {0.9948517754057411, 0.9897300550279551}, {0.9951949890181475, 0.9904130661668308}, {0.9958814162429602, 0.9917797952180842}, {0.9972542706925858, 0.9945160804146012}, {0.9975974843049922, 0.9952007406916491}, {0.9979406979173985, 0.9958856365598644}, {0.9986271251422112, 0.9972561350697975}, {0.9989703387546176, 0.9979417377115154}, {0.999313552367024, 0.9986275759444009}, {0.9996567659794304, 0.9993136497684537}, {0.9999999795918367, 0.9999999591836739}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999591836739}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999591836739}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 572c90bd-88cd-4175-ba26-b25edb2060f9
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Key" -> "D", "Accidental" -> 0]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: ee0db1e5-8249-4b0f-9291-91d07a7a5f3a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 55]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "FMSynth"]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "FMSynth"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "FMSynth"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 2678341441legend
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["(*VB[*)(Null)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWnMIB47kAhJjQjLTC2HSIME/NPScvITUyACnEAiNMjHJTU5PyU1WBrIq1A1dTWqUzV1LkmtKFE1d0orzUsuyczPUzV3SWOCWRFUmpMK1uuZm5ieGpxZlYqQ88ksLsmcBmRkygEJND18QIZjTmZ6Xm5qXklAfmZeCapGCCM1raSYDchwBipKLQIAY48ylA==\"*)(*]VB*)", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: -914924621legend
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["(*VB[*)(Null)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeO5AISY0Iy0wtRwj4p6Xl5CdCVXACidAgH5fU5PyU1GBWIK9C1dTVCACRUhCO\"*)(*]VB*)", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 468465155legend
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["(*GB[*){{(*VB[*)(Null)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeO5AISY0Iy0wtRwj4p6Xl5CdCVXACidAgH5fU5PyU1GBWIK9C1dTVCACRUhCO\"*)(*]VB*)(*|*),(*|*)\"function\"}}(*||*)(*1:eJxTTMoPSmNkYGAo5gUSYZmp5S6pyflFiSX5RcEsQBH3oswUAJ89CUc=*)(*]GB*)", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 39ce4115-07f4-47e8-8f32-e3f81611b94a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: d67de79a-1d9f-4fb1-958f-64c56f1439c2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "E"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 11a9ca2e-9de3-48c5-9775-c84f903d2a7d
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "E"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8e283008-f6c1-4430-971b-21ec2d351a39
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 5b4d4d60-600d-4674-90c8-3f5d12b9d307
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cdc83c81-3654-433a-8155-8fca28c67d79
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 41c44ea0-8d96-4f22-bace-e610420ed84a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 55]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 493b9f4e-a22b-47fc-8b6e-203b7089e7fb
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: b365d628-7dd7-4b26-9f1b-cfd3d3fdd17b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: e39fa298-ee89-41be-973f-a0e7526d5be2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]]}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

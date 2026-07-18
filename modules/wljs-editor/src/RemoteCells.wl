@@ -531,6 +531,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                     ];
                 , 10]; (* let it go to the que async. in a case if some windows have been just closed *)
+                (* that timeout was added to avoid launching through a socket that is in the process of closing, it can be even 1 tick. just to let WL to put it to an event loop *)
             ]
         ],
 

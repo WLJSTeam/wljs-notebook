@@ -82,7 +82,7 @@ createWindow[hash_, opts___] := With[{}, If[window[hash] === Null,
     windowOpts[hash] = {opts};
     window[hash] = CreateWindow[Cell["<div class=\"px-4 py-2\"><small>Temporal window</small></div>", "Output", "HTML"], WindowSize->{1920, 1280}, "Offscreen"->True, opts ];
 
-    EventHandler[window[hash], {"Ready" -> Function[w,
+    SetTimeout[EventHandler[window[hash], {"Ready" -> Function[w,
         windowObject[hash] = w;
         windowReadyQ[hash] = True;
         windowClosingQ[hash] = False;
@@ -91,7 +91,7 @@ createWindow[hash_, opts___] := With[{}, If[window[hash] === Null,
         If[intervalTimer[hash] =!= Null, TaskRemove[intervalTimer[hash]]];
         intervalTimer[hash] = SetInterval[
             checkQue[hash];
-            If[Now - lastTimeUsed[hash] > Quantity[3, "Seconds"],
+            If[Now - lastTimeUsed[hash] > Quantity[6, "Seconds"],
                 windowClosingQ[hash] = True;
                 NotebookClose[window[hash]];
             ];
@@ -100,7 +100,7 @@ createWindow[hash_, opts___] := With[{}, If[window[hash] === Null,
         If[window[hash] =!= Null,
             destroy[hash];
         ];
-    ]}];
+    ]}], 250]; (* creation of window on master kernel is delayed to avoid half-closing sockets, therefore subscribing too early is very bad, it might think that this is an input cell, not a window, since window object is not yet exists, so we delay subscription too by 25 times longer than a socket check *)
 ,
     (* Window is alive but closing: don't reset the idle timer, let it finish closing.
        Items added to the queue now will be picked up by destroy's recreation. *)

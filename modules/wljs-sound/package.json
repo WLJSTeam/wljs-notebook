@@ -4,6 +4,7 @@
     "description": "Library implementing sound engine",
     "scripts": {
         "build": "node --max-old-space-size=8192 ./node_modules/.bin/rollup --config rollup.config.mjs",
+        "test": "node test/pcm-player.test.mjs",
         "restore": "mkdir _temp && cd _temp && git clone --branch base https://github.com/JerryI/wljs-sound && mv wljs-sound/.git ../.git && cd .. && rm -rf _temp"
     },
     "defaultPackage": true,

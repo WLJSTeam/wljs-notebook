@@ -159,6 +159,10 @@ init[k_] := Module[{},
                 If[o === Null, Return[] ];
                 (* FIXME Intersection of different sub-packages!!!  See RemoteCells *)
                 With[{cell = CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj[o["Cell"] ], parent = CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj[o["Ref"] ]},
+                    If[o["Size"] > 0.05, 
+                        EchoLabel["Warning"]["Output is too long. It will hang UI for sure"];
+                        Return[];
+                    ];
                     Delete[cell];
                     CellPrint[o["Result"], "After" -> parent, "Type"->"Output"];
                     Internal`Kernel`TruncatedOutputLastItem = Null;
@@ -189,10 +193,10 @@ init[k_] := Module[{},
                                 shortform = CoffeeLiqueur`Extensions`Shallow`Internal`fitToBudget[result, 1500]
                             },
                                 (* [TODO] this shit with restoring the intendend content has to be refactored! *)
-                                Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"]|>;
+                                Internal`Kernel`TruncatedOutputLastItem = <|"Event"->ref, "Result"->string, "Cell"->hash, "Ref"->t["EvaluationContext"]["Ref"], "Size"->N[StringLength[string]/1024/1024]|>;
                                 EventHandler[ref, Internal`Kernel`TruncatedOutputReveal];
 
-                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][StringLength[string], StringReplace[StringTake[shortform, Min[StringLength[shortform], 5000]], {">"->"&gt;", "<"->"&lt;"} ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
+                                EventFire[Internal`Kernel`RemoteEvent[ t["Hash"] ], "Result", <|"Data" -> StringTemplate[Internal`Kernel`TruncatedOutputTemplate][ToString[NumberForm[Round[StringLength[string]/1024//N, 0.01], {3,2}]], StringReplace[StringTake[shortform, Min[StringLength[shortform], 5000]], {">"->"&gt;", "<"->"&lt;"} ], ref, ref, ref ], "Overflow"->True, "Meta"->Sequence["Hash"->hash, "Display"->"html", "Overflow"->True, "OverflowContent"->inputform] |> ];
                             ]
                         ]
                     ]
