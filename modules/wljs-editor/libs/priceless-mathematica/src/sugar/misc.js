@@ -35,6 +35,8 @@ export const Greekholder = ViewPlugin.fromClass(
 
 const pr = (elt, match, group1, group2) => {
   switch (group1) {
+    case 'flat': return '&flat;';
+    case 'sharp': return '&sharp;';
     case 'sqrt': return '&radic;';
     case 'partiald': return '&part;';
     case 'doublestruckn': return '&#8469;';

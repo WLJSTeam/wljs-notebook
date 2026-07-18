@@ -2903,6 +2903,7 @@ returns the argument of the first Throw generated in the evaluation of \
 first Throw[<i>value</i>,<i>tag</i>] for which <i>form</i> matches \
 <i>tag</i>. \n\nCatch[<i>expr</i>,<i>form</i>,<i>f</i>] returns \
 <i>f</i>[<i>value</i>,<i>tag</i>]. "|>, 
+ <|"label" -> "CatchExceptions", "type" -> "keyword", "info" -> "CatchExceptions[<i>expr</i>,<i>spec</i>] catches and transforms some or all exceptions possibly thrown by <i>expr</i>, according to <i>spec</i>.\n\nCatchExceptions[<i>spec</i>] represents an operator form of CatchExceptions."|>,
  <|"label" -> "CategoricalDistribution", "type" -> "keyword", 
   "info" -> "CategoricalDistribution[{<i>c</i><sub>1</sub>,<i>c</i><sub>2</su\
 b>,...}] represents a uniform categorical distribution over classes \
@@ -7395,7 +7396,8 @@ the specified element or property of an example."|>,
  <|"label" -> "Except", "type" -> "keyword", "info" -> "Except[<i>c</i>] is a \
 pattern object which represents any expression except one that matches \
 <i>c</i>. \n\nExcept[<i>c</i>,<i>p</i>] represents any expression that \
-matches <i>p</i> but not <i>c</i>. "|>, <|"label" -> "ExcludedContexts", 
+matches <i>p</i> but not <i>c</i>. "|>,
+ <|"label" -> "Exception", "type" -> "keyword", "info" -> "Exception[<i>spec</i>] creates an Exception object from <i>spec</i>.\n\nException[<i>spec</i>,<i>payload</i>] creates an Exception object from <i>spec</i>, with exception payload <i>payload</i>."|>, <|"label" -> "ExceptionQ", "type" -> "keyword", "info" -> "ExceptionQ[<i>expr</i>] gives True if <i>expr</i> is a valid Exception object, and False otherwise.\n\nExceptionQ[<i>expr</i>,<i>tag</i>] gives True if <i>expr</i> is a valid Exception object of a subtype of <i>tag</i>.\n\nExceptionQ[<i>expr</i>,{<i>tag</i><sub>1</sub>,<i>tag</i><sub>2</sub>,...}] gives True if <i>expr</i> is a valid Exception object of a subtype of any of <i>tag</i><sub>1</sub>, <i>tag</i><sub>2</sub>, ... ."|>, <|"label" -> "ExceptionTypeRegisteredQ", "type" -> "keyword", "info" -> "ExceptionTypeRegisteredQ[<i>sym</i>] gives True if <i>sym</i> is a registered exception type, and False otherwise."|>, <|"label" -> "ExceptionTypes", "type" -> "keyword", "info" -> "ExceptionTypes[] returns a list of all registered exception types.\n\nExceptionTypes[<i>tagspec</i>] returns a list of all registered exception types that are subtypes of the type(s) specified in <i>tagspec</i>."|>, <|"label" -> "ExcludedContexts",
   "type" -> "keyword", "info" -> "ExcludedContexts is an option for \
 FullDefinition, Manipulate and related symbols that gives contexts whose \
 symbols will not have the definitions recursively saved."|>, 
@@ -16371,15 +16373,16 @@ the multivariate Student t distribution with location \[Mu], scale matrix \
  <|"label" -> "MusicDuration", "type" -> "keyword", "info" -> "MusicDuration[duration] represents a duration for a musical note or rest."|>,
  <|"label" -> "MusicInterval", "type" -> "keyword", "info" -> "MusicInterval[spec] represents an interval between two musical pitches."|>,
  <|"label" -> "MusicKeySignature", "type" -> "keyword", "info" -> "MusicKeySignature[spec] represents a key signature for a musical measure, voice, or score."|>,
- <|"label" -> "MusicMeasure", "type" -> "keyword", "info" -> "MusicMeasure[events] represents a musical measure."|>,
+ <|"label" -> "MusicMeasure", "type" -> "keyword", "info" -> "MusicMeasure[{<i>event</i><sub>1</sub>,<i>event</i><sub>2</sub>,...}] returns a musical measure that contains the musical events <i>event</i><sub>i</sub>.\n\nMusicMeasure[<i>events</i>,<i>ts</i>,<i>ks</i>] returns a musical measure with time signature <i>ts</i> and key signature <i>ks</i>.\n\nMusicMeasure[<i>events</i>,<i>ts</i>,<i>ks</i>,<i>properties</i>] returns a musical measure with the specified property association <i>properties</i>."|>,
  <|"label" -> "MusicNote", "type" -> "keyword", "info" -> "MusicNote[p] represents a musical note with pitch p.\n\nMusicNote[p, duration] specifies the note duration."|>,
  <|"label" -> "MusicObjectQ", "type" -> "keyword", "info" -> "MusicObjectQ[expr] yields True if expr is a musical object, and False otherwise."|>,
- <|"label" -> "MusicPitch", "type" -> "keyword", "info" -> "MusicPitch[spec] represents the pitch of a musical note."|>,
+ <|"label" -> "MusicPitch", "type" -> "keyword", "info" -> "MusicPitch[<i>p</i>] returns a musical pitch parsed from the pitch specification <i>p</i>.\n\nMusicPitch[<i>p</i>,<i>properties</i>] returns a musical pitch with the specified property association <i>properties</i>.\n\nMusicPitch[<i>music</i>,<i>p</i>,<i>properties</i>] returns a musical pitch with properties inherited from another musical pitch <i>music</i>."|>,
  <|"label" -> "MusicRest", "type" -> "keyword", "info" -> "MusicRest[] represents a musical rest.\n\nMusicRest[duration] specifies the rest duration."|>,
  <|"label" -> "MusicScale", "type" -> "keyword", "info" -> "MusicScale[spec] represents a musical scale."|>,
  <|"label" -> "MusicScore", "type" -> "keyword", "info" -> "MusicScore[voices] represents a musical score containing one or more voices."|>,
  <|"label" -> "MusicTempo", "type" -> "keyword", "info" -> "MusicTempo specifies the musical tempo used during playback."|>,
  <|"label" -> "MusicTimeSignature", "type" -> "keyword", "info" -> "MusicTimeSignature[spec] represents a time signature for a musical measure, voice, or score."|>,
+ <|"label" -> "MusicTransform", "type" -> "keyword", "info" -> "MusicTransform[<i>music</i>,<i>tf</i>] applies the transformation <i>tf</i> to the music object <i>music</i>.\n\nMusicTransform[<i>music</i>,{<i>tf</i>,<i>params</i>}] applies <i>tf</i> to <i>music</i> with parameters <i>params</i>.\n\nMusicTransform[<i>tf</i>] represents an operator form of MusicTransform that can be applied to an expression."|>,
  <|"label" -> "MusicVoice", "type" -> "keyword", "info" -> "MusicVoice[events] represents a musical voice."|>,
  <|"label" -> "N", "type" -> "keyword", "info" -> "N[<i>expr</i>] gives the \
 numerical value of <i>expr</i>. \n\nN[<i>expr</i>,<i>n</i>] attempts to give \
@@ -20920,7 +20923,7 @@ luator</i>] registers the <i>evaluator</i> for use as an external evaluator \
 with the language or system \
 <i>sys</i>.\n\nRegisterExternalEvaluator[<i>sys</i>,<i>evaluator</i>,<i>name<\
 /i>] registers the <i>evaluator</i> using the assigned name <i>name</i>."|>, 
- <|"label" -> "RegularExpression", "type" -> "keyword", 
+ <|"label" -> "RegisterExceptionType", "type" -> "keyword", "info" -> "RegisterExceptionType[<i>sym</i>] registers <i>sym</i> as a symbolic exception type.\n\nRegisterExceptionType[<i>sym</i>,<i>parent</i>] registers <i>sym</i> as a symbolic exception type with the parent exception type <i>parent</i>.\n\nRegisterExceptionType[<i>sym</i>,{<i>parent</i><sub>1</sub>,...}] registers <i>sym</i> as a symbolic exception type with the parent exception types <i>parent</i><sub>1</sub>, ... ."|>, <|"label" -> "RegularExpression", "type" -> "keyword",
   "info" -> "RegularExpression[\"<i>regex</i>\"] represents the generalized \
 regular expression specified by the string \"<i>regex</i>\". "|>, 
  <|"label" -> "Regularization", "type" -> "keyword", 
@@ -25009,7 +25012,7 @@ enclosing Catch.\n\nThrow[<i>value</i>,<i>tag</i>] is caught only by \
 Catch[<i>expr</i>,<i>form</i>], where <i>tag</i> matches \
 <i>form</i>.\n\nThrow[<i>value</i>,<i>tag</i>,<i>f</i>] returns \
 <i>f</i>[<i>value</i>,<i>tag</i>] as the top-level value if no appropriate \
-Catch is found."|>, <|"label" -> "ThueMorse", "type" -> "keyword", 
+Catch is found."|>, <|"label" -> "ThrowException", "type" -> "keyword", "info" -> "ThrowException[<i>spec</i>] creates and throws an Exception object from <i>spec</i>.\n\nThrowException[<i>spec</i>,<i>payload</i>] creates and throws an Exception object from <i>spec</i>, with exception payload <i>payload</i>."|>, <|"label" -> "ThueMorse", "type" -> "keyword",
   "info" -> "ThueMorse[<i>n</i>] gives the <i>n</i><sup>th</sup> term \
 in the Thue-Morse sequence."|>, <|"label" -> "Thumbnail", 
   "type" -> "keyword", "info" -> "Thumbnail[<i>image</i>] gives a thumbnail \

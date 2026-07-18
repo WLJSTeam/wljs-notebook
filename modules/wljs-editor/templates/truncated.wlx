@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{Data = OptionValue["Data"], Size = ToString[NumberForm[Round[OptionValue["Size"]/1024/1024, 0.01], {4,2}]], Ref = OptionValue["Ref"]},
+Component[OptionsPattern[]] := With[{Data = OptionValue["Data"], Size = OptionValue["Size"], Ref = OptionValue["Ref"]},
     <div class="divide-y divide-gray-200 overflow-hidden rounded-lg  relative cursor-default rounded-md text-gray-500  ring-1 ring-inset ring-gray-200   text-xs leading-2" style="width: 100%;line-break: anywhere;">
       <div class="px-2 py-2 flex flex-row">
         <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 mr-2 text-gray-400 inline">

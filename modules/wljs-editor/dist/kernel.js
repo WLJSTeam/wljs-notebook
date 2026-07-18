@@ -29649,6 +29649,8 @@ const Greekholder = ViewPlugin.fromClass(
 
 const pr = (elt, match, group1, group2) => {
   switch (group1) {
+    case 'flat': return '&flat;';
+    case 'sharp': return '&sharp;';
     case 'sqrt': return '&radic;';
     case 'partiald': return '&part;';
     case 'doublestruckn': return '&#8469;';
@@ -33500,7 +33502,7 @@ function semanticSnippet() {
       //if (atEof) from = to = (to <= line.to ? line : state.doc.lineAt(to)).to
       const prev = state.sliceDoc(from, to);
       if (prev.length === 0) {
-        interpretate.alert('Select a text');
+        interpretate.alert('Select prompt text');
         return {};
       }
       return {

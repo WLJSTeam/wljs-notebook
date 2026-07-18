@@ -824,6 +824,18 @@ TemplateBox[{name_, dim_}, "VectorSymbol2", ___] := ViewBox[RowBox[{"VectorSymbo
 
 TemplateBox[{name_}, "VectorSymbol1", ___] := ViewBox[RowBox[{"VectorSymbol[",name,"]"}], ViewDecorator["VS", name, 0]]
 
+TemplateBox[{name_}, "Transpose", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "T"], Head->Transpose]
+]
+
+TemplateBox[{name_}, "ConjugateTranspose", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "&dagger;"], Head->ConjugateTranspose]
+]
+
+TemplateBox[{name_}, "Norm", ___] := With[{},
+  BoxBox[name, ViewDecorator["Transpose", "&#8214;"], Head->Norm]
+]
+
 TemplateBox[{name_, rank_, dimensions__}, "ArraySymbol2", ___] := With[{dims = {dimensions}},
   ViewBox[
     RowBox[{"ArraySymbol[", name, ",{", Sequence@@Riffle[dims, ","], "}]"}],

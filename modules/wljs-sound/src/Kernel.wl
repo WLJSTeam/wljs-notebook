@@ -12,8 +12,7 @@ PCMPlayer::usage = "PCMPlayer[data_Offload, type_String, opts___] creates a stre
 System`AudioWrapperBox;
 System`AudioWrapper;
 
-Unprotect[EmitSound]
-ClearAll[EmitSound]
+
 
 Unprotect[Audio`AudioGUIDump`audioBoxes]
 Unprotect[Audio]
@@ -22,6 +21,10 @@ ClearAll[Audio`AudioGUIDump`audioBoxes]
 
 Begin["`Internal`"]
 
+EmitSound[];
+
+Unprotect[EmitSound]
+ClearAll[EmitSound]
 
 EmitSound[s_Sound, opts: OptionsPattern[] ] := With[{},
     FrontSubmit[s, opts]
@@ -128,7 +131,7 @@ MusicPitch /: MakeBoxes[m_MusicPitch, StandardForm] := With[{},
       BoxForm`ArrangeSummaryBox[
            MusicPitch, (* head *)
            m,      (* interpretation *)
-           ViewDecorator["RawText", m["Key"]<>m["Octave"]],    (* icon, use None if not needed *)
+           ViewDecorator["RawText", m["Name"]<>m["Octave"]],    (* icon, use None if not needed *)
            (* above and below must be in a format suitable for Grid or Column *)
            {},    (* always shown content *)
            Null (* expandable content. Currently not supported!*)
@@ -145,7 +148,7 @@ MusicDuration /: MakeBoxes[m_MusicDuration, StandardForm] := With[{},
         ]
 ]
 MusicNote /: MakeBoxes[m_MusicNote, StandardForm] := With[{above={
-{BoxForm`SummaryItem[{"Note: ", Style[StringTemplate["````"][m["Pitch"]["Key"],m["Pitch"]["Octave"]], 9]}]},
+{BoxForm`SummaryItem[{"Note: ", Style[StringTemplate["````"][m["Pitch"]["Name"],m["Pitch"]["Octave"]], 9]}]},
 {BoxForm`SummaryItem[{"Duration: ", Style[ToString@ToString[m["Duration"]["Duration"], InputForm], 9]}]}
 }},
       BoxForm`ArrangeSummaryBox[
@@ -158,9 +161,9 @@ MusicNote /: MakeBoxes[m_MusicNote, StandardForm] := With[{above={
         ]
 ]
 MusicChord /: MakeBoxes[m_MusicChord, StandardForm] := With[{above={
-{BoxForm`SummaryItem[{"Name: ", Style[StringTemplate["``"][m["Name"]], 9]}]},
-{BoxForm`SummaryItem[{"Root: ", Style[StringTemplate["``"][m["Root"]["Key"]], 9]}]},
-{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Key"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
+If[m["Name"] =!= Automatic, {BoxForm`SummaryItem[{"Name: ", Style[StringTemplate["``"][m["Name"]], 9]}]}, Nothing],
+If[m["Root"] =!= Automatic,{BoxForm`SummaryItem[{"Root: ", Style[StringTemplate["``"][m["Root"]["Name"]], 9]}]},Nothing],
+{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Name"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
 }},
       BoxForm`ArrangeSummaryBox[
            MusicChord, (* head *)
@@ -174,12 +177,12 @@ MusicChord /: MakeBoxes[m_MusicChord, StandardForm] := With[{above={
 
 MusicScale /: MakeBoxes[m_MusicScale, StandardForm] := With[{above={
 {BoxForm`SummaryItem[{"Name: ", Style[StringTemplate["``"][m["Name"]], 9]}]},
-{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Key"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
+{BoxForm`SummaryItem[{"Notes: ", Style[StringRiffle[Map[Function[p, p["Name"]<>ToString[p["Octave"]]], m["PitchList"]], " "], 9]}]}
 }},
       BoxForm`ArrangeSummaryBox[
            MusicScale, (* head *)
            m,      (* interpretation *)
-           PianoViewBox[m["PitchList"]],    (* icon, use None if not needed *)
+           PianoViewBox[m["PitchList"], True],    (* icon, use None if not needed *)
            (* above and below must be in a format suitable for Grid or Column *)
            above,    (* always shown content *)
            Null (* expandable content. Currently not supported!*)

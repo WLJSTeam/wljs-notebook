@@ -605,9 +605,17 @@ const inferVoices = (pool) => {
     }
     if (lanes.length > 1) for (const [sound, voice] of assigned) sound.voice = voice;
 };
-const pianoView = (pitches) => {
+const pianoView = (pitches, rawNotes, sequenceQ=false) => {
     const active = new Set(flattenNotes(pitches).map(musicPitch).map(notePitch).filter((pitch) => pitch !== null).map((pitch) => (pitch % 12 + 12) % 12));
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.addEventListener('click', () => {
+      if (sequenceQ) {
+        const list = rawNotes.slice(1).map(el => ["MusicNote",["Association",["Rule","'Pitch'",el],["Rule","'Duration'",["MusicDuration",["Association",["Rule","'BeatDuration'",["Times",1,["Power",4,-1]]],["Rule","'Beats'",1]]]]]]);
+        
+        interpretate(['Sound', ["MusicScore",["Association",["Rule","'VoiceList'",["List",["MusicVoice",["Association",["Rule","'MeasureList'",["List",["MusicMeasure",["Association",["Rule","'NoteList'",["List",...list]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]], {});
+        return;
+      }      interpretate(['Sound', ["MusicScore",["Association",["Rule","'VoiceList'",["List",["MusicVoice",["Association",["Rule","'MeasureList'",["List",["MusicMeasure",["Association",["Rule","'NoteList'",["List",["MusicChord",["Association",["Rule","'PitchList'",rawNotes],["Rule","'Duration'",["MusicDuration",["Association",["Rule","'BeatDuration'",["Times",1,["Power",4,-1]]],["Rule","'Beats'",1]]]]]]]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]]],["Rule","'TimeSignature'",["MusicTimeSignature",["Association",["Rule","'Numerator'",4],["Rule","'Denominator'",4],["Rule","'BeatLength'",1]]]]]]], {});
+    });
     svg.setAttribute('viewBox', '0 0 56 24');
     svg.setAttribute('width', '56');
     svg.setAttribute('height', '24');
@@ -720,8 +728,8 @@ sound.MusicTempo = () => 'MusicTempo';
 sound['CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox'] = async (args, env) => {
     const pitches = await interpretate(args[0], {...env, context: sound});
     if (env.element) {
-        env.element.classList.add(...'inline-block align-middle'.split(' '));
-        env.element.replaceChildren(pianoView(pitches));
+        env.element.classList.add(...'inline-block align-middle cursor-pointer'.split(' '));
+        env.element.replaceChildren(pianoView(pitches, args[0], await interpretate(args[1], {})));
     }
     return pitches;
 };
@@ -816,11 +824,15 @@ const instrumentSpec = (instrument) => {
     const name = noteText(instrument || 'Piano').replace(/[^a-z]/gi, '').toLowerCase();
     const spec = {
         amsynth: ['AMSynth'], fmsynth: ['FMSynth'], duosynth: ['DuoSynth'], membranesynth: ['MembraneSynth'], metalsynth: ['MetalSynth'],
-        piano: ['Synth'],
-        guitar: ['Synth', {oscillator: {type: 'triangle'}, envelope: {attack: .005, decay: .2, sustain: .05, release: .5}}],
-        violin: ['Synth', {oscillator: {type: 'sawtooth'}, envelope: {attack: .05, decay: .1, sustain: .8, release: .4}}],
-        flute: ['Synth', {oscillator: {type: 'sine'}, envelope: {attack: .04, decay: .1, sustain: .7, release: .3}}],
-        trumpet: ['FMSynth'], organ: ['DuoSynth'], marimba: ['MetalSynth'], vibraphone: ['MetalSynth'], drums: ['MembraneSynth']
+        piano: ['Synth', {oscillator: {type: 'triangle8'}, envelope: {attack: .002, decay: .2, sustain: .15, release: 1.2}}],
+        guitar: ['MonoSynth', {oscillator: {type: 'square'}, filter: {Q: 8, rolloff: -24}, envelope: {attack: .002, decay: .18, sustain: .02, release: .3}, filterEnvelope: {attack: .001, decay: .12, sustain: 0, release: .2, baseFrequency: 120, octaves: 5}}],
+        violin: ['DuoSynth', {harmonicity: 1.01, vibratoAmount: .9, vibratoRate: 6, voice0: {oscillator: {type: 'sawtooth'}}, voice1: {oscillator: {type: 'square'}}}],
+        flute: ['AMSynth', {harmonicity: .5, oscillator: {type: 'sine'}, modulation: {type: 'sine'}, envelope: {attack: .08, decay: .05, sustain: .8, release: .5}}],
+        trumpet: ['FMSynth', {harmonicity: 1, modulationIndex: 12, oscillator: {type: 'square'}, modulation: {type: 'sawtooth'}}],
+        organ: ['DuoSynth', {harmonicity: 2, vibratoAmount: .2, vibratoRate: 7}],
+        marimba: ['MetalSynth', {harmonicity: 2, modulationIndex: 48, resonance: 2500}],
+        vibraphone: ['MetalSynth', {harmonicity: 5, modulationIndex: 12, resonance: 6000}],
+        drums: ['MembraneSynth', {octaves: 14, pitchDecay: .08}]
     }[name] || ['Synth'];
     return [name, Tone[spec[0]], spec[1]];
 };

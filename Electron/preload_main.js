@@ -66,6 +66,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   changeWindowSizeBy: (p) => ipcRenderer.send('resize-window-by', p),
 
+  setMinSize: (minWidth, minHeight) => ipcRenderer.send('set-min-size', minWidth, minHeight),
+
   blockWindow: (state, message) => {
     ipcRenderer.send('block-window', {state:state, message:message})
   },

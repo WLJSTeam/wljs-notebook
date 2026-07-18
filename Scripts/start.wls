@@ -13,13 +13,13 @@ Wolfram Engine is proprietary and distributed separately by Wolfram Research, In
 
 If[$VersionNumber < 14.1 || !NumberQ[$VersionNumber],
     Echo["Wolfram Engine versions older than 14.1 are not supported"];
-    Echo["due to some missing I/O features"];
+    Echo["due to missing I/O features"];
     Echo["Please, update"];
     Exit[0];
 ];
 
-If[$VersionNumber > 14.3,
-  Do[Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook - 14.1-14.3. We do not guarantee it will work correctly"], {5}];
+If[$VersionNumber > 15.0,
+  Do[Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook - 14.1-15.0. We do not guarantee it will work correctly"], {5}];
   Echo["Proceeding anyway..."];
   Pause[1];
 ];

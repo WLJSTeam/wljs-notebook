@@ -61,7 +61,8 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
         <script type="module">
             let wrap, supp = [];
             addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
-
+            if (window.electronAPI) window.electronAPI.setMinSize(100,100);
+            
             core.UIWindow = async (args, env) => {
                 const type = await interpretate(args[0], env);
                 return await core.UIWindow[type](args.slice(1), env);
@@ -108,6 +109,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                     console.log(event);
                     console.warn('Connection lost to a Evaluation Kernel');
                     //server.kernel = undefined;
+                    document.body.style.filter = 'grayscale(1)';
                     
                     if (<RetryWebSocket/> && !server.kernel.connected) {
                         console.warn('Retrying in 1700 ms');

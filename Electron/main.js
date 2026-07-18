@@ -2935,6 +2935,17 @@ app.whenReady().then(() => {
         }
     })
 
+    ipcMain.on('set-min-size', (e, minWidth, minHeight) => {
+        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
+        if (
+            senderWindow &&
+            Number.isFinite(minWidth) && minWidth >= 0 &&
+            Number.isFinite(minHeight) && minHeight >= 0
+        ) {
+            senderWindow.setMinimumSize(Math.round(minWidth), Math.round(minHeight));
+        }
+    });
+
     ipcMain.on('system-window-toggle', (e, p) => {
         const bonds = windows.focused.win.getBounds();
         if (bonds.width < 800) {
