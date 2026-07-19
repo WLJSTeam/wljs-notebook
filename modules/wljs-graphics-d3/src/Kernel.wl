@@ -107,19 +107,19 @@ Options[Graphics] = Join[Options[Graphics], {"Controls"->True}];*)
 
 MakeExpressionBox[expr_, uid_] := CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] , StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet
 
-Graphics /: MakeBoxes[System`Dump`g_Graphics?System`Dump`vizGraphicsQ,System`Dump`fmt:StandardForm|TraditionalForm] := If[ByteCount[System`Dump`g] < 2 1024,
-    ViewBox[System`Dump`g, System`Dump`g]
+Graphics /: MakeBoxes[g_Graphics?System`Dump`vizGraphicsQ,System`Dump`fmt:StandardForm|TraditionalForm] := If[ByteCount[g] < 2 1024,
+    ViewBox[g, g]
 ,
-    With[{fe = CreateFrontEndObject[System`Dump`g]},
+    With[{fe = CreateFrontEndObject[g]},
         {out = MakeBoxes[fe, StandardForm]},
         ViewBox[out, fe]
     ]
 ]
 
-Graphics /: MakeBoxes[System`Dump`g_Graphics,System`Dump`fmt:StandardForm|TraditionalForm] := If[ByteCount[System`Dump`g] < 2 1024,
-    ViewBox[System`Dump`g, System`Dump`g]
+Graphics /: MakeBoxes[g_Graphics,System`Dump`fmt:StandardForm|TraditionalForm] := If[ByteCount[g] < 2 1024,
+    ViewBox[g, g]
 ,
-    With[{fe = CreateFrontEndObject[System`Dump`g]},
+    With[{fe = CreateFrontEndObject[g]},
         {out = MakeBoxes[fe, StandardForm]},
         ViewBox[out, fe]
     ]
