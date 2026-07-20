@@ -517,7 +517,7 @@ readNotebook[stream_, timeout_:10] := Module[
                 If[FailureQ[buffer],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not separator of %"<>field<>"%"|>] ]
                 ];
-                AppendTo[list, temp["Key"] -> ToExpression[buffer, InputForm]];
+                AppendTo[list, ToString[temp["Key"]] -> ToExpression[buffer, InputForm]];
                 While[
                     !testIfEnd["EndOf" <> field]
                     ,
