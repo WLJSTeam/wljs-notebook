@@ -260,6 +260,30 @@ diff[Point[data1_List], Point[data2_List], level_, attributes_] :=
     $Failed
 ]
 
+diff[RGBColor[data1__], RGBColor[data2__], level_, attributes_] := 
+  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+    diffObject[RGBColor[data1], RGBColor[data2], Hash[RGBColor[data1]], Hash[RGBColor[data2]]]
+  ,
+    failureMessage["Cannot link two RGBColor primitives in 3D context or inside  GraphicsComplex", {RGBColor[data1], RGBColor[data2]}];
+    $Failed
+]
+
+diff[Hue[data1__], Hue[data2__], level_, attributes_] := 
+  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+    diffObject[Hue[data1], Hue[data2], Hash[Hue[data1]], Hash[Hue[data2]]]
+  ,
+    failureMessage["Cannot link two Hue primitives in 3D context or inside  GraphicsComplex", {Hue[data1], Hue[data2]}];
+    $Failed
+]
+
+diff[Opacity[data1_], Opacity[data2_], level_, attributes_] := 
+  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+    diffObject[Opacity[data1], Opacity[data2], Hash[Opacity[data1]], Hash[Opacity[data2]]]
+  ,
+    failureMessage["Cannot link two Opacity primitives in 3D context or inside  GraphicsComplex", {Opacity[data1], Opacity[data2]}];
+    $Failed
+]
+
 Do[With[{s = s},
 
     diff[s[d11_, d12_], s[d21_, d22_], level_, attributes_] := 
@@ -343,6 +367,56 @@ transpile[Line[_,_], Line[d_, u_], hash1_, hash2_] := With[{
     ]
   |>
 ];
+
+
+transpile[RGBColor[__], RGBColor[color__], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"]
+},
+  symbol = List[color]//N;
+  <|
+    "Priority"->1, "Rule" -> (RGBColor[color] -> RGBColor[Offload[symbol] ]),
+    "Reset" -> Function[Null, symbol = N@List[color] ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = N@(List@@e2);
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
+transpile[Opacity[__], Opacity[o], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"]
+},
+  symbol = N@o;
+  <|
+    "Priority"->1, "Rule" -> (Opacity[o] -> Opacity[Offload[symbol] ]),
+    "Reset" -> Function[Null, symbol = N@o ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = e2[[1]]//N;
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
+transpile[Hue[__], Hue[color__], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"]
+},
+  symbol = N@(List@@(RGBColor[Hue[color]]));
+  <|
+    "Priority"->1, "Rule" -> (Hue[color] -> RGBColor[Offload[symbol] ]),
+    "Reset" -> Function[Null, symbol = N@(List@@(RGBColor[Hue[color]])) ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = N@(List@@(RGBColor[e2]));
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
 
 With[{r = #},
     diff[r[data1_, m___], r[data2_, m___], level_, attributes_] := 
