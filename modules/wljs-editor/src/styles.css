@@ -13,18 +13,12 @@
 .frontend-view.floading::after {
   width: 100%;
   height: 100%;
-  padding: 0.20em;
-  padding-right:1em;
-  padding-left:1em;
-  border-radius:4px;
   font-family:system-ui;
-  color:#444;
-  background: rgba(15, 15, 15, 0.2);
   opacity: 0.25;
   overflow: hidden;
   font-size:x-small;
   content: 'Loading...';
-  animation: pulse 2s cubic-bezier(.4,0,.6,1) infinite;
+  animation: pulse 1s cubic-bezier(.4,0,.6,1) infinite;
 }
 
 .cm-tooltip {
