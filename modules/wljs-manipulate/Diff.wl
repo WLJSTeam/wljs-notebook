@@ -29,6 +29,10 @@ failureMessage[msg_, payload_] := (
   CoffeeLiqueur`Extensions`Manipulate`Diff`$lastJITFailure = {msg, payload};
 )
 
+showFailureMessage := CoffeeLiqueur`Extensions`Manipulate`Diff`$lastJITFailure;
+
+resetFailureMessage := CoffeeLiqueur`Extensions`Manipulate`Diff`$lastJITFailure = Null;
+
 transpileDiff[diff_] := With[{assoc = transpile @@ diff},
   If[AssociationQ[assoc],
     assoc

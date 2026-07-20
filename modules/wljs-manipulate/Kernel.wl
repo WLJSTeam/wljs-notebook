@@ -140,7 +140,9 @@ Manipulate[f_, paramters:({_Subscript | _Symbol | {_Subscript, _?NumericQ} | {_S
   , HoldAll] ]  
 ] /; (Length[Cases[Hold[ List[paramters] ], _Subscript, Infinity] ] > 0)
 
-Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style ).., OptionsPattern[] ] := Module[{code, currentData, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
+limitString[str_, max_] := StringTake[str, Min[max, StringLength[str]]];
+
+Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style ).., OptionsPattern[] ] := Module[{code, currentData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
   pvars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = ToString[Hash[{f//Hold, parameters, Now}] ],
   updateFunction = OptionValue["UpdateFunction"],
@@ -158,6 +160,8 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
     If[!AllTrue[vars, !FailureQ[#] &] || vars === $Failed,
       Return[$Failed];
     ];
+
+    df`Private`resetFailureMessage;
 
     EventHandler[widgetInstance["Hash"], {
       "Mounted" -> Function[Null,
@@ -203,52 +207,109 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
             If[result === False, jitFailedQQ = False];
           
           ,
-         (* preoptimize *)
-        Module[{jitFailedQ = True, taken = Length[vars]+1}, While[jitFailedQ && taken > 1, 
-         df`Private`clearTable[diffTable];
-         With[{
-          next = Table[With[{v = vars[[index]]}, 
-           If[index < taken,
-            Switch[v["Controller"],
+         (* Probe a bounded set of coordinated input states. Each state is
+            compared directly to the same initial expression. *)
+        Module[{
+          initial, sampleValues, valueSets, probeCount = 6, leaveOutCount,
+          leaveMasks, oneHotMasks, allMask, probeMasks, combinations,
+          sampledDiffLists, validDiffLists, expr, diffList
+        },
+          initial = (#["Initial"] & /@ vars);
+
+          sampleValues[values_List] := If[Length[values] <= probeCount,
+            values,
+            values[[DeleteDuplicates[
+              Round[Subdivide[1, Length[values], probeCount - 1]]
+            ]]]
+          ];
+
+          valueSets = Map[Function[v,
+            sampleValues @ Switch[v["Controller"],
               InputRange,
-              If[v[["Initial"]] + v[["StepRaw"]] > v[["MaxRaw"]], v[["Initial"]] - v[["StepRaw"]], v[["Initial"]] + v[["StepRaw"]] ],
+                Select[
+                  Table[i, {i, v["Min"], v["Max"], v["Step"]}],
+                  !TrueQ[# == v["Initial"]] &
+                ],
 
               InputSelect,
-              RandomChoice[Complement[v[["List"]], {v[["Initial"]]}] ]
+                Select[v["List"], !SameQ[#, v["Initial"]] &],
 
-            ] 
-           ,
-              v[["Initial"]]
-           ]
-          ], {index, 1, Length[vars]}]
-         },
-          originalExpression = anonymous @@ next;
+              _,
+                {}
+            ]
+          ], vars];
 
- 
+          (* Mix leave-one-out and single-input probes, then finish with all
+             inputs varied. This keeps selectors diverse and covers interactions. *)
+          leaveOutCount = If[Length[vars] > 1,
+            Min[Length[vars], probeCount - 1],
+            0
+          ];
+          allMask = ConstantArray[True, Length[vars]];
+          leaveMasks = Table[
+            ReplacePart[allMask, index -> False],
+            {index, 1, leaveOutCount}
+          ];
+          oneHotMasks = Table[
+            Table[index == selected, {index, 1, Length[vars]}],
+            {selected, 1, Length[vars]}
+          ];
+          probeMasks = Join[
+            Take[
+              Join[
+                leaveMasks,
+                oneHotMasks,
+                ConstantArray[allMask, probeCount]
+              ],
+              probeCount - 1
+            ],
+            {allMask}
+          ];
+          combinations = Select[
+            DeleteDuplicates[MapIndexed[Function[{mask, row},
+              Table[With[{values = valueSets[[index]]},
+                If[
+                  Length[values] == 0 ||
+                    !mask[[index]],
+                  initial[[index]],
+                  If[row[[1]] == probeCount,
+                    Last[values],
+                    values[[1 + Mod[row[[1]] + index - 2, Length[values]]]]
+                  ]
+                ]
+              ], {index, 1, Length[vars]}]
+            ], probeMasks]],
+            !SameQ[#, initial] &
+          ];
 
-          With[
-            {expr = anonymous @@ (#["Initial"] &/@ vars)},
-            {diffList = Flatten[{df`Private`diff[originalExpression, expr, 1, <||>]}]},
+          expr = anonymous @@ initial;
+          sampledDiffLists = Map[
+            Flatten[{df`Private`diff[anonymous @@ #, expr, 1, <||>]}] &,
+            combinations
+          ];
+          validDiffLists = Select[sampledDiffLists,
+            !MatchQ[#, {___, $Failed, ___}] &&
+              !Or @@ (FailureQ /@ #) &
+          ];
+          jitFailedQQ = Length[sampledDiffLists] > 0 &&
+            Length[validDiffLists] == 0;
 
-            jitFailedQ = Or @@ (FailureQ/@diffList);
+          diffList = If[jitFailedQQ,
+            {$Failed},
+            DeleteDuplicatesBy[Flatten[validDiffLists], #[[4]] &]
+          ];
 
-            df`Private`processDiffs[diffTable, originalExpression, expr, diffList, Function[editorExpr,
-              code = ToString[editorExpr, StandardForm];
-              False
-            ] ];
+          df`Private`processDiffs[diffTable, expr, expr, diffList, Function[editorExpr,
+            code = ToString[editorExpr, StandardForm];
+            False
+          ] ];
 
-            originalExpression = expr;
-          ];  
-         ];
-
-         taken--; 
-        ]; 
-          jitFailedQQ = jitFailedQ;
+          originalExpression = expr;
         ];
           
         ] ];
 
-  
+      jitMessage = df`Private`showFailureMessage;
       (* controls *)
 
       EventHandler[copyButton, {
@@ -355,11 +416,14 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
         ]
       ];
 
+      If[jitMessage =!= Null,
+        jitMessage = limitString[StringTemplate["``: ``"][jitMessage[[1]], ToString[Shallow[jitMessage[[2]]], StandardForm]], 240]<>"...";
+      ];
 
       ManipulateHelper[
           sliders[[1, "View"]],
           EditorView[code // Offload, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True]  (* EditorView works only with strings, FullReset for the cleanest update *)
-      , "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "OptionsButton"->copyButton[[1, "Id"]] ]
+      , "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "OptionsButton"->copyButton[[1, "Id"]], "JITMessage"->jitMessage ]
     ]
 ] ]
 
@@ -450,6 +514,8 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
     trigger = 0
   },
 
+  df`Private`resetFailureMessage;
+  
   (* event is fired from JS side (RefreshBox) *)
     EventHandler[event, Function[Null,
         With[
@@ -506,6 +572,8 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPatt
     str = ToString[evaluated, StandardForm],
     currentExpression = evaluated
   },
+
+  df`Private`resetFailureMessage;
   
   If[bypassJIT, 
     ClearAll[currentExpression];
@@ -1547,7 +1615,7 @@ Options[renderAnimation] = {"Window" :> CurrentWindow[], "ExposureTime"->Automat
 
 
 
-Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _String}, ___?NumericQ} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., OptionsPattern[] ] := Module[{forcedStep = False, code, sliders, originalExpression, jitFailedQQ = True, protected = {} , noOffload = False}, With[{
+Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _String}, ___?NumericQ} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., OptionsPattern[] ] := Module[{forcedStep = False, code, sliders, jitMessage = Null, originalExpression, jitFailedQQ = True, protected = {} , noOffload = False}, With[{
   vars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = Hash[{f//Hold, parameters}],
   eventId = CreateUUID[],
@@ -1575,7 +1643,8 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
 },
 
   If[Length[List[parameters] ] > 1, Return[Message[Animate::usesingle]; $Failed ] ];
-
+    df`Private`resetFailureMessage;
+    
     EventHandler[widgetInstance["Hash"], {
       "Mounted" -> Function[Null,
         wapi`Tools`ChangeState[widgetInstance, "Online"];
@@ -1628,34 +1697,43 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
           
           ,
 
-         (* preoptimize *)
-         With[{
-          next = If[vars[[1, "Initial"]] + If[forcedStep===False, vars[[1, "StepRaw"]], forcedStep] > vars[[1, "MaxRaw"]], 
-            vars[[1, "Initial"]] - If[forcedStep===False, vars[[1, "StepRaw"]], forcedStep], 
-            vars[[1, "Initial"]] + If[forcedStep===False, vars[[1, "StepRaw"]], forcedStep] 
-          ]
-         },
-          originalExpression = anonymous[ next ];
+         (* Compare several sampled states to the same initial frame, then
+            construct the optimized expression in a single pass. *)
+         Module[{step, range, samplePoints, sampledExpressions, expr, diffList},
+          step = If[forcedStep === False, vars[[1, "Step"]], forcedStep];
+          range = Select[
+            Table[i, {i, vars[[1, "Min"]], vars[[1, "Max"]], step}],
+            !TrueQ[# == vars[[1, "Initial"]]] &
+          ];
+          samplePoints = If[Length[range] <= 6,
+            range,
+            range[[DeleteDuplicates[Round[Subdivide[1, Length[range], 5]]]]]
+          ];
 
- 
+          expr = anonymous[vars[[1, "Initial"]]];
+          sampledExpressions = anonymous /@ samplePoints;
+          diffList = Flatten[
+            df`Private`diff[#, expr, 1, <||>] & /@ sampledExpressions
+          ];
+          jitFailedQQ = MatchQ[diffList, {___, $Failed, ___}] ||
+            Or @@ (FailureQ /@ diffList);
 
-          With[
-            {expr = anonymous[vars[[1, "Initial"]]]},
-            {diffList = Flatten[{df`Private`diff[originalExpression, expr, 1, <||>]}]},
+          (* A diff table has one updater per part of the initial expression. *)
+          If[!jitFailedQQ,
+            diffList = DeleteDuplicatesBy[diffList, #[[4]] &]
+          ];
 
-            jitFailedQQ = Or @@ (FailureQ/@diffList);
+          df`Private`processDiffs[table, expr, expr, diffList, Function[editorExpr,
+            code = ToString[editorExpr, StandardForm];
+            False
+          ] ];
 
-            df`Private`processDiffs[table, originalExpression, expr, diffList, Function[editorExpr,
-              code = ToString[editorExpr, StandardForm];
-              False
-            ] ];
-
-            originalExpression = expr;
-          ];  
-         ];    
+          originalExpression = expr;
+         ];
          ];     
         ];
 
+    jitMessage = df`Private`showFailureMessage;
 
     widgetInstance["Ranges"] = With[{r=Table[i, {i, vars[[1]]["Min"], vars[[1]]["Max"], If[forcedStep === False, vars[[1]]["Step"], forcedStep]}]}, {wapi`Tools`RangeSet[
       "Range"->r,
@@ -1723,10 +1801,13 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
 
       If[jitFailedQQ, Message[Animate::frclip] ];
 
+      If[jitMessage =!= Null,
+        jitMessage = limitString[StringTemplate["``: ``"][jitMessage[[1]], ToString[Shallow[jitMessage[[2]]], StandardForm]], 240]<>"...";
+      ];
 
       AnimationHelper[
         EditorView[ code // Offload, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True] (* EditorView works only with strings, FullReset for the cleanest update *)
-      , {vars[[1]]["Min"], vars[[1]]["Max"], If[forcedStep === False, vars[[1]]["Step"], forcedStep]}, eventId, If[jitFailedQQ, Min[animationRate, 5], animationRate], OptionValue["TriggerEvent"] === Null, If[animationRepetitions === Infinity, -1, animationRepetitions], widgetInstance["Hash"], "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance] ]
+      , {vars[[1]]["Min"], vars[[1]]["Max"], If[forcedStep === False, vars[[1]]["Step"], forcedStep]}, eventId, If[jitFailedQQ, Min[animationRate, 5], animationRate], OptionValue["TriggerEvent"] === Null, If[animationRepetitions === Infinity, -1, animationRepetitions], widgetInstance["Hash"], "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "JITMessage"->jitMessage ]
     ]
 ] ]
 

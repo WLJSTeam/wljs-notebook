@@ -168,6 +168,12 @@ const helper = async (args, env) => {
 
         env.local.jitIcon = jit;
 
+        if (options.JITMessage && jit) {
+            const jitContainer = jit.parentElement;
+            jitContainer.title = options.JITMessage;
+            jitContainer.style.cursor = 'help';
+        }
+
 
 
         bar.addEventListener('click', (ev) => {
@@ -402,6 +408,11 @@ const man = async (args, env) => {
                     icon.className = 'rounded-lg w-2 h-2';
                     icon.style.background = '#85e085';
                     env.local.jitIcon = icon;
+
+                    if (opts.JITMessage) {
+                      jitContainer.title = opts.JITMessage;
+                      jitContainer.style.cursor = 'help';
+                    }
             
                     jitContainer.appendChild(icon);
                     info.appendChild(jitContainer);
