@@ -96,19 +96,19 @@ LayoutMisc =
 
     <div class="h-titlebar flex {Class}" style="-webkit-app-region:none;user-select: none">
         <div class="mr-auto pr-4 flex gap-x-1 text-sm" style="{Style}">
-            <button style="-webkit-app-region: no-drag" id="fake-menu-file" class="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
+            <button style="-webkit-app-region: no-drag" id="fake-menu-file" class="text-gray-900 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
                 File
             </button>
 
-            <button style="-webkit-app-region: no-drag" id="fake-menu-view" class="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
+            <button style="-webkit-app-region: no-drag" id="fake-menu-view" class="text-gray-900 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
                 View
             </button>
 
-            <button style="-webkit-app-region: no-drag" id="fake-menu-evaluation" class="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
+            <button style="-webkit-app-region: no-drag" id="fake-menu-evaluation" class="text-gray-900 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
                 Evaluation
             </button>            
 
-            <button style="-webkit-app-region: no-drag" id="fake-menu-misc" class="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
+            <button style="-webkit-app-region: no-drag" id="fake-menu-misc" class="text-gray-900 dark:text-gray-400 hover:text-black dark:hover:text-white rounded-md px-2 h-6 win:ml-0 owin:ml-0 linux:ml-0">
                 Misc
             </button>
 
