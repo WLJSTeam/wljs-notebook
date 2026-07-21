@@ -819,22 +819,107 @@ function isAudioBuffer (buffer) {
 	// && buffer.copyFromChannel
 	&& typeof buffer.duration === 'number'
 }
-let instrumentSynths;
+let instrumentSynths, PianoVoice;
+const pianoVoice = () => {
+    if (PianoVoice) return PianoVoice;
+    PianoVoice = class extends Tone.Synth {
+        constructor (options) {
+            super(options);
+            this._secondString = new Tone.Synth({
+                context: this.context, volume: -9, detune: 2.4,
+                oscillator: {type: 'custom', partials: [1, .52, .3, .17, .09, .045]},
+                envelope: {attack: .004, decay: 1.35, sustain: .018, release: 1.1}
+            }).connect(this.output);
+            this._hammer = new Tone.FMSynth({
+                context: this.context, volume: -3,
+                harmonicity: 2.01, modulationIndex: 3.2,
+                oscillator: {type: 'sine'}, modulation: {type: 'sine'},
+                envelope: {attack: .001, decay: .075, sustain: 0, release: .025},
+                modulationEnvelope: {attack: .001, decay: .045, sustain: 0, release: .02}
+            }).connect(this.output);
+        }
+        triggerAttack (note, time, velocity) {
+            const level = velocity === undefined ? 1 : velocity;
+            super.triggerAttack(note, time, level);
+            this._secondString.triggerAttack(note, time, level * .7);
+            this._hammer.triggerAttack(note, time, level * .45);
+            return this;
+        }
+        triggerRelease (time) {
+            super.triggerRelease(time);
+            this._secondString.triggerRelease(time);
+            this._hammer.triggerRelease(time);
+            return this;
+        }
+        dispose () {
+            this._secondString.dispose();
+            this._hammer.dispose();
+            return super.dispose();
+        }
+    };
+    return PianoVoice;
+};
 const instrumentSpec = (instrument) => {
+    // Instrument names come from SoundNote/Music framework styles. Tone synth
+    // class names below remain available as WLJS-specific extensions.
     const name = noteText(instrument || 'Piano').replace(/[^a-z]/gi, '').toLowerCase();
     const spec = {
         amsynth: ['AMSynth'], fmsynth: ['FMSynth'], duosynth: ['DuoSynth'], membranesynth: ['MembraneSynth'], metalsynth: ['MetalSynth'],
-        piano: ['Synth', {oscillator: {type: 'triangle8'}, envelope: {attack: .002, decay: .2, sustain: .15, release: 1.2}}],
-        guitar: ['MonoSynth', {oscillator: {type: 'square'}, filter: {Q: 8, rolloff: -24}, envelope: {attack: .002, decay: .18, sustain: .02, release: .3}, filterEnvelope: {attack: .001, decay: .12, sustain: 0, release: .2, baseFrequency: 120, octaves: 5}}],
-        violin: ['DuoSynth', {harmonicity: 1.01, vibratoAmount: .9, vibratoRate: 6, voice0: {oscillator: {type: 'sawtooth'}}, voice1: {oscillator: {type: 'square'}}}],
-        flute: ['AMSynth', {harmonicity: .5, oscillator: {type: 'sine'}, modulation: {type: 'sine'}, envelope: {attack: .08, decay: .05, sustain: .8, release: .5}}],
-        trumpet: ['FMSynth', {harmonicity: 1, modulationIndex: 12, oscillator: {type: 'square'}, modulation: {type: 'sawtooth'}}],
-        organ: ['DuoSynth', {harmonicity: 2, vibratoAmount: .2, vibratoRate: 7}],
-        marimba: ['MetalSynth', {harmonicity: 2, modulationIndex: 48, resonance: 2500}],
-        vibraphone: ['MetalSynth', {harmonicity: 5, modulationIndex: 12, resonance: 6000}],
-        drums: ['MembraneSynth', {octaves: 14, pitchDecay: .08}]
+        piano: [pianoVoice(), {
+            oscillator: {type: 'custom', partials: [1, .68, .4, .24, .14, .08, .045, .025]},
+            envelope: {attack: .003, decay: 1.65, sustain: .025, release: 1.35}
+        }],
+        guitar: ['MonoSynth', {
+            oscillator: {type: 'custom', partials: [1, .48, .24, .12, .06]},
+            filter: {type: 'lowpass', Q: 1.5, rolloff: -24},
+            envelope: {attack: .002, decay: .38, sustain: .04, release: .55},
+            filterEnvelope: {attack: .001, decay: .16, sustain: .08, release: .35, baseFrequency: 140, octaves: 4.5}
+        }],
+        violin: ['DuoSynth', {
+            harmonicity: 1.002, vibratoAmount: .12, vibratoRate: 5.5,
+            voice0: {
+                oscillator: {type: 'sawtooth'}, filter: {type: 'lowpass', Q: 1, rolloff: -12},
+                envelope: {attack: .09, decay: .12, sustain: .86, release: .45},
+                filterEnvelope: {attack: .08, decay: .16, sustain: .72, release: .4, baseFrequency: 300, octaves: 3.5}
+            },
+            voice1: {
+                oscillator: {type: 'triangle'}, filter: {type: 'lowpass', Q: 1, rolloff: -12},
+                envelope: {attack: .11, decay: .14, sustain: .72, release: .5},
+                filterEnvelope: {attack: .09, decay: .18, sustain: .65, release: .45, baseFrequency: 260, octaves: 3.2}
+            }
+        }],
+        flute: ['AMSynth', {
+            harmonicity: 2, oscillator: {type: 'sine'}, modulation: {type: 'sine'},
+            envelope: {attack: .07, decay: .12, sustain: .82, release: .45},
+            modulationEnvelope: {attack: .1, decay: .12, sustain: .18, release: .3}
+        }],
+        trumpet: ['MonoSynth', {
+            oscillator: {type: 'sawtooth'}, filter: {type: 'lowpass', Q: 2, rolloff: -24},
+            envelope: {attack: .025, decay: .1, sustain: .76, release: .32},
+            filterEnvelope: {attack: .015, decay: .14, sustain: .62, release: .25, baseFrequency: 220, octaves: 4.2}
+        }],
+        organ: ['Synth', {
+            oscillator: {type: 'custom', partials: [1, .72, .5, .34, .22, .14, .09, .05]},
+            envelope: {attack: .015, decay: .08, sustain: .94, release: .28}
+        }],
+        marimba: ['FMSynth', {
+            harmonicity: 4, modulationIndex: 6,
+            oscillator: {type: 'sine'}, modulation: {type: 'sine'},
+            envelope: {attack: .001, decay: .72, sustain: 0, release: .16},
+            modulationEnvelope: {attack: .001, decay: .14, sustain: 0, release: .08}
+        }],
+        vibraphone: ['FMSynth', {
+            harmonicity: 4, modulationIndex: 2.5,
+            oscillator: {type: 'sine'}, modulation: {type: 'sine'},
+            envelope: {attack: .003, decay: 2.8, sustain: .08, release: 1.8},
+            modulationEnvelope: {attack: .002, decay: .9, sustain: .02, release: .7}
+        }],
+        drums: ['MembraneSynth', {
+            pitchDecay: .035, octaves: 7, oscillator: {type: 'sine'},
+            envelope: {attack: .001, decay: .34, sustain: .01, release: .65}
+        }]
     }[name] || ['Synth'];
-    return [name, Tone[spec[0]], spec[1]];
+    return [name, typeof spec[0] === 'string' ? Tone[spec[0]] : spec[0], spec[1]];
 };
 const instrumentSynth = (instrument) => {
     const [name, voice, options] = instrumentSpec(instrument);
