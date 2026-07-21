@@ -31,7 +31,7 @@ $OpaqueHeads = Alternatives[
 (* ─── Main module ──────────────────────────────────────────────────────── *)
 
 
-  {iShape, formatAtom, formatNode, skeletonType, formatElided,
+  {iShape, formatAtom, formatNode, formatAssociation, renderAssociation, skeletonType, formatElided,
    compressRuns, elideChildren, boundedChildren, columnHeld,
    wrapTuple, wrapRepeated, shortNode,
    depthQ, nextDepth, withBudget, budget,
@@ -173,44 +173,58 @@ $OpaqueHeads = Alternatives[
 
   (* Rule 2 — atoms *)
   iShape[e_, _?depthQ, _Integer, mSL_Integer] :=
-    formatAtom[Unevaluated[e], mSL]/; AtomQ[Unevaluated[e]];
+    formatAtom[Unevaluated[e], mSL] /;
+      AtomQ[Unevaluated[e]] && Head[Unevaluated[e]] =!= Association;
 
   (* Rule 3 — depth limit reached: head[<<n>>] *)
   iShape[e_, 0, _Integer, _Integer] := shortNode[e];
 
   (* Rule 4 — Association *)
-  iShape[e_Association, d_?depthQ, mEl_Integer, mSL_Integer] :=
-    withBudget[
-      shortNode[e],
-      Module[{pairs, total, shown, renderedPairs, heldTail, tailTokens, allTokens},
-        pairs = KeyValueMap[HoldComplete, Unevaluated[e]];
-        total = Length[pairs];
-        If[total === 0, "<||>",
-          shown = Min[mEl, total];
-          renderedPairs = Table[
-            pairs[[i]] /. HoldComplete[k_, v_] :>
-              (iShape[k, nextDepth[d], mEl, mSL] <> " -> " <>
-               iShape[v, nextDepth[d], mEl, mSL]),
-            {i, shown}];
-          heldTail = Drop[pairs, shown];
-          tailTokens =
-            Module[{dt = nextDepth[d], hk, hv, kt, vt},
-              Which[
-                Length[heldTail] === 0, {},
-                dt <= 0, {"<<" <> ToString[Length[heldTail]] <> ">>"},
-                True,
-                  hk = heldTail /. HoldComplete[k_, _] :> HoldComplete[k];
-                  hv = heldTail /. HoldComplete[_, v_] :> HoldComplete[v];
-                  kt = skeletonType[Join @@ hk, dt, mEl, mSL];
-                  vt = skeletonType[Join @@ hv, dt, mEl, mSL];
-                  {"<<" <> ToString[Length[heldTail]] <> ", " <>
-                     kt <> " -> " <> vt <> ">>"}
-              ]];
-          allTokens = Join[renderedPairs, tailTokens];
-          "<|" <> StringRiffle[allTokens, ", "] <> "|>"
-        ]
+  formatAssociation[e_Association, d_?depthQ, mEl_Integer, mSL_Integer] :=
+    Module[{pairs, total, shown, renderedPairs, heldTail, tailTokens, allTokens},
+      pairs = KeyValueMap[HoldComplete, e];
+      total = Length[pairs];
+      If[total === 0, "<||>",
+        shown = Min[mEl, total];
+        renderedPairs = Table[
+          pairs[[i]] /. HoldComplete[k_, v_] :>
+            (If[AssociationQ[k],
+               renderAssociation[k, nextDepth[d], mEl, mSL],
+               iShape[k, nextDepth[d], mEl, mSL]
+             ] <> " -> " <>
+             If[AssociationQ[v],
+               renderAssociation[v, nextDepth[d], mEl, mSL],
+               iShape[v, nextDepth[d], mEl, mSL]
+             ]),
+          {i, shown}];
+        heldTail = Drop[pairs, shown];
+        tailTokens =
+          Module[{dt = nextDepth[d], hk, hv, kt, vt},
+            Which[
+              Length[heldTail] === 0, {},
+              dt <= 0, {"<<" <> ToString[Length[heldTail]] <> ">>"},
+              True,
+                hk = heldTail /. HoldComplete[k_, _] :> HoldComplete[k];
+                hv = heldTail /. HoldComplete[_, v_] :> HoldComplete[v];
+                kt = skeletonType[Join @@ hk, dt, mEl, mSL];
+                vt = skeletonType[Join @@ hv, dt, mEl, mSL];
+                {"<<" <> ToString[Length[heldTail]] <> ", " <>
+                   kt <> " -> " <> vt <> ">>"}
+            ]];
+        allTokens = Join[renderedPairs, tailTokens];
+        "<|" <> StringRiffle[allTokens, ", "] <> "|>"
       ]
-    ] /; d =!= 0;
+    ];
+
+  renderAssociation[e_Association, d_?depthQ, mEl_Integer, mSL_Integer] :=
+    (budget--;
+     If[budget < 0,
+       formatNode[Association, "<<" <> ToString[Length[e]] <> ">>"],
+       formatAssociation[e, d, mEl, mSL]
+     ]);
+
+  iShape[e_Association, d_?depthQ, mEl_Integer, mSL_Integer] :=
+    renderAssociation[e, d, mEl, mSL] /; d =!= 0;
 
   (* Rule 5 — Rule *)
   iShape[e_Rule, d_?depthQ, mEl_Integer, mSL_Integer] :=
@@ -254,38 +268,52 @@ expressionSchema[
     maxElements_Integer     : 3,
     maxStringLength_Integer : 80,
     maxNodes_Integer        : 5000
-] := (budget = maxNodes; iShape[expr, maxDepth, maxElements, maxStringLength]);
+] := (
+  budget = maxNodes;
+  If[AssociationQ[expr],
+    renderAssociation[expr, maxDepth, maxElements, maxStringLength],
+    iShape[expr, maxDepth, maxElements, maxStringLength]
+  ]
+);
 
 Options[fitToBudget] = {"Depth" -> Infinity, "MaxElements" -> 5, "MaxStringLength" -> 40};
 
 fitToBudget[expr_, maxChars_Integer, OptionsPattern[]] :=
-  Catch@Module[
-    {d  = OptionValue["Depth"],
-     me = OptionValue["MaxElements"],
-     sl = OptionValue["MaxStringLength"],
-     cache, len, lo, hi, mid},
+  Module[{result},
+    result = Catch@Module[
+      {d  = OptionValue["Depth"],
+       me = OptionValue["MaxElements"],
+       sl = OptionValue["MaxStringLength"],
+       cache, len, lo, hi, mid},
 
-    (* memoize: each render costs <= n nodes; never recompute the same n *)
-    cache[n_] := cache[n] = expressionSchema[Unevaluated[expr], d, me, sl, n];
-    len[n_]   := StringLength[cache[n]];
+      (* memoize: each render costs <= n nodes; never recompute the same n *)
+      cache[n_] := cache[n] = expressionSchema[Unevaluated[expr], d, me, sl, n];
+      len[n_]   := StringLength[cache[n]];
 
-    (* 1. exponentially grow the budget until we overshoot or saturate     *)
-    hi = 32;
-    While[len[hi] <= maxChars,
-      If[len[hi] === len[2 hi], Throw[cache[hi]]];  (* whole expr fits: done *)
-      hi *= 2];
+      (* 1. exponentially grow the budget until we overshoot or saturate     *)
+      hi = 32;
+      While[len[hi] <= maxChars,
+        If[len[hi] === len[2 hi], Throw[cache[hi]]];  (* whole expr fits: done *)
+        hi *= 2];
 
-    (* 2. len[hi] now exceeds the limit; make sure the floor fits          *)
-    lo = 1;
-    If[len[lo] > maxChars, Throw[cache[lo]]];        (* can't do better      *)
+      (* 2. len[hi] now exceeds the limit; make sure the floor fits          *)
+      lo = 1;
+      If[len[lo] > maxChars, Throw[cache[lo]]];        (* can't do better      *)
 
-    (* 3. binary-search the largest budget that still fits                  *)
-    While[hi - lo > 1,
-      mid = Quotient[lo + hi, 2];
-      If[len[mid] <= maxChars, lo = mid, hi = mid]];
+      (* 3. binary-search the largest budget that still fits                  *)
+      While[hi - lo > 1,
+        mid = Quotient[lo + hi, 2];
+        If[len[mid] <= maxChars, lo = mid, hi = mid]];
 
-    cache[lo]
-];
+      cache[lo]
+    ];
+
+    Which[
+      maxChars <= 0, "",
+      StringLength[result] <= maxChars, result,
+      True, StringTake[result, UpTo[maxChars - 1]] <> "\[Ellipsis]"
+    ]
+  ];
 
 Unprotect[Shallow];
 ClearAll[Shallow];

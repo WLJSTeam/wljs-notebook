@@ -277,7 +277,7 @@ apiCall[request_, "/api/notebook/focused/"] := With[
 apiCall[request_, "/api/notebook/cells/"] := {
     "/api/notebook/cells/list/",
     "/api/notebook/cells/getlines/",
-    "/api/notebook/cells/readcontent/"
+    "/api/notebook/cells/readcontent/",
     "/api/notebook/cells/setlines/",
     "/api/notebook/cells/setlines/batch/",
     "/api/notebook/cells/insertlines/",
@@ -1033,7 +1033,10 @@ apiCall[request_, "/api/kernel/"] := {
 apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
     With[
         {k = If[StringQ[body["Kernel"] ], 
-            SelectFirst[AppExtensions`KernelList, (#["Hash"] === fromAlias[fromAlias[body["Kernel"]]]) &],  
+            SelectFirst[AppExtensions`KernelList, (
+                MemberQ[{body["Kernel"], fromAlias[body["Kernel"]]}, #["Hash"]] &&
+                TrueQ[#["ContainerReadyQ"]] && TrueQ[#["ReadyQ"]]
+            ) &],
             SelectFirst[AppExtensions`KernelList, (TrueQ[#["ContainerReadyQ"] ] && TrueQ[#["ReadyQ"] ]) &]
         ],
             expr = body["Expression"],
@@ -1175,4 +1178,3 @@ With[{http = AppExtensions`HTTPUHandler},
 
 End[]
 EndPackage[]
-
