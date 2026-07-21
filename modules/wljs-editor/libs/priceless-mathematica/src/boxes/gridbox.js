@@ -7,8 +7,8 @@ import {
   } from "@codemirror/view";
   import { isCursorInside } from "./utils";
 
-import { processGreeks } from "../sugar/misc";
-  
+import { processGreeksAll } from "../sugar/misc";
+
   import { BallancedMatchDecorator2, matchArguments  } from "./matcher";
   
   import { keymap } from "@codemirror/view";
@@ -192,7 +192,7 @@ import { processGreeks } from "../sugar/misc";
 
             if (itemDesc) {  //stylize the text
               //td.innerHTML = itemDesc[1];
-              processGreeks(td, itemDesc[1], false);
+              processGreeksAll(td, itemDesc[1], false);
               td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
@@ -204,7 +204,7 @@ import { processGreeks } from "../sugar/misc";
               interpretate(json, env);    
 
             } else {
-              processGreeks(td, text.slice(1,-1), false);
+              processGreeksAll(td, text.slice(1,-1), false);
               td.classList.add('selectable', 'sm-controls');
             }
           }
@@ -421,4 +421,3 @@ import { processGreeks } from "../sugar/misc";
         })
     }
   );
-  

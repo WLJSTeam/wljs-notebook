@@ -8,7 +8,7 @@ import {
 import { EditorState, Compartment } from "@codemirror/state"
 import { isCursorInside } from "./utils";
 
-import { processGreeks } from "../sugar/misc";
+import { processGreeksAll } from "../sugar/misc";
 
 import { BallancedMatchDecorator2, matchArguments } from "./matcher";
 
@@ -177,7 +177,7 @@ class EditorWidget {
     } else {
       topEditor = {destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(enumenator.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(enumenator.firstChild, newState.slice(1,-1), false);
         } else {
           enumenator.innerHTML = '';
           this.topEditor = new EditorView({
@@ -187,7 +187,7 @@ class EditorWidget {
         }
       }};
       const sp = document.createElement('span');
-      processGreeks(sp, topDoc.slice(1,-1), false);
+      processGreeksAll(sp, topDoc.slice(1,-1), false);
       enumenator.appendChild(sp);
     }
     
@@ -255,7 +255,7 @@ class EditorWidget {
     } else {
       bottomEditor = {destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(denumenator.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(denumenator.firstChild, newState.slice(1,-1), false);
         } else {
           denumenator.innerHTML = '';
           this.bottomEditor = new EditorView({
@@ -265,7 +265,7 @@ class EditorWidget {
         }
       }};
       const sp = document.createElement('span');
-      processGreeks(sp, bottomDoc.slice(1,-1), false);
+      processGreeksAll(sp, bottomDoc.slice(1,-1), false);
       denumenator.appendChild(sp);      
     }
     

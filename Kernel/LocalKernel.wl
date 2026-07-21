@@ -282,7 +282,7 @@ start[k_LocalKernelObject] := Module[{link},
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`WLJS`Transport`"] ];
         LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CUSockets`EventsExtension`"] ];
         LinkWrite[link, EnterTextPacket["<<LetWL`"] ];
-        LinkWrite[link, EnterTextPacket["Off[Most::argx]"] ];
+        LinkWrite[link, EnterTextPacket["Off[Most::argx]; Off[FrontEndObject::notavail];"] ];
         LinkWrite[link, EnterTextPacket["$Inspector = Dialog[]&;"] ];
         
         

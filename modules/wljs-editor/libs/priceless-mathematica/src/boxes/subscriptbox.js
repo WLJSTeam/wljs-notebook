@@ -7,7 +7,7 @@ import {
 } from "@codemirror/view";
 import { isCursorInside } from "./utils";
 
-import { processGreeksAll, processGreeks } from "../sugar/misc";
+import { processGreeksAll } from "../sugar/misc";
 
 import { BallancedMatchDecorator2, matchArguments } from "./matcher";
 
@@ -140,7 +140,7 @@ class EditorWidget {
     } else {
       topEditor = {passiveMode:true, destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(head.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(head.firstChild, newState.slice(1,-1), false);
         } else {
           head.innerHTML = '';
           this.topEditor = new EditorView({
@@ -151,7 +151,7 @@ class EditorWidget {
       }};
       const sp = document.createElement('span');
       sp.style.color = "#777";
-      processGreeks(sp, topDoc.slice(1,-1), false);
+      processGreeksAll(sp, topDoc.slice(1,-1), false);
       head.appendChild(sp);
     }
 

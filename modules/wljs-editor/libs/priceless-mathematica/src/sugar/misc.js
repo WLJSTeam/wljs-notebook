@@ -105,18 +105,33 @@ const pr = (elt, match, group1, group2) => {
 const regexp = /(sqrt|undirectededge|directededge|transpose|degree|doublestruckcapital|doublestruck|curlycapital|formalcapital|scriptcapital|capital|curly|formal|script|.*)(.*)/;
 
 
-export const processGreeksAll = (elt, str, mode=true) => {
-  
+export const processGreeksAll = (elt, str, mode = true) => {
   if (mode) {
     const result = str.toLowerCase().match(regexp);
     elt.innerHTML = pr(elt, result[0], result[1], result[2]);
-  } else {
-
-    elt.innerHTML = str.replaceAll(/\\\[(\w+)\]/g, (match) => {
-      return '&'+match.toLowerCase().slice(2,-1)+';'
-    })
+    return;
   }
-}
+
+  const fragment = document.createDocumentFragment();
+  let end = 0;
+
+  for (const match of str.matchAll(/\\\[(\w+)\]/g)) {
+    fragment.append(document.createTextNode(str.slice(end, match.index)));
+
+    const symbol = document.createElement('span');
+    processGreeks(symbol, match[1], true);
+    fragment.append(
+      symbol.style.length
+        ? symbol
+        : document.createTextNode(symbol.textContent)
+    );
+
+    end = match.index + match[0].length;
+  }
+
+  fragment.append(document.createTextNode(str.slice(end)));
+  elt.replaceChildren(fragment);
+};
 
 export const processGreeks = (elt, str, mode=true) => {
   

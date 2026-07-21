@@ -668,6 +668,30 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+Or use `TeXView`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or use `TeXView`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TeXForm[Series[Sin[x], {x,0,7}] // Normal] // TeXView
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Null)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeO5AISY0Iy0wtRwj4p6Xl5CdCVXACidAgH5fU5PyU1OBIIE9X1dQ5rSgxWdXcqULV1NVc1dwFyDQ1MDEAsYycUKVNIdKGRiBZNK3GEDkziL4KAIJqJTI="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## Style
 Highlight prime numbers
 
@@ -739,6 +763,50 @@ Type: Input
 Type: Output
 %-------------------------------------------------------------------------%
 (*FB[*)((1)(*,*)/(*,*)(2 ((*SqB[*)Sqrt[2](*]SqB*))))(*]FB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Formatted expressions as input
+You can evaluate the output decorated expressions as well. For example:
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Formatted expressions as input
+You can evaluate the output decorated expressions as well. For example:
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+table = (*GB[*){{(*BB[*)(None)(*,*)(*"1:eJxTTMoPSmNiYGAo5gMSwSWVOakuqcn5RYkl+UUQcRYgEVSak1osAlKQkV8eXFKUmZfunJFYlJhcklpUXMwKlHBLzClORdUQzAPV4JyfV5KaV4KkEAAnBR+D"*)(*]BB*)(*|*),(*|*)"y1"(*|*),(*|*)"y2"}(*||*),(*||*){"Group A"(*|*),(*|*)5(*|*),(*|*)7(*VB[*)(**)(*,*)(*"1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHPktTcNCaQPIgXVJqTWswFZDglJmenF+WX5qVANHOAJN2dnPNz8osyGYEcCAHEDGi6eYCM4JKizAL/PM+8gtKSYlaggFtiTnEqAJMOH3k="*)(*]VB*)}(*||*),(*||*){"Group B"(*|*),(*|*)4(*|*),(*|*)2}(*||*),(*||*){"Group C"(*|*),(*|*)10(*|*),(*|*)3}}(*||*)(*1:eJytj8EOgjAMhqfR6MXoK/goItGLJzDeJ3SkydjMuomP7wYiiiHh4KX5+/dL/3Z71YmYMcZo5csFoYoh04ZbbdJgHw3mYhrmoUucBFq/7Eg/YrxjDoY64oRkv/l04cVeS1cqapJajuZeHLgkqK2zcSAmA8Bb9ZbXQlf/3/z5ZnrjGapi9JsYsgYORfYzo00XtZNYqBKUHZvVICD6SJtHSy8iTiBRwRPvv20n*)(*]GB*);
+
+table[[2;;, 2;;]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+{{5,7},{4,2},{10,3}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+And our table is still editable!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And our table is still editable!
 
 %------------------------------%EndOfCells%-------------------------------%
 

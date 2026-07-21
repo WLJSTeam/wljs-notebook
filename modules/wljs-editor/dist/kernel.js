@@ -29719,17 +29719,32 @@ const pr = (elt, match, group1, group2) => {
 const regexp = /(sqrt|undirectededge|directededge|transpose|degree|doublestruckcapital|doublestruck|curlycapital|formalcapital|scriptcapital|capital|curly|formal|script|.*)(.*)/;
 
 
-const processGreeksAll = (elt, str, mode=true) => {
-  
+const processGreeksAll = (elt, str, mode = true) => {
   if (mode) {
     const result = str.toLowerCase().match(regexp);
     elt.innerHTML = pr(elt, result[0], result[1], result[2]);
-  } else {
-
-    elt.innerHTML = str.replaceAll(/\\\[(\w+)\]/g, (match) => {
-      return '&'+match.toLowerCase().slice(2,-1)+';'
-    });
+    return;
   }
+
+  const fragment = document.createDocumentFragment();
+  let end = 0;
+
+  for (const match of str.matchAll(/\\\[(\w+)\]/g)) {
+    fragment.append(document.createTextNode(str.slice(end, match.index)));
+
+    const symbol = document.createElement('span');
+    processGreeks(symbol, match[1], true);
+    fragment.append(
+      symbol.style.length
+        ? symbol
+        : document.createTextNode(symbol.textContent)
+    );
+
+    end = match.index + match[0].length;
+  }
+
+  fragment.append(document.createTextNode(str.slice(end)));
+  elt.replaceChildren(fragment);
 };
 
 const processGreeks = (elt, str, mode=true) => {
@@ -30586,7 +30601,7 @@ let EditorWidget$7 = class EditorWidget {
     } else {
       topEditor = {destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(enumenator.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(enumenator.firstChild, newState.slice(1,-1), false);
         } else {
           enumenator.innerHTML = '';
           this.topEditor = new EditorView({
@@ -30596,7 +30611,7 @@ let EditorWidget$7 = class EditorWidget {
         }
       }};
       const sp = document.createElement('span');
-      processGreeks(sp, topDoc.slice(1,-1), false);
+      processGreeksAll(sp, topDoc.slice(1,-1), false);
       enumenator.appendChild(sp);
     }
     
@@ -30664,7 +30679,7 @@ let EditorWidget$7 = class EditorWidget {
     } else {
       bottomEditor = {destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(denumenator.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(denumenator.firstChild, newState.slice(1,-1), false);
         } else {
           denumenator.innerHTML = '';
           this.bottomEditor = new EditorView({
@@ -30674,7 +30689,7 @@ let EditorWidget$7 = class EditorWidget {
         }
       }};
       const sp = document.createElement('span');
-      processGreeks(sp, bottomDoc.slice(1,-1), false);
+      processGreeksAll(sp, bottomDoc.slice(1,-1), false);
       denumenator.appendChild(sp);      
     }
     
@@ -31478,7 +31493,7 @@ let EditorWidget$5 = class EditorWidget {
     } else {
       topEditor = {passiveMode:true, destroy:() => {}, setState:(newState) => {
         if (typeof newState == 'string') {
-          processGreeks(head.firstChild, newState.slice(1,-1), false);
+          processGreeksAll(head.firstChild, newState.slice(1,-1), false);
         } else {
           head.innerHTML = '';
           this.topEditor = new EditorView({
@@ -31489,7 +31504,7 @@ let EditorWidget$5 = class EditorWidget {
       }};
       const sp = document.createElement('span');
       sp.style.color = "#777";
-      processGreeks(sp, topDoc.slice(1,-1), false);
+      processGreeksAll(sp, topDoc.slice(1,-1), false);
       head.appendChild(sp);
     }
 
@@ -32986,7 +33001,7 @@ var compactCMEditor$2;
 
             if (itemDesc) {  //stylize the text
               //td.innerHTML = itemDesc[1];
-              processGreeks(td, itemDesc[1], false);
+              processGreeksAll(td, itemDesc[1], false);
               td.classList.add('selectable', 'sm-controls');
               //throw(itemDesc);
 
@@ -32998,7 +33013,7 @@ var compactCMEditor$2;
               interpretate(json, env);    
 
             } else {
-              processGreeks(td, text.slice(1,-1), false);
+              processGreeksAll(td, text.slice(1,-1), false);
               td.classList.add('selectable', 'sm-controls');
             }
           }
@@ -33628,7 +33643,7 @@ let EditorWidget$1 = class EditorWidget {
              }
          };
           //aa.contentEditable = "plaintext-only";
-          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
+          processGreeksAll(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
           //aa.addEventListener('input', console.log);
           /*aa.addEventListener("input", () => {
             console.log('Update');

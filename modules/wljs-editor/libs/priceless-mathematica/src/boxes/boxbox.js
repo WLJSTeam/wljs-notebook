@@ -9,7 +9,7 @@ import { isCursorInside } from "./utils";
 
 import { Mma } from "./../mma-uncompress/src/mma";
 
-import { processGreeks } from "../sugar/misc";
+import { processGreeksAll } from "../sugar/misc";
 
 import { BallancedMatchDecorator2, matchArguments } from "./matcher";
 
@@ -171,7 +171,7 @@ class EditorWidget {
              }
          };
           //aa.contentEditable = "plaintext-only";
-          processGreeks(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
+          processGreeksAll(aa, self.args[0].body.slice(1 + self.prolog.offset, -1 - self.epilog.offset).replace(`\\n`, ' '), false);
           //aa.addEventListener('input', console.log);
           /*aa.addEventListener("input", () => {
             console.log('Update');
@@ -425,7 +425,6 @@ const placeholder = ViewPlugin.fromClass(
       })
   }
 );
-
 
 
 
