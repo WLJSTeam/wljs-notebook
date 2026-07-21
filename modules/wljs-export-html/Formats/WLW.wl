@@ -75,6 +75,7 @@ checkKernel[getkernel_, cbk_] := With[{
     ]
 ]
 
+wlxCellQ[data_String] := StringMatchQ[data, (".wlx\n"~~__) | (".wlx\r\n"~~__) | (".wlx\r"~~__)]
 markdownCellQ[data_String] := StringMatchQ[data, (".md\n"~~__) | (".md\r\n"~~__) | (".md\r"~~__)]
 markdownCellQ[_] := False
 
@@ -138,10 +139,12 @@ With[{
 
             Echo["Starting evaluation", "WLE Decoder"];
             With[{
-                initCells = Select[Select[notebook["Cells"], cell`InputCellQ], (#["Props"]["InitGroup"] === True) &],
-                last = FirstCase[notebook["Cells"] // Reverse, _?cell`InputCellQ],
+                initCells = Unique[],
+                last = Unique[],
                 dir = FileNameSplit[DirectoryName[ path ] ]
             },
+                initCells = Select[Select[notebook["Cells"], cell`InputCellQ], (#["Props"]["InitGroup"] === True) &];
+                last = FirstCase[notebook["Cells"] // Reverse, _?cell`InputCellQ];
                 
                 notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
                 
@@ -157,6 +160,19 @@ With[{
 
                 Echo["Evaluating initialization cells"];
 
+                If[!wlxCellQ[last["Data"]],
+                    Echo["Warning: output cell will not be WLX type"];
+                    Echo["Automatic convertion using StandardForm will be used"];
+                    
+                    initCells = Append[initCells, last];
+                    
+                    last["Props"] = <|"InitGroup" -> True|>;
+                    
+                    initCells = Append[initCells, cell`CellObj["Notebook"->notebook, "Type"->"Input", "Props"-><|"InitGroup" -> True|>, "Data"->"WLWTemporalWindowSymbol = StandardForm[%];"]];
+                    
+                    last = cell`CellObj["Notebook"->notebook, "Type"->"Input", "Data"->".wlx\r\n<WLWTemporalWindowSymbol/>"];
+                ];                
+
                 data["Container"][ cell`ToTransaction[#, "Notebook"->Null], <|"Ref" -> #["Hash"], "Notebook" -> notebook["Hash"]|> ] &/@ initCells;
 
 
@@ -168,8 +184,6 @@ With[{
                         ];
                     ];
                 ] // Quiet;
-                
-                
 
                 With[{hash = kernel["Hash"]},
                     Echo["Evaluating the last cell"];
@@ -200,7 +214,7 @@ With[{
                                 
                                 If[win["Display"] =!= "wlx",
                                     win["Display"] = "html";
-                                    win["Data"] = "<div class=\"px-4 py-2\"><small>Output window must be written in WLX. Plain Wolfram is not supported due to context switching issues</small></div>";
+                                    win["Data"] = "<div class=\"px-4 py-2\"><small>Output window must be written in WLX. Plain Wolfram is not supported due to context switching issues.</small></div>";
                                 ];
 
                                 EventFire[spinner["Promise"], Resolve, True];
@@ -227,6 +241,7 @@ With[{
                                                     $Context = "Global`";
                                                     SetDirectory[Internal`Kernel`$savedDirectory];
                                 ]; 
+                                ClearAll[last, initCells];
                             ],
 
                             "Finished" -> Function[Null,
