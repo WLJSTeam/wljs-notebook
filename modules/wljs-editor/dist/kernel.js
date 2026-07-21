@@ -33236,7 +33236,7 @@ const errText = String(err);
         //span.style.color = "rgb(255, 85, 85)";
         //span.style.background = "rgba(255, 179, 179, 0.2)";
         span.classList.add('px-2', 'py-1', 'rounded-md', 'text-xs');
-        span.innerText = '...';
+        span.innerText = '···';
         span.title = errText; 
         console.error(err);
 };
@@ -33527,7 +33527,7 @@ function semanticSnippet() {
         //span.style.color = "rgb(255, 85, 85)";
         //span.style.background = "rgba(255, 179, 179, 0.2)";
         span.classList.add('px-2', 'py-1', 'rounded-md', 'text-xs');
-        span.innerText = '...';
+        span.innerText = '···';
         span.title = errText; 
         console.error(err);
     };
