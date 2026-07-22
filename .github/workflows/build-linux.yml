@@ -137,8 +137,9 @@ jobs:
             --volume "$PWD/dist:/packages:ro" \
             opensuse/leap:16.0 \
             bash -euc '
-              rpm_path=$(find /packages -maxdepth 1 -name "*.rpm" -print -quit)
-              test -n "$rpm_path"
+              rpm_files=(/packages/*.rpm)
+              rpm_path=${rpm_files[0]}
+              test -f "$rpm_path"
               zypper --non-interactive --no-gpg-checks install --no-recommends "$rpm_path"
               package_name=$(rpm -qp --queryformat "%{NAME}" "$rpm_path")
               rpm -q "$package_name"
