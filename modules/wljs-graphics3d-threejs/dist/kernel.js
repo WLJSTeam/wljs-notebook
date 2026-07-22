@@ -4617,9 +4617,15 @@ g3d.DefaultLighting = (args, env) => {
 
 const makeEditorView = async (data, env = { global: {} }) => {
     //check by hash if there such object, if not. Ask server to create one with EditorView and store.
-    const hash = String(interpretate.hash(data));
+    let hash = String(interpretate.hashv2(data))+'3lbl';
     let obj;
     let storage;
+
+    if (!(hash in ObjectHashMap)) {
+      //try legacy hash
+      const legacyHash = String(interpretate.hash(data));
+      if (legacyHash in ObjectHashMap) hash = legacyHash;
+    }
 
     if (!(hash in ObjectHashMap)) {
       obj = new ObjectStorage(hash);

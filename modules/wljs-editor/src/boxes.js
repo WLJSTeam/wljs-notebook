@@ -120,7 +120,13 @@
   }}
 
   const requestLabel = async (label, env) => {
-    const hash = String(interpretate.hash(label))+'legend';
+    let hash = String(interpretate.hashv2(label))+'legend2';
+    if (!(hash in ObjectHashMap)) {
+      const legacyHash = String(interpretate.hash(label))+'legend';
+      if (legacyHash in ObjectHashMap) {
+        hash = legacyHash;
+      }
+    }
 
     let obj;
     console.log('check cache');
@@ -182,9 +188,14 @@
   }
 
   boxes.BarLegend = async (args, env) => {
-    const hash = String(interpretate.hash(args))+'bar';
+    let hash = String(interpretate.hashv2(args))+'bar2';
 
     let obj;
+    if (!(hash in ObjectHashMap)) {
+      const legacyHash = String(interpretate.hash(args))+'bar';
+      if (legacyHash in ObjectHashMap) hash = legacyHash;
+    }
+    
     console.log('check cache');
     if (ObjectHashMap[hash]) {
         obj = ObjectHashMap[hash];

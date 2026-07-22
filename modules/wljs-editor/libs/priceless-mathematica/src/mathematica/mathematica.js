@@ -33,22 +33,22 @@ function newESC() {
     let changes = state.changeByRange((range) => {
       let { from, to } = range;
       //if (atEof) from = to = (to <= line.to ? line : state.doc.lineAt(to)).to
-
+      
       return {
-        changes: { from, to, insert: "EC" },
-        range: EditorSelection.cursor(from + 2)
+        changes: { from, to, insert: "⣿" },
+        range: EditorSelection.cursor(from + 1)
       };
     });
 
     dispatch(
-      state.update(changes, { scrollIntoView: true, userEvent: "input" })
+      state.update(changes, { scrollIntoView: true, userEvent: "input.type" })
     );
     return true;
   };
 }
 
 function Completions(context, defaultFunctions) {
-  let word = context.matchBefore(/\w*/);
+  let word = context.matchBefore(/[⣿\w]*/);
   if (word.from === word.to && !context.explicit) return null;
   //console.log(defaultFunctions);
   return {
