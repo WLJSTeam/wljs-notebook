@@ -82,6 +82,77 @@ jobs:
         run: npm run dist-linux86
 
 
+  build-RPM-x86:
+    runs-on: ubuntu-latest
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64-v8
+    steps:
+      - name: Install build tools
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install build-essential libuv1-dev rpm ruby ruby-dev xz-utils
+
+      - name: Install FPM
+        run: sudo gem install fpm
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23'
+
+      - name: Patch platform-specific dependencies
+        run: |
+          node << 'EOF'
+          const fs = require('fs');
+          const path = './package.json';
+          const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+          for (const section of ['dependencies', 'devDependencies', 'optionalDependencies']) {
+            if (!pkg[section]) continue;
+            delete pkg[section]['dmg-license'];
+            delete pkg[section]['electron-trackpad-utils'];
+          }
+
+          fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+          EOF
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build and publish RPM
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          USE_SYSTEM_FPM: true
+        run: npm run dist-linux-rpm86
+
+      - name: Verify installation on openSUSE Leap 16.0
+        run: |
+          docker run --rm \
+            --volume "$PWD/dist:/packages:ro" \
+            opensuse/leap:16.0 \
+            bash -euc '
+              rpm_path=$(find /packages -maxdepth 1 -name "*.rpm" -print -quit)
+              test -n "$rpm_path"
+              zypper --non-interactive --no-gpg-checks install --no-recommends "$rpm_path"
+              package_name=$(rpm -qp --queryformat "%{NAME}" "$rpm_path")
+              rpm -q "$package_name"
+            '
+
+      - name: Upload RPM artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wljs-notebook-rpm-x86_64
+          path: dist/*.rpm
+          if-no-files-found: error
+
+
   build-ARM:
     runs-on: ubuntu-24.04-arm
     steps:
