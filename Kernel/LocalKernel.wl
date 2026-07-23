@@ -329,7 +329,7 @@ start[k_LocalKernelObject] := Module[{link},
 
     LinkWrite[link, generateConnectFunction[ k ]  ];
 
-    k["WatchDog"] = SetTimeout[ checkState[k], 12 * 1000];
+    k["WatchDog"] = SetTimeout[ checkState[k], 32 * 1000];
     k
 ]
 
