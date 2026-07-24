@@ -20,9 +20,9 @@
     "dist-mac": "electron-builder --mac --arm64 --publish always",
     "dist-mac86": "electron-builder --mac --x64 --publish always",
     "dist-win86": "electron-builder --win --x64 --publish always",
-    "dist-linux86": "electron-builder --linux --x64 --publish always",
-    "dist-linux-rpm86": "electron-builder --linux rpm --x64 --publish always",
-    "dist-linux": "electron-builder --linux --arm64 --publish always",
+    "dist-linux86": "electron-builder --linux --x64 --config.productName=wljs-notebook --publish always",
+    "dist-linux-rpm86": "electron-builder --linux rpm --x64 --config.productName=wljs-notebook --publish always",
+    "dist-linux": "electron-builder --linux --arm64 --config.productName=wljs-notebook --publish always",
     "remove-ds": "find . -name .DS_Store -print0 | xargs -0 git rm --ignore-unmatch",
     "build-css": "npx tailwindcss build Assets/Styles/Tailwind.css -o Assets/Styles/Optimized.css"
   },
@@ -80,6 +80,11 @@
     },
     "linux": {
       "executableName": "wljs-notebook",
+      "desktop": {
+        "entry": {
+          "Name": "WLJS Notebook"
+        }
+      },
       "target": [
         "deb",
         "zip",
