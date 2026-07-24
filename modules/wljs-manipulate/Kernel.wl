@@ -227,7 +227,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
             sampleValues @ Switch[v["Controller"],
               InputRange,
                 Select[
-                  Table[i, {i, v["Min"], v["Max"], v["Step"]}],
+                  Table[i, {i, v["MinRaw"], v["MaxRaw"], v["StepRaw"]}],
                   !TrueQ[# == v["Initial"]] &
                 ],
 
@@ -1700,9 +1700,9 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
          (* Compare several sampled states to the same initial frame, then
             construct the optimized expression in a single pass. *)
          Module[{step, range, samplePoints, sampledExpressions, expr, diffList},
-          step = If[forcedStep === False, vars[[1, "Step"]], forcedStep];
+          step = If[forcedStep === False, vars[[1, "StepRaw"]], forcedStep];
           range = Select[
-            Table[i, {i, vars[[1, "Min"]], vars[[1, "Max"]], step}],
+            Table[i, {i, vars[[1, "MinRaw"]], vars[[1, "MaxRaw"]], step}],
             !TrueQ[# == vars[[1, "Initial"]]] &
           ];
           samplePoints = If[Length[range] <= 6,
