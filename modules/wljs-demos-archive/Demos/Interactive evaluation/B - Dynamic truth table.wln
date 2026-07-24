@@ -1,0 +1,66 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use checkboxes to build a dynamic truth table:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use checkboxes to build a dynamic truth table:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+DynamicTruthTable[f_, vars_] :=
+ Module[{v, arr, e, tt, res, run},
+  (* localize *)
+  v = Array[arr, {Length[vars]}];
+  e = Function[Evaluate[f /. Thread[vars -> Array[Slot, {Length[vars]}]]]];
+  (* truth table *)
+  tt = Grid[{Append[vars, TraditionalForm[f]], 
+     Append[Map[Function[a, 
+       EventHandler[InputCheckbox[False], (a=#;run)&]], v], 
+       TextView[res//Offload]]}, 
+    Dividers -> {All, All}];
+    
+  run := res = Apply[Composition[ToString, Evaluate[e]], v];
+  (* initialize *)
+  Do[arr[i] = False, {i, Length[vars]}]; run;
+  tt//Deploy 
+]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+DynamicTruthTable[And[Or[a, b], b, c], {a, b, c}]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
