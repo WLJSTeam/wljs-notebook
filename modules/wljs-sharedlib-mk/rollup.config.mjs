@@ -4,7 +4,7 @@ import json from "@rollup/plugin-json";
 
 import terser from '@rollup/plugin-terser';
 
-export default {
+export default [{
 
   input: 'src/kernel.js',
   
@@ -30,4 +30,23 @@ export default {
   json(),
   commonjs({transformMixedEsModules:true})
   ]
-};
+},{
+
+  input: 'src/lazy.js',
+  
+  output: [
+    {
+      dir: 'dist/',
+      format: "es",
+      strict: false
+    }
+  ],
+  plugins    : [
+  nodeResolve({
+    jsnext: true,
+    main: false
+  }),
+  json(),
+  commonjs({transformMixedEsModules:true})
+  ]
+}];
