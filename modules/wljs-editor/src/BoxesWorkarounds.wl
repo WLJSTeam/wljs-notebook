@@ -904,11 +904,11 @@ Iconize /: MakeBoxes[Iconize[path_, 1, title_ ], StandardForm] := With[{},
 ]
 
 Iconize /: MakeBoxes[Iconize[compressed_, 2, title_ ], StandardForm] := With[{c = compressed, b = ByteCount[compressed]},
-      RowBox[{"(*VB[*)(Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
+      RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
 ]
 
 Iconize /: MakeBoxes[Iconize[path_, 3, title_ ], StandardForm] := With[{},
-  RowBox[{"(*VB[*)(Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
 ]
 
 
