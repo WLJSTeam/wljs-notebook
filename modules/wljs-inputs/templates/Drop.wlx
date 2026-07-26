@@ -10,7 +10,7 @@ Component[OptionsPattern[]] := With[{Class = OptionValue["Class"], Event = Optio
                     </svg><span id="text-#instanceId"><Label/></span></p>
                 <p class="text-xs text-gray-400 z-50"><Descr/></p>
             </div>
-            <input id="#instanceId" type="file" class="hidden" />
+            <input id="#instanceId" type="file" class="hidden" multiple="true" />
         </label>
     </div> 
  ,
