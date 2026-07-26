@@ -31,22 +31,33 @@ Begin["`Private`"]
 
 System`ProvidedOptions;
 
+System`CompressWithContext;
+
+CompressWithContext[expr_] :=
+  Block[
+    {
+      $Context = "cwc$`",
+      $ContextPath = {"cwc$`", "System`", "Global`"}
+    },
+    Compress[expr]
+  ];
+
 ViewBox[expr_, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, If[event === Null,
-  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[CompressWithContext[Hold[display] ], InputForm], "*)(*]VB*)"}]
 ,
-  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[CompressWithContext[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
 ViewBox[rowbox_RowBox, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, If[event === Null,
-  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[CompressWithContext[Hold[display] ], InputForm], "*)(*]VB*)"}]
 ,
-  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[CompressWithContext[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
 ViewBox[rowbox_String, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, If[event === Null,
-  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[CompressWithContext[Hold[display] ], InputForm], "*)(*]VB*)"}]
 ,
-  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[Compress[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", rowbox, ")(*,*)(*", ToString[CompressWithContext[ProvidedOptions[Hold[display], "Event"->event ] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
 Options[ViewBox] = {"Event" -> Null}
@@ -57,19 +68,19 @@ Options[ViewBox] = {"Event" -> Null}
 BoxBox[expr_, display_, OptionsPattern[] ] := With[{event = OptionValue["Event"]}, 
   If[OptionValue[Head] =!= Null,
     With[{dp = ProvidedOptions[Hold[display], "Head"->ToString[OptionValue[Head], InputForm], "Event"->event]},
-      RowBox[{"(*BB[*)(", ToString[OptionValue[Head], InputForm], "[", expr, "]", ")(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]
+      RowBox[{"(*BB[*)(", ToString[OptionValue[Head], InputForm], "[", expr, "]", ")(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]
     ]
   ,
     If[OptionValue["String"] === True,
       With[{dp = ProvidedOptions[Hold[display], "String"->True, "Event"->event]},
-        RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]
+        RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]
       ]
     ,
       If[event === Null,
-        RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[Compress[Hold[display] ], InputForm], "*)(*]BB*)"}]
+        RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[CompressWithContext[Hold[display] ], InputForm], "*)(*]BB*)"}]
       ,
         With[{dp = ProvidedOptions[Hold[display], "Event"->event]},
-          RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[Compress[Hold[dp] ], InputForm], "*)(*]BB*)"}]
+          RowBox[{"(*BB[*)(", expr, ")(*,*)(*", ToString[CompressWithContext[Hold[dp] ], InputForm], "*)(*]BB*)"}]
         ]
       ]
     ]

@@ -186,7 +186,7 @@ Unprotect[Sum]
 
 Sum /: MakeBoxes[Sum[expr_, {x_Symbol, min_, max_}], s: StandardForm] := With[{func = MakeBoxes[expr, s]},
     With[{dp = ViewDecorator["Sum", 1, True], symbol = MakeBoxes[x, s], bmin = MakeBoxes[min, s], bmax = MakeBoxes[max, s]},
-      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)", bmin, "(*|*),(*|*)", bmax, "(*|*)}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)", bmin, "(*|*),(*|*)", bmax, "(*|*)}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
@@ -202,13 +202,13 @@ Sum /: MakeBoxes[Sum[expr_, vars__List], s: StandardForm] := With[{list = List[v
         ] &/@ list
       , ","] // Flatten // RowBox
     },
-      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), ", symbols, "](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), ", symbols, "](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
 Sum /: MakeBoxes[Sum[expr_, {x_Symbol, min_, max_, step_}], s: StandardForm] := With[{func = MakeBoxes[expr, s]},
     With[{dp = ViewDecorator["Sum", 1, True], symbol = MakeBoxes[x, s], bmin = MakeBoxes[min, s], bmax = MakeBoxes[max, s], bstep = MakeBoxes[step, s]},
-      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)", bmin, "(*|*),(*|*)", bmax, "(*|*)", bstep, "}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Sum[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)", bmin, "(*|*),(*|*)", bmax, "(*|*)", bstep, "}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
@@ -220,7 +220,7 @@ Derivative /: MakeBoxes[Derivative[single_][f_], s: StandardForm] := With[{},
 Derivative /: MakeBoxes[Derivative[multi__][f_], s: StandardForm] := With[{list = List[multi]},
   With[{func = MakeBoxes[f, s], head = "Derivative["<>StringRiffle[ToString/@list, ","]<>"]"},
     With[{dp = ProvidedOptions[ViewDecorator["Derivative", list], "Head"->head]},
-      RowBox[{"(*BB[*)(", head, "[", func, "])(*,*)(*", ToString[Compress[dp ], InputForm], "*)(*]BB*)"}]
+      RowBox[{"(*BB[*)(", head, "[", func, "])(*,*)(*", ToString[CompressWithContext[dp ], InputForm], "*)(*]BB*)"}]
     ]
   ]
 ]
@@ -229,19 +229,19 @@ Unprotect[Integrate]
 
 Integrate /: MakeBoxes[Integrate[f_, x_Symbol], s: StandardForm ] := With[{},
     With[{dp = ViewDecorator["Integrate", 1, False], func = MakeBoxes[f, s], symbol = MakeBoxes[x, s]},
-      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), (*|*)", symbol, "(*|*)](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), (*|*)", symbol, "(*|*)](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
 Integrate /: MakeBoxes[Integrate[f_, x__Symbol], s: StandardForm ] := With[{list = List[x]},
     With[{dp = ViewDecorator["Integrate", list // Length, False], func = MakeBoxes[f, s], symbols = RowBox[Riffle[MakeBoxes[#, s]&/@list, "(*|*),(*|*)"] ]},
-      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), (*|*)", symbols, "(*|*)](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), (*|*)", symbols, "(*|*)](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
 Integrate /: MakeBoxes[Integrate[f_, {x_Symbol, min_, max_}], s: StandardForm ] := With[{},
     With[{dp = ViewDecorator["Integrate", 1, True], func = MakeBoxes[f, s], symbol = MakeBoxes[x, s], xmin = MakeBoxes[min, s], xmax = MakeBoxes[max, s]},
-      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)",xmin,"(*|*),(*|*)",xmax,"(*|*)}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), {(*|*)", symbol, "(*|*),(*|*)",xmin,"(*|*),(*|*)",xmax,"(*|*)}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
@@ -251,7 +251,7 @@ Integrate /: MakeBoxes[Integrate[f_, bond__List], s: StandardForm ] := With[{lis
           {"{(*|*)", MakeBoxes[var, s], "(*|*),(*|*)", MakeBoxes[min, s], "(*|*),(*|*)", MakeBoxes[max, s], "(*|*)}"}
         ]
       }&/@list, ","] // Flatten ]},
-      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), ", symbols, "](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Integrate[(*|*)", func, "(*|*), ", symbols, "](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
 ]
 
@@ -263,7 +263,7 @@ Cross /: MakeBoxes[Cross[a_,b_], StandardForm] := With[{
   y1 = MakeBoxes[a, StandardForm],
   y2 = MakeBoxes[b, StandardForm]
 },
-  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", Compress[ ViewDecorator["Cross"] ], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", CompressWithContext[ ViewDecorator["Cross"] ], "*)(*]TB*)"}]
 ]
 
 Cross /: MakeBoxes[Cross[x1_, x2_, x3_], StandardForm] := With[{
@@ -271,7 +271,7 @@ Cross /: MakeBoxes[Cross[x1_, x2_, x3_], StandardForm] := With[{
   y2 = MakeBoxes[x2, StandardForm],
   y3 = MakeBoxes[x3, StandardForm]
 },
-  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", Compress[ViewDecorator["Cross"]], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Cross"]], "*)(*]TB*)"}]
 ]
 
 Cross /: MakeBoxes[Cross[x1_, x2_, x3_, x4_], StandardForm] := With[{
@@ -280,7 +280,7 @@ Cross /: MakeBoxes[Cross[x1_, x2_, x3_, x4_], StandardForm] := With[{
   y3 = MakeBoxes[x3, StandardForm],
   y4 = MakeBoxes[x4, StandardForm]
 },
-  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", Compress[ViewDecorator["Cross"]], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Cross[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Cross"]], "*)(*]TB*)"}]
 ]
 
 Unprotect[Colon]
@@ -290,7 +290,7 @@ Colon /: MakeBoxes[Colon[a_, b_], StandardForm] := With[{
   y1 = MakeBoxes[a, StandardForm],
   y2 = MakeBoxes[b, StandardForm]
 },
-  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Colon"]], "*)(*]TB*)"}]
 ]
 
 Colon /: MakeBoxes[Colon[x1_, x2_, x3_], StandardForm] := With[{
@@ -298,7 +298,7 @@ Colon /: MakeBoxes[Colon[x1_, x2_, x3_], StandardForm] := With[{
   y2 = MakeBoxes[x2, StandardForm],
   y3 = MakeBoxes[x3, StandardForm]
 },
-  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Colon"]], "*)(*]TB*)"}]
 ]
 
 Colon /: MakeBoxes[Colon[x1_, x2_, x3_, x4_], StandardForm] := With[{
@@ -307,7 +307,7 @@ Colon /: MakeBoxes[Colon[x1_, x2_, x3_, x4_], StandardForm] := With[{
   y3 = MakeBoxes[x3, StandardForm],
   y4 = MakeBoxes[x4, StandardForm]
 },
-  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", Compress[ViewDecorator["Colon"]], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)Colon[(*|*)", y1, "(*|*),(*|*)", y2, "(*|*),(*|*)", y3, "(*|*),(*|*)", y4, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Colon"]], "*)(*]TB*)"}]
 ]
 
 
@@ -373,12 +373,12 @@ GridBox[list_List, opts___] := With[{optList = gridBoxCanonicalRules[List[opts]]
             RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
                 Riffle[
                     (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", CompressWithContext[ViewDecorator["Matrix"]  ], "*)(*]GB*)"]}}]))
         ,
             RowBox@(Join @@ (Join[{{"(*GB[*){"}}, 
                 Riffle[
                     (Join[{"{"}, Riffle[#, "(*|*),(*|*)"], {"}"}] & /@ list), 
-                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", Compress[ViewDecorator["Grid", Sequence@@rls]  ], "*)(*]GB*)"]}}]))
+                        If[Length[list] > 1, {{"(*||*),(*||*)"}}, {}] ], {{StringJoin["}(*||*)(*", CompressWithContext[ViewDecorator["Grid", Sequence@@rls]  ], "*)(*]GB*)"]}}]))
 
         ]
     ]
@@ -422,7 +422,7 @@ GridBox[{{"\[Piecewise]", whatever_}}, a___] := With[{original = whatever /. {Ro
         {"{(*|*)", MakeBoxes[val, StandardForm], "(*|*),(*|*)", MakeBoxes[cond, StandardForm], "(*|*)}"}
       ]& /@ original
     , ","] // Flatten // RowBox},
-      RowBox[{"(*TB[*)Piecewise[{", boxes, "}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Piecewise[{", boxes, "}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
   ]
 ]
@@ -443,7 +443,7 @@ Piecewise /: MakeBoxes[Piecewise[original_List], StandardForm] := With[{},
         {"{(*|*)", MakeBoxes[val, StandardForm], "(*|*),(*|*)", MakeBoxes[cond, StandardForm], "(*|*)}"}
       ]& /@ original
     , ","] // Flatten // RowBox},
-      RowBox[{"(*TB[*)Piecewise[{", boxes, "}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Piecewise[{", boxes, "}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
     ]
   ]
 ]
@@ -457,20 +457,20 @@ ToStringStrip[str_] := With[{s = ToString[str]},
 ]
 
 Unprotect[UnderscriptBox]
-UnderscriptBox[a_, b_] := RowBox[{"(*TB[*)Underscript[(*|*)", a, "(*|*),", b, "](*|*)(*", Compress[ViewDecorator["Under" ] ], "*)(*]TB*)"}]
-UnderscriptBox[a_, "_"] := RowBox[{"(*TB[*)UnderBar[(*|*)", a, "(*|*)](*|*)(*", Compress[ViewDecorator["Under", "_" ] ], "*)(*]TB*)"}]
+UnderscriptBox[a_, b_] := RowBox[{"(*TB[*)Underscript[(*|*)", a, "(*|*),", b, "](*|*)(*", CompressWithContext[ViewDecorator["Under" ] ], "*)(*]TB*)"}]
+UnderscriptBox[a_, "_"] := RowBox[{"(*TB[*)UnderBar[(*|*)", a, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Under", "_" ] ], "*)(*]TB*)"}]
 
 
 Unprotect[OverscriptBox]
-OverscriptBox[a_, b_] := RowBox[{"(*TB[*)Overscript[(*|*)", a, "(*|*),", b, "](*|*)(*", Compress[ViewDecorator["Over" ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, b_] := RowBox[{"(*TB[*)Overscript[(*|*)", a, "(*|*),", b, "](*|*)(*", CompressWithContext[ViewDecorator["Over" ] ], "*)(*]TB*)"}]
 
-OverscriptBox[a_, "^"] := RowBox[{"(*TB[*)OverHat[(*|*)", a, "(*|*)](*|*)(*", Compress[ViewDecorator["Over", "^" ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, "\[RightVector]"] := RowBox[{"(*TB[*)OverVector[(*|*)", a, "(*|*)](*|*)(*", Compress[ViewDecorator["Over", "&#8594;" ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, "~"] := RowBox[{"(*TB[*)OverTilde[(*|*)", a, "(*|*)](*|*)(*", Compress[ViewDecorator["Over", "~" ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, "_"] := RowBox[{"(*TB[*)OverBar[(*|*)", a, "(*|*)](*|*)(*", Compress[ViewDecorator["Over", "_" ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, "."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),1](*|*)(*", Compress[ViewDecorator["Over", "." ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, ".."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),2](*|*)(*", Compress[ViewDecorator["Over", ".." ] ], "*)(*]TB*)"}]
-OverscriptBox[a_, "..."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),3](*|*)(*", Compress[ViewDecorator["Over", "..." ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "^"] := RowBox[{"(*TB[*)OverHat[(*|*)", a, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Over", "^" ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "\[RightVector]"] := RowBox[{"(*TB[*)OverVector[(*|*)", a, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Over", "&#8594;" ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "~"] := RowBox[{"(*TB[*)OverTilde[(*|*)", a, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Over", "~" ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "_"] := RowBox[{"(*TB[*)OverBar[(*|*)", a, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["Over", "_" ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),1](*|*)(*", CompressWithContext[ViewDecorator["Over", "." ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, ".."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),2](*|*)(*", CompressWithContext[ViewDecorator["Over", ".." ] ], "*)(*]TB*)"}]
+OverscriptBox[a_, "..."] := RowBox[{"(*TB[*)OverDot[(*|*)", a, "(*|*),3](*|*)(*", CompressWithContext[ViewDecorator["Over", "..." ] ], "*)(*]TB*)"}]
 
 (* ::: Leftover plugs for FormatValues, we could not overwrite ::: *)
 
@@ -582,7 +582,7 @@ Around /: MakeBoxes[Around[mean_?NumberQ, {stdm_?NumberQ, stdp_?NumberQ}], Stand
 System`StyleDecorator;
 
 Unprotect[FrameBox]
-FrameBox[x_, opts___]  := RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[ StyleDecorator[opts, "Frame"->True] ], InputForm], "*)(*]BB*)"}]
+FrameBox[x_, opts___]  := RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[CompressWithContext[ StyleDecorator[opts, "Frame"->True] ], InputForm], "*)(*]BB*)"}]
 
 
 Unprotect[StyleBox]
@@ -602,12 +602,12 @@ StyleBox[px_, popts__]  := With[{
 }, {list = Association[Cases[opts, _Rule] ]},
   If[KeyExistsQ[list, ShowStringCharacters], 
     If[!list[ShowStringCharacters],
-      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts]  ] , InputForm], "*)(*]BB*)"}]  
+      RowBox[{"(*BB[*)(", ReplaceAll[x, s_String :> Kernel`Internal`trimStringCharacters[s] ], ")(*,*)(*", ToString[CompressWithContext[StyleDecorator[Sequence@@opts]  ] , InputForm], "*)(*]BB*)"}]  
     ,
-      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
+      RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[CompressWithContext[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
     ]
   ,
-    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[Compress[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
+    RowBox[{"(*BB[*)(", x, ")(*,*)(*", ToString[CompressWithContext[StyleDecorator[Sequence@@opts] ], InputForm], "*)(*]BB*)"}]
   ]
 ]
 
@@ -647,7 +647,7 @@ BoxBox[labelBox, StyleDecorator["URL"->url], "String"->True]]
 (*if a string, then remove quotes*)
 
 Unprotect[Style]
-Style /: MakeBoxes[Style[s_String, opts__], StandardForm] := RowBox[{"(*BB[*)(", ToString[s, InputForm], ")(*,*)(*", ToString[Compress[ProvidedOptions[StyleDecorator[opts], "String"->True ] ], InputForm], "*)(*]BB*)"}]
+Style /: MakeBoxes[Style[s_String, opts__], StandardForm] := RowBox[{"(*BB[*)(", ToString[s, InputForm], ")(*,*)(*", ToString[CompressWithContext[ProvidedOptions[StyleDecorator[opts], "String"->True ] ], InputForm], "*)(*]BB*)"}]
 
 (* ::: MISC view decorators ::: *)
 
@@ -661,7 +661,7 @@ Panel /: EventHandler[p_Panel, list_List] := With[{
 ]
 
 Unprotect[PanelBox]
-PanelBox[x_, opts___]  := RowBox[{"(*BB[*)(Panel[", x, "])(*,*)(*", ToString[Compress[ProvidedOptions[ViewDecorator["Panel", opts], "Head"->"Panel"] ], InputForm], "*)(*]BB*)"}]
+PanelBox[x_, opts___]  := RowBox[{"(*BB[*)(Panel[", x, "])(*,*)(*", ToString[CompressWithContext[ProvidedOptions[ViewDecorator["Panel", opts], "Head"->"Panel"] ], InputForm], "*)(*]BB*)"}]
 
 (* Special WLX Form*)
 
@@ -735,7 +735,7 @@ If[$VersionNumber > 14.1,
 
 Unprotect[ItemBox]
 
-ItemBox[expr_, o: OptionsPattern[] ] := RowBox[{expr, "(*VB[*)(**)(*,*)(*", ToString[Compress[ViewDecorator["Item", o] ], InputForm], "*)(*]VB*)"}] ;/ Head[expr] =!= Slot
+ItemBox[expr_, o: OptionsPattern[] ] := RowBox[{expr, "(*VB[*)(**)(*,*)(*", ToString[CompressWithContext[ViewDecorator["Item", o] ], InputForm], "*)(*]VB*)"}] ;/ Head[expr] =!= Slot
 
 
 (* :::QuantityBox to ViewDecorators ::: *)
@@ -754,7 +754,7 @@ QuantityUnits`QuantityBox[QuantityUnits`Private`x_, _] := ToString[QuantityUnits
 
 (* ::: More Template Boxes ::: *)
 
-TemplateBox[{"Root", m_, raw_, approx_}, opts___] := RowBox[{"(*VB[*)(", approx /. {RowBox->RowBoxFlatten} // ToString, ")(*,*)(*", ToString[Compress[ViewDecorator["Root", approx] ] , InputForm], "*)(*]VB*)"}]
+TemplateBox[{"Root", m_, raw_, approx_}, opts___] := RowBox[{"(*VB[*)(", approx /. {RowBox->RowBoxFlatten} // ToString, ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["Root", approx] ] , InputForm], "*)(*]VB*)"}]
 TemplateBox[{number_}, "C"] := RowBox[{ SubscriptBox[C, number]}]
 
 Unprotect[AlgebraicNumber]
@@ -764,19 +764,19 @@ AlgebraicNumber /: MakeBoxes[a_AlgebraicNumber, StandardForm] := With[{approx = 
   ViewBox[a, ViewDecorator["Root", approx]]
 ]
 
-TemplateBox[expr_, "Bra"] := With[{dp = ProvidedOptions[ViewDecorator["Bra"], "Head"->"Bra"]}, RowBox[{"(*BB[*)(Bra[", RowBox[Riffle[expr, ","]], "])(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]]
-TemplateBox[expr_, "Ket"] := With[{dp = ProvidedOptions[ViewDecorator["Ket"], "Head"->"Ket"]}, RowBox[{"(*BB[*)(Ket[", RowBox[Riffle[expr, ","]], "])(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]]
+TemplateBox[expr_, "Bra"] := With[{dp = ProvidedOptions[ViewDecorator["Bra"], "Head"->"Bra"]}, RowBox[{"(*BB[*)(Bra[", RowBox[Riffle[expr, ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
+TemplateBox[expr_, "Ket"] := With[{dp = ProvidedOptions[ViewDecorator["Ket"], "Head"->"Ket"]}, RowBox[{"(*BB[*)(Ket[", RowBox[Riffle[expr, ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
 
 Unprotect[Ket]
 Unprotect[Bra]
 
-Ket /: MakeBoxes[Ket[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Ket"], "Head"->"Ket"]}, RowBox[{"(*BB[*)(Ket[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]]
-Bra /: MakeBoxes[Bra[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Bra"], "Head"->"Bra"]}, RowBox[{"(*BB[*)(Bra[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[Compress[dp], InputForm], "*)(*]BB*)"}]]
+Ket /: MakeBoxes[Ket[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Ket"], "Head"->"Ket"]}, RowBox[{"(*BB[*)(Ket[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
+Bra /: MakeBoxes[Bra[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Bra"], "Head"->"Bra"]}, RowBox[{"(*BB[*)(Bra[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
 
 TemplateBox[{file_String}, "FileArgument"] := file
 
 TemplateBox[{expr_, cond_}, "ConditionalExpression"] := With[{dp = ViewDecorator["Conditional"]},
-  RowBox[{"(*TB[*)ConditionalExpression[(*|*)", expr, "(*|*), (*|*)", cond, "(*|*)](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+  RowBox[{"(*TB[*)ConditionalExpression[(*|*)", expr, "(*|*), (*|*)", cond, "(*|*)](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
 ]
 
 TemplateBox[expr_, "IconizedObject"] := "\"Box is not implemented\""
@@ -791,25 +791,25 @@ DynamicModuleBox[vars_, body_] := body
 (* :: Color Boxes :: *)
 
 TemplateBox[assoc_Association, "RGBColorSwatchTemplate"] := With[{color = assoc["color"]//N},
-   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[Compress[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
+   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
 ]
 
 TemplateBox[assoc_Association, "LABColorSwatchTemplate"] := With[{rgb = RGBColor[assoc["color"]]//N},
-  RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[Compress[ViewDecorator["CSWT", rgb]], InputForm], "*)(*]VB*)"}]  
+  RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["CSWT", rgb]], InputForm], "*)(*]VB*)"}]  
 ]
 
 TemplateBox[assoc_Association, "GrayLevelColorSwatchTemplate"] := With[{color = assoc["color"]//N // RGBColor},
-   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[Compress[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
+   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
 ]
 
 TemplateBox[assoc_Association, "HueColorSwatchTemplate"] := With[{color = assoc["color"]//N // RGBColor},
-   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[Compress[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
+   RowBox[{"(*VB[*)(", ToString[assoc["color"], InputForm], ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["CSWT", color]], InputForm], "*)(*]VB*)"}]
 ]
 
 (* :: Date Boxes :: *)
 
 TemplateBox[expr_List, "DateObject", __] := With[{date = expr[[1]][[1]][[1]]},
-   RowBox[{"(*VB[*)(", expr[[2]], ")(*,*)(*", ToString[Compress[ViewDecorator["Date", date] ], InputForm], "*)(*]VB*)"}]
+   RowBox[{"(*VB[*)(", expr[[2]], ")(*,*)(*", ToString[CompressWithContext[ViewDecorator["Date", date] ], InputForm], "*)(*]VB*)"}]
 ]
 
 (* :: Convertions to other boxes :: *)
@@ -879,7 +879,7 @@ TemplateBox[{TemplateBox[{dimensions__}, "ImplicitList", ___]}, "SymbolicZerosAr
 (* :: Indexed Box :: *)
 
 TemplateBox[{symbol_, index__}, "IndexedDefault"] := With[{dp = ViewDecorator["Indexed"], indexSym = StringRiffle[ List[index] /. {RowBox -> RowBoxFlatten}, ","]},
-      RowBox[{"(*TB[*)Indexed[(*|*)", symbol, "(*|*), {(*|*)", indexSym, "(*|*)}](*|*)(*", Compress[dp], "*)(*]TB*)"}]
+      RowBox[{"(*TB[*)Indexed[(*|*)", symbol, "(*|*), {(*|*)", indexSym, "(*|*)}](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]
 ]
 
 
@@ -896,19 +896,19 @@ Unprotect[Iconize]
 ClearAll[Iconize]
 
 Iconize /: MakeBoxes[Iconize[compressed_, 0, title_ ], StandardForm] := With[{c = compressed, b = ByteCount[compressed]},
-      RowBox[{"(*VB[*)(Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->title] ], InputForm], "*)(*]VB*)"}]
+      RowBox[{"(*VB[*)(Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Iconized", b, "Label"->title] ], InputForm], "*)(*]VB*)"}]
 ]
 
 Iconize /: MakeBoxes[Iconize[path_, 1, title_ ], StandardForm] := With[{},
-  RowBox[{"(*VB[*)(Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->title, "File"->True] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Iconized", 0, "Label"->title, "File"->True] ], InputForm], "*)(*]VB*)"}]
 ]
 
 Iconize /: MakeBoxes[Iconize[compressed_, 2, title_ ], StandardForm] := With[{c = compressed, b = ByteCount[compressed]},
-      RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
+      RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress[", ToString[c, InputForm], "])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Iconized", b, "Label"->"... ,"] ], InputForm], "*)(*]VB*)"}]
 ]
 
 Iconize /: MakeBoxes[Iconize[path_, 3, title_ ], StandardForm] := With[{},
-  RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[Compress[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(Evaluate@Sequence@@Uncompress@Get[FileNameJoin[", ToString[path, InputForm], "]])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Iconized", 0, "Label"->"... ,", "File"->True] ], InputForm], "*)(*]VB*)"}]
 ]
 
 
@@ -964,7 +964,7 @@ Unprotect[InterpretationBox]
 
 
 InterpretationBox[placeholder_, expr_, opts___] := With[{data = expr, v = EditorView[ToString[placeholder /. {RowBox->RowBoxFlatten}], "ReadOnly"->True, "Selectable"->False]},
-  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[v], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[CompressWithContext[v], InputForm], "*)(*]VB*)"}]
 ]
 
 Unprotect[Interpretation]
@@ -977,7 +977,7 @@ Interpretation[view_FrontEndExecutable, expr_] := With[{},
   InterpretationOptimized[view, expr]
 ]
 
-InterpretationOptimized /: MakeBoxes[InterpretationOptimized[view_, expr_], StandardForm] := RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[Compress[view], InputForm], "*)(*]VB*)"}]
+InterpretationOptimized /: MakeBoxes[InterpretationOptimized[view_, expr_], StandardForm] := RowBox[{"(*VB[*)(", ToString[expr, InputForm], ")(*,*)(*", ToString[CompressWithContext[view], InputForm], "*)(*]VB*)"}]
 
 
 (* :: Plug for SummaryBox :: *)
@@ -1035,7 +1035,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], StandardForm] := 
 }, With[{
   exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
-  RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend2", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Legend2", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
 Legended /: MakeBoxes[Legended[expr_, legendFunction_Placed ], WLXForm] := With[{
@@ -1053,7 +1053,7 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], StandardForm] := With[{
 }, With[{
   exprView = EditorView[FrontEndExecutable[containerUId], "ReadOnly"->True, "Selectable"->False ]
 },
-  RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[Compress[ ViewDecorator["Legend", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
+  RowBox[{"(*VB[*)(Legended[ToExpression[FrontEndRef[\"", containerUId, "\"], InputForm], ", ToString[legendFunction, InputForm], "])(*,*)(*", ToString[CompressWithContext[ ViewDecorator["Legend", exprView, legendFunction] ], InputForm], "*)(*]VB*)"}]
 ] ]
 
 Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
@@ -1213,14 +1213,14 @@ BoxForm`ArrangeSummaryBox[head_, interpretation_, icon_, above_List, _List, BoxF
       Module[{BoxForm`temporalStorage},
         With[{
           BoxForm`tempSymbol = ToString[BoxForm`temporalStorage, InputForm],
-          viewBox = StringRiffle[{headString, "[(*VB[*) ", "(*,*)(*", ToString[Compress[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "DataOnKernel"->True ] ], InputForm ], "*)(*]VB*)]"}, ""]
+          viewBox = StringRiffle[{headString, "[(*VB[*) ", "(*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "DataOnKernel"->True ] ], InputForm ], "*)(*]VB*)]"}, ""]
         },
           AppendTo[BoxForm`temporal, Hold[BoxForm`temporalStorage] ];
 
           BoxForm`temporalStorage = interpretation;
 
           With[{fakeEditor = EditorView[viewBox, "ReadOnly"->True, "Selectable"->False]},
-            RowBox[{"(*VB[*)", BoxForm`tempSymbol, "(*,*)(*", ToString[Compress[fakeEditor], InputForm ], "*)(*]VB*)"}]
+            RowBox[{"(*VB[*)", BoxForm`tempSymbol, "(*,*)(*", ToString[CompressWithContext[fakeEditor], InputForm ], "*)(*]VB*)"}]
           ]
         ]
       ]
@@ -1228,15 +1228,15 @@ BoxForm`ArrangeSummaryBox[head_, interpretation_, icon_, above_List, _List, BoxF
       
         If[event === Null,
           If[interpretationHead =!= headString && !StringQ[head],
-            RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[Compress[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]          
+            RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]          
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[Compress[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ,
           If[interpretationHead =!= headString && !StringQ[head],
-            RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[Compress[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[Compress[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ]
       
@@ -1245,14 +1245,14 @@ BoxForm`ArrangeSummaryBox[head_, interpretation_, icon_, above_List, _List, BoxF
       Module[{BoxForm`temporalStorage},
         With[{
           BoxForm`tempSymbol = ToString[BoxForm`temporalStorage, InputForm],
-          viewBox = StringRiffle[{headString, "[(*VB[*) ", "(*,*)(*", ToString[Compress[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "DataOnKernel"->True ] ], InputForm ], "*)(*]VB*)]"}, ""]
+          viewBox = StringRiffle[{headString, "[(*VB[*) ", "(*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "DataOnKernel"->True ] ], InputForm ], "*)(*]VB*)]"}, ""]
         },
           AppendTo[BoxForm`temporal, Hold[BoxForm`temporalStorage] ];
 
           BoxForm`temporalStorage = interpretation;
 
           With[{fakeEditor = EditorView[viewBox, "ReadOnly"->True, "Selectable"->False]},
-            RowBox[{"(*VB[*)", BoxForm`tempSymbol, "(*,*)(*", ToString[Compress[fakeEditor], InputForm ], "*)(*]VB*)"}]
+            RowBox[{"(*VB[*)", BoxForm`tempSymbol, "(*,*)(*", ToString[CompressWithContext[fakeEditor], InputForm ], "*)(*]VB*)"}]
           ]
         ]
       ]
@@ -1401,11 +1401,11 @@ BoxForm`EventObjectHasView[assoc_Association] := KeyExistsQ[assoc, "View"]
 EventObject /: MakeBoxes[EventObject[a_?BoxForm`EventObjectHasView], StandardForm] := If[StringQ[a["View"] ],
   (* reuse an existing FE Object to save up resources, if someone copied it *)
   With[{uid = a["View"]}, 
-    RowBox[{"(*VB[*)(", ToString[EventObject[Join[a, <|"View"->uid|>] ], InputForm], ")(*,*)(*", ToString[Compress[Hold[FrontEndExecutable[uid]]], InputForm], "*)(*]VB*)"}]
+    RowBox[{"(*VB[*)(", ToString[EventObject[Join[a, <|"View"->uid|>] ], InputForm], ")(*,*)(*", ToString[CompressWithContext[Hold[FrontEndExecutable[uid]]], InputForm], "*)(*]VB*)"}]
   ]
 ,
   With[{uid = CreateFrontEndObject[a["View"] ] // First}, 
-    RowBox[{"(*VB[*)(", ToString[EventObject[Join[a, <|"View"->uid|>] ], InputForm], ")(*,*)(*", ToString[Compress[Hold[FrontEndExecutable[uid]]], InputForm], "*)(*]VB*)"}]
+    RowBox[{"(*VB[*)(", ToString[EventObject[Join[a, <|"View"->uid|>] ], InputForm], ")(*,*)(*", ToString[CompressWithContext[Hold[FrontEndExecutable[uid]]], InputForm], "*)(*]VB*)"}]
   ] 
 ]
 

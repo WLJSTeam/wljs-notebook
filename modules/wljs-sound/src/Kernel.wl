@@ -310,7 +310,7 @@ AudioWrapperBox[a_Audio, StandardForm] := With[{
 
 
             With[{o = PCMPlayer[buffer // Offload, {}, "SignedInteger16", "AutoPlay"->False, "DataOnKernel"->True, "Event"->uid, "FullLength"->Length[bigBuffer], SampleRate -> options[SampleRate] ]},
-                RowBox[{"(*VB[*)(Audio[", ToString[bigBuffer//Unevaluated, InputForm], ", \"SignedInteger16\", SampleRate->", ToString[options[SampleRate], InputForm],"])(*,*)(*", ToString[Compress[o], InputForm], "*)(*]VB*)"}]
+                RowBox[{"(*VB[*)(Audio[", ToString[bigBuffer//Unevaluated, InputForm], ", \"SignedInteger16\", SampleRate->", ToString[options[SampleRate], InputForm],"])(*,*)(*", ToString[CompressWithContext[o], InputForm], "*)(*]VB*)"}]
             ]
         ]
     ,
@@ -320,7 +320,7 @@ AudioWrapperBox[a_Audio, StandardForm] := With[{
 
                         With[{virtualBuffer = CreateFrontEndObject[data] },
                             With[{result = With[{o = CreateFrontEndObject[PCMPlayer[virtualBuffer, "SignedInteger16", "AutoPlay"->False, SampleRate -> options[SampleRate] ] ]},
-                                RowBox[{"(*VB[*)(Audio[FrontEndRef[", ToString[virtualBuffer//First, InputForm], "], \"SignedInteger16\", SampleRate->",ToString[options[SampleRate], InputForm ],"])(*,*)(*", ToString[Compress[Hold[o] ], InputForm], "*)(*]VB*)"}]
+                                RowBox[{"(*VB[*)(Audio[FrontEndRef[", ToString[virtualBuffer//First, InputForm], "], \"SignedInteger16\", SampleRate->",ToString[options[SampleRate], InputForm ],"])(*,*)(*", ToString[CompressWithContext[Hold[o] ], InputForm], "*)(*]VB*)"}]
                             ] },
 
                                 

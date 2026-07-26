@@ -52,6 +52,12 @@ Mma.Util.UnescapeMmaUnicode = function (str) {
     });
 }
 
+Mma.Util.StripDefaultSymbolContext = function (name) {
+    if (name.startsWith("System`") || name.startsWith("Global`"))
+        return name.slice(7);
+    return name;
+}
+
 // Delete a character at a specific position from a string.
 Mma.Util.DeleteCharAt = function (string, pos) {
     return string.substr(0, pos) + string.substr(pos + 1);
@@ -291,7 +297,9 @@ Mma.Decode.Any = function (bits, offset, maxParts) {
         // Symbols are also just strings.
         case SYMBOL:
             var se = Mma.Decode.StringEntry(bits, offset);
-            parts.push(new Mma.Symbol(Mma.Util.UnescapeMmaUnicode(se.string)));
+            var symbolName = Mma.Util.UnescapeMmaUnicode(se.string);
+            parts.push(new Mma.Symbol(
+                Mma.Util.StripDefaultSymbolContext(symbolName)));
             offset += se.bytesRead;
             state = READY;
             break;
@@ -439,4 +447,3 @@ Mma.toArray = function (obj) {
     }
     return text;
 }
-

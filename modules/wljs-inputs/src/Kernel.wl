@@ -796,7 +796,7 @@ DatasetWrapperBox[ l: List[__List], StandardForm] := With[{
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
-			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm], "])(*,*)(*", ToString[Compress[Hold[o] ], InputForm], "*)(*]VB*)"}]},
+			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm], "])(*,*)(*", ToString[CompressWithContext[Hold[o] ], InputForm], "*)(*]VB*)"}]},
 				AppendTo[garbage, Hold[store ] ];
 				store = parts;
 				view
@@ -872,7 +872,7 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm], "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
-			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm],"])(*,*)(*", ToString[Compress[Hold[o] ], InputForm], "*)(*]VB*)"}]},
+			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm],"])(*,*)(*", ToString[CompressWithContext[Hold[o] ], InputForm], "*)(*]VB*)"}]},
 				AppendTo[garbage, Hold[store ] ];
 				store = parts;
 				view
@@ -1068,7 +1068,7 @@ DatasetWrapperBox[ l : List[__Association] ,  StandardForm] := With[{
 		With[{
 				o = CreateFrontEndObject[ProvidedOptions[parts // First // Dataset, "RequestEvent" -> event, "RequestCallback" -> ToString[req, InputForm],  "Total"->Length[l], "Parts"->Length[parts], "HashFunction"->"V2" ] ]
 			},
-			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm],"])(*,*)(*", ToString[Compress[Hold[o] ], InputForm], "*)(*]VB*)"}]},
+			With[{view = RowBox[{"(*VB[*)(Dataset[Join@@", ToString[store, InputForm],"])(*,*)(*", ToString[CompressWithContext[Hold[o] ], InputForm], "*)(*]VB*)"}]},
 				AppendTo[garbage, Hold[store ] ];
 				store = parts;
 				view
