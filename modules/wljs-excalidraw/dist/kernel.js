@@ -182,10 +182,10 @@ const ExcalidrawWindow = (scene, cchange, files) => () => {
 const matcher = new codemirror.MatchDecorator({
   regexp: /!!\[[^\]^\[]*\]/g,
   maxLength: Infinity,
-  decoration: (match, view, pos) => {
+  decoration: (match, view) => {
    
     return codemirror.Decoration.replace({
-      widget: new ExcalidrawWidget(match[0], view, pos)
+      widget: new ExcalidrawWidget(match[0], view)
     })
   }
 });
@@ -212,11 +212,10 @@ window.SupportedLanguages.filter((el) => (el.name == codemirror.markdownLanguage
 });
 
 class ExcalidrawWidget extends codemirror.WidgetType {
-  constructor(match, view, pos) {
+  constructor(match, view) {
     //console.log('created');
     super();
     this.match = match;
-    this.pos   = pos;
     this.view = view;
   }
 
@@ -229,12 +228,30 @@ class ExcalidrawWidget extends codemirror.WidgetType {
     return true;
   }
 
-  updateContent(data) {
-    const self = this;
-    
-    const newData = '[1:'+base64.encodeString(data)+']';
-    const changes = {from: self.pos + 2, to: self.pos + self.match.length, insert: newData};
-    this.view.dispatch({changes: changes});
+  updateContent(data, dom) {
+    if (!dom || dom.ExcalidrawWidget !== this) return false;
+
+    let from;
+    try {
+      // MatchDecorator may move this widget without recreating it.
+      from = this.view.posAtDOM(dom);
+    } catch (error) {
+      console.warn('Excalidraw widget is no longer attached to the editor', error);
+      return false;
+    }
+
+    const to = from + this.match.length;
+    const current = this.view.state.doc.sliceString(from, to);
+    if (current !== this.match) {
+      console.error('Refusing to overwrite a stale Excalidraw range');
+      return false;
+    }
+
+    const newData = '!![1:'+base64.encodeString(data)+']';
+    if (newData === current) return true;
+
+    this.view.dispatch({changes: {from, to, insert: newData}});
+    return true;
   }
 
   toDOM(view) {
@@ -297,9 +314,10 @@ class ExcalidrawWidget extends codemirror.WidgetType {
         if (!dom.ExcalidrawWidget) return;
         const string = JSON.stringify(elements);
         if (string != previous) {
-          previous = string;
-          console.log('save');
-          dom.ExcalidrawWidget.updateContent(string);
+          if (dom.ExcalidrawWidget.updateContent(string, dom)) {
+            previous = string;
+            console.log('save');
+          }
         }
       };
     
@@ -374,10 +392,9 @@ class ExcalidrawWidget extends codemirror.WidgetType {
 
   destroy(dom) {
     console.log('Excalidraw widget was destroyed');
+    dom.ExcalidrawWidget = undefined;
     if (!dom.reactRoot) return;
     dom.reactRoot.unmount();
-    
-    dom.ExcalidrawWidget = undefined;
   }
 }  
 
