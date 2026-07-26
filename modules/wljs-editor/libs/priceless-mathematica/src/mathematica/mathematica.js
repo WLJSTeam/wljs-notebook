@@ -340,22 +340,46 @@ wolframLanguage.of = (vocabulary, trackedQ=true) => {
 }
 
 let refreshTimeout = null;
+let refreshGeneration = 0;
 
-const reparse = () => {
+const delay = (ms) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+const reparse = async (generation) => {
     console.warn('refresh syntax highlighting');
-    trackedEditors.values().forEach((view) => reparseKeepingFragments(view));
-    refreshTimeout = null;
+
+    const editors = [...trackedEditors.values()];
+
+    for (let i = 0; i < editors.length; i++) {
+        // Stop if a newer refresh was requested.
+        if (generation !== refreshGeneration) {
+            return;
+        }
+
+        reparseKeepingFragments(editors[i]);
+
+        // Avoid waiting unnecessarily after the last editor.
+        if (i < editors.length - 1) {
+            await delay(250);
+        }
+    }
 };
 
 wolframLanguage.refresh = () => {
-  
-  
-  if (refreshTimeout) {
-    clearTimeout(refreshTimeout);
-  }
-  
-  refreshTimeout = setTimeout(reparse, 1000);
-}
+    const generation = ++refreshGeneration;
+
+    if (refreshTimeout !== null) {
+        clearTimeout(refreshTimeout);
+    }
+
+    refreshTimeout = setTimeout(() => {
+        refreshTimeout = null;
+
+        reparse(generation).catch((error) => {
+            console.error('Failed to refresh syntax highlighting', error);
+        });
+    }, 1000);
+};
 
 wolframLanguage.reBuild = (vocabulary) => {
   builtins = vocabulary.map((e) => e.label);
