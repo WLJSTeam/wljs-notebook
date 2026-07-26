@@ -1,7 +1,7 @@
 Component[OptionsPattern[]] := With[{Class = OptionValue["Class"], Event = OptionValue["Event"], Label = OptionValue["Label"], Descr = OptionValue["Description"]},
  {
     <div class="flex items-center sm-controls {Class}">
-        <label id="label-#instanceId" for="#instanceId" class="relative transition-all text-sm cursor-default pl-3 pr-2 text-left text-gray-500 bg-gray-50 wljs-card" style="background:white">
+        <label id="label-#instanceId" for="#instanceId" class="relative transition-all text-sm cursor-default pl-3 pr-2 text-left text-gray-500  wljs-card wljs-button">
             <div id="bar-#instanceId" class="absolute top-0 left-0 w-0 h-full z-0 rounded-md transition-all" style="width:0%"></div>
             <div class="flex flex-col items-center justify-center py-2">
                 <p class="text-sm text-gray-500 pr-1 flex gap-x-1 items-center z-50">

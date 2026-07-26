@@ -21,7 +21,23 @@ SystemDialogInputAsync;
 InputStringAsync;
 InputAsync;
 
+FrontFileDownload::usage = "FrontFileDownload[filename] creates a downloadable file for the frontend.\nFrontFileDownload[byteArray, filename] creates a downloadable file for the frontend from raw bytes.\nUse as FrontSubmit[FrontFileDownload[...]] to invoke a save dialog"
+
 Begin["`Internal`"]
+
+frontDownload;
+FrontFileDownload[array_ByteArray, name_String:"generic"] := frontDownload[array, name]
+
+FrontFileDownload[File[file_] | file_String] := With[{b = ReadByteArray[file]},
+    If[!ByteArrayQ[b],
+        $Failed
+    ,
+        frontDownload[b, FileNameTake[file]]
+    ]
+]
+
+FrontFileDownload::fmt = "Input must be a ByteArray or a file"
+FrontFileDownload[_,_] := (Message[FrontFileDownload::fmt]; $Failed);
 
 Options[ExportAsync] = Options[Export];
 
