@@ -50,6 +50,13 @@ PageBreakBelow /: MakeBoxes[PageBreakBelow, WLXForm] := "<div class=\"print:brea
 
 CoffeeLiqueur`WLX`Private`IdentityTransform[x_] := ToBoxes[x , WLXForm]
 
+(* supply context in WLX for symbols too *)
+(* this allows easier frontend symbol generation in isolated contexts *)
+(* then the context won't be stripped upon transformation *)
+(* it is not done globally for the whole WLX transformer (master kernel) to avoid conflicts with legacy frontend code *)
+(* [TODO]: Move me to Packages/WLX *)
+WLXForm /: MakeBoxes[s_Symbol, WLXForm] := If[Context[s] == "Global`" || Context[s] == "System`", SymbolName[s], Context[s]<>SymbolName[s]]
+
 End[]
 
 EndPackage[]
