@@ -5488,7 +5488,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     if (env.local.polygons) {
       throw 'update method for many polygons in not supported'
-    }    
+    }
+    points.push(points[0]);
   
     env.xAxis;
     env.yAxis;
