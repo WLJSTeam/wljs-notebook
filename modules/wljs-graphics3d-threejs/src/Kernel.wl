@@ -25,6 +25,8 @@ ClearAll[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShadin
 
 ToonShading[] = MeshMaterial[MeshToonMaterial[]];
 ToonShading[color_] := Directive[color, MeshMaterial[MeshToonMaterial[]]];
+PhongShading[] = MeshMaterial[MeshPhongMaterial[]];
+PhongShading[color_] := Directive[color, MeshMaterial[MeshPhongMaterial[]]];
 
 LinearFog::usage = "LinearFog[], LinearFog[col_], LinearFog[col_, {near_, far_}] adds a linear fog to a 3D scene"
 

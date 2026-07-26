@@ -10535,19 +10535,7 @@ value \[TildeEqual]137.5\[Degree]."|>, <|"label" -> "GoldenRatio",
 Gompertz distribution with scale parameter \[Lambda] and frailty parameter \
 \[Xi].\n\nGompertzMakehamDistribution[\[Lambda],\[Xi],\[Theta],\[Alpha]] \
 represents a Gompertz-Makeham distribution with parameters \[Lambda], \
-\[Xi], \[Theta], and \[Alpha]."|>, <|"label" -> "GoochShading", 
-  "type" -> "keyword", "info" -> "GoochShading[] is a three-dimensional \
-graphics directive specifying that surfaces that follow are to be drawn with \
-a warm color facing toward the light and a cool color facing \
-away.\n\nGoochShading[<i>col</i>] uses cool and warm colors obtained by \
-blending <i>col</i> with slate Blue and \
-Orange.\n\nGoochShading[{<i>ccol</i>,<i>wcol</i>}] uses the cool color \
-<i>ccol</i> and the warm color \
-<i>wcol</i>.\n\nGoochShading[{<i>w</i><sub>1</sub>,<i>w</i><sub>2</sub>}\
--&gt;{<i>ccol</i>,<i>wcol</i>}] uses the colors <i>ccol</i> and <i>wcol</i> \
-weighted by the \
-<i>w</i><sub><i>i</i></sub>.\n\nGoochShading[\"<i>scheme</i>\"] uses the \
-specified gradient color scheme in ColorData."|>, 
+\[Xi], \[Theta], and \[Alpha]."|>, 
  <|"label" -> "GoodmanKruskalGammaTest", "type" -> "keyword", 
   "info" -> "GoodmanKruskalGammaTest[<i>v</i><sub>1</sub>,<i>v</i><sub>2</sub\
 >] tests whether the vectors <i>v</i><sub>1</sub> and <i>v</i><sub>2</sub> \
@@ -11084,16 +11072,7 @@ direction <i>w</i>. "|>, <|"label" -> "HalfSpace", "type" -> "keyword",
   "info" -> "HalfSpace[<i>n</i>,<i>p</i>] represents the half-space of points \
 x such that n.(x-p)\[LessEqual]0.\n\nHalfSpace[<i>n</i>,<i>c</i>] represents \
 the half-space of points x such that n.x\[LessEqual]c. "|>, 
- <|"label" -> "HalftoneShading", "type" -> "keyword", 
-  "info" -> "HalftoneShading[] is a three-dimensional graphics directive \
-specifying that surfaces that follow are to be drawn with a base pattern of \
-dots.\n\nHalftoneShading[<i>d</i>] uses the density <i>d</i> of \
-shading.\n\nHalftoneShading[<i>col</i>] uses dots with the specified color \
-<i>col</i>.\n\nHalftoneShading[\"<i>shape</i>\"] uses the specified \
-\"<i>shape</i>\" as base pattern. \
-\n\nHalftoneShading[<i>d</i>,<i>col</i>,\"<i>shape</i>\"] uses a fixed \
-pattern of \"<i>shape</i>\" with the specified color <i>col</i> and density \
-<i>d</i>."|>, <|"label" -> "HamiltonianGraphQ", "type" -> "keyword", 
+ <|"label" -> "HamiltonianGraphQ", "type" -> "keyword", 
   "info" -> "HamiltonianGraphQ[<i>g</i>] yields True if the graph <i>g</i> is \
 Hamiltonian, and False otherwise."|>, <|"label" -> "HammingDistance", 
   "type" -> "keyword", "info" -> "HammingDistance[<i>u</i>,<i>v</i>] gives \
@@ -11152,22 +11131,7 @@ an integer hash code for the expression \
 <i>expr</i>.\n\nHash[<i>expr</i>,<i>type</i>] gives an integer hash digest of \
 the specified type for \
 <i>expr</i>.\n\nHash[<i>expr</i>,<i>type</i>,\"<i>format</i>\"] gives a hash \
-code in the specified format."|>, <|"label" -> "HatchFilling", 
-  "type" -> "keyword", "info" -> "HatchFilling[] is a two-dimensional \
-graphics directive that specifies that faces of polygons and other filled \
-graphics objects are to be drawn using closely spaced parallel lines. \
-\n\nHatchFilling[\"<i>name</i>\"] uses the specified line hatching \
-\"<i>name</i>\".\n\nHatchFilling[\[Theta]] draws parallel lines with an angle \
-\[Theta].\n\nHatchFilling[\[Theta],<i>r</i>] draws parallel lines with \
-absolute thickness <i>r</i>. \n\nHatchFilling[\[Theta],<i>r</i>,<i>d</i>] \
-draws parallel lines with gaps of absolute thickness <i>d</i>. "|>, 
- <|"label" -> "HatchShading", "type" -> "keyword", 
-  "info" -> "HatchShading[] is a three-dimensional graphics directive \
-specifying that objects that follow are to be drawn with closely spaced \
-parallel lines.\n\nHatchShading[<i>d</i>] uses the density <i>d</i> of \
-shading.\n\nHatchShading[<i>col</i>] uses lines with the specified color \
-<i>col</i>. \n\nHatchShading[<i>d</i>,<i>col</i>] uses lines with the \
-specified color <i>col</i> and density <i>d</i>."|>, 
+code in the specified format."|>, 
  <|"label" -> "Haversine", "type" -> "keyword", 
   "info" -> "Haversine[<i>z</i>] gives the haversine function hav(z)."|>, 
  <|"label" -> "HazardFunction", "type" -> "keyword", 
@@ -15400,16 +15364,7 @@ local names of the form <i>x</i>$<i>nnn</i>. "|>,
 >form</i>] returns True if <i>expr</i> matches the pattern <i>form</i>, and \
 returns False otherwise.\n\nMatchQ[<i>form</i>] represents an operator form \
 of MatchQ that can be applied to an expression."|>, 
- <|"label" -> "MaterialShading", "type" -> "keyword", 
-  "info" -> "MaterialShading[\"<i>material</i>\"] is a three-dimensional \
-graphics directive specifying that surfaces that follow are to be drawn with \
-the material \"<i>material</i>\" \
-appearance.\n\nMaterialShading[{\"<i>material</i>\",<i>col</i>}] uses the \
-specified color <i>col</i> as the base \
-color.\n\nMaterialShading[&lt;|<i>parm</i><sub>1</sub>-&gt;<i>\
-val</i><sub>1</sub>,<i>parm</i><sub>2</sub>-&gt;<i>val</i><sub>2</sub>,\
-...|&gt;] uses the specified parameters <i>parms</i>."|>\
-, <|"label" -> "MathematicalFunctionData", "type" -> "keyword", 
+  <|"label" -> "MathematicalFunctionData", "type" -> "keyword", 
   "info" -> "MathematicalFunctionData[<i>entity</i>,<i>property</i>] gives \
 data corresponding to <i>property</i> for the mathematical function specified \
 by \
@@ -23717,13 +23672,6 @@ molecule."|>, <|"label" -> "StieltjesGamma", "type" -> "keyword",
   "info" -> "StieltjesGamma[<i>n</i>] gives the Stieltjes constant \
 \[Gamma]<sub>n</sub>. \n\nStieltjesGamma[<i>n</i>,<i>a</i>] gives the \
 generalized Stieltjes constant \[Gamma]<sub>n</sub>(a)."|>, 
- <|"label" -> "StippleShading", "type" -> "keyword", 
-  "info" -> "StippleShading[] is a three-dimensional graphics directive \
-specifying that objects that follow are to be drawn using small \
-dots.\n\nStippleShading[<i>d</i>] uses the density <i>d</i> of \
-shading.\n\nStippleShading[<i>col</i>] uses dots with the specified color \
-<i>col</i>.\n\nStippleShading[<i>d</i>,<i>col</i>] uses dots of color \
-<i>col</i> with the density <i>d</i> of shading."|>, 
  <|"label" -> "StirlingS1", "type" -> "keyword", 
   "info" -> "StirlingS1[<i>n</i>,<i>m</i>] gives the Stirling number of the \
 first kind S<sub>n</sub><sup>(m)</sup>. "|>, <|"label" -> "StirlingS2", 
@@ -24441,12 +24389,7 @@ the specified <i>property</i> for the surface \
 /sub>,...},<i>property</i>] gives a list of property values for the \
 specified surface entities.\n\nSurfaceData[<i>entity</i>, <i>property</i>, \
 <i>annotation</i>] gives the specified <i>annotation</i> associated with the \
-given <i>property</i>."|>, <|"label" -> "SurfaceGraphics", 
-  "type" -> "keyword", "info" -> "SurfaceGraphics[<i>array</i>] is a \
-representation of a three-dimensional plot of a surface, with heights of each \
-point on a grid specified by values in <i>array</i>. \
-\n\nSurfaceGraphics[<i>array</i>,<i>shades</i>] represents a surface, whose \
-parts are shaded according to the array <i>shades</i>. "|>, 
+given <i>property</i>."|>, 
  <|"label" -> "SurvivalDistribution", "type" -> "keyword", 
   "info" -> "SurvivalDistribution[{<i>e</i><sub>1</sub>,<i>e</i><sub>2</sub>,\
 ...}] represents a survival distribution with event times \
@@ -28271,13 +28214,7 @@ ub>1</sub>,<i>g</i><sub>2</sub>] gives the graph sum of the graphs \
 <i>g</i><sub>1</sub> and <i>g</i><sub>2</sub>."|>, 
  <|"label" -> "GraphTriangleCount", "type" -> "keyword", 
   "info" -> "GraphTriangleCount[<i>g</i>] gives the number of triangles in \
-the graph <i>g</i>."|>, <|"label" -> "Haloing", "type" -> "keyword", 
-  "info" -> "Haloing[] is a two\[Hyphen]dimensional directive specifying that \
-graphics objects are to be drawn with a halo.\n\nHaloing[<i>col</i>] uses the \
-specified color <i>col</i> for the halo.\n\nHaloing[<i>col</i>,<i>w</i>] uses \
-the specified width <i>w</i> for the \
-halo.\n\nHaloing[<i>col</i>,<i>w</i>,<i>r</i>] applies a blur effect with \
-radius <i>r</i> to the halo."|>, <|"label" -> "HermitianMatrix", 
+the graph <i>g</i>."|>,  <|"label" -> "HermitianMatrix", 
   "type" -> "keyword", "info" -> "HermitianMatrix[<i>hmat</i>] converts the \
 Hermitian matrix <i>hmat</i> to a structured array."|>, 
  <|"label" -> "InertEvaluate", "type" -> "keyword", 
