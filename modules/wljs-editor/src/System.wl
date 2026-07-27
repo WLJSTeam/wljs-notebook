@@ -39,6 +39,14 @@ FrontFileDownload[File[file_] | file_String] := With[{b = ReadByteArray[file]},
 FrontFileDownload::fmt = "Input must be a ByteArray or a file"
 FrontFileDownload[_,_] := (Message[FrontFileDownload::fmt]; $Failed);
 
+frontDownload /: MakeBoxes[f_frontDownload, form: StandardForm | WLXForm] := With[{ref = CreateFrontEndObject[f]},
+    If[form === WLXForm,
+        MakeBoxes[ref, form]
+    ,
+        ViewBox[MakeBoxes[ref, form], ref]
+    ]
+]
+
 Options[ExportAsync] = Options[Export];
 
 ExportAsync[file_, content_, maybe___, opts:OptionsPattern[] ] := With[{p = Promise[]},
