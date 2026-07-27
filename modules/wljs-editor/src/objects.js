@@ -371,3 +371,34 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Get = async (arg
     return ['$Failed'];
   }
 }
+
+core['CoffeeLiqueur`Extensions`System`Internal`frontDownload'] = async (args, env) => {
+  let filename = 'generic';
+  const arrayBuffer = await interpretate(args[0], env);
+  if (args.length > 1) filename = await interpretate(args[1], env);
+  
+  const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+
+  // Create a temporary object URL pointing to the blob
+  function download() {
+    const url = URL.createObjectURL(blob);
+    // Create an invisible link and trigger a click to start the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);    
+  }
+  if (env.element) {
+    const button = document.createElement('button');
+    button.className = 'sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900';
+    button.innerText = '⤓ '+filename;
+    env.element.appendChild(button);
+    button.addEventListener('click',download);
+    return;
+  }
+  download();
+};

@@ -37,7 +37,7 @@ FrontFileDownload[File[file_] | file_String] := With[{b = ReadByteArray[file]},
 ]
 
 FrontFileDownload::fmt = "Input must be a ByteArray or a file"
-FrontFileDownload[_,_] := (Message[FrontFileDownload::fmt]; $Failed);
+FrontFileDownload[___] := (Message[FrontFileDownload::fmt]; $Failed);
 
 frontDownload /: MakeBoxes[f_frontDownload, form: StandardForm | WLXForm] := With[{ref = CreateFrontEndObject[f]},
     If[form === WLXForm,

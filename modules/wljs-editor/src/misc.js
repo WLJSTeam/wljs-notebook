@@ -93,37 +93,6 @@ core['CoffeeLiqueur`Extensions`Rasterize`Internal`takeScreenshot'] = async (args
   return p.promise;
 }
 
-core['CoffeeLiqueur`Extensions`System`Internal`frontDownload'] = async (args, env) => {
-  let filename = 'generic';
-  const arrayBuffer = await interpretate(args[0], env);
-  if (args.length > 1) filename = await interpretate(args[1], env);
-  
-  const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
-
-  // Create a temporary object URL pointing to the blob
-  function download() {
-    const url = URL.createObjectURL(blob);
-    // Create an invisible link and trigger a click to start the download
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    // Clean up
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);    
-  }
-  if (env.element) {
-    const button = document.createElement('button');
-    button.className = 'sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900';
-    button.innerText = '⤓ '+filename;
-    env.element.appendChild(button);
-    button.addEventListener('click',download);
-    return;
-  }
-  download();
-};
-
 const printingStyles = `%20%40media%20print%20%7B%0A%20%20%20%20html%2C%20body%20%7B%0A%20%20%20%20%20%20%20%20margin%3A%200%20!important%3B%0A%20%20%20%20%20%20%20%20padding%3A%200%20!important%3B%0A%20%20%20%20%20%20%20%20width%3A%20auto%20!important%3B%0A%20%20%20%20%20%20%20%20height%3A%20auto%20!important%3B%0A%20%20%20%20%20%20%20%20display%3A%20block%20!important%3B%0A%20%20%20%20%7D%0A%0Abody%20%3E%20*%3Anot(.print-only)%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20none%20!important%3B%0A%20%20%20%20%7D%0A%0A%0A%20%20%20%20.print-only%20%7B%0A%20%20%20%20%20%20%20%20display%3A%20block%20!important%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20%40page%20%7B%0A%20%20%20%20%20%20%20%20size%3A%20auto%3B%0A%20%20%20%20%20%20%20%20margin%3A%200%3B%0A%20%20%20%20%7D%0A%7D`;
 
 core['CoffeeLiqueur`Extensions`Rasterize`Internal`OverlayView'].Create = async (args, env) => {
