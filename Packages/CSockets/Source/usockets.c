@@ -36,14 +36,22 @@ typedef struct ooc socketObject;
 socketObject* sockets;
 int nsockets = 0;
 
-typedef struct {
+typedef enum {
+    SOCKET_COMMAND_WRITE,
+    SOCKET_COMMAND_CLOSE
+} socket_command_type;
+
+typedef struct write_req_s {
     uv_write_t req;
     uv_buf_t buf;
+    uv_stream_t *stream;
+    uv_handle_t *handle;
+    socket_command_type type;
+    struct write_req_s *next;
 } write_req_t;
 
 void free_write_req(uv_write_t *req) {
     write_req_t *wr = (write_req_t*) req;
-    //Here it fucks up
     free(wr->buf.base);
     free(wr);
 }
@@ -439,19 +447,16 @@ void on_new_connection(uv_stream_t *server, int status) {
     }
 }
 
-uv_async_t cbwrite;
-uv_async_t cbclose;
+uv_async_t cbio;
 
 
-void async_cb_write(uv_async_t* async, int status);
-void async_cb_close(uv_async_t* async, int status);
+void async_cb_io(uv_async_t* async);
 
 static void uvTask(mint asyncObjID, void* vtarg)
 {
     fprintf(stderr, "\nHee uvTask: %lld\n", asyncObjID);
     printf("Event-Loop started! \n");
-    uv_async_init(loop, &cbwrite, (void (*)(struct uv_async_s *))async_cb_write);
-    uv_async_init(loop, &cbclose, (void (*)(struct uv_async_s *))async_cb_close);
+    uv_async_init(loop, &cbio, async_cb_io);
     uv_run(loop, UV_RUN_DEFAULT);
 }
 
@@ -542,133 +547,201 @@ DLLEXPORT int create_server(WolframLibraryData libData, mint Argc, MArgument *Ar
     return LIBRARY_NO_ERROR; 
 }
 
+#define MAX_PENDING_WRITE_REQUESTS ((size_t)65536)
+#define MAX_PENDING_WRITE_BYTES ((size_t)512 * 1024 * 1024)
 
-typedef struct uv_write_q_st {
-    uv_write_t* req; 
-    uv_stream_t* stream; 
-    uv_buf_t* buf;
-} uv_write_q; 
+static write_req_t *command_head = NULL;
+static write_req_t *command_tail = NULL;
+static size_t pending_write_requests = 0;
+static size_t pending_write_bytes = 0;
 
-uv_write_q uv_write_que[128];
-int uv_write_que_ptr = -1;
+static void finish_write_req(write_req_t *req) {
+    uv_mutex_lock(&mutex);
+    if (pending_write_requests > 0) {
+        --pending_write_requests;
+    }
+    if (pending_write_bytes >= req->buf.len) {
+        pending_write_bytes -= req->buf.len;
+    } else {
+        pending_write_bytes = 0;
+    }
+    uv_mutex_unlock(&mutex);
 
-void echo_write(uv_write_t *req, int status) {
-    //printf("echo write\n");
-    if (status) {
-        int uid = fetchByStreamId(req->handle);
-        if (uid < 0) {
-            printf("client hash is broken\r\n");
-            free_write_req(req);
-            return;
-        }
-        printf("writeerror !\n");
-        printf("making %d closed manually!\n", uid);
-        if (uv_is_closing((uv_handle_t*) sockets[uid].stream) == 0) {
-            broadcastState(uid, "Closed", 0);
-            uv_close((uv_handle_t*) sockets[uid].stream, NULL);
-        }
-        sockets[uid].state = -1;
-        //broadcastState(uid);
-        uStateSet((uintptr_t)sockets[uid].stream, -1);
-        HashFree((uintptr_t)sockets[uid].stream, 0);     
+    free_write_req(&req->req);
+}
+
+static void mark_stream_failed(uv_stream_t *stream, int status) {
+    int uid = fetchByStreamId(stream);
+    if (uid < 0) {
+        printf("client hash is broken\r\n");
+        return;
     }
 
-    //printf("free write req !\n");
-    free_write_req(req);
+    fprintf(stderr, "write error on socket %d: %s\n", uid, uv_strerror(status));
+    if (uv_is_closing((uv_handle_t*) sockets[uid].stream) == 0) {
+        broadcastState(uid, "Closed", 0);
+        uv_close((uv_handle_t*) sockets[uid].stream, NULL);
+    }
+    sockets[uid].state = -1;
+    uStateSet((uintptr_t)sockets[uid].stream, -1);
+    HashFree((uintptr_t)sockets[uid].stream, 0);
+}
 
-    /*uv_write_que_ptr--;
-    printf("counter set %d\n", uv_write_que_ptr);
+void echo_write(uv_write_t *uv_req, int status) {
+    write_req_t *req = (write_req_t*) uv_req;
 
-    if (uv_write_que_ptr > -1) {
-        printf("checking next... in the que at %d\n", uv_write_que_ptr);
-        uv_write_q *p = &uv_write_que[uv_write_que_ptr];
+    if (status < 0) {
+        mark_stream_failed(req->stream, status);
+    }
 
-        uv_write(p->req, p->stream, p->buf, 1, echo_write);
-        printf("written from the que!\n");
+    finish_write_req(req);
+}
+
+static int enqueue_command(write_req_t *command) {
+    write_req_t *previous_tail;
+    size_t queued_requests;
+    size_t queued_bytes;
+    int result;
+
+    uv_mutex_lock(&mutex);
+
+    if (command->type == SOCKET_COMMAND_WRITE) {
+        if (pending_write_requests >= MAX_PENDING_WRITE_REQUESTS ||
+            command->buf.len > MAX_PENDING_WRITE_BYTES - pending_write_bytes) {
+            queued_requests = pending_write_requests;
+            queued_bytes = pending_write_bytes;
+            uv_mutex_unlock(&mutex);
+            fprintf(
+                stderr,
+                "socket write queue full: %zu requests, %zu bytes pending\n",
+                queued_requests,
+                queued_bytes
+            );
+            return UV_ENOBUFS;
+        }
+
+        ++pending_write_requests;
+        pending_write_bytes += command->buf.len;
+    }
+
+    previous_tail = command_tail;
+    if (command_tail != NULL) {
+        command_tail->next = command;
     } else {
-        printf("no pending write queries, i.e. %d. Done!\n", uv_write_que_ptr);
-    }*/
+        command_head = command;
+    }
+    command_tail = command;
+
+    /*
+     * Keep the queue locked until uv_async_send succeeds. This lets us roll
+     * back this exact append safely if the async handle is already closing.
+     */
+    result = uv_async_send(&cbio);
+    if (result < 0) {
+        if (previous_tail != NULL) {
+            previous_tail->next = NULL;
+            command_tail = previous_tail;
+        } else {
+            command_head = NULL;
+            command_tail = NULL;
+        }
+
+        if (command->type == SOCKET_COMMAND_WRITE) {
+            --pending_write_requests;
+            pending_write_bytes -= command->buf.len;
+        }
+    }
+
+    uv_mutex_unlock(&mutex);
+    return result;
 }
 
-int write_fifo_ptr = -1;
-int close_fifo_ptr = -1;
+static write_req_t *take_pending_commands(void) {
+    write_req_t *commands;
 
-typedef struct {
-    uv_write_t* req;
-    uv_stream_t* stream;
-    uv_buf_t* buf;
-    uv_handle_t* handle;
-} write_fifo_t;
-
-write_fifo_t write_fifo[1024];
-write_fifo_t close_fifo[64];
-
-
-
-void async_cb_write(uv_async_t* async, int status) {
-  uv_mutex_lock(&mutex);
-
-  int count = write_fifo_ptr + 1;    // number of pending writes
-  for (int i = 0; i < count; i++) {
-    uv_write(
-      write_fifo[i].req,
-      write_fifo[i].stream,
-      write_fifo[i].buf,
-      1,
-      echo_write
-    );
-  }
-
-  // clear the queue
-  write_fifo_ptr = -1;
-
-  uv_mutex_unlock(&mutex);
-}
-
-void async_cb_close(uv_async_t* async, int status) {
-  //printf("async_cb_close\n");
     uv_mutex_lock(&mutex);
-    
-  while (close_fifo_ptr >= 0) {
-    //const clientId = fetchByStreamId((uv_handle_t*)close_fifo[close_fifo_ptr].handle);
-    //broadcastState(clientId);
-
-    uv_close((uv_handle_t*)close_fifo[close_fifo_ptr].handle, NULL);
-    close_fifo_ptr--;
-  }
-uv_mutex_unlock(&mutex);
-  //uv_close((uv_handle_t*) async, NULL);
-}
-
-
-
-int uv_write_push(uv_write_t* req, uv_stream_t* stream, uv_buf_t* buf) {
-    uv_mutex_lock(&mutex);
-    ++write_fifo_ptr;
-    write_fifo[write_fifo_ptr].req = req;
-    write_fifo[write_fifo_ptr].stream = stream;
-    write_fifo[write_fifo_ptr].buf = buf;
+    commands = command_head;
+    command_head = NULL;
+    command_tail = NULL;
     uv_mutex_unlock(&mutex);
 
-    uv_async_send(&cbwrite);
-
-    return 0;
+    return commands;
 }
 
-void uv_close_push(uv_handle_t* handle, void* m) {
-    uv_mutex_lock(&mutex);
-    ++close_fifo_ptr;
-    close_fifo[close_fifo_ptr].handle = handle;
-    uv_mutex_unlock(&mutex);
-    uv_async_send(&cbclose);    
+void async_cb_io(uv_async_t* async) {
+    write_req_t *command;
+
+    (void)async;
+
+    /*
+     * New producers may append while libuv processes this detached list.
+     * Looping also handles uv_async_send coalescing without losing a wakeup.
+     */
+    while ((command = take_pending_commands()) != NULL) {
+        while (command != NULL) {
+            write_req_t *next = command->next;
+            command->next = NULL;
+
+            if (command->type == SOCKET_COMMAND_CLOSE) {
+                if (command->handle != NULL &&
+                    uv_is_closing(command->handle) == 0) {
+                    uv_close(command->handle, NULL);
+                }
+                free(command);
+            } else {
+                int result = uv_write(
+                    &command->req,
+                    command->stream,
+                    &command->buf,
+                    1,
+                    echo_write
+                );
+
+                /*
+                 * libuv does not run echo_write after an immediate uv_write
+                 * failure, so release ownership and account for it here.
+                 */
+                if (result < 0) {
+                    mark_stream_failed(command->stream, result);
+                    finish_write_req(command);
+                }
+            }
+
+            command = next;
+        }
+    }
+}
+
+static int uv_write_push(write_req_t *req, uv_stream_t* stream) {
+    req->type = SOCKET_COMMAND_WRITE;
+    req->stream = stream;
+    req->handle = NULL;
+    req->next = NULL;
+    return enqueue_command(req);
+}
+
+static int uv_close_push(uv_handle_t* handle) {
+    write_req_t *command = (write_req_t*) calloc(1, sizeof(write_req_t));
+    int result;
+
+    if (command == NULL) {
+        return UV_ENOMEM;
+    }
+
+    command->type = SOCKET_COMMAND_CLOSE;
+    command->handle = handle;
+    result = enqueue_command(command);
+
+    if (result < 0) {
+        free(command);
+    }
+
+    return result;
 }
 
 
 
 DLLEXPORT int socket_write(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res){
-
-    
-    int iResult; 
     WolframNumericArrayLibrary_Functions numericLibrary = libData->numericarrayLibraryFunctions; 
     int clientId = MArgument_getInteger(Args[0]); 
 
@@ -679,36 +752,60 @@ DLLEXPORT int socket_write(WolframLibraryData libData, mint Argc, MArgument *Arg
     }    
 
     if (uv_is_writable(sockets[clientId].stream) == 0) {
+        int closeResult = 0;
+
         printf("Client %d is not writtable anymore!\n", clientId);
         if (uv_is_closing((uv_handle_t*) sockets[clientId].stream) == 0) {
-            broadcastState(clientId, "Closed",0);
-            uv_close_push((uv_handle_t*) sockets[clientId].stream, NULL);
+            closeResult = uv_close_push((uv_handle_t*) sockets[clientId].stream);
         }
 
-        //broadcastState(clientId);
+        broadcastState(clientId, "Closed",0);
 
         uStateSet((uintptr_t)sockets[clientId].stream, -1);
         HashFree((uintptr_t)sockets[clientId].stream, 0);
  
         sockets[clientId].state = -1;
-        MArgument_setInteger(Res, -1);
+        MArgument_setInteger(Res, closeResult < 0 ? closeResult : UV_EPIPE);
         return LIBRARY_NO_ERROR;
     }
 
           
-    mint bytesLen = MArgument_getInteger(Args[2]); 
-    char *bytes = (char*) malloc(sizeof(char)*bytesLen);
-    //otherwise Mathematica will free the buffer before it will be sent
-    memcpy(bytes, numericLibrary->MNumericArray_getData(MArgument_getMNumericArray(Args[1])), sizeof(char)*bytesLen);
+    mint bytesLen = MArgument_getInteger(Args[2]);
+    if (bytesLen < 0) {
+        MArgument_setInteger(Res, UV_EINVAL);
+        return LIBRARY_NO_ERROR;
+    }
 
-    //printf("*** sending stuff.... to socket %d\n", clientId);
-    write_req_t *req = (write_req_t*) malloc(sizeof(write_req_t));
-    req->buf = uv_buf_init(bytes, bytesLen);
+    write_req_t *req = (write_req_t*) calloc(1, sizeof(write_req_t));
+    if (req == NULL) {
+        MArgument_setInteger(Res, UV_ENOMEM);
+        return LIBRARY_NO_ERROR;
+    }
 
-    int st = uv_write_push((uv_write_t*) req, sockets[clientId].stream, &req->buf);
-    //int st = uv_write((uv_write_t*) req, sockets[clientId].stream, &req->buf, 1, echo_write);
-    //ON ERROR send expection to mathematica
-    //printf("*** done with %d ***\n", st);
+    if (bytesLen > 0) {
+        req->buf.base = (char*) malloc((size_t)bytesLen);
+        if (req->buf.base == NULL) {
+            free(req);
+            MArgument_setInteger(Res, UV_ENOMEM);
+            return LIBRARY_NO_ERROR;
+        }
+
+        /*
+         * Keep a private copy until echo_write runs; Wolfram may release its
+         * ByteArray immediately after this LibraryLink call returns.
+         */
+        memcpy(
+            req->buf.base,
+            numericLibrary->MNumericArray_getData(MArgument_getMNumericArray(Args[1])),
+            (size_t)bytesLen
+        );
+    }
+    req->buf.len = (size_t)bytesLen;
+
+    int st = uv_write_push(req, sockets[clientId].stream);
+    if (st < 0) {
+        free_write_req(&req->req);
+    }
 
     MArgument_setInteger(Res, st); 
     return LIBRARY_NO_ERROR; 
@@ -717,8 +814,6 @@ DLLEXPORT int socket_write(WolframLibraryData libData, mint Argc, MArgument *Arg
 
 
 DLLEXPORT int socket_write_string(WolframLibraryData libData, mint Argc, MArgument *Args, MArgument Res){
-    int iResult; 
-    WolframNumericArrayLibrary_Functions numericLibrary = libData->numericarrayLibraryFunctions; 
     int clientId = MArgument_getInteger(Args[0]); 
 
     if (sockets[clientId].state == -1) {
@@ -728,35 +823,54 @@ DLLEXPORT int socket_write_string(WolframLibraryData libData, mint Argc, MArgume
     }    
 
     if (uv_is_writable(sockets[clientId].stream) == 0) {
+        int closeResult = 0;
+
         printf("Client %d is not writtable anymore!\n", clientId);
         if (uv_is_closing((uv_handle_t*) sockets[clientId].stream) == 0) {
-            broadcastState(clientId, "Closed",0);
-            uv_close_push((uv_handle_t*) sockets[clientId].stream, NULL);
+            closeResult = uv_close_push((uv_handle_t*) sockets[clientId].stream);
         }
-        
+
+        broadcastState(clientId, "Closed",0);
         uStateSet((uintptr_t)sockets[clientId].stream, -1);
         HashFree((uintptr_t)sockets[clientId].stream, 0);
 
-        //broadcastState(clientId);
-
         sockets[clientId].state = -1;
-        MArgument_setInteger(Res, -1);
+        MArgument_setInteger(Res, closeResult < 0 ? closeResult : UV_EPIPE);
         return LIBRARY_NO_ERROR;
     }
 
-    mint bytesLen = MArgument_getInteger(Args[2]); 
-    char *bytes = (char*) malloc(sizeof(char)*bytesLen);
-    //otherwise Mathematica will free the buffer before it will be sent
-    memcpy(bytes, MArgument_getUTF8String(Args[1]), sizeof(char)*bytesLen);
+    mint bytesLen = MArgument_getInteger(Args[2]);
+    if (bytesLen < 0) {
+        MArgument_setInteger(Res, UV_EINVAL);
+        return LIBRARY_NO_ERROR;
+    }
 
-    //printf("*** sending stuff.... to socket %d\n", clientId);
-    write_req_t *req = (write_req_t*) malloc(sizeof(write_req_t));
-    req->buf = uv_buf_init(bytes, bytesLen);
+    write_req_t *req = (write_req_t*) calloc(1, sizeof(write_req_t));
+    if (req == NULL) {
+        MArgument_setInteger(Res, UV_ENOMEM);
+        return LIBRARY_NO_ERROR;
+    }
 
-    //int st = uv_write((uv_write_t*) req, sockets[clientId].stream, &req->buf, 1, echo_write);
-    int st = uv_write_push((uv_write_t*) req, sockets[clientId].stream, &req->buf);
-    //ON ERROR send expection to mathematica
-    //printf("*** done with %d ***\n", st);
+    if (bytesLen > 0) {
+        req->buf.base = (char*) malloc((size_t)bytesLen);
+        if (req->buf.base == NULL) {
+            free(req);
+            MArgument_setInteger(Res, UV_ENOMEM);
+            return LIBRARY_NO_ERROR;
+        }
+
+        /*
+         * Keep a private copy until echo_write runs; Wolfram may release its
+         * UTF-8 string immediately after this LibraryLink call returns.
+         */
+        memcpy(req->buf.base, MArgument_getUTF8String(Args[1]), (size_t)bytesLen);
+    }
+    req->buf.len = (size_t)bytesLen;
+
+    int st = uv_write_push(req, sockets[clientId].stream);
+    if (st < 0) {
+        free_write_req(&req->req);
+    }
 
     MArgument_setInteger(Res, st); 
     return LIBRARY_NO_ERROR; 
@@ -767,9 +881,13 @@ DLLEXPORT int close_socket(WolframLibraryData libData, mint Argc, MArgument *Arg
 
     printf("Client %d was closed by Wolfram!\n", clientId);
     if (uv_is_closing((uv_handle_t*) sockets[clientId].stream) == 0) {
-        broadcastState(clientId, "Closed",0);
-        uv_close_push((uv_handle_t*) sockets[clientId].stream, NULL);
+        int closeResult = uv_close_push((uv_handle_t*) sockets[clientId].stream);
+        if (closeResult < 0) {
+            MArgument_setInteger(Res, closeResult);
+            return LIBRARY_NO_ERROR;
+        }
     }
+    broadcastState(clientId, "Closed",0);
     sockets[clientId].state = -1;  
 
     uStateSet((uintptr_t)sockets[clientId].stream, -1);
@@ -843,4 +961,3 @@ DLLEXPORT int socket_connect(WolframLibraryData libData, mint Argc, MArgument *A
 }*/
 
     
-

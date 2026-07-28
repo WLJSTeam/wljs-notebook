@@ -167,6 +167,8 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
 
                             {monitorHandler, monitor} = syncMonitorConstructor[uids, opts];
 
+                            WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", True], opts["Client"]];
+
                             With[{requests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetById", i, "MonitorEvent"->monitor] , opts["Client"] , "Format"->"ExpressionJSON"], {i, uids}]},
                                 Echo["Number of requests to resolve: "<>ToString[Length[requests] ] ];
                                 If[Length[requests] == 0,
@@ -180,6 +182,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                                     notebook["Objects"] = <||>;
                                     notebook["Symbols"] = <||>;
                                     EventFire[promise, Resolve, True];
+                                    WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
                                 , 
 
                                     Echo["Promises: "<>ToString[requests ] ];
@@ -211,6 +214,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                                                             If[Length[symRequests] == 0,
                                                                 notebook["Symbols"] = <||>;
                                                                 EventFire[promise, Resolve, True];
+                                                                WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
                                                                 ClearAll[promises];
                                                             , 
                                                                 Then[symRequests,
@@ -227,6 +231,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
 
                                                                         Echo["FrontendObject`Sync`Symbols >> ok "];
                                                                         EventFire[promise, Resolve, True];
+                                                                        WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
                                                                         ClearAll[promises];
                                                                     ]
                                                                 ]
@@ -238,6 +243,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                                         ],
                                         Function[rejected,
                                             Echo["REJECTED: "<>ToString[rejected ] ];
+                                            Echo["FIXME!"];
                                         ]
                                     ]
                                 ]

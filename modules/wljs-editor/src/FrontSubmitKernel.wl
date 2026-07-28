@@ -140,7 +140,9 @@ FrontFetchAsync[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["
         ]
     ] ];
 
-    WLJSTransportSend[System`FSAsk[expr, event], cli];
+    If[FailureQ[WLJSTransportSend[System`FSAsk[expr, event], cli]],
+        EventFire[promise, Reject, $Failed]
+    ];
 
     promise
 ]

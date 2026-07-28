@@ -255,6 +255,7 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetById = async 
     server.emitt(opts['MonitorEvent'], '"'+uid+'"');
   }
 
+  if (!ObjectHashMap[uid]) return false; //if got cleaned up
   const message = ObjectHashMap[uid].cache;
   
   console.log(message);//WL can't import empty arrays
@@ -332,6 +333,7 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetSymbolByName 
     server.emitt(opts['MonitorEvent'], '"'+name+'"');
   }
 
+  //omg. this looks so sketchy
   const s = core[name].data;
   if (Array.isArray(s)) {
     if (s[0] == 'JSObject') {
@@ -369,6 +371,16 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Get = async (arg
   } else {
     console.error('UIObjects get could not find an object');
     return ['$Failed'];
+  }
+}
+
+let watchdog = false;
+core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].WatchDog = async (args, env) => {
+  const state = await interpretate(args[0], env);
+  if (state && watchdog === false) watchdog = setTimeout(() => window.location.reload(), 45000);
+  if (!state && watchdog !== false) {
+    clearTimeout(watchdog);
+    watchdog = false;
   }
 }
 

@@ -245,7 +245,9 @@ WebUIFetch[expr_, client_:Global`$Client(*`*), OptionsPattern[]] := With[{format
         ]
     ]];
 
-    WebUISubmit[UIAsk[expr, event], client];
+    If[FailureQ[WebUISubmit[UIAsk[expr, event], client]],
+        EventFire[promise, Reject, $Failed];
+    ];
 
     promise
 ]
