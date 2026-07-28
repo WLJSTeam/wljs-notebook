@@ -64,9 +64,7 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 :::note
-If you evaluate the presentation in a new window (i.e. *project feature* or <kbd>⌘/Ctrl+Shift+Enter</kbd>), some styles may not be applied, since they are defined on the current page of the notebook in `.html` cell.
-
-Copy styles from one of the cells below to any slide of your presentation if you need this projection feature to work.
+You can evaluate slides in a new window using <kbd>⌘/Ctrl+Shift+Enter</kbd> on the input cell
 :::
 
 %-------------------------------------------------------------------------%
@@ -74,9 +72,7 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 :::note
-If you evaluate the presentation in a new window (i.e. *project feature* or <kbd >⌘/Ctrl+Shift+Enter</kbd>), some styles may not be applied, since they are defined on the current page of the notebook in `.html` cell.
-
-Copy styles from one of the cells below to any slide of your presentation if you need this projection feature to work.
+You can evaluate slides in a new window using <kbd >⌘/Ctrl+Shift+Enter</kbd> on the input cell
 :::
 
 %-------------------------------------------------------------------------%
