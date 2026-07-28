@@ -2915,8 +2915,65 @@ g3dComplex.Polygon = async (args, env) => {
           }
           break;
 
-          default:
-            throw 'cannot build such complex polygon'
+          default: {
+            const polygonLength = a.dims[a.dims.length-1];
+            const oldBuffer = a.buffer;
+            const fallbackVertices = env.vertices.position.array;
+            const triangulatedIndexes = [];
+
+            if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
+
+            for (let offset=0; offset<oldBuffer.length; offset+=polygonLength) {
+              let nx = 0;
+              let ny = 0;
+              let nz = 0;
+
+              for (let i=0; i<polygonLength; ++i) {
+                const current = (oldBuffer[offset+i]-1)*3;
+                const next = (oldBuffer[offset+(i+1)%polygonLength]-1)*3;
+                const x1 = fallbackVertices[current];
+                const y1 = fallbackVertices[current+1];
+                const z1 = fallbackVertices[current+2];
+                const x2 = fallbackVertices[next];
+                const y2 = fallbackVertices[next+1];
+                const z2 = fallbackVertices[next+2];
+
+                nx += (y1-y2)*(z1+z2);
+                ny += (z1-z2)*(x1+x2);
+                nz += (x1-x2)*(y1+y2);
+              }
+
+              const ax = Math.abs(nx);
+              const ay = Math.abs(ny);
+              const az = Math.abs(nz);
+              const projection = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+              const explicitVertices = new Array(polygonLength*2);
+
+              for (let i=0; i<polygonLength; ++i) {
+                const index = (oldBuffer[offset+i]-1)*3;
+                const target = i*2;
+
+                if (projection === 0) {
+                  explicitVertices[target] = fallbackVertices[index+1];
+                  explicitVertices[target+1] = fallbackVertices[index+2];
+                } else if (projection === 1) {
+                  explicitVertices[target] = fallbackVertices[index];
+                  explicitVertices[target+1] = fallbackVertices[index+2];
+                } else {
+                  explicitVertices[target] = fallbackVertices[index];
+                  explicitVertices[target+1] = fallbackVertices[index+1];
+                }
+              }
+
+              const triangles = earcut(explicitVertices, null, 2);
+              for (let i=0; i<triangles.length; ++i) {
+                triangulatedIndexes.push(oldBuffer[offset+triangles[i]]-1);
+              }
+            }
+
+            indexes = new THREE.BufferAttribute( new IndexArray(triangulatedIndexes), 1 );
+          }
+          break;
         }
       }
       break;
@@ -3007,31 +3064,52 @@ g3dComplex.Polygon = async (args, env) => {
           extendedIndexes.push(b[5], b[2], b[4]);
           extendedIndexes.push(b[2], b[3], b[4]);
           break;
-        default:
-
-
+        default: {
           const fallbackVertices = env.vertices.position.array;
+          let nx = 0;
+          let ny = 0;
+          let nz = 0;
 
+          for (let k=0; k<b.length; ++k) {
+            const current = (b[k]-1)*3;
+            const next = (b[(k+1)%b.length]-1)*3;
+            const x1 = fallbackVertices[current];
+            const y1 = fallbackVertices[current+1];
+            const z1 = fallbackVertices[current+2];
+            const x2 = fallbackVertices[next];
+            const y2 = fallbackVertices[next+1];
+            const z2 = fallbackVertices[next+2];
 
+            nx += (y1-y2)*(z1+z2);
+            ny += (z1-z2)*(x1+x2);
+            nz += (x1-x2)*(y1+y2);
+          }
 
-         
-          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
-
-
-          const explicitVertices = [];
+          const ax = Math.abs(nx);
+          const ay = Math.abs(ny);
+          const az = Math.abs(nz);
+          const projection = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+          const explicitVertices = new Array(b.length*2);
 
           for (let k=0; k<b.length; ++k) {
             const index = (b[k]-1)*3;
-            explicitVertices.push(fallbackVertices[index], fallbackVertices[index+1], fallbackVertices[index+2]);
+            const target = k*2;
+
+            if (projection === 0) {
+              explicitVertices[target] = fallbackVertices[index+1];
+              explicitVertices[target+1] = fallbackVertices[index+2];
+            } else if (projection === 1) {
+              explicitVertices[target] = fallbackVertices[index];
+              explicitVertices[target+1] = fallbackVertices[index+2];
+            } else {
+              explicitVertices[target] = fallbackVertices[index];
+              explicitVertices[target+1] = fallbackVertices[index+1];
+            }
           }
 
-          
-
-  
-
-          extendedIndexes.push(earcut(explicitVertices, null, 3).map((index) => b[index]));
-
-        
+          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
+          extendedIndexes.push(earcut(explicitVertices, null, 2).map((index) => b[index]));
+        }
           break;
       }
     }   
@@ -3070,31 +3148,52 @@ g3dComplex.Polygon = async (args, env) => {
           extendedIndexes.push(a[5], a[2], a[4]);
           extendedIndexes.push(a[2], a[3], a[4]);
           break;
-        default:
-
-
+        default: {
           const fallbackVertices = env.vertices.position.array;
+          let nx = 0;
+          let ny = 0;
+          let nz = 0;
 
+          for (let k=0; k<a.length; ++k) {
+            const current = (a[k]-1)*3;
+            const next = (a[(k+1)%a.length]-1)*3;
+            const x1 = fallbackVertices[current];
+            const y1 = fallbackVertices[current+1];
+            const z1 = fallbackVertices[current+2];
+            const x2 = fallbackVertices[next];
+            const y2 = fallbackVertices[next+1];
+            const z2 = fallbackVertices[next+2];
 
+            nx += (y1-y2)*(z1+z2);
+            ny += (z1-z2)*(x1+x2);
+            nz += (x1-x2)*(y1+y2);
+          }
 
-         
-          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
-          console.warn('earcut');
-
-          const explicitVertices = [];
+          const ax = Math.abs(nx);
+          const ay = Math.abs(ny);
+          const az = Math.abs(nz);
+          const projection = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+          const explicitVertices = new Array(a.length*2);
 
           for (let k=0; k<a.length; ++k) {
             const index = (a[k]-1)*3;
-            explicitVertices.push(fallbackVertices[index], fallbackVertices[index+1], fallbackVertices[index+2]);
+            const target = k*2;
+
+            if (projection === 0) {
+              explicitVertices[target] = fallbackVertices[index+1];
+              explicitVertices[target+1] = fallbackVertices[index+2];
+            } else if (projection === 1) {
+              explicitVertices[target] = fallbackVertices[index];
+              explicitVertices[target+1] = fallbackVertices[index+2];
+            } else {
+              explicitVertices[target] = fallbackVertices[index];
+              explicitVertices[target+1] = fallbackVertices[index+1];
+            }
           }
 
-          
-
-  
-
-          extendedIndexes.push(earcut(explicitVertices, null, 3).map((index) => a[index]));
-
-        
+          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
+          extendedIndexes.push(earcut(explicitVertices, null, 2).map((index) => a[index]));
+        }
           break;
       }
     
@@ -3420,8 +3519,65 @@ g3dComplex.Polygon.update = async (args, env) => {
         }
         break;
 
-        default:
-          throw 'cannot build such complex polygon'
+        default: {
+          const polygonLength = a.dims[a.dims.length-1];
+          const oldBuffer = a.buffer;
+          const fallbackVertices = env.vertices.position.array;
+          const triangulatedIndexes = [];
+
+          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
+
+          for (let offset=0; offset<oldBuffer.length; offset+=polygonLength) {
+            let nx = 0;
+            let ny = 0;
+            let nz = 0;
+
+            for (let i=0; i<polygonLength; ++i) {
+              const current = (oldBuffer[offset+i]-1)*3;
+              const next = (oldBuffer[offset+(i+1)%polygonLength]-1)*3;
+              const x1 = fallbackVertices[current];
+              const y1 = fallbackVertices[current+1];
+              const z1 = fallbackVertices[current+2];
+              const x2 = fallbackVertices[next];
+              const y2 = fallbackVertices[next+1];
+              const z2 = fallbackVertices[next+2];
+
+              nx += (y1-y2)*(z1+z2);
+              ny += (z1-z2)*(x1+x2);
+              nz += (x1-x2)*(y1+y2);
+            }
+
+            const ax = Math.abs(nx);
+            const ay = Math.abs(ny);
+            const az = Math.abs(nz);
+            const projection = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+            const explicitVertices = new Array(polygonLength*2);
+
+            for (let i=0; i<polygonLength; ++i) {
+              const index = (oldBuffer[offset+i]-1)*3;
+              const target = i*2;
+
+              if (projection === 0) {
+                explicitVertices[target] = fallbackVertices[index+1];
+                explicitVertices[target+1] = fallbackVertices[index+2];
+              } else if (projection === 1) {
+                explicitVertices[target] = fallbackVertices[index];
+                explicitVertices[target+1] = fallbackVertices[index+2];
+              } else {
+                explicitVertices[target] = fallbackVertices[index];
+                explicitVertices[target+1] = fallbackVertices[index+1];
+              }
+            }
+
+            const triangles = earcut(explicitVertices, null, 2);
+            for (let i=0; i<triangles.length; ++i) {
+              triangulatedIndexes.push(oldBuffer[offset+triangles[i]]-1);
+            }
+          }
+
+          newBuffer = new IndexArray(triangulatedIndexes);
+        }
+        break;
       }
 
       
@@ -3520,8 +3676,65 @@ g3dComplex.Polygon.update = async (args, env) => {
         }
         break;
 
-        default:
-          throw 'cannot build such complex polygon'
+        default: {
+          const fallbackVertices = env.vertices.position.array;
+          const triangulatedIndexes = [];
+
+          if (!earcut) earcut = (await import('./earcut-caf22acd.js')).default;
+
+          for (let p=0; p<a.length; ++p) {
+            const polygon = a[p];
+            const polygonLength = polygon.length;
+            let nx = 0;
+            let ny = 0;
+            let nz = 0;
+
+            for (let i=0; i<polygonLength; ++i) {
+              const current = (polygon[i]-1)*3;
+              const next = (polygon[(i+1)%polygonLength]-1)*3;
+              const x1 = fallbackVertices[current];
+              const y1 = fallbackVertices[current+1];
+              const z1 = fallbackVertices[current+2];
+              const x2 = fallbackVertices[next];
+              const y2 = fallbackVertices[next+1];
+              const z2 = fallbackVertices[next+2];
+
+              nx += (y1-y2)*(z1+z2);
+              ny += (z1-z2)*(x1+x2);
+              nz += (x1-x2)*(y1+y2);
+            }
+
+            const ax = Math.abs(nx);
+            const ay = Math.abs(ny);
+            const az = Math.abs(nz);
+            const projection = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+            const explicitVertices = new Array(polygonLength*2);
+
+            for (let i=0; i<polygonLength; ++i) {
+              const index = (polygon[i]-1)*3;
+              const target = i*2;
+
+              if (projection === 0) {
+                explicitVertices[target] = fallbackVertices[index+1];
+                explicitVertices[target+1] = fallbackVertices[index+2];
+              } else if (projection === 1) {
+                explicitVertices[target] = fallbackVertices[index];
+                explicitVertices[target+1] = fallbackVertices[index+2];
+              } else {
+                explicitVertices[target] = fallbackVertices[index];
+                explicitVertices[target+1] = fallbackVertices[index+1];
+              }
+            }
+
+            const triangles = earcut(explicitVertices, null, 2);
+            for (let i=0; i<triangles.length; ++i) {
+              triangulatedIndexes.push(polygon[triangles[i]]-1);
+            }
+          }
+
+          newBuffer = new IndexArray(triangulatedIndexes);
+        }
+        break;
       }
          
     }
