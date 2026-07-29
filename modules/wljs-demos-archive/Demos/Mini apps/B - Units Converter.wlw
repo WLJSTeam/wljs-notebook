@@ -51,13 +51,13 @@ CustomInput[Label_, OptionsPattern[]] := Module[{
   sym = OptionValue["Symbol"],
   Ev = OptionValue["Event"],
   Pattern = OptionValue["Pattern"],
-  System`Handler (* to avoid context issues when placing it in core[] *)
+  Handler
 },
-  With[{Handler = System`Handler},
+  With[{},
   With[{Template = 
     <div class="mt-2 flex">
-      <div style="width: 7rem" class="flex shrink-0 items-center rounded-l-md bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6"><Label/></div>
-      <input type="number" step="1" class="-ml-px block w-full grow rounded-r-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="0.0"/>
+      <div style="width: 7rem" class="flex shrink-0 items-center rounded bg-white px-3 text-base text-gray-500 outline outline-1 -outline-offset-1 outline-gray-300 sm:text-sm/6 mr-2"><Label/></div>
+      <input type="number" step="1" class="-ml-px block w-full grow rounded bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" placeholder="0.0"/>
     <script type="module">
       core['<Handler/>'] = async (args, env) => {
         const input = env.element.getElementsByTagName('input')[0];
@@ -166,24 +166,24 @@ EventHandler[ev, {
   units_ :> (recalc[units, #]&)
 }];
 
-<div class="flex flex-col bg-white p-4 w-full h-full gap-y-1 overflow-y-scroll">
+<div class="flex flex-col bg-white p-4 w-full bg-white h-full gap-y-1 overflow-y-scroll">
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Centimeters"}>cm<sup>-1</sup></CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"eV"}>eV</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"meV"}>meV</CustomInput>
-  <hr/>
+
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Micrometers"}>&micro;m</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Nanometers"}>nm</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Angstrem"}>A</CustomInput>
-  <hr/>
+
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"MHz"}>MHz</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"GHz"}>GHz</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"THz"}>THz</CustomInput>
-  <hr/>
+
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"ps"}>ps</CustomInput>
-  <hr/>
+
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Oe"}>Oe (1/2)</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"T"}>T (1/2)</CustomInput>
-  <hr/>
+
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"K"}>K</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"kJ/Mol"}>kJ/Mol</CustomInput>
   <CustomInput Symbol={rack//Offload} Event={ev}  Pattern={"Hartree"}>Hartree</CustomInput>

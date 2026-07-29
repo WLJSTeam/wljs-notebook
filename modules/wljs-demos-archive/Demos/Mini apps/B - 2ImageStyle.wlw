@@ -1,0 +1,120 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# 2 Image Restyler
+Upload 2 images to see the result
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# 2 Image Restyler
+Upload 2 images to see the result
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+(* make it initialzation cell *)
+(* launch parallel kernels *)
+If[Kernels[] === {}, LaunchKernels[2]];
+
+process[img1_Image, img2_Image] := {
+  ParallelSubmitAsync[ImageRestyle[img1, img2]],
+  ParallelSubmitAsync[ImageRestyle[img2, img1]]
+};
+
+FileWidget = InputFile[];
+DownloadButton = InputButton["Save","Style"->"height:2.4rem"];
+nb = EvaluationNotebook[];
+files = {};
+refresh = EventObject[];
+output = Invisible[Null];
+images = Null;
+
+EventHandler[DownloadButton, Function[Null,
+  If[images === Null,
+    MessageDialog["Nothing to save", "Notebook"->nb];
+    Return[];
+  ];
+  FrontSubmit[
+    FrontFileDownload[
+      ExportByteArray[ImageCollage@images, "PNG"], 
+      "image.png"
+    ]
+  ];
+]];
+
+EventHandler[FileWidget, {"Transaction" -> Function[assoc,
+  files = {};
+  If[assoc["Length"] =!= 2,
+    MessageDialog["Failed. Upload 2 images", "Notebook"->nb];
+    EventRemove[FileWidget, "File"];
+    Return[];
+  ];
+  
+  EventHandler[FileWidget, {"File" -> Function[data,
+    AppendTo[files, ImportByteArray[data["Data"] // BaseDecode]];
+    If[Length[files] > 1,
+      EventRemove[FileWidget, "File"];
+      If[!MatchQ[files, {_Image..}],
+        MessageDialog["Files are not images", "Notebook"->nb];
+        Return[];
+      ];
+      
+      output = Style["Processing...", 10];
+      EventFire[refresh, "Refresh", True];
+      Then[process@@files, Function[results,
+        images = results;
+        output = Map[ImageResize[#, UpTo[350]]&, images] // Row // Deploy;
+        EventFire[refresh, "Refresh", True];
+      ]];
+    ];
+  ]}];
+]}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+With[{
+  OutputCanvas = Refresh[output, refresh]
+},
+  <div class="bg-white h-full w-full flex flex-col gap-y-2 p-2">
+    <div class="w-full gap-x-2 flex flex-row"><FileWidget/><DownloadButton/></div>
+    <OutputCanvas/>
+    <script>resizeTo(400,500)</script>
+  </div>
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

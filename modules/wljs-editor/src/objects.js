@@ -377,7 +377,7 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Get = async (arg
 let watchdog = false;
 core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].WatchDog = async (args, env) => {
   const state = await interpretate(args[0], env);
-  if (state && watchdog === false) watchdog = setTimeout(() => window.location.reload(), 45000);
+  if (state && watchdog === false) watchdog = setTimeout(() => window.location.reload(), 75000);
   if (!state && watchdog !== false) {
     clearTimeout(watchdog);
     watchdog = false;

@@ -1,0 +1,146 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Plotter
+Interactive XY dataset loader & plotter
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Plotter
+Interactive XY dataset loader & plotter
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+dataset = RandomReal[{0,1}, {50,2}];
+refreshEvent = EventObject[];
+selectionEvent = EventObject[];
+file = Null;
+
+nb = EvaluationNotebook[];
+
+selected[_] := False;
+selected[i_Integer] := selected[ToString[i]]
+selected["1"] = True;
+selected["2"] = True;
+
+EventHandler[selectionEvent, {
+  idx_ :> Function[state,
+    Echo[{state, idx}];
+    selected[idx] = state;
+]}];
+
+PreviewWidget = Refresh[
+  TableView@Prepend[Table[With[{idx=ToString[i]},
+    InputCheckbox[selectionEvent, 
+      selected[idx], "Topic"->idx]
+  ], {i,Length[dataset//First]}]][dataset],
+ refreshEvent
+];
+
+params = <|"Format"->"CSV", "Header"->1|>;
+format = InputGroup[<|
+  "Format"->InputSelect[{"CSV", "TSV"}, "CSV", "Label"->"Format"],
+  "Header"->InputRange[0,3,1,1, "Label"->"Header lines"]
+|>];
+
+
+loadFile = Function[Null,
+  If[!StringQ[file], Return[]];
+  With[{
+    result = Import[file, params["Format"], HeaderLines->params["Header"]]
+  },
+    If[!MatchQ[result, {{__}..}],
+      MessageDialog["Failed to load", "Notebook"->nb];
+      Return[];
+    ];
+    dataset = result;
+    EventFire[refreshEvent, True];
+  ];
+];
+
+EventHandler[format, Function[new, 
+  params = new;
+  loadFile[];
+]];
+
+controls = EventObject[];
+EventHandler[controls, {
+  "Load" -> Function[Null,
+    Then[SystemDialogInputAsync["FileOpen"], Function[path,
+      If[!StringQ[path], Return[]];
+      file = path;
+      loadFile[];
+    ]]
+  ],
+  
+  "Plot" -> Function[Null, With[{
+    tr = Transpose[dataset]
+  }, {
+    filtered = Select[
+      Transpose[
+        Table[If[selected[i], tr[[i]], Nothing], {i, Length[tr]}]
+      ],
+      MatchQ[{_?NumberQ, _?NumberQ}]
+    ]
+  },
+    If[Length[filtered] < 3,
+      MessageDialog[
+        "Data should contain 2 numerical columns", 
+        "Notebook"->nb
+      ];
+      Return[];
+    ];    
+    CreateWindow[
+      ListLinePlot[filtered, PlotRange->Full, ImageSize->{460,300}], 
+      WindowSize->{600,400}
+    ];
+  ]]
+}];
+
+ControlsWidget = Column[{
+  Row[{
+    InputButton[controls, "Load file", "Topic"->"Load"],
+    InputButton[controls, "Plot", "Topic"->"Plot"]
+  }],
+  format
+}];
+
+Row[
+  {PreviewWidget, ControlsWidget}, 
+  ImageSize->600, Alignment->{{Left,Right}, Top}
+] // Deploy
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
