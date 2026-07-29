@@ -1,168 +1,270 @@
-<|"Notebook" -> <|"Controller" -> "77467ccc-e68b-45e9-adcc-56fb11c25ec6", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1304], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "fb49ecce-f151-40be-aa49-634d4c79737a", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Audio Streaming.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Live Audio Streaming", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1316]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Waveform screen", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1300]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "GUI controls", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1306]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Live Audio Streaming\nThis code sets up and \
-plays a continuous audio waveform using a buffer and event-driven playback \
-mechanism. We create dynamic `Audio` object with a buffer, which accepts a \
-raw audio data in a form of `NumericArray` of singed integers (as most audio \
-sources). The rest is the supporting code for: \n\n- **Signal generator \
-function:**  \n  `samplingFunction` defines the waveform to be played. In \
-this case, it\[CloseCurlyQuote]s a sine wave of frequency 200 Hz.\n\n- \
-**Global time tracking:**  \n  A `time` variable is initialized to keep track \
-of the current position in the audio stream.\n\n- **Event handling:**  \n  An \
-event handler (`\"More\"`) triggers when the buffer is depleted. It:\n  - \
-Computes a new set of audio samples using the sine function.\n  - Scales and \
-clips them to the `Integer16` range.\n  - Updates the buffer with the new \
-samples.\n  - Advances the `time` variable to ensure seamless \
-continuation.\n\nIn the end it generates real-time streaming of generated \
-audio using a sine wave sampled at 44.1 kHz", "Display" -> "codemirror", 
-    "Hash" -> "b4d0e8f9-c39c-4f8e-8a56-3671b9684170", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "# Live Audio Streaming\nThis code sets up and plays a \
-continuous audio waveform using a buffer and event-driven playback mechanism. \
-We create dynamic `Audio` object with a buffer, which accepts a raw audio \
-data in a form of `NumericArray` of singed integers (as most audio sources). \
-The rest is the supporting code for: \n\n- **Signal generator function:**  \n \
- `samplingFunction` defines the waveform to be played. In this case, \
-it\[CloseCurlyQuote]s a sine wave of frequency 200 Hz.\n\n- **Global time \
-tracking:**  \n  A `time` variable is initialized to keep track of the \
-current position in the audio stream.\n\n- **Event handling:**  \n  An event \
-handler (`\"More\"`) triggers when the buffer is depleted. It:\n  - Computes \
-a new set of audio samples using the sine function.\n  - Scales and clips \
-them to the `Integer16` range.\n  - Updates the buffer with the new \
-samples.\n  - Advances the `time` variable to ensure seamless \
-continuation.\n\nIn the end it generates real-time streaming of generated \
-audio using a sine wave sampled at 44.1 kHz", "Display" -> "markdown", 
-    "Hash" -> "03d4f543-d6aa-4c48-b5cc-5dea6c1cecf1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "buffer = {};\nsamplingFunction = Function[t, Sin[200.0 \
-t]];\n\ntime = 0;\n\naudio = Audio[buffer//Offload, \"SignedInteger16\", \
-SampleRate->8000];\n\nClearAll[updateBuffer]\nupdateBuffer[_] := With[{},\n  \
-With[{c = (1.0/8000.0) (2Pi)},\n    With[{sampled =  32760 \
-Table[samplingFunction[c (i + time)], {i, 0, 4 1024 - 1}]},\n      buffer = \
-NumericArray[sampled, \"SignedInteger16\", \"ClipAndRound\"];\n    ];\n    \n \
-   time += 4 1024;\n  ];\n];\n\naudio = EventHandler[audio, \n  {\"More\" -> \
-updateBuffer}\n];\n\naudio", "Display" -> "codemirror", 
-    "Hash" -> "0243e4e2-cadb-4864-9299-b04726d83f69", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> ".md\nWe can change the generator function on-fly", 
-    "Display" -> "codemirror", "Hash" -> 
-     "89630794-3a47-4a3e-8b82-d4ea0a305066", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "We can change the generator function on-fly", 
-    "Display" -> "markdown", "Hash" -> 
-     "26ebdc9b-8a11-4389-bddc-73257476dddb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "samplingFunction = Function[t, Sin[300.0 t ]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d3a79c4e-c547-4be8-89f7-c2531d6cab36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> ".md\n__Two oscillators with a decay__", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e96c1339-79a9-4a66-a96e-8e7a7529466a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "__Two oscillators with a decay__", "Display" -> "markdown", 
-    "Hash" -> "5636dc6b-815c-4373-ae44-529fef88f6ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "samplingFunction = Function[t, With[{mod = Mod[t, Pi]},\n  \
-Sin[300.0 t ] Sin[45.0 t ] Exp[-t mod / 200.0 ]\n]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9ea1c4a1-5c91-49b4-9914-4ca05564c50c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> ".md\n## Waveform screen\nLet's modify our handler function to \
-store waveform in `ilines` symbol", "Display" -> "codemirror", 
-    "Hash" -> "d2b53586-0f31-4f18-8e22-9bcad9bebe66", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "## Waveform screen\nLet's modify our handler function to \
-store waveform in `ilines` symbol", "Display" -> "markdown", 
-    "Hash" -> "39b74394-f6e9-4297-9f11-6f76ecae45e9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "updateBuffer[_] := With[{},\n  With[{c = (1.0/8000.0) \
-(2Pi)},\n    With[{sampled =  32760 Table[samplingFunction[c (i + time)], {i, \
-0, 512 - 1}]},\n      buffer = NumericArray[sampled, \"SignedInteger16\", \
-\"ClipAndRound\"];\n      ilines = NumericArray[\n        \
-Transpose[{Range[512], sampled}]\n      , \"Integer16\", \"ClipAndRound\"];\n \
-   ];\n    \n    time += 512;\n  ];\n];", "Display" -> "codemirror", 
-    "Hash" -> "b22c60fd-acef-4a4e-b439-0c49cf7cde9e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> ".md\n\n:::tip\nProject the cell below to a window\n:::", 
-    "Display" -> "codemirror", "Hash" -> 
-     "38b3c974-960b-4f54-8c54-1d610a3fc5ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "\n:::tip\nProject the cell below to a window\n:::", 
-    "Display" -> "markdown", "Hash" -> 
-     "715f7d5f-74af-40ee-84b9-e31a3ae63cc9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "Graphics[{Line[ilines // Offload]}, \"TransitionType\"->None, \
-AspectRatio->0.5, \"Controls\"->False, PlotRange->{{0, 512}, {-32760, \
-32760}}]", "Display" -> "codemirror", 
-    "Hash" -> "5b249f3e-bafa-4cfe-8a99-6649b731ee52", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> ".md\n## GUI controls\nHere we set up a bunch of sliders to \
-control the oscillator parameters", "Display" -> "codemirror", 
-    "Hash" -> "9db4a004-2e29-43b1-aee2-43666c787dfc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "## GUI controls\nHere we set up a bunch of sliders to control \
-the oscillator parameters", "Display" -> "markdown", 
-    "Hash" -> "28014ef5-594f-4ec1-bac9-a036c289722d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>, 
-   <|"Data" -> "EventHandler[InputGroup[<|\n  \"w1\" -> InputRange[10, 800, \
-1, 455, \"Label\"->\"Osc 1\"],\n  \"w2\" -> InputRange[10, 800, 1, 455, \
-\"Label\"->\"Osc 2\"],\n  \"d\"  -> InputRange[50, 1000, 10, 300, \
-\"Label\"->\"Decay\"],\n  \"r\"  -> InputRange[0.5, 4.5, 0.1, 3.1, \
-\"Label\"->\"Period\"]\n|>, \"Layout\"->\"Horisontal\"], With[{},\n  \
-samplingFunction = Function[t, With[{mod = Mod[t, #r]},\n    Sin[#w1 t ] \
-Sin[#w2 t ] Exp[-t mod / #d ] \n  ]];\n]&]", "Display" -> "codemirror", 
-    "Hash" -> "b91c87f1-6c1c-4316-9109-5aaff5a6b820", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True, "InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "924b3b2a-3b62-43cd-a782-5984c82616f1"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Live Audio Streaming
+This code sets up and plays a continuous audio waveform using a buffer and event-driven playback mechanism. We create dynamic `Audio` object with a buffer, which accepts a raw audio data in a form of `NumericArray` of singed integers (as most audio sources). The rest is the supporting code for: 
+
+- **Signal generator function:**  
+  `samplingFunction` defines the waveform to be played. In this case, it’s a sine wave of frequency 200 Hz.
+
+- **Global time tracking:**  
+  A `time` variable is initialized to keep track of the current position in the audio stream.
+
+- **Event handling:**  
+  An event handler (`"More"`) triggers when the buffer is depleted. It:
+  - Computes a new set of audio samples using the sine function.
+  - Scales and clips them to the `Integer16` range.
+  - Updates the buffer with the new samples.
+  - Advances the `time` variable to ensure seamless continuation.
+
+In the end it generates real-time streaming of generated audio using a sine wave sampled at 44.1 kHz.
+
+:::info
+Increase a buffer size if your connection has large latency
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Live Audio Streaming
+This code sets up and plays a continuous audio waveform using a buffer and event-driven playback mechanism. We create dynamic `Audio` object with a buffer, which accepts a raw audio data in a form of `NumericArray` of singed integers (as most audio sources). The rest is the supporting code for: 
+
+- **Signal generator function:**  
+  `samplingFunction` defines the waveform to be played. In this case, it’s a sine wave of frequency 200 Hz.
+
+- **Global time tracking:**  
+  A `time` variable is initialized to keep track of the current position in the audio stream.
+
+- **Event handling:**  
+  An event handler (`"More"`) triggers when the buffer is depleted. It:
+  - Computes a new set of audio samples using the sine function.
+  - Scales and clips them to the `Integer16` range.
+  - Updates the buffer with the new samples.
+  - Advances the `time` variable to ensure seamless continuation.
+
+In the end it generates real-time streaming of generated audio using a sine wave sampled at 44.1 kHz.
+
+:::info
+Increase a buffer size if your connection has large latency
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+buffer = {};
+$bufferSize =  512;
+samplingFunction = Function[t, Sin[200.0 t]];
+
+time = 0;
+
+audio = Audio[buffer//Offload, "SignedInteger16", SampleRate->8000];
+
+ClearAll[updateBuffer]
+updateBuffer[_] := With[{},
+  With[{c = (1.0/8000.0) (2Pi)},
+    With[{sampled =  32760 Table[samplingFunction[c (i + time)], {i, 0, $bufferSize - 1}]},
+      buffer = NumericArray[sampled, "SignedInteger16", "ClipAndRound"];
+    ];
+    
+    time += $bufferSize;
+  ];
+];
+
+audio = EventHandler[audio, 
+  {"More" -> updateBuffer}
+];
+
+audio
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We can change the generator function on-fly
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We can change the generator function on-fly
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+samplingFunction = Function[t, Sin[300.0 t ]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Two oscillators with a decay__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Two oscillators with a decay__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+samplingFunction = Function[t, With[{mod = Mod[t, Pi]},
+  Sin[300.0 t ] Sin[45.0 t ] Exp[-t mod / 200.0 ]
+]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Waveform screen
+Let's modify our handler function to store waveform in `ilines` symbol
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Waveform screen
+Let's modify our handler function to store waveform in `ilines` symbol
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+updateBuffer[_] := With[{},
+  With[{c = (1.0/8000.0) (2Pi)},
+    With[{sampled =  32760 Table[samplingFunction[c (i + time)], {i, 0, 512 - 1}]},
+      buffer = NumericArray[sampled, "SignedInteger16", "ClipAndRound"];
+      ilines = NumericArray[
+        Transpose[{Range[512], sampled}]
+      , "Integer16", "ClipAndRound"];
+    ];
+    
+    time += 512;
+  ];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+:::tip
+Project the cell below to a window
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+:::tip
+Project the cell below to a window
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{Line[ilines // Offload]}, "TransitionType"->None, AspectRatio->0.5, "Controls"->False, PlotRange->{{0, 512}, {-32760, 32760}}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## GUI controls
+Here we set up a bunch of sliders to control the oscillator parameters
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## GUI controls
+Here we set up a bunch of sliders to control the oscillator parameters
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputGroup[<|
+  "w1" -> InputRange[10, 800, 1, 455, "Label"->"Osc 1"],
+  "w2" -> InputRange[10, 800, 1, 455, "Label"->"Osc 2"],
+  "d"  -> InputRange[50, 1000, 10, 300, "Label"->"Decay"],
+  "r"  -> InputRange[0.5, 4.5, 0.1, 3.1, "Label"->"Period"]
+|>, "Layout"->"Horisontal"], With[{},
+  samplingFunction = Function[t, With[{mod = Mod[t, #r]},
+    Sin[#w1 t ] Sin[#w2 t ] Exp[-t mod / #d ] 
+  ]];
+]&]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

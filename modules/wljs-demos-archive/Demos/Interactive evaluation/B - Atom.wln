@@ -1,90 +1,164 @@
-<|"Notebook" -> <|"Controller" -> "f9609b66-6528-448e-a7a1-fb9c789e9e97", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$995], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "4495157d-3873-41a6-aaee-7f5dc415eb45", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Animation/B - Atom.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Atom model animation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$989]]}|>, 
- "Cells" -> 
-  {<|"Data" -> ".md\n# Atom model animation\n*created by Kirill Belov*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f5362329-f57e-4631-8989-85c93a05585d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> "># Atom model animation\n*created by Kirill Belov*", 
-    "Display" -> "markdown", "Hash" -> 
-     "589f829e-16c6-4cc7-b3ac-06413284b7be", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> ".md\nPrecalculate paths of electrons", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5c6ffb22-234e-475a-a40f-49fb4cfb37f6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> ">Precalculate paths of electrons", "Display" -> "markdown", 
-    "Hash" -> "4a9d14ee-c4b0-4564-b79a-10388a5eec79", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> "path1 = Table[{5 Sin[t], 5 Cos[t], 0}, {t, 0.0, 8Pi, \
-Pi/360.0}]; \nlight1 = path1[[1]]; \n\npath2 = \
-RotationTransform[(*FB[*)((2Pi)(*,*)/(*,*)(3))(*]FB*), {1, 0, 0}] /@ path1; \
-\nlight2 = path2[[1]]; \n\npath3 = \
-RotationTransform[(*FB[*)((4Pi)(*,*)/(*,*)(3))(*]FB*), {1, 0, 1}] /@ path1; \
-\nlight3 = path3[[1]];", "Display" -> "codemirror", 
-    "Hash" -> "ef111283-3be3-42f3-9f9d-e87c5cb7b7d3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> ".md\nTime variable", "Display" -> "codemirror", 
-    "Hash" -> "8c9f3500-92a7-4618-8233-c5ad4348c97c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> "Time variable", "Display" -> "markdown", 
-    "Hash" -> "49b08f8f-28c8-4352-8cfb-cce5252f96bb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> 
-     "ClearAll[t];\nt := Mod[Round[AbsoluteTime[] * 100] + 1, Length[path1]]"\
-, "Display" -> "codemirror", "Hash" -> 
-     "fa0f3ee7-922c-4363-9d7c-b5dc3338de3c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> ".md\nConstruct 3D graphics", "Display" -> "codemirror", 
-    "Hash" -> "168fc241-1c07-4933-bfd8-5720c3b60345", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> ">Construct 3D graphics", "Display" -> "markdown", 
-    "Hash" -> "a9273213-306c-4ab3-b124-8b8fccca1e2d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>, 
-   <|"Data" -> "Graphics3D[{  \n  {  \n    \
-MeshMaterial[MeshPhysicalMaterial[]],   \n    Roughness[0.1],   \n    \
-Sphere[]  \n  },   \n  {  \n    PointLight[Cyan, Offload @ light1],   \n    \
-PointLight[Magenta, Offload @ light2],   \n    PointLight[Orange, Offload @ \
-light3]  \n  },   \n  {  \n    Emissive[Cyan, 5], Sphere[Offload @ light1, \
-0.1],   \n    Emissive[Magenta, 5], Sphere[Offload @ light2, 0.1],   \n    \
-Emissive[Orange, 5], Sphere[Offload @ light3, 0.1],\n    \
-EventHandler[AnimationFrameListener[Offload @ light3], Function[Null,\n      \
-light1 = path1[[t]]; \n      light2 = path2[[t]]; \n      light3 = \
-path3[[t]]; \n    ]]\n  },   \n  {  \n    LightBlue, Line[path1],   \n    \
-LightRed, Line[path2],   \n    LightGreen, Line[path3]  \n  }  \n},     \n  \
-PlotRange -> {{-10, 10}, {-10, 10}, {-10, 10}},   \n  Lighting -> None  \n] "\
-, "Display" -> "codemirror", "Hash" -> 
-     "a42b9302-89f3-47e7-addc-af14e9709ce3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fafc2222-73c4-433d-b81a-1d6fddc1e79b"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Atom model animation
+*created by Kirill Belov*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+># Atom model animation
+*created by Kirill Belov*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Precalculate paths of electrons
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Precalculate paths of electrons
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+path1 = N@Table[{5 Sin[t], 5 Cos[t], 0}, {t, 0.0, 2Pi, Pi/360.0}]; 
+light1 = path1[[1]]; 
+
+path2 = RotationTransform[(*FB[*)((2Pi)(*,*)/(*,*)(3))(*]FB*), {1, 0, 0}] /@ path1; 
+light2 = path2[[1]]; 
+
+path3 = RotationTransform[(*FB[*)((4Pi)(*,*)/(*,*)(3))(*]FB*), {1, 0, 1}] /@ path1; 
+light3 = path3[[1]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Time variable
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Time variable
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[t];
+t := Mod[Round[AbsoluteTime[] 100], Length[path1]] + 1
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Construct 3D graphics
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Construct 3D graphics
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{  
+  {  
+    Graphics3D`Materials["Glass"],
+    Directive["Roughness"->0.3, "Transmission"->0.9],
+    Sphere[{0,0,0}, 1] 
+  },   
+  {  
+    PointLight[Blue, Offload @ light1],   
+    PointLight[Green, Offload @ light2],   
+    PointLight[Red, Offload @ light3]  
+  },   
+  {  
+    Directive["Roughness"->0, "Emissive"->Blue], 
+    Sphere[Offload @ light1, 0.13],   
+    Directive["Roughness"->0, "Emissive"->Green],
+    Sphere[Offload @ light2, 0.13],  
+    Directive["Roughness"->0, "Emissive"->Red],
+    Sphere[Offload @ light3, 0.13],
+    EventHandler[AnimationFrameListener[Offload @ light3], Function[Null,
+      light1 = path1[[t]]; 
+      light2 = path2[[t]]; 
+      light3 = path3[[t]]; 
+    ]]
+  },   
+  {  
+    Graphics3D`Materials["Glass"],
+    LightBlue, Tube[path1, 0.06],   
+    LightGreen, Tube[path2, 0.06],   
+    LightRed, Tube[path3, 0.06]  
+  }  
+},     
+  PlotRange -> {{-10, 10}, {-10, 10}, {-10, 10}},   
+  Lighting -> None, Background->Black, ImageSize->Medium 
+] 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
