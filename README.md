@@ -14,8 +14,6 @@ Typeset math input, expressive syntax, rich media output, and live interactivity
 ![Wolfram Language](https://img.shields.io/badge/Wolfram%20Language-DD1100?style=for-the-badge&logo=wolfram&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![C](https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black)
-![Electron.js](https://img.shields.io/badge/Electron.js-47848F?style=for-the-badge&logo=electron&logoColor=white)
-
 
 <div class="note">
   <p>
@@ -32,22 +30,23 @@ Typeset math input, expressive syntax, rich media output, and live interactivity
 
 ## Resources
 
-- **[Documentation & Tutorials](https://wljs.io/)** 📔
-- **[Freeware Wolfram Language Interpreter](https://www.wolfram.com/engine/)**
-- **[Wolfram Language Introduction](https://wljs.io/frontend/Wolfram-Language)** 🐺
+- **[Migration from Mathematica](https://wljs.io/frontend/Guides/Migration)** 
+- **[Documentation & Tutorials](https://wljs.io/)** 
+- **[Freeware Wolfram Language Interpreter](https://www.wolfram.com/engine/)** 
+- **[Wolfram Language Introduction](https://wljs.io/frontend/Wolfram-Language)** 
 
 ## Community
 
-- **[Reddit](https://www.reddit.com/r/wljs/)** 💬
-- **[Github Discussions](https://github.com/JerryI/wolfram-js-frontend/discussions)** 💬
-- **[Telegram Support Chat](https://t.me/wljs_support)** 🐴
+- **[Reddit](https://www.reddit.com/r/wljs/)** 
+- **[Github Discussions](https://github.com/JerryI/wolfram-js-frontend/discussions)** 
+- **[Telegram Support Chat](https://t.me/wljs_support)** 
 
-**Recommended [Wolfram Engine](https://www.wolfram.com/engine/): Version 14.3**
+**Recommended [Wolfram Engine](https://www.wolfram.com/engine/): Version 15.0**
 
 > The algorithms, functions, and other components of the Wolfram Language provided by the Wolfram Engine are the intellectual property of Wolfram Research, Inc.
 
 ## Platforms
-- **Desktop**: Windows (x86), GNU/Linux (x86, ARM), MacOS (x86, ARM)
+- **Desktop**: Windows (x86: EXE), GNU/Linux (x86: AppImage, DEB, RPM, ARM: AppImage, DEB), MacOS (x86, ARM)
 - **Server**: Docker container or via WolframScript
 
 
