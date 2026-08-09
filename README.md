@@ -52,15 +52,6 @@ Typeset math input, expressive syntax, rich media output, and live interactivity
 
 See how at [wljs.io](https://wljs.io/frontend/setup)
 
-## Star History
-
-<a href="https://www.star-history.com/?repos=WLJSTeam%2Fwljs-notebook&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=WLJSTeam/wljs-notebook&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=WLJSTeam/wljs-notebook&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=WLJSTeam/wljs-notebook&type=date&legend=top-left" />
- </picture>
-</a>
 
 ## Highlights
 
@@ -125,6 +116,9 @@ Free code signing on Windows provided by [SignPath.io](https://SignPath.io), cer
 
 </div>
 
+## Inspired by 
+- [Mathics](https://github.com/Mathics3) - Wolfram Language Ecosystem recreated in Python
+- [Notebook support for Wolfram Language in VS Code](https://github.com/njpipeorgan/wolfram-language-notebook)
 
 ## Code signing policy
 We sign official desktop releases publised on Github Releases.
@@ -147,7 +141,6 @@ We sign official desktop releases publised on Github Releases.
 
 ## Privacy policy
 This program / code-base will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. See more at [Privacy Policy](./SECURITY.md).
-
 
 ## License
 WLJS Notebooks (including all extensions, graphics and sound libraries, frontend and backend) are licensed under AGPL. 
