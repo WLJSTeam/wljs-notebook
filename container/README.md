@@ -48,6 +48,35 @@ docker run -it \
 
 You may change port mapping in the starting sequence.
 
+## CUDA support
+
+A separate CUDA-enabled image is published with the `-cuda` tag suffix, for
+example `ghcr.io/wljsteam/wljs-notebook:main-cuda`. It uses the GPU support
+built into Wolfram Engine 15.0 and does not install additional Wolfram
+paclets.
+
+The host must be a Linux machine with a supported NVIDIA GPU, a compatible
+NVIDIA driver, and the NVIDIA Container Toolkit configured for Docker. Start
+the image with GPU access enabled:
+
+```bash
+docker run -it \
+  --gpus all \
+  -v ~/wljs:"/home/wljs/WLJS Notebooks" \
+  -v ~/wljs/tmp:/tmp \
+  -v ~/wljs/Licensing:/home/wljs/.WolframEngine/Licensing \
+  -p 8080:3000 \
+  --name wljs-cuda \
+  ghcr.io/wljsteam/wljs-notebook:main-cuda
+```
+
+GPU availability can be checked from a notebook with:
+
+```wolfram
+Needs["CUDALink`"];
+{CUDAQ[], CUDAInformation[]}
+```
+
 ## How to update
 To feath a new version, you need to purge the old one including a named volume
 
@@ -219,4 +248,3 @@ docker run -it \
   --name wljs \
   ghcr.io/wljsteam/wljs-notebook:main
 ```
-

@@ -1,16 +1,4 @@
 # syntax=docker/dockerfile:1
-FROM docker.io/wolframresearch/wolframengine AS deps
-
-USER root
-RUN apt-get update && apt-get install -y ffmpeg
-User wolframengine
-
-
-WORKDIR /workspace
-
-RUN --mount=type=secret,id=wolfram_license,env=WOLFRAMSCRIPT_ENTITLEMENTID,required=true wolframscript -script Scripts/update.wls
-
-
 FROM wolframresearch/wolframengine:15.0.0 AS final
 
 USER root
@@ -43,3 +31,12 @@ COPY container/run.sh /run.sh
 RUN chmod +x /run.sh
 
 CMD /run.sh
+
+
+FROM final AS cuda
+
+# These variables are understood by the NVIDIA container runtime. The host
+# must still expose a GPU when starting the container, for example with
+# `docker run --gpus all ...`.
+ENV NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility
