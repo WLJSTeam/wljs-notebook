@@ -20,6 +20,10 @@ EventHandler[Secret, {"Load" -> Function[Null,
         "WindowsLegacy" -> Function[state,
             settings = Join[settings, <|"WindowsLegacy"->state|>];
             onSave[settings];
+        ],
+        "NoCoins" -> Function[state,
+            settings = Join[settings, <|"NoCoins"->state|>];
+            onSave[settings];
         ]
     }];
 
@@ -44,6 +48,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
 ,
     <div class="mt-4 overflow-y-auto" style="max-height:60%">   
         <span class="dark:text-gray-400">Frontend</span>
+        <Checkbox Label={"Disable coffee notificaton"} Event={controller} Topic={"NoCoins"} Description={"No coins? No problem, just use this checkbox"} Checked={settings["NoCoins"]}/>        
         <Checkbox Label={"Remove vibrancy for Windows 11"} Event={controller} Topic={"WindowsLegacy"} Description={"Electron uses quite buggy API to create acryllic material. Turn this on if you have any issues on Windows 11"} Checked={settings["WindowsLegacy"]}/>
     </div>  
 }

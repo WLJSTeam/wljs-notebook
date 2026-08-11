@@ -2629,11 +2629,12 @@ app.whenReady().then(() => {
     }
 
 
+    const splash = require('./coffee.js').showCoffeeSplash;
+    const coffee = nativeImage.createFromPath(path.join(__dirname, 'build', 'coffee.png'));
+    
     //make a log window and start WL
     windows.log.construct((log_window) => {
         windows.log.version(app.getVersion());
-        
- 
         //new promt('input', 'Do you have Wolfram Engine installed?', (answer) => console.log(answer), log_window);
         check_installed(() => check_wl(load_configuration(), () => store_configuration(() => start_server(log_window)), log_window), log_window);
     });
@@ -2641,6 +2642,15 @@ app.whenReady().then(() => {
     //again in a case if something changed
     read_wl_settings();
 
+    setTimeout(() => {
+      if (server.frontend.NoCoins) return;
+      if(Math.random() < 0.7) return;
+      splash({
+        imageRef: coffee,
+        onClick: () => shell.openExternal('https://wljs.io/frontend/Support')
+      })
+    }, 1000*60*45);
+    
     if (!server.frontend.NoUpdates) autoUpdater.checkForUpdatesAndNotify();
 
     

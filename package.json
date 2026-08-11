@@ -160,6 +160,7 @@
       "./Electron/bundle/log.js",
       "./Electron/electron.css",
       "./Electron/log.html",
+      "./Electron/coffee.js",
       "./Electron/sudo.js",
       "./Electron/device.html",
       "./Electron/log_padded.html",
