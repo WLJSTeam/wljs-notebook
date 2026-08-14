@@ -23,14 +23,14 @@
 
 [![DOI](https://zenodo.org/badge/588982265.svg)](https://doi.org/10.5281/zenodo.15538087)
 
-WLJS Notebook is free and open-source software that runs with the Wolfram Engine. You do not need Mathematica to use it. The Wolfram Engine is a separate product with its own licensing terms and account-registration requirements.
+WLJS Notebook is free and open-source software that runs with the [Wolfram Engine](https://www.wolfram.com/engine/) (freeware for personal use). You do not need Mathematica to use it.
 
 > [!IMPORTANT]
 > WLJS Notebook is not affiliated with, endorsed by, or sponsored by Wolfram Research.
 
 ## Why WLJS?
 
-WLJS is designed for researchers, educators, and developers who value Wolfram Language but want a notebook workflow that is local, works with freeware Wolfram Engine, Git-friendly, lightweight, and easy to share.
+WLJS is designed for researchers, educators, and developers who value Wolfram Language but want a notebook workflow that is local, works with [freeware Wolfram Engine](https://www.wolfram.com/engine/), Git-friendly, lightweight, and easy to share.
 
 - **Interactive by design** — Build responsive visualizations with `Manipulate`, events, graphics primitives, and targeted updates.
 - **Made for research applications** — Combine computation, narrative, controls, and reusable interface components in one document.
