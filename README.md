@@ -1,151 +1,156 @@
 <h1 align="center">WLJS Notebook</h1>
-<h2 align="center">Open-source Notebook interface for Wolfram Language</h2>
 
-Typeset math input, expressive syntax, rich media output, and live interactivity
+<p align="center">
+  <strong>An open-source, web-native notebook interface for Wolfram Language</strong>
+</p>
 
-![Preview](imgs/Toster.png)
+<p align="center">
+  Build interactive research notebooks, scientific tools, and presentations with typeset math, rich media, live controls, and JavaScript integration.
+</p>
 
-<h3 align="center">
-  <a href="https://wljs.io/frontend/Overview">What is WLJS?</a> &nbsp;&nbsp; 
-  <a href="https://wljs.io/frontend/setup">Installation</a>
-</h3>
+![WLJS Notebook preview](imgs/Toster.png)
 
+<p align="center">
+  <a href="https://wljs.io/blog"><strong>Explore projects</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://wljs.io/frontend/setup"><strong>Install WLJS</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://wljs.io/frontend/Overview"><strong>Documentation</strong></a> &nbsp;&middot;&nbsp;
+  <a href="https://wljs.io/frontend/Guides/Migration"><strong>Migrate from Mathematica</strong></a>
+</p>
 
 ![Wolfram Language](https://img.shields.io/badge/Wolfram%20Language-DD1100?style=for-the-badge&logo=wolfram&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![C](https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black)
 
-<div class="note">
-  <p>
-    WLJS Notebook is <b>free software</b> based on the Wolfram Engine.
-  </p>
-  <p>
-    You don’t need Mathematica installed to use WLJS Notebook. <b>No subscription required</b>—just a one-time registration at <em>wolfram.com</em> for personal use.
-  </p>
-</div>
-
 [![DOI](https://zenodo.org/badge/588982265.svg)](https://doi.org/10.5281/zenodo.15538087)
 
-**This project is not affiliated with, endorsed by, or sponsored by Wolfram Research**
+WLJS Notebook is free and open-source software that runs with the Wolfram Engine. You do not need Mathematica to use it. The Wolfram Engine is a separate product with its own licensing terms and account-registration requirements.
 
-## Resources
+> [!IMPORTANT]
+> WLJS Notebook is not affiliated with, endorsed by, or sponsored by Wolfram Research.
 
-- **[Migration from Mathematica](https://wljs.io/frontend/Guides/Migration)** 
-- **[Documentation & Tutorials](https://wljs.io/)** 
-- **[Freeware Wolfram Language Interpreter](https://www.wolfram.com/engine/)** 
-- **[Wolfram Language Introduction](https://wljs.io/frontend/Wolfram-Language)** 
+## Why WLJS?
+
+WLJS is designed for researchers, educators, and developers who value Wolfram Language but want a notebook workflow that is local, Git-friendly, lightweight, and easy to share.
+
+- **Interactive by design** — Build responsive visualizations with `Manipulate`, events, graphics primitives, and targeted updates.
+- **Made for research applications** — Combine computation, narrative, controls, and reusable interface components in one document.
+- **Git-friendly notebooks** — Store notebooks in a minimal, human-readable format that people, version-control systems, and LLMs can inspect and diff.
+- **Portable output** — Export notebooks as standalone or embeddable HTML or MDX while keeping supported plots and controls interactive.
+- **Mathematica migration** — Open and convert `.nb` notebooks, with a migration guide for frontend and dynamic-interface differences.
+- **JavaScript integration** — Use JavaScript cells and web libraries through a dedicated communication channel to the Wolfram kernel.
+- **Desktop and web deployment** — Runs as a polished desktop application or remotely on a server through any modern web browser.
+- **Local and offline** — Keep notebooks and computation on your machine without depending on a hosted service.
+- **Agent-ready** — Inspect, edit, and evaluate notebook cells through the built-in CLI and Model Context Protocol server.
+
+## Quick start
+
+1. Install the recommended [Wolfram Engine 15.0](https://www.wolfram.com/engine/).
+2. Download WLJS Notebook for your platform from the [installation page](https://wljs.io/frontend/setup) or [GitHub Releases](https://github.com/WLJSTeam/wljs-notebook/releases).
+3. Open a notebook and evaluate your first expression:
+
+```wl
+Manipulate[
+  Plot3D[Sin[n x] Cos[n y], {x, -1, 1}, {y, -1, 1}],
+  {n, 1, 5, 0.3},
+  ContinuousAction -> True
+]
+```
+
+You can also deploy WLJS with Docker or run it on a remote server. See the complete [installation and server guide](https://wljs.io/frontend/setup).
+
+## Interactive and expressive
+
+WLJS combines a Mathematica-like editing experience with a flat notebook structure and browser-based rendering. It supports editable mathematical input, rich output, interactive 2D and 3D graphics, sound, images, Markdown, Mermaid diagrams, presentations, and custom web interfaces.
+
+![Dynamic plots in WLJS](imgs/DynamicsFast-ezgif.com-optimize.gif)
+
+WLJS and Mathematica use different frontend architectures. WLJS emphasizes explicit events, targeted updates, browser rendering, and control over how interactive interfaces behave.
+
+| Aspect | Mathematica | WLJS |
+| --- | --- | --- |
+| Rendering model | Immediate mode | Retained mode with immediate-mode emulation |
+| Reactive updates | Automatic dependency tracking and reevaluation | Explicit, targeted updates |
+| Data binding | Two-way symbol binding | One-way symbol binding with input events |
+| Reactive model | Pull | Push |
+
+## Platforms
+
+- **Windows:** x86-64 installer
+- **GNU/Linux:** x86-64 and ARM64 packages in AppImage, DEB, and RPM formats where available
+- **macOS:** Apple Silicon and Intel disk images
+- **Server:** Docker container or direct launch with WolframScript
+
+![WLJS across supported platforms](imgs/4OS.png)
+
+Official desktop releases are digitally signed. See [Code signing](#code-signing) for details.
+
+## Learn and build
+
+- [Project showcases and tutorials](https://wljs.io/blog)
+- [Documentation and tutorials](https://wljs.io/)
+- [WLJS blog](https://wljs.io/blog)
+- [Wolfram Language introduction](https://wljs.io/frontend/Wolfram-Language)
+- [Migration guide from Mathematica](https://wljs.io/frontend/Guides/Migration)
+- [Reference documentation](https://wljs.io/frontend/Reference/)
 
 ## Community
 
-- **[Reddit](https://www.reddit.com/r/wljs/)** 
-- **[Github Discussions](https://github.com/JerryI/wolfram-js-frontend/discussions)** 
-- **[Telegram Support Chat](https://t.me/wljs_support)** 
+[GitHub Discussions](https://github.com/WLJSTeam/wljs-notebook/discussions) is the main place to ask questions, propose ideas, and show what you have built with WLJS.
 
-**Recommended [Wolfram Engine](https://www.wolfram.com/engine/): Version 15.0**
+- **Ask, propose, or showcase:** [GitHub Discussions](https://github.com/WLJSTeam/wljs-notebook/discussions)
+- **Follow and share projects:** [r/wljs](https://www.reddit.com/r/wljs/)
+- **Get real-time help:** [Telegram support chat](https://t.me/wljs_support)
 
-> The algorithms, functions, and other components of the Wolfram Language provided by the Wolfram Engine are the intellectual property of Wolfram Research, Inc.
+If WLJS helped with your research, teaching, visualization, or application, please share a screenshot, notebook, repository, or short write-up. Community examples are one of the best ways to help new users understand what is possible.
 
-## Platforms
-- **Desktop**: Windows (x86: EXE), GNU/Linux (x86: AppImage, DEB, RPM, ARM: AppImage, DEB), MacOS (x86, ARM)
-- **Server**: Docker container or via WolframScript
+## Contributing
 
+Contributions do not need to start with a large code change. You can help by:
 
-See how at [wljs.io](https://wljs.io/frontend/setup)
-
-
-## Highlights
-
-### Feels like Mathematica and Jupyter
-WLJS Notebook feels and works like Wolfram Mathematica (and it can open .nb files) and has a flat and minimal notebook structure like in Jupyter Lab.
-
-### Human-, LLM- and GIT-friendly Notebook Format
-The structure is minimal, and easy to read and parse by people and machines, but most importantly, it allows versioning systems correctly identify the differences.
-
-### Interactive & Powerful
-Optimized for interactive computing and allows to make complex real-time visualizations. From the high-level `Manipulate` to low-level graphics primitives
-
-![Dynamic Plots](imgs/DynamicsFast-ezgif.com-optimize.gif)
-
-WLJS and Mathematica frontends are based on two different paradigms, where both have their own advantages, while we focus on control and performance
-
-| Aspect           | Mathematica                                     | WLJS                                       |
-| ---------------- | ----------------------------------------------- | -------------------------------------------------- |
-| Rendering model  | Immediate mode                                  | Retained mode (+ immediate mode emulation)         |
-| Reactive updates | Automatic dependency tracking and re-evaluation | Explicit, targeted updates                         |
-| Data binding     | Two-way symbol binding                          | One-way symbol binding + events for input elements |
-| Reactive model          | Pull                                      | Push 
+- Reporting a reproducible bug or suggesting an improvement in [Issues](https://github.com/WLJSTeam/wljs-notebook/issues)
+- Answering a question or reviewing an idea in [Discussions](https://github.com/WLJSTeam/wljs-notebook/discussions)
+- Improving documentation, examples, tests, or platform instructions
+- Sharing a notebook, integration, research workflow, or application built with WLJS
+- Submitting a focused pull request
 
 
 
-### Super portable
-Export and share your notebook as a standalone or embeddable .html or .mdx file—plots stay interactive, and sliders remain draggable.
 
-### Batteries included
-More than 200 importers/exporters formats, 3000 functions. Vast standard library of Wolfram Engine is ready for every computational need.
+## Support the project
 
-### Javascript Sandbox
-First class support of Javascript cells with a dedicated communication channel to Wolfram Kernel. Use any library from web to enhance your visuals.
+WLJS is an independent open-source project. You can support its development by:
 
-### Crossplatform
-Windows, GNU/Linux, MacOS or even a browser. We carefully designed the backend and adjusted our UI to match all platforms
+- Starring this repository
+- Sharing WLJS with a colleague, research group, or class
+- Contributing an example, documentation improvement, bug report, or pull request
+- [Buying the maintainers a coffee](https://wljs.io/frontend/Support)
 
-![](./imgs/4OS.png)
+## Privacy and security
 
-### Works fully offline
-No needs in the internet connection, no dependencies on external services. Yours forever
-
-### MCP Ready
-MCP server runs in the background allowing agents directly see, edit and evalaute any cell in the notebook
+WLJS does not transfer information to networked systems unless requested by the person installing or operating it. See the [privacy and security policy](SECURITY.md) for details.
 
 
-## We need your support
-As an independent open-source project, we’re unaffiliated with Wolfram or any company. Your support keeps this project alive:
 
-- [ ] +1 ⭐️ on this Github repo
-- [ ] Share it with your colleague
-- [ ] [Buy us a coffee](https://wljs.io/frontend/Support) ☕️
+## Code signing
 
----
+Official desktop releases published through GitHub Releases are signed where supported.
 
-<div style="display: flex;">
-<img src="https://avatars.githubusercontent.com/u/34448643?s=200&v=4" width="50" style="margin-right:0.5rem"/>
+- **Windows:** Installers and executable binaries are signed by [SignPath.io](https://signpath.io/) with a certificate issued to SignPath Foundation.
+- **macOS:** Application bundles and disk images are signed with the team's Apple Developer ID certificate (`com.coffeeliqueur.*`). Gatekeeper should display that Developer ID when opening the application.
 
+Community and third-party builds are not covered by this signing policy.
 
-Free code signing on Windows provided by [SignPath.io](https://SignPath.io), certificate by *SignPath Foundation*
+## Project team
 
+See the WLJS organization team for current [committers and reviewers](https://github.com/orgs/WLJSTeam/teams/committers-and-reviewers/).
 
-</div>
+## Inspired by
 
-## Inspired by 
-- [Mathics](https://github.com/Mathics3) - Wolfram Language Ecosystem recreated in Python
-- [Notebook support for Wolfram Language in VS Code](https://github.com/njpipeorgan/wolfram-language-notebook)
-
-## Code signing policy
-We sign official desktop releases publised on Github Releases.
-
-### What we sign
-- **Windows:** Installers (`.exe`, `.msi`) and executable binaries.
-- **macOS:** `.app` bundles and `.dmg` installers.
-- **Source archives & checksums:** Each release includes SHA-256 checksums for all artifacts.
-
-### Platforms & identities
-- **Windows** — Signed by **SignPath.io** using a certificate issued to **SignPath Foundation**.  
-  _Free code signing sponsored by [SignPath.io](https://SignPath.io)._
-- **macOS** — Signed with an Apple **Developer ID** certificate owned by our team (`com.coffeeliqueur.*`).  
-  Gatekeeper should show the developer as our Developer ID when opening the app.
-
-> Community or third-party builds are **not** covered by our signing policy.
-
-## Team roles and their members
-- [**Committers and reviewers**](https://github.com/orgs/WLJSTeam/teams/committers-and-reviewers/)
-
-## Privacy policy
-This program / code-base will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. See more at [Privacy Policy](./SECURITY.md).
+- [Mathics](https://github.com/Mathics3) — an open-source Wolfram Language ecosystem implemented in Python
+- [Wolfram Language Notebook for VS Code](https://github.com/njpipeorgan/wolfram-language-notebook)
 
 ## License
-WLJS Notebooks (including all extensions, graphics and sound libraries, frontend and backend) are licensed under AGPL. 
 
-The algorithms, functions, and other components of the Wolfram Language provided by the freeware distribution of Wolfram Engine are the intellectual property of Wolfram Research, Inc. 
+WLJS Notebook, including its extensions, graphics and sound libraries, frontend, and backend, is licensed under the GNU Affero General Public License. See [LICENSE.md](LICENSE.md).
 
-See more at [LICENSE.md](./LICENSE)
-
+The algorithms, functions, and other components of Wolfram Language provided by the Wolfram Engine are the intellectual property of Wolfram Research, Inc. The Wolfram Engine is distributed separately under its own license.
