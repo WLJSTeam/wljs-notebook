@@ -3,6 +3,7 @@ import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import cors from "cors";
 
 import fs from "node:fs/promises"
 
@@ -1008,14 +1009,7 @@ export async function startWljsNotebookMcp(a,b,c,options = {}) {
   const app = express();
   app.disable("x-powered-by");
   app.use(express.json({ limit: bodyLimit }));
-
-  app.use((req, res, next) => {
-    if (originCheck && !isLocalOrigin(req.headers.origin)) {
-      rejectJsonRpc(res, 403, "Forbidden Origin. This local MCP server only accepts localhost origins or non-browser clients.");
-      return;
-    }
-    next();
-  });
+  app.use(cors());
 
   app.post(path, async (req, res) => {
     const server = createWlMcpServer(a);
