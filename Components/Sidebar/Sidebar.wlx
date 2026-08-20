@@ -44,6 +44,12 @@ Controller["Download", __] := Function[name,
   WebUISubmit[Global`UIOpenDownloadWindow[name, FileNameTake[name // URLDecode]] (*`*), $Client];
 ];
 
+Controller["CopyLink", __] := Function[name,
+  WebUISubmit[Global`UIOpenCopyLink[name] (*`*), $Client];
+];
+
+
+
 Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function[dname,
   With[{decoded = URLDecode[dname]},
     With[{splitted = FileNameSplit[decoded], promise = Promise[]},
@@ -232,6 +238,16 @@ With[{
         link.href = '/folder/' + url;
         link.target = "_blank"
         link.click();
+      }
+
+      core.UIOpenCopyLink = async (args, env) => {
+       const url = await interpretate(args[0], env);
+       try {
+         await navigator.clipboard.writeText(url);
+         console.log('Link copied to clipboard!');
+        } catch (err) {
+         alert(url);
+       }
       }
 
       setInterval(() => {
