@@ -508,7 +508,9 @@ makeMagic[cell_] := With[{notebook = cell["Notebook"]},
      "Content": "new line 3\nnew line 4"  // can be fewer/more lines than replaced
    }
    Response: "Lines were set"
-   Error: "Cell not found" | "From or To is not a number" | "Cannot edit output cells"
+   Error: "Cell not found" | "From and To must be positive integers" |
+          "From must be less than or equal to To" | "Line range is out of bounds" |
+          "Content must be a string" | "Cannot edit output cells"
 *)
 apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Body"]},
     With[
@@ -519,23 +521,31 @@ apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Bo
             content = body["Content"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
-        If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
+        If[!IntegerQ[from] || !IntegerQ[to] || from < 1 || to < 1,
+            Return[failure["From and To must be positive integers"], Module]
+        ];
+        If[from > to, Return[failure["From must be less than or equal to To"], Module] ];
+        If[!StringQ[content], Return[failure["Content must be a string"], Module] ];
         If[cell["Type"] === "Output", Return[failure["Cannot edit output cells"], Module] ];
 
         
-        With[{lines = StringSplit[cell["Data"], "\n", All] }, With[{
-            before = If[from-1 > 0, Take[lines, from-1], {}],
-            after = If[to==Length[lines], {}, Drop[lines, to] ]
-        },
-        {
-            newData = StringRiffle[Flatten[{before, content, after}], "\n"]   
-        },
-            
-            updateCellContent[cell, newData];
-            makeMagic[cell];
-            
-            "Lines were set"
-        ] ]
+        With[{lines = StringSplit[cell["Data"], "\n", All] },
+            If[to > Length[lines], Return[failure["Line range is out of bounds"], Module] ];
+
+            With[{
+                before = Take[lines, from - 1],
+                after = Drop[lines, to]
+            },
+            With[{
+                newData = StringRiffle[Flatten[{before, content, after}], "\n"]
+            },
+
+                updateCellContent[cell, newData];
+                makeMagic[cell];
+
+                "Lines were set"
+            ] ]
+        ]
     ]
 ]
 
@@ -600,7 +610,9 @@ apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request[
    }
    Response: {"Applied": 3, "Message": "Batch lines were set"}
    Error: "Cell not found" | "Changes must be a list" | "Cannot edit output cells" |
-          "Each change must have numeric From, To and string Content" |
+          "Each change must have positive integer From and To and string Content" |
+          "Each change must have From less than or equal to To" |
+          "Changes contain an out-of-bounds line range" |
           "Changes have overlapping line ranges"
 *)
 apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = request["Body"]},
@@ -615,19 +627,27 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
         If[Length[changes] === 0, Return["No changes to apply", Module] ];
         
         (* Validate all changes have required fields *)
-        If[!AllTrue[changes, (NumberQ[#["From"]] && NumberQ[#["To"]] && StringQ[#["Content"]]) &],
-            Return[failure["Each change must have numeric From, To and string Content"], Module]
+        If[!AllTrue[changes, (IntegerQ[#["From"]] && #["From"] > 0 &&
+                IntegerQ[#["To"]] && #["To"] > 0 && StringQ[#["Content"]]) &],
+            Return[failure["Each change must have positive integer From and To and string Content"], Module]
         ];
-        
-        (* Sort changes by From line descending to apply from bottom to top *)
-        With[{sortedChanges = SortBy[changes, -#["From"] &]},
-            (* Check for overlapping ranges *)
-            If[Length[sortedChanges] > 1 && !AllTrue[Partition[sortedChanges, 2, 1], (#[[1]]["From"] > #[[2]]["To"]) &],
-                Return[failure["Changes have overlapping line ranges"], Module]
+        If[!AllTrue[changes, (#["From"] <= #["To"]) &],
+            Return[failure["Each change must have From less than or equal to To"], Module]
+        ];
+
+        With[{lines = StringSplit[cell["Data"], "\n", All]},
+            If[!AllTrue[changes, (#["To"] <= Length[lines]) &],
+                Return[failure["Changes contain an out-of-bounds line range"], Module]
             ];
-            
-            (* Apply changes from bottom to top *)
-            With[{lines = StringSplit[cell["Data"], "\n", All]},
+
+            (* Sort changes by From line descending to apply from bottom to top *)
+            With[{sortedChanges = SortBy[changes, -#["From"] &]},
+                (* Check for overlapping ranges *)
+                If[Length[sortedChanges] > 1 && !AllTrue[Partition[sortedChanges, 2, 1], (#[[1]]["From"] > #[[2]]["To"]) &],
+                    Return[failure["Changes have overlapping line ranges"], Module]
+                ];
+
+                (* Apply changes from bottom to top *)
                 With[{newLines = Fold[
                     Function[{currentLines, change},
                         With[{
@@ -636,8 +656,8 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
                             content = change["Content"]
                         },
                             With[{
-                                before = If[from - 1 > 0, Take[currentLines, from - 1], {}],
-                                after = If[to >= Length[currentLines], {}, Drop[currentLines, to]]
+                                before = Take[currentLines, from - 1],
+                                after = Drop[currentLines, to]
                             },
                                 Flatten[{before, content, after}]
                             ]
