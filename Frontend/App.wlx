@@ -446,7 +446,7 @@ App[request_] := With[{
           <Kernels AppEvents={AppEvent} Controls={GlobalControls} Messager={GlobalMessanger} KernelList={kernels} OnConnected={initKernel[serverParams]} OnExit={deinitKernel}/>
 
           <div class="h-full" id="frame">
-            <div class="h-full flex flex-col" style="-webkit-app-region: drag">
+            <div class="h-full flex flex-col wljs-root-bg" style="-webkit-app-region: drag">
               <TopBar Menu={FakeMenu} CachedClient={cachedClient} ExtensionTemplates={ExtensionTemplates} AppEvents={AppEvent} Messanger={GlobalMessanger} Parameters={GlobalParameters} Controls={GlobalControls} Path={Path} Modals={ModalController}/>
               <Notifications Controls={GlobalControls} CachedClient={cachedClient} MessagePort={GlobalMessanger} ElectronQ={isElectron}/>
               <Views Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Kernels={kernels} Path={Path} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates} AppGlobals={appGlobals}/>

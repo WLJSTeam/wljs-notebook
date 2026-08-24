@@ -76,7 +76,7 @@ Status = Switch[
 
 <div class="px-4 py-0 w-full" id="{Uid}">
       <div class="relative mt-0 w-full">
-         <div class="relative w-full cursor-default rounded-md 0 h-7 pl-3 pr-2 text-left text-gray-500  ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-xs sm:leading-6 bg-d9 dark:bg-gray-700 dark:ring-gray-500" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
+         <div class="relative w-full cursor-default rounded-md 0 h-7 pl-3 pr-2 text-left text-gray-500 dark:text-gray-300 ring-1 ring-inset ring-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-xs sm:leading-6 bg-d9 dark:bg-gray-700 dark:ring-gray-500" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label">
          <span class="flex items-center h-full">
            <span id="state-{Uid}" class="inline-block h-2 w-2 flex-shrink-0 rounded-full" style="background: {Status}">
            </span>

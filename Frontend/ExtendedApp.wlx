@@ -441,10 +441,10 @@ App[request_] := With[{
           <Modals CachedClient={cachedClient} ModalsPort={ModalController} ElectronQ={isElectron}/>
           <ExtensionTemplates Template={"AppOverlay"} Path={Path} AppEvents={AppEvent} MessagePort={GlobalMessanger}/>
 
-          <div id="sidebar" style="user-select: none; -webkit-app-region: drag; overflow:hidden" class="hidden pt-10 md:fixed zen:hidden md:inset-y-0 md:z-50 md:w-sidesys md:flex md:flex-col linux:border-r owin:border-r osx:border-r border-gray-300 dark:border-gray-600 filter">        
+          <div id="sidebar" style="user-select: none; -webkit-app-region: drag; overflow:hidden" class="hidden pt-10 md:fixed zen:hidden md:inset-y-0 md:z-50 md:w-sidesys md:flex md:flex-col wljs-sidebar filter">        
             <Kernels AppEvents={AppEvent} Controls={GlobalControls} Messager={GlobalMessanger} KernelList={kernels} OnConnected={initKernel[serverParams]} OnExit={deinitKernel}/>
             <Sidebar ElectronQ={isElectron} RawPath={RawPath} ExtensionTemplates={ExtensionTemplates} AppEvents={AppEvent} Messanger={GlobalMessanger} Icons={ExtensionSidebarIcons} Parameters={GlobalParameters} Modals={ModalController} Secret={Secret} Path={Path} Controls={GlobalControls}/>
-            <div class="osx:border-b owin:border-b linux:border-b border-gray-300 dark:border-gray-600"></div>
+            <div></div>
             <div class="px-4 flex flex-row h-10 mt-auto grow-0 shrink-0 items-center" style="-webkit-app-region: drag;">
               <SettingsButton/>
             </div>
@@ -452,7 +452,7 @@ App[request_] := With[{
           
           <div class="md:pl-sidesys zen:pl-0 h-full" id="frame">
             <div id="s-resizer" class="hidden h-full md:block zen:hidden top-0 absolute w-1" style="cursor: ew-resize; z-index:1000; {ResizerStyle}"></div>          
-            <div class="h-full flex flex-col" style="-webkit-app-region: drag">
+            <div class="h-full flex flex-col wljs-root-bg" style="-webkit-app-region: drag">
               <TopBar Menu={FakeMenu} CachedClient={cachedClient} ExtensionTemplates={ExtensionTemplates} AppEvents={AppEvent} Messanger={GlobalMessanger} Parameters={GlobalParameters} Controls={GlobalControls} Path={Path} Modals={ModalController}/>
               <Notifications CachedClient={cachedClient} ElectronQ={isElectron} Controls={GlobalControls} MessagePort={GlobalMessanger}/>
               <Views Parameters={GlobalParameters} ElectronQ={isElectron} Modals={ModalController} Kernels={kernels} Path={Path} AppEvents={AppEvent} Messanger={GlobalMessanger} Controls={GlobalControls} ExtensionTemplateInjection={ExtensionTemplates} AppGlobals={appGlobals}/>

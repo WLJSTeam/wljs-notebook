@@ -78,7 +78,7 @@ TeXFormAsync[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
 
   ParallelSubmitFunctionAsync[Function[{args, cbk},
-    cbk @ ToString[TeXForm @@ args, InputForm]
+    cbk @ StringReplace[ToString[TeXForm @@ args, InputForm], "\\\\"->"\\\\\\"]
   ], {all}]
 )
 

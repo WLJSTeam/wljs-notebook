@@ -360,7 +360,7 @@ input::selection {
   padding-left: 0.5rem;
 }
 
-[transparency="true"] .bg-g-trans {
+.bg-g-trans {
   background: transparent !important;
 }
 
@@ -487,6 +487,32 @@ input::selection {
 
 .focus\:bg-sys-25:focus {
   background-color: var(--system-accent-color-25);
+}
+.wljs-sidebar {
+    box-shadow: 1px 0px 1px 0px #CFCFCF;  
+}
+.wljs-topbar {
+    background: rgb(240, 240, 240);
+    border-bottom-width: 0;
+    box-shadow: -1px 1px 2px 0px #CFCFCF;  
+}
+
+.wljs-root-bg {
+    background: white;
+}
+
+@media (prefers-color-scheme: dark) {
+    .wljs-topbar {
+        background: rgb(52, 52, 52);
+        border-bottom-width: 0;
+        box-shadow: -1px 1px 0px 0px #000000;       
+    }
+    .wljs-root-bg {
+        background: rgb(30, 30, 31);
+    }
+    .wljs-sidebar {
+        box-shadow: 1px 0px 0px 0px #000000;       
+    }    
 }
 
 .wljs-card {

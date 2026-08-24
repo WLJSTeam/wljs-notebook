@@ -93,7 +93,7 @@ Component[OptionsPattern[]] := With[{
                     </nav>
     
                 </div>
-                <div id="settings-content" class="px-4 py-0 h-full overflow-y-auto dark:text-gray-400">
+                <div id="settings-content" class="px-4 py-0 h-full sc-b overflow-y-auto dark:text-gray-400">
                   <ul role="list" class="p-0 divide-y divide-gray-200 dark:divide-gray-600">
                       <li class="list-none px-4 py-3 sm:px-0">
                           <GeneralSettings Modals={modals} Messager={log} Settings={settings} OnSave={updateSettings[log]} Secret={secret}/>
