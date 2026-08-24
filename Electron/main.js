@@ -3240,16 +3240,16 @@ function create_first_window() {
 
         
 
-                if (isFile(process.argv[pos])) {
-                    app.addRecentDocument(process.argv[pos]);
-                    create_window({url: server.url.default() + '/' + encodeURIComponent(process.argv[pos]), title: path.basename(process.argv[pos]), show: false, focus: true, cacheClear: server.wasUpdated});
-                } else {
-                    if (typeof process.argv[pos] == 'string') {
-                        create_window({url: server.url.default() + '/folder/' + encodeURIComponent(process.argv[pos]), title:  path.basename(process.argv[pos]), show: false, focus: true, cacheClear: server.wasUpdated});
-                    } else {
-                        create_window({url: server.url.default(), title: 'Default', show: false, focus: false, cacheClear: server.wasUpdated});
-                    }
+                // AppImage desktop entries can supply only Electron flags (for example, --no-sandbox).
+                const requestedPath = process.argv[pos];
 
+                if (typeof requestedPath !== 'string') {
+                    create_window({url: server.url.default(), title: 'Default', show: false, focus: false, cacheClear: server.wasUpdated});
+                } else if (isFile(requestedPath)) {
+                    app.addRecentDocument(requestedPath);
+                    create_window({url: server.url.default() + '/' + encodeURIComponent(requestedPath), title: path.basename(requestedPath), show: false, focus: true, cacheClear: server.wasUpdated});
+                } else {
+                    create_window({url: server.url.default() + '/folder/' + encodeURIComponent(requestedPath), title:  path.basename(requestedPath), show: false, focus: true, cacheClear: server.wasUpdated});
                 }
             
 
