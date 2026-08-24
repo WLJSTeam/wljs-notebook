@@ -494,7 +494,7 @@ input::selection {
 .wljs-topbar {
     background: rgb(240, 240, 240);
     border-bottom-width: 0;
-    box-shadow: -1px 1px 2px 0px #CFCFCF;  
+    box-shadow: 0px 1px 2px 0px #CFCFCF;  
 }
 
 .wljs-root-bg {
@@ -505,7 +505,7 @@ input::selection {
     .wljs-topbar {
         background: rgb(52, 52, 52);
         border-bottom-width: 0;
-        box-shadow: -1px 1px 0px 0px #000000;       
+        box-shadow: 0px 1px 0px 0px #000000;       
     }
     .wljs-root-bg {
         background: rgb(30, 30, 31);
