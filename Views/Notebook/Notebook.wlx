@@ -625,6 +625,9 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                             EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                 Delete[transaction];
                                 Echo["Finished evaluation"];
+                            ], "Error" -> Function[Null,
+                                Delete[transaction];
+                                Echo["Transaction error"];
                             ]}];
 
                             notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];
@@ -654,6 +657,9 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                                         EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                             Delete[transaction];
                                             Echo["Finished evaluation"];
+                                        ], "Error" -> Function[Null,
+                                            Delete[transaction];
+                                            Echo["Transaction error"];
                                         ]}];
 
                                         notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];

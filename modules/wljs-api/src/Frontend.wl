@@ -9,6 +9,7 @@ BeginPackage["CoffeeLiqueur`Extensions`API`", {
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
+    "CodeParser`",
     "CoffeeLiqueur`Extensions`FrontendObject`"
 }]
 
@@ -864,6 +865,17 @@ getMessagesEventChannel[kernel_, prop_] := If[clonedChannels[kernel[prop]]["Orig
   clonedChannels[kernel[prop]]["Target"]  
 ]
 
+
+wolframInputCellQ[cell_] := If[cell["Display"] === "codemirror",
+    !StringMatchQ[
+        cell["Data"],
+        StartOfString ~~ (LetterCharacter | DigitCharacter | "_" | "-")... ~~ "." ~~
+            (LetterCharacter | DigitCharacter | "_").. ~~
+            (EndOfString | ("\r\n" | "\n" | "\r") ~~ ___)
+    ],
+    False
+]
+
 (* 
    /api/notebook/cells/evaluate/ - Evaluate a cell and get output cell IDs
    
@@ -894,6 +906,11 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
         
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
+
+        If[wolframInputCellQ[cell], If[!TrueQ[CheckSyntax[cell["Data"]]],
+            Return[failure[ToString[CheckSyntax[cell["Data"]]]], Module];
+        ]];
+
         If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
         If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
@@ -1195,6 +1212,27 @@ existsOrTrue[settings_, field_] := If[KeyExistsQ[settings, field], settings[fiel
 With[{http = AppExtensions`HTTPUHandler},
     http["MessageHandler", "ExternalAPI"] = AssocUMatchQ[<|"Path" -> ("/api/"~~___)|>] -> HTTPAPICall;
 ];
+
+testQuestionMarks[s_String] := StringMatchQ[StringTrim[s], StartOfString~~("?" | "??")~~__]
+testQuestionMarks[_] := False
+
+CheckSyntax[_?testQuestionMarks] := True
+
+CheckSyntax[str_String] :=
+    Module[{syntaxErrors = Cases[CodeParser`CodeParse[str],(ErrorNode|AbstractSyntaxErrorNode|UnterminatedGroupNode|UnterminatedCallNode)[___],Infinity]},
+        If[Length[syntaxErrors]=!=0 ,
+
+
+            Return[StringRiffle[
+                TemplateApply["Syntax error `` at line `` column ``",
+                    {ToString[#1],Sequence@@#3[CodeParser`Source][[1]]}
+                ]&@@@syntaxErrors
+
+            , "\n"], Module];
+        ];
+        Return[True, Module];
+    ];
+
 
 End[]
 EndPackage[]
