@@ -257,10 +257,6 @@ EventHandler[Secret, {"Load" -> Function[Null,
             </StringRiffle>
 
             <StringRiffle>
-                <Checkbox Label={"Inner window transparency"} Event={controller} Topic={"Transparency"} Description={"Makes a notebook background transparent. It might not work on all OS"} Checked={settings["Transparency"]}/>
-            </StringRiffle>
-
-            <StringRiffle>
                 <Checkbox Label={"Run in a tray"} Event={controller} Topic={"RunInTray"} Description={"Keeps WLJS kernel alive, even if all windows are closed (Windows/Linux only)"} Checked={defaultTray}/>
             </StringRiffle>
 

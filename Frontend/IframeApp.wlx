@@ -227,7 +227,7 @@ App[request_] := With[{
             ""
         ], ""],
 
-        Transparency = If[KeyExistsQ[settings, "Transparency"], If[settings["Transparency"], "true", "false"], "false"]
+        Transparency = "true"
     },
 
     (* /* collect any runtime changes  */ *)

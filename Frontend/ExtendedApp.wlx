@@ -311,7 +311,7 @@ App[request_] := With[{
 
         ResizerStyle = If[!MatchQ[Lookup[request["Headers"], "AppOS", "Browser"], "OSX" | "Browser"], "margin-top: 4rem;margin-left: 1rem;height: 70%;", ""],
 
-        Transparency = If[KeyExistsQ[settings, "Transparency"], If[settings["Transparency"], "true", "false"], "false"],
+        Transparency = "true",
 
         FakeMenu = 
           Switch[If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],
