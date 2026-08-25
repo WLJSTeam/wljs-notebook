@@ -364,6 +364,14 @@ input::selection {
   background: transparent !important;
 }
 
+[os="WindowsLegacy"] .bg-g-trans {
+  background: white !important;
+}
+
+[os="Windows"] .bg-g-trans {
+  background: white !important;
+}
+
 .ttint {
   transition: height 0.2s;
   opacity: 0.18;
@@ -494,12 +502,40 @@ input::selection {
 .wljs-topbar {
     background: rgb(240, 240, 240);
     border-bottom-width: 0;
-    box-shadow: 0px 1px 2px 0px #CFCFCF;  
+    box-shadow: 0px 1px 2px 0px #CFCFCF;
 }
 
+
+
 .wljs-root-bg {
-    background: white;
+  background: white;
 }
+
+[os="WindowsLegacy"] .wljs-root-bg {
+  background: transparent;
+}
+
+[os="Windows"] .wljs-root-bg {
+  background: transparent;
+}
+
+[os="Windows"] .wljs-sidebar {
+  box-shadow: none
+}
+
+  [os="WindowsLegacy"] .wljs-sidebar {
+    box-shadow: none
+  }
+
+[os="Windows"] .wljs-topbar {
+  box-shadow: none;
+  background:none;
+}
+
+  [os="WindowsLegacy"] .wljs-topbar {
+    box-shadow: none;
+    background:none;
+  }
 
 @media (prefers-color-scheme: dark) {
     .wljs-topbar {
@@ -512,7 +548,16 @@ input::selection {
     }
     .wljs-sidebar {
         box-shadow: 1px 0px 0px 0px #000000;       
-    }    
+    }  
+
+  
+  [os="WindowsLegacy"] .bg-g-trans {
+  background: #e1e1e1 !important;
+}
+
+[os="Windows"] .bg-g-trans {
+  background: #e1e1e1 !important;
+}
 }
 
 .wljs-card {
