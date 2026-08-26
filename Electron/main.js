@@ -1551,7 +1551,7 @@ const windows = {
                         win.setBackgroundColor("#eeeeee");
                         //titleBarOverlay
                     } else {
-                        win.setBackgroundColor("#212731");
+                        win.setBackgroundColor("#292929");
                     }
                 }
 
@@ -2042,7 +2042,7 @@ function create_window(opts, cbk = () => {}) {
                         win.setBackgroundColor("#eeeeee");
                         //titleBarOverlay
                     } else {
-                        win.setBackgroundColor("#212731");
+                        win.setBackgroundColor("#292929");
                     }
                 }
 
@@ -2117,7 +2117,7 @@ function create_window(opts, cbk = () => {}) {
                         win.setBackgroundColor("#eeeeee");
                         //titleBarOverlay
                     } else {
-                        win.setBackgroundColor("#212731");
+                        win.setBackgroundColor("#292929");
                     }
                 }
 
