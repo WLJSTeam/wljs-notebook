@@ -1188,10 +1188,10 @@
 }
 
 .markdown {
-    font-size: large;
+    font-size: medium;
     /*color: rgba(55,65,81);*/
     padding-left: 0.1rem;
-    color: rgba(31,41,55);
+    color: rgba(55,65,81);
     line-height:1.625;
 }
 
