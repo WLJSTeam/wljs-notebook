@@ -964,7 +964,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                               |> ], {out, shortened}]},
                               
                                 If[Length[accumulatedMessages] > 0,
-                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages]|>}]]; 
+                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
                                 ,
                                     EventFire[promise, Resolve,  cellsGenerated]; 
                                 ];
@@ -984,14 +984,18 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     ]
 ]
 
-trimMessages[messages_List] := Select[
-  StringTrim @ 
+limitStringLength[_, _] := str
+limitStringLength[str_String, max_] := StringTake[str, Min[max, StringLength[str]]]
+
+trimMessages[messages_List, maxCharacters_:1000] := Select[
+ limitStringLength[StringTrim @ 
   StringReplace[
     DeleteDuplicates[messages], 
     
     RegularExpression["\\s+"] -> " "
-  ],
-  StringFreeQ[#, "will be suppressed during this calculation"] &
+  ], 
+ maxCharacters],
+ StringFreeQ[#, "will be suppressed during this calculation"] &
 ];
 
 majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
@@ -1122,12 +1126,12 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                     postProcess[#["Result"]], 
                     "⚠ " <> StringRiffle[
                       Select[
-                        StringTrim @ 
+                        limitStringLength[StringTrim @ 
                         StringReplace[
                           DeleteDuplicates[#["MessagesText"]], 
                           
                           RegularExpression["\\s+"] -> " "
-                        ],
+                        ], maxCharacters],
                         StringFreeQ[#, "will be suppressed during this calculation"] &
                       ], 
                       " | "
