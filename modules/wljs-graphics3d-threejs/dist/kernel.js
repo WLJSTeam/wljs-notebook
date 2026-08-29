@@ -2015,84 +2015,6 @@ g3d.LookAt.virtual = true;
 
 
 const decodeTransformation = (arrays, env) => {
-
-  /*console.log(p);
-  var centering = false;
-  var centrans = [];
-
-  if (p.length === 1) {
-    p = p[0];
-  }
-  if (p.length === 1) {
-    p = p[0];
-  } else if (p.length === 2) {
-    console.log(p);
-    if (p[1] === "Center") {
-      centering = true;
-    } else {
-      console.log("NON CENTERING ISSUE!!!");
-      console.log(p);
-      centrans = p[1];
-      console.log("???");
-    }
-    //return;
-    p = p[0];
-  }
-
-  if (p.length === 3) {
-    if (typeof p[0] === "number") {
-      var dir = p;
-      var matrix = new THREE.Matrix4().makeTranslation(...dir, 1);
-    } else {
-      //make it like Matrix4
-      p.forEach((el) => {
-        el.push(0);
-      });
-      p.push([0, 0, 0, 1]);
-
-      var matrix = new THREE.Matrix4();
-      console.log("Apply matrix to group::");
-      matrix.set(...aflatten(p));
-    }
-  } else {
-    console.log(p);
-    console.error("Unexpected length matrix: :: " + p);
-  }
-
-  //Backup of params
-  var copy = Object.assign({}, env);
-  copy.mesh = group;
-  await interpretate(args[0], copy);
-  console.log('MATRIX');
-  console.log(matrix);
-
-  if (centering || centrans.length > 0) {
-    console.log("::CENTER::");
-    var bbox = new THREE.Box3().setFromObject(group);
-    console.log(bbox);
-    var center = bbox.max.clone().add(bbox.min).divideScalar(2);
-    if (centrans.length > 0) {
-      console.log("CENTRANS");
-      center = center.fromArray(centrans);
-    }
-    console.log(center);
-
-    var translate = new THREE.Matrix4().makeTranslation(
-      -center.x,
-      -center.y,
-      -center.z,
-    );
-    group.applyMatrix4(translate);
-    group.applyMatrix4(matrix);
-    translate = new THREE.Matrix4().makeTranslation(
-      center.x,
-      center.y,
-      center.z
-    );
-    group.applyMatrix4(translate);
-  } else {
-    group.applyMatrix4(matrix);
-  }*/
   let matrix = [];
 
   if (!env.local.type) {
@@ -2130,7 +2052,7 @@ const decodeTransformation = (arrays, env) => {
     break;
 
     case 'complex':
-      matrix = [...arrays[0]];
+      matrix = arrays[0].map((el) => [...el]);
       const v = [...arrays[1]];
 
       matrix[0].push(v[0]);

@@ -59,17 +59,20 @@ BuildVocabularAsync := With[{},
 
 currentContextPath = $ContextPath;
 
+contextAliases = {};
+
 BuildVocabular := With[{},
     BuildVocabular = Null;
  
     If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; Return[$Failed]; ];
     
     (* Echo["Buildind vocabular for autocomplete..."]; *)
-    With[{r = Flatten[( ((*Echo[#]; *){#, Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[$ContextPath, blacklist], 1]},
+    With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[$ContextPath, blacklist], 1]},
         definitions = Join[definitions, r] // DeleteDuplicates;
     ];
 
     currentContextPath = $ContextPath;
+    contextAliases = Keys[$ContextAliases];
 
     Internal`AddHandler["GetFileEvent",
         If[checkContext[#], 
@@ -95,13 +98,31 @@ reBuildVocabulary := With[{},
             If[now - lastTime > 4,
                 TaskRemove[timer];
 
-                With[{contexts = Complement[$ContextPath, currentContextPath]}, 
+                With[{
+                    contexts = Complement[$ContextPath, currentContextPath],
+                    aliases = Complement[Keys[$ContextAliases], contextAliases]
+                }, 
                     currentContextPath = $ContextPath;
+
+                    If[Length[aliases] > 0,
+                     Module[{old = definitions, spinner = EchoLabel["Spinner"][  "Rebuilding aliases"]},
+
+                            With[{r = Flatten[Function[f, {f, ToString@Information[f, "Usage"]}] /@ StringReplace[Names[#<>"*"], $ContextAliases[#]->#] &/@ Take[$ContextAliases//Keys ,-1], 1]},
+                            definitions = Join[definitions, r] // DeleteDuplicates;
+                        ];
+
+
+
+                        extend[Complement[definitions, old] ];
+                        spinner["Cancel"];
+                        timer = Null;
+                     ];
+                    ];
                     
                     If[Length[contexts] > 0, 
                         Module[{old = definitions, spinner = EchoLabel["Spinner"]["Rebuilding vocabulary"]},
 
-                            With[{r = Flatten[( ((*Echo[#]; *){#, Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
+                            With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
                                 definitions = Join[definitions, r] // DeleteDuplicates;
                             ];
 

@@ -625,6 +625,9 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                             EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                 Delete[transaction];
                                 Echo["Finished evaluation"];
+                            ], "Error" -> Function[Null,
+                                Delete[transaction];
+                                Echo["Transaction error"];
                             ]}];
 
                             notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];
@@ -654,6 +657,9 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                                         EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                             Delete[transaction];
                                             Echo["Finished evaluation"];
+                                        ], "Error" -> Function[Null,
+                                            Delete[transaction];
+                                            Echo["Transaction error"];
                                         ]}];
 
                                         notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];
@@ -1312,7 +1318,7 @@ Component[OptionsPattern[]] := With[{
 
     With[{nid = notebook["Hash"], mainStyle = If[TrueQ[parameters["Draggable"]], "app-region: drag", "app-region: no-drag"]},
 
-        <main class="grow flex flex-col overflow-hidden dark:invert  owin:bg-white dark:win:contrast-100 dark:win:shadow-0 win:m-4 win:mt-2 win:rounded-lg win:bg-white win:shadow linux:bg-white bg-g-trans" style="{mainStyle}">
+        <main class="grow flex flex-col overflow-hidden dark:invert dark:win:contrast-100 dark:win:shadow-0 win:m-4 win:mt-2 win:rounded-lg win:shadow bg-g-trans" style="{mainStyle}">
             <KernelIndicator Notebook={notebook}/>
             <ExtensionTemplateInjection Template={"Notebook-Prolog"} Notebook={notebook} Event={secret} />
             <TopBar Notebook={notebook}/>

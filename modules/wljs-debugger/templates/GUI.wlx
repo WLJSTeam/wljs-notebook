@@ -439,7 +439,7 @@ App[request_] := Module[{
                      </div>
 
                      <div class="overflow-hidden hidden border border-gray-200 dark:border-gray-700 h-full">
-	                        <div class="px-2 py-2 overflow-y-scroll text-xs h-full" id="container" style="color:#545353">
+	                        <div class="px-2 py-2 overflow-y-scroll sc-b text-xs h-full" id="container" style="color:#545353">
 	                            
 	                        </div>
                     </div>

@@ -1563,7 +1563,7 @@ ClearAll[MathMLForm]
 
 TeXForm[all__] := (
   If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-  ParallelSubmit[ToString[TeXForm[all], InputForm]]//WaitAll
+  ParallelSubmit[StringReplace[ToString[TeXForm[all], InputForm], "\\\\"->"\\\\\\"]]//WaitAll
 )
 
 MathMLForm[all__] := (

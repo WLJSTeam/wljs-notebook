@@ -1,0 +1,230 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes *3.1.1*
+<Now/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes *3.1.1*
+Sat 29 Aug 2026 14:56:29
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## UI and colors
+We neutralised base colors, reducing the blue component. The contrast between text, buttons, and the background was reduced. The reduced backdrop blur on Windows and macOS also accounts for slightly lower GPU usage.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## UI and colors
+We neutralised base colors, reducing the blue component. The contrast between text, buttons, and the background was reduced. The reduced backdrop blur on Windows and macOS also accounts for slightly lower GPU usage.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## TraditionalForm improvements
+This also accounts for a similar bug: combining `TeXForm` with `TeXView` resulted in incorrectly rendered matrices. It now works.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## TraditionalForm improvements
+This also accounts for a similar bug: combining `TeXForm` with `TeXView` resulted in incorrectly rendered matrices. It now works.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MatrixForm[PauliMatrix[3]] // TraditionalForm
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Null)(*,*)(*"1:eJxdjdsKwjAMhicI4mN40UulG8zDpXaCFxNhHvByp3QWS4vtxvQNfGyzAyJC8iV/fpJMUh3xgeM4dojYaZl3aoZgmnOAUDwqqEy8fZagrNDKxvvE3HNdKwZS2vgE14uAutsbIQ6cS530h8aIcxQGkOkcjm9UxGcSeEm8JaFrFCkUQpHFJjEmeZFFgG2WNRVdj7qYxJsjadP5rI/WpF9z6v67PgOV/55tZ0YUN3y9QvUB1VlAbQ=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Updated mermaid module
+A new version of the Mermaid processor is available from `.mermaid` cells, allowing for much more complex styling:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Updated mermaid module
+A new version of the Mermaid processor is available from `.mermaid` cells, allowing for much more complex styling:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.mermaid
+---
+config:
+  layout: elk
+---
+flowchart LR
+subgraph s1["Raw Commits"]
+n1["Branch Main"]
+n2["Branch Dev"]
+n3["Feature Branches"]
+end
+s1 --> n4["Merge Conflict Resolver"]
+n4 --> n5["Build Pipeline Trigger"]
+n8(["Approval Gate"]) --> n5
+n5 -- "<span style='padding-left:10px;'>Generate Artifacts Only</span>" --> n7["Docker Image<br>Single Registry Path<br>n Container Versions"]
+
+
+n1@{ shape: rect}
+n2@{ shape: rect}
+n3@{ shape: rect}
+
+%-------------------------------------------------------------------------%
+Display: mermaid
+Type: Output
+%-------------------------------------------------------------------------%
+---
+config:
+  layout: elk
+---
+flowchart LR
+subgraph s1["Raw Commits"]
+n1["Branch Main"]
+n2["Branch Dev"]
+n3["Feature Branches"]
+end
+s1 --> n4["Merge Conflict Resolver"]
+n4 --> n5["Build Pipeline Trigger"]
+n8(["Approval Gate"]) --> n5
+n5 -- "<span style='padding-left:10px;'>Generate Artifacts Only</span>" --> n7["Docker Image<br>Single Registry Path<br>n Container Versions"]
+
+
+n1@{ shape: rect}
+n2@{ shape: rect}
+n3@{ shape: rect}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Minor Graphics3D improvements
+We fixed `GeometricTransformation`, which mutated shared symbols and resulted in visual glitches across multiple instances sharing the same data.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Minor Graphics3D improvements
+We fixed `GeometricTransformation`, which mutated shared symbols and resulted in visual glitches across multiple instances sharing the same data.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Improved autocomplete rescan
+:::note
+This is an optional feature; __you can switch it on__ in the Editor section of the settings. The kernel actively discovers newly loaded packages with every `Get` or `Needs` call
+:::
+
+Autocomplete now resolves symbols loaded using context aliases. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Improved autocomplete rescan
+:::note
+This is an optional feature; __you can switch it on__ in the Editor section of the settings. The kernel actively discovers newly loaded packages with every `Get` or `Needs` call
+:::
+
+Autocomplete now resolves symbols loaded using context aliases. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Needs["Quaternions`"->"qa`"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+![](/attachments/Screenshot-2026-08-29-at-14.39.54-15a.png)
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+![](/attachments/Screenshot-2026-08-29-at-14.39.54-15a.png)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## MCP Server patches
+- Stronger type checks for tool calls
+- Fixed minor bugs with argument passing
+- Added a syntax checker
+- Resolved an issue with CORS blocking
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## MCP Server patches
+- Stronger type checks for tool calls
+- Fixed minor bugs with argument passing
+- Added a syntax checker
+- Resolved an issue with CORS blocking
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -9,6 +9,7 @@ BeginPackage["CoffeeLiqueur`Extensions`API`", {
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
+    "CodeParser`",
     "CoffeeLiqueur`Extensions`FrontendObject`"
 }]
 
@@ -508,7 +509,9 @@ makeMagic[cell_] := With[{notebook = cell["Notebook"]},
      "Content": "new line 3\nnew line 4"  // can be fewer/more lines than replaced
    }
    Response: "Lines were set"
-   Error: "Cell not found" | "From or To is not a number" | "Cannot edit output cells"
+   Error: "Cell not found" | "From and To must be positive integers" |
+          "From must be less than or equal to To" | "Line range is out of bounds" |
+          "Content must be a string" | "Cannot edit output cells"
 *)
 apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Body"]},
     With[
@@ -519,23 +522,31 @@ apiCall[request_, "/api/notebook/cells/setlines/"] := Module[{body = request["Bo
             content = body["Content"]
         },
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell not found"], Module] ];
-        If[!NumberQ[from] || !NumberQ[to], Return[failure["From or To is not a number"], Module] ];
+        If[!IntegerQ[from] || !IntegerQ[to] || from < 1 || to < 1,
+            Return[failure["From and To must be positive integers"], Module]
+        ];
+        If[from > to, Return[failure["From must be less than or equal to To"], Module] ];
+        If[!StringQ[content], Return[failure["Content must be a string"], Module] ];
         If[cell["Type"] === "Output", Return[failure["Cannot edit output cells"], Module] ];
 
         
-        With[{lines = StringSplit[cell["Data"], "\n", All] }, With[{
-            before = If[from-1 > 0, Take[lines, from-1], {}],
-            after = If[to==Length[lines], {}, Drop[lines, to] ]
-        },
-        {
-            newData = StringRiffle[Flatten[{before, content, after}], "\n"]   
-        },
-            
-            updateCellContent[cell, newData];
-            makeMagic[cell];
-            
-            "Lines were set"
-        ] ]
+        With[{lines = StringSplit[cell["Data"], "\n", All] },
+            If[to > Length[lines], Return[failure["Line range is out of bounds"], Module] ];
+
+            With[{
+                before = Take[lines, from - 1],
+                after = Drop[lines, to]
+            },
+            With[{
+                newData = StringRiffle[Flatten[{before, content, after}], "\n"]
+            },
+
+                updateCellContent[cell, newData];
+                makeMagic[cell];
+
+                "Lines were set"
+            ] ]
+        ]
     ]
 ]
 
@@ -600,7 +611,9 @@ apiCall[request_, "/api/notebook/cells/insertlines/"] := Module[{body = request[
    }
    Response: {"Applied": 3, "Message": "Batch lines were set"}
    Error: "Cell not found" | "Changes must be a list" | "Cannot edit output cells" |
-          "Each change must have numeric From, To and string Content" |
+          "Each change must have positive integer From and To and string Content" |
+          "Each change must have From less than or equal to To" |
+          "Changes contain an out-of-bounds line range" |
           "Changes have overlapping line ranges"
 *)
 apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = request["Body"]},
@@ -615,19 +628,27 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
         If[Length[changes] === 0, Return["No changes to apply", Module] ];
         
         (* Validate all changes have required fields *)
-        If[!AllTrue[changes, (NumberQ[#["From"]] && NumberQ[#["To"]] && StringQ[#["Content"]]) &],
-            Return[failure["Each change must have numeric From, To and string Content"], Module]
+        If[!AllTrue[changes, (IntegerQ[#["From"]] && #["From"] > 0 &&
+                IntegerQ[#["To"]] && #["To"] > 0 && StringQ[#["Content"]]) &],
+            Return[failure["Each change must have positive integer From and To and string Content"], Module]
         ];
-        
-        (* Sort changes by From line descending to apply from bottom to top *)
-        With[{sortedChanges = SortBy[changes, -#["From"] &]},
-            (* Check for overlapping ranges *)
-            If[Length[sortedChanges] > 1 && !AllTrue[Partition[sortedChanges, 2, 1], (#[[1]]["From"] > #[[2]]["To"]) &],
-                Return[failure["Changes have overlapping line ranges"], Module]
+        If[!AllTrue[changes, (#["From"] <= #["To"]) &],
+            Return[failure["Each change must have From less than or equal to To"], Module]
+        ];
+
+        With[{lines = StringSplit[cell["Data"], "\n", All]},
+            If[!AllTrue[changes, (#["To"] <= Length[lines]) &],
+                Return[failure["Changes contain an out-of-bounds line range"], Module]
             ];
-            
-            (* Apply changes from bottom to top *)
-            With[{lines = StringSplit[cell["Data"], "\n", All]},
+
+            (* Sort changes by From line descending to apply from bottom to top *)
+            With[{sortedChanges = SortBy[changes, -#["From"] &]},
+                (* Check for overlapping ranges *)
+                If[Length[sortedChanges] > 1 && !AllTrue[Partition[sortedChanges, 2, 1], (#[[1]]["From"] > #[[2]]["To"]) &],
+                    Return[failure["Changes have overlapping line ranges"], Module]
+                ];
+
+                (* Apply changes from bottom to top *)
                 With[{newLines = Fold[
                     Function[{currentLines, change},
                         With[{
@@ -636,8 +657,8 @@ apiCall[request_, "/api/notebook/cells/setlines/batch/"] := Module[{body = reque
                             content = change["Content"]
                         },
                             With[{
-                                before = If[from - 1 > 0, Take[currentLines, from - 1], {}],
-                                after = If[to >= Length[currentLines], {}, Drop[currentLines, to]]
+                                before = Take[currentLines, from - 1],
+                                after = Drop[currentLines, to]
                             },
                                 Flatten[{before, content, after}]
                             ]
@@ -844,6 +865,17 @@ getMessagesEventChannel[kernel_, prop_] := If[clonedChannels[kernel[prop]]["Orig
   clonedChannels[kernel[prop]]["Target"]  
 ]
 
+
+wolframInputCellQ[cell_] := If[cell["Display"] === "codemirror",
+    !StringMatchQ[
+        cell["Data"],
+        StartOfString ~~ (LetterCharacter | DigitCharacter | "_" | "-")... ~~ "." ~~
+            (LetterCharacter | DigitCharacter | "_").. ~~
+            (EndOfString | ("\r\n" | "\n" | "\r") ~~ ___)
+    ],
+    False
+]
+
 (* 
    /api/notebook/cells/evaluate/ - Evaluate a cell and get output cell IDs
    
@@ -874,6 +906,11 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
         {events = getMessagesEventChannel[notebook, "MessangerChannel"]},
         
         If[!MatchQ[cell, _cell`CellObj], Return[failure["Cell is missing"], Module] ];
+
+        If[wolframInputCellQ[cell], If[!TrueQ[CheckSyntax[cell["Data"]]],
+            Return[failure[ToString[CheckSyntax[cell["Data"]]]], Module];
+        ]];
+
         If[!NumberQ[timeout], Return[failure["TimeLimit is not a number"], Module]];
         If[!NumberQ[maxCharacters], Return[failure["MaxCharacters is not a number"], Module]];
         If[TrueQ[notebook["Opened"] ], 
@@ -927,7 +964,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                               |> ], {out, shortened}]},
                               
                                 If[Length[accumulatedMessages] > 0,
-                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages]|>}]]; 
+                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
                                 ,
                                     EventFire[promise, Resolve,  cellsGenerated]; 
                                 ];
@@ -947,14 +984,18 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     ]
 ]
 
-trimMessages[messages_List] := Select[
-  StringTrim @ 
+limitStringLength[_, _] := str
+limitStringLength[str_String, max_] := StringTake[str, Min[max, StringLength[str]]]
+
+trimMessages[messages_List, maxCharacters_:1000] := Select[
+ limitStringLength[StringTrim @ 
   StringReplace[
     DeleteDuplicates[messages], 
     
     RegularExpression["\\s+"] -> " "
-  ],
-  StringFreeQ[#, "will be suppressed during this calculation"] &
+  ], 
+ maxCharacters],
+ StringFreeQ[#, "will be suppressed during this calculation"] &
 ];
 
 majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
@@ -1085,12 +1126,12 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                     postProcess[#["Result"]], 
                     "⚠ " <> StringRiffle[
                       Select[
-                        StringTrim @ 
+                        limitStringLength[StringTrim @ 
                         StringReplace[
                           DeleteDuplicates[#["MessagesText"]], 
                           
                           RegularExpression["\\s+"] -> " "
-                        ],
+                        ], maxCharacters],
                         StringFreeQ[#, "will be suppressed during this calculation"] &
                       ], 
                       " | "
@@ -1175,6 +1216,27 @@ existsOrTrue[settings_, field_] := If[KeyExistsQ[settings, field], settings[fiel
 With[{http = AppExtensions`HTTPUHandler},
     http["MessageHandler", "ExternalAPI"] = AssocUMatchQ[<|"Path" -> ("/api/"~~___)|>] -> HTTPAPICall;
 ];
+
+testQuestionMarks[s_String] := StringMatchQ[StringTrim[s], StartOfString~~("?" | "??")~~__]
+testQuestionMarks[_] := False
+
+CheckSyntax[_?testQuestionMarks] := True
+
+CheckSyntax[str_String] :=
+    Module[{syntaxErrors = Cases[CodeParser`CodeParse[str],(ErrorNode|AbstractSyntaxErrorNode|UnterminatedGroupNode|UnterminatedCallNode)[___],Infinity]},
+        If[Length[syntaxErrors]=!=0 ,
+
+
+            Return[StringRiffle[
+                TemplateApply["Syntax error `` at line `` column ``",
+                    {ToString[#1],Sequence@@#3[CodeParser`Source][[1]]}
+                ]&@@@syntaxErrors
+
+            , "\n"], Module];
+        ];
+        Return[True, Module];
+    ];
+
 
 End[]
 EndPackage[]
