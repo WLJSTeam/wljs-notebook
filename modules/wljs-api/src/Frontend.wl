@@ -984,8 +984,9 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
     ]
 ]
 
-limitStringLength[_, _] := str
-limitStringLength[str_String, max_] := StringTake[str, Min[max, StringLength[str]]]
+limitStringLength[str_, _] := str
+limitStringLength[str_List, m_] := limitStringLength[#, m]&/@str
+limitStringLength[str_String, max_] := With[{l = StringLength[str]}, If[max >= l, str, StringTake[str, max ]<>"..." ]]
 
 trimMessages[messages_List, maxCharacters_:1000] := Select[
  limitStringLength[StringTrim @ 
