@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WOLFRAM_SYSTEM_ID: Linux-x86-64-v8
+      EP_GH_IGNORE_TIME: true
     steps:
       - name: Install build tools
         run: |
