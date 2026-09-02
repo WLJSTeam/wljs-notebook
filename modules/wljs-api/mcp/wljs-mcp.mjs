@@ -169,7 +169,7 @@ Workflow:
 3. Edit only INPUT cells. 
 4. Outputs are produced by evaluate_cell.
 5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
-6. Use consult_docs before creating or editing .js, .html, .md, .mermaid, .slide, or WLJS dynamic/interactivity cells. For example:
+6. Before creating or editing .js, .html, .md, .mermaid, .slide, or WLJS dynamic/interactivity cells, read the relevant bundled resource under wljs://skills/*. Use search_wolfram_docs for Wolfram Language symbols and functions. For example:
 \`\`\`
 .md
 This will output **markdown**.
@@ -198,7 +198,7 @@ function textResourceResult(uri, text) {
 }
 
 function skillIndexText() {
-  return `# WLJS Notebook Skill Index\n\nThese are bundled MCP resources for notebook-specific cell types and WLJS interactivity. Agents should call consult_docs before creating or editing these cell types.\n\n${SKILL_INDEX}`;
+  return `# WLJS Notebook Skill Index\n\nThese are bundled MCP resources for notebook-specific cell types and WLJS interactivity. Read the relevant resource before creating or editing these cell types.\n\n${SKILL_INDEX}`;
 }
 
 function findSkillDocs(query) {
@@ -501,7 +501,7 @@ export function createWlMcpServer(app, options = {}) {
           role: "user",
           content: {
             type: "text",
-            text: `Use the WLJS notebook tools with the bundled skills below. Before creating or editing .js, .html, .md, .mermaid, .slide, or interactive Wolfram cells, call consult_docs with the relevant topic.\n\n${skillIndexText()}`,
+            text: `Use the WLJS notebook tools with the bundled skills below. Before creating or editing .js, .html, .md, .mermaid, .slide, or interactive Wolfram cells, read the relevant bundled skill resource. Use search_wolfram_docs for Wolfram Language symbols and functions.\n\n${skillIndexText()}`,
           },
         },
       ],
@@ -577,67 +577,44 @@ function register(name, description, inputSchema, handler, options = {}) {
 }
 
 register(
-  "consult_docs",
-  "Consult bundled WLJS skill docs first, then fallback to Wolfram Language documentation from the local llm.txt. Use this when unsure about JS/HTML/Markdown/Mermaid/slide cells or dynamics/interactivity.",
+  "search_wolfram_docs",
+  "Search the configured WLJS llms-full.txt documentation corpus for one or more Wolfram Language symbols or topics. Cell-authoring guidance is available separately through the wljs://skills/* resources.",
   {
-    Query: z
-      .string()
+    Topics: z
+      .array(z.string().trim().min(1))
       .min(1)
+      .max(8)
       .describe(
-        "Documentation topic, for example JavaScript, HTML, Markdown, Mermaid, Slide, dynamics, EventHandler, Offload, Manipulate, Plot.",
+        'Wolfram Language symbols or documentation topics, for example ["Plot", "Map", "EventHandler"]. Keep multi-word topic names in one array item.',
       ),
-    LinesCount: z.number().int().positive().optional().default(60),
-    WolframOnly: z.boolean().optional().default(false).describe("Skip bundled WLJS skill docs and go directly to Wolfram Language documentation."),
+    LinesPerTopic: z
+      .number()
+      .int()
+      .min(1)
+      .max(200)
+      .optional()
+      .default(60)
+      .describe("Maximum documentation lines returned for each matched topic."),
   },
-  async ({ Query, LinesCount, WolframOnly }) => {
-    const localMatches = WolframOnly ? [] : findSkillDocs(Query);
-
-    if (localMatches.length > 0) {
-      return {
-        Source: "bundled-wljs-skills",
-        Query,
-        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-          key,
-          title,
-          uri,
-        })),
-        Documents: localMatches.map(({ key, title, uri, text }) => ({
-          key,
-          title,
-          uri,
-          text,
-        })),
-      };
-    }
-
-    try {
-      return {
-        Source: "wolfram-language-llm-docs",
-        Query,
-        Result: await wlCall("/api/docs/find/", { Query, LinesCount }),
-        AvailableSkillDocs: SKILL_DOCS.map(({ key, title, uri }) => ({
-          key,
-          title,
-          uri,
-        })),
-      };
-    } catch (error) {
-      return {
-        Source: "not-found",
-        Query,
-        Message: `No bundled WLJS skill matched and the WL documentation lookup failed: ${
-          error?.message ?? String(error)
-        }`,
-        AvailableSkillDocs: SKILL_DOCS.map(
-          ({ key, title, uri, aliases }) => ({
-            key,
-            title,
-            uri,
-            aliases,
-          }),
-        ),
-      };
-    }
+  async ({ Topics, LinesPerTopic }) => {
+    return {
+      Source: "wljs-llms-full-docs",
+      Topics,
+      Content: await wlCall("/api/docs/find/", {
+        Query: Topics.join(", "),
+        LinesCount: LinesPerTopic,
+      }),
+    };
+  },
+  {
+    annotations: READ_ONLY_OPEN_WORLD,
+    outputSchema: {
+      result: z.object({
+        Source: z.literal("wljs-llms-full-docs"),
+        Topics: z.array(z.string()),
+        Content: z.string(),
+      }),
+    },
   },
 );
 
@@ -1176,7 +1153,7 @@ function cliManifest() {
         "wljs set-lines <cell> <from> <to> --content '<replacement>'",
         "wljs eval <cell>",
       ],
-      consult_docs_before_rich_cells: [
+      consult_cli_docs_before_rich_cells: [
         "wljs docs javascript",
         "wljs docs html",
         "wljs docs dynamics",

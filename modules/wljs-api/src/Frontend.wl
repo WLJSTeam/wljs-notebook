@@ -196,14 +196,70 @@ apiCall[request_, "/api/docs/"] := {
     "/api/docs/find/"
 }
 
-getNLinesAfter[url_, query_, n_:40] := Module[{stream = OpenRead[url], skipping = False},
-  If[!StringQ[Find[stream, query]], Close[stream]; Return[$Failed]];
-  With[{res = StringRiffle[Table[With[{line = ReadLine[stream]},
-    If[StringMatchQ[line, (StartOfString~~"# "~~___) | "Please visit the official [Wolfram Language Reference]"~~___] || skipping, skipping = True; Nothing, line]
-  ], {n}], "\n"]},
+readDocsLines[url_] := Module[{stream = OpenRead[url], content},
+    If[stream === $Failed, Return[$Failed]];
+    content = ReadString[stream];
     Close[stream];
-    res
-  ]
+    If[StringQ[content], StringSplit[content, "\n", All], $Failed]
+]
+
+docsHeadingQ[line_String] := StringStartsQ[StringTrim[line], "# "]
+
+docsSectionEndQ[line_String] := docsHeadingQ[line] ||
+    StringStartsQ[line, "Please visit the official [Wolfram Language Reference]"]
+
+docsTopicAnchor[topic_String] := "[#"<>ToLowerCase[StringReplace[StringTrim[topic], Whitespace -> "-"]]<> "]"
+
+docsTopicAnchorQ[line_String, topic_String] := StringContainsQ[
+    StringTrim[line], docsTopicAnchor[topic], IgnoreCase -> True
+]
+
+getNLinesAfter[lines_List, query_String, n_:40] := Module[{
+    topic = StringTrim[query], position, anchorPositions, section
+},
+    position = FirstPosition[lines, line_String /; docsHeadingQ[line] &&
+        ToLowerCase[StringTrim[StringDrop[StringTrim[line], 2]]] === ToLowerCase[topic],
+        Missing["NotFound"]
+    ];
+
+    If[MissingQ[position],
+        anchorPositions = Position[lines, line_String /; docsTopicAnchorQ[line, topic]];
+        If[anchorPositions =!= {}, position = Last[anchorPositions]]
+    ];
+
+    If[MissingQ[position],
+        position = FirstPosition[lines, line_String /; docsHeadingQ[line] &&
+            StringContainsQ[StringDrop[StringTrim[line], 2], topic, IgnoreCase -> True],
+            Missing["NotFound"]
+        ]
+    ];
+
+    If[MissingQ[position], Return[$Failed]];
+    section = TakeWhile[Drop[lines, First[position]], !docsSectionEndQ[#] &];
+    section = Drop[section, Length[TakeWhile[section, StringLength[StringTrim[#]] === 0 &]]];
+    section = Take[section, UpTo[n]];
+    StringRiffle[section, "\n"]
+]
+
+splitDocsQuery[query_String] := DeleteDuplicatesBy[
+    Select[StringTrim /@ StringSplit[query, {",", Whitespace}], StringLength[#] > 0 &],
+    ToLowerCase
+]
+
+findDocs[url_, query_String, n_:40] := Module[{lines, exact, matches, keywords = splitDocsQuery[query]},
+    If[keywords === {}, Return[$Failed]];
+    lines = readDocsLines[url];
+    If[!ListQ[lines], Return[$Failed]];
+
+    exact = getNLinesAfter[lines, query, n];
+    If[StringQ[exact], Return[exact]];
+
+    matches = Map[Function[keyword,
+        With[{result = getNLinesAfter[lines, keyword, n]},
+            If[StringQ[result], "# "<>keyword<>"\n"<>result, Nothing]
+        ]
+    ], keywords];
+    If[matches === {}, $Failed, StringRiffle[matches, "\n\n---\n\n"]]
 ]
 
 
@@ -211,7 +267,7 @@ apiCall[request_, "/api/docs/find/"] := With[{
     query = request["Body"]["Query"], 
     number = ToExpression@Lookup[request["Body"], "LinesCount", 40]
 }, {
-    found = getNLinesAfter[getLLMFile, "# "<>StringTrim[query], number]
+    found = findDocs[getLLMFile, query, number]
 },
     If[!StringQ[found], failure["No results"], found]
 ]
