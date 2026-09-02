@@ -25897,7 +25897,11 @@ of TuringMachine that corresponds to one step of evolution."|>,
 polynomial of the graph \
 <i>g</i>.\n\nTuttePolynomial[{<i>v</i>-&gt;<i>w</i>,...},\
 ...] uses rules <i>v</i>-&gt;<i>w</i> to specify the graph \
-<i>g</i>. "|>, <|"label" -> "TwoWayRule", "type" -> "keyword", 
+<i>g</i>. "|>,
+ <|"label" -> "Tuples", "type" -> "keyword",
+  "info" -> "Tuples[<i>list</i>,<i>n</i>] gives a list of all possible <i>n</i>-tuples of elements in <i>list</i>. \
+\n\nTuples[{<i>list</i><sub>1</sub>,<i>list</i><sub>2</sub>,...}] gives a list of all possible tuples formed by taking successive elements from the <i>list</i><sub><i>i</i></sub>."|>,
+ <|"label" -> "TwoWayRule", "type" -> "keyword",
   "info" -> "<i>x</i><-><i>y</i> or <i>x</i>\[TwoWayRule]<i>y</i> represents \
 a two-way rule expressing exchange or correspondence of <i>x</i> and \
 <i>y</i>."|>, <|"label" -> "Typed", "type" -> "keyword", 

@@ -988,15 +988,13 @@ limitStringLength[str_, _] := str
 limitStringLength[str_List, m_] := limitStringLength[#, m]&/@str
 limitStringLength[str_String, max_] := With[{l = StringLength[str]}, If[max >= l, str, StringTake[str, max ]<>"..." ]]
 
-trimMessages[messages_List, maxCharacters_:1000] := Select[
- limitStringLength[StringTrim @ 
-  StringReplace[
-    DeleteDuplicates[messages], 
-    
-    RegularExpression["\\s+"] -> " "
-  ], 
- maxCharacters],
- StringFreeQ[#, "will be suppressed during this calculation"] &
+trimMessages[messages_, maxCharacters_:1000] := Select[
+  limitStringLength[
+    StringTrim /@ (StringReplace[#, RegularExpression["\\s+"] -> " "] & /@
+      DeleteDuplicates @ Cases[Flatten[{messages}], _String]),
+    maxCharacters
+  ],
+  StringFreeQ[#, "will be suppressed during this calculation"] &
 ];
 
 majorHeadsPreview[k_, exprs_, True, lim_:1500] := With[{promise = Promise[]},
@@ -1125,18 +1123,8 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                   If[
                     #["MessagesText"] === {}, 
                     postProcess[#["Result"]], 
-                    "⚠ " <> StringRiffle[
-                      Select[
-                        limitStringLength[StringTrim @ 
-                        StringReplace[
-                          DeleteDuplicates[#["MessagesText"]], 
-                          
-                          RegularExpression["\\s+"] -> " "
-                        ], maxCharacters],
-                        StringFreeQ[#, "will be suppressed during this calculation"] &
-                      ], 
-                      " | "
-                    ] <> "\n" <> postProcess[#["Result"]]
+                    "⚠ " <> StringRiffle[trimMessages[#["MessagesText"], maxCharacters], " | "] <>
+                      "\n" <> postProcess[#["Result"]]
                   ] & @ EvaluationData[
                     CheckAbort[
                       TimeConstrained[
@@ -1172,18 +1160,8 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                         If[
                           #["MessagesText"] === {}, 
                           postProcess[#["Result"]], 
-                          "⚠ " <> StringRiffle[
-                            Select[
-                              StringTrim @ 
-                              StringReplace[
-                                DeleteDuplicates[#["MessagesText"]], 
-                                
-                                RegularExpression["\\s+"] -> " "
-                              ],
-                              StringFreeQ[#, "will be suppressed during this calculation"] &
-                            ], 
-                            " | "
-                          ] <> "\n" <> postProcess[#["Result"]]
+                          "⚠ " <> StringRiffle[trimMessages[#["MessagesText"], maxCharacters], " | "] <>
+                            "\n" <> postProcess[#["Result"]]
                         ] & @ EvaluationData[
                           CheckAbort[
                             TimeConstrained[
