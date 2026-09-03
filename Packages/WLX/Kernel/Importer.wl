@@ -137,7 +137,6 @@ SetAttributes[wcache, HoldFirst]
 
 cache = Identity[#1]&
 
-Print["Caching is enabled for 1 hour! Type CoffeeLiqueur`WLX`Importer`Private`CacheControl[False] to disable it"];
 
 cache = wcache; cinterval = "Hour";
 

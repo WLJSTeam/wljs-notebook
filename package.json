@@ -1,6 +1,6 @@
 {
   "name": "wljs-notebook",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "recommended-client-version": "2.6.3",
   "description": "A computational notebook IDE for Wolfram Language",
   "desktopName": "wljs-notebook.desktop",
@@ -30,8 +30,7 @@
     "publish": [
       {
         "provider": "github",
-        "channel": "latest-${arch}",
-        "releaseType": "release"
+        "channel": "latest-${arch}"
       }
     ],
     "afterSign": "./Electron/sign.js",
