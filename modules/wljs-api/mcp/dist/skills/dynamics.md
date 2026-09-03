@@ -1,27 +1,35 @@
 ---
-title: Interactive evaluation in Wolfram Language within WLJS Environment
-desc: A guide to creating sliders, manipulating expressions, dynamically plotting, and interactive graphics.
+title: Dynamics and interactive evaluation in WLJS
+desc: Build responsive controls, plots, pushed updates, and pointer-driven graphics with WLJS's event model.
 ---
 
-Some symbols commonly available in Mathematica are **not supported** here:
+# WLJS dynamics
 
-- `Dynamic`  
-- `DynamicModule`   
-- `Refresh`  
-- `CellPrint`   
-- `Out`  
-- `Slider`  
+WLJS does not implement Mathematica's automatic two-way `Dynamic` dependency model.
+Choose the update mechanism explicitly:
+
+- Use `Refresh[expr, interval]` to poll and reevaluate an expression.
+- Use `Offload` to push assignments into supported frontend views or primitives.
+- Use `EventHandler` with `InputRange`, `InputButton`, `InputCheckbox`, or graphics
+  events for user input.
+- Use `Module` instead of `DynamicModule` and connect state changes explicitly.
+
+`CellPrint` is supported for programmatic cell creation. Mathematica-style
+`Slider[Dynamic[x], ...]` should be rewritten with `InputRange` and an event handler.
 
 ## Manipulate
-Offers limited features, but generally can work following these examples:
+
+`Manipulate` is supported with fewer layout and control options. Use
+`ContinuousAction -> True` when updates should occur during a drag. Keep the output
+structure, image dimensions, and plot ranges stable so WLJS can use granular updates;
+otherwise it falls back to full reevaluation.
 
 ```wolfram
 Manipulate[
  Plot[Sin[a x + b], {x, 0, 6}, ImageSize->300], 
  {{a, 2, "Frequency"}, 1, 4,1}, 
  {{b, 0, "Phase"}, 0, 10,1}, 
- ContinuousAction->True,
- Appearance->None
+ ContinuousAction->True
 ]
 ```
 
@@ -56,21 +64,34 @@ Manipulate[
 ]
 ```
 
-And Animate:
+`Animate` uses the same optimization strategy, supports one finite-range parameter,
+and accepts `RefreshRate` to throttle expensive output:
 
 ```wolfram
 Animate[
-  ParametricPlot[ReIm @ Exp[-I (\[Phi] + \[Gamma] I \[Phi])], {\[Phi],0,5Pi}, 
+  ParametricPlot[ReIm @ Exp[-I (\[Phi] + \[Gamma] I \[Phi])], {\[Phi],0,5 Pi},
     PlotLabel->StringTemplate["\[Gamma] = ``"][\[Gamma]],
     ImageSize->270
   ]
-, {\[Gamma],0,0.5}, Appearance->None]
+, {\[Gamma],0,0.5}, RefreshRate->0.5]
 ```
 
+## Refresh
 
-## Dynamic Plot Function
+`Refresh` does not require an outer `Dynamic` and does not automatically track
+symbols. Give it a polling interval or trigger it from an event:
 
-`ManipulatePlot` works only for **real values**.  
+```wolfram
+Module[{count = 0}, Refresh[count = count + 1, 0.5]]
+```
+
+Use `Offload` instead when assignments can be pushed directly to a supported view.
+
+## Specialized dynamic plot functions
+
+Prefer `ManipulatePlot`, `ManipulateParametricPlot`, `AnimatePlot`, or
+`AnimateParametricPlot` for interactive curves. `ManipulatePlot` works only for real
+values.
 
 ```wolfram
 ManipulatePlot[f_, {t, tmin_, tmax_}, {p1, min_, max_}, {p2, min_, max_}, ...]
@@ -133,11 +154,21 @@ EventHandler[slider, Function[value, Print[value]]];
 slider
 ```
 
+Apply `EventFire` to an `EventObject` to emit its default value and initialize state:
+
+```wolfram
+slider // EventFire;
+```
+
+For multiple controls, use `Row` or `Column` for visual grouping. Use `InputGroup` to
+combine controls while preserving a list or association of values.
+
 ---
 
-## Granural updates
+## Granular updates
 
-Use `Offload` expression with
+Define a symbol's own value before passing it through `Offload`. Later assignments are
+pushed to dependent frontend objects:
 
 ### Supported objects
 
@@ -214,7 +245,7 @@ EventHandler[InputButton["Random word!"], Function[Null, text = RandomWord[]]]
 
 ---
 
-# Extended Interaction with Graphics Primitives
+## Extended interaction with graphics primitives
 
 Some primitives support direct user interaction:
 
@@ -223,10 +254,16 @@ Some primitives support direct user interaction:
 
 Event patterns:  
 
-- `"drag"` → make draggable (returns new position)  
-- `"mousemove"` → listen to cursor position (returns coordinates)  
-- `"click"` → trigger handler on click (returns click position)  
+- `"drag"` → make a primitive draggable and return its coordinates
+- `"dragsignal"` → report dragging without moving the primitive
+- `"dragall"` → report drag start, movement, and end
+- `"mousemove"`, `"mousedown"`, `"mouseup"`, `"mouseover"` → pointer events
+- `"click"` and `"altclick"` → click with or without the Alt key
+- `"zoom"` → mouse-wheel input on supported primitives
 - `"transform"` (3D) → make object draggable (returns association with `"position" -> {x,y,z}`)  
+
+The entire 2D `Graphics` canvas additionally supports `"keydown"`,
+`"capturekeydown"`, and `"onload"`.
 
 ### Example: Draggable Point
 
@@ -251,3 +288,7 @@ EventHandler[Graphics[{
 ```
 
 Each click adds a new point to the plot.
+
+Source: https://wljs.io/llms.mdx/frontend/Guides/Dynamic
+Migration patterns: https://wljs.io/llms.mdx/frontend/Guides/Migration
+Input events: https://wljs.io/llms.mdx/frontend/Guides/UI-Events-Capture

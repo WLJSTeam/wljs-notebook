@@ -1,25 +1,41 @@
 ---
-title: Notes on HTML Cells
-desc: Instructions for working with HTML cells
+title: HTML cells in WLJS
+desc: Author raw HTML cells and embed Wolfram Language expressions with WSP templates.
 ---
 
-**HTML cell:**
-```
+# HTML cells
+
+Start an input cell with `.html` and put the HTML on following lines:
+
+```html
 .html
-<div style="color: red;">Hello</div>
+Here is my <h3>Hello World</h3>
 ```
 
-HTML cells are not rendered automatically in the notebook interface and requires evaluation
+HTML cells are evaluated like other input cells. Return only content intended for the
+cell output; do not create a complete document with `<html>`, `<head>`, or `<body>`,
+and do not append content to `document.body`.
 
-## Guidelines
+HTML parsing is more permissive than WLX because HTML tags are not converted into a
+Wolfram expression tree. Prefer `.wlx` when Wolfram expressions, reusable components,
+or strict tag/argument semantics are central to the result.
 
-- **Do not use** `<body>` or `<head>` tags.  
-  Only include `<div>` or other content-related tags.  
-  The code is embedded directly into the notebook cell layout.  
+## Embed Wolfram expressions with WSP
 
-- Always self-close void elements:  
-  - `<img/>`  
-  - `<br/>`  
-  - `<input/>`  
+Use `<?wsp ... ?>` inside an HTML cell to evaluate a Wolfram expression:
 
-- You may add `<script>` and `<style>` tags anywhere as needed.  
+```html
+.html
+<h3>Today is <?wsp Now // TextString ?></h3>
+```
+
+Use self-closing syntax for void elements when content may later be reused in WLX,
+Markdown, or slide cells:
+
+```html
+<img src="image.png"/>
+<br/>
+<input type="text"/>
+```
+
+Source: https://wljs.io/llms.mdx/frontend/Cell-types/HTML

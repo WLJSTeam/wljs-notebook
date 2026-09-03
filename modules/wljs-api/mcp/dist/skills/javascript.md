@@ -1,107 +1,86 @@
 ---
-title: Notes on JavaScript Cells
-desc: Limitations and important features of JS cells in notebooks
+title: JavaScript and MJS cells in WLJS
+desc: Author isolated browser JavaScript cells or bundled module cells with correct output and cleanup behavior.
 ---
 
-## 1. Return Value Requirement
+# JavaScript cells
 
-A JavaScript cell **must return a value**. The code is executed line by line as if it were inside an **implicit anonymous function**. No extra brackets are needed.  
+## Vanilla `.js`
 
-```
+A `.js` cell runs as an anonymous function in an isolated scope. Declared variables
+are local to the cell; shared frontend state is reachable through `window` or `core`.
+Return the value that the output cell should display. A returned DOM node is mounted
+as the output:
+
+```javascript
 .js
-const i = 3;
-return i;
-```
-
-- The returned value (`3` in this example) will be displayed in the output cell.  
-- If you return a **DOM element**, it will be rendered as a normal DOM element.
-
----
-
-## 2. DOM Manipulation
-
-**Do not use** `document.body`—it can break the notebook interface.  
-**Do not append anything to document.body or head**
-
-
-To insert a DOM element:
-
-1. **Create the element locally.**  
-2. **Return it from the cell.**
-
-Example:
-
-```
-.js
-const element = document.createElement('span');
-element.innerText = "Hello World!";
-
-// Additional manipulation here...
-
-// The created object is rendered in the output cell
+const element = document.createElement("span");
+element.textContent = "Hello World";
 return element;
 ```
 
----
+Do not append elements to `document.body` or `document.head`.
 
-## 3. Variable Scope
+## Cleanup
 
-- Variables defined in a JS cell are **local to that cell**.  
+Assign `this.ondestroy` whenever the cell starts timers, animation frames, observers,
+listeners, or third-party widgets. It is called when the cell is removed or
+reevaluated:
 
----
-
-## 4. Animations
-
-If using `requestAnimationFrame` or `setInterval`, **store the ID** so it can be canceled when the cell is destroyed.  
-
-Use the `ondestroy` property of the root context:
-
-```
+```javascript
 .js
-let uid;
+const element = document.createElement("div");
+const timer = setInterval(() => element.textContent = new Date().toISOString(), 1000);
+this.ondestroy = () => clearInterval(timer);
+return element;
+```
 
-// Rendering code...
-uid = requestAnimationFrame(render);
+## Module `.mjs`
 
-// Cleanup
-this.ondestroy = () => {
-    cancelAnimationFrame(uid);
+Use `.mjs` when imports or NPM packages are required. Node.js must be installed. MJS
+cells are bundled automatically and store the bundled output in the notebook.
+
+Unlike `.js`, publish output with `this.return(...)`. Use `this.after` for work that
+must happen after the returned DOM node has mounted:
+
+```javascript
+.mjs
+import Widget from "some-package";
+
+const root = document.createElement("div");
+this.return(root);
+
+let widget;
+this.after = () => {
+  widget = new Widget({ container: root });
 };
-...
-
+this.ondestroy = () => widget?.dispose();
 ```
 
-- `this.ondestroy` is automatically called if the cell is removed or re-evaluated.
+Install notebook-local packages from a `.sh` cell with an explicit local prefix:
 
----
-
-## 5. Return Statement
-
-- A `return` at the **top-level** of the cell ends execution immediately.  
-- The returned value is displayed in the output cell.
-
----
-
-## 6. How to exchange data with WL
-
-Define a symbol in `core` object as async function:
-
+```shell
+.sh
+npm install some-package --prefix .
 ```
+
+## Wolfram/frontend communication
+
+Frontend symbols can be defined on `core`. Evaluate Wolfram arguments with
+`interpretate`, then call the symbol from Wolfram Language with `FrontFetch` when a
+result is needed or `FrontSubmit` for fire-and-forget execution:
+
+```javascript
 .js
 core.sumOfArray = async (args, env) => {
-    const data = await interpretate(args[0], env);
-    return data.reduce((a, c) => a + c, 0);
-}
+  const data = await interpretate(args[0], env);
+  return data.reduce((sum, value) => sum + value, 0);
+};
+return "sumOfArray registered";
 ```
 
-then you can execute it and fetch the result using:
-
-```
-FrontFetch[sumOfArray[Table[i, {i,10}]]]
+```wolfram
+FrontFetch[sumOfArray[Range[10]]]
 ```
 
-or execute only (no results):
-
-```
-FrontSubmit[sumOfArray[Table[i, {i,10}]]];
-```
+Source: https://wljs.io/llms.mdx/frontend/Cell-types/Javascript

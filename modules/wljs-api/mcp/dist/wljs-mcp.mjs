@@ -46320,49 +46320,95 @@ function readBundledMarkdown(relativePath) {
 }
 var SKILL_DOCS = [
   {
+    key: "migration",
+    title: "Migration from Mathematica",
+    uri: "wljs://skills/migration",
+    summary: "Use when porting Mathematica/.nb content or diagnosing Mathematica-to-WLJS frontend compatibility.",
+    aliases: ["migration", "migrate from mathematica", "mathematica", ".nb", ".wln", "dynamicmodule", "mma view", "mmaview", "mathematica compatibility", "port notebook"],
+    text: readBundledMarkdown("./skills/migration.md")
+  },
+  {
+    key: "formatting",
+    title: "Formatting Wolfram Expressions",
+    uri: "wljs://skills/formatting",
+    summary: "Use for Wolfram output forms, layouts, and expression styling; use HTML or WLX for web/CSS layout.",
+    aliases: ["wolfram formatting", "format expression", "format expressions", "standardform", "inputform", "traditionalform", "wlxform", "numberform", "tableform", "matrixform", "wolfram style", "style expression", "deploy", "makeboxes", "arrangesummarybox"],
+    text: readBundledMarkdown("./skills/formatting.md")
+  },
+  {
     key: "dynamics",
     title: "WLJS Dynamics and Interactivity",
     uri: "wljs://skills/dynamics",
-    aliases: ["dynamic", "dynamics", "interactivity", "interactive", "manipulate", "manipulateplot", "offload", "eventhandler", "event handler", "inputrange", "inputbutton", "slider", "button", "drag", "click", "mousemove", "graphics"],
+    summary: "Use for interactive controls, events, Refresh, Offload, Manipulate, and pointer-driven graphics.",
+    aliases: ["wljs dynamic", "dynamics", "interactivity", "interactive controls", "manipulate", "manipulateplot", "offload", "eventhandler", "event handler", "inputrange", "inputbutton", "inputcheckbox", "slider", "button", "drag", "click", "graphics event", "interactive graphics", "dragsignal", "mousemove"],
     text: readBundledMarkdown("./skills/dynamics.md")
+  },
+  {
+    key: "async-programming",
+    title: "Asynchronous Wolfram Programming",
+    uri: "wljs://skills/async-programming",
+    summary: "Use for non-blocking Wolfram event handlers, promises, AsyncFunction, and Await; not ordinary JavaScript async.",
+    aliases: ["async", "asynchronous wolfram", "asyncfunction", "await", "wljs promise", "wolfram then", "pauseasync", "sessionsubmit", "non-blocking event handler", "async callback", "callback"],
+    text: readBundledMarkdown("./skills/async-programming.md")
+  },
+  {
+    key: "wlx",
+    title: "WLX Cells and Components",
+    uri: "wljs://skills/wlx",
+    summary: "Primary resource for .wlx cells and reusable WLX components; use HTML for unparsed raw markup.",
+    aliases: ["wlx", ".wlx", "wlxform", "component", "wlx component", "component markup", "wlx custom tag", "optionspattern", "wlx markup", "wlx template"],
+    text: readBundledMarkdown("./skills/wlx.md")
   },
   {
     key: "html",
     title: "HTML Cells",
     uri: "wljs://skills/html",
-    aliases: ["html", ".html", "iframe", "script", "style", "dom", "body", "head", "void element", "img", "br", "input"],
+    summary: "Primary resource for .html cells, raw HTML, and WSP interpolation; not WLX component semantics.",
+    aliases: ["html", ".html", "html cell", "raw html", "wsp", "<?wsp", "html iframe", "html script", "html style", "html void element"],
     text: readBundledMarkdown("./skills/html.md")
   },
   {
     key: "javascript",
     title: "JavaScript Cells",
     uri: "wljs://skills/javascript",
-    aliases: ["javascript", "js", ".js", "dom", "document.body", "return", "ondestroy", "requestanimationframe", "setinterval", "frontfetch", "frontsubmit", "core", "interpretate"],
+    summary: "Primary resource for .js and .mjs cells, DOM output, lifecycle cleanup, and frontend symbols.",
+    aliases: ["javascript", "js", ".js", "mjs", ".mjs", "javascript cell", "mjs cell", "dom", "document.body", "ondestroy", "this.ondestroy", "this.return", "this.after", "requestanimationframe", "setinterval", "frontend symbol", "frontfetch", "frontsubmit", "interpretate", "npm", "npm module", "rollup"],
     text: readBundledMarkdown("./skills/javascript.md")
   },
   {
     key: "markdown",
     title: "Markdown Cells",
     uri: "wljs://skills/markdown",
-    aliases: ["markdown", "md", ".md", "latex", "admonition", "note"],
+    summary: "Primary resource for .md narrative cells and Markdown-specific KaTeX, admonitions, drawings, and WLX embedding.",
+    aliases: ["markdown", "md", ".md", "markdown latex", "admonition", "markdown admonition", "excalidraw", "bookmark", "pagebreakbelow", "pagebreakabove"],
     text: readBundledMarkdown("./skills/markdown.md")
   },
   {
     key: "mermaid",
     title: "Mermaid Diagram Cells",
     uri: "wljs://skills/mermaid",
-    aliases: ["mermaid", ".mermaid", "diagram", "flowchart", "sequence diagram", "gantt"],
+    summary: "Primary resource for .mermaid cells and programmatically created Mermaid output cells.",
+    aliases: ["mermaid", ".mermaid", "diagram", "mermaid diagram", "flowchart", "sequence diagram", "gantt"],
     text: readBundledMarkdown("./skills/mermaid.md")
   },
   {
     key: "slides",
     title: "RevealJS Slide Cells",
     uri: "wljs://skills/slides",
-    aliases: ["slide", "slides", ".slide", "reveal", "revealjs", "presentation", "fragments", "fragment", "iframe", "latex", "plot embedding"],
+    summary: "Primary resource for .slide/.slides presentations, Reveal options, fragments, events, and embedded WLX.",
+    aliases: ["slide", "slides", ".slide", ".slides", "reveal", "revealjs", "presentation", "presentation cell", "fragment", "fragments", "slide fragment", "slideeventlistener", "slide background", "slide transition", "slide iframe", "slide latex", "plot embedding"],
     text: readBundledMarkdown("./skills/slides.md")
+  },
+  {
+    key: "special-cells",
+    title: "File, Shell, and LaTeX Cells",
+    uri: "wljs://skills/special-cells",
+    summary: "Primary resource for .sh, .latex, and notebook-local filename cells; not .mjs module code.",
+    aliases: ["special cells", "shell", ".sh", "shell cell", "latex cell", ".latex", "file cell", "image preview", "notebookdirectory", "notebook npm install"],
+    text: readBundledMarkdown("./skills/special-cells.md")
   }
 ];
-var SKILL_INDEX = SKILL_DOCS.map((doc) => `- ${doc.title}: ${doc.uri} (aliases: ${doc.aliases.slice(0, 8).join(", ")})`).join("\n");
+var SKILL_INDEX = SKILL_DOCS.map((doc) => `- ${doc.title}: ${doc.uri} \u2014 ${doc.summary}`).join("\n");
 var NOTEBOOK_ASSISTANT_INSTRUCTIONS = `Operate on a local sandboxed WLJS/Wolfram notebook.
 
 Workflow:
@@ -46371,7 +46417,7 @@ Workflow:
 3. Edit only INPUT cells. 
 4. Outputs are produced by evaluate_cell.
 5. Use batch tools for related edits: set_cell_lines_batch and add_cells_batch.
-6. Before creating or editing .js, .html, .md, .mermaid, .slide, or WLJS dynamic/interactivity cells, read the relevant bundled resource under wljs://skills/*. Use search_wolfram_docs for Wolfram Language symbols and functions. For example:
+6. Before creating or editing rich or special cells, read one primary bundled resource selected by the cell's first-line marker. Consult a cross-cutting resource (dynamics, async-programming, formatting, or migration) only when the task needs it. Use search_wolfram_docs for individual Wolfram Language symbols and functions. For example:
 \`\`\`
 .md
 This will output **markdown**.
@@ -46380,7 +46426,7 @@ This will output **markdown**.
 Bundled resources are available at: wljs://skills/*
 
 Cell rules:
-- Cell type is determined only by the first line of input cell: .md, .html, .js, .mermaid, .slide, *.*, or not --- this is plain Wolfram Language.
+- Cell type is determined only by the first line of input cell: .md, .html, .js, .mjs, .mermaid, .slide, .slides, .wlx, .sh, .latex, a filename marker, or no marker for plain Wolfram Language.
 - Line numbers are 1-indexed and inclusive.
 - Deleting an input also deletes its outputs; do not delete unless explicitly asked.
 - Avoid Print and Abort in Wolfram cells.
@@ -46400,7 +46446,12 @@ function textResourceResult(uri, text) {
 function skillIndexText() {
   return `# WLJS Notebook Skill Index
 
-These are bundled MCP resources for notebook-specific cell types and WLJS interactivity. Read the relevant resource before creating or editing these cell types.
+These bundled MCP resources cover rich and special cell types, expression formatting, WLJS interactivity, asynchronous workflows, and Mathematica migration.
+
+Routing:
+- Usually read one primary resource selected by the explicit cell marker or requested output type.
+- Add a cross-cutting resource (dynamics, async-programming, formatting, or migration) only when that concern is actually present.
+- Do not combine marker-specific rules: for example, .js returns output with return, .mjs uses this.return(...), and .latex does not use Markdown escaping.
 
 ${SKILL_INDEX}`;
 }
@@ -46613,7 +46664,7 @@ function createWlMcpServer(app, options = {}) {
     "wljs://skills/index",
     {
       title: "WLJS Skill Index",
-      description: "Index of bundled WLJS notebook skills: JS, HTML, Markdown, Mermaid, slides, and dynamics/interactivity.",
+      description: "Index of bundled WLJS skills for rich cells, formatting, interactivity, asynchronous workflows, and Mathematica migration.",
       mimeType: "text/markdown"
     },
     (uri) => textResourceResult(uri, skillIndexText())
@@ -46624,7 +46675,7 @@ function createWlMcpServer(app, options = {}) {
       skill.uri,
       {
         title: skill.title,
-        description: `Bundled WLJS notebook skill documentation for ${skill.title}.`,
+        description: skill.summary,
         mimeType: "text/markdown"
       },
       (uri) => textResourceResult(uri, skill.text)
@@ -46660,7 +46711,7 @@ function createWlMcpServer(app, options = {}) {
           role: "user",
           content: {
             type: "text",
-            text: `Use the WLJS notebook tools with the bundled skills below. Before creating or editing .js, .html, .md, .mermaid, .slide, or interactive Wolfram cells, read the relevant bundled skill resource. Use search_wolfram_docs for Wolfram Language symbols and functions.
+            text: `Use the WLJS notebook tools with the bundled skills below. Select one primary resource from the cell marker or requested output type, then add a cross-cutting resource only when needed. Use search_wolfram_docs for individual Wolfram Language symbols and functions.
 
 ${skillIndexText()}`
           }
@@ -46727,7 +46778,7 @@ ${skillIndexText()}`
   }
   register(
     "search_wolfram_docs",
-    "Search the configured WLJS llms-full.txt documentation corpus for one or more Wolfram Language symbols or topics. Cell-authoring guidance is available separately through the wljs://skills/* resources.",
+    "Search the configured WLJS llms-full.txt documentation corpus for one or more Wolfram Language symbols or topics. Curated WLJS authoring and migration guidance is available separately through the wljs://skills/* resources.",
     {
       Topics: external_exports.array(external_exports.string().trim().min(1)).min(1).max(8).describe(
         'Wolfram Language symbols or documentation topics, for example ["Plot", "Map", "EventHandler"]. Keep multi-word topic names in one array item.'
@@ -47169,7 +47220,7 @@ function cliManifest() {
       "OUTPUT cells are created by evaluating INPUT cells.",
       "Do not delete cells unless the user explicitly requested deletion.",
       "Before editing a cell, inspect the notebook and read the relevant cell lines.",
-      "Use docs before creating or editing .js, .html, .md, .mermaid, .slide, or interactive WLJS cells."
+      "Before creating a rich or special cell, use docs for one primary resource selected by its first-line marker; add a cross-cutting resource only when needed."
     ],
     content_argument_syntax: {
       recommended_for_multiline: "--content -",
@@ -47182,8 +47233,13 @@ function cliManifest() {
       markdown: ".md",
       html: ".html",
       javascript: ".js",
+      javascript_module: ".mjs",
       mermaid: ".mermaid",
       slide: ".slide",
+      merged_slides: ".slides",
+      wlx: ".wlx",
+      shell: ".sh",
+      latex: ".latex",
       custom: "*.*",
       wolfram_language: "no marker"
     },
@@ -47207,6 +47263,7 @@ function cliManifest() {
       consult_cli_docs_before_rich_cells: [
         "wljs docs javascript",
         "wljs docs html",
+        "wljs docs wlx",
         "wljs docs dynamics",
         "wljs docs slides"
       ]

@@ -1,59 +1,104 @@
 ---
-title: Notes on Slide Cells
-desc: Instructions for creating presentations in a notebook
+title: Slide cells in WLJS
+desc: Build Reveal.js presentations with Markdown, WLX, HTML, fragments, events, and per-slide options.
 ---
 
-You can create **slide cells** using **Reveal.js** with Markdown as the primary language for slide content.  
+# Slide cells
 
-- To render a slide, specify `"Slide"` or `"Reveal"` as contentType in the `cellPrint` function.  
-- **One cell = one slide**. To create multiple slides, print multiple cells.  
-- You can use **HTML** and script tags alongside Markdown within slides
+Start a cell with `.slide`. Slide content supports Markdown, HTML, and WLX.
 
-### Examples
+One `.slide` cell commonly represents one slide, but a cell may contain multiple
+slides separated by `---`:
 
-#### HTML in a Slide
-
-```
+```markdown
 .slide
+# First slide
+
+Content
+
+---
+
+# Second slide
+
+More content
+```
+
+Use `.slides` to merge slide cells from the notebook into one continuous
+presentation.
+
+## Layout and slide options
+
+Use blank lines around HTML blocks when mixing them with Markdown. Common slide
+classes and Reveal attributes are attached with a `.slide` comment:
+
+```markdown
+.slide
+<!-- .slide: class="slide-standard" data-transition="fade" data-background-color="#172033" -->
+
 # Title
 
-<iframe
-  style="margin-left:auto; margin-right:auto; border-radius: 10px"
-  width="600"
-  height="500"
-  src="https://jerryi.github.io/wljs-docs/">
-</iframe>
+<div class="flex justify-between">
+
+<div>Left column</div>
+
+<div>Right column</div>
+
+</div>
 ```
 
-#### LaTeX Equations
+Use `slide-standard-scroll` for long scrollable content. Background images use
+`data-background-image`, optionally with `data-background-size`,
+`data-background-position`, and `data-background-opacity`.
 
+## Fragments
+
+```markdown
+Appears later
+<!-- .element: class="fragment fade-up" data-fragment-index="1" -->
 ```
+
+Reveal fragment classes include `fade-in`, `fade-out`, `fade-up`, `fade-down`,
+`fade-left`, `fade-right`, `highlight-red`, `highlight-green`, `grow`, and `shrink`.
+
+## Wolfram expressions and equations
+
+Assign a figure or other expression to a capitalized symbol, evaluate it, and embed
+it as a tag:
+
+```wolfram
+MyFigure = Plot[Sin[x], {x, 0, 2 Pi}, ImageSize -> 500];
+```
+
+```markdown
 .slide
-# LaTeX Equations (use double backslashes)
+# Result
 
-$$
-E = \\hbar \\omega
-$$
+<MyFigure/>
 ```
 
-#### Slide Animations (Fragments)
+If an expression has no useful `WLXForm`, wrap it with `StandardForm` before assigning
+it to the embedded symbol. Slides use KaTeX; escape backslashes in equations.
 
+## Slide events
+
+Put a listener in the slide and register the handler before evaluating the slide:
+
+```wolfram
+EventHandler["demoSlide", {
+  "Slide" -> (Print["revealed"] &),
+  "fragment-1" -> (Print["fragment revealed"] &)
+}]
 ```
+
+```markdown
 .slide
-# Fragments Example
+# Event-driven slide
 
-This content is always visible.
+Details <!-- .element: class="fragment" data-fragment-index="1" -->
 
-<span style="color:red">Appears later</span> <!-- .element: class="fragment" data-fragment-index="1" -->
-
-And this one <!-- .element: class="fragment fade-up" data-fragment-index="2" -->
+<SlideEventListener Id={"demoSlide"}/>
 ```
 
-- Use **fragment classes** to create step-by-step reveal effects.
+Other lifecycle patterns include `"Mounted"`, `"Left"`, and `"Destroy"`.
 
----
-
-To embed Wolfram Language Plots:
-- create a Wolfram Language cell and assign a plot or image to `YourSymbolName`, **that starts from capital letter**
-- evaluate this Wolfram cell
-- create a slide cell with `<YourSymbolName/>` tag somewhere on a slide. A plot will be embeeded to a slide as if it was a normal HTML tag
+Source: https://wljs.io/llms.mdx/frontend/Cell-types/Slide
