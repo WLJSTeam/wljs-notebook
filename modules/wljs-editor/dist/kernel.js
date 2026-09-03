@@ -29685,6 +29685,8 @@ const pr = (elt, match, group1, group2) => {
     case 'twowayrule': return '&harr;';
     case 'directededge': return '&rarr;';
     case 'suchthat': return '&#8715;';
+    case 'circleplus': return '&oplus;';
+    case 'circletimes': return '&otimes;';
     case 'coproduct': return '∐';
     case 'element': return '&#8712;';
     case 'invisiblecomma': return ' ';
