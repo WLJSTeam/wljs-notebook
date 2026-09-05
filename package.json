@@ -31,7 +31,7 @@
       {
         "provider": "github",
         "channel": "latest-${arch}",
-        "type": "release"
+        "releaseType": "release"
       }
     ],
     "afterSign": "./Electron/sign.js",
