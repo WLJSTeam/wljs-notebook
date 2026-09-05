@@ -1018,14 +1018,14 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                     "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
                                 |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Content" -> o|>, <||>] ] 
                               |> ], {out, shortened}]},
-                              
+                               SetTimeout[
                                 If[Length[accumulatedMessages] > 0,
                                     EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
                                 ,
                                     EventFire[promise, Resolve,  cellsGenerated]; 
                                 ];
                                 ClearAll[accumulatedMessages];
-                               
+                               , 150]; (* delay the readout to wait until preemptive kernel link buffers are cleared. this is exactly 150 ms *)
                               ];
                             ]];
                         ]
@@ -1143,7 +1143,28 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
             finalPromise = Promise[],
 
             dir = Lookup[body, "Directory", Null],
-            accumulated = Unique[]
+            accumulated = Unique[],
+            formatMessages = Function[{messages, maxLength},
+              Select[
+                Map[
+                  Function[message,
+                    With[{
+                      normalized = StringTrim[
+                        StringReplace[message, RegularExpression["\\s+"] -> " "]
+                      ]
+                    },
+                      If[
+                        maxLength >= StringLength[normalized],
+                        normalized,
+                        StringTake[normalized, maxLength] <> "..."
+                      ]
+                    ]
+                  ],
+                  DeleteDuplicates[ToString /@ Flatten[{messages}]]
+                ],
+                StringFreeQ[#, "will be suppressed during this calculation"] &
+              ]
+            ]
         }, 
 
         If[MissingQ[k], ClearAll[accumulated]; Return[failure["Kernel is not found or not ready for evaluation. Use kernel list"], Module] ];
@@ -1175,13 +1196,24 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                     ]
                   ]
                 },
-                 Block[{$Messages = {}}, 
-                  If[
-                    #["MessagesText"] === {}, 
-                    postProcess[#["Result"]], 
-                    "⚠ " <> StringRiffle[trimMessages[#["MessagesText"], maxCharacters], " | "] <>
-                      "\n" <> postProcess[#["Result"]]
-                  ] & @ EvaluationData[
+                 Block[{$Messages = {}, $Output = {}},
+                  Function[data,
+                    With[{
+                      messages = formatMessages[data["MessagesText"], maxCharacters],
+                      logs = DeleteCases[StringTrim[ToString /@ data["OutputLog"]], ""]
+                    },
+                      StringRiffle[
+                        Join[
+                          If[messages === {}, {}, {
+                            "⚠ " <> StringRiffle[messages, " | "]
+                          }],
+                          logs,
+                          {postProcess[data["Result"]]}
+                        ],
+                        "\n"
+                      ]
+                    ]
+                  ] @ EvaluationData[
                     CheckAbort[
                       TimeConstrained[
                         ToExpression[expr, InputForm], 
@@ -1212,13 +1244,24 @@ apiCall[request_, "/api/kernel/evaluate/"] := Module[{body = request["Body"]},
                           ]
                         ]
                       },
-                       Block[{$Messages = {}}, 
-                        If[
-                          #["MessagesText"] === {}, 
-                          postProcess[#["Result"]], 
-                          "⚠ " <> StringRiffle[trimMessages[#["MessagesText"], maxCharacters], " | "] <>
-                            "\n" <> postProcess[#["Result"]]
-                        ] & @ EvaluationData[
+                       Block[{$Messages = {}, $Output = {}},
+                        Function[data,
+                          With[{
+                            messages = formatMessages[data["MessagesText"], maxCharacters],
+                            logs = DeleteCases[StringTrim[ToString /@ data["OutputLog"]], ""]
+                          },
+                            StringRiffle[
+                              Join[
+                                If[messages === {}, {}, {
+                                  "⚠ " <> StringRiffle[messages, " | "]
+                                }],
+                                logs,
+                                {postProcess[data["Result"]]}
+                              ],
+                              "\n"
+                            ]
+                          ]
+                        ] @ EvaluationData[
                           CheckAbort[
                             TimeConstrained[
                               ToExpression[expr, InputForm], 
