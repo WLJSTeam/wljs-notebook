@@ -46,10 +46,10 @@ DefineOutputStreamMethod["MasterEchoPrint",
 
                     If[AssociationQ[System`$EvaluationContext],
                         If[StringTake[str, Min[2, StringLength[str] ] ] == ">>",
-                            CellPrint[str, "Display"->"print"];
+                            CellPrint[str, "Display"->"print", "SkipOutputs"->True];
        
                         ,
-                            CellPrint[ToString[ToExpression[str, InputForm], StandardForm], "Display"->"print"];
+                            CellPrint[ToString[ToExpression[str, InputForm], StandardForm], "Display"->"print", "SkipOutputs"->True];
                             
                         ]
                     ,

@@ -435,17 +435,36 @@ EventHandler[NotebookEditorChannel // EventClone,
                         Echo["Print a normal new cell"];
                         Echo["Adding new cell after:"];
                         Echo[cell`HashMap[t["Meta"]["After"][[1]]] ];
-                        cell`CellObj @@ Join[
-                            {
-                                "Notebook" -> If[MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
-                                    cell`HashMap[t["Meta"]["After"][[1]]]["Notebook"],
-                                    If[!MatchQ[reference["Notebook"], _nb`NotebookObj], notebook, reference["Notebook"] ]
-                                ],
-                                "Data"    -> t["Data"],
-                                "Display" -> display
-                            },
-                            ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window"}] ],
-                                {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
+                        If[TrueQ[t["Meta"]["SkipOutputs"]] && MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
+                          (* special case if skipping outputs *)
+                          cell`CellObj @@ Join[
+                              {
+                                  "Notebook" -> If[MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
+                                      cell`HashMap[t["Meta"]["After"][[1]]]["Notebook"],
+                                      If[!MatchQ[reference["Notebook"], _nb`NotebookObj], notebook, reference["Notebook"] ]
+                                 ],
+                                  "Data"    -> t["Data"],
+                                  "Display" -> display,
+                                  "After" -> With[{acell = cell`HashMap[t["Meta"]["After"][[1]]]}, 
+                                      SequenceCases[acell["Notebook"]["Cells"], {acell, ___?cell`OutputCellQ}] // First // Last
+                                  ]
+                              },
+                              ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window", "SkipOutputs", "After"}] ],
+                                  {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
+                          ]
+                        ,
+                          cell`CellObj @@ Join[
+                              {
+                                  "Notebook" -> If[MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
+                                      cell`HashMap[t["Meta"]["After"][[1]]]["Notebook"],
+                                      If[!MatchQ[reference["Notebook"], _nb`NotebookObj], notebook, reference["Notebook"] ]
+                                  ],
+                                  "Data"    -> t["Data"],
+                                  "Display" -> display
+                              },
+                              ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window", "SkipOutputs"}] ],
+                                  {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
+                          ]
                         ] // Echo;
                         Return[];
                     ,

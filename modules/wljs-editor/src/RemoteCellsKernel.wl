@@ -620,7 +620,7 @@ CellPrintGeneral[cell_Association, opts___] := With[{hash = CreateUUID[], list =
     RemoteCellObj[hash]
 ]
 
-Options[CellPrint] = {"EvaluatedQ"->True, "Target"->"Notebook", "Window":>CurrentWindow[], "Title"->"Projector", ImageSize->Automatic}
+Options[CellPrint] = {"EvaluatedQ"->True, "Target"->"Notebook", "Window":>CurrentWindow[], "Title"->"Projector", ImageSize->Automatic, "SkipOutputs"->False}
 
 End[]
 EndPackage[]
