@@ -14,7 +14,8 @@
   <a href="https://wljs.io/blog"><strong>Explore projects</strong></a> &nbsp;&middot;&nbsp;
   <a href="https://wljs.io/frontend/setup"><strong>Install WLJS</strong></a> &nbsp;&middot;&nbsp;
   <a href="https://wljs.io/frontend/Overview"><strong>Documentation</strong></a> &nbsp;&middot;&nbsp;
-  <a href="https://wljs.io/frontend/Guides/Migration"><strong>Migrate from Mathematica</strong></a>
+  <a href="https://wljs.io/frontend/Guides/Migration"><strong>Migrate from Mathematica</strong></a> &nbsp;&middot;&nbsp;
+  <a href="#help-cover-wljs-project-costs"><strong>Support WLJS</strong></a>
 </p>
 
 ![Wolfram Language](https://img.shields.io/badge/Wolfram%20Language-DD1100?style=for-the-badge&logo=wolfram&logoColor=white)
@@ -116,14 +117,26 @@ Contributions do not need to start with a large code change. You can help by:
 
 
 
-## Support the project
+## Help cover WLJS project costs
 
-WLJS is an independent open-source project. You can support its development by:
+WLJS is an independent open-source project. Our first funding goal is **€300 per year** to help cover these approximate annual costs:
+
+- **€100** — Apple Developer membership
+- **€100** — Domain name
+- A small budget for occasional CDN edge requests, cloud credits for testing, and coffee
+
+**Five supporters giving €5 per month** would reach that goal before fees.
+
+If WLJS helps with your research, teaching, or side projects, please consider supporting it.
+
+**[Support monthly or give once](https://opencollective.com/wljs-notebook)** · [Other ways to donate](https://wljs.io/frontend/Support)
+
+You can also help by:
 
 - Starring this repository
 - Sharing WLJS with a colleague, research group, or class
+- Say a word on a conference
 - Contributing an example, documentation improvement, bug report, or pull request
-- [Buying the maintainers a coffee](https://wljs.io/frontend/Support)
 
 ## Privacy and security
 
