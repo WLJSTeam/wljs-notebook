@@ -371,7 +371,7 @@ apiCall[request_, "/api/notebook/cells/list/"] := Module[{body = request["Body"]
         {notebook = nb`HashMap[ fromAlias[body["Notebook"]] ]},
         If[!MatchQ[notebook, _nb`NotebookObj], Return[failure["Notebook is missing"], Module] ];
         With[{cells = notebook["Cells"]},
-            If[cell`InputCellQ[#], <|
+            Select[If[cell`InputCellQ[#], <|
                 "Id"-> toAlias[#["Hash"]],
                 "Type" -> #["Type"],
                 "Display" -> #["Display"],
@@ -383,7 +383,7 @@ apiCall[request_, "/api/notebook/cells/list/"] := Module[{body = request["Body"]
                 "Type" -> #["Type"],
                 "Display" -> #["Display"]
             |>
-            ] &/@ cells    
+            ] &/@ cells, Function[cc, cc["Display"] =!= "print"]]    
         ]
     ]
 ]
@@ -989,7 +989,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                     accumulatedMessages = {};
                     EventHandler[events, {
                         "Warning" -> Function[dt,
-                            Echo["------"]; AppendTo[accumulatedMessages, dt]; Echo["------"]
+                            Echo["------"]; AppendTo[accumulatedMessages, "⚠ " <>ToString[dt]]; Echo["------"]
                         ]
                     }];
                     
@@ -1019,10 +1019,11 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                 |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Content" -> o|>, <||>] ] 
                               |> ], {out, shortened}]},
                                SetTimeout[
+                                Map[Function[printCell, AppendTo[accumulatedMessages, cell`HashMap[fromAlias[printCell["Id"]]]["Data"]//ToString ]], Select[cellsGenerated, (#["Display"] === "print")&]];
                                 If[Length[accumulatedMessages] > 0,
-                                    EventFire[promise, Resolve,  Join[cellsGenerated, {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
+                                    EventFire[promise, Resolve,  Join[Select[cellsGenerated, (#["Display"] =!= "print")&], {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
                                 ,
-                                    EventFire[promise, Resolve,  cellsGenerated]; 
+                                    EventFire[promise, Resolve,  Select[cellsGenerated, (#["Display"] =!= "print")&]]; 
                                 ];
                                 ClearAll[accumulatedMessages];
                                , 150]; (* delay the readout to wait until preemptive kernel link buffers are cleared. this is exactly 150 ms *)
