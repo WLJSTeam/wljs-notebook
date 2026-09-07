@@ -996,7 +996,10 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                     Then[EventFire[controller, "NotebookCellEvaluateTemporal", cell], Function[Null,
                         TaskRemove[timer];
 
-                        With[{
+                        (* Allow two 150 ms polling intervals plus scheduling margin before
+                           snapshotting outputs or detaching the warning listener. Delaying
+                           only the response would still discard late cells and warnings. *)
+                        SetTimeout[With[{
                             out = Select[cell`SelectCells[notebook["Cells"], Sequence[cell, __?cell`OutputCellQ] ], cell`OutputCellQ]
                         },
 
@@ -1018,7 +1021,6 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                     "Display" -> If[TrueQ[c["Overflow"] ], "codemirror", c["Display"] ]
                                 |>,  If[c["Display"] === "codemirror" || TrueQ[c["Overflow"]], <|"Content" -> o|>, <||>] ] 
                               |> ], {out, shortened}]},
-                               SetTimeout[
                                 Map[Function[printCell, AppendTo[accumulatedMessages, cell`HashMap[fromAlias[printCell["Id"]]]["Data"]//ToString ]], Select[cellsGenerated, (#["Display"] === "print")&]];
                                 If[Length[accumulatedMessages] > 0,
                                     EventFire[promise, Resolve,  Join[Select[cellsGenerated, (#["Display"] =!= "print")&], {<|"Messages"->trimMessages[accumulatedMessages, maxCharacters]|>}]]; 
@@ -1026,10 +1028,9 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                                     EventFire[promise, Resolve,  Select[cellsGenerated, (#["Display"] =!= "print")&]]; 
                                 ];
                                 ClearAll[accumulatedMessages];
-                               , 150]; (* delay the readout to wait until preemptive kernel link buffers are cleared. this is exactly 150 ms *)
                               ];
                             ]];
-                        ]
+                        ], 350];
                     ] ];
                     promise
                 ] ]
