@@ -10,9 +10,13 @@
 
 BeginPackage["CoffeeLiqueur`CUSockets`"]; 
 
-Needs @ If[$OperatingSystem === "Windows",  
-	"CoffeeLiqueur`CUSockets`Interface`Windows`", 
-	"CoffeeLiqueur`CUSockets`Interface`Unix`"
+Needs @ Which[
+	StringStartsQ[ToString[$Version], "Woxi"],
+		"CoffeeLiqueur`CUSockets`Interface`Woxi`",
+	$OperatingSystem === "Windows",
+		"CoffeeLiqueur`CUSockets`Interface`Windows`",
+	True,
+		"CoffeeLiqueur`CUSockets`Interface`Unix`"
 ];
 
 (* ::Section:: *)
@@ -99,7 +103,9 @@ socketClose[socketId];
 
 StandardSocketEventsHandler = Echo[StringTemplate["`` was ``"][#2, #1] ]&;
 
-USocketObject /: SocketListen[socket: USocketObject[socketId_Integer], handler_, OptionsPattern[{SocketListen, "BufferSize" -> $bufferSize, "SocketEventsHandler" -> StandardSocketEventsHandler}]] := 
+Options[usocketListen] = {"BufferSize" -> $bufferSize, "SocketEventsHandler" -> StandardSocketEventsHandler};
+
+usocketListen[socket: USocketObject[socketId_Integer], handler_, OptionsPattern[]] :=
 With[{messager = OptionValue["SocketEventsHandler"]},
 	Module[{task}, 
 		task = createAsynchronousTask[socketId, 
@@ -114,8 +120,15 @@ With[{messager = OptionValue["SocketEventsHandler"]},
 			"TaskId" -> task[[2]], 
 			"Task" -> task
 		|>]
-	]; 
+	]
 ];
+
+(* Keep the upvalue patterns simple enough for alternative WL evaluators. *)
+USocketObject /: SocketListen[USocketObject[socketId_Integer], handler_] :=
+	usocketListen[USocketObject[socketId], handler];
+
+USocketObject /: SocketListen[USocketObject[socketId_Integer], handler_, opts__Rule] :=
+	usocketListen[USocketObject[socketId], handler, opts];
 
 
 USocketListener /: DeleteObject[USocketListener[assoc_Association]] := 
