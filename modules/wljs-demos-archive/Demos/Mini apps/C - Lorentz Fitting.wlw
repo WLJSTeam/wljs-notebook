@@ -192,9 +192,9 @@ MakeFittingWidget := With[{
       path = SystemDialogInputAsync["FileSave", {Null, {"Raster Formats" -> {"*.png", "*.jpg"}, "Portable Vector Document" -> {"*.pdf"}}}] // Await;
       If[!StringQ[path], Return[Null, Module]];
       If[ToLowerCase[FileExtension[FileNameTake[path]]] === "pdf",
-        ExportAsync[path, graphics /. {Locator[_] :> Null, Rule[PlotLabel, _] :> Rule[PlotLabel, None]}] // Await;
+        ExportAsync[path, graphics /. {Offload -> Identity, Locator[_] :> Null, Rule[PlotLabel, _] :> Rule[PlotLabel, None]}] // Await;
       ,
-        data = RasterizeAsync[graphics /. {Locator[_] :> Null, Rule[PlotLabel, _] :> Rule[PlotLabel, None]}, "ExposureTime"->4] // Await;
+        data = RasterizeAsync[graphics /. {Offload -> Identity, Locator[_] :> Null, Rule[PlotLabel, _] :> Rule[PlotLabel, None]}, "ExposureTime"->4] // Await;
         ExportAsync[path, data] // Await;
       ];
       ClearAll[path, data];

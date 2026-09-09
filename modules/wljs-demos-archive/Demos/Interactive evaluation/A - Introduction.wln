@@ -1,818 +1,917 @@
-<|"Notebook" -> <|"Controller" -> "1211e0ed-504a-4f91-b4ec-308e99cbe96f", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$916], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "f780e045-0cbd-4636-9ae3-db50591316da", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/A - Introduction.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Interactive evaluation and granular updates", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$647]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Manipulate and Animate Functionality", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$647]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "How to export animation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$896]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "More specialized functions", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$681]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Tips for better performance", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$922]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Granular Updates", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$689]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Architecture", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$689]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Colors and Opacity", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$718]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Animation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$747]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, "As Transitions", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$747]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, "Frames", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$757]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Interactive evaluation and granular \
-updates\n\n## Manipulate and Animate Functionality\nWLJS Notebook partially \
-inherits a well-known killer feature of Wolfram Mathematica - Manipulate, \
-Animate, and others, allowing interactive evaluation of arbitrary \
-expressions:", "Display" -> "codemirror", 
-    "Hash" -> "fb2761a8-1e49-40d0-b86d-dd23b5e38135", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "# Interactive evaluation and granular updates\n\n## \
-Manipulate and Animate Functionality\nWLJS Notebook partially inherits a \
-well-known killer feature of Wolfram Mathematica - Manipulate, Animate, and \
-others, allowing interactive evaluation of arbitrary expressions:", 
-    "Display" -> "markdown", "Hash" -> 
-     "4860b89e-c5c3-4781-b038-227a62ab3131", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Manipulate[\n  Plot[Sin[a x + b], {x, 0, 6}], \n  {{a, 2, \
-\"Frequency\"}, 1, 4, 1}, \n  {{b, 0, \"Phase\"}, 0, 10, 1}, \n  \
-ContinuousAction->True\n]", "Display" -> "codemirror", 
-    "Hash" -> "3f130760-4d35-41de-8d6a-205ae3480d89", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Manipulate[Plot[1.0 + Sin[w] Sin[x + w],{x,0,5Pi}, \
-Epilog->{\n  Red, Point[{8.0, 1.0 + Sin[w] Sin[8.0 + w]}]\n}], {w,0,Pi}, \
-ContinuousAction->True]", "Display" -> "codemirror", 
-    "Hash" -> "ffa54de3-c66e-4584-98e1-4a5ad94b69dd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nText strings or any other symbolic expressions can also \
-be manipulated:", "Display" -> "codemirror", 
-    "Hash" -> "8b0bee6e-6690-4832-86cc-6861f86bae67", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> 
-     "Text strings or any other symbolic expressions can also be \
-manipulated:", "Display" -> "markdown", 
-    "Hash" -> "a4fe68e5-4a3f-4813-8745-82712348e531", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Manipulate[Column[{\n  Style[StringTemplate[\"`` m/s\"][v], \
-Blue],\n  Table[\"\|01f697\", {i, Floor[v/25]}] // Row \n}], {v,10,100}, \
-ContinuousAction->True]", "Display" -> "codemirror", 
-    "Hash" -> "0c05bb6f-e4d4-4d12-acf6-7fc0d9aaf702", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n3D plot example:", "Display" -> "codemirror", 
-    "Hash" -> "c621d580-4317-43de-a157-e13b499c89c7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "3D plot example:", "Display" -> "markdown", 
-    "Hash" -> "14bccf7e-44ae-4186-924e-c0f999b851f3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Manipulate[Plot3D[Sin[n x] Cos[n y], {x,-1,1}, {y,-1,1}], {n, \
-1, 5, 0.3}, ContinuousAction->True]", "Display" -> "codemirror", 
-    "Hash" -> "157f8885-f36d-4f42-aa6e-c0c72a026f31", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nImages:", "Display" -> "codemirror", 
-    "Hash" -> "5e3335f5-a1f4-47f1-9dd3-d2cfd5335576", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Images:", "Display" -> "markdown", 
-    "Hash" -> "04b2e6a6-58b6-4264-b0e1-2c98fe40ec77", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "img = ImageResize[ExampleData[ExampleData[\"TestImage\"] // \
-Last], 350];\nManipulate[\n  ImageAdjust[img, {c,a}], \n  \n  {{c, \
-0},0,5,0.1}, \n  {{a, 0},0,5,0.1},\n  ContinuousAction->True\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "18476c40-fd2c-4ee6-8ab9-fe689c1efca8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nUnder the hood, it uses a diff algorithm to interpret \
-changes between old and new expressions evaluated using corresponding \
-parameters. Then, if possible, the expression is transformed into a more \
-optimized one that uses granular updates instead of full re-evaluation.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8fe3c718-92c7-48c4-9b7d-5f3e934216a9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Under the hood, it uses a diff algorithm to interpret changes \
-between old and new expressions evaluated using corresponding parameters. \
-Then, if possible, the expression is transformed into a more optimized one \
-that uses granular updates instead of full re-evaluation.", 
-    "Display" -> "markdown", "Hash" -> 
-     "5c5bf388-efd0-4ab1-8df9-b3fa82414748", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n`Animate` works in a similar way, but scans the \
-parameter automatically:", "Display" -> "codemirror", 
-    "Hash" -> "c6237e8a-5ccb-4c9e-9d9f-df807267dd89", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> 
-     "`Animate` works in a similar way, but scans the parameter \
-automatically:", "Display" -> "markdown", 
-    "Hash" -> "f8468eed-5d54-4c75-9163-6ec1a4940ec7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Animate[\n  ParametricPlot[ReIm @ Exp[-I (\\[Phi] + \\[Gamma] \
-I \\[Phi])], {\\[Phi],0,5Pi}, \n    PlotLabel->StringTemplate[\"\\[Gamma] = \
-``\"][\\[Gamma]]\n  ]\n, {\\[Gamma],0,0.5}]", "Display" -> "codemirror", 
-    "Hash" -> "d89fe8cc-07a9-4d50-8887-0981cc2fd196", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nFor symbolic data it works too:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "78715fd4-2cef-4ab2-bc27-632189481c2a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "For symbolic data it works too:", "Display" -> "markdown", 
-    "Hash" -> "deb427e5-55a3-4b78-ba5e-f80484787f65", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Animate[{x, (*SpB[*)Power[x(*|*),(*|*)2](*]SpB*)} // \
-NumberForm, {x,0,10}]", "Display" -> "codemirror", 
-    "Hash" -> "6c936104-5998-4bc9-b308-4890cbc63f05", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Animate[Row[{Sin[x], \"==\", Series[Sin[x], {x,0,n}], \
-Invisible[1/2]}], {n, 1, 10, 1}, RefreshRate->3]", "Display" -> "codemirror", 
-    "Hash" -> "c0b15c7f-8529-4e6f-89b1-8e2f9c61f78e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n### How to export animation\n\n:::warning\nThis feature \
-is available only for WLJS desktop application\n:::\n\nIf you want to export \
-it as GIF, render it to `AnimatedImage` first. For example:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4cb1440a-e48b-4da4-95a0-e82b335c09cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "### How to export animation\n\n:::warning\nThis feature is \
-available only for WLJS desktop application\n:::\n\nIf you want to export it \
-as GIF, render it to `AnimatedImage` first. For example:", 
-    "Display" -> "markdown", "Hash" -> 
-     "91eb5cc0-b525-4ec6-bdca-80c55a55b005", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "w3D[x_,y_,t_] := Total@Table[With[{kx = 1.0 \\[Omega], ky = \
-1.0 \\[Omega]}, \n  Cos[ kx x + ky y - \\[Omega] t]\n], {\\[Omega], 0, 3, \
-1.0}];", "Display" -> "codemirror", 
-    "Hash" -> "657232ca-e2bb-4135-bb3f-64399a2cc0a9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "a = AnimatedImage @ Animate[Plot3D[w3D[x,y,t], {x,-Pi,Pi}, \
-{y,-Pi,Pi}, MaxRecursion->1, Mesh->None, PlotRange->Full], {t,0,5}];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a81a2f68-1206-4678-9f31-7b86b0c7f708", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nNow we can export it as GIF or as a movie:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5e27b82a-5c36-430d-a4bd-96f03a9f04ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Now we can export it as GIF or as a movie:", 
-    "Display" -> "markdown", "Hash" -> 
-     "75852e18-5dbe-41e6-9030-bfc9f001031a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Export[\"animation.gif\", a]", "Display" -> "codemirror", 
-    "Hash" -> "436c23ca-1823-421f-bee1-986d32551b83", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n### More specialized functions\nWe recommend using \
-`ManipulatePlot` and `ManipulateParametricPlot` for simple interactive curve \
-plotting, since they are more optimized and do not require the diff algorithm \
-to run:", "Display" -> "codemirror", 
-    "Hash" -> "b309e7ec-8a2f-4d01-9166-26fc305bf1a9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "### More specialized functions\nWe recommend using \
-`ManipulatePlot` and `ManipulateParametricPlot` for simple interactive curve \
-plotting, since they are more optimized and do not require the diff algorithm \
-to run:", "Display" -> "markdown", "Hash" -> 
-     "c0402b44-c4ee-4cd4-a467-3089d4a1073a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "ManipulatePlot[\n  (*TB[*)Sum[(*|*)(*FB[*)((Sin[2\[Pi](2j - \
-1) x])(*,*)/(*,*)(2j-1))(*]FB*)(*|*), \
-{(*|*)j(*|*),(*|*)1.0(*|*),(*|*)n(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAoZgMSwaW5TvkV\
-mYwgPguQCCkqTQUAeAcHBQ==*)(*]TB*)\n, {x, -1,1}, {{n,4}, 1,7, 1}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3f0cd8df-e891-496a-bbdb-5eb635e96b50", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n`AnimatePlot` and `AnimateParametricPlot` use a \
-different strategy and precalculate all curves before animating:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d8467a80-c2e0-4e15-8f62-af597cc1777b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "`AnimatePlot` and `AnimateParametricPlot` use a different \
-strategy and precalculate all curves before animating:", 
-    "Display" -> "markdown", "Hash" -> 
-     "eba1c601-33b1-44e6-8934-613a28fb00f2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "AnimateParametricPlot[\n    With[{t = If[x > lim,lim,x]},\n   \
-   N[Exp[-(*FB[*)((1)(*,*)/(*,*)(3))(*]FB*) Floor[(*FB[*)((x)(*,*)/(*,*)(4 \
-\\[Pi]))(*]FB*)]] ReIm[(*SpB[*)Power[I(*|*),(*|*)-t](*]SpB*) + 3 \
-((*SpB[*)Power[I(*|*),(*|*)t/3](*]SpB*))]]\n    ]\n    , {x, 0.1`, 16 \
-\\[Pi]}, {lim, 0.1`, 16 \\[Pi]}\n]", "Display" -> "codemirror", 
-    "Hash" -> "468bc0f5-3858-41c7-9bce-6827c9a5bf9b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n### Tips for better performance\nIf you still want to \
-use `Animate` or `Manipulate` on some complex expressions, there are some \
-tricks to avoid deoptimization of JIT engine:\n\n<div class=\"text-sm \
-mt-2\">\n\n\n- Try to keep the number of curves/traces the same as well as \
-polygons if possible. Try not to add new entities to your graphs.\n\n- \
-`PerformanceGoal->\"Speed\"` is also a good option for 3D plots.\n\n- \
-`Mesh->None might` also help.\n\n- `PlotRange->Full` can help to avoid \
-fragmentation of line segments\n\n- Avoid changing colors, opacity on \
-runtime\n\n  \n</div>", "Display" -> "codemirror", 
-    "Hash" -> "0a1139b5-579e-48fb-b1ec-50a0d2c52d41", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "### Tips for better performance\nIf you still want to use \
-`Animate` or `Manipulate` on some complex expressions, there are some tricks \
-to avoid deoptimization of JIT engine:\n\n<div class=\"text-sm mt-2\">\n\n\n- \
-Try to keep the number of curves/traces the same as well as polygons if \
-possible. Try not to add new entities to your graphs.\n\n- \
-`PerformanceGoal->\"Speed\"` is also a good option for 3D plots.\n\n- \
-`Mesh->None might` also help.\n\n- `PlotRange->Full` can help to avoid \
-fragmentation of line segments\n\n- Avoid changing colors, opacity on \
-runtime\n\n  \n</div>", "Display" -> "markdown", 
-    "Hash" -> "bdea42fe-2eb2-4531-92c8-e9ca2be83d80", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n## Granular Updates\n\nThe way how you update things \
-like points and lines on your plots, images, or bind those elements to the \
-changes of data differs from one used in Pluto.jl, Marimo and Wolfram \
-Mathematica. If the last one uses 2-ways binding, we rely on 1-way. The key \
-changes were made for the sake of performance and simplicity.\n\n### \
-Architecture\n\nWLJS mostly uses retained mode for managing objects on \
-screen, which means Line or Point has a dedicated method to update itself \
-when the dependencies change. Not all primitives have an update method \
-implemented\[LongDash]please check our symbols reference section to confirm. \
-The dependencies are resolved and the changes are propagated by the frontend \
-(browser), not by the evaluation kernel. To create such a dependency, you \
-need to \"offload\" an expression to be executed on the frontend. For \
-example:", "Display" -> "codemirror", 
-    "Hash" -> "acead71c-2864-4e06-8130-d8bc79860e96", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "## Granular Updates\n\nThe way how you update things like \
-points and lines on your plots, images, or bind those elements to the changes \
-of data differs from one used in Pluto.jl, Marimo and Wolfram Mathematica. If \
-the last one uses 2-ways binding, we rely on 1-way. The key changes were made \
-for the sake of performance and simplicity.\n\n### Architecture\n\nWLJS \
-mostly uses retained mode for managing objects on screen, which means Line or \
-Point has a dedicated method to update itself when the dependencies change. \
-Not all primitives have an update method implemented\[LongDash]please check \
-our symbols reference section to confirm. The dependencies are resolved and \
-the changes are propagated by the frontend (browser), not by the evaluation \
-kernel. To create such a dependency, you need to \"offload\" an expression to \
-be executed on the frontend. For example:", "Display" -> "markdown", 
-    "Hash" -> "745655fe-3c8b-45f1-a040-b4871aac9818", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "l = 1;\n\nGraphics[{Cyan,\n  \
-(*BB[*)(Rectangle)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskH\
-leakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34\"*)(*]BB\
-*)[{-1, -1}, \
-{(*BB[*)(l)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnM\
-BGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR\"*)(*]BB*) \
-// Offload, 1}]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "7735667a-22a8-4e73-a279-7f240a458d52", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere we used `Offload` to tell Wolfram Kernel not to \
-evaluate symbol `l` and keep it for evaluating on the frontend. In this \
-example above the binding happens between `Rectangle` and `l`. Nothing stops \
-us from offloading a derived expression from the same symbol:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ab317c2e-b38d-4f80-ac5a-46667a6a48bb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here we used `Offload` to tell Wolfram Kernel not to evaluate \
-symbol `l` and keep it for evaluating on the frontend. In this example above \
-the binding happens between `Rectangle` and `l`. Nothing stops us from \
-offloading a derived expression from the same symbol:", 
-    "Display" -> "markdown", "Hash" -> 
-     "c1f2c3eb-77ab-4495-b4e4-fc8e3691fe3f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Graphics[{Pink,\n  \
-(*BB[*)(Disk)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakF\
-nMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34\"*)(*]BB*)[{(\
-*BB[*)(l)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBG\
-U6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR\"*)(*]BB*), \
-(*BB[*)(l)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMB\
-GU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR\"*)(*]BB*)}/\
-/Offload, \
-(*SpB[*)Power[(*BB[*)(l)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0\
-hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSL\
-R\"*)(*]BB*)(*|*),(*|*)2](*]SpB*) // Offload]\n}, PlotRange->{{0,1}, {0,1}}]"\
-, "Display" -> "codemirror", "Hash" -> 
-     "d8bb5270-c194-42f9-8d5f-5269a43fbdb9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere the radius of Disk depends on `l^2`, therefore when \
-`l` changes, it recalculates the derived square of this symbol. Now let's try \
-to update our symbol:", "Display" -> "codemirror", 
-    "Hash" -> "5a983447-55bb-4b63-a87b-a20814ddf484", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here the radius of Disk depends on `l^2`, therefore when `l` \
-changes, it recalculates the derived square of this symbol. Now let's try to \
-update our symbol:", "Display" -> "markdown", 
-    "Hash" -> "e49ea11e-bb93-4d8c-a5ec-e57630731c4d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "l = 0.33;", "Display" -> "codemirror", 
-    "Hash" -> "90644df8-374f-4144-a5c6-f4dde7cab8de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nUsing a slider we can observe the change easier:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "272b57ab-8377-4168-961c-a0b8ff8becc9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Using a slider we can observe the change easier:", 
-    "Display" -> "markdown", "Hash" -> 
-     "e7993952-c01d-4fed-88b3-033a773ad5df", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "EventHandler[InputRange[0,1,.1], Function[val, l=val]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "71ecd56f-b310-46c6-be0e-67050172a5be", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere we used a built-in UI element InputRange with a \
-basic event handler assigned to it, that updates our symbol with a new value. \
-When a new value is assigned to `l` symbol, Wolfram Kernel pushes a new value \
-using a fast binary protocol to the frontend, that updates all visible \
-instances coupled to `l`.", "Display" -> "codemirror", 
-    "Hash" -> "4cfdf562-2769-4e2e-b5c9-7fd3d04ca6c8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here we used a built-in UI element InputRange with a basic \
-event handler assigned to it, that updates our symbol with a new value. When \
-a new value is assigned to `l` symbol, Wolfram Kernel pushes a new value \
-using a fast binary protocol to the frontend, that updates all visible \
-instances coupled to `l`.", "Display" -> "markdown", 
-    "Hash" -> "1b4876a1-448b-466a-a533-b496f9551969", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nThe provided data does not have to be numerical, it can \
-be textual as well. Here is an example with __text spray__:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4071fc8d-626d-4df0-b8c9-15e4604830af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "The provided data does not have to be numerical, it can be \
-textual as well. Here is an example with __text spray__:", 
-    "Display" -> "markdown", "Hash" -> 
-     "85837458-1a09-4d7a-8a63-0ee091f94a8f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Module[{\n  text = \"Hello World\"\n},\n  Column[{\n    \
-EventHandler[InputText[text], (text = #)&],\n    Graphics[Table[{\n      \
-RandomColor[],\n      Rotate[\n        Text[text // Offload, RandomReal[{-1, \
-1}, 2]],\n        RandomReal[{0, 3.14}]\n      ]\n    }, {40}]]\n  }]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5727d56e-b57e-4235-add8-ae3e488c7b11", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n### Colors and Opacity\nIn Wolfram Language color, \
-opacity and other directives are automatically applied to all primitives, \
-even scoped with a List appearing after them, i.e.:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3772485f-0f6a-46d0-977e-58187068432c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "### Colors and Opacity\nIn Wolfram Language color, opacity \
-and other directives are automatically applied to all primitives, even scoped \
-with a List appearing after them, i.e.:", "Display" -> "markdown", 
-    "Hash" -> "2e46f521-f419-4b24-87df-03b5e8b9a2cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "{Red, \
-(*BB[*)(Disk[...])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskH\
-leakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF8WDw3r5IAAwe2BfNAYM79gBQ7x14\"*)(*]BB\
-*), Blue, \
-{(*BB[*)(Disk[...])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgsk\
-HleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF0mBw277o108QeGlfdP8eCLyzBwCCPCLr\"*)\
-(*]BB*), \
-(*BB[*)(Line[...])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskH\
-leakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF0mBw277o108QeGlfdP8eCLyzBwCCPCLr\"*)(\
-*]BB*)}}", "Display" -> "codemirror", 
-    "Hash" -> "2cc18d34-aaa9-4d41-8a8a-bd772db300fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nTherefore if we use dynamic symbols and offload them to \
-the frontend, there will be 2 types of binding:", "Display" -> "codemirror", 
-    "Hash" -> "2ba465da-09e0-4d88-bf4f-f49e24f001af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Therefore if we use dynamic symbols and offload them to the \
-frontend, there will be 2 types of binding:", "Display" -> "markdown", 
-    "Hash" -> "334583c7-f028-42cd-bad9-fae5e4bb2c94", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "opacity = 1.0;\nGraphics[{\n  Triangle[],\n  \
-(*BB[*)(Opacity)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHle\
-akFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34\"*)(*]BB*)\
-[(*BB[*)(opacity)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHl\
-eakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR\"*)(*\
-]BB*) // Offload], \n  Red, \
-(*BB[*)(Disk)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakF\
-nMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFd26DgX3Rgvkg8N6+6NJFEHhoDwDL+yT7\"*)(*]BB*\
-)[{0,0}, 0.25]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "85fee3eb-5ba5-4f09-9454-c7fb5a8c01db", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nfrom opacity to `Opacity` directive, and from `Disk` to \
-`opacity`. When we update `opacity`, the whole chain will be pulled:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ad30c20c-296f-4997-9da1-19b5107f589f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "from opacity to `Opacity` directive, and from `Disk` to \
-`opacity`. When we update `opacity`, the whole chain will be pulled:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d6761a1f-4fde-400a-a1c7-22d469d6ae1e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "opacity = RandomReal[{0,1}];", "Display" -> "codemirror", 
-    "Hash" -> "3998bf7d-dc0e-4393-9deb-9f33b5fd31c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nTo update `RGBColor` or `Hue` you need to bind them in \
-the same way:", "Display" -> "codemirror", 
-    "Hash" -> "e674d4a3-6761-4494-82f3-bc6636737844", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> 
-     "To update `RGBColor` or `Hue` you need to bind them in the same way:", 
-    "Display" -> "markdown", "Hash" -> 
-     "5e4ebbeb-79e7-4075-8a9c-d7a0516332f4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> 
-     "color = {1.0,1.0,1.0};\nGraphics[{RGBColor[color//Offload], Disk[]}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "61accab2-032f-4cd9-947b-0f126c2aee73", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nFor convenience, you may apply the following pattern:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8ca47662-4abc-4fa7-9099-1f8c3dfaf9a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "For convenience, you may apply the following pattern:", 
-    "Display" -> "markdown", "Hash" -> 
-     "86c2bc2a-c39c-4a38-ac8f-50bccb133a50", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "color = List@@RGBColor[Pink];", "Display" -> "codemirror", 
-    "Hash" -> "7acf67e0-45a8-4c50-83d2-adab14cbb67c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "color = List@@RGBColor[LABColor[0.6,0.5,0.5]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "76791cb8-dd40-4f64-86e3-83fc3504e78b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n### Animation\nLow-level animation can be done in two \
-ways:\n\n#### As Transitions\nThis one is reserved exclusively for `Graphics` \
-or higher-order functions like `Plot*` or `HighlightImage`, which produce \
-`Graphics`. Any update to a primitive is interpolated on the frontend by \
-default. You can control it with `TransitionType` and `TransitionDuration` \
-directives, set globally as an option to `Graphics` or locally using \
-`Directive`. Here is an example:", "Display" -> "codemirror", 
-    "Hash" -> "8bce73e4-e269-457a-9a60-537c77a427af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "### Animation\nLow-level animation can be done in two \
-ways:\n\n#### As Transitions\nThis one is reserved exclusively for `Graphics` \
-or higher-order functions like `Plot*` or `HighlightImage`, which produce \
-`Graphics`. Any update to a primitive is interpolated on the frontend by \
-default. You can control it with `TransitionType` and `TransitionDuration` \
-directives, set globally as an option to `Graphics` or locally using \
-`Directive`. Here is an example:", "Display" -> "markdown", 
-    "Hash" -> "fe167d9a-e67e-4fe3-8573-4d15af3a7cfa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "pos = {-1,0};\nGraphics[{\n  \
-Directive[\"TransitionType\"->None],\n  Disk[(pos+{0,0.5})//Offload, 0.1],\n  \
-Directive[\"TransitionType\"->\"Linear\"],\n  Disk[(pos)//Offload, 0.1],\n  \
-Directive[\"TransitionType\"->\"CubicInOut\"],\n  \
-Disk[(pos+{0,-0.5})//Offload, 0.1]\n}, \n  PlotRange->{{-1,1}, {-1,1}},\n  \
-\"TransitionDuration\"->2000\n]", "Display" -> "codemirror", 
-    "Hash" -> "95dd7d3d-8ec6-4394-bb96-8c1ee63558de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nThen update the positions instantly:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "009bb228-5fc1-4698-a7d1-fe3047976e83", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Then update the positions instantly:", 
-    "Display" -> "markdown", "Hash" -> 
-     "a18b80c2-9d37-490b-86dc-9d5bc2a0daee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "pos = -pos;", "Display" -> "codemirror", 
-    "Hash" -> "84c41c52-a434-4419-adb4-1e18c1c293b0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\n#### Frames\nThe naive way of animating things could be \
-something like a loop with `Pause`:", "Display" -> "codemirror", 
-    "Hash" -> "4df78bd6-1f3d-4276-ac41-2ac56ff71524", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "#### Frames\nThe naive way of animating things could be \
-something like a loop with `Pause`:", "Display" -> "markdown", 
-    "Hash" -> "11a44fe2-ce29-403f-80e0-2b8e900e942b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Do[data = animate[i]; Pause[0.01], {i, 99999}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4772db77-c18b-489e-b7f1-d97f0de59900", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nThis will work. However, it is a suboptimal approach: it \
-blocks the kernel, it is not in sync with the screen refresh (which may cause \
-flickering), and there is no reliable way to embed it in a presentation or \
-simply suspend it.\n\nTo solve these issues for any type of animated \
-graphics, use `AnimationFrameListener`. It does a few things:\n\n<div \
-class=\"text-sm mt-2\">\n\n- It fires an event before the next paint cycle of \
-a window\n- It has to be \"reloaded\" by a change to some symbol for the next \
-shot\n- Animation stops if the app is not visible or the parent expression \
-has been removed\n\nThese lead to:\n\n- Animation does not block your basic \
-evaluation cycle (async)\n- Animation will run as fast as your computation \
-cycle allows and will not spam the computation kernel\n- Animation is in sync \
-with your hardware and clamped to the maximum screen refresh rate\n- \
-Animation will not run in the background by accident\n  \n</div>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3b6c681a-ddb5-4d43-a30e-586ac0717c51", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "This will work. However, it is a suboptimal approach: it \
-blocks the kernel, it is not in sync with the screen refresh (which may cause \
-flickering), and there is no reliable way to embed it in a presentation or \
-simply suspend it.\n\nTo solve these issues for any type of animated \
-graphics, use `AnimationFrameListener`. It does a few things:\n\n<div \
-class=\"text-sm mt-2\">\n\n- It fires an event before the next paint cycle of \
-a window\n- It has to be \"reloaded\" by a change to some symbol for the next \
-shot\n- Animation stops if the app is not visible or the parent expression \
-has been removed\n\nThese lead to:\n\n- Animation does not block your basic \
-evaluation cycle (async)\n- Animation will run as fast as your computation \
-cycle allows and will not spam the computation kernel\n- Animation is in sync \
-with your hardware and clamped to the maximum screen refresh rate\n- \
-Animation will not run in the background by accident\n  \n</div>", 
-    "Display" -> "markdown", "Hash" -> 
-     "258d89b0-d7de-420e-ad8c-3184ac7b5a9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere is an example with many 3D spheres animated:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1fa0f962-176f-4703-836c-65da4ad82e67", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here is an example with many 3D spheres animated:", 
-    "Display" -> "markdown", "Hash" -> 
-     "5968724b-a0cd-4e9e-b90b-e0cbb28761b0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "balls = RandomReal[{-1,1}, {100,3}];\nvels  = \
-RandomReal[{-1,1}, {100,3}];\n\nGraphics3D[{\n  Table[With[{i = i},\n    {\n  \
-    RGBColor[RandomReal[{0,1}, 3]],\n      Sphere[balls[[i]] // Offload, \
-0.03]\n    }\n  ], {i, Length[balls]}], \n\n  \
-EventHandler[AnimationFrameListener[balls // Offload], handler]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0872cb0d-8b90-43b2-88a5-e9d4050843c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere `balls` is passed as a dependency to \
-`AnimationFrameListener`, acting as a trigger that signals the animation is \
-complete and needs to fire an event handled by the handler function for the \
-next frame. Let's define our basic handler function that updates the ball \
-positions:", "Display" -> "codemirror", 
-    "Hash" -> "1ab8642b-fdfa-4955-963b-a1928371c5e1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here `balls` is passed as a dependency to \
-`AnimationFrameListener`, acting as a trigger that signals the animation is \
-complete and needs to fire an event handled by the handler function for the \
-next frame. Let's define our basic handler function that updates the ball \
-positions:", "Display" -> "markdown", 
-    "Hash" -> "749b8450-52cb-4f9c-b13a-269d5effed74", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "handler[_] := With[{},\n  vels = Table[\n    \
-If[Norm[balls[[i]]] < 0.01, -1, 1] vels[[i]] - 0.08 balls[[i]]\n  , {i, \
-Length[balls]}];\n  \n  balls = Table[balls[[i]] + 0.08 vels[[i]], {i, \
-Length[balls]}];\n]", "Display" -> "codemirror", 
-    "Hash" -> "a48eceea-a1aa-438d-b3ac-37936b865b09", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nTo start the animation, you need to evaluate the first \
-cell we described or kick-start it by manually triggering an update:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e5473ad3-3117-45f8-bd77-545f70141f87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "To start the animation, you need to evaluate the first cell \
-we described or kick-start it by manually triggering an update:", 
-    "Display" -> "markdown", "Hash" -> 
-     "3bb522d7-07a5-4358-ba6f-12a1650445c1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "balls = balls;", "Display" -> "codemirror", 
-    "Hash" -> "2e0f78aa-1001-410b-b865-5591c5ddd3e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> 
-     ".md\nTo interrupt an animation, you can simply break the cycle:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b36e4e58-b06c-4e1f-9adb-3ed9c4f7e7a7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "To interrupt an animation, you can simply break the cycle:", 
-    "Display" -> "markdown", "Hash" -> 
-     "488bd5bd-fd4e-4348-897c-d5370f5b585c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "handler[_] := Null;", "Display" -> "codemirror", 
-    "Hash" -> "712977d2-1299-43cf-b604-eadb071f2116", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nHere is another nice and easy example with 2D points:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e3716a89-9c5c-47ed-a773-bb1936821e24", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Here is another nice and easy example with 2D points:", 
-    "Display" -> "markdown", "Hash" -> 
-     "77068bf2-68c8-4a96-b349-2c0985383ff2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "Module[{pts = RandomReal[{-1,1}, {100, 2}]},\nGraphics[{\n  \
-Point[pts // Offload],\n  EventHandler[AnimationFrameListener[pts//Offload], \
-Function[Null,\n    pts = Map[(# + 0.01 Normalize[{-1,1} #[[{2,1}]]])&, \
-pts];\n  ]]\n}, \"TransitionType\"->None, ImageSize->Small]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e221c446-3564-4f87-acb6-eaa355fa32ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> ".md\nIn some cases, timers can also be used. If your \
-animation is slow and you do not need to be in sync with the screen, use \
-`SetInterval`. Here is a previous example rewritten with timers:\n\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f128ec89-dcb6-48bb-b6c5-325cd8fc8d4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "In some cases, timers can also be used. If your animation is \
-slow and you do not need to be in sync with the screen, use `SetInterval`. \
-Here is a previous example rewritten with timers:\n\n", 
-    "Display" -> "markdown", "Hash" -> 
-     "0469421a-371f-4d00-a19d-bb9409ce0f1f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>, 
-   <|"Data" -> "TaskRemove[task] // Quiet;\nModule[{\n  path = {{0,0}}\n},\n  \
-task = SetInterval[\n    path = Append[path, Last[path] + RandomChoice[{\n    \
-  {0,1}, {0,-1}, {1,0}, {-1,0}\n    }]];\n  , 100];\n  Graphics[{\n    \
-Line[path//Offload]\n    }, PlotRange->20{{-1,1},{-1,1}},\n    \
-\"TransitionType\"->None\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "000e7033-16fa-4a74-a192-17a3778ca71f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "16899031-7f0f-4f93-be84-f3a620af8100"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Interactive evaluation and granular updates
+
+## Manipulate and Animate Functionality
+WLJS Notebook partially inherits a well-known killer feature of Wolfram Mathematica - Manipulate, Animate, and others, allowing interactive evaluation of arbitrary expressions:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Interactive evaluation and granular updates
+
+## Manipulate and Animate Functionality
+WLJS Notebook partially inherits a well-known killer feature of Wolfram Mathematica - Manipulate, Animate, and others, allowing interactive evaluation of arbitrary expressions:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[
+  Plot[Sin[a x + b], {x, 0, 6}], 
+  {{a, 2, "Frequency"}, 1, 4, 1}, 
+  {{b, 0, "Phase"}, 0, 10, 1}, 
+  ContinuousAction->True
+]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[Plot[1.0 + Sin[w] Sin[x + w],{x,0,5Pi}, Epilog->{
+  Red, Point[{8.0, 1.0 + Sin[w] Sin[8.0 + w]}]
+}], {w,0,Pi}, ContinuousAction->True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Text strings or any other symbolic expressions can also be manipulated:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Text strings or any other symbolic expressions can also be manipulated:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[Column[{
+  Style[StringTemplate["`` m/s"][v], Blue],
+  Table["🚗", {i, Floor[v/25]}] // Row 
+}], {v,10,100}, ContinuousAction->True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Basic 2D/3D primitives can also be manipulated, for example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Basic 2D/3D primitives can also be manipulated, for example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[Graphics[{
+  Translate[Rotate[Rectangle[q{-1,-1}, q{1,1}], r], {x, 0}]
+}, PlotRange->1], {x,-1,1}, {r,0,Pi/2.0}, {q,0.1,0.2}, ContinuousAction->True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+3D plot example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+3D plot example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[Plot3D[Sin[n x] Cos[n y], {x,-1,1}, {y,-1,1}], {n, 1, 5, 0.3}, ContinuousAction->True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Images:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Images:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+img = ImageResize[ExampleData[ExampleData["TestImage"] // Last], 350];
+Manipulate[
+  ImageAdjust[img, {c,a}], 
+  
+  {{c, 0},0,5,0.1}, 
+  {{a, 0},0,5,0.1},
+  ContinuousAction->True
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Under the hood, it uses a diff algorithm to interpret changes between old and new expressions evaluated using corresponding parameters. Then, if possible, the expression is transformed into a more optimized one that uses granular updates instead of full re-evaluation.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Under the hood, it uses a diff algorithm to interpret changes between old and new expressions evaluated using corresponding parameters. Then, if possible, the expression is transformed into a more optimized one that uses granular updates instead of full re-evaluation.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`Animate` works in a similar way, but scans the parameter automatically:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`Animate` works in a similar way, but scans the parameter automatically:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Animate[
+  ParametricPlot[ReIm @ Exp[-I (\[Phi] + \[Gamma] I \[Phi])], {\[Phi],0,5Pi}, 
+    PlotLabel->StringTemplate["\[Gamma] = ``"][\[Gamma]]
+  ]
+, {\[Gamma],0,0.5}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For symbolic data it works too:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For symbolic data it works too:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Animate[{x, (*SpB[*)Power[x(*|*),(*|*)2](*]SpB*)} // NumberForm, {x,0,10}]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Animate[Row[{Sin[x], "==", Series[Sin[x], {x,0,n}], Invisible[1/2]}], {n, 1, 10, 1}, RefreshRate->3]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### How to export animation
+
+:::warning
+This feature is available only for WLJS desktop application
+:::
+
+If you want to export it as GIF, render it to `AnimatedImage` first. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### How to export animation
+
+:::warning
+This feature is available only for WLJS desktop application
+:::
+
+If you want to export it as GIF, render it to `AnimatedImage` first. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+w3D[x_,y_,t_] := Total@Table[With[{kx = 1.0 \[Omega], ky = 1.0 \[Omega]}, 
+  Cos[ kx x + ky y - \[Omega] t]
+], {\[Omega], 0, 3, 1.0}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+a = AnimatedImage @ Animate[Plot3D[w3D[x,y,t], {x,-Pi,Pi}, {y,-Pi,Pi}, MaxRecursion->1, Mesh->None, PlotRange->Full], {t,0,5}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can export it as GIF or as a movie:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can export it as GIF or as a movie:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Export["animation.gif", a]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### More specialized functions
+We recommend using `ManipulatePlot` and `ManipulateParametricPlot` for simple interactive curve plotting, since they are more optimized and do not require the diff algorithm to run:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### More specialized functions
+We recommend using `ManipulatePlot` and `ManipulateParametricPlot` for simple interactive curve plotting, since they are more optimized and do not require the diff algorithm to run:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ManipulatePlot[
+  (*TB[*)Sum[(*|*)(*FB[*)((Sin[2π(2j - 1) x])(*,*)/(*,*)(2j-1))(*]FB*)(*|*), {(*|*)j(*|*),(*|*)1.0(*|*),(*|*)n(*|*)}](*|*)(*1:eJxTTMoPSmNiYGAoZgMSwaW5TvkVmYwgPguQCCkqTQUAeAcHBQ==*)(*]TB*)
+, {x, -1,1}, {{n,4}, 1,7, 1}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`AnimatePlot` and `AnimateParametricPlot` use a different strategy and precalculate all curves before animating:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`AnimatePlot` and `AnimateParametricPlot` use a different strategy and precalculate all curves before animating:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+AnimateParametricPlot[
+    With[{t = If[x > lim,lim,x]},
+      N[Exp[-(*FB[*)((1)(*,*)/(*,*)(3))(*]FB*) Floor[(*FB[*)((x)(*,*)/(*,*)(4 \[Pi]))(*]FB*)]] ReIm[(*SpB[*)Power[I(*|*),(*|*)-t](*]SpB*) + 3 ((*SpB[*)Power[I(*|*),(*|*)t/3](*]SpB*))]]
+    ]
+    , {x, 0.1`, 16 \[Pi]}, {lim, 0.1`, 16 \[Pi]}
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Tips for better performance
+If you still want to use `Animate` or `Manipulate` on some complex expressions, there are some tricks to avoid deoptimization of JIT engine:
+
+<div class="text-sm mt-2">
+
+
+- Try to keep the number of curves/traces the same as well as polygons if possible. Try not to add new entities to your graphs.
+
+- `PerformanceGoal->"Speed"` is also a good option for 3D plots.
+
+- `Mesh->None might` also help.
+
+- `PlotRange->Full` can help to avoid fragmentation of line segments
+
+- Avoid changing colors, opacity on runtime
+
+  
+</div>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Tips for better performance
+If you still want to use `Animate` or `Manipulate` on some complex expressions, there are some tricks to avoid deoptimization of JIT engine:
+
+<div class="text-sm mt-2">
+
+
+- Try to keep the number of curves/traces the same as well as polygons if possible. Try not to add new entities to your graphs.
+
+- `PerformanceGoal->"Speed"` is also a good option for 3D plots.
+
+- `Mesh->None might` also help.
+
+- `PlotRange->Full` can help to avoid fragmentation of line segments
+
+- Avoid changing colors, opacity on runtime
+
+  
+</div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Granular Updates
+
+The way how you update things like points and lines on your plots, images, or bind those elements to the changes of data differs from one used in Pluto.jl, Marimo and Wolfram Mathematica. If the last one uses 2-ways binding, we rely on 1-way. The key changes were made for the sake of performance and simplicity.
+
+### Architecture
+
+WLJS mostly uses retained mode for managing objects on screen, which means Line or Point has a dedicated method to update itself when the dependencies change. Not all primitives have an update method implemented—please check our symbols reference section to confirm. The dependencies are resolved and the changes are propagated by the frontend (browser), not by the evaluation kernel. To create such a dependency, you need to "offload" an expression to be executed on the frontend. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Granular Updates
+
+The way how you update things like points and lines on your plots, images, or bind those elements to the changes of data differs from one used in Pluto.jl, Marimo and Wolfram Mathematica. If the last one uses 2-ways binding, we rely on 1-way. The key changes were made for the sake of performance and simplicity.
+
+### Architecture
+
+WLJS mostly uses retained mode for managing objects on screen, which means Line or Point has a dedicated method to update itself when the dependencies change. Not all primitives have an update method implemented—please check our symbols reference section to confirm. The dependencies are resolved and the changes are propagated by the frontend (browser), not by the evaluation kernel. To create such a dependency, you need to "offload" an expression to be executed on the frontend. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+l = 1;
+
+Graphics[{Cyan,
+  (*BB[*)(Rectangle)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34"*)(*]BB*)[{-1, -1}, {(*BB[*)(l)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR"*)(*]BB*) // Offload, 1}]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we used `Offload` to tell Wolfram Kernel not to evaluate symbol `l` and keep it for evaluating on the frontend. In this example above the binding happens between `Rectangle` and `l`. Nothing stops us from offloading a derived expression from the same symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we used `Offload` to tell Wolfram Kernel not to evaluate symbol `l` and keep it for evaluating on the frontend. In this example above the binding happens between `Rectangle` and `l`. Nothing stops us from offloading a derived expression from the same symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{Pink,
+  (*BB[*)(Disk)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34"*)(*]BB*)[{(*BB[*)(l)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR"*)(*]BB*), (*BB[*)(l)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR"*)(*]BB*)}//Offload, (*SpB[*)Power[(*BB[*)(l)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR"*)(*]BB*)(*|*),(*|*)2](*]SpB*) // Offload]
+}, PlotRange->{{0,1}, {0,1}}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here the radius of Disk depends on `l^2`, therefore when `l` changes, it recalculates the derived square of this symbol. Now let's try to update our symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here the radius of Disk depends on `l^2`, therefore when `l` changes, it recalculates the derived square of this symbol. Now let's try to update our symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+l = 0.33;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Using a slider we can observe the change easier:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Using a slider we can observe the change easier:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputRange[0,1,.1], Function[val, l=val]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we used a built-in UI element InputRange with a basic event handler assigned to it, that updates our symbol with a new value. When a new value is assigned to `l` symbol, Wolfram Kernel pushes a new value using a fast binary protocol to the frontend, that updates all visible instances coupled to `l`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we used a built-in UI element InputRange with a basic event handler assigned to it, that updates our symbol with a new value. When a new value is assigned to `l` symbol, Wolfram Kernel pushes a new value using a fast binary protocol to the frontend, that updates all visible instances coupled to `l`.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The provided data does not have to be numerical, it can be textual as well. Here is an example with __text spray__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The provided data does not have to be numerical, it can be textual as well. Here is an example with __text spray__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{
+  text = "Hello World"
+},
+  Column[{
+    EventHandler[InputText[text], (text = #)&],
+    Graphics[Table[{
+      RandomColor[],
+      Rotate[
+        Text[text // Offload, RandomReal[{-1, 1}, 2]],
+        RandomReal[{0, 3.14}]
+      ]
+    }, {40}]]
+  }]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Colors and Opacity
+In Wolfram Language color, opacity and other directives are automatically applied to all primitives, even scoped with a List appearing after them, i.e.:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Colors and Opacity
+In Wolfram Language color, opacity and other directives are automatically applied to all primitives, even scoped with a List appearing after them, i.e.:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{Red, (*BB[*)(Disk[...])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF8WDw3r5IAAwe2BfNAYM79gBQ7x14"*)(*]BB*), Blue, {(*BB[*)(Disk[...])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF0mBw277o108QeGlfdP8eCLyzBwCCPCLr"*)(*]BB*), (*BB[*)(Line[...])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVF0mBw277o108QeGlfdP8eCLyzBwCCPCLr"*)(*]BB*)}}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Therefore if we use dynamic symbols and offload them to the frontend, there will be 2 types of binding:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Therefore if we use dynamic symbols and offload them to the frontend, there will be 2 types of binding:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+opacity = 1.0;
+Graphics[{
+  Triangle[],
+  (*BB[*)(Opacity)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb5oDhi8sS+qB4P39gBJMR34"*)(*]BB*)[(*BB[*)(opacity)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFDGDwwb7o7x8QeGNf9PEDCDywBwB4XSLR"*)(*]BB*) // Offload], 
+  Red, (*BB[*)(Disk)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeB5AILqnMSXXKr0hjgskHleakFnMBGU6JydnpRfmleSlpzDDlQe5Ozvk5+UVFd26DgX3Rgvkg8N6+6NJFEHhoDwDL+yT7"*)(*]BB*)[{0,0}, 0.25]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+from opacity to `Opacity` directive, and from `Disk` to `opacity`. When we update `opacity`, the whole chain will be pulled:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+from opacity to `Opacity` directive, and from `Disk` to `opacity`. When we update `opacity`, the whole chain will be pulled:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+opacity = RandomReal[{0,1}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To update `RGBColor` or `Hue` you need to bind them in the same way:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To update `RGBColor` or `Hue` you need to bind them in the same way:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+color = {1.0,1.0,1.0};
+Graphics[{RGBColor[color//Offload], Disk[]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For convenience, you may apply the following pattern:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For convenience, you may apply the following pattern:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+color = List@@RGBColor[Pink];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+color = List@@RGBColor[LABColor[0.6,0.5,0.5]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Animation
+Low-level animation can be done in two ways:
+
+#### As Transitions
+This one is reserved exclusively for `Graphics` or higher-order functions like `Plot*` or `HighlightImage`, which produce `Graphics`. Any update to a primitive is interpolated on the frontend by default. You can control it with `TransitionType` and `TransitionDuration` directives, set globally as an option to `Graphics` or locally using `Directive`. Here is an example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Animation
+Low-level animation can be done in two ways:
+
+#### As Transitions
+This one is reserved exclusively for `Graphics` or higher-order functions like `Plot*` or `HighlightImage`, which produce `Graphics`. Any update to a primitive is interpolated on the frontend by default. You can control it with `TransitionType` and `TransitionDuration` directives, set globally as an option to `Graphics` or locally using `Directive`. Here is an example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pos = {-1,0};
+Graphics[{
+  Directive["TransitionType"->None],
+  Disk[(pos+{0,0.5})//Offload, 0.1],
+  Directive["TransitionType"->"Linear"],
+  Disk[(pos)//Offload, 0.1],
+  Directive["TransitionType"->"CubicInOut"],
+  Disk[(pos+{0,-0.5})//Offload, 0.1]
+}, 
+  PlotRange->{{-1,1}, {-1,1}},
+  "TransitionDuration"->2000
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Then update the positions instantly:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Then update the positions instantly:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pos = -pos;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+#### Frames
+The naive way of animating things could be something like a loop with `Pause`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+#### Frames
+The naive way of animating things could be something like a loop with `Pause`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Do[data = animate[i]; Pause[0.01], {i, 99999}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This will work. However, it is a suboptimal approach: it blocks the kernel, it is not in sync with the screen refresh (which may cause flickering), and there is no reliable way to embed it in a presentation or simply suspend it.
+
+To solve these issues for any type of animated graphics, use `AnimationFrameListener`. It does a few things:
+
+<div class="text-sm mt-2">
+
+- It fires an event before the next paint cycle of a window
+- It has to be "reloaded" by a change to some symbol for the next shot
+- Animation stops if the app is not visible or the parent expression has been removed
+
+These lead to:
+
+- Animation does not block your basic evaluation cycle (async)
+- Animation will run as fast as your computation cycle allows and will not spam the computation kernel
+- Animation is in sync with your hardware and clamped to the maximum screen refresh rate
+- Animation will not run in the background by accident
+  
+</div>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This will work. However, it is a suboptimal approach: it blocks the kernel, it is not in sync with the screen refresh (which may cause flickering), and there is no reliable way to embed it in a presentation or simply suspend it.
+
+To solve these issues for any type of animated graphics, use `AnimationFrameListener`. It does a few things:
+
+<div class="text-sm mt-2">
+
+- It fires an event before the next paint cycle of a window
+- It has to be "reloaded" by a change to some symbol for the next shot
+- Animation stops if the app is not visible or the parent expression has been removed
+
+These lead to:
+
+- Animation does not block your basic evaluation cycle (async)
+- Animation will run as fast as your computation cycle allows and will not spam the computation kernel
+- Animation is in sync with your hardware and clamped to the maximum screen refresh rate
+- Animation will not run in the background by accident
+  
+</div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is an example with many 3D spheres animated:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is an example with many 3D spheres animated:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+balls = RandomReal[{-1,1}, {100,3}];
+vels  = RandomReal[{-1,1}, {100,3}];
+
+Graphics3D[{
+  Table[With[{i = i},
+    {
+      RGBColor[RandomReal[{0,1}, 3]],
+      Sphere[balls[[i]] // Offload, 0.03]
+    }
+  ], {i, Length[balls]}], 
+
+  EventHandler[AnimationFrameListener[balls // Offload], handler]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here `balls` is passed as a dependency to `AnimationFrameListener`, acting as a trigger that signals the animation is complete and needs to fire an event handled by the handler function for the next frame. Let's define our basic handler function that updates the ball positions:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here `balls` is passed as a dependency to `AnimationFrameListener`, acting as a trigger that signals the animation is complete and needs to fire an event handled by the handler function for the next frame. Let's define our basic handler function that updates the ball positions:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+handler[_] := With[{},
+  vels = Table[
+    If[Norm[balls[[i]]] < 0.01, -1, 1] vels[[i]] - 0.08 balls[[i]]
+  , {i, Length[balls]}];
+  
+  balls = Table[balls[[i]] + 0.08 vels[[i]], {i, Length[balls]}];
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To start the animation, you need to evaluate the first cell we described or kick-start it by manually triggering an update:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To start the animation, you need to evaluate the first cell we described or kick-start it by manually triggering an update:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+balls = balls;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To interrupt an animation, you can simply break the cycle:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To interrupt an animation, you can simply break the cycle:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+handler[_] := Null;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is another nice and easy example with 2D points:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is another nice and easy example with 2D points:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{pts = RandomReal[{-1,1}, {100, 2}]},
+Graphics[{
+  Point[pts // Offload],
+  EventHandler[AnimationFrameListener[pts//Offload], Function[Null,
+    pts = Map[(# + 0.01 Normalize[{-1,1} #[[{2,1}]]])&, pts];
+  ]]
+}, "TransitionType"->None, ImageSize->Small]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In some cases, timers can also be used. If your animation is slow and you do not need to be in sync with the screen, use `SetInterval`. Here is a previous example rewritten with timers:
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In some cases, timers can also be used. If your animation is slow and you do not need to be in sync with the screen, use `SetInterval`. Here is a previous example rewritten with timers:
+
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TaskRemove[task] // Quiet;
+Module[{
+  path = {{0,0}}
+},
+  task = SetInterval[
+    path = Append[path, Last[path] + RandomChoice[{
+      {0,1}, {0,-1}, {1,0}, {-1,0}
+    }]];
+  , 100];
+  Graphics[{
+    Line[path//Offload]
+    }, PlotRange->20{{-1,1},{-1,1}},
+    "TransitionType"->None
+  ]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
