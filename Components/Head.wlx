@@ -2,14 +2,27 @@ hexColor = (IntegerDigits[
   ToExpression@StringReplace[#, "#" -> "16^^"], 256, If[StringLength[#] > 7, 4, 3]]) &;
 
 
-GenerateDarkStyles[brightness_, contrast_] := With[{
+GenerateDarkStyles[brightness_, contrast_, True] := With[{
     Brightness = ToString[NumberForm[brightness//N, {2, 1}]],
-    Contrast = ToString[NumberForm[contrast//N, {2, 1}]]
+    Contrast = ToString[NumberForm[contrast//N, {2, 1}]],
+    InverseBrightness = ToString[NumberForm[1/(brightness//N), {3, 2}]],
+    InverseContrast = ToString[NumberForm[1/(contrast//N), {3, 2}]]
 },
-    StringTemplate["@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(``) contrast(``);}}"][Brightness, Contrast]
+    StringTemplate["@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(``) contrast(``);} .wljs-canvas {filter: contrast(``) brightness(``) hue-rotate(180deg) invert(1);}}"][Brightness, Contrast, InverseContrast, InverseBrightness]
 ];
 
-GenerateDarkStyles[1.1, 0.9] = "@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);}}"
+GenerateDarkStyles[1.1, 0.9, True] = "@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);} .wljs-canvas {filter: contrast(1.11) brightness(0.91) hue-rotate(180deg) invert(1);}}"
+
+GenerateDarkStyles[brightness_, contrast_, False] := With[{
+    Brightness = ToString[NumberForm[brightness//N, {2, 1}]],
+    Contrast = ToString[NumberForm[contrast//N, {2, 1}]],
+    InverseBrightness = ToString[NumberForm[1/(brightness//N), {3, 2}]],
+    InverseContrast = ToString[NumberForm[1/(contrast//N), {3, 2}]]
+},
+    StringTemplate["@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(``) contrast(``);}}"][Brightness, Contrast, InverseContrast, InverseBrightness]
+];
+
+GenerateDarkStyles[1.1, 0.9, False] = "@media (prefers-color-scheme: dark) {.dark\\:invert {filter: invert(1) hue-rotate(180deg) brightness(1.1) contrast(0.9);}}"
 
 Component[Children__, OptionsPattern[]] := With[{
     AccentColor = OptionValue["AccentColor"], 
@@ -33,7 +46,8 @@ Component[Children__, OptionsPattern[]] := With[{
  
         DarkStyles = GenerateDarkStyles[
             Lookup[OptionValue["Settings"], "Brightness", 1.1], 
-            Lookup[OptionValue["Settings"], "Contrast", 0.9]
+            Lookup[OptionValue["Settings"], "Contrast", 0.9],
+            Lookup[OptionValue["Settings"], "DisableDarkModeForCanvas", False]
         ]
     },
         <head>

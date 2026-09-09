@@ -3999,6 +3999,19 @@ function latexLikeToHTML(raw) {
   return withSupers;
 }
 
+async function setTextAlignment(labelObject, args, env) {
+  if (args.length <= 2 || (Array.isArray(args[2]) && args[2][0] === 'Rule')) return;
+
+  let offset = await interpretate(args[2], env);
+  if (offset instanceof NumericArrayObject) offset = offset.normal();
+  if (!Array.isArray(offset) || offset.length < 2) return;
+
+  labelObject.center.set(
+    offset[0] < 0 ? 0 : offset[0] > 0 ? 1 : 0.5,
+    offset[1] > 0 ? 0 : offset[1] < 0 ? 1 : 0.5
+  );
+}
+
 g3d.Inset = async (args, env) => {
     let pos = [0,0,0];
     let size; 
@@ -4176,6 +4189,7 @@ g3d.Text = async (args, env) => {
     let labelX = new CSS2D.CSS2DObject( stext );
     stext.className = 'g3d-label';
     labelX.position.copy( new THREE.Vector3(...(await interpretate(args[1], env)))  );
+    await setTextAlignment(labelX, args, env);
     env.mesh.add(labelX);
 
     await makeEditorView(args[0], {...env, element:stext});
@@ -4201,6 +4215,7 @@ g3d.Text = async (args, env) => {
 
   const labelObject = new CSS2D.CSS2DObject( text );
   labelObject.position.copy( new THREE.Vector3(...pos) );
+  await setTextAlignment(labelObject, args, env);
   env.local.labelObject = labelObject;
 
   env.mesh.add(labelObject);
@@ -4217,6 +4232,7 @@ g3d.Text.update = async (args, env) => {
 
   env.local.text.innerHTML = latexLikeToHTML(String(label));
   env.local.labelObject.position.copy( new THREE.Vector3(...pos) );
+  await setTextAlignment(env.local.labelObject, args, env);
   env.wake();
 }
 
@@ -8084,6 +8100,7 @@ core.Image3D = async (args, env) => {
   renderer.setSize(ImageSize[0], ImageSize[1]);
   renderer.setPixelRatio(devicePixelRatio);
 
+  env.element.classList.add('wljs-canvas');
   env.element.appendChild(renderer.domElement);
 
   renderer.setClearColor(0x000000, 0);
@@ -8156,6 +8173,7 @@ core.Image3D.update = async (args, env) => {
 
 core.Image3D.destroy = (args, env) => {
   console.warn('Dispose');
+  env.element.classList.remove('wljs-canvas');
 
   if (env.local.animation) {
     cancelAnimationFrame(env.local.animation);

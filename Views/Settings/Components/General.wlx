@@ -64,6 +64,11 @@ EventHandler[Secret, {"Load" -> Function[Null,
             onSave[settings];
         ],        
 
+        "DisableDarkModeForCanvas" -> Function[state,
+            settings = Join[settings, <|"DisableDarkModeForCanvas"->state|>];
+            onSave[settings, False];
+        ],        
+
         "Theme" -> Function[state,
             settings = Join[settings, <|"Theme"->state|>];
             onSave[settings, False];
@@ -280,6 +285,10 @@ EventHandler[Secret, {"Load" -> Function[Null,
                                                 </div> 
                                             </div>     
 
+                                            <StringRiffle>
+                                                <Checkbox Label={"Limit dark filter"} Event={controller} Topic={"DisableDarkModeForCanvas"} Description={"Disables dark mode filter for 2D and 3D images"} Checked={settings["DisableDarkModeForCanvas"]}/>
+                                            </StringRiffle>
+                                            
             <Radio Label={"UI Color"} List={ {{"System", "System"}, {"User", "User"}} } Selected={defaultColorChoice} Pattern={"ColorChoice"} Event={controller} />
 
             <ColorPicker Label={"Accent color"} Default={defaultColor} Pattern={"Color"} Event={controller}/>

@@ -3908,11 +3908,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       }
       
       if (offset[1] === 0) {
-        object.attr("alignment-baseline", "middle");
+        object.attr("dominant-baseline", "middle");
       } else if (offset[1] > 0) {
-        object.attr("alignment-baseline", "hanging");
+        object.attr("dominant-baseline", "hanging");
       } else if (offset[1] < 0) {
-        object.attr("alignment-baseline", "text-after");
+        object.attr("dominant-baseline", "text-after-edge");
       }        
 
 
@@ -9474,7 +9474,10 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
       var canvas = document.createElement("canvas");
       canvas.width = target_width;
       canvas.height = target_height;      
-      if (!env.offscreen) env.element.appendChild(canvas);
+      if (!env.offscreen) {
+        env.element.appendChild(canvas);
+        canvas.classList.add('wljs-canvas');
+      }
       canvas.style.width = target_width / dpi + 'px';
       canvas.style.height = target_height / dpi + 'px';
       ctx  = canvas.getContext("2d");
@@ -9561,6 +9564,7 @@ core['Canvas2D`Private`ctx'] = async (args, env) => {
   if (!runOptcodes) runOptcodes = (await import('./canvas2d-e97b098c.js')).runOptcodes;
 
   const canvas = document.createElement("canvas");
+  canvas.classList.add('wljs-canvas');
   opts.ImageResolution = await interpretate(opts.ImageResolution, env);
 
   if (typeof opts.ImageResolution[0] != 'number') {
