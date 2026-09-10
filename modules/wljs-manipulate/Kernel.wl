@@ -1615,7 +1615,7 @@ Options[renderAnimation] = {"Window" :> CurrentWindow[], "ExposureTime"->Automat
 
 
 
-Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _String}, ___?NumericQ} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., OptionsPattern[] ] := Module[{forcedStep = False, code, sliders, jitMessage = Null, originalExpression, jitFailedQQ = True, protected = {} , noOffload = False}, With[{
+Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _String}, ___?NumericQ} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., OptionsPattern[] ] := Module[{forcedStep = False, code, syncSymbol = 1, sliders, jitMessage = Null, originalExpression, jitFailedQQ = True, protected = {} , noOffload = False}, With[{
   vars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = Hash[{f//Hold, parameters}],
   eventId = CreateUUID[],
@@ -1667,6 +1667,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
         wapi`Tools`ChangeState[widgetInstance, "Offline"];
         EventRemove[widgetInstance["Hash"] ];
         Delete[ widgetInstance ];
+        ClearAll[syncSymbol];
     ]}];
  
     If[!AllTrue[vars, !FailureQ[#] &] || vars === $Failed,
@@ -1797,6 +1798,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
             
           ];
         ];
+        syncSymbol = syncSymbol + 1;
       ] ] ];
 
       If[jitFailedQQ, Message[Animate::frclip] ];
@@ -1807,7 +1809,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
 
       AnimationHelper[
         EditorView[ code // Offload, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True] (* EditorView works only with strings, FullReset for the cleanest update *)
-      , {vars[[1]]["Min"], vars[[1]]["Max"], If[forcedStep === False, vars[[1]]["Step"], forcedStep]}, eventId, If[jitFailedQQ, Min[animationRate, 5], animationRate], OptionValue["TriggerEvent"] === Null, If[animationRepetitions === Infinity, -1, animationRepetitions], widgetInstance["Hash"], "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "JITMessage"->jitMessage ]
+      , {vars[[1]]["Min"], vars[[1]]["Max"], If[forcedStep === False, vars[[1]]["Step"], forcedStep]}, eventId, If[jitFailedQQ, Min[animationRate, 5], animationRate], OptionValue["TriggerEvent"] === Null, If[animationRepetitions === Infinity, -1, animationRepetitions], widgetInstance["Hash"], Offload[code], Offload[syncSymbol], "ViewChange"->widgetInstance["Hash"], Appearance->OptionValue[Appearance], "JITMessage"->jitMessage ]
     ]
 ] ]
 

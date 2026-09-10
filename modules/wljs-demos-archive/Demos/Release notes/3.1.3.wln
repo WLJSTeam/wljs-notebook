@@ -261,6 +261,20 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+Even more: __we guarded__ `Animate` __widget from spamming the kernel with evaluation requests__. Animation won't go faster than the communication link, rendering pipeline and computation mutually allows.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Even more: __we guarded__ `Animate` __widget from spamming the kernel with evaluation requests__. Animation won't go faster than the communication link, rendering pipeline and computation mutually allows.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## MCP Server patches
 - Improved documentation search
 - New skills for all cell types

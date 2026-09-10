@@ -94,12 +94,19 @@ const helper = async (args, env) => {
     const frameRate = 60.0 / (await interpretate(args[3], env));
     const noTrigger = await interpretate(args[4], env);
     const maxRepetitions = await interpretate(args[5], env);
+
+    env.local.innerCode = await interpretate(args[7], env);
+    env.local.syncIndicator =  await interpretate(args[8], env);
+
+    
     let repetitions = 0;
 
     const startQ = false;
 
     let timeMarker = () => {}
     let finished = () => {}
+
+    let count = 0;
 
     const options = await core._getRules(args, env);
 
@@ -176,16 +183,13 @@ const helper = async (args, env) => {
 
 
 
-        bar.addEventListener('click', (ev) => {
-            const p = ev.offsetX/bar.clientWidth;
-            currentValue = Math.max(Math.min(ranges[0] + Math.round(p*(ranges[1] - ranges[0]) / ranges[2]), ranges[1]), ranges[0]);
-            pbar.style.width = Math.round(100 * p) + "%"; 
-        });
+
 
 
         playButton.addEventListener('click',  () => {      
             runningQ = true;
             repetitions = 0;
+
             animate(false);
             playButton.classList.add('hidden');
             stopButton.classList.remove('hidden');
@@ -214,7 +218,7 @@ const helper = async (args, env) => {
 
     env.local.event = event;
     let runningQ = false;
-    let count = 0;
+    
     let currentValue = ranges[0];
 
     function nextFrame() {
@@ -240,12 +244,21 @@ const helper = async (args, env) => {
     }
     
     let animate;
+
+    env.local.readyQ = true;
+    
     animate = () => {
         if (!runningQ) return;
 
         count++;
-        if (count >= frameRate) {
+        if (count >= frameRate && env.local.readyQ) {
             count = 0;
+            //check if this is legacy animation tool
+            //or is this is running outside the notebook
+            if (
+                Number.isInteger(env.local.syncIndicator) && // [LEGACY] Support for older plots
+                window.server.kernel.connected //if connected
+            ) env.local.readyQ = false; // wait for the sync with a server
             if (!nextFrame() && !startQ) {
                 runningQ = false;
                 finished();
@@ -256,9 +269,10 @@ const helper = async (args, env) => {
             
         }
 
-        
         env.local.uid = requestAnimationFrame(animate);
+        
     }
+
 
     if (!startQ) {
         helper[event] = (state) => {
@@ -290,20 +304,38 @@ const helper = async (args, env) => {
     }
 }
 
-helper.update = (args, env) => {
-    if (!env.local.jitTimer) {
+helper.update = async (args, env) => {
+  //Something changed
+
+  const sync = await interpretate(args[8], env);
+  //1: is this  is a synchronization signal
+  //   to trigger an update (evaluation has finished)
+  if (env.local.syncIndicator != sync) {
+    env.local.syncIndicator = sync;
+    //go to the next frame
+    env.local.readyQ = true;
+  }
+
+  //2: this is JIT failure
+  if (!env.local.jitTimer) {
+        const innerCode = await interpretate(args[7], env);
+        if (env.local.innerCode == innerCode) return;
+        env.local.innerCode = innerCode;
         if (!env.local.jitIcon) return;
         env.local.jitIcon.style.background = "rgb(255 147 147)";
         env.local.jitTimer = setTimeout(() => {
             env.local.jitIcon.style.background = "#85e085";
             env.local.jitTimer = 0;
         }, 400);
-    }
+  }
 }
 
 helper.destroy = (args, env) => {
     delete helper[env.local.event];
     cancelAnimationFrame(env.local.uid);
+    delete env.local.innerCode;
+    delete env.local.syncIndicator;
+    
     if (env.local.viewChange) {
         server.kernel.io.fire(env.local.viewChange, true, 'Destroy');
     }    
