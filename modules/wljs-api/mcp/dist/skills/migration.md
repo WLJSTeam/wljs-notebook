@@ -46,6 +46,18 @@ dimensions, and `PlotRange` stable so granular updates can be used. Prefer speci
 `ManipulatePlot`, `ManipulateParametricPlot`, `AnimatePlot`, or
 `AnimateParametricPlot` for interactive curves.
 
+Their diff optimizer, also used by `Refresh`, requires compatible expression structure:
+keep heads, argument counts, wrapper nesting, and primitive counts stable. Keep
+`Style[...]` and `Directive[...]` unchanged. Changing 3D `Polygon` data must use an
+indexed `GraphicsComplex` (both vertices and nested polygon indices may change); 2D
+polygons may be direct or use `GraphicsComplex`. Changing `Image`/`Raster`
+dimensions, `Texture`, or `Image3D` is unsupported; changes to `PlotRange` and
+`AxesOrigin` are ignored. Direct 2D `RGBColor`, `Hue`, and `Opacity` updates work, but
+3D styling does not. A missed JIT match is a performance fallback, not an evaluation
+error; small, textual, or infrequently updated results may remain responsive. Use
+lower-level `Offload` updates when low-latency updates matter and full replacement is
+observably too slow.
+
 `Animate` supports one finite-range parameter. Use `RefreshRate` to throttle expensive
 output. `Refresh` is written directly as `Refresh[expr, interval]`; it does not need an
 outer `Dynamic` and does not automatically track symbols.

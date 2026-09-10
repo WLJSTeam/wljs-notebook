@@ -1,0 +1,83 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Folding a plane into a torus
+## Technique
+
+The surface starts as a rectangular point grid. Two families of rotations bend that grid around perpendicular axes; the controls vary the logarithms of the bend scales, so the effective values are $l_1 = 10^x$ and $l_2 = 10^{x_2}$. Larger values produce a gentler fold.
+
+Instead of giving every quad its own four coordinates, the code flattens the grid into one shared vertex list. Each neighboring $2 \times 2$ block becomes an indexed quad face, and `GraphicsComplex` joins those faces into a single mesh. This keeps the topology explicit, avoids duplicated vertices, and is a natural representation for a connected surface.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Folding a plane into a torus
+## Technique
+
+The surface starts as a rectangular point grid. Two families of rotations bend that grid around perpendicular axes; the controls vary the logarithms of the bend scales, so the effective values are $l_1 = 10^x$ and $l_2 = 10^{x_2}$. Larger values produce a gentler fold.
+
+Instead of giving every quad its own four coordinates, the code flattens the grid into one shared vertex list. Each neighboring $2 \times 2$ block becomes an indexed quad face, and `GraphicsComplex` joins those faces into a single mesh. This keeps the topology explicit, avoids duplicated vertices, and is a natural representation for a connected surface.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Manipulate[
+ Module[{l = 10.^x, l2 = 10.^x2, grid, tiles, vertices, faces, rows, columns},
+  grid[a_, b_, n_, m_] := Outer[
+    Compose,
+    Array[RotationTransform[# Pi/b, {0, 0, 1.}, {0, -b, 0}] &, n, {-1, 1}],
+    Array[RotationTransform[# Pi/a, {1., 0, 0}, {0, 2, a}][{0, 2, 0}] &, m, {-1, 1}],
+    1
+  ];
+
+  tiles = grid[l, l2, 50, 25];
+  {rows, columns} = Dimensions[tiles][[{1, 2}]];
+  vertices = Flatten[tiles, 1];
+  faces = Flatten[
+    Table[
+     With[{i = (r - 1) columns + c}, {i, i + 1, i + columns + 1, i + columns}],
+     {r, rows - 1}, {c, columns - 1}
+    ],
+    1
+  ];
+
+  Graphics3D[
+   {Blue, GraphicsComplex[vertices, Polygon[faces]]},
+   PlotRange -> {{-7, 7}, {-7, 7}, {-1, 2}},
+   ImageSize -> 600,
+   Axes -> True
+  ]
+ ],
+ {{x, 2., "log10 l1"}, .0001, 2.},
+ {{x2, 2., "log10 l2"}, .0001, 2.},
+ ContinuousAction -> True
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

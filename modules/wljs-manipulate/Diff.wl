@@ -187,16 +187,12 @@ diff[Raster[data1_List | data1_NumericArray, pos_, rest1___], Raster[data2_List 
 ]
 
 diff[Line[data1_List], Line[data2_List], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "GraphicsQ", False] || Lookup[attributes, "Graphics3DQ", False],
     diffObject[Line[data1], Line[data2], Hash[Line[data1]], Hash[Line[data2]]]
   ,
-    If[Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False],
-      diffObject[Line[data1], Line[data2], Hash[Line[data1]], Hash[Line[data2]]]
-    ,
-      failureMessage["Cannot link two Line primitives w/wo GraphicsComplex", {Line[data1], Line[data2]}];
-      $Failed
-    ] 
-]
+    failureMessage["Cannot link two Line primitives outside Graphics", {Line[data1], Line[data2]}];
+    $Failed
+  ]
 
 diff[Inset[obj_, pos1_List], Inset[obj_, pos2_List], level_, attributes_] :=
   If[Lookup[attributes, "GraphicsQ", False] && !Lookup[attributes, "GraphicsComplexQ", False],
@@ -229,31 +225,23 @@ diff[Arrow[data1_List], Arrow[data2_List], level_, attributes_] :=
 ]
 
 diff[Line[data1_List, m_], Line[data2_List, u_], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "GraphicsQ", False] || Lookup[attributes, "Graphics3DQ", False],
     diffObject[Line[data1,m], Line[data2, u], Hash[Line[data1,m]], Hash[Line[data2, u]]]
   ,
-    If[Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False],
-      diffObject[Line[data1,m], Line[data2, u], Hash[Line[data1,m]], Hash[Line[data2, u]]]
-    ,
-      failureMessage["Cannot link two Line primitives w/wo GraphicsComplex", {Line[data1, m], Line[data2, u]}];
-      $Failed
-    ] 
-]
+    failureMessage["Cannot link two Line primitives outside Graphics", {Line[data1, m], Line[data2, u]}];
+    $Failed
+  ]
 
 diff[Polygon[data1_List], Polygon[data2_List], level_, attributes_] := 
-  If[Lookup[attributes, "GraphicsQ", False] && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "GraphicsQ", False] || (Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False]),
     diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
   ,
-    If[Lookup[attributes, "Graphics3DQ", False] && Lookup[attributes, "GraphicsComplexQ", False],
-      diffObject[Polygon[data1], Polygon[data2], Hash[Polygon[data1]], Hash[Polygon[data2]]]
-    ,
-      failureMessage["Cannot link two Polygon primitives w/wo GraphicsComplex", {Polygon[data1], Polygon[data2]}];
-      $Failed
-    ] 
-]
+    failureMessage["Cannot link two Polygon primitives in this graphics context", {Polygon[data1], Polygon[data2]}];
+    $Failed
+  ]
 
 diff[Point[data1_List], Point[data2_List], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "GraphicsQ", False] || (Lookup[attributes, "Graphics3DQ", False] && !Lookup[attributes, "GraphicsComplexQ", False]),
     diffObject[Point[data1], Point[data2], Hash[Point[data1]], Hash[Point[data2]]]
   ,
     failureMessage["Cannot link two Point primitives w/wo GraphicsComplex", {Point[data1], Point[data2]}];
@@ -550,15 +538,24 @@ Do[With[{head2 = head},
   ];  
 
 
-rgbColorValues[colors_] := N[Map[Function[x, List @@ (RGBColor[x])], colors]];
+rgbColorValues[colors_] := N[Map[Function[x,
+  If[VectorQ[x, NumericQ], x, List @@ RGBColor[x]]
+], colors]];
 
 numericArrayWithRGBColorGuard[data_, colorIndex_Integer] := Module[{
-  array = NumericArray[data] // Quiet
+  array = NumericArray[data] // Quiet,
+  normalized
 },
   If[NumericArrayQ[array],
     array
   ,
-    NumericArray[ReplacePart[data, colorIndex -> rgbColorValues[data[[colorIndex]]]]]
+    normalized = ReplacePart[data, colorIndex -> rgbColorValues[data[[colorIndex]]]];
+    array = NumericArray[normalized] // Quiet;
+
+    If[NumericArrayQ[array],
+      array,
+      NumericArray /@ normalized
+    ]
   ]
 ]
 
@@ -919,17 +916,10 @@ textureLessQ[expr_] := True; (*supported*)
 
 diff[g: GraphicsComplex[args1__], GraphicsComplex[args2__], level_, attributes_] := If[textureLessQ[g], With[{list1 = {args1}, list2 = {args2}}, 
   If[Length[list1] == Length[list2],
-    If[Lookup[attributes, "GraphicsQ", False],
-      MapThread[Function[{a,b},
-        diff[a,b, level+1, Join[attributes, <|"GraphicsComplexQ"->True|>] ]
-      ], {list1, list2}] 
-    ,
-      (* Graphics3D case. 2D is not supported yet *)
-      {
-        diff[list1[[2]], list2[[2]], level+1, Join[attributes, <|"GraphicsComplexQ"->True|>] ],
-        diffObject[GraphicsComplex[args1], GraphicsComplex[args2], Hash[GraphicsComplex[args1] ], Hash[GraphicsComplex[args2] ] ]
-      }
-    ]
+    {
+      diff[list1[[2]], list2[[2]], level+1, Join[attributes, <|"GraphicsComplexQ"->True|>] ],
+      diffObject[GraphicsComplex[args1], GraphicsComplex[args2], Hash[GraphicsComplex[args1] ], Hash[GraphicsComplex[args2] ] ]
+    }
  ,
    failureMessage["GraphicsComplex objects differs in args length", {list1, list2}];
    $Failed

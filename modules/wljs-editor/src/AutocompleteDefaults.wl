@@ -2564,7 +2564,11 @@ otherwise."|>, <|"label" -> "BoundaryStyle", "type" -> "keyword",
 the style in which boundaries of regions should be drawn. "|>, 
  <|"label" -> "BoundedRegionQ", "type" -> "keyword", 
   "info" -> "BoundedRegionQ[<i>reg</i>] gives True if <i>reg</i> is a bounded \
-region and False otherwise. "|>, <|"label" -> "BracketingBar", 
+region and False otherwise. "|>,
+ <|"label" -> "BoxRatios", "type" -> "keyword",
+  "info" -> "BoxRatios is an option for Graphics3D that gives the ratios of \
+side lengths for the bounding box of the three-dimensional picture."|>,
+ <|"label" -> "BracketingBar", "type" -> "keyword",
   "type" -> "keyword", "info" -> "BracketingBar[<i>x</i>, <i>y</i>, \
 ...] displays as \
 \[LeftBracketingBar]<i>x</i>,<i>y</i>,...\[RightBracketingBar]."|>, 
@@ -3940,7 +3944,10 @@ the property \"<i>prop</i>\" for connected components of <i>image</i>. \
 returns measurements for components that satisfy the criterion \
 <i>crit</i>.\n\nComponentMeasurements[...,\"<i>prop</i>\",<i>crit</i>\
 ,<i>format</i>] formats the result according to the output specification \
-<i>format</i>."|>, <|"label" -> "ComposeList", "type" -> "keyword", 
+<i>format</i>."|>,
+ <|"label" -> "Compose", "type" -> "keyword",
+  "info" -> "Compose has been superseded by Composition."|>,
+ <|"label" -> "ComposeList", "type" -> "keyword",
   "info" -> "ComposeList[{<i>f</i><sub>1</sub>,<i>f</i><sub>2</sub>,\
 ...},<i>x</i>] generates a list of the form \
 {<i>x</i>,<i>f</i><sub>1</sub>[<i>x</i>],<i>f</i><sub>2</sub>[<i>f</i><sub>1<\

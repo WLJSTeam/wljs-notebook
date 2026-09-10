@@ -1,0 +1,117 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Real-time ray tracing in a region
+
+This notebook simulates rays moving through a two-dimensional region with circular obstacles. Each particle stores its distance from the boundary, current position, direction, and collision count. The simulation advances in small time steps; near a wall, `RegionNearest` estimates the local boundary normal used to reflect the ray.
+
+The original simulation was adapted from [Tim Laska’s answer to “Why is raytracing so slow?”](https://mathematica.stackexchange.com/questions/219629/why-is-raytracing-so-slow) on Mathematica Stack Exchange. His version precomputes the particle histories and animation frames. This WLJS adaptation advances the state during `Animate` and renders the changing positions and collision-based colors through `GraphicsComplex` allowing to update the vertex data efficiently.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Real-time ray tracing in a region
+
+This notebook simulates rays moving through a two-dimensional region with circular obstacles. Each particle stores its distance from the boundary, current position, direction, and collision count. The simulation advances in small time steps; near a wall, `RegionNearest` estimates the local boundary normal used to reflect the ray.
+
+The original simulation was adapted from [Tim Laska’s answer to “Why is raytracing so slow?”](https://mathematica.stackexchange.com/questions/219629/why-is-raytracing-so-slow) on Mathematica Stack Exchange. His version precomputes the particle histories and animation frames. This WLJS adaptation advances the state during `Animate` and renders the changing positions and collision-based colors through `GraphicsComplex` allowing to update the vertex data efficiently.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+(* Create and Discretize Region *)
+disks = RegionUnion[Disk[{-1, 0}, 0.5], Disk[{1, 0}, 0.5], 
+   Disk[{0, -1}, 0.5], Disk[{0, 1}, 0.5], Disk[{0, 0}, 0.25]];
+region = RegionDifference[Disk[], disks];
+R2 = RegionBoundary@DiscretizeRegion[region, AccuracyGoal -> 5];
+(* Set up Region Operators *)
+rdf = RegionDistance[R2];
+rnf = RegionNearest[R2];
+(* Time Increment *)
+dt = 3 0.001;
+(* Collision Margin *)
+margin = 1.02 dt;
+(* Starting Point for Emission *)
+sp = 0.85 Normalize[{1, 1}];
+(* Conditional Particle Advancer *)
+advance[r_, x_, v_, c_] := 
+ Block[{xnew = x + dt v}, {rdf[xnew], xnew, v, c}] /; r > margin
+advance[r_, x_, v_, c_] := 
+ Block[{xnew = x , vnew = v, normal = Normalize[x - rnf[x]]},
+   vnew = Normalize[v - 2 v.normal normal];
+   xnew += dt vnew;
+   {rdf[xnew], xnew, vnew, c + 1}] /; r <= margin
+   
+(* Setup simulation *)
+nparticles = 500;
+ntimesteps = 1200;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Real-time animation
+
+The particle state is kept locally inside `Module`. Each animation frame advances the simulation by the required number of steps before drawing the new positions; returning to the beginning resets the particles
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Real-time animation
+
+The particle state is kept locally inside `Module`. Each animation frame advances the simulation by the required number of steps before drawing the new positions; returning to the beginning resets the particles
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{s, rplot = RegionPlot[R2], lasti = Infinity},
+  Animate[
+    If[lasti > i, 
+      lasti = 1; (* reset inner state *)
+      s = Table[{rdf[sp], sp, AngleVector[2 Pi RandomReal[]], 0}, nparticles]
+    ];
+    
+    Do[s = (advance @@ # &) /@ s, {i-lasti}];
+    lasti = i;
+    
+    Show[rplot, Graphics[{PointSize[.01],
+      GraphicsComplex[s[[All, 2]], Point[Range[nparticles]],
+        VertexColors -> (ColorData["Rainbow", (# - 1)/10] & /@ s[[All, 4]])]}]],
+    {i, 1, ntimesteps, 1}, RefreshRate -> 60]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
