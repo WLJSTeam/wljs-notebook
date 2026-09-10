@@ -806,6 +806,19 @@ window.WindowWrapper = class {
 
   channel;
 
+  static getWindow(uid) {
+    return windows.get(uid)
+  }
+
+  static remove(uid) {
+    return windows.get(uid).dispose();
+  } 
+
+  static moveToContainer = (uid, element) => {
+    const cell = windows.get(uid);
+    element.appendChild(cell.element);
+  }
+
   focus() {
     if (!this.display.editor) return;
     this.display.editor.focus();

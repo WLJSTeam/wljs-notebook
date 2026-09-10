@@ -541,6 +541,121 @@ projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_
     ];
 ] 
 
+projectCellPromised[cell_, winOpts_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{
+    client = If[MatchQ[cli, _Symbol], notebook["Socket"], cli],
+    promise = Promise[],
+    finalPromise = Promise[]
+},
+
+    
+    With[{project = Function[Null, With[{
+        transaction = cell`ToTransaction[cell, "Notebook"->Null],
+        output = Unique["nbWinCellOut"],
+        win = win`WindowObj["Notebook"->notebook, "Display"->"codemirror", "WebSocketPort"->notebook["Evaluator"]["Kernel"]["WebSocket"] ]
+    }, {
+        cloned = EventClone[win]
+    },
+        output = Null;
+        
+
+
+        EventHandler[EventClone @ transaction, {
+            "Result" -> Function[data,
+                If[output === Null, output = data];
+                If[data["Data"] =!= "Null", output = data];
+            ],
+            
+            "Finished" -> Function[Null,
+                If[KeyExistsQ[output, "Meta"],
+                    win["Data"] = output["Data"];
+                    win["Display"] = Lookup[<|output["Meta"]|>, "Display", "codemirror"];
+                    With[{generatedHash = <|output["Meta"]|>["Hash"]}, If[StringQ[generatedHash], 
+                        EventHandler[EventClone[win], {
+                            (* forward all events *)
+                            any_ :> (EventFire[generatedHash, any, #]&)
+                        }];
+                    ] ];
+                ,
+                    win["Data"] = output["Data"];
+                ];
+                
+                ClearAll[output];
+                Delete[transaction];
+                Echo["Done! Resolving window promise"];
+                EventFire[promise, Resolve, True];
+                
+            ],
+
+            "Error" -> Function[Null,
+                ClearAll[output];
+                Delete[transaction];
+                win["Data"] = "$Failed";
+                EventFire[promise, Resolve, True];
+            ]
+        }];
+
+        If[TrueQ[winOpts["Offscreen"]],
+            ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Projector", <|"offscreen"->True|>];
+        ,
+            WebUILocation[StringJoin["/window?id=", win["Hash"] ], client, "Target"->_];
+        ];
+
+        EventHandler[cloned, {
+            "AfterWebSocketConnected" -> Function[Null,
+                Echo["Subscribe to window events AfterLoad"];
+                EventHandler[cloned, {
+                    "AfterLoad" -> Function[Null,
+                        EventRemove[cloned];
+                        Echo["Window was loaded, time to resolve promise"];
+                        EventFire[finalPromise, Resolve, win];
+                    ]
+                }];
+                
+                notebook["Evaluator"][transaction, 
+                    <|"KernelWebSocket"->win["KernelWebSocket"], "Notebook"->cell["Notebook"]["Hash"], "Ref"->cell["Hash"]|>
+                ];
+                promise
+            ]   
+        }];
+      ] ]
+    },
+
+        (*/* Check kernel and evaluator */*)
+        If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized",
+            If[Length[ReleaseHold @ kernels] == 0, WebUISubmit[Alert["No Kernels are available"], client]; EventFire[finalPromise, Reject, $Failed]; Return[] ];
+
+            (*/* Kernel looks conected and etc */*)
+            Print["ok!"];
+
+            (*/* the last check */*)
+            With[{},
+                If[cell["State"] != "Idle",
+                    WebUISubmit[Alert["Cell is still under evaluation"], client];
+                ,
+                    Then[checkWSLink[notebook, client, secret, log], 
+                        project
+                    ];
+                ];
+            ];
+        ,
+            If[Length[ReleaseHold @ kernels] == 0, WebUISubmit[Alert["No Kernels are available"], client]; Return[] ];
+
+            requestKernel[notebook, kernels, modals, client, Function[Null,
+                With[{},
+                            If[cell["State"] != "Idle",
+                                WebUISubmit[Alert["Cell is still under evaluation"], client];
+                            ,
+                                Echo["Success!"];
+                                Then[checkWSLink[notebook, client, secret, log], project];
+                            ]
+                ];
+            ] ];
+        ];
+
+        finalPromise
+    ]
+] 
+
 
 checkEvaluationCells[currentCell_, notebook_, secret_, log_, kernels_, client_, modals_, parameters_, extensions__] := Module[{
 
@@ -682,7 +797,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
 ] ];
 
 
-evaluateCellFull[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{p = Promise[]},
+evaluateCellPromised[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_, parameters_, extensions__] := With[{p = Promise[]},
     Then[evaluateCell[cell, notebook, secret, log, kernels, cli, modals, parameters, extensions], Function[Null,
         GenericKernel`Send[notebook["Evaluator"]["Kernel"],  (  
             EventFire[Internal`Kernel`RemoteEvent[ p[[1]] ], Resolve, True];
@@ -1094,8 +1209,11 @@ Component[OptionsPattern[]] := With[{
         ],
 
         "NotebookCellEvaluate" -> Function[cell, evaluateCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellEvaluateTemporal" -> Function[cell, evaluateCellFull[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "NotebookCellEvaluateTemporal" -> Function[cell, evaluateCellPromised[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
         "NotebookCellProject" -> Function[cell, projectCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "NotebookCellProjectTemporal" -> Function[cell, projectCellPromised[cell, <||>, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "NotebookCellProjectTemporalOpts" -> Function[assoc, projectCellPromised[assoc["Cell"], assoc, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        
         
         "NotebookQ" -> Function[Null,
             notebook

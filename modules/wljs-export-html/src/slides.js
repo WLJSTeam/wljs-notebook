@@ -196,13 +196,13 @@ core['CoffeeLiqueur`Extensions`ExportImport`Slides`Private`HijackCellToContainer
         env.element.setAttribute("style", styles);
     }
     env.local.uid = uid;
-    CellWrapper.getCell(uid).display.makeStandardSize();
-    CellWrapper.getCell(uid).display.setResizer(false);
-    CellWrapper.moveToContainer(uid, env.element);
+    WindowWrapper.getWindow(uid).display.makeStandardSize();
+    WindowWrapper.getWindow(uid).display.setResizer(false);
+    WindowWrapper.moveToContainer(uid, env.element);
 }
 
 core['CoffeeLiqueur`Extensions`ExportImport`Slides`Private`HijackCellToContainer'].virtual = true;
 
 core['CoffeeLiqueur`Extensions`ExportImport`Slides`Private`HijackCellToContainer'].destroy = async (args, env) => {
-    CellWrapper.remove(env.local.uid);
+    WindowWrapper.remove(env.local.uid);
 }

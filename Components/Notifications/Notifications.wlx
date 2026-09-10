@@ -34,6 +34,7 @@ SetAttributes[assignClient, HoldAll];
 Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
     Event = OptionValue["MessagePort"], 
     Controller = CreateUUID[], 
+    genericController = CreateUUID[],
     globalControls = OptionValue["Controls"], 
     localControls = CreateUUID[], 
     JSBinds = CreateUUID[],
@@ -89,10 +90,10 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
 
         any_?Filter   :> Function[data,
             If[electronQ && any === "Error",
-                EventFire[Controller, "ErrorBox", <|"Client"->client, "Data"->data|> ];
+                EventFire[genericController, "ErrorBox", <|"Client"->client, "Data"->data|> ];
             ,
                 With[{g = GenericTemplate[any, data]},
-                    EventFire[Controller, "Append", Join[<|"Client"->client, "Type"->"Generic"|>, g] ];
+                    EventFire[genericController, "Append", Join[<|"Client"->client, "Type"->"Generic"|>, g] ];
                     buffer = Append[buffer, <|"Type"->any, "Message" -> data, "Date"->Now|>];
                     If[lastClient === Null, assignClient[lastClient, client, buffer, evCloned]];      
                 ]
@@ -101,17 +102,24 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
     }];
 
     {
-        <WebUIContainer Event={Controller}>
-            <div aria-live="assertive" style="z-index:100" class="print:hide pointer-events-none fixed inset-0 flex items-start px-6 mt-12 win:px-5 owin:px-5 linux:px-5">
-                <div class="flex w-full flex-col items-center space-y-0 sm:items-end">      
-                    <WebUIContainerChild/>
-                </div>  
-            </div>  
-        </WebUIContainer>
+        <div aria-live="assertive" style="z-index:100" class="print:hide pointer-events-none fixed inset-0 flex items-start px-6 mt-12 win:px-5 owin:px-5 linux:px-5">
+            <div class="flex w-full flex-col items-center space-y-0 sm:items-end">
+                <WebUIContainer Event={Controller}>
+                    <div class="flex w-full flex-col items-center space-y-0 sm:items-end">
+                        <WebUIContainerChild/>
+                    </div>
+                </WebUIContainer>
+                <WebUIContainer Event={genericController}>
+                    <div class="relative flex w-full flex-col items-center space-y-0 sm:items-end">
+                        <WebUIContainerChild/>
+                    </div>
+                </WebUIContainer>
+            </div>
+        </div>
     ,
         <MessageList Controller={listController} Data={Hold[buffer]}/>
     ,
-        <GenericScript Controller={Controller} Port={localControls}/>
+        <GenericScript Controller={genericController} Port={localControls}/>
     ,
         <SpinnerScript Controller={Controller}/>
     ,
