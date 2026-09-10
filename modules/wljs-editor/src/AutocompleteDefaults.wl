@@ -9819,6 +9819,9 @@ gives the renormalized form \"lim\"+m-&gt;0\[UnknownGlyph]/m. "|>,
  <|"label" -> "General", "type" -> "keyword", 
   "info" -> 
    "General is a symbol to which general system messages are attached. "|>, 
+ <|"label" -> "GeneralizedPower", "type" -> "keyword",
+  "info" -> "GeneralizedPower[<i>f</i>,<i>x</i>,<i>k</i>] represents \
+Fold[<i>f</i>,Table[<i>x</i>,<i>k</i>]]."|>,
  <|"label" -> "GenerateAsymmetricKeyPair", "type" -> "keyword", 
   "info" -> "GenerateAsymmetricKeyPair[] randomly generates a PrivateKey and \
 corresponding PublicKey object for use with public-key cryptographic \

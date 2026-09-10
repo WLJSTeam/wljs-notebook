@@ -946,7 +946,101 @@
         outerDiv.appendChild(sep);
       }
     });
-  }  
+  }
+
+  boxes.ViewDecorator.L = async (args, env) => {
+    const text = await interpretate(args[0], env);
+    env.element.innerText = text;
+  }
+
+  boxes.ViewDecorator.File = async (args, env) => {
+    const path = await interpretate(args[0], env);
+
+    const label = document.createElement('span');
+    const expand = document.createElement('button');
+    const open = document.createElement('button');
+    let expanded = false;
+
+    const expandIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;width:1em;height:1em"><path d="M8 3H3v5m13-5h5v5M8 21H3v-5m18 0v5h-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const collapseIcon = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;width:1em;height:1em"><path d="M3 8h5V3m13 5h-5V3M3 16h5v5m13-5h-5v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const buttonStyle = {display: 'inline-flex', flex: 'none', padding: '0', color: 'inherit', background: 'none', border: '0', font: 'inherit', cursor: 'pointer'};
+
+    env.element.title = path.join('/');
+    env.element.classList.add('wljs-card', 'selectable');
+    Object.assign(env.element.style, {display: 'inline-flex', alignItems: 'center', gap: '0.35em', maxWidth: '24em', padding: '0.2em 0.5em', background:'var(--system-accent-color-25)', color: 'rgb(55 58 65)', fontSize: '0.75rem', lineHeight: '1rem', verticalAlign: 'middle'});
+    Object.assign(label.style, {minWidth: '0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', direction: 'rtl', textAlign: 'left', userSelect: 'text'});
+    Object.assign(expand.style, buttonStyle);
+    Object.assign(open.style, buttonStyle);
+
+    label.textContent = path.join('/');
+    expand.type = 'button';
+    expand.title = 'Show full path';
+    expand.setAttribute('aria-label', 'Show full path');
+    expand.setAttribute('aria-expanded', 'false');
+    expand.innerHTML = expandIcon;
+    expand.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      expanded = !expanded;
+      Object.assign(env.element.style, {maxWidth: expanded ? '48em' : '24em', alignItems: expanded ? 'flex-start' : 'center'});
+      Object.assign(label.style, {overflow: expanded ? 'visible' : 'hidden', textOverflow: expanded ? 'clip' : 'ellipsis', whiteSpace: expanded ? 'normal' : 'nowrap', overflowWrap: expanded ? 'anywhere' : 'normal', direction: expanded ? 'ltr' : 'rtl'});
+      expand.title = expanded ? 'Collapse path' : 'Show full path';
+      expand.setAttribute('aria-label', expand.title);
+      expand.setAttribute('aria-expanded', String(expanded));
+      expand.innerHTML = expanded ? collapseIcon : expandIcon;
+    });
+    env.element.append(label, expand);
+    if (!window.electronAPI) return;
+    
+    const openFile = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      window.electronAPI.openPath(path);
+    };
+    open.type = 'button';
+    open.title = 'Open file';
+    open.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;width:1em;height:1em"><path d="M14 3h7v7m0-7L10 14m11 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    open.addEventListener('click', openFile);
+
+    env.element.append(open);
+  }
+
+  boxes.ViewDecorator.URL = async (args, env) => {
+    const url = String(await interpretate(args[0], env));
+    const label = document.createElement('span');
+    const link = document.createElement('a');
+
+    env.element.title = url;
+    env.element.classList.add('wljs-card');
+    Object.assign(env.element.style, {display: 'inline-flex', alignItems: 'center', gap: '0.35em', maxWidth: '24em', padding: '0.2em 0.5em', color: '#6b7280', fontSize: '0.75rem', lineHeight: '1rem', verticalAlign: 'middle'});
+    Object.assign(label.style, {minWidth: '0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'});
+    Object.assign(link.style, {display: 'inline-flex', flex: 'none', color: 'inherit', cursor: 'pointer'});
+
+    label.textContent = url;
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', `Open ${url} in a new window`);
+    link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block;width:1em;height:1em"><path d="M14 3h7v7m0-7L10 14m11 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    env.element.append(label, link);
+  }
+
+  boxes.ViewDecorator.GP = async (args, env) => {
+    env.global.allowCellHighlighting = true;
+    const [func, expr, degree] = env.children;
+    const power = document.createElement('span');
+    const numerator = document.createElement('span');
+    const denominator = document.createElement('span');
+
+    Object.assign(env.element.style, {display: 'inline-flex', alignItems: 'flex-start', verticalAlign: 'baseline'});
+    Object.assign(power.style, {display: 'inline-grid', marginLeft: '0.1em', fontSize: 'smaller',  textAlign: 'center'});
+
+    numerator.appendChild(degree);
+    denominator.appendChild(func);
+    power.append(numerator, denominator);
+    env.element.append(expr, power);
+    env.element.style.alignItems = "end";
+  }
 
   boxes.ViewDecorator.Sum = async (args, env) => {
     let vars = await interpretate(args[0], env);

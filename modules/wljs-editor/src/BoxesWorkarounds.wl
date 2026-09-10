@@ -709,6 +709,23 @@ TemplateBox[list:{expr_, label_}, "Labeled", opts__Rule ] := With[{func = Associ
   func @@ list
 ]
 
+TemplateBox[{operator_, exp_, degree_}, "GeneralizedPower"] := RowBox[{"(*TB[*)GeneralizedPower[(*|*)", operator, "(*|*), (*|*)", exp, "(*|*), (*|*)", degree, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["GP"]], "*)(*]TB*)"}]
+
+TemplateBox[{operator_, exp_, degree_, label_}, "GeneralizedPower"] := With[{
+    foperator = ViewBox[RowBox[{operator}], ViewDecorator["L", ToString[label]]]
+},
+    RowBox[{"(*TB[*)GeneralizedPower[(*|*)", foperator, "(*|*), (*|*)", exp, "(*|*), (*|*)", degree, "(*|*)](*|*)(*", CompressWithContext[ViewDecorator["GP"]], "*)(*]TB*)"}]
+]
+
+TemplateBox[{url_String}, "URLArgument"] := ViewBox[url, ViewDecorator["URL", ToExpression[url]]]
+TemplateBox[{file_String}, "FileArgument"] := With[{absolute = ToExpression[file] // AbsoluteFileName // Quiet},
+    If[FailureQ[absolute],
+        file
+    ,
+        ViewBox[file, ViewDecorator["File", FileNameSplit[absolute] ] ]
+    ]
+]
+
 Unprotect[Labeled];
 Labeled /: MakeBoxes[Labeled[expr_, label_], WLXForm] := With[{
   exprBox = MakeBoxes[expr, WLXForm],
@@ -772,8 +789,6 @@ Unprotect[Bra]
 
 Ket /: MakeBoxes[Ket[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Ket"], "Head"->"Ket"]}, RowBox[{"(*BB[*)(Ket[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
 Bra /: MakeBoxes[Bra[list__], StandardForm] := With[{dp = ProvidedOptions[ViewDecorator["Bra"], "Head"->"Bra"]}, RowBox[{"(*BB[*)(Bra[", RowBox[Riffle[List[list], ","]], "])(*,*)(*", ToString[CompressWithContext[dp], InputForm], "*)(*]BB*)"}]]
-
-TemplateBox[{file_String}, "FileArgument"] := file
 
 TemplateBox[{expr_, cond_}, "ConditionalExpression"] := With[{dp = ViewDecorator["Conditional"]},
   RowBox[{"(*TB[*)ConditionalExpression[(*|*)", expr, "(*|*), (*|*)", cond, "(*|*)](*|*)(*", CompressWithContext[dp], "*)(*]TB*)"}]

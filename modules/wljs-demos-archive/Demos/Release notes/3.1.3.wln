@@ -1,0 +1,216 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes *3.1.3*
+<Now/>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes *3.1.3*
+Thu 10 Sep 2026 13:56:22
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Print ordering
+We fixed a very old issue related on how printed messages are handled. Try it out:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Print ordering
+We fixed a very old issue related on how printed messages are handled. Try it out:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Print["1"];
+2
+Print["3"];
+4
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## More options for dark theme
+By the default the dark theme is derived using a global window filter, that inverts color, adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users if applied on raster images. We added a new option to address that:
+
+
+![](/attachments/Screenshot-2026-09-10-at-14.01.42-455.png)
+
+See it in the settings menu in UI section.
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## More options for dark theme
+By the default the dark theme is derived using a global window filter, that inverts color, adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users if applied on raster images. We added a new option to address that:
+
+
+![](/attachments/Screenshot-2026-09-10-at-14.01.42-455.png)
+
+See it in the settings menu in UI section.
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Improved slides export
+We switched to a less distracting offscreen rendering, and it automatically reports a progress on rendering slides.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Improved slides export
+We switched to a less distracting offscreen rendering, and it automatically reports a progress on rendering slides
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Typesetting
+We added missing `URL` and `File` output representation
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Typesetting
+We added missing `URL` and `File` output representation
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+URL["https://google.com?q=1"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+URL[(*VB[*)("https://google.com?q=1")(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4vkAjLTC13SU3OL0osyS8KZgaKhAb5BIsB6YySkoJiK3399Pz89JxUveT8XPtCW0MAlAgTVQ=="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+File["3.1.3.wln"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+File[(*VB[*)("3.1.3.wln")(*,*)(*"1:eJw1TksKwjAQjeIHBTd6AT1AC9IrFHXhqkH3qZnQ6DQDmdRe30nBzZs37zPMqaXGzZRSvBC4EVo3z9tO4OlhrOFF0SSKOvsXj+C2//Tdc9IylV4KPBgi65Wwj48ecaJXn7qh1QehI6GLpi/eXLhIIUGwei16T3ZAYL3PGRTXQk9cmPjq/Bem03VWdH6pAQTDcAyUpLIRpSrPZVWOGH4sqTPM"*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+If file does not exist, the output will be shortened:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+If file does not exist, the output will be shortened:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+File["3.1.9.wln"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+File["3.1.9.wln"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We also fixed the representation of `GeneralizedPower` symbol
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We also fixed the representation of `GeneralizedPower` symbol
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+GeneralizedPower[f, a, 2]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*TB[*)GeneralizedPower[(*|*)(*VB[*)(f)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4vkAjLTC13SU3OL0osyS8KBinyAZNpACpjCyo="*)(*]VB*)(*|*), (*|*)a(*|*), (*|*)2(*|*)](*|*)(*1:eJxTTMoPSmNkYGAo5gUSYZmp5S6pyflFiSX5RcFMQBH3AACM5QhW*)(*]TB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## MCP Server patches
+- Improved documentation search
+- New skills for all cell types
+- Smaller system prompt
+- Improved messages reporting and tool calling
+- Improved messages truncating 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## MCP Server patches
+- Improved documentation search
+- New skills for all cell types
+- Smaller system prompt
+- Improved messages reporting and tool calling
+- Improved messages truncating 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
