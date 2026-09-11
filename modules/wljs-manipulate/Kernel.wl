@@ -17,6 +17,8 @@ BeginPackage["CoffeeLiqueur`Extensions`Manipulate`", {
 Needs["CoffeeLiqueur`Extensions`Manipulate`Diff`"->"df`"]
 Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`"->"wapi`"]
 
+Needs["CoffeeLiqueur`Extensions`Rasterize`"->"rh`"];
+
 
 ManipulatePlot::usage = "ManipulatePlot[f_, {x, min, max}, {p1, min, max}, ...] an interactive plot of a function f[x, p1] with p1 given as a parameter"
 ManipulateParametricPlot::usage = ""
@@ -515,7 +517,7 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
   },
 
   df`Private`resetFailureMessage;
-  
+
   (* event is fired from JS side (RefreshBox) *)
     EventHandler[event, Function[Null,
         With[
@@ -574,7 +576,7 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPatt
   },
 
   df`Private`resetFailureMessage;
-  
+
   If[bypassJIT, 
     ClearAll[currentExpression];
     EventHandler[ev, Function[Null, With[{newExpr = expr},
@@ -1471,12 +1473,13 @@ With[{
 
 
 renderAnimation[widget_AnimationHelper, opts: OptionsPattern[] ] := Module[{
-  task, run, index = 2, attemps = 0, exitAndCleanUp, collectFrames
+  task, run, index = 2, attemps = 0, exitAndCleanUp, collectFrames, progressBar
 }, With[{
   instance = wapi`Tools`HashMap[widget[[7]]],
-  window = OptionValue["Window"],
   channel = CreateUUID[],
-  promise = Promise[]
+  promise = Promise[],
+  progressBar = EchoLabel["ProgressBar"]["Rendering"],
+  notebook = EvaluationNotebook[]
 },
 {
   range = instance["Ranges"][[1]]
@@ -1485,60 +1488,69 @@ renderAnimation[widget_AnimationHelper, opts: OptionsPattern[] ] := Module[{
   exposure = If[NumberQ[#], 1000 #, range["Delay"] ] &@ OptionValue["ExposureTime"]
 },
 
-  exitAndCleanUp := With[{},
-    ClearAll[task];
-    ClearAll[index];
-    ClearAll[collectFrames];
-    ClearAll[run];
-    ClearAll[attemps];
-    ClearAll[exitAndCleanUp];
-  ];
-
-  task = SetInterval[
-    attemps++;
-    If[attemps > 100,
-      Echo["Widget instace is still offline. Aborting"];
-      exitAndCleanUp; TaskRemove[task]; TaskAbort[task]; Return[];
+  Then[rh`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{window = assoc["Window"], windowPromise = assoc["Promise"]},
+    exitAndCleanUp := With[{},
+        ClearAll[task];
+        ClearAll[index];
+        ClearAll[collectFrames];
+        ClearAll[run];
+        ClearAll[attemps];
+        ClearAll[exitAndCleanUp];
+        EventFire[windowPromise, Resolve, True];
+        progressBar["Cancel"];
     ];
-    If[instance["Online"] === True,
-      TaskRemove[task];
-      TaskAbort[task];
-      SetTimeout[
-        instance["ResetStateFunction"][];
-        SetTimeout[run, Max[1000, exposure] ];
-      , Max[1000, exposure] ];
-    ];, 300];
 
-  run := With[{},
     task = SetInterval[
-        FrontSubmit[RecorderView["Capture"], "Window" -> window];
-        If[index > Length[range["Range"] ], 
-          TaskRemove[task]; TaskAbort[task]; collectFrames; Return[] 
-        ];    
-
-        EventFire[range["Event"][[1]], range["Event"][[2]], range["Range"][[index]] ];
-        index++;
-    , exposure ];
-  ];
-
-  collectFrames := With[{spinner = EchoLabel["Spinner"]["Collecting data"]},
+        attemps++;
+        If[attemps > 100,
+        Echo["Widget instace is still offline. Aborting"];
+        exitAndCleanUp; TaskRemove[task]; TaskAbort[task]; 
+        EventFire[promise, Resolve, $Failed];
+        Return[];
+        ];
+        If[instance["Online"] === True,
+        TaskRemove[task];
+        TaskAbort[task];
+        SetTimeout[
+            instance["ResetStateFunction"][];
+            SetTimeout[run, Max[1000, exposure] ];
+        , Max[1000, exposure] ];
+        ];, 400];
     
-    Then[TableAsync[
-      Module[{a},
-        a = FrontFetchAsync[RecorderView["Pop"], "Window"->window] // Await;
-        ImportString[StringDrop[a, StringLength["data:image/png;base64,"] ], "Base64"]
-      ]
-    , {i, 1, Length[range["Range"] ]}], Function[frames,
-      FrontSubmit[RecorderView["Dispose"], "Window" -> window];
-      exitAndCleanUp;
-      Delete[spinner];
-      EventFire[promise, Resolve, frames];
-    ] ]
-  ];
+    run := With[{},
+        task = SetInterval[
+            FrontSubmit[RecorderView["Capture"], "Window" -> window];
+            If[index > Length[range["Range"] ],
+            TaskRemove[task]; TaskAbort[task]; collectFrames; Return[]
+            ];
 
-  Then[FrontFetchAsync[RecorderView[], "Window" -> window], Function[Null,
-    FrontSubmit[RecorderView["Create", widget /. {Rule[Appearance, _]->Rule[Appearance, "UILess"]}, channel, 0 ], "Window" -> window];
-  ] ]; 
+            EventFire[range["Event"][[1]], range["Event"][[2]], range["Range"][[index]] ];
+            progressBar["Set", index/Length[range["Range"] ]  // N];
+            index++;
+        , exposure ];
+    ];
+
+    collectFrames := With[{spinner = EchoLabel["Spinner"]["Collecting data"]},
+        progressBar["Set", 1.0];
+        Then[TableAsync[
+        Module[{a},
+            a = FrontFetchAsync[RecorderView["Pop"], "Window"->window] // Await;
+            ImportString[StringDrop[a, StringLength["data:image/png;base64,"] ], "Base64"]
+        ]
+        , {i, 1, Length[range["Range"] ]}], Function[frames,
+        FrontSubmit[RecorderView["Dispose"], "Window" -> window];
+        exitAndCleanUp;
+        spinner["Cancel"];
+        EventFire[promise, Resolve, frames];
+        ] ]
+    ];
+
+    Then[FrontFetchAsync[RecorderView[], "Window" -> window], Function[Null,
+        FrontSubmit[RecorderView["Create", widget /. {Rule[Appearance, _]->Rule[Appearance, "UILess"]}, channel, 0 ], "Window" -> window];
+    ] ];
+  ]]];
+
+
 
   promise
 ] ]
@@ -1550,12 +1562,13 @@ renderAnimation[_, opts: OptionsPattern[] ] := (
 )
 
 renderAnimation[packedAnimation[body_, {"AnimatedTrace", start_Integer, end_Integer}], opts: OptionsPattern[] ] := Module[{
-  task, run, index = 2, exitAndCleanUp, collectFrames
+  task, run, index = 2, exitAndCleanUp, collectFrames, progressBar
 }, With[{
-  window = OptionValue["Window"],
   channel = CreateUUID[],
   promise = Promise[],
-  triggerId = CreateUUID[]
+  triggerId = CreateUUID[],
+  progressBar = EchoLabel["ProgressBar"]["Rendering"],
+  notebook = EvaluationNotebook[]
 },
 {
   range = Range[start, end]
@@ -1564,49 +1577,54 @@ renderAnimation[packedAnimation[body_, {"AnimatedTrace", start_Integer, end_Inte
   exposure = If[NumberQ[#], 1000 #, 100 ] &@ OptionValue["ExposureTime"]
 },
 
-  exitAndCleanUp := With[{},
-    ClearAll[task];
-    ClearAll[index];
-    ClearAll[collectFrames];
-    ClearAll[run];
-    ClearAll[exitAndCleanUp];
-  ];
+  Then[rh`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{window = assoc["Window"], windowPromise = assoc["Promise"]},
+    exitAndCleanUp := With[{},
+      ClearAll[task];
+      ClearAll[index];
+      ClearAll[collectFrames];
+      ClearAll[run];
+      ClearAll[exitAndCleanUp];
+      EventFire[windowPromise, Resolve, True];
+      progressBar["Cancel"];
+    ];
 
-  EventHandler[triggerId, {"Mounted" -> Function[Null,
-    SetTimeout[run, 500];
-    EventRemove[triggerId];
-  ]}];
+    EventHandler[triggerId, {"Mounted" -> Function[Null,
+      SetTimeout[run, 500];
+      EventRemove[triggerId];
+    ]}];
 
-  run := With[{},
-    task = SetInterval[
-        FrontSubmit[RecorderView["Capture"], "Window" -> window];
-        If[index > Length[range], 
-          TaskRemove[task]; TaskAbort[task]; collectFrames; Return[] 
-        ];    
+    run := With[{},
+      task = SetInterval[
+          FrontSubmit[RecorderView["Capture"], "Window" -> window];
+          If[index > Length[range],
+            TaskRemove[task]; TaskAbort[task]; collectFrames; Return[]
+          ];
 
-        FrontSubmit[AnimationCtl[triggerId, range[[index]] ], "Window"->window];
-        index++;
-    , exposure ];
-  ];
+          FrontSubmit[AnimationCtl[triggerId, range[[index]] ], "Window"->window];
+          progressBar["Set", index/Length[range] // N];
+          index++;
+      , exposure ];
+    ];
 
-  collectFrames := With[{spinner = EchoLabel["Spinner"]["Collecting data"]},
-    
-    Then[TableAsync[
-      Module[{a},
-        a = FrontFetchAsync[RecorderView["Pop"], "Window"->window] // Await;
-        ImportString[StringDrop[a, StringLength["data:image/png;base64,"] ], "Base64"]
-      ]
-    , {i, 1, Length[range ]}], Function[frames,
-      FrontSubmit[RecorderView["Dispose"], "Window" -> window];
-      exitAndCleanUp;
-      Delete[spinner];
-      EventFire[promise, Resolve, frames];
-    ] ]
-  ];
+    collectFrames := With[{spinner = EchoLabel["Spinner"]["Collecting data"]},
+      progressBar["Set", 1.0];
+      Then[TableAsync[
+        Module[{a},
+          a = FrontFetchAsync[RecorderView["Pop"], "Window"->window] // Await;
+          ImportString[StringDrop[a, StringLength["data:image/png;base64,"] ], "Base64"]
+        ]
+      , {i, 1, Length[range]}], Function[frames,
+        FrontSubmit[RecorderView["Dispose"], "Window" -> window];
+        exitAndCleanUp;
+        spinner["Cancel"];
+        EventFire[promise, Resolve, frames];
+      ] ]
+    ];
 
-  Then[FrontFetchAsync[RecorderView[], "Window" -> window], Function[Null,
-    FrontSubmit[RecorderView["Create", body /. {AnimationShutter[a_,b_,c_, rules___] :> AnimationShutter[a,b,c, "ManualTrigger"->triggerId, rules]}, channel, 0 ], "Window" -> window];
-  ] ]; 
+    Then[FrontFetchAsync[RecorderView[], "Window" -> window], Function[Null,
+      FrontSubmit[RecorderView["Create", body /. {AnimationShutter[a_,b_,c_, rules___] :> AnimationShutter[a,b,c, "ManualTrigger"->triggerId, rules]}, channel, 0 ], "Window" -> window];
+    ] ];
+  ]]];
 
   promise
 ] ]

@@ -229,7 +229,7 @@ RasterizeAsync[any_, ___, OptionsPattern[] ] := (
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
+RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], spinner = EchoLabel["Spinner"]["Rendering"]},
     Then[CoffeeLiqueur`Extensions`Rasterize`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{
         window = assoc["Window"],
         back = assoc["Promise"]
@@ -239,6 +239,7 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], chann
           FrontSubmit[OverlayView["Dispose"], "Window" -> window];
           EventFire[back, Resolve, True];
           EventFire[p, Resolve, ImportString[StringDrop[base, StringLength["data:image/png;base64,"] ], "Base64"] ];
+          spinner["Cancel"];
         ] ]
       ] ];
 
@@ -259,7 +260,7 @@ producePDF[any_, OptionsPattern[] ] := (
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-producePDF[any_, opts: OptionsPattern[] ] := With[{ p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
+producePDF[any_, opts: OptionsPattern[] ] := With[{ p = Promise[], channel = CreateUUID[], notebook = OptionValue["Notebook"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"], spinner = EchoLabel["Spinner"]["Rendering"]},
     Then[CoffeeLiqueur`Extensions`Rasterize`Helpers`UseTemporalWindow["Notebook"->notebook], Function[assoc, With[{window = assoc["Window"], promise = assoc["Promise"]},
       EventHandler[channel, Function[Null,
         Then[FrontFetchAsync[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], "Window" -> window], Function[payload,
@@ -267,6 +268,7 @@ producePDF[any_, opts: OptionsPattern[] ] := With[{ p = Promise[], channel = Cre
           FrontSubmit[OverlayView["Dispose"], "Window" -> window];
           EventFire[promise, Resolve, True];
           EventFire[p, Resolve,  ByteArray[payload] ];
+          spinner["Cancel"];
         ] ]
       ] ];
 

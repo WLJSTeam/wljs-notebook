@@ -5,26 +5,28 @@ Component[OptionsPattern[]] := With[{
     Msg = OptionValue["Message"]
 },
 
+cli = {};
+
 EventHandler[Controller1, {
     "Progress" -> Function[body,
-        EventFire[Controller2, "Progress", <|"Client" -> cli, "Message" -> body|>]
+        EventFire[Controller2, "Progress", <|"Client" -> #, "Message" -> body|>]&/@cli;
     ],
 
     "Message" -> Function[body,
-        EventFire[Controller2, "Message", <|"Client" -> cli, "Message" -> body|>]
+        EventFire[Controller2, "Message", <|"Client" -> #, "Message" -> body|>]&/@cli;
     ],
 
     "Done" -> Function[body,
-        EventFire[Controller2, "Done", <|"Client" -> cli|>];
+        EventFire[Controller2, "Done", <|"Client" -> #|>]&/@cli;
         ClearAll[cli];
     ],
 
     "Continue" -> Function[Null,
-        EventFire[Controller2, "RemoveButton", <|"Client" -> cli|>]
+        EventFire[Controller2, "RemoveButton", <|"Client" -> #|>]&/@cli;
     ], 
 
     "Connected" -> Function[Null,
-        cli = Global`$Client;
+        AppendTo[cli, Global`$Client];
     ]
 }];
 
