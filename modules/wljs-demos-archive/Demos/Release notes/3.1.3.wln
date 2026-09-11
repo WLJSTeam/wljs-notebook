@@ -19,7 +19,7 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 # Release Notes *3.1.3*
-Fri 11 Sep 2026 11:47:32
+Fri 11 Sep 2026 12:08:41
 
 %-------------------------------------------------------------------------%
 Props:
@@ -28,14 +28,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Print ordering
-We fixed a very old issue related on how printed messages are handled. Try it out:
+We fixed a very old issue related to how printed messages are handled. Try it out:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Print ordering
-We fixed a very old issue related on how printed messages are handled. Try it out:
+We fixed a very old issue related to how printed messages are handled. Try it out:
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -52,12 +52,12 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## More options for dark theme
-By the default the dark theme is derived using a global window filter, that inverts color, adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users if applied on raster images. We added a new option to address that:
+By default, the dark theme is derived using a global window filter that inverts colors and adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users when applied to raster images. We added a new option to address this:
 
 
 ![](/attachments/Screenshot-2026-09-10-at-14.01.42-455.png)
 
-See it in the settings menu in UI section.
+See it in the UI section of the settings menu.
 
 
 %-------------------------------------------------------------------------%
@@ -65,12 +65,12 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## More options for dark theme
-By the default the dark theme is derived using a global window filter, that inverts color, adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users if applied on raster images. We added a new option to address that:
+By default, the dark theme is derived using a global window filter that inverts colors and adjusts hue and contrast. This is great for text and vector graphics, but it may confuse users when applied to raster images. We added a new option to address this:
 
 
 ![](/attachments/Screenshot-2026-09-10-at-14.01.42-455.png)
 
-See it in the settings menu in UI section.
+See it in the UI section of the settings menu.
 
 
 %-------------------------------------------------------------------------%
@@ -80,14 +80,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Improved slides export
-We switched to a less distracting offscreen rendering, and it automatically reports a progress on rendering slides.
+We switched to less distracting offscreen rendering, and it now reports progress while rendering slides.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Improved slides export
-We switched to a less distracting offscreen rendering, and it automatically reports a progress on rendering slides
+We switched to less distracting offscreen rendering, and it now reports progress while rendering slides.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -96,14 +96,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Typesetting
-We added missing `URL` and `File` output representation
+We added missing `URL` and `File` output representations.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Typesetting
-We added missing `URL` and `File` output representation
+We added missing `URL` and `File` output representations.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -131,13 +131,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-If file does not exist, the output will be shortened:
+If the file does not exist, the output will be shortened:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-If file does not exist, the output will be shortened:
+If the file does not exist, the output will be shortened:
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -155,13 +155,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-We also fixed the representation of `GeneralizedPower` symbol
+We also fixed the representation of the `GeneralizedPower` symbol.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-We also fixed the representation of `GeneralizedPower` symbol
+We also fixed the representation of the `GeneralizedPower` symbol.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -180,14 +180,14 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 ## Improved Animate/Manipulate
-We added support for `GraphicsComplex` in the context of 2D graphics for our optimizer/transpiler (JIT) used in `Manipulate`, `Animate` and `Refresh`  expressions. This allows to take advantage of efficient 2D rendering like this one:
+We added support for `GraphicsComplex` in the context of 2D graphics for our optimizer/transpiler (JIT), used in `Manipulate`, `Animate`, and `Refresh` expressions. This allows us to take advantage of efficient 2D rendering, as in this example:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 ## Improved Animate/Manipulate
-We added support for `GraphicsComplex` in the context of 2D graphics for our optimizer/transpiler (JIT) used in `Manipulate`, `Animate` and `Refresh`  expressions. This allows to take advantage of efficient 2D rendering like this one:
+We added support for `GraphicsComplex` in the context of 2D graphics for our optimizer/transpiler (JIT), used in `Manipulate`, `Animate`, and `Refresh` expressions. This allows us to take advantage of efficient 2D rendering, as in this example:
 
 %-------------------------------------------------------------------------%
 Props:
@@ -247,13 +247,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-In this example it simulates "photons" bouncing from the inner walls of 2D region. Depending on the speed of simulation it may have less frames per second even though the target is set to 60.
+In this example, it simulates "photons" bouncing off the inner walls of a 2D region. Depending on the simulation speed, it may produce fewer frames per second, even though the target is set to 60.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-In this example it simulates "photons" bouncing from the inner walls of 2D region. Depending on the speed of simulation it may have less frames per second even though the target is set to 60.
+In this example, it simulates "photons" bouncing off the inner walls of a 2D region. Depending on the simulation speed, it may produce fewer frames per second, even though the target is set to 60.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -261,13 +261,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-Even more: __we guarded__ `Animate` __widget from spamming the kernel with evaluation requests__. Animation won't go faster than the communication link, rendering pipeline and computation mutually allows.
+Even more: __we guarded__ the `Animate` __widget against spamming the kernel with evaluation requests__. The animation will not go faster than the communication link, rendering pipeline, and computation allow.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-Even more: __we guarded__ `Animate` __widget from spamming the kernel with evaluation requests__. Animation won't go faster than the communication link, rendering pipeline and computation mutually allows.
+Even more: __we guarded__ the `Animate` __widget against spamming the kernel with evaluation requests__. The animation will not go faster than the communication link, rendering pipeline, and computation allow.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -275,15 +275,15 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-## AnimatedImage or how to export animation
-Applying `AnimatedImage` on `Animate`, `AnimatePlot` or `AnimateParametericPlot` will automatically render all frames offscreen and return `AniamtedImage` object containing all uncompressed frames
+## AnimatedImage, or how to export an animation
+Applying `AnimatedImage` to `Animate`, `AnimatePlot`, or `AnimateParametricPlot` will automatically render all frames offscreen and return an `AnimatedImage` object containing all uncompressed frames.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-## AnimatedImage or how to export animation
-Applying `AnimatedImage` on `Animate`, `AnimatePlot` or `AnimateParametericPlot` will automatically render all frames offscreen and return `AniamtedImage` object containing all uncompressed frames
+## AnimatedImage, or how to export an animation
+Applying `AnimatedImage` to `Animate`, `AnimatePlot`, or `AnimateParametricPlot` will automatically render all frames offscreen and return an `AnimatedImage` object containing all uncompressed frames.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -312,13 +312,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-To export, simply use native `Export`
+To export it, simply use the native `Export` function.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-To export, simply use native `Export`
+To export it, simply use the native `Export` function.
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -331,13 +331,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-If you prefer to do it in a non-blocking way (asynchronously), set `Asynchronous->True`, `AnimatedImage` will return `Promise`: 
+If you prefer to do this asynchronously, set `Asynchronous -> True`; `AnimatedImage` will return a `Promise`:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-If you prefer to do it in a non-blocking way (asynchronously), set `Asynchronous->True`, `AnimatedImage` will return `Promise`: 
+If you prefer to do this asynchronously, set `Asynchronous -> True`; `AnimatedImage` will return a `Promise`:
 
 %-------------------------------------------------------------------------%
 Type: Input
@@ -354,7 +354,7 @@ Type: Input
 %-------------------------------------------------------------------------%
 .md
 :::warning
-This feature is only available for WLJS Notebook desktop application, since it relies on our custom rendering engine
+This feature is available only in the WLJS Notebook desktop application because it relies on our custom rendering engine.
 :::
 
 %-------------------------------------------------------------------------%
@@ -362,7 +362,7 @@ Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 :::warning
-This feature is only available for WLJS Notebook desktop application, since it relies on our custom rendering engine
+This feature is available only in the WLJS Notebook desktop application because it relies on our custom rendering engine.
 :::
 
 %-------------------------------------------------------------------------%
@@ -375,8 +375,8 @@ Type: Input
 - Improved documentation search
 - New skills for all cell types
 - Smaller system prompt
-- Improved messages reporting and tool calling
-- Improved messages truncating 
+- Improved message reporting and tool calling
+- Improved message truncation
 
 %-------------------------------------------------------------------------%
 Display: markdown
@@ -386,8 +386,8 @@ Type: Output
 - Improved documentation search
 - New skills for all cell types
 - Smaller system prompt
-- Improved messages reporting and tool calling
-- Improved messages truncating 
+- Improved message reporting and tool calling
+- Improved message truncation
 
 %------------------------------%EndOfCells%-------------------------------%
 
