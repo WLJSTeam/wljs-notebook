@@ -1,5 +1,11 @@
 name: Container image
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
 
 env:
   REGISTRY: ghcr.io
@@ -17,6 +23,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Verify release tag matches app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          app_version="$(node -p "require('./package.json').version")"
+          test "$tag_version" = "$app_version" || {
+            echo "Release tag v$tag_version does not match package.json version $app_version"
+            exit 1
+          }
 
       # ---- Free a LOT of disk on the runner (10–30 GB) ----
       - name: Free runner disk space
@@ -46,6 +63,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
 
       # ---- Build & push with stronger compression and GHA cache ----
       - name: Build and push Docker image
@@ -86,6 +107,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Verify release tag matches app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          app_version="$(node -p "require('./package.json').version")"
+          test "$tag_version" = "$app_version" || {
+            echo "Release tag v$tag_version does not match package.json version $app_version"
+            exit 1
+          }
+
       - name: Free runner disk space
         run: |
           sudo rm -rf /usr/share/dotnet
@@ -112,6 +144,10 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
           flavor: |
             suffix=-cuda,onlatest=true
 

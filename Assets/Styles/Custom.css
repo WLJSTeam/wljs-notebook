@@ -532,10 +532,14 @@ input::selection {
   background:none;
 }
 
-  [os="WindowsLegacy"] .wljs-topbar {
+[os="WindowsLegacy"] .wljs-topbar {
     box-shadow: none;
     background:none;
-  }
+}
+
+[os="Browser"] .wljs-topbar {
+      background:none;
+ }
 
 @media (prefers-color-scheme: dark) {
     .wljs-topbar {
