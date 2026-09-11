@@ -18,7 +18,8 @@ PacletObject[
           {"CoffeeLiqueur`CUSockets`", "CSockets.wl"}, 
           {"CoffeeLiqueur`CUSockets`EventsExtension`", "EventsExtension.wl"},
           {"CoffeeLiqueur`CUSockets`Interface`Windows`", "Windows.wl"},
-          {"CoffeeLiqueur`CUSockets`Interface`Unix`", "Unix.wl"}
+          {"CoffeeLiqueur`CUSockets`Interface`Unix`", "Unix.wl"},
+          {"CoffeeLiqueur`CUSockets`Interface`Symja`", "Symja.wl"}
         },
         "Symbols" -> {
           "CoffeeLiqueur`CUSockets`USocketObject",
