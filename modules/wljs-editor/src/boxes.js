@@ -13,6 +13,8 @@
   boxes.Replace = () => {
     console.error('Replace must NOT be evaluated on the frontend. Seek for some errors');
   }
+
+  boxes.AllowScriptLevelChange = () => {}
   
   boxes.LineBreakWithin = () => {}
 
