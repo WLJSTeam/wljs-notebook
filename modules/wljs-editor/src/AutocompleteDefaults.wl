@@ -11800,12 +11800,7 @@ i>1n</i></sub>},...,{<i>im</i><sub><i>m1</i></sub>,...,<i>im<\
   "type" -> "keyword", "info" -> "ImageAugmentationLayer[{<i>h</i>,<i>w</i>}] \
 represents a net layer that applies random image transformations to produce \
 images of height <i>h</i> and width <i>w</i>."|>, 
- <|"label" -> "ImageCapture", "type" -> "keyword", 
-  "info" -> "ImageCapture[] opens a graphical user interface for capturing \
-images from connected cameras."|>, <|"label" -> "ImageCaptureFunction", 
-  "type" -> "keyword", "info" -> "ImageCaptureFunction is an option for \
-ImageCapture that specifies the function to apply to images acquired by the \
-imaging device. "|>, <|"label" -> "ImageCases", "type" -> "keyword", 
+ <|"label" -> "ImageCases", "type" -> "keyword", 
   "info" -> "ImageCases[<i>image</i>] gives an association of lists of \
 subimages for each identified category of objects in \
 <i>image</i>.\n\nImageCases[<i>image</i>,<i>category</i>] gives a list of \
@@ -28980,6 +28975,30 @@ lays out the video frames according to the provided <i>layout</i>."|>,
  <|"label" -> "VideoTranscribe", "type" -> "keyword", 
   "info" -> "VideoTranscribe[<i>video</i>] recognizes speech in an audio \
 track and adds it to <i>video</i> as a subtitle track."|>, 
+ <|"label" -> "BoxMatrix", "type" -> "keyword", 
+  "info" -> "BoxMatrix[<i>r</i>] gives a (2 <i>r</i>+1)\[Times](2 <i>r</i>+1) matrix of 1s.\n\nBoxMatrix[<i>r</i>,<i>w</i>] gives a <i>w</i>\[Times]<i>w</i> matrix containing a box of 1s with radius <i>r</i>."|>, 
+ <|"label" -> "CrossMatrix", "type" -> "keyword", 
+  "info" -> "CrossMatrix[<i>r</i>] gives a matrix whose elements are 1 in a cross-shaped region of radius <i>r</i>, and are otherwise 0."|>, 
+ <|"label" -> "DiagonalMatrix", "type" -> "keyword", 
+  "info" -> "DiagonalMatrix[<i>list</i>] gives a matrix with the elements of <i>list</i> on the leading diagonal and zeros elsewhere."|>, 
+ <|"label" -> "DiagonalMatrixQ", "type" -> "keyword", 
+  "info" -> "DiagonalMatrixQ[<i>m</i>] gives True if <i>m</i> is diagonal, and False otherwise."|>, 
+ <|"label" -> "DiamondMatrix", "type" -> "keyword", 
+  "info" -> "DiamondMatrix[<i>r</i>] gives a matrix whose elements are 1 in a diamond-shaped region of radius <i>r</i>, and are otherwise 0."|>, 
+ <|"label" -> "DiskMatrix", "type" -> "keyword", 
+  "info" -> "DiskMatrix[<i>r</i>] gives a matrix whose elements are 1 in a disk-shaped region of radius <i>r</i>, and are otherwise 0."|>, 
+ <|"label" -> "GaborMatrix", "type" -> "keyword", 
+  "info" -> "GaborMatrix[<i>r</i>,<i>k</i>] gives a Gabor convolution kernel with pixel radius <i>r</i> and wave vector <i>k</i>."|>, 
+ <|"label" -> "GaussianMatrix", "type" -> "keyword", 
+  "info" -> "GaussianMatrix[<i>r</i>] gives a (2 <i>r</i>+1)\[Times](2 <i>r</i>+1) matrix that samples a Gaussian."|>, 
+ <|"label" -> "LowerTriangularMatrixQ", "type" -> "keyword", 
+  "info" -> "LowerTriangularMatrixQ[<i>m</i>] gives True if <i>m</i> is lower triangular, and False otherwise."|>, 
+ <|"label" -> "SavitzkyGolayMatrix", "type" -> "keyword", 
+  "info" -> "SavitzkyGolayMatrix[<i>r</i>,<i>n</i>] gives a Savitzky\[Hyphen]Golay smoothing or derivative convolution kernel."|>, 
+ <|"label" -> "ShenCastanMatrix", "type" -> "keyword", 
+  "info" -> "ShenCastanMatrix[<i>r</i>] gives an exponential or exponential-derivative convolution kernel."|>, 
+ <|"label" -> "UpperTriangularMatrixQ", "type" -> "keyword", 
+  "info" -> "UpperTriangularMatrixQ[<i>m</i>] gives True if <i>m</i> is upper triangular, and False otherwise."|>, 
  <|"label" -> "⣿ca⣿", "type" -> "text", "apply" -> "\\[CapitalAlpha]", 
   "detail" -> "CapitalAlpha"|>, <|"label" -> "⣿cb⣿", "type" -> "text", 
   "apply" -> "\\[CapitalBeta]", "detail" -> "CapitalBeta"|>, 
