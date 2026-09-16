@@ -26,6 +26,13 @@ renderer.link = (href, title, text) => {
   return localLink ? html : html.replace(/^<a /, `<a target="_blank" rel="noreferrer noopener nofollow" `);
 };
 
+const imageRenderer = renderer.image;
+
+renderer.image = (href, title, text) => {
+  const html = imageRenderer.call(renderer, href, title, text);
+  return html.replace(/^<img /, '<img class="wljs-canvas" ');
+};
+
 /*const renderer = new Marked.Renderer();
 const linkRenderer = renderer.link;
 renderer.link = (href, title, text) => {
