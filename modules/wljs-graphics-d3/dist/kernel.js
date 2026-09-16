@@ -7486,7 +7486,8 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
         updatePos(xAxis.invert(p[0]), yAxis.invert(p[1]));
     }
   
-    object.on("mousedown", (e)=>clicked(e, d3.pointer(e)));
+    // Run before d3-zoom stops propagation, regardless of rule order.
+    object.on("mousedown", (e)=>clicked(e, d3.pointer(e)), true);
   };  
 
   g2d.EventListener.mouseup = (uid, object, env) => {
@@ -7505,7 +7506,10 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
         updatePos(xAxis.invert(p[0]), yAxis.invert(p[1]));
     }
   
-    object.on("mouseup", (e)=>clicked(e, d3.pointer(e)));
+    object.on("mouseup", function(e) {
+      // Zoom forwards releases from window; keep coordinates local to the object.
+      clicked(e, d3.pointer(e, this));
+    });
   };  
 
   g2d.EventListener.altclick = (uid, object, env) => {
@@ -7665,7 +7669,13 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     }
   
     object.call(d3.zoom()
-        .on("zoom", zoom));
+        .on("zoom", zoom)
+        .on("end.mouseup", function(e) {
+          // d3-zoom consumes native mouseup on window before it reaches the object.
+          if (e.sourceEvent?.type !== "mouseup") return;
+          const released = d3.select(this).on("mouseup");
+          if (released) released.call(this, e.sourceEvent);
+        }));
   }; 
 
 
