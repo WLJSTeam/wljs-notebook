@@ -7711,7 +7711,10 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
       updatePos(xAxis.invert(arr[0]), yAxis.invert(arr[1]))
     }
   
-    object.on("mousemove", (e) => moved(d3.pointer(e)));
+    object.on("mousemove", function(e) {
+      // Zoom forwards movement from window; keep coordinates local to the object.
+      moved(d3.pointer(e, this));
+    });
   };   
 
   g2d.EventListener.mouseover = (uid, object, env) => {
@@ -7748,6 +7751,12 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   
     object.call(d3.zoom()
         .on("zoom", zoom)
+        .on("zoom.mousemove", function(e) {
+          // d3-zoom consumes native mousemove on window during a mouse drag.
+          if (e.sourceEvent?.type !== "mousemove") return;
+          const moved = d3.select(this).on("mousemove");
+          if (moved) moved.call(this, e.sourceEvent);
+        })
         .on("end.mouseup", function(e) {
           // d3-zoom consumes native mouseup on window before it reaches the object.
           if (e.sourceEvent?.type !== "mouseup") return;
