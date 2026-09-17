@@ -3134,7 +3134,18 @@
       }
     }
   
+    boxes["BoxForm`OverlayViewBox"] = async (args, env) => {
+      const values = await interpretate(args[0], {...env, hold:true});
+    env.element.classList.add(...('subscript-tail sm-controls cursor-default'.split(' ')));
+     const container = env.element;
   
+     for (const editor of values) {
+      const dom = document.createElement('div');
+      if (editor == values[0]) dom; else dom.classList.add('absolute', 'z-0', 'top-0');
+      container.appendChild(dom);
+      await interpretate(editor, {...env, element: dom});
+     }
+    }
 
   boxes["BoxForm`TabViewBox"] = async (args, env) => {
     const labels = await interpretate(args[0], {...env, hold:true});

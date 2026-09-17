@@ -1577,12 +1577,18 @@ Unprotect[MathMLForm]
 ClearAll[MathMLForm]
 
 TeXForm[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+  If[Length[Kernels[] ] == 0, With[{s = EchoLabel["Spinner"]["Launching subkernel"]},
+    LaunchKernels[1]; 
+    s["Cancel"];
+  ]];
   ParallelSubmit[StringReplace[ToString[TeXForm[all], InputForm], "\\\\"->"\\\\\\"]]//WaitAll
 )
 
 MathMLForm[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
+If[Length[Kernels[] ] == 0, With[{s = EchoLabel["Spinner"]["Launching subkernel"]},
+  LaunchKernels[1]; 
+  s["Cancel"];
+]];
   ParallelSubmit[ToString[MathMLForm[all], InputForm]]//WaitAll
 )
 
@@ -1743,6 +1749,23 @@ TabView /: MakeBoxes[TabView[list:{r__Rule}, default_Integer:1], WLXForm] := Wit
   With[{ o = CreateFrontEndObject[BoxForm`TabViewBox[labels, values, default] ]},
     MakeBoxes[o, WLXForm]
   ]
+]
+
+Unprotect[Overlay];
+FormatValues[Overlay] = {};
+Overlay /: MakeBoxes[Overlay[expr_List, ___], form: StandardForm] := With[{
+  editors = EditorView[ToString[#, form], "ReadOnly"->True, "Selectable"->False] &/@ expr 
+},
+    ViewBox[Null, BoxForm`OverlayViewBox[editors] ]
+]
+
+Overlay /: MakeBoxes[Overlay[expr_List, ___], form: StandardForm] := With[{
+  editors = EditorView[ToString[#, form], "ReadOnly"->True, "Selectable"->False] &/@ expr 
+},
+{
+  o = CreateFrontEndObject[BoxForm`OverlayViewBox[editors]]
+},
+  MakeBoxes[o, WLXForm]
 ]
 
 Unprotect[CenteredInterval];
