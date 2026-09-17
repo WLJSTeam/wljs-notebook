@@ -7733,6 +7733,43 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     }
   
     object.on("mouseover", e => moved(d3.pointer(e)));
+  };  
+
+  g2d.EventListener.mouseenter = (uid, object, env) => {
+
+    console.log('mouse event generator');
+    console.log(env.local);
+    const xAxis = env.xAxis;
+    const yAxis = env.yAxis;
+
+    const updatePos = throttle((x,y) => {
+      server.kernel.io.fire(uid, [x,y], 'mouseenter')
+    });
+  
+    function moved(arr) {
+      updatePos(xAxis.invert(arr[0]), yAxis.invert(arr[1]))
+    }
+  
+    object.on("mouseenter", e => moved(d3.pointer(e)));
+  };  
+  
+  
+  g2d.EventListener.mouseleave = (uid, object, env) => {
+
+    console.log('mouse event generator');
+    console.log(env.local);
+    const xAxis = env.xAxis;
+    const yAxis = env.yAxis;
+
+    const updatePos = throttle((x,y) => {
+      server.kernel.io.fire(uid, [x,y], 'mouseleave')
+    });
+  
+    function moved(arr) {
+      updatePos(xAxis.invert(arr[0]), yAxis.invert(arr[1]))
+    }
+  
+    object.on("mouseleave", e => moved(d3.pointer(e)));
   };   
 
   g2d.EventListener.zoom = (uid, object, env) => {
