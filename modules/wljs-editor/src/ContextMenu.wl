@@ -18,6 +18,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`Evaluator`" -> "StandardEvaluator`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
+Needs["CoffeeLiqueur`Extensions`Editor`" -> "editor`"];
 
 System`ProvidedOptions;
 System`CommentBox;
@@ -123,6 +124,57 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
     ];
 ]
 
+
+processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{},
+    Echo["Evaluate in PLACE!!!!"];
+    If[!checkLink[notebook, logs], Return[] ];
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+        Function[text,
+            Then[evaluationInPlace[text, notebook, controls, logs, cli, "TeXForm"], 
+                Function[result,
+                    WebUISubmit[
+                        editor`Internal`InsertToClipBoard[ URLEncode[ ToExpression[result["Data"]] ], True],
+                    cli];
+                    
+                    EventFire[logs, Notifications`NotificationMessage["Copied"], "Success"];
+                ]
+            ,
+                Function[result,
+                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                ]
+            ];
+        ]
+    ];
+]
+
+processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With[{},
+    Echo["Evaluate in PLACE!!!!"];
+    If[!checkLink[notebook, logs], Return[] ];
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+        Function[text,
+            Then[evaluationInPlace[text, notebook, controls, logs, cli, "(ToString[#, InputForm]&)"], 
+                Function[result,
+                    WebUISubmit[
+                        editor`Internal`InsertToClipBoard[ URLEncode[ ToExpression[
+                            If[TrueQ[result["Overflow"]],
+                                Association[result["Meta"]]["OverflowContent"]
+                            ,
+                                result["Data"]
+                            ]
+                        ] ], True],
+                    cli];
+                    
+                    EventFire[logs, Notifications`NotificationMessage["Copied"], "Success"];
+                ]
+            ,
+                Function[result,
+                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                ]
+            ];
+        ]
+    ];
+]
+
 processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid = (Internal`NoWR`RandomWord[])<>"-"<>StringTake[CreateUUID[], 3]},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
@@ -162,6 +214,16 @@ addListeners[notebook_nb`NotebookObj, controls_, logs_, cli_] := With[{},
         "speak_selected" -> Function[Null,
             processSelected[text, notebook, controls, logs, cli, "Speak"]
         ],
+
+        "copy_as_tex" -> Function[Null,
+            processSelected[text, notebook, controls, logs, cli, "CopyAsTeX"]
+        ],
+
+        "copy_as_input" -> Function[Null,
+            processSelected[text, notebook, controls, logs, cli, "CopyAsInput"]
+        ],        
+
+        
 
         "comment_selected" -> Function[Null,
             Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"], Function[text,

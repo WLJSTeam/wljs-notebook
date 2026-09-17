@@ -104,6 +104,16 @@
         "label": "Hidden comment",
         "event": "comment_selected",
         "visible": "selection"
+      },
+      {
+        "label": "Copy as TeX",
+        "event": "copy_as_tex",
+        "visible": "selection"
+      },
+      {
+        "label": "Copy as Input",
+        "event": "copy_as_input",
+        "visible": "selection"
       }
     ]
   },
