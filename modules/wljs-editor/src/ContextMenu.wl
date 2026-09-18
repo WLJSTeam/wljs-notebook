@@ -58,7 +58,12 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
     EventHandler[t, {
         (* capture successfull event of the last transaction to end the process *)  
         "Result" -> Function[data, 
-            EventFire[p, Resolve, data];
+            If[TrueQ[data["Overflow"]],
+                    EventFire[p, Resolve, Join[data, <|"Data" -> Association[data["Meta"]]["OverflowContent"] |>]];
+                ,
+                    EventFire[p, Resolve, data];
+            ];
+            
         ]
     }];      
 
@@ -156,11 +161,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With
                 Function[result,
                     WebUISubmit[
                         editor`Internal`InsertToClipBoard[ URLEncode[ ToExpression[
-                            If[TrueQ[result["Overflow"]],
-                                Association[result["Meta"]]["OverflowContent"]
-                            ,
-                                result["Data"]
-                            ]
+                            result["Data"]
                         ] ], True],
                     cli];
                     
