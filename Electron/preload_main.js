@@ -200,11 +200,3 @@ ipcRenderer.on('confirm',  (ev, params) => {
     ipcRenderer.send('confirmed',  {uid: params.uid, result: false});
   }
 });
-
-function search(direction) {
-  let searched = document.getElementById("searchInput").value.trim();
-  if(searched.length > 0){
-      window.electronAPI.searchText(searched,direction)
-  }                
-  document.getElementById("searchInput").focus()
-}
