@@ -4080,9 +4080,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       let trans;
 
       if (env.local.text != text) {
+        g2d.Text.PutText(env.local.object, text, env);
         trans = env.local.object
         .maybeTransition(env.transitionType, env.transitionDuration)
-        .text(text)
         .attr("x", env.xAxis(coords[0]))
         .attr("y", env.yAxis(coords[1]))
       } else {
