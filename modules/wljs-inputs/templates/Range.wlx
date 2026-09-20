@@ -459,6 +459,9 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, {Control
     </script>
 )
 
+makeScript[Uid_, Event_, Topic_, Controller_, "Vertical"] := makeScript[Uid, Event, Topic, Controller, Automatic]
+makeScript[Uid_, Event_, Topic_, Controller_, "Number"] := makeScript[Uid, Event, Topic, Controller, Automatic]
+
 makeScript[Uid_, Event_String, Topic_String, Null, "FineTuning"] := (
     <script type="module">
         const num = document.getElementById('n-#instanceId');
@@ -1170,7 +1173,23 @@ Component[OptionsPattern[]] := With[{
                     <label for="default-range" class="block mb-2 text-sm  text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
                     <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 rounded-md border-gray-300 wljs-card {CounterClass}" style="{CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
                 </div>
-                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="{SliderStyle}"></input>
+                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="height:0.35rem; {SliderStyle}"></input>
+            </div>
+        ,
+        If[Mode === "Vertical",
+            <div class="relative shrink-0 gap-y-3 pb-2 inline-flex flex-col items-center sm-controls">
+                <div class="flex flex-col items-center sm-controls">
+                    <label for="n-#instanceId" class="block text-sm text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+                    <input id="n-#instanceId" type="number" class="h-2 block p-2.5 text-xs text-gray-900 rounded-md border-gray-300 wljs-card {CounterClass}" style="width:4rem; {CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
+                </div>
+                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="writing-mode:vertical-lr; direction:rtl; height:8rem; width:1rem; {SliderStyle}"></input>
+            </div>
+        ,
+        If[Mode === "Number",
+            <div class="relative shrink-0 pb-2 flex sm-controls">
+                <label for="n-#instanceId" class="block mr-5 mb-2 text-sm text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+                <input id="n-#instanceId" type="number" class="h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 rounded-md border-gray-300 wljs-card {CounterClass}" style="{CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
+                <input id="r-#instanceId" type="hidden" value="{Initial}"></input>
             </div>
         ,
             <div class="relative shrink-0 gap-y-3 pb-2 flex flex-col sm-controls">
@@ -1178,16 +1197,17 @@ Component[OptionsPattern[]] := With[{
                     <label for="default-range" class="block mb-2 text-sm  text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
                     <input id="n-#instanceId" type="number" class="ml-auto h-2 grow max-w-60 block p-2.5 text-xs text-gray-900 rounded-md border-gray-300 wljs-card {CounterClass}" style="{CounterStyle}" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}"></input>
                 </div>
-                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="{SliderStyle}"></input>
+                <input id="r-#instanceId" type="range" min="{MinX}" max="{MaxX}" step="{Step}" value="{Initial}" class="sm-controls native {SliderClass}" style="height:0.35rem; {SliderStyle}"></input>
                 <input min="-10" max="10" step="0.1" value="0" id="f-#instanceId" type="range" class="sm-controls native sm-frange" aria-label="Fine tune" title="Fine tune"></input>
             </div>
+        ]
+        ]
         ]
     ,
         makeScript[_, Event, Topic, external, Mode]
     }
 ];
 
-Options[Component] = {Appearance->Automatic, "Event"->Null, "Label"->"", "Min"->0, "Max"->1, "Step"->1, "Initial"->0, "Topic"->"Default", "TrackedSymbolUId"->Null, "TrackedExpression"->Null, "LabelClass"->"", "LabelStyle"->"", "CounterClass"->"", "CounterStyle"->"", "SliderClass"->"", "SliderStyle"->"height:0.35rem"};
+Options[Component] = {Appearance->Automatic, "Event"->Null, "Label"->"", "Min"->0, "Max"->1, "Step"->1, "Initial"->0, "Topic"->"Default", "TrackedSymbolUId"->Null, "TrackedExpression"->Null, "LabelClass"->"", "LabelStyle"->"", "CounterClass"->"", "CounterStyle"->"", "SliderClass"->"", "SliderStyle"->""};
 
 Component
-

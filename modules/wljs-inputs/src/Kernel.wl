@@ -10,7 +10,7 @@ BeginPackage["CoffeeLiqueur`Extensions`InputsOutputs`", {
 	"CoffeeLiqueur`Extensions`Communication`"
 }]
 
-InputRange::usage = "InputRange[min, max, step:1, initial:(max+min)/2, \"Label\"->\"\", \"Topic\"->\"Default\"] _EventObject."
+InputRange::usage = "InputRange[min, max, step:1, initial:(max+min)/2, \"Label\"->\"\", \"Topic\"->\"Default\"] _EventObject. Appearance can be Automatic, \"FineTuning\", \"Vertical\", or \"Number\"."
 InputCheckbox::usage = "InputCheckbox[state_Bool, \"Label\"->, \"Description\"->, , \"Topic\"->\"Default\"] _EventObject. A standard checkbox"
 InputColor::usage = "InputColor[initialColor, \"Label\"->\"Color\", \"ShowAlpha\"->False] _EventObject. A color picker that accepts {r,g,b}, RGBColor[r,g,b], or Hue[h] and returns {r,g,b} or {r,g,b,a}"
 InputButton::usage = "InputButton[label_String, \"Topic\"->\"Default\"] _EventObject. A standard button"
