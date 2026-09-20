@@ -191,7 +191,7 @@ HTMLView[value_?notString, opts: OptionsPattern[] ] := With[{},
 RangeX = ImportComponent[FileNameJoin[{$troot, "Range.wlx"}] ];
 
 InputRange[min_?NumberQ, max_?NumberQ, step_?NumberQ, initial_?NumberQ, opts: OptionsPattern[] ] := With[{uid = OptionValue["Event"]},
-	If[OptionValue["TrackedExpression"] === Null || OptionValue["TrackedExpression"] === False || OptionValue["TrackedExpression"] === None, OptionValue["TrackedExpression"] === Automatic,
+	If[OptionValue["TrackedExpression"] === Null || OptionValue["TrackedExpression"] === False || OptionValue["TrackedExpression"] === None || OptionValue["TrackedExpression"] === Automatic,
 		EventObject[<|"Id"->uid, "Initial"->initial, "View"->HTMLView[ RangeX["Min"->min, "Max"->max, "Step"->step, "Initial"->initial, "Event"->uid, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
 	,
 		With[{trId = CreateUUID[]},
