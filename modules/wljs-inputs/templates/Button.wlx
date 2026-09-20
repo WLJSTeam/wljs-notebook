@@ -1,25 +1,83 @@
 Component[OptionsPattern[]] := With[{
-    Event = OptionValue["Event"], 
-    Topic = OptionValue["Topic"], 
-    Uid = CreateUUID[], 
+    Event = OptionValue["Event"],
+    Topic = OptionValue["Topic"],
+    Uid = CreateUUID[],
     Label = OptionValue["Label"],
     Class = OptionValue["Class"],
-    Style = OptionValue["Style"]
+    Style = OptionValue["Style"],
+    StateExpression = OptionValue["StateExpression"],
+    StateId = OptionValue["StateId"]
 },
-    {
-        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
+    If[MatchQ[StateExpression, Null | None | Automatic],
+     {
+        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
             <Label/>
         </button>
-    ,
+     ,
         <script type="module">
             const el = document.getElementById('#instanceId');
             el.addEventListener('click', (event)=>{
-                server.kernel.io.fire('<Event/>', true, '<Topic/>');     
+                server.kernel.io.fire('<Event/>', true, '<Topic/>');
             });
         </script>
-    }
+     }
+    ,
+     {
+        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
+            <span class="wljs-input-button-label"><Label/></span>
+            <span class="wljs-input-button-spinner" aria-hidden="true" hidden="true"></span>
+        </button>
+     ,
+        <script type="module">
+            const el = document.getElementById('#instanceId');
+            const label = el.querySelector('.wljs-input-button-label');
+            const spinner = el.querySelector('.wljs-input-button-spinner');
+            el.addEventListener('click', (event)=>{
+                server.kernel.io.fire('<Event/>', true, '<Topic/>');
+            });
+
+            const setState = (disabled, busy) => {
+                el.disabled = disabled;
+                el.setAttribute('aria-busy', String(busy));
+                label.style.opacity = busy ? '0' : '';
+                spinner.hidden = !busy;
+            };
+
+            const controller = {
+                update: (data, env) => {
+                    switch(data) {
+                        case 'Buzy':
+                        case 'Busy':
+                        case 'Loading':
+                        case 'Wait':
+                        case 'Progress':
+                            setState(true, true);
+                        break;
+                        case 'Disabled':
+                        case 'Disable':
+                        case 'Off':
+                        case false:
+                            setState(true, false);
+                        break;
+                        case 'Reset':
+                        case 'Enabled':
+                        case 'Enable':
+                        case 'On':
+                        case true:
+                        default:
+                            setState(false, false);
+                    }
+                }
+
+            };
+            controller.init = controller.update;
+
+            core["CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementCallback"]['<StateId/>'] = controller;
+        </script>
+     }
+    ]
 ];
 
-Options[Component] = {"Event"->"blackhole", "Label"->"Click", "Topic"->"Default", "Class"->"", "Style"->""};
+Options[Component] = {"Event"->"blackhole", "Label"->"Click", "Topic"->"Default", "Class"->"", "Style"->"", "StateId"->Null, "StateExpression"->Null};
 
 Component

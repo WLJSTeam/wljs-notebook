@@ -39,7 +39,7 @@ Begin["`Private`"];
 EventObject[] := EventObject[<|"Id" -> CreateUUID[]|>]
 EventObject[uid_String] := EventObject[<|"Id" -> uid|>]
 EventObject[a_Association][field_] := a[field]
-
+EventObject[ev_EventObject] := ev
 
 listener[p_, list_] := With[{uid = CreateUUID[]}, With[{
     rules = Map[Function[rule, rule[[1]] -> uid ], list]

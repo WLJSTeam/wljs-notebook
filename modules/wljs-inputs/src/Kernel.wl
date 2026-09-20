@@ -191,7 +191,7 @@ HTMLView[value_?notString, opts: OptionsPattern[] ] := With[{},
 RangeX = ImportComponent[FileNameJoin[{$troot, "Range.wlx"}] ];
 
 InputRange[min_?NumberQ, max_?NumberQ, step_?NumberQ, initial_?NumberQ, opts: OptionsPattern[] ] := With[{uid = OptionValue["Event"]},
-	If[OptionValue["TrackedExpression"] === Null,
+	If[OptionValue["TrackedExpression"] === Null || OptionValue["TrackedExpression"] === False || OptionValue["TrackedExpression"] === None, OptionValue["TrackedExpression"] === Automatic,
 		EventObject[<|"Id"->uid, "Initial"->initial, "View"->HTMLView[ RangeX["Min"->min, "Max"->max, "Step"->step, "Initial"->initial, "Event"->uid, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
 	,
 		With[{trId = CreateUUID[]},
@@ -278,15 +278,22 @@ Options[InputRaster] = {"AllowUpdateWhileDrawing"->False, "Topic"->"Default", "E
 
 Knob = ImportComponent[FileNameJoin[{$troot, "Button.wlx"}] ];
 
-InputButton[label_String:"Click", opts: OptionsPattern[] ] := With[{id = OptionValue["Event"]},
-    EventObject[<|"Id"->id, "Initial"->False, "View"->HTMLView[Knob["Label"->label, "Event"->id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+InputButton[label_String:"Click", opts: OptionsPattern[] ] := With[{id = OptionValue["Event"], stateExpr = OptionValue["StateExpression"], stateId = CreateUUID[]},
+    If[MatchQ[stateExpr, Null | None | Automatic],
+        EventObject[<|"Id"->id, "Initial"->False, "View"->HTMLView[Knob["Label"->label, "Event"->id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+    ,
+        With[{out = EventObject[<|"Id"->id, "Initial"->False, "View"->HTMLView[Knob["Label"->label, "Event"->id, opts, "StateId"->stateId], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>], Epilog->InternalElementCallback[stateId, stateExpr//Offload ] ]|>]},
+            If[!ValueQ[stateExpr] && MatchQ[stateExpr, _Symbol], stateExpr = "Enabled"];
+            out
+        ]
+    ]
 ];
 
 InputButton[EventObject[a_Association], rest__] := InputButton[rest, "Event" -> a["Id"] ]
 InputButton[EventObject[a_Association], rest_]  := InputButton[rest, "Event" -> a["Id"] ]
 InputButton[EventObject[a_Association] ]  := InputButton["Event" -> a["Id"] ]
 
-Options[InputButton] = {"Class"->"", "Style"->"", "Topic"->"Default", "Event":>CreateUUID[]}
+Options[InputButton] = {"Class"->"", "Style"->"", "Topic"->"Default", "Event":>CreateUUID[], "StateExpression"->Null}
 
 Unprotect[Button]
 ClearAll[Button]

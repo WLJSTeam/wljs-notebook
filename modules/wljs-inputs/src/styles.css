@@ -12,3 +12,42 @@
 
 .sm-frange::-webkit-slider-thumb { transform: scale(0.85); }
 .sm-frange::-moz-range-thumb     { transform: scale(0.85); }
+
+.wljs-input-button {
+  position: relative;
+}
+
+button.wljs-input-button:disabled {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  color: #6b7280;
+  box-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.wljs-input-button-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin: -0.425rem 0 0 -0.425rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: wljs-input-button-spin 0.7s linear infinite;
+}
+
+.wljs-input-button-spinner[hidden] {
+  display: none;
+}
+
+@keyframes wljs-input-button-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wljs-input-button-spinner { animation-duration: 1.5s; }
+}
