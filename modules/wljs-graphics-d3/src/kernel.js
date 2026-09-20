@@ -5275,19 +5275,20 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       const { bufferInfo: buf } = myLocal.state;
       const wgl = env.wgl;
       twgl.setBuffersAndAttributes(wgl.gl, wgl.programInfo, buf);
-      if (wgl.vertexTexture) {
-        if (!env.texture) throw 'Texture is not provided!';
+      if (wgl.vertexTexture && env.texture) {
         const texture = env.texture.get(wgl.gl);
         twgl.setUniforms(wgl.programInfo, {
           u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
           u_texture: texture,
+          u_vertexColor: false,
           u_vertexTexture: true
         });
       } else {
         twgl.setUniforms(wgl.programInfo, {
           u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
           u_color: color,
-          u_vertexColor: Boolean(wgl.vertexColors)
+          u_vertexColor: Boolean(wgl.vertexColors),
+          u_vertexTexture: false
         });
       }
       if (wgl.fallbackVertices.length > 65535) {
