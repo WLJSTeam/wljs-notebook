@@ -3001,7 +3001,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     } else {
 
       console.log('Multiple isntances');
-      console.log(data);
+    
 
       const gr = env.svg.append("g");
       gr.attr("fill", "none")
@@ -4801,11 +4801,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     }
 
     translate = [env.xAxis(translate[0]) , env.yAxis(translate[1]) ];
-    console.log(translate);
+
 
     const o = env.panZoomEntites;
 
-    console.log(env.svg.attr('transform'));
+
 
     const transform = d3.zoomIdentity.translate(dims.width, dims.height).scale(zoom).translate(-translate[0], -translate[1]);
     env.local.currentZoomTransform = transform;
@@ -5214,7 +5214,6 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           u_vertexTexture: true
         });
       } else {
-        console.log(color);
         twgl.setUniforms(wgl.programInfo, {
           u_resolution: [wgl.gl.canvas.width, wgl.gl.canvas.height],
           u_color: color,
@@ -7623,7 +7622,6 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   g2d.EventListener.mousemove = (uid, object, env) => {
 
     console.log('mouse event generator');
-    console.log(env.local);
     const xAxis = env.xAxis;
     const yAxis = env.yAxis;
 
@@ -7644,7 +7642,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   g2d.EventListener.mouseover = (uid, object, env) => {
 
     console.log('mouse event generator');
-    console.log(env.local);
+
     const xAxis = env.xAxis;
     const yAxis = env.yAxis;
 
@@ -7706,7 +7704,6 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
 
     function zoom(e) {
-      console.log();
       updatePos(e.transform.k);
     }
   
