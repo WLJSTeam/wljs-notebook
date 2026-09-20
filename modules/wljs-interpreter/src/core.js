@@ -793,10 +793,26 @@ core.If = async(args, env) => {
 }
 
 core.If.update = core.If
-core.If.destroy = async(args, env) => {
-    await interpretate(args[0], env)
-    await interpretate(args[1], env);
+
+core.Equal = async(args, env) => {
+    const a = await interpretate(args[0], env);
+    const b = await interpretate(args[1], env);
+    return a == b;
 }
+
+core.Equal.update = core.Equal;
+core.SameQ = core.Equal;
+
+
+core.Unequal = async(args, env) => {
+    const a = await interpretate(args[0], env);
+    const b = await interpretate(args[1], env);
+    return a != b;
+}
+
+core.Unequal.update = core.Unequal;
+
+core.UnsameQ = core.Unequal;
 
 core.Less = async(args, env) => {
     if ((await interpretate(args[0], env)) < (await interpretate(args[1], env))) return true;
