@@ -705,6 +705,12 @@ TemplateBox[{pts_Integer}, "Spacer"] := ViewBox[Spacer[pts], ViewDecorator["Spac
 TemplateBox[{pts_Integer}, "Spacer1"] := ViewBox[Spacer[pts], ViewDecorator["Spacer", pts] ]
 TemplateBox[{pts__Integer}, "Spacer2"] := ViewBox[Spacer[pts], ViewDecorator["Spacer", List @ pts] ]
 
+Unprotect[Spacer];
+
+Spacer /: MakeBoxes[Spacer[w_], WLXForm] := StringTemplate["<div style=\"width:``rem\"></div>"][NumberForm[w/10.0, {3,2}]//ToString];
+Spacer /: MakeBoxes[Spacer[{w_, h_}], WLXForm] := StringTemplate["<div style=\"width:``rem;height:``rem\"></div>"][NumberForm[w/10.0, {3,2}]//ToString, NumberForm[h/10.0, {3,2}]//ToString];
+Spacer /: MakeBoxes[Spacer[{Automatic, h_}], WLXForm] := StringTemplate["<div style=\"height:``rem\"></div>"][NumberForm[h/10.0, {3,2}]//ToString];
+
 TemplateBox[list:{expr_, label_}, "Labeled", opts__Rule ] := With[{func = Association[ List[opts] ][DisplayFunction]},
   func @@ list
 ]
