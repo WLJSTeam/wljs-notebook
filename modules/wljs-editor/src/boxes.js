@@ -474,7 +474,7 @@
   }
 
   boxes.ViewDecorator.Legend2 = async (args, env) => {
-    //throw args;
+
     const container = document.createElement('div');
     container.classList.add('flex', 'flex-row', 'gap-x-3', 'items-center', 'relative');
     const exprContainer = document.createElement('div');
@@ -483,7 +483,7 @@
 
     container.appendChild(exprContainer);
     await interpretate(args[0], {...env, context:[], element: exprContainer});
-    
+
     await interpretate(args[1], {...env, element: {
       parent: container,
       expr: exprContainer

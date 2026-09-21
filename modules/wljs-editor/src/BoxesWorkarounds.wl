@@ -1090,32 +1090,63 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
 Unprotect[BarLegend];
 FormatValues[BarLegend] = {};
 
-BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
   MakeBoxes[o, form]
 ]
 
-BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts___Rule, ___], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
+ With[{out = MakeBoxes[o, StandardForm]},
+  ViewBox[out, o]
+ ]
+]
+
+
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, contours_?(!OptionQ[#] &), opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, contours, opts] ]},
+  MakeBoxes[o, form]
+]
+
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+  MakeBoxes[o, form]
+]
+
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, contours_?(!OptionQ[#] &), opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, contours, opts] ]},
   With[{out = MakeBoxes[o, StandardForm]},
     ViewBox[out, o]
   ]
 ]
 
+BarLegend /: MakeBoxes[BarLegend[{cf_, range_List}, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, range, opts] ]},
+  With[{out = MakeBoxes[o, StandardForm]},
+    ViewBox[out, o]
+  ]
+]
+
+ClearAll[BoxForm`makeBarLegend];
+Options[BoxForm`makeBarLegend] = Options[BarLegend];
+
 BoxForm`makeBarLegend[uid_String, JSON_String] := (CreateFrontEndObject[BoxForm`makeBarLegend @@ ImportByteArray[JSON//StringToByteArray, "ExpressionJSON"], uid]; uid)
-BoxForm`makeBarLegend[{cf_, range_List}, opts___Rule, ___] :=  BoxForm`makeBarLegend[cf, range, opts]
-BoxForm`makeBarLegend[cf_String, range_List, opts___Rule] := BoxForm`makeBarLegend[ColorData[cf], range, opts]
-BoxForm`makeBarLegend[cf_] := BoxForm`makeBarLegend[cf, {0,1}]
+BoxForm`makeBarLegend[{cf: {__RGBColor}, {min_, max_}}, contours_?(!OptionQ[#] &), opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, {min, max}, contours, opts]
+BoxForm`makeBarLegend[{cf_, range_List}, contours_?(!OptionQ[#] &), opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, range, contours, opts]
+BoxForm`makeBarLegend[{cf_, range_List}, opts:OptionsPattern[]] :=  BoxForm`makeBarLegend[cf, range, opts]
+BoxForm`makeBarLegend[cf_String, range_List, contours_?(!OptionQ[#] &), opts:OptionsPattern[]] := BoxForm`makeBarLegend[ColorData[cf], range, contours, opts]
+BoxForm`makeBarLegend[cf_String, range_List, opts:OptionsPattern[]] := BoxForm`makeBarLegend[ColorData[cf], range, opts]
+BoxForm`makeBarLegend[cf_] := BoxForm`makeBarLegend[cf, {0,1}, 10]
 
-BoxForm`makeBarLegend[{cf: {__RGBColor}, {min_, max_}}, rest___] := BoxForm`makeBarLegend[{Blend[cf, (# - min)/(max-min)]&, {min, max}}, rest]
+BoxForm`makeBarLegend[{cf: {__RGBColor}, {min_, max_}}, opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, {min, max}, opts]
+BoxForm`makeBarLegend[cf_, range_List, opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, range, 10, opts]
 
-BoxForm`makeBarLegend[cf_, range_List, opts___Rule] := With[{
-  ticks = Table[{Round[i, (range[[2]] - range[[1]])/20.0], Null}, {i, range[[1]], range[[2]], (range[[2]] - range[[1]])/10.0}]
+BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With[{
+  divisions = If[IntegerQ[contours] && Positive[contours], contours, 10]
 },
   With[{
+    ticks = ({Round[#, (range[[2]] - range[[1]])/(2.0 divisions)], ToString[NumberForm[Round[#, (range[[2]] - range[[1]])/(2.0 divisions)], If[divisions > 10, {1,1}, {0,0}] + {2,1} ]]} &) /@ Subdivide[range[[1]], range[[2]], divisions]
+  },
+  With[{
     legend =   With[{options = Association[List[opts] ]}, 
-    
-    Module[{colorConvert, step = (ticks[[2, 1]] - ticks[[1, 1]]) * 0.5, 
+    Module[{colorConvert, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
       imageSize = 
-        If[KeyExistsQ[options, ImageSize], options[ImageSize], 370 / 1.6180339  ]},
+        If[KeyExistsQ[options, ImageSize], options[ImageSize], 370 / 1.6180339  ],
+      labelStyle = Lookup[options, LabelStyle, Automatic]},
       
       (* Adjust the image size depending on whether it is a list or not *)
       imageSize = 
@@ -1131,20 +1162,32 @@ BoxForm`makeBarLegend[cf_, range_List, opts___Rule] := With[{
       (* Color conversion function based on range *)
       colorConvert[value_] := 
         cf @ ((value - range[[1]]) / (range[[2]] - range[[1]]));
+
+      colorToRGB[color_] := N[Take[List @@ ColorConvert[color, "RGB"], 3]];
+
+      {colorPositions, sampledColors} = If[MatchQ[cf, {__RGBColor}],
+        If[Length[cf] > 1,
+          {Subdivide[range[[1]], range[[2]], Length[cf] - 1], cf},
+          {{range[[1]], range[[2]]}, {First[cf], First[cf]}}
+        ],
+        {ticks[[All, 1]], colorConvert /@ ticks[[All, 1]]}
+      ];
+
+      vertices = Flatten[({{-1, #}, {1, #}} &) /@ colorPositions, 1];
+      vertexColors = Flatten[({#, #} &) /@ (colorToRGB /@ sampledColors), 1];
+      polygons = Table[{2 i - 1, 2 i, 2 i + 2, 2 i + 1}, {i, Length[colorPositions] - 1}];
       
-      (* Create the graphic with rectangles for each tick *)
+      (* Interpolate the sampled colors across a shared polygon mesh. *)
       Graphics[
-        Map[
-          Function[tick, 
-            With[{val = tick[[1]], deco = tick[[2 ;;]]}, 
-              {colorConvert[val], 
-               Rectangle[{-1, val - step}, {1, val + step}]}
-            ]
-          ], 
-          ticks
-        ], 
+        GraphicsComplex[
+          vertices,
+          Polygon[polygons],
+          VertexColors -> vertexColors
+        ],
         Axes -> True, Frame -> True, 
-        FrameTicks -> {{{}, ticks[[All, 1]]}, {False, False}}, 
+        FrameTicks -> {{ticks, ticks}, {False, False}},
+        FrameStyle -> labelStyle,
+        FrameTicksStyle -> labelStyle,
         TickLabels -> {False, False, False, True}, 
         PlotRange -> {{-1, 1}, range}, 
         "Controls" -> False, 
@@ -1158,6 +1201,7 @@ BoxForm`makeBarLegend[cf_, range_List, opts___Rule] := With[{
   
   legend
   
+  ]
   ]
 ]
 
