@@ -13787,88 +13787,25 @@ a least squares method, given the specified frequencies \
 spec</i>},<i>n</i>] uses the full filter specification \
 {\"<i>type</i>\",<i>spec</i>}."|>, <|"label" -> "Left", "type" -> "keyword", 
   "info" -> "Left is a symbol that represents the left-hand side for purposes \
-of alignment and positioning. "|>, <|"label" -> "LeftArrow", 
-  "type" -> "keyword", "info" -> "LeftArrow[<i>x</i>,<i>y</i>,...] \
-displays as <i>x</i>\[LeftArrow]<i>y</i>\[LeftArrow]...."|>, 
- <|"label" -> "LeftArrowBar", "type" -> "keyword", 
-  "info" -> "LeftArrowBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftArrowBar]<i>y</i>\[LeftArrowBar]...."|>, 
- <|"label" -> "LeftArrowRightArrow", "type" -> "keyword", 
-  "info" -> "LeftArrowRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftArrowRightArrow]<i>y</i>\[LeftArrowRightArrow]...."|>, 
- <|"label" -> "LeftDownTeeVector", "type" -> "keyword", 
-  "info" -> "LeftDownTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftDownTeeVector]<i>y</i>\[LeftDownTeeVector]...."|>, 
- <|"label" -> "LeftDownVector", "type" -> "keyword", 
-  "info" -> "LeftDownVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftDownVector]<i>y</i>\[LeftDownVector]...."|>, 
- <|"label" -> "LeftDownVectorBar", "type" -> "keyword", 
-  "info" -> "LeftDownVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftDownVectorBar]<i>y</i>\[LeftDownVectorBar]...."|>, 
- <|"label" -> "LeftRightArrow", "type" -> "keyword", 
-  "info" -> "LeftRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftRightArrow]<i>y</i>\[LeftRightArrow]...."|>, 
- <|"label" -> "LeftRightVector", "type" -> "keyword", 
-  "info" -> "LeftRightVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftRightVector]<i>y</i>\[LeftRightVector]...."|>, 
- <|"label" -> "LeftTee", "type" -> "keyword", 
-  "info" -> "LeftTee[<i>x</i>,<i>y</i>] displays as x\[LeftTee]y."|>, 
- <|"label" -> "LeftTeeArrow", "type" -> "keyword", 
-  "info" -> "LeftTeeArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftTeeArrow]<i>y</i>\[LeftTeeArrow]...."|>, 
- <|"label" -> "LeftTeeVector", "type" -> "keyword", 
-  "info" -> "LeftTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftTeeVector]<i>y</i>\[LeftTeeVector]...."|>, 
- <|"label" -> "LeftTriangle", "type" -> "keyword", 
-  "info" -> "LeftTriangle[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftTriangle]<i>y</i>\[LeftTriangle]...."|>, 
- <|"label" -> "LeftTriangleBar", "type" -> "keyword", 
-  "info" -> "LeftTriangleBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftTriangleBar]<i>y</i>\[LeftTriangleBar]...."|>, 
- <|"label" -> "LeftTriangleEqual", "type" -> "keyword", 
-  "info" -> "LeftTriangleEqual[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftTriangleEqual]<i>y</i>\[LeftTriangleEqual]...."|>, 
- <|"label" -> "LeftUpDownVector", "type" -> "keyword", 
-  "info" -> "LeftUpDownVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftUpDownVector]<i>y</i>\[LeftUpDownVector]...."|>, 
- <|"label" -> "LeftUpTeeVector", "type" -> "keyword", 
-  "info" -> "LeftUpTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftUpTeeVector]<i>y</i>\[LeftUpTeeVector]...."|>, 
- <|"label" -> "LeftUpVector", "type" -> "keyword", 
-  "info" -> "LeftUpVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftUpVector]<i>y</i>\[LeftUpVector]...."|>, 
- <|"label" -> "LeftUpVectorBar", "type" -> "keyword", 
-  "info" -> "LeftUpVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftUpVectorBar]<i>y</i>\[LeftUpVectorBar]...."|>, 
- <|"label" -> "LeftVector", "type" -> "keyword", 
-  "info" -> "LeftVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftVector]<i>y</i>\[LeftVector]...."|>, 
- <|"label" -> "LeftVectorBar", "type" -> "keyword", 
-  "info" -> "LeftVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[LeftVectorBar]<i>y</i>\[LeftVectorBar]...."|>, 
- <|"label" -> "LegendAppearance", "type" -> "keyword", 
-  "info" -> "LegendAppearance is an option for charting functions that \
-specifies the appearance of any legends that are generated."|>, 
+of alignment and positioning. "|>, 
  <|"label" -> "Legended", "type" -> "keyword", "info" -> "Legended[<i>expr</i\
 >,<i>leg</i>] displays <i>expr</i> with legend <i>leg</i>. \
 \n\nLegended[<i>expr</i>,<i>lbl</i>] indicates in plotting and charting \
 functions that a legend entry for <i>expr</i> should be created, with label \
-<i>lbl</i>."|>, <|"label" -> "LegendFunction", "type" -> "keyword", 
-  "info" -> "LegendFunction is an option for legends that specifies an \
-overall function to apply to the generated legend."|>, 
+<i>lbl</i> which can be LineLegend, PointLegend, SwatchLegend or BarLegend."|>, <|"label" -> "LegendFunction", "type" -> "keyword", 
+  "info" -> "LegendFunction is an option for legends like PointLegend, LineLegend, SwatchLegend, that specifies an \
+overall function to apply to the generated legend.\nPossible values are: \"Panel\", \"Frame\", \"DarkFrame\", \"Frameless\" "|>, 
+<|"label" -> "LabelStyle", "type" -> "keyword", 
+"info" -> "LabelStyle is an option for legends that specifies an overall \
+look of labels"|>,
  <|"label" -> "LegendLabel", "type" -> "keyword", 
   "info" -> "LegendLabel is an option for legends that specifies an overall \
-label for a legend."|>, <|"label" -> "LegendLayout", "type" -> "keyword", 
-  "info" -> "LegendLayout is an option for legends that specifies how to \
-format the legend content."|>, <|"label" -> "LegendMargins", 
-  "type" -> "keyword", "info" -> "LegendMargins is an option for legends that \
-specifies the margins to leave around the legend."|>, 
- <|"label" -> "LegendMarkers", "type" -> "keyword", 
-  "info" -> "LegendMarkers is an option for legends such as PointLegend that \
-specifies markers for each element."|>, <|"label" -> "LegendMarkerSize", 
-  "type" -> "keyword", "info" -> "LegendMarkerSize is an option for legends \
-such as PointLegend that specifies the size of marker regions for each \
-element."|>, <|"label" -> "Length", "type" -> "keyword", 
+label for a legend. Only BarLegend is supported!"|>, <|"label" -> "LegendLayout", "type" -> "keyword", 
+  "info" -> "LegendLayout is an option for legends like PlotLegend, LineLegend, SwatchLegend, that specifies how to \
+format the legend content.\nPosssible values are \"Row\", \"Column\", \"ReversedRow\", \"ReversedColumn\""|>, <|"label" -> "LegendMargins", 
+  "type" -> "keyword", "info" -> "LegendMargins is an option for legends like PointLegend, LineLegend and etc, that \
+  specifies the margins to leave around the legend.\nLegendMargins->5, or LegendMargins->{{left, right}, {top, bottom}} "|>,
+  <|"label" -> "Length", "type" -> "keyword", 
   "info" -> 
    "Length[<i>expr</i>] gives the number of elements in <i>expr</i>. "|>, 
  <|"label" -> "LengthWhile", "type" -> "keyword", 
@@ -13900,14 +13837,9 @@ x\[LessFullEqual]y\[LessFullEqual]...."|>,
 x\[LessGreater]y\[LessGreater]...."|>, 
  <|"label" -> "LessLess", "type" -> "keyword", "info" -> "LessLess[<i>x</i>,<\
 i>y</i>,...] displays as x\[LessLess]y\[LessLess]...."|>, 
- <|"label" -> "LessSlantEqual", "type" -> "keyword", 
-  "info" -> "LessSlantEqual[<i>x</i>,<i>y</i>,...] displays as \
-x\[LessSlantEqual]y\[LessSlantEqual]...."|>, 
  <|"label" -> "LessThan", "type" -> "keyword", "info" -> "LessThan[<i>y</i>] \
 is an operator form that yields <i>x</i><<i>y</i> when applied to an \
-expression <i>x</i>."|>, <|"label" -> "LessTilde", "type" -> "keyword", 
-  "info" -> "LessTilde[<i>x</i>,<i>y</i>,...] displays as \
-x\[LessTilde]y\[LessTilde]...."|>, <|"label" -> "LetterCharacter", 
+expression <i>x</i>."|>,  <|"label" -> "LetterCharacter", 
   "type" -> "keyword", "info" -> 
    "LetterCharacter represents a letter character in StringExpression."|>, 
  <|"label" -> "LetterCounts", "type" -> "keyword", 
