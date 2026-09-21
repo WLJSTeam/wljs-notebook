@@ -231,6 +231,8 @@
 
     const markers = await interpretate(args[0], {...env, hold:true});
     const labels = await interpretate(args[1], {...env, hold:true});
+    const opts = await core._getRules(args, {...env, hold:true});
+    
 
     if (!Array.isArray(markers) || !Array.isArray(labels)) {
       console.error('Markers and labels are not lists');
@@ -242,12 +244,75 @@
     
     container.classList.add('flex', 'flex-col', 'gap-y-1', 'text-left');
     container.style.alignItems = "flex-start";
+    if ('LegendFunction' in opts) {
+      const held = opts.LegendFunction;
+      switch (held) {
+        case "'Panel'":
+          env.element.classList.add(...('cursor-default py-1 px-2 bg-gray-50 wljs-card'.split(' ')));
+        break;
+
+        case "'Frameless'":
+          env.element.classList.add(...('cursor-default py-1 px-2 bg-gray-50'.split(' ')));  
+        break;
+
+        case "'DarkFrame'":
+        case "'DarkFramed'":
+        case "'DarkBorder'":
+          env.element.style.borderColor = 'rgb(68, 68, 68)';
+        case "'Framed'":
+        case "'Frame'":
+        case "'Border'":
+          env.element.classList.add(...('cursor-default py-1 px-2 wljs-card'.split(' ')));
+          env.element.style.boxShadow = 'none'
+        break;
+      }
+    }
+    if ('Background' in opts) {
+      const c = await interpretate(opts.Background, env);
+      container.style.backgroundColor = c;
+    }
+    if ('RoundingRadius' in opts) {
+      const r = await interpretate(opts.RoundingRadius, env);
+      if (typeof r == 'number') container.style.borderRadius = r/20.0 + 'rem';
+    }
+    if ('LegendMargins' in opts) {
+      const r = await interpretate(opts.LegendMargins, env);
+      if (typeof r == 'number') container.style.padding = r/20.0 + 'rem';
+      if (Array.isArray(r)) {
+        container.style.paddingLeft = r[0][0]/20.0 + 'rem';
+        container.style.paddingRight = r[0][1]/20.0 + 'rem';
+        container.style.paddingTop = r[1][0]/20.0 + 'rem';
+        container.style.paddingBottom = r[1][1]/20.0 + 'rem';
+      }
+    }
+    if ('LegendLayout' in opts) {
+      const r = await interpretate(opts.LegendLayout, env);
+      switch(r) {
+        case 'Row':
+          container.classList.add('flex-row', 'gap-x-2');
+          container.classList.remove('flex-col');
+        break;
+        case 'ReversedRow':
+          container.classList.add('flex-row', 'gap-x-2');
+          container.classList.remove('flex-col');
+          container.style.flexDirection = 'row-reverse';
+        break;
+        case 'ReversedColumn':
+          container.style.flexDirection = 'column-reverse';
+        break;
+        case 'Column':
+        default:
+          
+      }
+    }    
 
     for (let i=0; i<markers.length; ++i) {
       const cell = document.createElement('div');
       cell.classList.add('flex', 'flex-row', 'gap-x-2', 'items-baseline');
 
       const markerEnv = {...env, context: legends, color: 'black', thickness: 2, pointsize: 1};
+
+      
       await interpretate(markers[i], markerEnv);
       const markerWrapper = document.createElement('div');
       markerWrapper.style.margin = "auto";
@@ -255,9 +320,30 @@
       markerWrapper.appendChild(markerFunction(markerEnv));
       cell.appendChild(markerWrapper);
 
-
       const label = document.createElement('span');
 
+      if ('LabelStyle' in opts) {
+        const old = {color: markerEnv.color};
+        if (Array.isArray(opts.LabelStyle)) {
+          if (opts.LabelStyle[0] == 'List' || opts.LabelStyle[0] == 'Directive') {
+            //bypass List default behaviour. Fuck Wolfram
+            const copy = opts.LabelStyle.slice(1);
+            const options = await core._getRules(copy, markerEnv);
+            for (let i=0; i<copy.length-Object.keys(opts).length; ++i) await interpretate(copy[i], markerEnv);
+
+            if ('FontSize' in options) {
+              label.style.fontSize = String(options.FontSize) + 'pt';
+            } 
+            if ('FontFamily' in options) {
+              label.style.fontFamily = String(options.FontFamily);
+            }             
+          } else {
+            await interpretate(opts.LabelStyle, markerEnv);
+          }
+        }
+        if (markerEnv.color != old.color) label.style.color = markerEnv.color;
+      }
+      
       label.classList.add('text-sm', 'sm-controls');
 
       if (typeof labels[i] == 'string') {
