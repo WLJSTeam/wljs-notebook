@@ -1130,6 +1130,8 @@ BoxForm`makeBarLegend[{cf_, range_List}, contours_?(!OptionQ[#] &), opts:Options
 BoxForm`makeBarLegend[{cf_, range_List}, opts:OptionsPattern[]] :=  BoxForm`makeBarLegend[cf, range, opts]
 BoxForm`makeBarLegend[cf_String, range_List, contours_?(!OptionQ[#] &), opts:OptionsPattern[]] := BoxForm`makeBarLegend[ColorData[cf], range, contours, opts]
 BoxForm`makeBarLegend[cf_String, range_List, opts:OptionsPattern[]] := BoxForm`makeBarLegend[ColorData[cf], range, opts]
+BoxForm`makeBarLegend[cf_String, contours_Integer, opts:OptionsPattern[]] := BoxForm`makeBarLegend[ColorData[cf], {0,1}, contours,  opts]
+BoxForm`makeBarLegend[cf_, contours_Integer, opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, {0,1}, contours,  opts]
 BoxForm`makeBarLegend[cf_] := BoxForm`makeBarLegend[cf, {0,1}, 10]
 
 BoxForm`makeBarLegend[{cf: {__RGBColor}, {min_, max_}}, opts:OptionsPattern[]] := BoxForm`makeBarLegend[cf, {min, max}, opts]
@@ -1143,7 +1145,7 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
   },
   With[{
     legend =   With[{options = Association[List[opts] ]}, 
-    Module[{colorConvert, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
+    Module[{colorConvert, label = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
       imageSize = 
         If[KeyExistsQ[options, ImageSize], options[ImageSize], 370 / 1.6180339  ],
       labelStyle = Lookup[options, LabelStyle, Automatic]},
@@ -1176,6 +1178,8 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
       vertices = Flatten[({{-1, #}, {1, #}} &) /@ colorPositions, 1];
       vertexColors = Flatten[({#, #} &) /@ (colorToRGB /@ sampledColors), 1];
       polygons = Table[{2 i - 1, 2 i, 2 i + 2, 2 i + 1}, {i, Length[colorPositions] - 1}];
+
+      label = Replace[Lookup[options, LegendLabel, None] , {Automatic -> None}];
       
       (* Interpolate the sampled colors across a shared polygon mesh. *)
       Graphics[
@@ -1187,12 +1191,13 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
         Axes -> True, Frame -> True, 
         FrameTicks -> {{ticks, ticks}, {False, False}},
         FrameStyle -> labelStyle,
+        FrameLabel -> {{ None, label}, {None, None}},
         FrameTicksStyle -> labelStyle,
         TickLabels -> {False, False, False, True}, 
         PlotRange -> {{-1, 1}, range}, 
         "Controls" -> False, 
-        ImageSize -> imageSize, 
-        ImagePadding -> {{0, 25}, {0,0}},
+        ImageSize -> imageSize + {If[label =!= Null, 40, 0], 0}, 
+        ImagePadding -> {{0, 25 + If[label =!= Null, 35, 0]}, {0,0}},
         "PaddingIsImportant" -> True
       ]
     ]

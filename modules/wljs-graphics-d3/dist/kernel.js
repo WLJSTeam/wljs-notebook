@@ -1982,9 +1982,9 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           //if (ref[0] == "List" && ref.length == 3) ref = [ref[1], ref[2]];
 
           await processLabel(ref, gRY, {...env}, (text, offsets) => {
-          g2d.Text.PutText(gRY.append("text")
-          .attr("x", 0 + offsets[0])
-              .attr("y", margin.bottom + offsets[1])
+          g2d.Text.PutText(gRY.append("text").attr("transform", "rotate(90)")
+            .attr("x", height/2 - offsets[1])
+          .attr("y", -margin.right + offsets[0] + 1.2 * axesstyle.fontsize)
               .attr("font-size", axesstyle.fontsize)
               .attr("fill", axesstyle.color)
               .attr("text-anchor", "middle")
@@ -1992,7 +1992,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           }, (node, offsets) => {
 
           node
-          .attr("transform", `translate(${offsets[0]}, ${ margin.bottom + offsets[1]})`)
+          .attr("transform", `rotate(90) translate(${height/2 - offsets[1]}, ${ -margin.right + offsets[0] + 1.2 * axesstyle.fontsize})`)
               .attr("font-size", axesstyle.fontsize)
               .attr("fill", axesstyle.color)
               .attr("text-anchor", "middle");
