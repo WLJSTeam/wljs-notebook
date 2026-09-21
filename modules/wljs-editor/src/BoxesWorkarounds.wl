@@ -1147,16 +1147,16 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
     legend =   With[{options = Association[List[opts] ]}, 
     Module[{colorConvert, label = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
       imageSize = 
-        If[KeyExistsQ[options, ImageSize], options[ImageSize], 370 / 1.6180339  ],
+        If[KeyExistsQ[options, ImageSize], options[ImageSize], 1.2 370 / 1.6180339  ],
       labelStyle = Lookup[options, LabelStyle, Automatic]},
       
       (* Adjust the image size depending on whether it is a list or not *)
       imageSize = 
-        1.2 If[!ListQ[imageSize], 
+        If[!ListQ[imageSize], 
           (* If it's not a list, scale by the golden ratio *)
           imageSize {0.1, 1.0} ,
           (* If it's a list, adjust by the second element *)
-          imageSize[[2]] {0.1, 1.0} // N
+          imageSize
         ];
 
       If[imageSize[[1]] < 50.0, imageSize[[1]] = 50.0];
@@ -1197,7 +1197,7 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
         PlotRange -> {{-1, 1}, range}, 
         "Controls" -> False, 
         ImageSize -> imageSize + {If[label =!= Null, 40, 0], 0}, 
-        ImagePadding -> {{0, 25 + If[label =!= Null, 35, 0]}, {0,0}},
+        ImagePadding -> {{0, 25 + If[label =!= Null, 35, 0]}, {35,30}},
         "PaddingIsImportant" -> True
       ]
     ]

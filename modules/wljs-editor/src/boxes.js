@@ -286,11 +286,13 @@
       }
     }
     if ('LegendLayout' in opts) {
-      const r = await interpretate(opts.LegendLayout, env);
+      let r = await interpretate(opts.LegendLayout, env);
+      if (Array.isArray(r)) r = r[0];
       switch(r) {
         case 'Row':
           container.classList.add('flex-row', 'gap-x-2');
           container.classList.remove('flex-col');
+          container.style.flexDirection = 'row';
         break;
         case 'ReversedRow':
           container.classList.add('flex-row', 'gap-x-2');
@@ -329,7 +331,9 @@
             //bypass List default behaviour. Fuck Wolfram
             const copy = opts.LabelStyle.slice(1);
             const options = await core._getRules(copy, markerEnv);
-            for (let i=0; i<copy.length-Object.keys(opts).length; ++i) await interpretate(copy[i], markerEnv);
+            for (let i=0; i<copy.length-Object.keys(options).length; ++i) {
+              await interpretate(copy[i], markerEnv);
+            }
 
             if ('FontSize' in options) {
               label.style.fontSize = String(options.FontSize) + 'pt';
