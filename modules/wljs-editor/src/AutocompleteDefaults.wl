@@ -17917,12 +17917,7 @@ option to string and sequence functions that specifies how to treat \
 overlapping substrings. "|>, <|"label" -> "Overlay", "type" -> "keyword", 
   "info" -> "Overlay[{<i>expr</i><sub>1</sub>,<i>expr</i><sub>2</sub>,\
 ...}] displays as an overlay of all the \
-<i>expr</i><sub><i>i</i></sub>.\n\nOverlay[{<i>expr</i><sub>1</sub>,<i>expr</\
-i><sub>2</sub>,...},{<i>i</i>,<i>j</i>,...}] displays as an \
-overlay of <i>expr</i><sub><i>i</i></sub>, <i>expr</i><sub><i>j</i></sub>, \
-....\n\nOverlay[{<i>expr</i><sub>1</sub>,<i>expr</i><sub>2</sub>,\
-...},{<i>i</i>,<i>j</i>,...},<i>s</i>] allows selections to \
-be made and controls to be clicked in <i>expr</i><sub><i>s</i></sub>."|>, 
+<i>expr</i><sub><i>i</i></sub>"|>, 
  <|"label" -> "OverlayVideo", "type" -> "keyword", 
   "info" -> "OverlayVideo[<i>background</i>,<i>o</i>] gives the result of \
 overlaying <i>o</i> onto a background video or image <i>background</i>. \

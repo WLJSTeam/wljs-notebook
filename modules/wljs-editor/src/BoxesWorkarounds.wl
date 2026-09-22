@@ -1814,7 +1814,7 @@ Overlay /: MakeBoxes[Overlay[expr_List, ___], form: StandardForm] := With[{
     ViewBox[Null, BoxForm`OverlayViewBox[editors] ]
 ]
 
-Overlay /: MakeBoxes[Overlay[expr_List, ___], form: StandardForm] := With[{
+Overlay /: MakeBoxes[Overlay[expr_List, ___], form: WLXForm] := With[{
   editors = EditorView[ToString[#, form], "ReadOnly"->True, "Selectable"->False] &/@ expr 
 },
 {

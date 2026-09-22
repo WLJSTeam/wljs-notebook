@@ -90,7 +90,7 @@ Image /: EventHandler[Image[args__, opts:OptionsPattern[] ], list_List ] := With
     }]|>]},
         Image[args, Sequence @@ Normal[options] ]
     ] 
-]
+] // Quiet
 
 
 Unprotect[Graphics]
@@ -103,7 +103,7 @@ Graphics /: EventHandler[Graphics[args_, opts:OptionsPattern[] ], list_List ] :=
     }]|>]},
         Graphics[args, Sequence @@ Normal[options] ]
     ] 
-]
+] // Quiet
 
 Options[Graphics] = Join[Options[Graphics], {"Controls"->True}];
 
