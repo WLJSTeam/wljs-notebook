@@ -671,7 +671,7 @@ Options[Panel] = Join[Options[Panel], {Selectable->True}]
 Panel /: MakeBoxes[Panel[expr_, ___], WLXForm] := With[{
   Content = ToString[MakeBoxes[expr, WLXForm]]
 },
-  StringJoin["<div class=\"rounded-md 0 py-1 px-2 bg-gray-50 text-left text-gray-500 ring-1 ring-inset ring-gray-400\">", Content, "</div>"]
+  StringJoin["<div class=\"wljs-card\">", Content, "</div>"]
 ]
 
 (* Deploy *)
@@ -1491,7 +1491,105 @@ EventObject /: Inset[EventObject[a_?BoxForm`EventObjectHasView], rest___ ] := If
 ]
 
 
-(* :: Row, Column adaptation for WLXForm :: *)
+(* :: Row, Column, Grid adaptation for WLXForm :: *)
+
+BoxForm`wlxCSSNumber[value_] := If[
+  MatchQ[value, _Integer | _Real | _Rational],
+  StringReplace[StringTrim[ToString[NumberForm[N[value], {Infinity, 12}, ExponentFunction -> (Null &)], OutputForm]], RegularExpression["\\.$"] -> ""],
+  ""
+]
+
+BoxForm`wlxCSSSize[value_] := Switch[value,
+  Tiny, "50px", Small, "200px", Medium, "500px", Large, "1000px",
+  Full, "100%",
+  _Integer | _Real | _Rational, BoxForm`wlxCSSNumber[value] <> "px",
+  _, ""
+]
+
+BoxForm`wlxImageSizeCSS[value_] := Module[{sizes = If[ListQ[value], value, {value}], width, height},
+  If[value === Full, Return["width:100%;height:100%;"]];
+  width = If[Length[sizes] >= 1, BoxForm`wlxCSSSize[sizes[[1]]], ""];
+  height = If[Length[sizes] >= 2, BoxForm`wlxCSSSize[sizes[[2]]], ""];
+  StringJoin[
+    If[width === "", "", "width:" <> width <> ";"],
+    If[height === "", "", "height:" <> height <> ";"]
+  ]
+]
+
+BoxForm`wlxHorizontalAlign[value_] := Switch[value, Left, "start", Center, "center", Right, "end", _, ""]
+BoxForm`wlxVerticalAlign[value_] := Switch[value, Top, "start", Center, "center", Bottom, "end", Baseline | Axis, "baseline", _, ""]
+
+BoxForm`wlxAlignmentCSS[value_, direction_] := Module[{horizontal, vertical, h, v, hProperty, vProperty},
+  {horizontal, vertical} = If[MatchQ[value, {_, _}], value, {value, value}];
+  h = BoxForm`wlxHorizontalAlign[horizontal];
+  v = BoxForm`wlxVerticalAlign[vertical];
+  {hProperty, vProperty} = Switch[direction,
+    "row", {"justify-content", "align-items"},
+    "col", {"align-items", "justify-content"},
+    _, {"justify-items", "align-items"}
+  ];
+  StringJoin[
+    If[h === "", "", hProperty <> ":" <> h <> ";"],
+    If[v === "", "", vProperty <> ":" <> v <> ";"]
+  ]
+]
+
+BoxForm`wlxSpacingCSS[value_] := Module[{x, y},
+  If[!ListQ[value],
+    x = BoxForm`wlxCSSNumber[value];
+    Return[If[x === "", "", "gap:" <> x <> "em;"]]
+  ];
+  x = If[Length[value] >= 1, BoxForm`wlxCSSNumber[value[[1]]], ""];
+  y = If[Length[value] >= 2, BoxForm`wlxCSSNumber[value[[2]]], ""];
+  StringJoin[
+    If[x === "", "", "column-gap:" <> x <> "em;"],
+    If[y === "", "", "row-gap:" <> y <> "em;"]
+  ]
+]
+
+BoxForm`wlxOptionName[key_String] := key
+BoxForm`wlxOptionName[key_Symbol] := SymbolName[key]
+BoxForm`wlxOptionName[_] := ""
+
+BoxForm`wlxOptionValue[options_Association, names_List] := Module[{matches},
+  matches = Select[Normal[options], MemberQ[names, BoxForm`wlxOptionName[First[#]]] &];
+  If[matches === {}, Automatic, Last[Last[matches]]]
+]
+
+BoxForm`wlxLayoutStyle[opts_List, direction_] := Module[{options = Association[Flatten[opts]]},
+  StringJoin[
+    BoxForm`wlxAlignmentCSS[BoxForm`wlxOptionValue[options, {"Alignment", "Aligmnment"}], direction],
+    BoxForm`wlxSpacingCSS[BoxForm`wlxOptionValue[options, {"Spacings"}]],
+    BoxForm`wlxImageSizeCSS[BoxForm`wlxOptionValue[options, {"ImageSize"}]]
+  ]
+]
+
+BoxForm`wlxStyleAttribute[style_String] := If[style === "", "", " style=\"" <> style <> "\""]
+
+BoxForm`wlxRowItemBoxes[contents_List, alignment_] := Module[{positions, justify},
+  If[!MatchQ[alignment, {_List, _}] || First[alignment] === {}, Return[contents]];
+  positions = First[alignment];
+  MapIndexed[
+    Function[{content, index},
+      justify = Switch[BoxForm`wlxHorizontalAlign[positions[[Mod[First[index] - 1, Length[positions]] + 1]]],
+        "start", "flex-start", "end", "flex-end", "center", "center", _, ""
+      ];
+      If[justify === "", content,
+        "<div style=\"flex:1;display:flex;justify-content:" <> justify <> ";\">" <> ToStringRiffle[content] <> "</div>"
+      ]
+    ], contents
+  ]
+]
+
+BoxForm`wlxFlexBoxes[list_List, direction_, opts_List] := Module[{style, contents, alignment},
+  style = BoxForm`wlxLayoutStyle[opts, direction];
+  contents = Map[MakeBoxes[#, WLXForm] &, list];
+  If[direction === "row",
+    alignment = BoxForm`wlxOptionValue[Association[Flatten[opts]], {"Alignment", "Aligmnment"}];
+    contents = BoxForm`wlxRowItemBoxes[contents, alignment]
+  ];
+  StringJoin["<div class=\"flex flex-", direction, "\"", BoxForm`wlxStyleAttribute[style], ">", ToStringRiffle[contents], "</div>"]
+]
 
 Unprotect[Row]
 
@@ -1505,30 +1603,27 @@ Row /: MakeBoxes[Row[expr_List, sep_, opts:OptionsPattern[]], StandardForm] := W
 ]
 
 
-Row /: MakeBoxes[Row[expr__, OptionsPattern[] ], WLXForm] := With[{list = List[expr]},
-  With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},
-    StringJoin["<div class=\"flex flex-row\">", StringRiffle[Res, "\n"], "</div>"]
-  ]
-]
-
-Row /: MakeBoxes[Row[expr_List, OptionsPattern[] ], WLXForm] := With[{list = expr},
-  With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},
-    StringJoin["<div class=\"flex flex-row\">", StringRiffle[Res, "\n"], "</div>"]
-  ]
-]
+Row /: MakeBoxes[Row[expr_List, opts___?OptionQ], WLXForm] := BoxForm`wlxFlexBoxes[expr, "row", {opts}]
+Row /: MakeBoxes[Row[expr_List, sep_?(!OptionQ[#] &), opts___?OptionQ], WLXForm] := BoxForm`wlxFlexBoxes[expr, "row", {opts}]
+Row /: MakeBoxes[Row[expr__, opts___?OptionQ], WLXForm] := BoxForm`wlxFlexBoxes[List[expr], "row", {opts}]
 
 Unprotect[Column]
 
-Column /: MakeBoxes[Column[expr__, OptionsPattern[] ], WLXForm] := With[{list = List[expr]},
-  With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},
-    StringJoin["<div class=\"flex flex-col\">", StringRiffle[Res, "\n"], "</div>"]
-  ]
-]
+Column /: MakeBoxes[Column[expr_List, opts___?OptionQ], WLXForm] := BoxForm`wlxFlexBoxes[expr, "col", {opts}]
+Column /: MakeBoxes[Column[expr__, opts___?OptionQ], WLXForm] := BoxForm`wlxFlexBoxes[List[expr], "col", {opts}]
 
-Column /: MakeBoxes[Column[expr_List, OptionsPattern[] ], WLXForm] := With[{list = expr},
-  With[{Res = Map[MakeBoxes[#, WLXForm]&, list]},
-    StringJoin["<div class=\"flex flex-col\">", StringRiffle[Res, "\n"], "</div>"]
-  ]
+Unprotect[Grid]
+
+Grid /: MakeBoxes[Grid[rows_List, opts___?OptionQ], WLXForm] := Module[{columns, style, cells},
+  columns = Max[0, Sequence @@ (Length /@ rows)];
+  style = "display:grid;" <> If[columns > 0, "grid-template-columns:repeat(" <> ToString[columns] <> ",max-content);", ""] <>
+    BoxForm`wlxLayoutStyle[{opts}, "grid"];
+  cells = StringJoin[Map[
+    Function[row, StringJoin[Join[
+      Map["<div>" <> ToStringRiffle[MakeBoxes[#, WLXForm]] <> "</div>" &, row],
+      ConstantArray["<div></div>", columns - Length[row]]
+    ]]], rows]];
+  StringJoin["<div", BoxForm`wlxStyleAttribute[style], ">", cells, "</div>"]
 ]
 
 (* :: Squiggled convertion  ::*)

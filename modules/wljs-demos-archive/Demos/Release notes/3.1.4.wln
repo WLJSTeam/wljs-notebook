@@ -311,6 +311,164 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
+## Better WLX form of `Row`, `Column` and `Grid`
+We improved the output form of these wrappers used on markdown, slides and WLX cells. `ImageSize`, `Alignment` and `Spacings` can be used for WLX output as they are used now in a normal `StandardForm` (default wolfram output). For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Better WLX form of `Row`, `Column` and `Grid`
+We improved the output form of these wrappers used on markdown, slides and WLX cells. `ImageSize`, `Alignment` and `Spacings` can be used for WLX output as they are used now in a normal `StandardForm` (default wolfram output). For example:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*Standard form*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*Standard form*
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TestRow = Row[{1,2}, ImageSize->{300, Automatic}, Alignment->{{Left, Right}, Center}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{1(*|*),(*|*)2}}(*||*)(*1:eJxdTssKAjEMrG88CP6Cd39iVRDB0xa81zWtgbaBpmXFr7ddBelewmQyM5ndnVo9E0LwJo8bQn+CjoKKFOQ8M+eADz0t97K1yQJvf/SBXo1F4x34+JdckWNtkKsMjmST81zrvgB05EXRonmOrQOgnvWkyq82Xpb8XALCqOk6g4tTBiS+oX6N+5wxCJoUyamI3Qefazud*)(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*WLX form*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*WLX form*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+<Row Alignment={{{Left, Right}, Center}} ImageSize={{Full, Automatic}}>
+  <div>1</div>
+  <div>2</div>
+</Row>
+
+%-------------------------------------------------------------------------%
+Display: wlx
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="flex flex-row" style="align-items:center;width:100%;"><div style="flex:1;display:flex;justify-content:flex-start;"><div >1</div></div>
+<div style="flex:1;display:flex;justify-content:flex-end;"><div >2</div></div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This way is also supported:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This way is also supported:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+<TestRow/>
+
+%-------------------------------------------------------------------------%
+Display: wlx
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="flex flex-row" style="align-items:center;width:300.000000000000px;"><div style="flex:1;display:flex;justify-content:flex-start;">1</div>
+<div style="flex:1;display:flex;justify-content:flex-end;">2</div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The common case is to use it for presentations instead of manually constructing it from `div`s and CSS styles:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The common case is to use it for presentations instead of manually constructing it from `div`s and CSS styles:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TestPlot = Plot[x, {x,0,1}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+## My Title
+
+Some text here
+
+<Row Alignment={{{Left, Right}, Center}} ImageSize={{Full, Automatic}}>
+  <div>
+
+- Point 1
+- Point 2
+  
+  </div>
+
+  <TestPlot/>
+
+</Row>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+## My Title
+
+Some text here
+
+<div class="flex flex-row" style="align-items:center;width:100%;"><div style="flex:1;display:flex;justify-content:flex-start;"><div >
+
+- Point 1
+- Point 2
+  
+  </div></div>
+<div style="flex:1;display:flex;justify-content:flex-end;">FrontEndExecutable[25763c58-aeb5-4e81-a843-36a3ccd9859c]</div></div></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
 ## UI elements
 ### Vertical slider and input box
 Set `Appearance` to `"Vertical"` on `InputRange` to get a vertical slider.
@@ -718,20 +876,16 @@ Key: -2139934971bar2
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[Graphics[GraphicsComplex[{{-1, -5.9}, {1, -5.9}, {-1, -1.9666666666666668}, {1, -1.9666666666666668}, {-1, 1.9666666666666668}, {1, 1.9666666666666668}, {-1, 5.9}, {1, 5.9}}, Polygon[{{1, 2, 4, 3}, {3, 4, 6, 5}, {5, 6, 8, 7}}], VertexColors -> {{0.471412, 0.108766, 0.527016}, {0.471412, 0.108766, 0.527016}, {0.324106, 0.6089696666666666, 0.7083413333333334}, {0.324106, 0.6089696666666666, 0.7083413333333334}, {0.764712, 0.7283023333333333, 0.27360833333333334}, {0.764712, 0.7283023333333333, 0.27360833333333334}, {0.857359, 0.131106, 0.132128}, {0.857359, 0.131106, 0.132128}}], Axes -> True, Frame -> True, FrameTicks -> {{{{-5.9, "-5.9"}, {-1.9666666666666668, "-2.0"}, {1.9666666666666668, "2.0"}, {5.9, "5.9"}}, {{-5.9, "-5.9"}, {-1.9666666666666668, "-2.0"}, {1.9666666666666668, "2.0"}, {5.9, "5.9"}}}, {False, False}}, FrameStyle -> Directive[FontSize -> 14], FrameLabel -> {{None, "f(x,y)"}, {None, None}}, FrameTicksStyle -> Directive[FontSize -> 14], TickLabels -> {False, False, False, True}, PlotRange -> {{-1, 1}, {Rational[-59, 10], Rational[59, 10]}}, "Controls" -> False, ImageSize -> {90, 300}, ImagePadding -> {{0, 60}, {35, 30}}, "PaddingIsImportant" -> True]]|>
 
+%-------------------------------------------------------------------------%
+Key: 25763c58-aeb5-4e81-a843-36a3ccd9859c
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
 %-----------------------------%EndOfObjects%------------------------------%
 
 
 
 %--------------------------------%Symbols%--------------------------------%
-Key: state
-%-------------------------------------------------------------------------%
-False
-
-%-------------------------------------------------------------------------%
-Key: stateText
-%-------------------------------------------------------------------------%
-"Running"
-
 %-----------------------------%EndOfSymbols%------------------------------%
 
 
