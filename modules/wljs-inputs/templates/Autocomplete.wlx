@@ -82,7 +82,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
 
       newElements.forEach((el) => {
         const node = document.createElement('li');
-        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-sys-25', 'relative', 'dark:text-gray-400', 'cursor-default', 'py-1', 'text-gray-900', 'select-none');
+        node.classList.add('list-none', 'pl-3', 'nooline', 'focus:bg-sys-25', 'relative', 'dark:text-gray-400', 'cursor-default', 'py-1', 'text-gray-800', 'select-none');
         node.tabIndex = -1;
         
         const span = document.createElement('span');

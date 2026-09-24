@@ -44,7 +44,7 @@ Component[value_:"", OptionsPattern[]] := With[{
     EditableQ = OptionValue["Editable"]
 },{
     ClassName = With[{c=If[OptionValue[Appearance] === Automatic, 
-        "relative cursor-default rounded-md pl-3 pr-2 text-left text-gray-900 slbl text-xs py-1 bg-white wljs-card",
+        "relative cursor-default rounded-md pl-3 pr-2 text-left text-gray-800 slbl text-xs py-1 bg-white wljs-card",
         "relative cursor-default slbl rounded-md text-left border-0 text-xs"
     ]}, If[EditableQ === True, StringJoin[c," h-6 wljs-card "], c]],
     CSSStyle = StringJoin[OptionValue["CSS"], " ", OptionValue["Style"]],
@@ -60,7 +60,7 @@ FinalCSS = StringJoin[If[ListQ[size], StringTemplate["width: ``px;height: ``px;o
   {
     If[EditableQ === True,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+            <label for="#instanceId" class="block text-sm  leading-6 text-gray-800 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <input id="#instanceId" style="{FinalCSS}" data-type="text-string" value="{value}" type="text" class="focus:ring-2 {ClassName}" placeholder="{Placeholder}"/>
             </div>
@@ -68,7 +68,7 @@ FinalCSS = StringJoin[If[ListQ[size], StringTemplate["width: ``px;height: ``px;o
         </div>
     ,
         <div class="sm-controls">
-            <label for="#instanceId" class="block text-sm  leading-6 text-gray-900 {LabelClass}" style="{LabelStyle}"><Label/></label>
+            <label for="#instanceId" class="block text-sm  leading-6 text-gray-800 {LabelClass}" style="{LabelStyle}"><Label/></label>
             <div class="mt-1">
               <div id="#instanceId" style="{FinalCSS}" data-type="text-string" class="{ClassName}">...</div>
             </div>

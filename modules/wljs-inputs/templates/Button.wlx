@@ -10,7 +10,7 @@ Component[OptionsPattern[]] := With[{
 },
     If[MatchQ[StateExpression, Null | None | Automatic],
      {
-        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
+        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-800 {Class}">
             <Label/>
         </button>
      ,
@@ -23,7 +23,7 @@ Component[OptionsPattern[]] := With[{
      }
     ,
      {
-        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-900 {Class}">
+        <button type="button" style="{Style}" id="#instanceId" class="sm-controls rounded wljs-button wljs-input-button bg-white px-2 py-1 text-xs text-gray-800 {Class}">
             <span class="wljs-input-button-label"><Label/></span>
             <span class="wljs-input-button-spinner" aria-hidden="true" hidden="true"></span>
         </button>
@@ -39,6 +39,7 @@ Component[OptionsPattern[]] := With[{
             const setState = (disabled, busy) => {
                 el.disabled = disabled;
                 el.setAttribute('aria-busy', String(busy));
+                if (busy) ((r) => Object.assign(el.style, { width: `${r.width}px`, height: `${r.height}px`, boxSizing: 'border-box', overflow: 'hidden' }))(el.getBoundingClientRect());
                 label.style.opacity = busy ? '0' : '';
                 spinner.hidden = !busy;
             };

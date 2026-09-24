@@ -13,17 +13,17 @@ Component[OptionsPattern[]] := With[{
   <fieldset>
         <div class="mt-2 flex-row gap-x-2 flex">
           
-          <div class="flex items-center"><input name="#instanceId-colorRadio" value="black" checked="true" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Black</label></div>
+          <div class="flex items-center"><input name="#instanceId-colorRadio" value="black" checked="true" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-800">Black</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="white" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">White</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="white" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-800">White</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="red" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Red</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="red" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-800">Red</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="green" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Green</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="green" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-800">Green</label></div>
 
-                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="blue" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-900">Blue</label></div>
+                    <div class="flex items-center"><input name="#instanceId-colorRadio" value="blue" type="radio" class="h-4 w-4 border-gray-300 text-sys  focus:ring-sys"/><label class="ml-3 block text-sm   leading-6 text-gray-800">Blue</label></div>
 
-          <div class="flex items-center ml-auto"><button class="sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-900" id="#instanceId-clear">Clear</button></div>
+          <div class="flex items-center ml-auto"><button class="sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-800" id="#instanceId-clear">Clear</button></div>
         </div>
       
         
