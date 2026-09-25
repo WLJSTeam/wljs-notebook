@@ -1,193 +1,265 @@
-<|"Notebook" -> <|"Controller" -> "bf0e154f-ac81-4128-87ae-72a97635c3d6", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$745], "FocusedCellSelection" -> 
-    {64, 63}, "HaveToSaveAs" -> True, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "2c8739c9-99bf-41b8-841c-c6795ff9d5dc", 
-   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
-ules/wljs-demos-archive/Demos/Frontend symbols/A - Quick and Dirty.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Overview", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$712]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Quick and Dirty", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$712]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Overview\nIn this guide, we explore the core \
-ideas behind the WLJS project, what powers the UI, interactivity, and how to \
-extend it to your own needs. As you may know from the introduction, WLJS \
-Notebooks are web-based, which means that graphical objects, sliders, \
-buttons, and UI elements are made with HTML/CSS and JavaScript code. If you \
-want to create your own display function or input element that cannot be \
-easily derived from the basic primitives of the Wolfram Language Standard \
-library (or would be inefficient to do so), you need to write supporting \
-JavaScript code to achieve that.\n\nTo bridge the Wolfram Kernel and \
-JavaScript environments seamlessly, we made the latter speak the same \
-language and called it WLJS Interpreter\[LongDash]a small subset of the \
-Wolfram Kernel running in the browser.\n\nYou can define symbols and contexts \
-that can be evaluated on the frontend only, with results fetched by the \
-Wolfram Kernel\[LongDash]we refer to them as frontend symbols.\n\nYou can \
-also define instanced symbols that are evaluated into scoped runtime \
-instances with local state and reactive bindings to other symbols. This is \
-how reactivity in WLJS Notebooks works under the hood.\n\nThe possibilities \
-are limitless: from creating DOM elements and emitting sound, to using 3rd \
-party libraries like ApexCharts or Charts.js to visualize your data in \
-fascinating ways. Frontend symbols give you the full power to go completely \
-beyond the Wolfram Language ecosystem and even access Bluetooth HID, GPU, and \
-serial devices to pipe data in and out.\n\n## Quick and Dirty\nCreate a \
-JavaScript cell, then define a function within the core object\[LongDash]or \
-as we call it later, the global frontend symbol context:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8865c056-875b-4bd0-9267-b9f96398e018", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "# Overview\nIn this guide, we explore the core ideas behind \
-the WLJS project, what powers the UI, interactivity, and how to extend it to \
-your own needs. As you may know from the introduction, WLJS Notebooks are \
-web-based, which means that graphical objects, sliders, buttons, and UI \
-elements are made with HTML/CSS and JavaScript code. If you want to create \
-your own display function or input element that cannot be easily derived from \
-the basic primitives of the Wolfram Language Standard library (or would be \
-inefficient to do so), you need to write supporting JavaScript code to \
-achieve that.\n\nTo bridge the Wolfram Kernel and JavaScript environments \
-seamlessly, we made the latter speak the same language and called it WLJS \
-Interpreter\[LongDash]a small subset of the Wolfram Kernel running in the \
-browser.\n\nYou can define symbols and contexts that can be evaluated on the \
-frontend only, with results fetched by the Wolfram Kernel\[LongDash]we refer \
-to them as frontend symbols.\n\nYou can also define instanced symbols that \
-are evaluated into scoped runtime instances with local state and reactive \
-bindings to other symbols. This is how reactivity in WLJS Notebooks works \
-under the hood.\n\nThe possibilities are limitless: from creating DOM \
-elements and emitting sound, to using 3rd party libraries like ApexCharts or \
-Charts.js to visualize your data in fascinating ways. Frontend symbols give \
-you the full power to go completely beyond the Wolfram Language ecosystem and \
-even access Bluetooth HID, GPU, and serial devices to pipe data in and \
-out.\n\n## Quick and Dirty\nCreate a JavaScript cell, then define a function \
-within the core object\[LongDash]or as we call it later, the global frontend \
-symbol context:", "Display" -> "markdown", 
-    "Hash" -> "add06781-33f0-40ec-b283-ec4cadbe1a7d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".js\ncore.totalSum = async (args, env) => {\n  const data = \
-await interpretate(args[0], env);\n  const sum = data.reduce((p, a) => p + a, \
-0);\n  return sum;\n}", "Display" -> "codemirror", 
-    "Hash" -> "c378bb19-df8c-4b3e-a025-5ee064ecc19a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "core.totalSum = async (args, env) => {\n  const data = await \
-interpretate(args[0], env);\n  const sum = data.reduce((p, a) => p + a, 0);\n \
- return sum;\n}", "Display" -> "js", 
-    "Hash" -> "a30dac58-ea21-4ed0-8d86-cc7d8ea6d959", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".md\nTo evaluate it directly from the Wolfram Kernel and get \
-the result back, use `FrontFetch`:", "Display" -> "codemirror", 
-    "Hash" -> "4e81cac2-8515-4a24-9d28-92b419894ded", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "To evaluate it directly from the Wolfram Kernel and get the \
-result back, use `FrontFetch`:", "Display" -> "markdown", 
-    "Hash" -> "6c299c7e-1a07-4e87-af9d-1ac4d1e74c0f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "totalSum[{1,2,3,4,5}] // FrontFetch", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f85bfeb1-d653-4be6-9635-eb13a5745b5d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "15", "Display" -> "codemirror", 
-    "Hash" -> "e24df85b-41d5-497a-94ed-e663ed8d0bfb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".md\nSince `Alert` is also a frontend symbol, we can chain it \
-with our totalSum to display the result in a popup box. In this case, we \
-don't need to fetch the result; instead, we use:", "Display" -> "codemirror", 
-    "Hash" -> "dfccb8ec-54a7-4fe8-858a-c00d8d354e9f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "Since `Alert` is also a frontend symbol, we can chain it with \
-our totalSum to display the result in a popup box. In this case, we don't \
-need to fetch the result; instead, we use:", "Display" -> "markdown", 
-    "Hash" -> "7e68dcb5-4729-4866-a50d-e86165f73b20", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "totalSum[{1,2,3,4,5}] // Alert // FrontSubmit;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4146821b-3cdc-43eb-bd45-2072c563b3c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".md\n`FrontSubmit` acts similarly to LocalSubmit or \
-SessionSubmit.\n\nHere is another example using the Canvas API to display a \
-cellular automaton:", "Display" -> "codemirror", 
-    "Hash" -> "b1527cb8-84b2-42bf-a8d4-eda503965939", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "`FrontSubmit` acts similarly to LocalSubmit or \
-SessionSubmit.\n\nHere is another example using the Canvas API to display a \
-cellular automaton:", "Display" -> "markdown", 
-    "Hash" -> "6a55a5ac-10e1-421b-8bac-11bc816582ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".js\nconst canvas = \
-document.createElement(\"canvas\");\ncanvas.width = 400;\ncanvas.height = \
-400;\n\nlet context = canvas.getContext(\"2d\");\ncontext.fillStyle = \
-\"lightgray\";\ncontext.fillRect(0, 0, 500, 500);\n\ncore.drawArray = async \
-(args, env) => {\n  const data = await interpretate(args[0], env);\n\n  \
-//draw our boxes\n  for(let i=0; i<40; ++i) {\n    for (let j=0; j<40; ++j) \
-{\n      if (data[i][j] > 0) {\n        context.fillStyle = \
-\"rgba(255,0,0,0.6)\"; \n        context.fillRect(i*10 + 1, j*10 + 1, 8, \
-8);\n      } else {\n        context.fillStyle = \"rgba(255,255,255,0.6)\"; \
-\n        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);\n      }\n    }\n  \
-}\n}\n\nreturn canvas", "Display" -> "codemirror", 
-    "Hash" -> "69fbf14b-af2a-4085-9132-bbe3bdc80c50", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "const canvas = \
-document.createElement(\"canvas\");\ncanvas.width = 400;\ncanvas.height = \
-400;\n\nlet context = canvas.getContext(\"2d\");\ncontext.fillStyle = \
-\"lightgray\";\ncontext.fillRect(0, 0, 500, 500);\n\ncore.drawArray = async \
-(args, env) => {\n  const data = await interpretate(args[0], env);\n\n  \
-//draw our boxes\n  for(let i=0; i<40; ++i) {\n    for (let j=0; j<40; ++j) \
-{\n      if (data[i][j] > 0) {\n        context.fillStyle = \
-\"rgba(255,0,0,0.6)\"; \n        context.fillRect(i*10 + 1, j*10 + 1, 8, \
-8);\n      } else {\n        context.fillStyle = \"rgba(255,255,255,0.6)\"; \
-\n        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);\n      }\n    }\n  \
-}\n}\n\nreturn canvas", "Display" -> "js", 
-    "Hash" -> "746e61cc-7e34-4bcc-ab7d-fbab8c3b3346", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> ".md\nNow we can call `drawArray` repeatedly in a loop to \
-update the field:", "Display" -> "codemirror", 
-    "Hash" -> "2b92bddb-fa47-4153-9ffe-6c01541b8adf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> 
-     "Now we can call `drawArray` repeatedly in a loop to update the field:", 
-    "Display" -> "markdown", "Hash" -> 
-     "4f0184db-1382-49b7-945f-cbdc008e332c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>, 
-   <|"Data" -> "board = RandomInteger[1, {40, 40}];\n\nDo[\n  board = \
-CellularAutomaton[\"GameOfLife\", board];\n  drawArray[board] // \
-FrontSubmit;\n  Pause[0.1];\n, {i,1,50}]", "Display" -> "codemirror", 
-    "Hash" -> "7b1fc5ad-9257-4a8d-adf7-bef7ea74b799", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a157e89e-3f4d-489c-bf69-72db1dca7557"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Overview
+In this guide, we explore the core ideas behind the WLJS project, what powers the UI, interactivity, and how to extend it to your own needs. As you may know from the introduction, WLJS Notebooks are web-based, which means that graphical objects, sliders, buttons, and UI elements are made with HTML/CSS and JavaScript code. If you want to create your own display function or input element that cannot be easily derived from the basic primitives of the Wolfram Language Standard library (or would be inefficient to do so), you need to write supporting JavaScript code to achieve that.
+
+To bridge the Wolfram Kernel and JavaScript environments seamlessly, we made the latter speak the same language and called it WLJS Interpreter—a small subset of the Wolfram Kernel running in the browser.
+
+You can define symbols and contexts that can be evaluated on the frontend only, with results fetched by the Wolfram Kernel—we refer to them as frontend symbols.
+
+You can also define instanced symbols that are evaluated into scoped runtime instances with local state and reactive bindings to other symbols. This is how reactivity in WLJS Notebooks works under the hood.
+
+The possibilities are limitless: from creating DOM elements and emitting sound, to using 3rd party libraries like ApexCharts or Charts.js to visualize your data in fascinating ways. Frontend symbols give you the full power to go completely beyond the Wolfram Language ecosystem and even access Bluetooth HID, GPU, and serial devices to pipe data in and out.
+
+## Quick and Dirty
+Create a JavaScript cell, then define a function within the core object—or as we call it later, the global frontend symbol context:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Overview
+In this guide, we explore the core ideas behind the WLJS project, what powers the UI, interactivity, and how to extend it to your own needs. As you may know from the introduction, WLJS Notebooks are web-based, which means that graphical objects, sliders, buttons, and UI elements are made with HTML/CSS and JavaScript code. If you want to create your own display function or input element that cannot be easily derived from the basic primitives of the Wolfram Language Standard library (or would be inefficient to do so), you need to write supporting JavaScript code to achieve that.
+
+To bridge the Wolfram Kernel and JavaScript environments seamlessly, we made the latter speak the same language and called it WLJS Interpreter—a small subset of the Wolfram Kernel running in the browser.
+
+You can define symbols and contexts that can be evaluated on the frontend only, with results fetched by the Wolfram Kernel—we refer to them as frontend symbols.
+
+You can also define instanced symbols that are evaluated into scoped runtime instances with local state and reactive bindings to other symbols. This is how reactivity in WLJS Notebooks works under the hood.
+
+The possibilities are limitless: from creating DOM elements and emitting sound, to using 3rd party libraries like ApexCharts or Charts.js to visualize your data in fascinating ways. Frontend symbols give you the full power to go completely beyond the Wolfram Language ecosystem and even access Bluetooth HID, GPU, and serial devices to pipe data in and out.
+
+## Quick and Dirty
+Create a JavaScript cell, then define a function within the core object—or as we call it later, the global frontend symbol context:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.totalSum = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  //in the case if the data is packed
+  if (NumericArrayObject.Q(data)) data = data.normal();
+  
+  const sum = data.reduce((p, a) => p + a, 0);
+  return sum;
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.totalSum = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(data)) data = data.normal();
+  
+  const sum = data.reduce((p, a) => p + a, 0);
+  return sum;
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To evaluate it directly from the Wolfram Kernel and get the result back, use `FrontFetch`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To evaluate it directly from the Wolfram Kernel and get the result back, use `FrontFetch`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+totalSum[Table[i, {i, 10000}]] // FrontFetch
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+50005000
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Since `Alert` is also a frontend symbol, we can chain it with our totalSum to display the result in a popup box. In this case, we don't need to fetch the result; instead, we use:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Since `Alert` is also a frontend symbol, we can chain it with our totalSum to display the result in a popup box. In this case, we don't need to fetch the result; instead, we use:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+totalSum[{1,2,3,4,5}] // Alert // FrontSubmit;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`FrontSubmit` acts similarly to LocalSubmit or SessionSubmit.
+
+Here is another example using the Canvas API to display a cellular automaton:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`FrontSubmit` acts similarly to LocalSubmit or SessionSubmit.
+
+Here is another example using the Canvas API to display a cellular automaton:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+const canvas = document.createElement("canvas");
+canvas.width = 400;
+canvas.height = 400;
+
+let context = canvas.getContext("2d");
+context.fillStyle = "lightgray";
+context.fillRect(0, 0, 500, 500);
+
+core.drawArray = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  //in the case if the data is packed
+  if (NumericArrayObject.Q(data)) data = data.normal();
+
+  //draw our boxes
+  for(let i=0; i<40; ++i) {
+    for (let j=0; j<40; ++j) {
+      if (data[i][j] > 0) {
+        context.fillStyle = "rgba(255,0,0,0.6)"; 
+        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);
+      } else {
+        context.fillStyle = "rgba(255,255,255,0.6)"; 
+        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);
+      }
+    }
+  }
+}
+
+return canvas
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+const canvas = document.createElement("canvas");
+canvas.width = 400;
+canvas.height = 400;
+
+let context = canvas.getContext("2d");
+context.fillStyle = "lightgray";
+context.fillRect(0, 0, 500, 500);
+
+core.drawArray = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  //in the case if the data is packed
+  if (NumericArrayObject.Q(data)) data = data.normal();
+
+  //draw our boxes
+  for(let i=0; i<40; ++i) {
+    for (let j=0; j<40; ++j) {
+      if (data[i][j] > 0) {
+        context.fillStyle = "rgba(255,0,0,0.6)"; 
+        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);
+      } else {
+        context.fillStyle = "rgba(255,255,255,0.6)"; 
+        context.fillRect(i*10 + 1, j*10 + 1, 8, 8);
+      }
+    }
+  }
+}
+
+return canvas
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can call `drawArray` repeatedly in a loop to update the field:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can call `drawArray` repeatedly in a loop to update the field:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+board = RandomInteger[1, {40, 40}];
+
+Do[
+  board = CellularAutomaton["GameOfLife", board];
+  drawArray[board] // FrontSubmit;
+  Pause[0.1];
+, {i,1,50}]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

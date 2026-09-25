@@ -1,421 +1,846 @@
-<|"Notebook" -> <|"Controller" -> "1872ddf5-a681-49f9-ba65-b2932474a8b8", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$908], "FocusedCellSelection" -> 
-    {4212, 4211}, "HaveToSaveAs" -> True, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "25d24e38-8b5a-4f23-92eb-fef67b55d689", 
-   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
-ules/wljs-demos-archive/Demos/Frontend symbols/B - Web IO.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Web IO", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$877]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Microphone capture", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$877]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Canvas", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$907]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Web IO\n## Microphone capture\n\nThe WebAPI \
-provides access to many peripherals and has the advantage that no special \
-drivers or libraries are needed. In this guide, we capture microphone audio \
-and process it in real time using Wolfram Language.\n\nWe will use event \
-system as a main way of piping data from Javascript to Wolfram \
-side.\n\n:::warning\nYou need to have WLJS Notebook installed as a desktop \
-application or run it as a Docker container or server script with secure \
-HTTPS connection. Otherwise, your browser will not allow audio capture.\n:::"\
-, "Display" -> "codemirror", "Hash" -> 
-     "d97182cf-db4a-4e37-8f6f-c833789debd5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "# Web IO\n## Microphone capture\n\nThe WebAPI provides access \
-to many peripherals and has the advantage that no special drivers or \
-libraries are needed. In this guide, we capture microphone audio and process \
-it in real time using Wolfram Language.\n\nWe will use event system as a main \
-way of piping data from Javascript to Wolfram side.\n\n:::warning\nYou need \
-to have WLJS Notebook installed as a desktop application or run it as a \
-Docker container or server script with secure HTTPS connection. Otherwise, \
-your browser will not allow audio capture.\n:::", "Display" -> "markdown", 
-    "Hash" -> "aaa897e2-fe93-4f12-b6f1-a3f1b0886d5e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".js\nconst sign = \
-document.createElement(\"div\");\nsign.style.color = \
-\"gray\";\nsign.innerText = \"Idle\";\n\nconst audioContext = new \
-(window.AudioContext || window.webkitAudioContext)();\nconst analyser = \
-audioContext.createAnalyser();\nconst scriptProcessor = \
-audioContext.createScriptProcessor(2048, 1, 1);\n\nlet isRunning = \
-false;\nlet mediaStream = null;\nlet inputNode = \
-null;\n\nanalyser.smoothingTimeConstant = 0.3;\nanalyser.fftSize = \
-1024;\n\nfunction setStatus(text, color) {\n  sign.innerText = text;\n  \
-sign.style.color = color;\n}\n\nfunction connectGraph(stream) {\n  \
-mediaStream = stream;\n  inputNode = \
-audioContext.createMediaStreamSource(stream);   \n  \
-inputNode.connect(analyser);\n  analyser.connect(scriptProcessor);\n  \
-scriptProcessor.connect(audioContext.destination);  \n  \
-scriptProcessor.onaudioprocess = onAudioProcess;\n}\n\nfunction \
-disconnectGraph() {\n  scriptProcessor.onaudioprocess = null;  \n  try { \
-inputNode?.disconnect(); } catch {}\n  try { analyser?.disconnect(); } catch \
-{}\n  try { scriptProcessor?.disconnect(); } catch {} \n  inputNode = null;   \
-\n  // Optional: stop mic hardware capture\n  \
-mediaStream?.getTracks?.().forEach((t) => t.stop());\n  mediaStream = \
-null;\n}\n\nfunction onAudioProcess() {\n  const data = new \
-Uint8Array(analyser.frequencyBinCount);\n  \
-analyser.getByteTimeDomainData(data);   \n  server.kernel.io.fire(\"audio\", \
-Array.from(data));\n}\n\nasync function requestMicrophoneAccess() {\n  try \
-{\n    return await navigator.mediaDevices.getUserMedia({ audio: true });\n  \
-} catch (err) {\n    alert(\n      \"Could not access the microphone.\" +\n   \
-   \"Make sure you're using https and you granted permission.\"\n    );\n    \
-return null;\n  }\n}\n\ncore.MicStart = async () => {\n  if (isRunning) \
-return;\n  isRunning = true;   \n  // Some browsers need this on a user \
-gesture\n  if (audioContext.state === \"suspended\") {\n    await \
-audioContext.resume();\n  }   \n  const stream = await \
-requestMicrophoneAccess();\n  if (!stream) {\n    isRunning = false;\n    \
-setStatus(\"Idle\", \"gray\");\n    return;\n  }   \n  \
-connectGraph(stream);\n  setStatus(\"Recording...\", \
-\"red\");\n};\n\ncore.MicStop = async () => {\n  if (!isRunning) return;\n  \
-isRunning = false;  \n  disconnectGraph();\n  setStatus(\"Stopped\", \
-\"blue\");\n};\n\nthis.ondestroy = () => {\n  if (!isRunning) return;\n  \
-isRunning = false;  \n  disconnectGraph();\n};\n\n// Return UI \
-element\nreturn sign;", "Display" -> "codemirror", 
-    "Hash" -> "c61011cc-2283-40db-9e55-7026b7c5f2b3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "const sign = \
-document.createElement(\"div\");\nsign.style.color = \
-\"gray\";\nsign.innerText = \"Idle\";\n\nconst audioContext = new \
-(window.AudioContext || window.webkitAudioContext)();\nconst analyser = \
-audioContext.createAnalyser();\nconst scriptProcessor = \
-audioContext.createScriptProcessor(2048, 1, 1);\n\nlet isRunning = \
-false;\nlet mediaStream = null;\nlet inputNode = \
-null;\n\nanalyser.smoothingTimeConstant = 0.3;\nanalyser.fftSize = \
-1024;\n\nfunction setStatus(text, color) {\n  sign.innerText = text;\n  \
-sign.style.color = color;\n}\n\nfunction connectGraph(stream) {\n  \
-mediaStream = stream;\n  inputNode = \
-audioContext.createMediaStreamSource(stream);   \n  \
-inputNode.connect(analyser);\n  analyser.connect(scriptProcessor);\n  \
-scriptProcessor.connect(audioContext.destination);  \n  \
-scriptProcessor.onaudioprocess = onAudioProcess;\n}\n\nfunction \
-disconnectGraph() {\n  scriptProcessor.onaudioprocess = null;  \n  try { \
-inputNode?.disconnect(); } catch {}\n  try { analyser?.disconnect(); } catch \
-{}\n  try { scriptProcessor?.disconnect(); } catch {} \n  inputNode = null;   \
-\n  // Optional: stop mic hardware capture\n  \
-mediaStream?.getTracks?.().forEach((t) => t.stop());\n  mediaStream = \
-null;\n}\n\nfunction onAudioProcess() {\n  const data = new \
-Uint8Array(analyser.frequencyBinCount);\n  \
-analyser.getByteTimeDomainData(data);   \n  server.kernel.io.fire(\"audio\", \
-Array.from(data));\n}\n\nasync function requestMicrophoneAccess() {\n  try \
-{\n    return await navigator.mediaDevices.getUserMedia({ audio: true });\n  \
-} catch (err) {\n    alert(\n      \"Could not access the microphone.\" +\n   \
-   \"Make sure you're using https and you granted permission.\"\n    );\n    \
-return null;\n  }\n}\n\ncore.MicStart = async () => {\n  if (isRunning) \
-return;\n  isRunning = true;   \n  // Some browsers need this on a user \
-gesture\n  if (audioContext.state === \"suspended\") {\n    await \
-audioContext.resume();\n  }   \n  const stream = await \
-requestMicrophoneAccess();\n  if (!stream) {\n    isRunning = false;\n    \
-setStatus(\"Idle\", \"gray\");\n    return;\n  }   \n  \
-connectGraph(stream);\n  setStatus(\"Recording...\", \
-\"red\");\n};\n\ncore.MicStop = async () => {\n  if (!isRunning) return;\n  \
-isRunning = false;  \n  disconnectGraph();\n  setStatus(\"Stopped\", \
-\"blue\");\n};\n\nthis.ondestroy = () => {\n  if (!isRunning) return;\n  \
-isRunning = false;  \n  disconnectGraph();\n};\n\n// Return UI \
-element\nreturn sign;", "Display" -> "js", 
-    "Hash" -> "22f01705-3b79-4144-9bef-e35ab800ada3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nHere we introduce two frontend symbols, `MicStart` and \
-`MicStop`, to control the streaming. The rest is boilerplate code for \
-handling the standard WebAudio API. The actual data is sent via", 
-    "Display" -> "codemirror", "Hash" -> 
-     "750fdb70-c1ed-4bd0-8cdd-e7bd9c4b9d1c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "Here we introduce two frontend symbols, `MicStart` and \
-`MicStop`, to control the streaming. The rest is boilerplate code for \
-handling the standard WebAudio API. The actual data is sent via", 
-    "Display" -> "markdown", "Hash" -> 
-     "23cc27ca-d82e-41a8-838d-4164d74f259a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "const data = new \
-Uint8Array(analyser.frequencyBinCount);\nanalyser.getByteTimeDomainData(data)\
-;   \nserver.kernel.io.fire(\"audio\", Array.from(data));", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6c31410c-688e-4d9b-87eb-866e4280f526", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nas a list of bytes in integer representation. \
-Unfortunately, the JS->WL binary format is not yet available.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e3230d58-6314-4a69-a651-ed74e69b6c22", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "as a list of bytes in integer representation. Unfortunately, \
-the JS->WL binary format is not yet available.", "Display" -> "markdown", 
-    "Hash" -> "a50742f0-89de-4265-b51b-34e0fa10474a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nLet's add control buttons", "Display" -> "codemirror", 
-    "Hash" -> "f1841e38-8d92-4d36-96ee-0fbee233b697", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "Let's add control buttons", "Display" -> "markdown", 
-    "Hash" -> "e59ad639-d408-4178-8295-0b5c8fa68519", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "{Button[\"Start\", MicStart // FrontSubmit], Button[\"Stop\", \
-MicStop // FrontSubmit]} // Row", "Display" -> "codemirror", 
-    "Hash" -> "03055759-97cf-4ad8-809a-333afdd9f9b3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nAnd finally to handle the incoming data we use \
-`EventHandler` and hook it to some `Graphics` primitive:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ac3f25af-c660-4132-aace-7080c7b745c2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "And finally to handle the incoming data we use `EventHandler` \
-and hook it to some `Graphics` primitive:", "Display" -> "markdown", 
-    "Hash" -> "62dc03c1-70ab-457d-b0cf-e1e50c48228a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "Module[{line = {}},\n  EventHandler[\"audio\", \
-Function[data,\n      line = Transpose[{Range[data//Length], data}];\n  \
-]];\n\n  Graphics[\n      Line[line // Offload], \n      PlotRange -> \
-{{0,512}, {127-50, 127+50}},\n      \"TransitionDuration\"->30,\n      \
-Axes->True, AspectRatio->1/2\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "6ee8d47e-52ca-42fe-aa3d-95fed07b3747", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nLet's add fourier transform as well:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "942ed31c-554a-44e4-8222-743d0236aa60", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "Let's add fourier transform as well:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d41a80f5-0898-4b18-bd32-38691f9a5144", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "Module[{line = {}, fft={}},\n    EventHandler[\"audio\", \
-Function[data,\n      line = Transpose[{Range[data//Length], data}];\n      \
-fft = Drop[Transpose[{Range[128]//N, Log@Take[Fourier[data], \
-128]//Abs}],1];\n    ]];\n  \n    {Graphics[\n      {Blue, Line[line // \
-Offload]},\n      PlotRange -> {{0,512}, {127-50, 127+50}},\n      \
-TransitionDuration->30,\n      Axes->True, AspectRatio->1/2\n    ],\n    \
-Graphics[\n      {Red, Line[fft // Offload]},\n      PlotRange -> {{1,128}, \
-{0,6}},\n      TransitionDuration->30,\n      Axes->True, AspectRatio->1/2\n  \
-  ]}  // Row\n]", "Display" -> "codemirror", 
-    "Hash" -> "84d88a86-047b-4d9e-b990-877a82799f79", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nYou can also accumulate the buffer for more samples and \
-perform the computations asynchronously with a timer or similar mechanism.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0949a9eb-d68e-48c1-8504-6fe532059165", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "You can also accumulate the buffer for more samples and \
-perform the computations asynchronously with a timer or similar mechanism.", 
-    "Display" -> "markdown", "Hash" -> 
-     "58b3779b-a040-4083-8fb2-a729c33bf31e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\n## Canvas\nHere we will perform a small experiment with \
-the JavaScript Canvas API. Optimizing drawing operations on a canvas is \
-itself a challenging task. However, we will skip that part and focus on what \
-we have:\n\n- animated bubbles that fade away with time\n- we provide an XY \
-array of points where bubbles can appear\n- we animate them continuously\n- \
-we define a frontend symbol Spark to update XY array\n\nLet's create \
-Javascript cell and evaluate it:", "Display" -> "codemirror", 
-    "Hash" -> "5e8c544a-4eeb-47dc-8936-f576d7aa3d74", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "## Canvas\nHere we will perform a small experiment with the \
-JavaScript Canvas API. Optimizing drawing operations on a canvas is itself a \
-challenging task. However, we will skip that part and focus on what we \
-have:\n\n- animated bubbles that fade away with time\n- we provide an XY \
-array of points where bubbles can appear\n- we animate them continuously\n- \
-we define a frontend symbol Spark to update XY array\n\nLet's create \
-Javascript cell and evaluate it:", "Display" -> "markdown", 
-    "Hash" -> "17e515db-c5d9-4413-bf6d-fdf61d342dc3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".js\nconst canvas = \
-document.createElement(\"canvas\");\n\nconst CSS_WIDTH = 500;\nconst \
-CSS_HEIGHT = 200;\n\nconst MAX_PARTICLES = 5000;\nconst SPAWN_PER_FRAME = \
-10;\nconst AGE_STEP = 0.1;\nconst FADE_START = 4;\nconst FADE_END = \
-18;\n\nconst ctx = canvas.getContext(\"2d\");\n\n// HiDPI / DPR\nlet dpr = \
-1;\n\nfunction resizeCanvas(cssW = CSS_WIDTH, cssH = CSS_HEIGHT) {\n  dpr = \
-Math.max(1, Math.min(window.devicePixelRatio || 1, 3)); // cap optional\n\n  \
-// Set the displayed size\n  canvas.style.width = Math.round(cssW)+'px';\n  \
-canvas.style.height = Math.round(cssH)+'px';\n\n  // Set the backing-store \
-size\n  canvas.width = Math.floor(cssW * dpr);\n  canvas.height = \
-Math.floor(cssH * dpr);\n\n  // Draw in CSS pixels\n  ctx.setTransform(dpr, \
-0, 0, dpr, 0, 0);\n}\n\nresizeCanvas();\n\nconst rand = (min, max) => \
-Math.random() * (max - min) + min;\nconst randInt = (min, maxInclusive) => \
-Math.floor(rand(min, maxInclusive + 1));\nconst clamp = (v, lo, hi) => \
-Math.max(lo, Math.min(hi, v));\n\nfunction convertRange(value, [a1, a2], [b1, \
-b2]) {\n  if (a1 === a2) return (b1 + b2) / 2;\n  return ((value - a1) * (b2 \
-- b1)) / (a2 - a1) + b1;\n}\n\nfunction getMinMax(points) {\n  let minX = \
-Infinity,\n    minY = Infinity,\n    maxX = -Infinity,\n    maxY = \
--Infinity;\n\n  for (const [x, y] of points) {\n    if (x < minX) minX = x;\n \
-   if (y < minY) minY = y;\n    if (x > maxX) maxX = x;\n    if (y > maxY) \
-maxY = y;\n  }\n  return { minX, minY, maxX, maxY };\n}\n\nfunction \
-alphaForAge(age) {\n  if (age <= FADE_START) return 1;\n  if (age >= \
-FADE_END) return 0;\n  const t = (age - FADE_START) / (FADE_END - \
-FADE_START);\n  return (1 - t) * (1 - t); // smooth-ish fade\n}\n\nconst rgba \
-= (rgb, a) => 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+a+')';\n\nconst \
-particles = new Array(MAX_PARTICLES);\nlet writeIndex = 0;\nlet liveCount = \
-0;\n\n// Positions are stored in CSS pixels (not device pixels)\nlet data = \
-[];\n\nfunction putParticle(x, y) {\n  const p =\n    particles[writeIndex] \
-??\n    (particles[writeIndex] = {\n      x: 0,\n      y: 0,\n      xvel: \
-0,\n      yvel: 0,\n      rgb: [0, 0, 0],\n      baseAlpha: 0.6,\n      size: \
-5,\n      age: 1,\n    });\n\n  p.x = x;\n  p.y = y;\n  p.xvel = rand(-1, \
-1);\n  p.yvel = rand(-1, 1);\n  p.rgb[0] = randInt(0, 255);\n  p.rgb[1] = \
-randInt(0, 255);\n  p.rgb[2] = randInt(0, 255);\n  p.baseAlpha = 0.6;\n  \
-p.size = 5;\n  p.age = 1;\n\n  writeIndex = (writeIndex + 1) % \
-MAX_PARTICLES;\n  if (liveCount < MAX_PARTICLES) liveCount++;\n}\n\nfunction \
-spawnParticles() {\n  if (!data.length) return;\n\n  for (let j = 0; j < \
-SPAWN_PER_FRAME; j++) {\n    const idx = randInt(0, data.length - 1);\n    \
-const [x, y] = data[idx];\n    putParticle(x, y);\n  }\n}\n\nfunction \
-drawParticles() {\n  // Clear using CSS pixel dimensions\n  ctx.clearRect(0, \
-0, CSS_WIDTH, CSS_HEIGHT);\n\n  // Oldest -> newest ordering when full\n  \
-const start = liveCount === MAX_PARTICLES ? writeIndex : 0;\n\n  for (let i = \
-0; i < liveCount; i++) {\n    const idx = (start + i) % MAX_PARTICLES;\n    \
-const p = particles[idx];\n    if (!p) continue;\n\n    const a = p.baseAlpha \
-* alphaForAge(p.age);\n    if (a <= 0) continue;\n\n    const radius = p.size \
-/ Math.max(p.age, 0.001);\n\n    ctx.beginPath();\n    ctx.arc(p.x, p.y, \
-radius, 0, Math.PI * 2);\n    ctx.fillStyle = rgba(p.rgb, a);\n    \
-ctx.fill();\n\n    p.age += AGE_STEP;\n    p.x += p.xvel;\n    p.y -= \
-p.yvel;\n  }\n}\n\nlet rafId = 0;\nlet destroyed = false;\n\nfunction \
-animate() {\n  if (destroyed) return;\n\n  const currentDpr = Math.max(1, \
-Math.min(window.devicePixelRatio || 1, 3));\n  if (currentDpr !== dpr) \
-resizeCanvas();\n\n  spawnParticles();\n  drawParticles();\n\n  rafId = \
-window.requestAnimationFrame(animate);\n}\n\nthis.ondestroy = () => {\n  \
-destroyed = true;\n  if (rafId) \
-window.cancelAnimationFrame(rafId);\n};\n\ncore.Spark = async (args, env) => \
-{\n  const raw = await interpretate(args[0], env);\n  if (!Array.isArray(raw) \
-|| raw.length === 0) {\n    data = [];\n    return;\n  }\n\n  const { minX, \
-minY, maxX, maxY } = getMinMax(raw);\n\n  const pad = 50;\n  const x0 = \
-pad,\n    x1 = CSS_WIDTH - pad;\n  const y0 = pad,\n    y1 = CSS_HEIGHT - \
-pad;\n\n  data = raw.map(([x, y]) => {\n    const mx = convertRange(x, [minX, \
-maxX], [x0, x1]);\n    const my = convertRange(y, [maxY, minY], [y0, y1]); // \
-invert Y\n    return [clamp(mx, x0, x1), clamp(my, y0, y1)];\n  });\n};\n\n// \
-Start\nanimate();\n\nreturn canvas;", "Display" -> "codemirror", 
-    "Hash" -> "9f44e58f-db28-4ffb-9f75-d2ab78003286", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "const canvas = document.createElement(\"canvas\");\n\nconst \
-CSS_WIDTH = 500;\nconst CSS_HEIGHT = 200;\n\nconst MAX_PARTICLES = \
-5000;\nconst SPAWN_PER_FRAME = 10;\nconst AGE_STEP = 0.1;\nconst FADE_START = \
-4;\nconst FADE_END = 18;\n\nconst ctx = canvas.getContext(\"2d\");\n\n// \
-HiDPI / DPR\nlet dpr = 1;\n\nfunction resizeCanvas(cssW = CSS_WIDTH, cssH = \
-CSS_HEIGHT) {\n  dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, \
-3)); // cap optional\n\n  // Set the displayed size\n  canvas.style.width = \
-Math.round(cssW)+'px';\n  canvas.style.height = Math.round(cssH)+'px';\n\n  \
-// Set the backing-store size\n  canvas.width = Math.floor(cssW * dpr);\n  \
-canvas.height = Math.floor(cssH * dpr);\n\n  // Draw in CSS pixels\n  \
-ctx.setTransform(dpr, 0, 0, dpr, 0, 0);\n}\n\nresizeCanvas();\n\nconst rand = \
-(min, max) => Math.random() * (max - min) + min;\nconst randInt = (min, \
-maxInclusive) => Math.floor(rand(min, maxInclusive + 1));\nconst clamp = (v, \
-lo, hi) => Math.max(lo, Math.min(hi, v));\n\nfunction convertRange(value, \
-[a1, a2], [b1, b2]) {\n  if (a1 === a2) return (b1 + b2) / 2;\n  return \
-((value - a1) * (b2 - b1)) / (a2 - a1) + b1;\n}\n\nfunction getMinMax(points) \
-{\n  let minX = Infinity,\n    minY = Infinity,\n    maxX = -Infinity,\n    \
-maxY = -Infinity;\n\n  for (const [x, y] of points) {\n    if (x < minX) minX \
-= x;\n    if (y < minY) minY = y;\n    if (x > maxX) maxX = x;\n    if (y > \
-maxY) maxY = y;\n  }\n  return { minX, minY, maxX, maxY };\n}\n\nfunction \
-alphaForAge(age) {\n  if (age <= FADE_START) return 1;\n  if (age >= \
-FADE_END) return 0;\n  const t = (age - FADE_START) / (FADE_END - \
-FADE_START);\n  return (1 - t) * (1 - t); // smooth-ish fade\n}\n\nconst rgba \
-= (rgb, a) => 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+a+')';\n\nconst \
-particles = new Array(MAX_PARTICLES);\nlet writeIndex = 0;\nlet liveCount = \
-0;\n\n// Positions are stored in CSS pixels (not device pixels)\nlet data = \
-[];\n\nfunction putParticle(x, y) {\n  const p =\n    particles[writeIndex] \
-??\n    (particles[writeIndex] = {\n      x: 0,\n      y: 0,\n      xvel: \
-0,\n      yvel: 0,\n      rgb: [0, 0, 0],\n      baseAlpha: 0.6,\n      size: \
-5,\n      age: 1,\n    });\n\n  p.x = x;\n  p.y = y;\n  p.xvel = rand(-1, \
-1);\n  p.yvel = rand(-1, 1);\n  p.rgb[0] = randInt(0, 255);\n  p.rgb[1] = \
-randInt(0, 255);\n  p.rgb[2] = randInt(0, 255);\n  p.baseAlpha = 0.6;\n  \
-p.size = 5;\n  p.age = 1;\n\n  writeIndex = (writeIndex + 1) % \
-MAX_PARTICLES;\n  if (liveCount < MAX_PARTICLES) liveCount++;\n}\n\nfunction \
-spawnParticles() {\n  if (!data.length) return;\n\n  for (let j = 0; j < \
-SPAWN_PER_FRAME; j++) {\n    const idx = randInt(0, data.length - 1);\n    \
-const [x, y] = data[idx];\n    putParticle(x, y);\n  }\n}\n\nfunction \
-drawParticles() {\n  // Clear using CSS pixel dimensions\n  ctx.clearRect(0, \
-0, CSS_WIDTH, CSS_HEIGHT);\n\n  // Oldest -> newest ordering when full\n  \
-const start = liveCount === MAX_PARTICLES ? writeIndex : 0;\n\n  for (let i = \
-0; i < liveCount; i++) {\n    const idx = (start + i) % MAX_PARTICLES;\n    \
-const p = particles[idx];\n    if (!p) continue;\n\n    const a = p.baseAlpha \
-* alphaForAge(p.age);\n    if (a <= 0) continue;\n\n    const radius = p.size \
-/ Math.max(p.age, 0.001);\n\n    ctx.beginPath();\n    ctx.arc(p.x, p.y, \
-radius, 0, Math.PI * 2);\n    ctx.fillStyle = rgba(p.rgb, a);\n    \
-ctx.fill();\n\n    p.age += AGE_STEP;\n    p.x += p.xvel;\n    p.y -= \
-p.yvel;\n  }\n}\n\nlet rafId = 0;\nlet destroyed = false;\n\nfunction \
-animate() {\n  if (destroyed) return;\n\n  const currentDpr = Math.max(1, \
-Math.min(window.devicePixelRatio || 1, 3));\n  if (currentDpr !== dpr) \
-resizeCanvas();\n\n  spawnParticles();\n  drawParticles();\n\n  rafId = \
-window.requestAnimationFrame(animate);\n}\n\nthis.ondestroy = () => {\n  \
-destroyed = true;\n  if (rafId) \
-window.cancelAnimationFrame(rafId);\n};\n\ncore.Spark = async (args, env) => \
-{\n  const raw = await interpretate(args[0], env);\n  if (!Array.isArray(raw) \
-|| raw.length === 0) {\n    data = [];\n    return;\n  }\n\n  const { minX, \
-minY, maxX, maxY } = getMinMax(raw);\n\n  const pad = 50;\n  const x0 = \
-pad,\n    x1 = CSS_WIDTH - pad;\n  const y0 = pad,\n    y1 = CSS_HEIGHT - \
-pad;\n\n  data = raw.map(([x, y]) => {\n    const mx = convertRange(x, [minX, \
-maxX], [x0, x1]);\n    const my = convertRange(y, [maxY, minY], [y0, y1]); // \
-invert Y\n    return [clamp(mx, x0, x1), clamp(my, y0, y1)];\n  });\n};\n\n// \
-Start\nanimate();\n\nreturn canvas;", "Display" -> "js", 
-    "Hash" -> "3893b07e-6e78-47ce-9c84-95d49318d7f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> ".md\nFrom the evaluation kernel, we need to design a function \
-like `Plot` that accepts a function, samples it in the provided interval, and \
-pipes the data to the `Spark` symbol on the frontend:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "534fdb6b-7d7e-454e-8aef-ac31a0cde34a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "From the evaluation kernel, we need to design a function like \
-`Plot` that accepts a function, samples it in the provided interval, and \
-pipes the data to the `Spark` symbol on the frontend:", 
-    "Display" -> "markdown", "Hash" -> 
-     "9534d051-0f0a-4fbc-b0d4-7c34c422fd69", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>, 
-   <|"Data" -> "SparkPlot[func_, range_] := With[{var = Extract[range,1, \
-Inactivate], min = range[[2]], max = range[[3]]}, Table[{var, func}, {var, \
-min, max, (max-min)/200.0}]] // FrontSubmit[Spark[#]] \
-&\n\nSetAttributes[SparkPlot, HoldAll]\n\nSparkPlot[Sinc[1.5 x], {x,-10,10}]"\
-, "Display" -> "codemirror", "Hash" -> 
-     "c691501c-1148-4504-b32e-223c6a11dada", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b9165b32-00a6-4016-ae9a-ad6d34808831"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Web IO
+## Microphone capture
+
+The WebAPI provides access to many peripherals and has the advantage that no special drivers or libraries are needed. In this guide, we capture microphone audio and process it in real time using Wolfram Language.
+
+We will use event system as a main way of piping data from Javascript to Wolfram side.
+
+:::warning
+You need to have WLJS Notebook installed as a desktop application or run it as a Docker container or server script with secure HTTPS connection. Otherwise, your browser will not allow audio capture.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Web IO
+## Microphone capture
+
+The WebAPI provides access to many peripherals and has the advantage that no special drivers or libraries are needed. In this guide, we capture microphone audio and process it in real time using Wolfram Language.
+
+We will use event system as a main way of piping data from Javascript to Wolfram side.
+
+:::warning
+You need to have WLJS Notebook installed as a desktop application or run it as a Docker container or server script with secure HTTPS connection. Otherwise, your browser will not allow audio capture.
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+const sign = document.createElement("div");
+sign.style.color = "gray";
+sign.innerText = "Idle";
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+let isRunning = false;
+let mediaStream = null;
+let inputNode = null;
+
+analyser.smoothingTimeConstant = 0.3;
+analyser.fftSize = 1024;
+
+function setStatus(text, color) {
+  sign.innerText = text;
+  sign.style.color = color;
+}
+
+function connectGraph(stream) {
+  mediaStream = stream;
+  inputNode = audioContext.createMediaStreamSource(stream);   
+  inputNode.connect(analyser);
+  analyser.connect(scriptProcessor);
+  scriptProcessor.connect(audioContext.destination);  
+  scriptProcessor.onaudioprocess = onAudioProcess;
+}
+
+function disconnectGraph() {
+  scriptProcessor.onaudioprocess = null;  
+  try { inputNode?.disconnect(); } catch {}
+  try { analyser?.disconnect(); } catch {}
+  try { scriptProcessor?.disconnect(); } catch {} 
+  inputNode = null;   
+  // Optional: stop mic hardware capture
+  mediaStream?.getTracks?.().forEach((t) => t.stop());
+  mediaStream = null;
+}
+
+function onAudioProcess() {
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteTimeDomainData(data);   
+  server.kernel.io.fire("audio", Array.from(data));
+}
+
+async function requestMicrophoneAccess() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (err) {
+    alert(
+      "Could not access the microphone." +
+      "Make sure you're using https and you granted permission."
+    );
+    return null;
+  }
+}
+
+core.MicStart = async () => {
+  if (isRunning) return;
+  isRunning = true;   
+  // Some browsers need this on a user gesture
+  if (audioContext.state === "suspended") {
+    await audioContext.resume();
+  }   
+  const stream = await requestMicrophoneAccess();
+  if (!stream) {
+    isRunning = false;
+    setStatus("Idle", "gray");
+    return;
+  }   
+  connectGraph(stream);
+  setStatus("Recording...", "red");
+};
+
+core.MicStop = async () => {
+  if (!isRunning) return;
+  isRunning = false;  
+  disconnectGraph();
+  setStatus("Stopped", "blue");
+};
+
+this.ondestroy = () => {
+  if (!isRunning) return;
+  isRunning = false;  
+  disconnectGraph();
+};
+
+// Return UI element
+return sign;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+const sign = document.createElement("div");
+sign.style.color = "gray";
+sign.innerText = "Idle";
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+
+let isRunning = false;
+let mediaStream = null;
+let inputNode = null;
+
+analyser.smoothingTimeConstant = 0.3;
+analyser.fftSize = 1024;
+
+function setStatus(text, color) {
+  sign.innerText = text;
+  sign.style.color = color;
+}
+
+function connectGraph(stream) {
+  mediaStream = stream;
+  inputNode = audioContext.createMediaStreamSource(stream);   
+  inputNode.connect(analyser);
+  analyser.connect(scriptProcessor);
+  scriptProcessor.connect(audioContext.destination);  
+  scriptProcessor.onaudioprocess = onAudioProcess;
+}
+
+function disconnectGraph() {
+  scriptProcessor.onaudioprocess = null;  
+  try { inputNode?.disconnect(); } catch {}
+  try { analyser?.disconnect(); } catch {}
+  try { scriptProcessor?.disconnect(); } catch {} 
+  inputNode = null;   
+  // Optional: stop mic hardware capture
+  mediaStream?.getTracks?.().forEach((t) => t.stop());
+  mediaStream = null;
+}
+
+function onAudioProcess() {
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteTimeDomainData(data);   
+  server.kernel.io.fire("audio", Array.from(data));
+}
+
+async function requestMicrophoneAccess() {
+  try {
+    return await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (err) {
+    alert(
+      "Could not access the microphone." +
+      "Make sure you're using https and you granted permission."
+    );
+    return null;
+  }
+}
+
+core.MicStart = async () => {
+  if (isRunning) return;
+  isRunning = true;   
+  // Some browsers need this on a user gesture
+  if (audioContext.state === "suspended") {
+    await audioContext.resume();
+  }   
+  const stream = await requestMicrophoneAccess();
+  if (!stream) {
+    isRunning = false;
+    setStatus("Idle", "gray");
+    return;
+  }   
+  connectGraph(stream);
+  setStatus("Recording...", "red");
+};
+
+core.MicStop = async () => {
+  if (!isRunning) return;
+  isRunning = false;  
+  disconnectGraph();
+  setStatus("Stopped", "blue");
+};
+
+this.ondestroy = () => {
+  if (!isRunning) return;
+  isRunning = false;  
+  disconnectGraph();
+};
+
+// Return UI element
+return sign;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+const data = new Uint8Array(analyser.frequencyBinCount);
+analyser.getByteTimeDomainData(data);   
+server.kernel.io.fire("audio", Array.from(data));
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+as a list of bytes in integer representation. Unfortunately, the JS->WL binary format is not yet available.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+as a list of bytes in integer representation. Unfortunately, the JS->WL binary format is not yet available.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's add control buttons
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's add control buttons
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{Button["Start", MicStart // FrontSubmit], Button["Stop", MicStop // FrontSubmit]} // Row
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+And finally to handle the incoming data we use `EventHandler` and hook it to some `Graphics` primitive:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And finally to handle the incoming data we use `EventHandler` and hook it to some `Graphics` primitive:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{line = {}},
+  EventHandler["audio", Function[data,
+      line = Transpose[{Range[data//Length], data}];
+  ]];
+
+  Graphics[
+      Line[line // Offload], 
+      PlotRange -> {{0,512}, {127-50, 127+50}},
+      "TransitionDuration"->30,
+      Axes->True, AspectRatio->1/2
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's add fourier transform as well:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's add fourier transform as well:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{line = {}, fft={}},
+    EventHandler["audio", Function[data,
+      line = Transpose[{Range[data//Length], data}];
+      fft = Drop[Transpose[{Range[128]//N, Log@Take[Fourier[data], 128]//Abs}],1];
+    ]];
+  
+    {Graphics[
+      {Blue, Line[line // Offload]},
+      PlotRange -> {{0,512}, {127-50, 127+50}},
+      TransitionDuration->30,
+      Axes->True, AspectRatio->1/2
+    ],
+    Graphics[
+      {Red, Line[fft // Offload]},
+      PlotRange -> {{1,128}, {0,6}},
+      TransitionDuration->30,
+      Axes->True, AspectRatio->1/2
+    ]}  // Row
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also accumulate the buffer for more samples and perform the computations asynchronously with a timer or similar mechanism.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also accumulate the buffer for more samples and perform the computations asynchronously with a timer or similar mechanism.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Canvas
+Here we will perform a small experiment with the JavaScript Canvas API. Optimizing drawing operations on a canvas is itself a challenging task. However, we will skip that part and focus on what we have:
+
+- animated bubbles that fade away with time
+- we provide an XY array of points where bubbles can appear
+- we animate them continuously
+- we define a frontend symbol Spark to update XY array
+
+Let's create Javascript cell and evaluate it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Canvas
+Here we will perform a small experiment with the JavaScript Canvas API. Optimizing drawing operations on a canvas is itself a challenging task. However, we will skip that part and focus on what we have:
+
+- animated bubbles that fade away with time
+- we provide an XY array of points where bubbles can appear
+- we animate them continuously
+- we define a frontend symbol Spark to update XY array
+
+Let's create Javascript cell and evaluate it:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+const canvas = document.createElement("canvas");
+
+const CSS_WIDTH = 500;
+const CSS_HEIGHT = 200;
+
+const MAX_PARTICLES = 5000;
+const SPAWN_PER_FRAME = 10;
+const AGE_STEP = 0.1;
+const FADE_START = 4;
+const FADE_END = 18;
+
+const ctx = canvas.getContext("2d");
+
+// HiDPI / DPR
+let dpr = 1;
+
+function resizeCanvas(cssW = CSS_WIDTH, cssH = CSS_HEIGHT) {
+  dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 3)); // cap optional
+
+  // Set the displayed size
+  canvas.style.width = Math.round(cssW)+'px';
+  canvas.style.height = Math.round(cssH)+'px';
+
+  // Set the backing-store size
+  canvas.width = Math.floor(cssW * dpr);
+  canvas.height = Math.floor(cssH * dpr);
+
+  // Draw in CSS pixels
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+resizeCanvas();
+
+const rand = (min, max) => Math.random() * (max - min) + min;
+const randInt = (min, maxInclusive) => Math.floor(rand(min, maxInclusive + 1));
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function convertRange(value, [a1, a2], [b1, b2]) {
+  if (a1 === a2) return (b1 + b2) / 2;
+  return ((value - a1) * (b2 - b1)) / (a2 - a1) + b1;
+}
+
+function getMinMax(points) {
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+
+  for (const [x, y] of points) {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  return { minX, minY, maxX, maxY };
+}
+
+function alphaForAge(age) {
+  if (age <= FADE_START) return 1;
+  if (age >= FADE_END) return 0;
+  const t = (age - FADE_START) / (FADE_END - FADE_START);
+  return (1 - t) * (1 - t); // smooth-ish fade
+}
+
+const rgba = (rgb, a) => 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+a+')';
+
+const particles = new Array(MAX_PARTICLES);
+let writeIndex = 0;
+let liveCount = 0;
+
+// Positions are stored in CSS pixels (not device pixels)
+let data = [];
+
+function putParticle(x, y) {
+  const p =
+    particles[writeIndex] ??
+    (particles[writeIndex] = {
+      x: 0,
+      y: 0,
+      xvel: 0,
+      yvel: 0,
+      rgb: [0, 0, 0],
+      baseAlpha: 0.6,
+      size: 5,
+      age: 1,
+    });
+
+  p.x = x;
+  p.y = y;
+  p.xvel = rand(-1, 1);
+  p.yvel = rand(-1, 1);
+  p.rgb[0] = randInt(0, 255);
+  p.rgb[1] = randInt(0, 255);
+  p.rgb[2] = randInt(0, 255);
+  p.baseAlpha = 0.6;
+  p.size = 5;
+  p.age = 1;
+
+  writeIndex = (writeIndex + 1) % MAX_PARTICLES;
+  if (liveCount < MAX_PARTICLES) liveCount++;
+}
+
+function spawnParticles() {
+  if (!data.length) return;
+
+  for (let j = 0; j < SPAWN_PER_FRAME; j++) {
+    const idx = randInt(0, data.length - 1);
+    const [x, y] = data[idx];
+    putParticle(x, y);
+  }
+}
+
+function drawParticles() {
+  // Clear using CSS pixel dimensions
+  ctx.clearRect(0, 0, CSS_WIDTH, CSS_HEIGHT);
+
+  // Oldest -> newest ordering when full
+  const start = liveCount === MAX_PARTICLES ? writeIndex : 0;
+
+  for (let i = 0; i < liveCount; i++) {
+    const idx = (start + i) % MAX_PARTICLES;
+    const p = particles[idx];
+    if (!p) continue;
+
+    const a = p.baseAlpha * alphaForAge(p.age);
+    if (a <= 0) continue;
+
+    const radius = p.size / Math.max(p.age, 0.001);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = rgba(p.rgb, a);
+    ctx.fill();
+
+    p.age += AGE_STEP;
+    p.x += p.xvel;
+    p.y -= p.yvel;
+  }
+}
+
+let rafId = 0;
+let destroyed = false;
+
+function animate() {
+  if (destroyed) return;
+
+  const currentDpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 3));
+  if (currentDpr !== dpr) resizeCanvas();
+
+  spawnParticles();
+  drawParticles();
+
+  rafId = window.requestAnimationFrame(animate);
+}
+
+this.ondestroy = () => {
+  destroyed = true;
+  if (rafId) window.cancelAnimationFrame(rafId);
+};
+
+core.Spark = async (args, env) => {
+  let raw = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(raw)) raw = raw.normal();
+  if (!Array.isArray(raw) || raw.length === 0) {
+    data = [];
+    return;
+  }
+
+  const { minX, minY, maxX, maxY } = getMinMax(raw);
+
+  const pad = 50;
+  const x0 = pad,
+    x1 = CSS_WIDTH - pad;
+  const y0 = pad,
+    y1 = CSS_HEIGHT - pad;
+
+  data = raw.map(([x, y]) => {
+    const mx = convertRange(x, [minX, maxX], [x0, x1]);
+    const my = convertRange(y, [maxY, minY], [y0, y1]); // invert Y
+    return [clamp(mx, x0, x1), clamp(my, y0, y1)];
+  });
+};
+
+// Start
+animate();
+
+return canvas;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+const canvas = document.createElement("canvas");
+
+const CSS_WIDTH = 500;
+const CSS_HEIGHT = 200;
+
+const MAX_PARTICLES = 5000;
+const SPAWN_PER_FRAME = 10;
+const AGE_STEP = 0.1;
+const FADE_START = 4;
+const FADE_END = 18;
+
+const ctx = canvas.getContext("2d");
+
+// HiDPI / DPR
+let dpr = 1;
+
+function resizeCanvas(cssW = CSS_WIDTH, cssH = CSS_HEIGHT) {
+  dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 3)); // cap optional
+
+  // Set the displayed size
+  canvas.style.width = Math.round(cssW)+'px';
+  canvas.style.height = Math.round(cssH)+'px';
+
+  // Set the backing-store size
+  canvas.width = Math.floor(cssW * dpr);
+  canvas.height = Math.floor(cssH * dpr);
+
+  // Draw in CSS pixels
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+resizeCanvas();
+
+const rand = (min, max) => Math.random() * (max - min) + min;
+const randInt = (min, maxInclusive) => Math.floor(rand(min, maxInclusive + 1));
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function convertRange(value, [a1, a2], [b1, b2]) {
+  if (a1 === a2) return (b1 + b2) / 2;
+  return ((value - a1) * (b2 - b1)) / (a2 - a1) + b1;
+}
+
+function getMinMax(points) {
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+
+  for (const [x, y] of points) {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  return { minX, minY, maxX, maxY };
+}
+
+function alphaForAge(age) {
+  if (age <= FADE_START) return 1;
+  if (age >= FADE_END) return 0;
+  const t = (age - FADE_START) / (FADE_END - FADE_START);
+  return (1 - t) * (1 - t); // smooth-ish fade
+}
+
+const rgba = (rgb, a) => 'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+a+')';
+
+const particles = new Array(MAX_PARTICLES);
+let writeIndex = 0;
+let liveCount = 0;
+
+// Positions are stored in CSS pixels (not device pixels)
+let data = [];
+
+function putParticle(x, y) {
+  const p =
+    particles[writeIndex] ??
+    (particles[writeIndex] = {
+      x: 0,
+      y: 0,
+      xvel: 0,
+      yvel: 0,
+      rgb: [0, 0, 0],
+      baseAlpha: 0.6,
+      size: 5,
+      age: 1,
+    });
+
+  p.x = x;
+  p.y = y;
+  p.xvel = rand(-1, 1);
+  p.yvel = rand(-1, 1);
+  p.rgb[0] = randInt(0, 255);
+  p.rgb[1] = randInt(0, 255);
+  p.rgb[2] = randInt(0, 255);
+  p.baseAlpha = 0.6;
+  p.size = 5;
+  p.age = 1;
+
+  writeIndex = (writeIndex + 1) % MAX_PARTICLES;
+  if (liveCount < MAX_PARTICLES) liveCount++;
+}
+
+function spawnParticles() {
+  if (!data.length) return;
+
+  for (let j = 0; j < SPAWN_PER_FRAME; j++) {
+    const idx = randInt(0, data.length - 1);
+    const [x, y] = data[idx];
+    putParticle(x, y);
+  }
+}
+
+function drawParticles() {
+  // Clear using CSS pixel dimensions
+  ctx.clearRect(0, 0, CSS_WIDTH, CSS_HEIGHT);
+
+  // Oldest -> newest ordering when full
+  const start = liveCount === MAX_PARTICLES ? writeIndex : 0;
+
+  for (let i = 0; i < liveCount; i++) {
+    const idx = (start + i) % MAX_PARTICLES;
+    const p = particles[idx];
+    if (!p) continue;
+
+    const a = p.baseAlpha * alphaForAge(p.age);
+    if (a <= 0) continue;
+
+    const radius = p.size / Math.max(p.age, 0.001);
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = rgba(p.rgb, a);
+    ctx.fill();
+
+    p.age += AGE_STEP;
+    p.x += p.xvel;
+    p.y -= p.yvel;
+  }
+}
+
+let rafId = 0;
+let destroyed = false;
+
+function animate() {
+  if (destroyed) return;
+
+  const currentDpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 3));
+  if (currentDpr !== dpr) resizeCanvas();
+
+  spawnParticles();
+  drawParticles();
+
+  rafId = window.requestAnimationFrame(animate);
+}
+
+this.ondestroy = () => {
+  destroyed = true;
+  if (rafId) window.cancelAnimationFrame(rafId);
+};
+
+core.Spark = async (args, env) => {
+  let raw = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(raw)) raw = raw.normal();
+  if (!Array.isArray(raw) || raw.length === 0) {
+    data = [];
+    return;
+  }
+
+  const { minX, minY, maxX, maxY } = getMinMax(raw);
+
+  const pad = 50;
+  const x0 = pad,
+    x1 = CSS_WIDTH - pad;
+  const y0 = pad,
+    y1 = CSS_HEIGHT - pad;
+
+  data = raw.map(([x, y]) => {
+    const mx = convertRange(x, [minX, maxX], [x0, x1]);
+    const my = convertRange(y, [maxY, minY], [y0, y1]); // invert Y
+    return [clamp(mx, x0, x1), clamp(my, y0, y1)];
+  });
+};
+
+// Start
+animate();
+
+return canvas;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+From the evaluation kernel, we need to design a function like `Plot` that accepts a function, samples it in the provided interval, and pipes the data to the `Spark` symbol on the frontend:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+From the evaluation kernel, we need to design a function like `Plot` that accepts a function, samples it in the provided interval, and pipes the data to the `Spark` symbol on the frontend:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SparkPlot[func_, range_] := With[{var = Extract[range,1, Inactivate], min = range[[2]], max = range[[3]]}, Table[{var, func}, {var, min, max, (max-min)/200.0}]] // FrontSubmit[Spark[#]] &
+
+SetAttributes[SparkPlot, HoldAll]
+
+SparkPlot[Sinc[1.5 x], {x,-10,10}]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -57,6 +57,9 @@
 
 <|"label" -> "TabularQ", "type"->"keyword", "info" ->
   "TabularQ[tab] gives True if tab is a valid Tabular object and False otherwise."|>,
+  
+  <|"label" -> "FindFaces", "type"->"keyword", "info" ->
+  "FindFaces[img] detects all faces on the image img"|>,
 
 <|"label" -> "TabularColumn", "type"->"keyword", "info" ->
   "TabularColumn[{v1,v2,…}] gives a vector with elements with values vi with an efficient element type determined automatically.\nTabularColumn[{…},etype] uses element type etype.\nTabularColumn[{…},etype,method] uses method to convert elements to etype."|>,
