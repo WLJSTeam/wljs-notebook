@@ -80,17 +80,15 @@ interpretate.anonymous = async (d, org) => {
   } else {
     core[name] = async (args, env) => {
       const key = await interpretate(args[0], env);
-      let data = await interpretate(core[name].data, {...env, hold:true});
-      data = await interpretate(data[key], env);
+      let data = await interpretate(core[name].data, env);
       if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; 
-      return data;
+      return data[key];
     }
   
     core[name].update = async (args, env) => {
       const key = await interpretate(args[0], env);
-      let data = await interpretate(core[name].data, {...env, hold:true});
-      data = await interpretate(data[key], env);
-      return data;
+      let data = await interpretate(core[name].data, env);
+      return data[key];
     }      
   }
 

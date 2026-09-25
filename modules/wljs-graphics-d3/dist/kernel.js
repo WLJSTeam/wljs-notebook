@@ -4052,6 +4052,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
 
   g2d.Text.destroy = (args, env) => {
+    if (!env.local.object) return;
     env.local.object.remove();
     delete env.local.object;
 
@@ -7513,6 +7514,52 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   };  
 
+  g2d.EventListener.rightclick = (uid, object, env) => {
+
+    console.log('mouseup event generator');
+    console.log(env.local);
+    const xAxis = env.xAxis;
+    const yAxis = env.yAxis;
+
+    const updatePos = throttle((x,y) => {
+      server.kernel.io.fire(uid, [x,y], 'rightclick');
+    });
+  
+    function clicked(event, p) {
+      //if (event.altKey)
+        event.preventDefault();
+        event.stopPropagation();
+        updatePos(xAxis.invert(p[0]), yAxis.invert(p[1]));
+    }
+  
+    object.on("contextmenu", function(e) {
+      clicked(e, d3.pointer(e, this));
+    });
+  }; 
+
+  g2d.EventListener.contextmenu = (uid, object, env) => {
+
+    console.log('mouseup event generator');
+    console.log(env.local);
+    const xAxis = env.xAxis;
+    const yAxis = env.yAxis;
+
+    const updatePos = throttle((x,y) => {
+      server.kernel.io.fire(uid, [x,y], 'contextmenu');
+    });
+  
+    function clicked(event, p) {
+      //if (event.altKey)
+        event.preventDefault();
+        event.stopPropagation();
+        updatePos(xAxis.invert(p[0]), yAxis.invert(p[1]));
+    }
+  
+    object.on("contextmenu", function(e) {
+      clicked(e, d3.pointer(e, this));
+    });
+  };  
+  
   g2d.EventListener.altclick = (uid, object, env) => {
 
     console.log('click event generator');
