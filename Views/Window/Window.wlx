@@ -151,6 +151,14 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                 if (!skipNext) allowedQ = false;
                 skipNext = false;
               })
+
+              addEventListener("click", (event) => {
+                allowedQ = false;
+              })
+
+              addEventListener("click", (event) => {
+                allowedQ = false;
+              })
             
               const [hash, margin, minSize] = await Promise.all([
                 interpretate(args[0], env),
@@ -190,7 +198,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
               };
   
             
-              [0, 100, 300, 1000, 2000, 3000].forEach(delay =>
+              [100, 300, 1000, 3000].forEach(delay =>
                 setTimeout(schedule, delay)
               );
             };

@@ -1,674 +1,778 @@
-<|"Notebook" -> <|"Controller" -> "71fd6fee-5550-4918-b4af-f9fc92b7bb9f", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$723], "FocusedCellSelection" -> 
-    {53, 52}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "db25e666-86f3-48cf-a2b4-b212bd74169b", 
-   "Objects" -> <|"d5c51f07-b309-402d-ae2e-0bde4050b9d8" -> 
-      <|"Public" -> Hold[Graphics[{{Directive[RGBColor[1, 0.79375, 0.25], 
-             EdgeForm[Directive[Thickness[Small], Opacity[0.595], GrayLevel[
-                0]]]], {{}, {Directive[RGBColor[1, 0.79375, 0.25], EdgeForm[
-                Directive[Thickness[Small], Opacity[0.595], GrayLevel[0]]]], 
-              {{Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-3.5, 0}, {-3, 1}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 1], Style[1, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-3, 0}, {-2.5, 1}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 1], Style[1, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-2.5, 0}, {-2, 5}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 5], Style[5, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-2, 0}, {-1.5, 7}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 7], Style[7, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-1.5, 0}, {-1, 28}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 28], Style[28, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-1, 0}, {-0.5, 29}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 29], Style[29, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {-0.5, 0}, {0, 40}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 40], Style[40, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {0, 0}, {0.5, 39}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 39], Style[39, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {0.5, 0}, {1, 21}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 21], Style[21, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {1, 0}, {1.5, 16}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 16], Style[16, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {1.5, 0}, {2, 8}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 8], Style[8, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {2, 0}, {2.5, 4}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 4], Style[4, {}]]}, {
-                Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[
-                     {2.5, 0}, {3, 1}, "RoundingRadius" -> 0], {"Style", 
-                     EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], 
-                       Opacity[0.66]}]}]}, 1], Style[1, {}]]}}}, {}, {}}}, 
-           {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}}, 
-          {AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, 
-           AxesLabel -> {None, None}, AxesOrigin -> {-3.63, 0}, 
-           FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {CoordinatesToolOptions -> {"DisplayFunction" -> 
-                ({Identity[#1[[1]]], Identity[#1[[2]]]} & ), 
-               "CopiedValueFunction" -> ({Identity[#1[[1]]], Identity[
-                   #1[[2]]]} & )}, "AxisPadding" -> Scaled[0.02], 
-             "ChartDefaultStyle" -> {Directive[RGBColor[1, 0.725, 0], 
-                Opacity[0.6]], Directive[RGBColor[0.24, 0.6, 0.8], 
-                Opacity[0.6]], Directive[RGBColor[0.455, 0.7, 0.21], 
-                Opacity[0.6]], Directive[RGBColor[0.922526, 0.385626, 
-                 0.209179], Opacity[0.6]], Directive[RGBColor[0.578, 0.51, 
-                 0.85], Opacity[0.6]], Directive[RGBColor[0.772079, 0.431554, 
-                 0.102387], Opacity[0.6]], Directive[RGBColor[0.4, 0.64, 1], 
-                Opacity[0.6]], Directive[RGBColor[1, 0.75, 0], Opacity[0.6]], 
-               Directive[RGBColor[0.8, 0.4, 0.76], Opacity[0.6]], Directive[
-                RGBColor[0.637, 0.65, 0], Opacity[0.6]], Directive[
-                RGBColor[0.915, 0.3325, 0.2125], Opacity[0.6]], Directive[
-                RGBColor[0.40082222609352647, 0.5220066643438841, 0.85], 
-                Opacity[0.6]], Directive[RGBColor[0.9728288904374106, 
-                 0.621644452187053, 0.07336199581899142], Opacity[0.6]], 
-               Directive[RGBColor[0.736782672705901, 0.358, 
-                 0.5030266573755369], Opacity[0.6]], Directive[RGBColor[
-                 0.28026441037696703, 0.715, 0.4292089322474965], 
-                Opacity[0.6]]}, "DefaultBoundaryStyle" -> Automatic, 
-             "DefaultChartBaseStyle" -> Directive[RGBColor[1, 0.79375, 0.25], 
-               EdgeForm[{GrayLevel[0]}]], "DefaultGraphicsInteraction" -> 
-              {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, 
-               "Effects" -> {"Highlight" -> {"ratio" -> 2}, 
-                 "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> 
-                  {"freeformCursorMode" -> True, "placement" -> 
-                    {"x" -> "All", "y" -> "None"}}}}, "DefaultPlotStyle" -> 
-              Automatic, "DomainPadding" -> Scaled[0.02], "RangePadding" -> 
-              Scaled[0.05]}, PlotRange -> {{-3.5, 3}, {All, All}}, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.05]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>, "52ac37fe-5353-4c6b-8a61-a51c06901581" -> 
-      <|"Public" -> Hold[HTMLView[
-          "<div style=\"\" class=\"p-2\" data-type=\"html-string\"></div>", 
-          Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]], 
-          Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalEl\
-ementUpdate[Offload[cnt$531409], "html-string", "innerHTML"]]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Presentation/B - Advanced.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <|"cnt$531409" -> 11|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Advanced Slides", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$617]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Data-driven slides", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$617]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Events binding", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$639]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Stat Counter", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$652]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Widgets with plots", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$669]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Animation triggers", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$680]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Run Javascript", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$692]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Programmatic slides control", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$714]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Advanced Slides\nThis is an advanced guide \
-on how to build live presentations with dynamic content events and complex \
-layouts.\n\n## Data-driven slides\nWe have seen it already, that one can \
-generate plots from the raw data directly on a slide:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ade028a7-b9e0-42fa-bd11-768138f6c159", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "# Advanced Slides\nThis is an advanced guide on how to build \
-live presentations with dynamic content events and complex layouts.\n\n## \
-Data-driven slides\nWe have seen it already, that one can generate plots from \
-the raw data directly on a slide:", "Display" -> "markdown", 
-    "Hash" -> "5eb05e6d-814d-4bc2-9d03-3eeed2f08b4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "ClearAll[MyFigure];\n\nMyFigure[OptionsPattern[]] := \
-Histogram[RandomVariate[NormalDistribution[0, OptionValue[\"Sigma\"]], \
-200]];\nOptions[MyFigure] = {\"Sigma\" -> 1.0};", "Display" -> "codemirror", 
-    "Hash" -> "5eeaa8a7-5a35-4a43-8d6c-98d13df21f4b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n<MyFigure Sigma={1.0}/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bf33ab90-0ee6-401a-83ec-ee6cc76abf7c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> 
-     "<dummy \
->FrontEndExecutable[d5c51f07-b309-402d-ae2e-0bde4050b9d8]</dummy>", 
-    "Display" -> "slide", "Hash" -> "f87dab6e-fecc-462a-ad16-8d5e20eee82d", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nThe same works with any interactive element with \
-`WLXForm` defined (or supported), for example `Manipulate`:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "936ed6dd-226f-475b-b5cd-e36a946a3ce6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "The same works with any interactive element with `WLXForm` \
-defined (or supported), for example `Manipulate`:", "Display" -> "markdown", 
-    "Hash" -> "8b6bf517-a8e7-4d7d-acf8-a1af242c8995", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Cannon = Manipulate[\n  Module[{g = 9.81, t, tmax, x, y, vx, \
-vy},\n    tmax = (2 * v0 * Sin[angle Degree]) / g;\n    \n    Show[\n      (* \
-Trajectory plot *)\n      ParametricPlot[\n        {v0 * Cos[angle Degree] * \
-t, \n         v0 * Sin[angle Degree] * t - 0.5 * g * t^2},\n        {t, 0, \
-tmax},\n        PlotStyle -> {Blue, Thick},\n        PlotRange -> {{0, 100}, \
-{0, 60}},\n        AspectRatio -> 0.6,\n        GridLines -> Automatic,\n     \
-   FrameLabel -> {\"Distance (m)\", \"Height (m)\"},\n        ImageSize -> \
-300\n      ],\n      Graphics[{\n        Red, Thick, \n        Arrow[{{0, 0}, \
-2.0 {v0 * Cos[angle Degree] / 5.0, v0 * Sin[angle Degree] / 5.0}}]\n      \
-}],\n      Graphics[{\n        Green, PointSize[0.05],\n        Point[{v0 * \
-Cos[angle Degree] * tmax, 0}]\n      }],\n      Epilog -> {\n        Text[\n  \
-        \"Range: \" <> ToString[N[v0 * Cos[angle Degree] * tmax, 3]] <> \" \
-m\", {50, 5+30}\n        ],\n        Text[\n          \"Max Height: \" <> \
-ToString[N[(v0 * Sin[angle Degree])^2 / (2 * g), 3]] <> \" m\", {50, 10+30}\n \
-       ]\n      }\n    ]\n  ],\n  \n  {{v0, 30, \"Initial Velocity (m/s)\"}, \
-5, 35, 5},\n  {{angle, 45, \"Launch angle Degree (\[Degree])\"}, 15, 90, 15}, \
-\n  Appearance->None\n];", "Display" -> "codemirror", 
-    "Hash" -> "26e2b1d8-f048-49f1-ac4e-02147d40a9cb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n## Projectile Motion Simulator\n\nAdjust the \
-parameters to see how they affect the trajectory:\n\n<Cannon/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7f98eb47-f91e-4f52-91d1-ef9620001e51", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nHowever, we can push the idea of slides and data further \
-and bind different actions to the events generated on a slide.\n\n## Events \
-binding\nEvery slide generates a bunch of events that can be captured with \
-`SlideEventListener`. For example we can capture when the slide becomes \
-visible or invisible:", "Display" -> "codemirror", 
-    "Hash" -> "ecef8917-39d4-4308-955d-01aa5d2b552d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "However, we can push the idea of slides and data further and \
-bind different actions to the events generated on a slide.\n\n## Events \
-binding\nEvery slide generates a bunch of events that can be captured with \
-`SlideEventListener`. For example we can capture when the slide becomes \
-visible or invisible:", "Display" -> "markdown", 
-    "Hash" -> "062572c5-11f0-4933-97ac-283f63fb62ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "EventHandler[\"generated-by-slide\", {\n    \"Slide\" -> \
-Function[Null,\n        Print[\"I am visible\"];\n    ], \n    \"Left\" | \
-\"Destroy\" -> Function[Null,\n        Print[\"I am no longer visible\"];\n   \
- ]\n}];", "Display" -> "codemirror", 
-    "Hash" -> "685926cd-1ef4-4c21-900d-8c3c3c2deda8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# First slide \n\n---\n\n# Second \
-slide\n\n<SlideEventListener Id={\"generated-by-slide\"}/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "35d61ea5-eb16-4dcd-aa5a-a239528dcde0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nThe same works with fragments:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6090636f-6bc7-4d55-87b6-a175d1fe003a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "The same works with fragments:", "Display" -> "markdown", 
-    "Hash" -> "557c8e12-2860-4a9a-81d1-f9465d3fb953", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "EventHandler[\"generated-by-slide\", {\n    \"fragment-1\" -> \
-Function[Null,\n        Print[\"I am a fragment 1\"];\n    ],\n    \
-\"fragment-2\" -> Function[Null,\n        Print[\"I am a fragment 2\"];\n    \
-]\n}];", "Display" -> "codemirror", 
-    "Hash" -> "0eeded55-b357-466f-afad-88dacf4591db", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# Fragments\n\nI am a fragment 1 <!-- .element: \
-class=\"fragment\" -->\n\nI am a fragment 2 <!-- .element: class=\"fragment\" \
--->\n\n<SlideEventListener Id={\"generated-by-slide\"}/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "34647cc9-9712-4272-a943-4022ab09f9a7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\n### Stat Counter\nHere is an example component of a \
-basic stat display:", "Display" -> "codemirror", 
-    "Hash" -> "8d0157d1-d9f1-40a7-8d30-f77ffc729811", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> 
-     "### Stat Counter\nHere is an example component of a basic stat \
-display:", "Display" -> "markdown", 
-    "Hash" -> "dc431d94-f2ea-4389-960c-ca6fe3726c02", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".wlx\n\nStat[Text_, OptionsPattern[]] := With[{\n      Count \
-= OptionValue[\"Count\"]\n},\n\n      <div class=\"text-center text-gray-600 \
-m-4 p-4 rounded bg-gray-100 flex flex-col\">\n          <Count />\n          \
-<span class=\"text-md\"><Text /></span>\n      </div>\n]\n\nOptions[Stat] = \
-{\"Count\" -> 1};", "Display" -> "codemirror", 
-    "Hash" -> "2c874131-536b-4522-96d5-c503bcbfd876", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# Basic counter\n\n<Stat Count={11}>Number of \
-publications</Stat>", "Display" -> "codemirror", 
-    "Hash" -> "702c1acf-c3dd-4e1b-94f1-0fe57c6d6079", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "<dummy >\n# Basic counter\n\n<div class=\"text-center \
-text-gray-600 m-4 p-4 rounded bg-gray-100 flex \
-flex-col\">FrontEndExecutable[52ac37fe-5353-4c6b-8a61-a51c06901581]<span \
-class=\"text-md\">Number of \
-publications</span>RVJSEvent[\"64203b44-12c6-4530-8995-aa27baa77b3e\",\"Slide\
-\"]</div></dummy>", "Display" -> "slide", 
-    "Hash" -> "59f03185-fc2c-41c1-be0f-e8f8efb4dde6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nTo make it count up from 0, we need to update the \
-displayed number using a timer that starts when `SlideEventListener` fires \
-the \"Slide\" event. To display the changing value, we use `HTMLView` (though \
-`TextView` could also work):", "Display" -> "codemirror", 
-    "Hash" -> "bc054664-f145-45f7-8aea-0e73bd66386b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "To make it count up from 0, we need to update the displayed \
-number using a timer that starts when `SlideEventListener` fires the \
-\"Slide\" event. To display the changing value, we use `HTMLView` (though \
-`TextView` could also work):", "Display" -> "markdown", 
-    "Hash" -> "09fc0b36-c512-4aed-a894-890210098776", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".wlx\nStat[Text_, OptionsPattern[]] := Module[{\n      cnt = \
-0,\n      task\n}, With[{\n      ev = CreateUUID[],\n      HTMLCounter = \
-HTMLView[cnt // Offload],\n      max = OptionValue[\"Count\"]\n},\n\n      \
-EventHandler[ev, {\n          \"Destroy\" -> Function[Null, EventRemove[ev]; \
-If[task[\"TaskStatus\"] === \"Running\", TaskRemove[task]]; \
-ClearAll[task];],\n          \"Left\" -> Function[Null, cnt = 0],\n          \
-\"Slide\" -> Function[Null, task = SetInterval[If[cnt < max, cnt += 1, \
-TaskRemove[task]], 15]]\n      }];\n\n      <div class=\"text-center \
-text-gray-600 m-4 p-4 rounded bg-gray-100 flex flex-col\">\n          \
-<HTMLCounter/>\n          <span class=\"text-md\"><Text/></span>\n          \
-<SlideEventListener Id={ev}/>\n      </div>\n] ]\n\nOptions[Stat] = \
-{\"Count\" -> 1};", "Display" -> "codemirror", 
-    "Hash" -> "cc47f721-ec60-4152-bfdf-400847e63cbf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nEach `Stat` component is generated with its own scope \
-and counts up independently. You can place them on any slide as many as you \
-want:", "Display" -> "codemirror", "Hash" -> 
-     "b0380db3-2bb8-41fd-874a-8f67ff754d6e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Each `Stat` component is generated with its own scope and \
-counts up independently. You can place them on any slide as many as you \
-want:", "Display" -> "markdown", "Hash" -> 
-     "f91a4cdf-0c2d-4519-87b2-6c2ca8fb4af6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n# Stats\n\n<Row>\n      <Stat \
-Count={11}>Citations</Stat>\n      <Stat Count={110}>Hours</Stat>\n      \
-<Stat Count={1010}>Symbols</Stat>\n</Row>", "Display" -> "codemirror", 
-    "Hash" -> "8a3db8ae-345a-4622-8eec-a9c3e0a0f4a8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nEach counter is self-contained and responds only when \
-the slide is active.\n\n## Widgets with plots\nLet's create another example: \
-a custom widget that reacts to slide fragments. For instance, a reactive \
-chart with a flying disk that moves when a fragment appears. Here we use the \
-`Offload` method to switch between datasets provided in options:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "293a4942-8887-4884-82ab-12c2f679a823", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Each counter is self-contained and responds only when the \
-slide is active.\n\n## Widgets with plots\nLet's create another example: a \
-custom widget that reacts to slide fragments. For instance, a reactive chart \
-with a flying disk that moves when a fragment appears. Here we use the \
-`Offload` method to switch between datasets provided in options:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d4fc08be-b674-4e6f-b45e-d55bc024234f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".wlx\nPlotWidget[OptionsPattern[]] := Module[{\n  data = \
-OptionValue[\"DataA\"],\n  disk = OptionValue[\"DataA\"] // Last\n},\n\n  \
-With[{\n    Canvas = Graphics[{\n      ColorData[97][1], Line[data // \
-Offload],\n      ColorData[97][3], Disk[disk // Offload, {0.4,0.05}]\n    }, \
-Axes -> True, ImageSize -> 500, PlotRange -> {{-0.2, 1.1 5 Pi}, 1.1 {-1, \
-1}},\n       TransitionDuration -> 500],\n    uid = CreateUUID[],\n    dataA \
-= OptionValue[\"DataA\"],\n    dataB = OptionValue[\"DataB\"]\n  },\n    \
-EventHandler[uid, {\n      \"fragment-1\" -> Function[Null,\n        data = \
-dataB;\n        disk = dataB // Last;\n      ],\n      (\"Left\" | \
-\"Destroy\" | \"Slide\") -> Function[Null,\n        data = dataA;\n        \
-disk = dataB // First;\n      ]\n      }];\n\n    <div class=\"flex flex-col \
-gap-y-2\">\n      <Canvas />\n      <div class=\"fragment \
-invisible\">Invisible text</div>\n      <SlideEventListener Id={uid} />\n    \
-</div>\n  ]\n]\n\nOptions[PlotWidget] = {\"DataA\" -> {}, \"DataB\" -> {}};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7a34c587-805b-441a-82fd-3c4825780b6f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nGenerate 2 datasets:", "Display" -> "codemirror", 
-    "Hash" -> "6f233d26-3e6b-463e-bc97-1e71df28a4d6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Generate 2 datasets:", "Display" -> "markdown", 
-    "Hash" -> "f19f7578-f54d-4f84-9867-591deaed6f82", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "{dataA, dataB} = {\n  Table[{x, Sin[x]}, {x, 0, 5 Pi, \
-0.1}],\n  Table[{x, Tan[x]}, {x, 0, 5 Pi, 0.1}]\n};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bd30da2c-70a9-4800-987c-85cfdf7fdda6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nMount it on a slide:", "Display" -> "codemirror", 
-    "Hash" -> "e2346b0c-43f2-4620-9887-5b9fd766a8f5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Mount it on a slide:", "Display" -> "markdown", 
-    "Hash" -> "7fac67e0-e085-4c21-b492-d9940c907d91", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# First slide\n\n---\n\n# Second \
-slide\n\n<PlotWidget DataA={dataA} DataB={dataB} />\n\n---\n\n# Third slide", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b050edfd-fad6-454f-9d1b-e6cc7b3f91ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\n## Animation triggers\nAnother example of using slide \
-events to trigger animation is `Animate`. The simplest example we can think \
-of is:", "Display" -> "codemirror", 
-    "Hash" -> "6ae4c60d-7b59-42d6-85a7-898f0b4d0d41", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "## Animation triggers\nAnother example of using slide events \
-to trigger animation is `Animate`. The simplest example we can think of is:", 
-    "Display" -> "markdown", "Hash" -> 
-     "47a1e861-31d1-45ea-b2e7-00cbecde1062", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Animate[Graphics3D[{\n  Black, Arrow[{{0,0,0}, {8Pi,0,0}}],\n \
- Red, Tube[Table[{x, 0, 5 Sin[x-t]}, {x,0,6Pi,0.1}], 0.2],\n  Blue, \
-Tube[Table[{x, 5 Sin[x-t+Pi/2], 0}, {x,0,6Pi,0.1}], 0.2]\n}], {t,0,16Pi,0.1}, \
-RefreshRate->60]", "Display" -> "codemirror", 
-    "Hash" -> "09d2ad16-26dd-464c-bf20-7e5f97568612", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\n`Animate` supports external controls wired via \
-`EventObject`, which allow you to start, stop, or suspend the animation:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4404d050-e7dd-49ac-9bbb-a6bb6b4a308d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "`Animate` supports external controls wired via `EventObject`, \
-which allow you to start, stop, or suspend the animation:", 
-    "Display" -> "markdown", "Hash" -> 
-     "a2f3d343-69ad-41db-adaf-925a7cdb7123", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".wlx\n\nAnimation := With[{\n  ev = EventObject[],\n  proxy = \
-EventObject[]\n}, {\n  AnimationHolder = Animate[Graphics3D[{\n      Black, \
-Arrow[{{0,0,0}, {8Pi,0,0}}],\n      Red, Tube[Table[{x, 0, 5 Sin[x-t]}, \
-{x,0,6Pi,0.1}], 0.2],\n      Blue, Tube[Table[{x, 5 Sin[x-t+Pi/2], 0}, \
-{x,0,6Pi,0.1}], 0.2]\n  }], {t,0,16Pi,0.1}, RefreshRate->60, \
-\"TriggerEvent\"->proxy]\n},\n      EventHandler[ev, {\n        \"Slide\" -> \
-(EventFire[proxy, \"Start\", Null]&),\n        \"Left\" | \"Destroy\" -> \
-(EventFire[proxy, \"Stop\", Null]&)\n      }];\n      <div>\n          \
-<AnimationHolder/>\n          <SlideEventListener Id={ev}/>\n      </div>\n]"\
-, "Display" -> "codemirror", "Hash" -> 
-     "955b834c-5c47-4139-b8cb-ac0e6377357b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nHere we used proxy to filter out other events and \
-properly wire the rest. Let's place it on a slide:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fd4c42d6-6b99-4da2-839f-e658b4eae2dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Here we used proxy to filter out other events and properly \
-wire the rest. Let's place it on a slide:", "Display" -> "markdown", 
-    "Hash" -> "fe031902-9306-443b-be0a-3aaf63edc4b1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# Empty slide\n\n---\n\n<Animation/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0d8ae88a-00d1-4b5a-8a88-90e91ff4b83e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\n## Run Javascript\n\nHere is an example of how to \
-trigger confetti with an external JavaScript library. To understand how \
-Wolfram Language integrates with JavaScript, check out these guides:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1be09736-3136-43f6-847f-d39bf8fc6168", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "## Run Javascript\n\nHere is an example of how to trigger \
-confetti with an external JavaScript library. To understand how Wolfram \
-Language integrates with JavaScript, check out these guides:", 
-    "Display" -> "markdown", "Hash" -> 
-     "78d40692-fe57-449f-bd7c-ba0ccc93157b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".html\n<script \
-src=\"https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js\"></sc\
-ript>", "Display" -> "codemirror", "Hash" -> 
-     "c8175f72-83bc-4bf4-bbe8-01a2b87cb3e4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "<script \
-src=\"https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js\"></sc\
-ript>", "Display" -> "html", "Hash" -> 
-     "fadaac24-6f4f-459c-89ce-1b2c62545ea8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nNow it is in the global Javascript scope. Define a \
-javascript function to trigger confetti:", "Display" -> "codemirror", 
-    "Hash" -> "6bbebfab-4aeb-4674-97c1-770e96066985", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Now it is in the global Javascript scope. Define a javascript \
-function to trigger confetti:", "Display" -> "markdown", 
-    "Hash" -> "71286b9a-f2d3-4b4a-8a85-75220c7106ae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".js\ncore.RunFireworks = async (args, env) => {\nconst id = \
-await interpretate(args[0], \
-env);\nparty.confetti(document.getElementById(id).parentNode, {\n  count: \
-party.variation.range(20, 40),\n  size: party.variation.range(0.8, \
-2.2),\n});\n}", "Display" -> "codemirror", 
-    "Hash" -> "e3ca3e5e-71e5-4859-96e3-af7f7b1b22eb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "core.RunFireworks = async (args, env) => {\nconst id = await \
-interpretate(args[0], \
-env);\nparty.confetti(document.getElementById(id).parentNode, {\n  count: \
-party.variation.range(20, 40),\n  size: party.variation.range(0.8, \
-2.2),\n});\n}", "Display" -> "js", "Hash" -> 
-     "42365357-02c6-40db-bc44-c0b35532e2a3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nHere `RunFireworks[id]` accepts one argument: the ID of \
-a DOM element whose parent will receive the confetti fireworks. We can create \
-a dummy DOM element within a WLX component and trigger `RunFireworks` using \
-`FrontSubmit` in response to slide events:", "Display" -> "codemirror", 
-    "Hash" -> "9fedc8e7-da82-4c5e-b142-e030fceedf4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Here `RunFireworks[id]` accepts one argument: the ID of a DOM \
-element whose parent will receive the confetti fireworks. We can create a \
-dummy DOM element within a WLX component and trigger `RunFireworks` using \
-`FrontSubmit` in response to slide events:", "Display" -> "markdown", 
-    "Hash" -> "afa45617-b23f-4f1b-9739-13b11801ab4d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".wlx\nParty := Module[{\n  UId = CreateUUID[],\n  Ev = \
-CreateUUID[]\n},\n  EventHandler[Ev, {\n      \"Slide\" -> Function[Null,\n   \
-       FrontSubmit[RunFireworks[UId]]\n      ]\n  }];\n  <div id=\"{UId}\">\n \
-     <SlideEventListener Id={Ev}/>\n  </div>\n]", "Display" -> "codemirror", 
-    "Hash" -> "cb2a54bc-b5eb-401b-8d5a-7c855b50afdb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nNow if you place it on any slide, it will launch \
-confetti once the slide has become visible. For example:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "787c7104-88ea-4d29-adb1-5267f28743a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Now if you place it on any slide, it will launch confetti \
-once the slide has become visible. For example:", "Display" -> "markdown", 
-    "Hash" -> "eef31862-ad1c-496e-94e4-b3371e890e21", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".slide\n\n# Let's have\n\n---\n\n# A Party!\n\n<Party/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "584f569c-793c-4678-993e-136e6440f33f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\n## Programmatic slides control\nUse \
-`FrontSlidesSelected` to control slides programmatically. Note that this is a \
-frontend function (i.e., undefined on the Wolfram Kernel). Execute it with \
-`FrontSubmit` to navigate to a different slide programmatically. For \
-example:", "Display" -> "codemirror", 
-    "Hash" -> "105973e5-8ff0-477f-bac7-0f24ec65f8c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "## Programmatic slides control\nUse `FrontSlidesSelected` to \
-control slides programmatically. Note that this is a frontend function (i.e., \
-undefined on the Wolfram Kernel). Execute it with `FrontSubmit` to navigate \
-to a different slide programmatically. For example:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d83ecd31-59b2-41ed-aa69-d4ae6a96984c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "FrontSlidesSelected[\"navigateNext\", 1] // FrontSubmit", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b7463e3-6b46-40bf-9c5c-455f705ac642", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nThis will navigate the first visible presentation to the \
-next slide. You can connect external devices and manipulate slides remotely \
-via Wolfram Language, timers, or buttons:", "Display" -> "codemirror", 
-    "Hash" -> "5001943f-3a5e-4641-b59e-b6334e4b1afd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "This will navigate the first visible presentation to the next \
-slide. You can connect external devices and manipulate slides remotely via \
-Wolfram Language, timers, or buttons:", "Display" -> "markdown", 
-    "Hash" -> "45e1a2ce-bca6-40d0-aa89-1ba73e303641", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "NavButton := Button[\"\[RightArrow]\", \
-FrontSlidesSelected[\"navigateNext\", 1] // FrontSubmit];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9f4e75fc-3770-4b1f-9168-41c745512434", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> ".md\nThen use it on a slide:", "Display" -> "codemirror", 
-    "Hash" -> "e2617d60-7c80-4ff2-998e-f010c5d757f0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> "Then use it on a slide:", "Display" -> "markdown", 
-    "Hash" -> "417ce2f0-8ecf-4ed8-aeb8-49b418bc90b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>, 
-   <|"Data" -> 
-     ".slide\n\nCurrent slide\n\n<NavButton/>\n\n---\n\nNext slide", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d2325944-ea97-4fb0-aae9-d245269b67f2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "cfdfeeb4-a462-4381-863b-e5a18279908c"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Advanced Slides
+This is an advanced guide on how to build live presentations with dynamic content events and complex layouts.
+
+## Data-driven slides
+We have seen it already, that one can generate plots from the raw data directly on a slide:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Advanced Slides
+This is an advanced guide on how to build live presentations with dynamic content events and complex layouts.
+
+## Data-driven slides
+We have seen it already, that one can generate plots from the raw data directly on a slide:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[MyFigure];
+
+MyFigure[OptionsPattern[]] := Histogram[RandomVariate[NormalDistribution[0, OptionValue["Sigma"]], 200]];
+Options[MyFigure] = {"Sigma" -> 1.0};
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<MyFigure Sigma={1.0}/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >FrontEndExecutable[d5c51f07-b309-402d-ae2e-0bde4050b9d8]</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same works with any interactive element with `WLXForm` defined (or supported), for example `Manipulate`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same works with any interactive element with `WLXForm` defined (or supported), for example `Manipulate`:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+Cannon = Manipulate[
+  Module[{g = 9.81, t, tmax, x, y, vx, vy},
+    tmax = (2 * v0 * Sin[angle Degree]) / g;
+    
+    Show[
+      (* Trajectory plot *)
+      ParametricPlot[
+        {v0 * Cos[angle Degree] * t, 
+         v0 * Sin[angle Degree] * t - 0.5 * g * t^2},
+        {t, 0, tmax},
+        PlotStyle -> {Blue, Thick},
+        PlotRange -> {{0, 100}, {0, 60}},
+        AspectRatio -> 0.6,
+        GridLines -> Automatic,
+        FrameLabel -> {"Distance (m)", "Height (m)"},
+        ImageSize -> 300
+      ],
+      Graphics[{
+        Red, Thick, 
+        Arrow[{{0, 0}, 2.0 {v0 * Cos[angle Degree] / 5.0, v0 * Sin[angle Degree] / 5.0}}]
+      }],
+      Graphics[{
+        Green, PointSize[0.05],
+        Point[{v0 * Cos[angle Degree] * tmax, 0}]
+      }],
+      Epilog -> {
+        Text[
+          "Range: " <> ToString[N[v0 * Cos[angle Degree] * tmax, 3]] <> " m", {50, 5+30}
+        ],
+        Text[
+          "Max Height: " <> ToString[N[(v0 * Sin[angle Degree])^2 / (2 * g), 3]] <> " m", {50, 10+30}
+        ]
+      }
+    ]
+  ],
+  
+  {{v0, 30, "Initial Velocity (m/s)"}, 5, 35, 5},
+  {{angle, 45, "Launch angle Degree (°)"}, 15, 90, 15}, 
+  Appearance->None
+];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+## Projectile Motion Simulator
+
+Adjust the parameters to see how they affect the trajectory:
+
+<Cannon/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+However, we can push the idea of slides and data further and bind different actions to the events generated on a slide.
+
+## Events binding
+Every slide generates a bunch of events that can be captured with `SlideEventListener`. For example we can capture when the slide becomes visible or invisible:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+However, we can push the idea of slides and data further and bind different actions to the events generated on a slide.
+
+## Events binding
+Every slide generates a bunch of events that can be captured with `SlideEventListener`. For example we can capture when the slide becomes visible or invisible:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler["generated-by-slide", {
+    "Slide" -> Function[Null,
+        Print["I am visible"];
+    ], 
+    "Left" | "Destroy" -> Function[Null,
+        Print["I am no longer visible"];
+    ]
+}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# First slide 
+
+---
+
+# Second slide
+
+<SlideEventListener Id={"generated-by-slide"}/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same works with fragments:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same works with fragments:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler["generated-by-slide", {
+    "fragment-1" -> Function[Null,
+        Print["I am a fragment 1"];
+    ],
+    "fragment-2" -> Function[Null,
+        Print["I am a fragment 2"];
+    ]
+}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Fragments
+
+I am a fragment 1 <!-- .element: class="fragment" -->
+
+I am a fragment 2 <!-- .element: class="fragment" -->
+
+<SlideEventListener Id={"generated-by-slide"}/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Stat Counter
+Here is an example component of a basic stat display:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Stat Counter
+Here is an example component of a basic stat display:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+Stat[Text_, OptionsPattern[]] := With[{
+      Count = OptionValue["Count"]
+},
+
+      <div class="text-center text-gray-600 m-4 p-4 rounded bg-gray-100 flex flex-col">
+          <Count />
+          <span class="text-md"><Text /></span>
+      </div>
+]
+
+Options[Stat] = {"Count" -> 1};
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Basic counter
+
+<Stat Count={11}>Number of publications</Stat>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+# Basic counter
+
+<div class="text-center text-gray-600 m-4 p-4 rounded bg-gray-100 flex flex-col">FrontEndExecutable[52ac37fe-5353-4c6b-8a61-a51c06901581]<span class="text-md">Number of publications</span>RVJSEvent["64203b44-12c6-4530-8995-aa27baa77b3e","Slide"]</div></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To make it count up from 0, we need to update the displayed number using a timer that starts when `SlideEventListener` fires the "Slide" event. To display the changing value, we use `HTMLView` (though `TextView` could also work):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To make it count up from 0, we need to update the displayed number using a timer that starts when `SlideEventListener` fires the "Slide" event. To display the changing value, we use `HTMLView` (though `TextView` could also work):
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+Stat[Text_, OptionsPattern[]] := Module[{
+      cnt = 0,
+      task
+}, With[{
+      ev = CreateUUID[],
+      HTMLCounter = HTMLView[cnt // Offload],
+      max = OptionValue["Count"]
+},
+
+      EventHandler[ev, {
+          "Destroy" -> Function[Null, EventRemove[ev]; If[task["TaskStatus"] === "Running", TaskRemove[task]]; ClearAll[task];],
+          "Left" -> Function[Null, cnt = 0],
+          "Slide" -> Function[Null, task = SetInterval[If[cnt < max, cnt += 1, TaskRemove[task]], 15]]
+      }];
+
+      <div class="text-center text-gray-600 m-4 p-4 rounded bg-gray-100 flex flex-col">
+          <HTMLCounter/>
+          <span class="text-md"><Text/></span>
+          <SlideEventListener Id={ev}/>
+      </div>
+] ]
+
+Options[Stat] = {"Count" -> 1};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Each `Stat` component is generated with its own scope and counts up independently. You can place them on any slide as many as you want:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Each `Stat` component is generated with its own scope and counts up independently. You can place them on any slide as many as you want:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Stats
+
+<Row ImageSize={{Full, Automatic}} Alignment={Center}>
+      <Stat Count={11}>Citations</Stat>
+      <Stat Count={110}>Hours</Stat>
+      <Stat Count={1010}>Symbols</Stat>
+</Row>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Each counter is self-contained and responds only when the slide is active.
+
+## Widgets with plots
+Let's create another example: a custom widget that reacts to slide fragments. For instance, a reactive chart with a flying disk that moves when a fragment appears. Here we use the `Offload` method to switch between datasets provided in options:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Each counter is self-contained and responds only when the slide is active.
+
+## Widgets with plots
+Let's create another example: a custom widget that reacts to slide fragments. For instance, a reactive chart with a flying disk that moves when a fragment appears. Here we use the `Offload` method to switch between datasets provided in options:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+PlotWidget[OptionsPattern[]] := Module[{
+  data = OptionValue["DataA"],
+  disk = OptionValue["DataA"] // Last
+},
+
+  With[{
+    Canvas = Graphics[{
+      ColorData[97][1], Line[data // Offload],
+      ColorData[97][3], Disk[disk // Offload, {0.4,0.05}]
+    }, Axes -> True, ImageSize -> 500, PlotRange -> {{-0.2, 1.1 5 Pi}, 1.1 {-1, 1}},
+       TransitionDuration -> 500],
+    uid = CreateUUID[],
+    dataA = OptionValue["DataA"],
+    dataB = OptionValue["DataB"]
+  },
+    EventHandler[uid, {
+      "fragment-1" -> Function[Null,
+        data = dataB;
+        disk = dataB // Last;
+      ],
+      ("Left" | "Destroy" | "Slide") -> Function[Null,
+        data = dataA;
+        disk = dataB // First;
+      ]
+      }];
+
+    <div class="flex flex-col gap-y-2">
+      <Canvas />
+      <div class="fragment invisible">Invisible text</div>
+      <SlideEventListener Id={uid} />
+    </div>
+  ]
+]
+
+Options[PlotWidget] = {"DataA" -> {}, "DataB" -> {}};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Generate 2 datasets:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Generate 2 datasets:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{dataA, dataB} = {
+  Table[{x, Sin[x]}, {x, 0, 5 Pi, 0.1}],
+  Table[{x, Tan[x]}, {x, 0, 5 Pi, 0.1}]
+};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Mount it on a slide:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Mount it on a slide:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# First slide
+
+---
+
+# Second slide
+
+<PlotWidget DataA={dataA} DataB={dataB} />
+
+---
+
+# Third slide
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Animation triggers
+Another example of using slide events to trigger animation is `Animate`. The simplest example we can think of is:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Animation triggers
+Another example of using slide events to trigger animation is `Animate`. The simplest example we can think of is:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Animate[Graphics3D[{
+  Black, Arrow[{{0,0,0}, {8Pi,0,0}}],
+  Red, Tube[Table[{x, 0, 5 Sin[x-t]}, {x,0,6Pi,0.1}], 0.2],
+  Blue, Tube[Table[{x, 5 Sin[x-t+Pi/2], 0}, {x,0,6Pi,0.1}], 0.2]
+}], {t,0,16Pi,0.1}, RefreshRate->60]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`Animate` supports external controls wired via `EventObject`, which allow you to start, stop, or suspend the animation:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`Animate` supports external controls wired via `EventObject`, which allow you to start, stop, or suspend the animation:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+Animation := With[{
+  ev = EventObject[],
+  proxy = EventObject[]
+}, {
+  AnimationHolder = Animate[Graphics3D[{
+      Black, Arrow[{{0,0,0}, {8Pi,0,0}}],
+      Red, Tube[Table[{x, 0, 5 Sin[x-t]}, {x,0,6Pi,0.1}], 0.2],
+      Blue, Tube[Table[{x, 5 Sin[x-t+Pi/2], 0}, {x,0,6Pi,0.1}], 0.2]
+  }], {t,0,16Pi,0.1}, RefreshRate->60, "TriggerEvent"->proxy]
+},
+      EventHandler[ev, {
+        "Slide" -> (EventFire[proxy, "Start", Null]&),
+        "Left" | "Destroy" -> (EventFire[proxy, "Stop", Null]&)
+      }];
+      <div>
+          <AnimationHolder/>
+          <SlideEventListener Id={ev}/>
+      </div>
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we used proxy to filter out other events and properly wire the rest. Let's place it on a slide:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we used proxy to filter out other events and properly wire the rest. Let's place it on a slide:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Empty slide
+
+---
+
+<Animation/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Run Javascript
+
+Here is an example of how to trigger confetti with an external JavaScript library. To understand how Wolfram Language integrates with JavaScript, check out these guides:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Run Javascript
+
+Here is an example of how to trigger confetti with an external JavaScript library. To understand how Wolfram Language integrates with JavaScript, check out these guides:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.html
+<script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+
+%-------------------------------------------------------------------------%
+Display: html
+Type: Output
+%-------------------------------------------------------------------------%
+<script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now it is in the global Javascript scope. Define a javascript function to trigger confetti:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now it is in the global Javascript scope. Define a javascript function to trigger confetti:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.RunFireworks = async (args, env) => {
+const id = await interpretate(args[0], env);
+party.confetti(document.getElementById(id).parentNode, {
+  count: party.variation.range(20, 40),
+  size: party.variation.range(0.8, 2.2),
+});
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.RunFireworks = async (args, env) => {
+const id = await interpretate(args[0], env);
+party.confetti(document.getElementById(id).parentNode, {
+  count: party.variation.range(20, 40),
+  size: party.variation.range(0.8, 2.2),
+});
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here `RunFireworks[id]` accepts one argument: the ID of a DOM element whose parent will receive the confetti fireworks. We can create a dummy DOM element within a WLX component and trigger `RunFireworks` using `FrontSubmit` in response to slide events:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here `RunFireworks[id]` accepts one argument: the ID of a DOM element whose parent will receive the confetti fireworks. We can create a dummy DOM element within a WLX component and trigger `RunFireworks` using `FrontSubmit` in response to slide events:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+Party := Module[{
+  UId = CreateUUID[],
+  Ev = CreateUUID[]
+},
+  EventHandler[Ev, {
+      "Slide" -> Function[Null,
+          FrontSubmit[RunFireworks[UId]]
+      ]
+  }];
+  <div id="{UId}">
+      <SlideEventListener Id={Ev}/>
+  </div>
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now if you place it on any slide, it will launch confetti once the slide has become visible. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now if you place it on any slide, it will launch confetti once the slide has become visible. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Let's have
+
+---
+
+# A Party!
+
+<Party/>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Programmatic slides control
+Use `FrontSlidesSelected` to control slides programmatically. Note that this is a frontend function (i.e., undefined on the Wolfram Kernel). Execute it with `FrontSubmit` to navigate to a different slide programmatically. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Programmatic slides control
+Use `FrontSlidesSelected` to control slides programmatically. Note that this is a frontend function (i.e., undefined on the Wolfram Kernel). Execute it with `FrontSubmit` to navigate to a different slide programmatically. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontSlidesSelected["navigateNext", 1] // FrontSubmit
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This will navigate the first visible presentation to the next slide. You can connect external devices and manipulate slides remotely via Wolfram Language, timers, or buttons:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This will navigate the first visible presentation to the next slide. You can connect external devices and manipulate slides remotely via Wolfram Language, timers, or buttons:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NavButton := Button["→", FrontSlidesSelected["navigateNext", 1] // FrontSubmit];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Then use it on a slide:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Then use it on a slide:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+Current slide
+
+<NavButton/>
+
+---
+
+Next slide
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: d5c51f07-b309-402d-ae2e-0bde4050b9d8
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{{Directive[RGBColor[1, 0.79375, 0.25], EdgeForm[Directive[Thickness[Small], Opacity[0.595], GrayLevel[0]]]], {{}, {Directive[RGBColor[1, 0.79375, 0.25], EdgeForm[Directive[Thickness[Small], Opacity[0.595], GrayLevel[0]]]], {{Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-3.5, 0}, {-3, 1}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 1], Style[1, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-3, 0}, {-2.5, 1}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 1], Style[1, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-2.5, 0}, {-2, 5}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 5], Style[5, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-2, 0}, {-1.5, 7}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 7], Style[7, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-1.5, 0}, {-1, 28}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 28], Style[28, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-1, 0}, {-0.5, 29}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 29], Style[29, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{-0.5, 0}, {0, 40}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 40], Style[40, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{0, 0}, {0.5, 39}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 39], Style[39, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{0.5, 0}, {1, 21}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 21], Style[21, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{1, 0}, {1.5, 16}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 16], Style[16, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{1.5, 0}, {2, 8}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 8], Style[8, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{2, 0}, {2.5, 4}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 4], Style[4, {}]]}, {Tooltip[StatusArea[{Charting`DelayedMouseEffect[Rectangle[{2.5, 0}, {3, 1}, "RoundingRadius" -> 0], {"Style", EdgeForm[{GrayLevel[0.5], AbsoluteThickness[1.5], Opacity[0.66]}]}]}, 1], Style[1, {}]]}}}, {}, {}}}, {{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}}}, {AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {-3.63, 0}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {CoordinatesToolOptions -> {"DisplayFunction" -> ({Identity[#1[[1]]], Identity[#1[[2]]]} & ), "CopiedValueFunction" -> ({Identity[#1[[1]]], Identity[#1[[2]]]} & )}, "AxisPadding" -> Scaled[0.02], "ChartDefaultStyle" -> {Directive[RGBColor[1, 0.725, 0], Opacity[0.6]], Directive[RGBColor[0.24, 0.6, 0.8], Opacity[0.6]], Directive[RGBColor[0.455, 0.7, 0.21], Opacity[0.6]], Directive[RGBColor[0.922526, 0.385626, 0.209179], Opacity[0.6]], Directive[RGBColor[0.578, 0.51, 0.85], Opacity[0.6]], Directive[RGBColor[0.772079, 0.431554, 0.102387], Opacity[0.6]], Directive[RGBColor[0.4, 0.64, 1], Opacity[0.6]], Directive[RGBColor[1, 0.75, 0], Opacity[0.6]], Directive[RGBColor[0.8, 0.4, 0.76], Opacity[0.6]], Directive[RGBColor[0.637, 0.65, 0], Opacity[0.6]], Directive[RGBColor[0.915, 0.3325, 0.2125], Opacity[0.6]], Directive[RGBColor[0.40082222609352647, 0.5220066643438841, 0.85], Opacity[0.6]], Directive[RGBColor[0.9728288904374106, 0.621644452187053, 0.07336199581899142], Opacity[0.6]], Directive[RGBColor[0.736782672705901, 0.358, 0.5030266573755369], Opacity[0.6]], Directive[RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], Opacity[0.6]]}, "DefaultBoundaryStyle" -> Automatic, "DefaultChartBaseStyle" -> Directive[RGBColor[1, 0.79375, 0.25], EdgeForm[{GrayLevel[0]}]], "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultPlotStyle" -> Automatic, "DomainPadding" -> Scaled[0.02], "RangePadding" -> Scaled[0.05]}, PlotRange -> {{-3.5, 3}, {All, All}}, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 52ac37fe-5353-4c6b-8a61-a51c06901581
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div style=\"\" class=\"p-2\" data-type=\"html-string\"></div>", Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]], Epilog -> CoffeeLiqueur`Extensions`InputsOutputs`Private`InternalElementUpdate[Offload[cnt$531409], "html-string", "innerHTML"]]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: cnt$531409
+%-------------------------------------------------------------------------%
+11
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
