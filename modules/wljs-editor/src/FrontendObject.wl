@@ -83,7 +83,7 @@ CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
     FrontEndExecutable[uid]
 ]
 
-CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, CreateUUID[], opts]
+CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][Hash[expr]], opts]
 
 Options[CreateFrontEndObject] = {"Store" -> All}
 
