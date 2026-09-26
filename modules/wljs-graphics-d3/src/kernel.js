@@ -1260,6 +1260,41 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
     let gTX = undefined;
     let gRY = undefined;
+
+    const scaledTicksScale = (scale, functions) => {
+      if (functions[1] !== 'Log' || functions[2] !== 'Exp') return scale;
+
+      // Wolfram already supplies logged coordinates. Generate ticks in the
+      // original domain, then map them back without logging the geometry twice.
+      scale.ticks = count => {
+        const domain = scale.domain();
+        const decades = Math.abs(domain[domain.length - 1] - domain[0]) / Math.LN10;
+        // D3 omits minor ticks when the decade span exceeds the tick count.
+        return d3.scaleLog()
+          .domain(domain.map(Math.exp))
+          .ticks(Math.max(count ?? 10, Math.ceil(decades) + 1))
+          .map(Math.log);
+      };
+
+      scale.tickFormat = (count, formatter) => {
+        const logScale = d3.scaleLog().domain(scale.domain().map(Math.exp));
+        // Keep the normal label density even though we render every minor tick.
+        const labeledDecades = new Set(logScale.ticks(count).map(value => {
+          const exponent = Math.log10(value);
+          return Math.abs(exponent - Math.round(exponent)) < 1e-10 ? Math.round(exponent) : null;
+        }));
+        const format = logScale.tickFormat(Infinity, typeof formatter === 'function' ? value => formatter(Math.log(value)) : formatter);
+        return value => {
+          const exponent = value / Math.LN10;
+          if (Math.abs(exponent - Math.round(exponent)) > 1e-10 || !labeledDecades.has(Math.round(exponent))) return '';
+          return format(Math.exp(value));
+        };
+      };
+
+      const copy = scale.copy;
+      scale.copy = () => scaledTicksScale(copy(), functions);
+      return scale;
+    };
     
     let x = d3.scaleLinear()
       .domain(range[0])
@@ -1310,10 +1345,11 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
      
           switch(ticks[0].type) {
             case 'ScaledTicks':
-               
-               x = d3.scaleLinear()
+
+               x = scaledTicksScale(d3.scaleLinear()
                .domain(range[0]) // like [-3.926, 0]
-               .range([0, width]); 
+               .range([0, width]), ticks[0].args[0]);
+               txAxis.scale(x);
 
                //[TODO] covers only a few cases...
                const mathFunction = eval('Math.'+ticks[0].args[0][2].toLowerCase());
@@ -1338,7 +1374,12 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
                  }
                };
 
-               xAxis = d3.axisBottom(x).tickFormat(tickFormat)
+               xAxis = d3.axisBottom(x);
+               if (ticks[0].args[0][1] === 'Log' && ticks[0].args[0][2] === 'Exp') {
+                 xAxis.ticks(10, tickFormat);
+               } else {
+                 xAxis.tickFormat(tickFormat);
+               }
 
             break;
           }
@@ -1399,9 +1440,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           switch(ticks[2].type) {
             case 'ScaledTicks':
                
-               x = d3.scaleLinear()
+               x = scaledTicksScale(d3.scaleLinear()
                .domain(range[0]) // like [-3.926, 0]
-               .range([0, width]); 
+               .range([0, width]), ticks[2].args[0]);
+               xAxis.scale(x);
 
                //[TODO] covers only a few cases...
                const mathFunction = eval('Math.'+ticks[2].args[0][2].toLowerCase());
@@ -1426,7 +1468,12 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
                  }
                };
 
-               txAxis = d3.axisTop(x).tickFormat(tickFormat)
+               txAxis = d3.axisTop(x);
+               if (ticks[2].args[0][1] === 'Log' && ticks[2].args[0][2] === 'Exp') {
+                 txAxis.ticks(10, tickFormat);
+               } else {
+                 txAxis.tickFormat(tickFormat);
+               }
 
             break;
           }
@@ -1524,9 +1571,10 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           switch(ticks[1].type) {
             case 'ScaledTicks':
                
-               y = d3.scaleLinear()
+               y = scaledTicksScale(d3.scaleLinear()
                .domain(range[1]) // like [-3.926, 0]
-               .range([height, 0]); 
+               .range([height, 0]), ticks[1].args[0]);
+               ryAxis.scale(y);
 
                //[TODO] covers only a few cases...
                const mathFunction = eval('Math.'+ticks[1].args[0][2].toLowerCase());
@@ -1551,7 +1599,12 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
                  }
                };
 
-             yAxis = d3.axisLeft(y).tickFormat(tickFormat)
+             yAxis = d3.axisLeft(y);
+             if (ticks[1].args[0][1] === 'Log' && ticks[1].args[0][2] === 'Exp') {
+               yAxis.ticks(10, tickFormat);
+             } else {
+               yAxis.tickFormat(tickFormat);
+             }
 
             break;
           }
@@ -1608,12 +1661,13 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           switch(ticks[3].type) {
             case 'ScaledTicks':
                
-               y = d3.scaleLinear()
+               y = scaledTicksScale(d3.scaleLinear()
                .domain(range[1]) // like [-3.926, 0]
-               .range([height, 0]); 
+               .range([height, 0]), ticks[3].args[0]);
+               yAxis.scale(y);
 
                //[TODO] covers only a few cases...
-               const mathFunction = eval('Math.'+ticks[1].args[0][2].toLowerCase());
+               const mathFunction = eval('Math.'+ticks[3].args[0][2].toLowerCase());
 
                const tickFormat = d => {
                  const val = mathFunction(d);
@@ -1635,7 +1689,12 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
                  }
                };
 
-               ryAxis = d3.axisRight(y).tickFormat(tickFormat)
+               ryAxis = d3.axisRight(y);
+               if (ticks[3].args[0][1] === 'Log' && ticks[3].args[0][2] === 'Exp') {
+                 ryAxis.ticks(10, tickFormat);
+               } else {
+                 ryAxis.tickFormat(tickFormat);
+               }
 
             break;
           }
