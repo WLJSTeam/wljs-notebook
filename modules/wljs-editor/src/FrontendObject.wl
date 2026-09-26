@@ -83,7 +83,9 @@ CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
     FrontEndExecutable[uid]
 ]
 
-CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][Hash[expr]], opts]
+(* Hash[] function causes colisions, we have to use UUID instead *)
+(* CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][Hash[expr]], opts] *)
+CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][CreateUUID[]], opts]
 
 Options[CreateFrontEndObject] = {"Store" -> All}
 
