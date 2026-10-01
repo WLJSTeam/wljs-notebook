@@ -27,10 +27,8 @@ rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
 defaults = Get[FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}] ];
 
-testEndpoint[path_] := TimeConstrained[With[{test = Find[str = OpenRead[path], "# Map"]},
-  Close[str];
-  Echo["Test results: "]; Echo[test];
-  test === "# Map"
+testEndpoint[path_] := TimeConstrained[With[{test = Import[path, "Text"]},
+  TrueQ[StringContainsQ[test, "# Map"]]
 ], 6, False];
 
 endpoint := endpoint = SelectFirst[{
