@@ -70,11 +70,11 @@ App[request_] := With[{
     },
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
-      EventFire[AppEvent, "AfterUILoad", <|"Client"->$Client, "Settings"->settings, "Env"->env, "Controls"->GlobalControls, "WindowQ"->True|>];
+      EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "Controls"->GlobalControls, "WindowQ"->True|>];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["Window >> Destroy"];

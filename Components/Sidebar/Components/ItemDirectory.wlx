@@ -25,7 +25,7 @@ Component[OptionsPattern[]] := With[{
       
       If[!initialized, (* /* FIXME. Make global destroy signal */*)
         initialized = True;
-        With[{client = EventClone[$Client]},
+        With[{client = EventClone[$CurrentWebSocket]},
           EventHandler[client, {"Closed" -> Function[Null,
             EventRemove[client];
             ClearAll[State];
@@ -40,20 +40,20 @@ Component[OptionsPattern[]] := With[{
         "Empty",
           State = "Open";
           
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
               EventFire[Controller, "Load", <|"Client"->client|>];
               EventFire[Port, "Change", <|"Client"->client|>];
           ],
         
         "Open",
           State = "Hidden";
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
             EventFire[Controller, "Hide", <|"Client"->client|>];
           ], 
         
         "Hidden",
           State = "Open";
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
             EventFire[Controller, "Show", <|"Client"->client|>];
           ]       
       ];

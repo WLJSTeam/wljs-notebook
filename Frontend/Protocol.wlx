@@ -110,9 +110,9 @@ App[request_] := With[{
     loadSettingsOnceMore;
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      cachedClient = $CurrentWebSocket;
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["Protocol >> Destroy"];
@@ -127,7 +127,7 @@ App[request_] := With[{
 
       With[{msg = ImportString[Protocol, "RawJSON"]},
         Echo[msg];
-        EventFire[AppProtocol, msg["type"], Join[<|"URL" -> Protocol, "Client" -> $Client, "Controls" -> GlobalControls, "Messanger" -> GlobalMessanger, "Modals"->ModalController, "KernelList"->kernels|>, msg]];
+        EventFire[AppProtocol, msg["type"], Join[<|"URL" -> Protocol, "Client" -> $CurrentWebSocket, "Controls" -> GlobalControls, "Messanger" -> GlobalMessanger, "Modals"->ModalController, "KernelList"->kernels|>, msg]];
       ];
       
 

@@ -18,7 +18,7 @@ categoryPackages = SortBy[#, Function[item, -WLJSPackages`Packages[item, "wljs-m
 EventHandler[Secret, {"Load" -> Function[Null,
     EventHandler[controller, {
         name_String :> Function[state,
-            If[TrueQ[WLJSPackages`Packages[name,"wljs-meta","important"]], WebUISubmit[Alert["This is a core-package. Do it on your own risk!"], $Client]];
+            If[TrueQ[WLJSPackages`Packages[name,"wljs-meta","important"]], WebUISubmit[Alert["This is a core-package. Do it on your own risk!"], $CurrentWebSocket]];
             WLJSPackages`Packages[name, "enabled"] = state;
             Echo["CHanged!"];
             EventFire[Messager, Notifications`NotificationMessage["Info"](*`*), "A restart is required"]
@@ -28,7 +28,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
     }];
 
 
-    With[{socket = EventClone[$Client]},
+    With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {
             "Closed" -> Function[Null,
                 EventRemove[socket];

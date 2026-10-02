@@ -32,20 +32,20 @@ Controller["Duplicate", sidebarId_, __, Secret_] := Function[name,
   With[{decoded = URLDecode[name]},
     CopyFile[decoded, FileNameJoin[{DirectoryName[decoded], StringJoin[FileBaseName[decoded], "-dup", ".", FileExtension[decoded]]}]];
   ];
-  EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];
-  EventFire[Secret, "Change", <|"Client"->$Client|>];
+  EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];
+  EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
 ];
 
 Controller["Reveal", __] := Function[name,
-  WebUISubmit[Global`UIOpenExplorer[FileNameSplit[URLDecode[name]]] (*`*), $Client];
+  WebUISubmit[Global`UIOpenExplorer[FileNameSplit[URLDecode[name]]] (*`*), $CurrentWebSocket];
 ];
 
 Controller["Download", __] := Function[name,
-  WebUISubmit[Global`UIOpenDownloadWindow[name, FileNameTake[name // URLDecode]] (*`*), $Client];
+  WebUISubmit[Global`UIOpenDownloadWindow[name, FileNameTake[name // URLDecode]] (*`*), $CurrentWebSocket];
 ];
 
 Controller["CopyLink", __] := Function[name,
-  WebUISubmit[Global`UIOpenCopyLink[name] (*`*), $Client];
+  WebUISubmit[Global`UIOpenCopyLink[name] (*`*), $CurrentWebSocket];
 ];
 
 
@@ -64,11 +64,11 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
               Then[EventFire[Controls, "RenameFile", {decoded, name}], Function[Null,
                 If[decoded == path,
                 
-                  WebUISubmit[UILocation[URLEncode[name] ], $Client];
+                  WebUISubmit[UILocation[URLEncode[name] ], $CurrentWebSocket];
                 ];
               ]];
             ];
-            EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];
+            EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];
           ,
             If[DirectoryQ[decoded],
               RenameDirectory[decoded, FileNameJoin[Flatten @ {Drop[splitted,-1], name} ]];
@@ -77,12 +77,12 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
 
               Then[EventFire[Controls, "RenameFile", {decoded, FileNameJoin[Flatten @ {Drop[splitted,-1], name} ]}], Function[Null,
                 If[decoded == path,
-                  WebUISubmit[UILocation[URLEncode[ FileNameJoin[Flatten @ {Drop[splitted,-1], name} ] ]], $Client];
+                  WebUISubmit[UILocation[URLEncode[ FileNameJoin[Flatten @ {Drop[splitted,-1], name} ] ]], $CurrentWebSocket];
                 ];
               ]];
             ];
-            EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];   
-            EventFire[Secret, "Change", <|"Client"->$Client|>];     
+            EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];   
+            EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];     
           ];
         ]
       ]];
@@ -93,7 +93,7 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
 ];
 
 Controller["Window", __] := Function[name,
-  WebUISubmit[Global`UIOpenWindow[name] (*`*), $Client];
+  WebUISubmit[Global`UIOpenWindow[name] (*`*), $CurrentWebSocket];
 ];
 
 orderlessSameQ[a_List, b_List] := (Length@a == Length@b) && (Sort@Tally@a === Sort@Tally@b);
@@ -140,8 +140,8 @@ With[{
           If[!orderlessSameQ[files, cached],
             cached = files;
             Echo["Refresh sidebar!"];
-            EventFire[SidebarId, "Refresh", <|"Client"->$Client|>]; 
-            EventFire[Secret, "Change", <|"Client"->$Client|>];
+            EventFire[SidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>]; 
+            EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
           ]
         ]
       ];
@@ -162,8 +162,8 @@ With[{
               With[{path = If[DirectoryQ[Path], Path, DirectoryName[Path]]},
                 CreateDirectory[FileNameJoin[{path, StringTrim[name]}]];
               ];
-              EventFire[SidebarId, "Refresh", <|"Client"->$Client|>]; 
-              EventFire[Secret, "Change", <|"Client"->$Client|>];
+              EventFire[SidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>]; 
+              EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
             ];
           ];
 

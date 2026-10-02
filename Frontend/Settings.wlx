@@ -41,10 +41,10 @@ App[request_] := With[{
     },
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["Settings >> Destroy"];

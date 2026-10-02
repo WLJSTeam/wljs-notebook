@@ -103,7 +103,7 @@ recreateNotebook[modals_] := With[{n = nb`NotebookObj[]},
     "New Cell" -> Function[cell,
         If[Length[n["Cells"]] > 2 && !TrueQ[n["AskedToExtend"]],
           With[{
-            cli = $Client
+            cli = $CurrentWebSocket
           }, 
 
             With[{promise = Promise[]},
@@ -219,10 +219,10 @@ App[request_] := Module[{localExtensions}, With[{
     Echo[n["Path"]];
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["PromptWindow >> Destroy"];
@@ -251,7 +251,7 @@ App[request_] := Module[{localExtensions}, With[{
         ];
 
         EventRemove[promtEventUID];
-        transformNotebook[temporalNotebook, $Client];
+        transformNotebook[temporalNotebook, $CurrentWebSocket];
       ] ]
     }];
 

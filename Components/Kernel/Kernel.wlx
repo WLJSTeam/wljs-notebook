@@ -20,7 +20,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   
   EventHandler[EventClone[LazyLoad], {
     "Load" -> Function[Null,
-      With[{cli = EventClone[$Client], client = $Client,  cloned = EventClone[appEvents]},
+      With[{cli = EventClone[$CurrentWebSocket], client = $CurrentWebSocket,  cloned = EventClone[appEvents]},
         EventHandler[cloned, {"AppendKernel" -> Function[kernel,
           Echo["Kernels.wlx --> append Kernel"];
           EventFire[Controller, "Append", <|"Client"->client, "Data" -> Item["Messager"->Messager, "Kernel"->kernel, "Client"->client] |> ];
@@ -39,7 +39,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   
   EventHandler[ButtonId, {"New" -> Function[Type,
     Echo[Type];
-    With[{client = $Client, m = Messager, kernel = Switch[Type,
+    With[{client = $CurrentWebSocket, m = Messager, kernel = Switch[Type,
                                                     "Master", MasterKernel["Name"->(Internal`NoWR`RandomWord[])],
                                                     _, LocalKernel`LocalKernel["Name"->(Internal`NoWR`RandomWord[])]
                                                   ]
@@ -100,7 +100,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   ,
     With[{
       KernelListComponent := 
-        Block[{client = $Client},
+        Block[{client = $CurrentWebSocket},
           Table[
             Item["Messager"->Messager, "Kernel"->K, "Client"->client]
           , {K, ReleaseHold[KernelList]} ] // Flatten // ToStringRiffle

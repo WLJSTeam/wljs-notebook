@@ -15,19 +15,19 @@ EventHandler[ButtonId, Function[Null,
     Switch[State,
       "System",
         State = "Dark";
-        With[{client = $Client},
+        With[{client = $CurrentWebSocket},
             EventFire[Controller, State, <|"Client"->client|>];
         ],
       
       "Dark",
         State = "Light";
-        With[{client = $Client},
+        With[{client = $CurrentWebSocket},
           EventFire[Controller, State, <|"Client"->client|>];
         ], 
       
       "Light",
         State = "System";
-        With[{client = $Client},
+        With[{client = $CurrentWebSocket},
           EventFire[Controller, State, <|"Client"->client|>];
         ]       
     ];

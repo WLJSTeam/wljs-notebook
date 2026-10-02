@@ -234,10 +234,10 @@ App[request_] := With[{
     loadSettingsOnceMore;
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
-      EventFire[AppEvent, "AfterUILoad", <|"Client"->$Client, "Settings"->settings, "Env"->env, "IFrameQ"->True|>];
+      cachedClient = $CurrentWebSocket;
+      EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "IFrameQ"->True|>];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["IFrame >> Destroy"];
@@ -277,10 +277,10 @@ App[request_] := With[{
     (*/* Hard logic */*)
     EventHandler[EventClone[GlobalControls], {
       "RenameFile" -> ((renameFile @@ #) &),
-       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $Client, Path]&),
-      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $Client]&),
+       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
       "IFrameQ" -> (True &)
     }];
   {

@@ -59,7 +59,7 @@ Component[OptionsPattern[]] := With[{
 
         "Load" -> Function[Null,
             Print["Settings is about to be shown"];
-            Echo[StringJoin["Connected using socket: ", $Client // ToString]];
+            Echo[StringJoin["Connected using socket: ", $CurrentWebSocket // ToString]];
 
             
 

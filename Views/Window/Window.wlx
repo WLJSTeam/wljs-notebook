@@ -261,7 +261,7 @@ Component[OptionsPattern[] ] := With[{
 
         "Load" -> Function[Null,
             Print["Window is about to be shown"];
-            Echo[StringJoin["Connected using socket: ", $Client // ToString]];
+            Echo[StringJoin["Connected using socket: ", $CurrentWebSocket // ToString]];
 
             EventFire[appEvents, "Window:Loaded", window];
 
@@ -284,12 +284,12 @@ Component[OptionsPattern[] ] := With[{
             ];
 
             (* /* Add all listeners to a **notebook** */ *)
-            addListeners[window, secret, $Client, modals, parameters, extensions];
+            addListeners[window, secret, $CurrentWebSocket, modals, parameters, extensions];
 
-            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $Client];
+            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $CurrentWebSocket];
 
             (* /* Establish WS Connection to a Kernel (if available) */ *)
-            checkWSLink[window, $Client, secret];
+            checkWSLink[window, $CurrentWebSocket, secret];
         ],
 
         "ManuallyClosed" -> Function[Null,
@@ -297,9 +297,9 @@ Component[OptionsPattern[] ] := With[{
             EventFire[appEvents, "Window:ManuallyClosed", window];
         ],
 
-        "WebSocketConnected" -> Function[Null, With[{cli = $Client},
+        "WebSocketConnected" -> Function[Null, With[{cli = $CurrentWebSocket},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
-            Then[WebUIFetch[Global`UIWindow["KernelSocket"], $Client ], Function[data,
+            Then[WebUIFetch[Global`UIWindow["KernelSocket"], $CurrentWebSocket ], Function[data,
                 window["WebSocketQ"] = True;
                 window["KernelWebSocket"] = data;
 
@@ -319,7 +319,7 @@ Component[OptionsPattern[] ] := With[{
             window["WebSocketQ"] = False;
 
             (* /* reset a preliminary link */ *)
-            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $Client];
+            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $CurrentWebSocket];
         ]
 
         else_String :> (Echo[StringTemplate["Unknown window view event ``: ``"][else, #]]&)

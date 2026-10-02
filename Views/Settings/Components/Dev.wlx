@@ -27,7 +27,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ]
     }];
 
-    With[{socket = EventClone[$Client]},
+    With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {
             "Closed" -> Function[Null,
                 EventRemove[socket];

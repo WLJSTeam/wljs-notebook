@@ -339,11 +339,11 @@ App[request_] := With[{
                   ],
 
                   "LocateExamples" -> Function[Null,
-                    WebUILocation[StringJoin["/folder/", URLEncode[AppExtensions`DemosDir (*`*)]], $Client, "Target"->_, "Features"->"top=100,right=100"];
+                    WebUILocation[StringJoin["/folder/", URLEncode[AppExtensions`DemosDir (*`*)]], $CurrentWebSocket, "Target"->_, "Features"->"top=100,right=100"];
                   ],
 
                   "OpenSettings" -> Function[Null,
-                    WebUILocation["/settings", $Client, "Target"->_];
+                    WebUILocation["/settings", $CurrentWebSocket, "Target"->_];
                   ],
 
                   "Exit" -> Function[Null,
@@ -372,10 +372,10 @@ App[request_] := With[{
     loadSettingsOnceMore;
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
-      EventFire[AppEvent, "AfterUILoad", <|"Client"->$Client, "Settings"->settings, "Env"->env, "Controls"->GlobalControls|>];
+      cachedClient = $CurrentWebSocket;
+      EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "Controls"->GlobalControls|>];
       
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["App >> Destroy"];
@@ -413,16 +413,16 @@ App[request_] := With[{
    
     (*/* Hard logic */*)
     EventHandler[EventClone[GlobalControls], {
-      "OpenSettings" -> (WebUILocation[StringJoin["/settings", ""], $Client, "Target"->_, "Features"->"width=600,height=800"]&), 
+      "OpenSettings" -> (WebUILocation[StringJoin["/settings", ""], $CurrentWebSocket, "Target"->_, "Features"->"width=600,height=800"]&), 
       "RenameFile" -> ((renameFile @@ #) &),
-       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $Client, Path]&),
-      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $Client]&),
-      "DumpHashCheck" -> (dumpHashCheckUpdate[#, GlobalMessanger, $Client]&),
-      "DumpReloadCells" -> (dumpReloadNotebook[#, GlobalMessanger, $Client]&),
-      "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $Client]&),
-      "PrintPDF" -> (printPDF[$Client, ModalController, GlobalMessanger]&)
+       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
+      "DumpHashCheck" -> (dumpHashCheckUpdate[#, GlobalMessanger, $CurrentWebSocket]&),
+      "DumpReloadCells" -> (dumpReloadNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
+      "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "PrintPDF" -> (printPDF[$CurrentWebSocket, ModalController, GlobalMessanger]&)
     }];
   {
     "<!DOCTYPE html>"

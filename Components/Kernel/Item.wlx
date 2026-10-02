@@ -21,7 +21,7 @@ destoryWidget := With[{},
 
 With[{m = $Options["Messager"], client = Client},
    EventHandler[assignedEvent1, {any_ :> Function[data, 
-      Block[{$Client = client},
+      Block[{$CurrentWebSocket = client},
          EventFire[m, any, data];
       ]  
    ]}]

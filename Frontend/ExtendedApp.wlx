@@ -323,11 +323,11 @@ App[request_] := With[{
                   ],
 
                   "OpenSettings" -> Function[Null,
-                    WebUILocation["/settings", $Client, "Target"->_];
+                    WebUILocation["/settings", $CurrentWebSocket, "Target"->_];
                   ],
 
                   "LocateExamples" -> Function[Null,
-                    WebUILocation[StringJoin["/folder/", URLEncode[AppExtensions`DemosDir (*`*)]], $Client, "Target"->_, "Features"->"top=100,right=100"];
+                    WebUILocation[StringJoin["/folder/", URLEncode[AppExtensions`DemosDir (*`*)]], $CurrentWebSocket, "Target"->_, "Features"->"top=100,right=100"];
                   ],
 
                   "Exit" -> Function[Null,
@@ -372,10 +372,10 @@ App[request_] := With[{
     }]; 
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
-      EventFire[AppEvent, "AfterUILoad", <|"Client"->$Client, "Settings"->settings, "Env"->env, "Controls"->GlobalControls, "ExtendedAppQ"->True|>];
+      cachedClient = $CurrentWebSocket;
+      EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "Controls"->GlobalControls, "ExtendedAppQ"->True|>];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
           Echo["ExtendedApp >> Destroy"];
@@ -403,19 +403,19 @@ App[request_] := With[{
    
     (*/* Hard logic */*)
     EventHandler[EventClone[GlobalControls], {
-      "OpenSettings" -> (WebUILocation[StringJoin["/settings", ""], $Client, "Target"->_, "Features"->"width=600,height=800"]&), 
+      "OpenSettings" -> (WebUILocation[StringJoin["/settings", ""], $CurrentWebSocket, "Target"->_, "Features"->"width=600,height=800"]&), 
       "RenameFile" -> ((renameFile @@ #)&),
-      "NewNotebook" -> (createNotebook[#, GlobalMessanger, ModalController, $Client, Path]&),
-      "_NewNotebook" -> (createNotebook[<|"BaseDirectory"->If[DirectoryQ[Path], Path, DirectoryName[Path]]|>, GlobalMessanger, ModalController, $Client, Path]&),
-      "_NewQuickNotebook" -> (Echo["SHORT!"]; createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $Client, Path]&),
-      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $Client]&),
-      "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $Client]&),
-      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $Client]&),
-      "DumpHashCheck" -> (dumpHashCheckUpdate[#, GlobalMessanger, $Client]&),
-      "DumpReloadCells" -> (dumpReloadNotebook[#, GlobalMessanger, $Client]&),
-      "SidebarToggle" -> (toggleWindowSize[#, $Client]&),
-      "PrintPDF" -> (printPDF[$Client, ModalController, GlobalMessanger]&)
+      "NewNotebook" -> (createNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "_NewNotebook" -> (createNotebook[<|"BaseDirectory"->If[DirectoryQ[Path], Path, DirectoryName[Path]]|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "_NewQuickNotebook" -> (Echo["SHORT!"]; createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
+      "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
+      "DumpHashCheck" -> (dumpHashCheckUpdate[#, GlobalMessanger, $CurrentWebSocket]&),
+      "DumpReloadCells" -> (dumpReloadNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
+      "SidebarToggle" -> (toggleWindowSize[#, $CurrentWebSocket]&),
+      "PrintPDF" -> (printPDF[$CurrentWebSocket, ModalController, GlobalMessanger]&)
     }];
 
   {
