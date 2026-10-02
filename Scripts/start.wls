@@ -1,28 +1,38 @@
 #!/usr/bin/env wolframscript
 
+Internal`WoxiQ = StringStartsQ[ToString[$Version], "Woxi"];
+Internal`SymjaQ = StringStartsQ[ToString[$Version], "Symja"];
+Internal`WolframQ = !Internal`WoxiQ && !Internal`SymjaQ;
+
 If[$Env["ElectronCode"] =!= 1,
 "WLJS Notebooks
 Copyright (c) 2026 Coffee liqueur
 Licensed under the AGPLv3. See <AppDir>/LICENSE.md.
-
+  
 This product bundles third-party FOSS. Full license texts are included in <AppDir>/licenses/.
-Wolfram Engine is proprietary and distributed separately by Wolfram Research, Inc.
-" // Print];
+" // Print;
+  If[Internal`WolframQ,
+    "Wolfram Engine is proprietary and distributed separately by Wolfram Research, Inc." // Print;
+  ];
+];
 
 "This project is not affiliated with, endorsed by, or sponsored by Wolfram Research, Inc. Wolfram and Wolfram Language are trademarks of Wolfram Research, Inc." // Print;
 
-If[$VersionNumber < 14.1 || !NumberQ[$VersionNumber],
+If[($VersionNumber < 14.1 || !NumberQ[$VersionNumber]) && Internal`WolframQ,
     Echo["Wolfram Engine versions older than 14.1 are not supported"];
     Echo["due to missing I/O features"];
     Echo["Please, update"];
     Exit[0];
 ];
 
-If[$VersionNumber > 15.0,
+If[$VersionNumber > 15.0 && Internal`WolframQ,
   Do[Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook - 14.1-15.0. We do not guarantee it will work correctly"], {5}];
   Echo["Proceeding anyway..."];
   Pause[1];
 ];
+
+If[Internal`SymjaQ, "Symja support is experimental. Some features may not work" // Print];
+If[Internal`WoxiQ, "Woxi support is experimental. Some features may not work" // Print];
 
 (* $AllowDataUpdates = False; *)
 $AllowInternet = True; (* Force it to avoid https://mathematica.stackexchange.com/questions/320062/openread-crashes-kernel-if-the-remote-resource-is-unavailable-the-product-exite *)

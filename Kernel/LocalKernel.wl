@@ -44,7 +44,9 @@ generateConnectFunction[o_LocalKernelObject] := With[{
     shared = af`SharedDir, host = o["Host"], uid = o["Hash"], 
     env = System`$Env, electronQ = (System`$Env["ElectronCode"] === 1),
     promise = Promise[],
-    asyncLinkId = StringTake[StringReplace[CreateUUID[], "-"->""],4]
+    asyncLinkId = StringTake[StringReplace[CreateUUID[], "-"->""],4],
+    woxiQ = Internal`WoxiQ,
+    symjaQ = Internal`SymjaQ
 }, {
     expression = With[{},  
         Print["Link to the host was established. Setting up async link..."];
@@ -56,6 +58,13 @@ generateConnectFunction[o_LocalKernelObject] := With[{
         ];
 
         Internal`Kernel`Host = host;
+
+        Internal`WoxiQ = woxiQ;
+        Internal`SymjaQ = symjaQ;
+        Internal`WolframQ = !Internal`WoxiQ && !Internal`SymjaQ;
+        Internal`Kernel`WoxiQ = woxiQ;
+        Internal`Kernel`SymjaQ = symjaQ;
+        Internal`Kernel`WolframQ = Internal`WolframQ;
         
         (* Internal`Kernel`RemoteEvent = USocketConnect[addr] // LTPTransport; *)
 

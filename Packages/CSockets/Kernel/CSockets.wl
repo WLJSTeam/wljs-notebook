@@ -11,8 +11,10 @@
 BeginPackage["CoffeeLiqueur`CUSockets`"]; 
 
 Needs @ Which[
-	StringStartsQ[ToString[$Version], "Symja"],
+	TrueQ[Internal`SymjaQ],
 		"CoffeeLiqueur`CUSockets`Interface`Symja`",
+	TrueQ[Internal`WoxiQ],
+		"CoffeeLiqueur`CUSockets`Interface`Woxi`",		
 	$OperatingSystem === "Windows",
 		"CoffeeLiqueur`CUSockets`Interface`Windows`",
 	True,
