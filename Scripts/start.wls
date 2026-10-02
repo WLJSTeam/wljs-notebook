@@ -25,6 +25,7 @@ If[$VersionNumber > 15.0,
 ];
 
 (* $AllowDataUpdates = False; *)
+$AllowInternet = True; (* Force it to avoid https://mathematica.stackexchange.com/questions/320062/openread-crashes-kernel-if-the-remote-resource-is-unavailable-the-product-exite *)
 
 PacletDirectoryUnload /@ PacletDirectoryLoad[]; (* FIXME WL autoloads some crap *)
 
