@@ -32,11 +32,8 @@ postProcess[string_String] := Module[{drawings = {}}, With[{p = Promise[], win =
     p
 ] ]
 
-MTrimmer = Function[str, 
-StringReplace[str, {
-  RegularExpression["\\A([\\n|\\t|\\r| ]*)([\\w|:|\\$|#|\\-|\\[|\\]|!|\\*|_|\\/|.|\\d]?)"] :> If[StringLength["$2"]===0, "", "$1"<>"$2"],
-  RegularExpression["([\\w|\\$|#|*|\\*|\\-|\\[|!|\\]|:|\\/|.|\\d]?)([\\r|\\n| |\\t]*)\\Z"] :> If[StringLength["$1"]===0, "", "$1"<>"$2"]
-}]
+MTrimmer = Function[str,
+  If[StringTrim[str] === "", "", str]
 ];
 
 Internal`Kernel`RevealEvaluator = Function[t, With[{hash = CreateUUID[]},
