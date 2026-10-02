@@ -11,7 +11,7 @@
             "src/Frontend.wl"
         ],
         "js": "dist/kernel.js",
-        "electron": "mcp/dist/",
+        "electron": "mcp/dist/electron-extension.cjs",
         "deferred": "src/VFX.wl",
         "priority": 6000,
         "category": "Notebook Extensions"

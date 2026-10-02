@@ -1,4 +1,5 @@
-//just don't look at it. We did not invest enough efforts to this...
+// Electron entry point. Feature implementations live in ./main; this file owns
+// process-level state, window lifecycle, and startup ordering.
 const { session, nativeImage, app, Tray, Menu, BrowserWindow, dialog, ipcMain, nativeTheme, systemPreferences } = require('electron')
 
 nativeImage.__emitterPool = new Set();
@@ -9,12 +10,10 @@ const { mkdir, writeFile } = require('node:fs/promises');
 
 const { net } = require('electron')
 const fs = require('fs');
-
-
-const { pathToFileURL } = require("url")
-
 const path = require('path')
-const { platform } = require('node:process');
+const { createExtensionManager } = require('./main/extension-manager');
+
+const extensionManager = createExtensionManager(app);
 
 const cliIndex = process.argv.indexOf("--cli");
 const isCli = cliIndex !== -1;
@@ -26,70 +25,21 @@ if (isCli) {
 
   const cliArgs = process.argv.slice(cliIndex + 1);
 
-    const loadedElectronExtensions = new Set();
-
-    const loadElectronExtension = (electronEntry, packageJsonPath) => {
-        if (!electronEntry) return;
-
-        const packageDir = path.dirname(packageJsonPath);
-        const entries = Array.isArray(electronEntry) ? electronEntry : [electronEntry];
-
-        entries.forEach(entry => {
-            if (!entry || typeof entry !== 'string') return;
-
-            const entryPath = path.isAbsolute(entry)
-                ? entry
-                : path.join(packageDir, entry);
-
-            let resolvedPath;
-
-            try {
-                resolvedPath = require.resolve(entryPath);
-            } catch (err) {
-                console.error(`Failed to resolve electron extension "${entry}" from "${packageDir}"`, err);
-                return;
-            }
-
-            if (loadedElectronExtensions.has(resolvedPath)) {
-                return;
-            }
-
-            try {
-                loadedElectronExtensions.add(resolvedPath);
-            } catch (err) {
-                console.error(`Failed to load electron extension "${resolvedPath}"`, err);
-            }
-        });
-    };
-
-    const appendItem = (item, p) => {
-        if (fs.existsSync(p)) {
-            const hh = JSON.parse(fs.readFileSync(p, 'utf8'));
-            if (hh["wljs-meta"]["electron"]) {
-                loadElectronExtension(hh["wljs-meta"]["electron"], p);
-            }
-        }
-    }
-    let rootAppFolder = app.getAppPath();
-    const defaultPath = path.join(rootAppFolder, 'modules');
-
-    if (!fs.existsSync(defaultPath)) return;
-
-    fs.readdirSync(defaultPath, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
-        const p = path.join(defaultPath, item.name, 'package.json');
-        appendItem(item, p);
-    });
-
-  loadedElectronExtensions.forEach(fn => {
-    const g = require(fn);
-    if (g.prolog) g.prolog(app, {}, cliArgs);
-  });  
+  extensionManager.discover([path.join(app.getAppPath(), 'modules')]);
+  void extensionManager.start('prolog', cliArgs);
 
   return;
 }
 
+const { createDevicePermissions } = require('./main/device-permissions');
+const { registerIpcHandlers } = require('./main/ipc-handlers');
+const { createMenuManager } = require('./main/menu-manager');
+const { createWolframRuntime } = require('./main/wolfram-runtime');
+const { spawn } = require('node:child_process');
 
 const pdfjsLib = require("./pdfjs/pdf.mjs");
+const { createPdfTools } = require('./main/pdf-tools');
+const { cropPdfBuffer } = createPdfTools(pdfjsLib, path.join(__dirname, 'pdfjs'));
 
 /*
 const cliArgs = process.argv.slice(cliIndex + 1);
@@ -109,14 +59,9 @@ function isFile(pathItem) {
     return !!path.extname(pathItem);
   }
 
-const zlib = require('zlib');
-
 const {powerMonitor } = require('electron')
 
-
-const fse = require('fs-extra');
 const https = require('https');
-
 const { powerSaveBlocker } = require('electron')
 
 let powerSaveId;
@@ -130,7 +75,7 @@ const { signal } = controller;
 
 const { shell } = require('electron')
 
-const { IS_WINDOWS_11, WIN10 } = require('mica-electron');
+const { IS_WINDOWS_11 } = require('mica-electron');
 
 const isWindows = process.platform === 'win32'
 const isMac = process.platform === 'darwin'
@@ -144,7 +89,7 @@ if (!isWindows && !isMac) {
 class Deferred {
   promise = {}
   reject = {}
-  resolve = {}          
+  resolve = {}
 
   constructor() {
     this.promise = new Promise((resolve, reject)=> {
@@ -152,7 +97,7 @@ class Deferred {
       this.resolve = resolve;
     });
   }
-} 
+}
 
 let trackpadUtils = {
     onForceClick: () => {},
@@ -175,1152 +120,33 @@ let rootAppFolder = app.getAppPath();
 const userExtensions = path.join(app.getPath('documents'), 'WLJS Notebooks', 'Extensions');
 
 const runPath = path.join(rootAppFolder, 'Scripts', 'start.wls');
-const updatePath = path.join(rootAppFolder, 'Scripts', 'update.wls');
 const workingDir = app.getPath('home');
 
 trackpadUtils.onForceClick(() => {
 	console.log("onForceClick");
 });
 
+const { createCliInstaller } = require('./main/cli-installer');
+const cliInstaller = createCliInstaller({
+    app,
+    appDataFolder,
+    dialog,
+    electronDirectory: __dirname,
+    isWindows,
+    sudo: require('./sudo')
+});
 
-const { createCanvas } = require("@napi-rs/canvas")
-
-
-
-
-
-
-const { PDFDocument, breakTextIntoLines } = require('pdf-lib');
-
-
-
-
-
-//pdf-tools
-
-const NodeCanvasFactory = {
-    create: (width, height) => {
-      const canvas = createCanvas(width, height);
-      return {
-        canvas,
-        context: canvas.getContext('2d'),
-      };
-    },
-    reset: (canvasAndContext, width, height) => {
-      canvasAndContext.canvas.width = width;
-      canvasAndContext.canvas.height = height;
-    },
-    destroy: (canvasAndContext) => {
-      canvasAndContext.canvas = null;
-      canvasAndContext.context = null;
-    },
-  };
-
-async function cropPdfBuffer(inputBuffer, margin = 10, pageNumber = 1) {
-    const bbox = await getVisualBoundingBox(new Uint8Array(inputBuffer), pageNumber);
-  
-    const pdfDoc = await PDFDocument.load(inputBuffer);
-    const page = pdfDoc.getPages()[pageNumber - 1];
-    const pageWidth = page.getWidth();
-    const pageHeight = page.getHeight();
-  
-    const x = Math.max(0, bbox.x - margin);
-    const y = Math.max(0, bbox.y - margin);
-    const width = Math.min(pageWidth - x, bbox.width + 2 * margin);
-    const height = Math.min(pageHeight - y, bbox.height + 2 * margin);
-  
-    page.setCropBox(x, y, width, height);
-  
-    return await pdfDoc.save();
-  }
-  
-  //const pdfjsLib = require("./pdfjs/pdf");
-  //const pdfjsLib = {};
-
-
-
-  async function getVisualBoundingBox(pdfBuffer, pageNumber = 1, scale = 2.0) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = pathToFileURL(
-        path.join(__dirname, "pdfjs", "pdf.worker.mjs")
-    ).href;
-    const loadingTask = pdfjsLib.getDocument({ data: pdfBuffer });
-    const pdf = await loadingTask.promise;
-  
-    const page = await pdf.getPage(pageNumber);
-    const viewport = page.getViewport({ scale });
-  
-    const canvasFactory = NodeCanvasFactory;
-    const canvasAndContext = canvasFactory.create(viewport.width, viewport.height);
-    const canvas = canvasAndContext.canvas;
-    const context = canvasAndContext.context;
-  
-    await page.render({ canvasContext: context, viewport, canvasFactory: canvasFactory }).promise;
-  
-    const imageData = context.getImageData(0, 0, canvas.width, canvas.height).data;
-  
-    let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
-  
-    for (let y = 0; y < canvas.height; y++) {
-      for (let x = 0; x < canvas.width; x++) {
-        const idx = (y * canvas.width + x) * 4;
-        const r = imageData[idx];
-        const g = imageData[idx + 1];
-        const b = imageData[idx + 2];
-        const a = imageData[idx + 3];
-  
-        const isNotWhite = !(r === 255 && g === 255 && b === 255 && a === 255);
-        if (isNotWhite) {
-          minX = Math.min(minX, x);
-          maxX = Math.max(maxX, x);
-          minY = Math.min(minY, y);
-          maxY = Math.max(maxY, y);
-        }
-      }
-    }
-  
-    return {
-      x: minX / scale,
-      y: (canvas.height - maxY) / scale,
-      width: (maxX - minX) / scale,
-      height: (maxY - minY) / scale,
-    };
-  }
-const cli_info = {
-    'darwin': {
-        cliPath: '/usr/local/bin/',
-        cliLink: '/usr/local/bin/wljs',
-        cmd: 'bash',
-        
-        script_uninstall: path.join(__dirname, 'build', 'cli_unix_remove.sh'),
-        script: path.join(__dirname, 'build', 'cli_unix.sh')
-    },
-
-    'linux': {
-        cliPath: '/usr/local/bin/',
-        cliLink: '/usr/local/bin/wljs',
-        cmd: 'bash',
-        
-        script_uninstall: path.join(__dirname, 'build', 'cli_unix_remove.sh'),
-        script: path.join(__dirname, 'build', 'cli_unix.sh')
-    },
-    
-    'win32': {
-        cliPath: '%SystemRoot%\\System32\\wljs.bat',
-        cliLink: isWindows ? path.join(process.env.windir, 'System32', 'wljs.bat') : '',
-        cmd: '',
-        
-        script_uninstall: path.join(__dirname, 'build', 'cli_win_remove.bat'),
-        script: path.join(__dirname, 'build', 'cli_win.bat')        
-    }
-}
-
-var sudo = require('./sudo');
-
-const cliInstalledMarkerPath = () => path.join(appDataFolder, '.cli_i3');
-
-function mark_cli_prompt_handled() {
-    fs.writeFile(cliInstalledMarkerPath(), 'Nothing to see here', function(err) {
-        if (err) {
-            console.error('Failed to write CLI marker');
-            console.error(err);
-        }
-    });
-}
-
-function check_cli_installed(log_window) {
-    if (!app.isPackaged) return;
-
-    if (!cli_info[process.platform]) {
-        console.warn('Cli is not supported on platform '+process.platform);
-        return;
-    }
-
-    fs.exists(cliInstalledMarkerPath(), (existsQ) => {
-        if (existsQ) {
-            console.log('Cli is installed');
-            return;
-        }
-
-        const cliPath = cli_info[process.platform].cliPath;
-
-        console.log('Cli is not installed');
-
-        const prompt = dialog.showMessageBox(log_window, {
-            type: 'question',
-            buttons: ['Install', 'Not now'],
-            defaultId: 0,
-            cancelId: 1,
-            noLink: true,
-            message: 'Install the WLJS command line interface?',
-            detail: 'This adds the wljs command so WLJS Notebook can be opened from a terminal.'
-        });
-
-        prompt.then((res) => {
-            if (res.response !== 0) {
-                mark_cli_prompt_handled();
-                return;
-            }
-
-            try {
-                const exePath = app.getPath('exe');
-
-                console.log(exePath);
-
-                console.log(path.resolve(cli_info[process.platform].script));
-
-                const options = {
-                    name: 'WLJS Elevated module'
-                };
-
-                sudo.exec((cli_info[process.platform].cmd + ' "'+path.resolve(cli_info[process.platform].script)+'" '+'"'+cliPath+'" '+'"'+exePath+'"').trim(), options,
-                    function(error, stdout, stderr) {
-                        if (error) throw error;
-                        console.log('stdout: ' + stdout);
-
-                        mark_cli_prompt_handled();
-                    }
-                );
-            } catch (err) {
-                console.log('Failed to install CLI');
-                console.error(err);
-            }
-        }).catch((err) => {
-            console.log('Failed to show CLI install prompt');
-            console.error(err);
-        });
-    })
-}
-
-
-
-
-    /*if (os_cli_file[process.platform]) {
-        const from = path.join(__dirname, 'build', os_cli_file[process.platform]);
-        const to = os_cli_dest[process.platform];
-
-        var sudoer = new Sudoer({name: 'WLJS Elevated Module'});
-        sudoer.spawn('cp', ['$PARAM'], {env: {PARAM: 'VALUE'}}).then(function (cp) {
-       
-        
-            const res = cp.output.stdout;
-            console.log(res);
-        });        
-    }
-    */
-    
 
 //fetch contex menus items from wljs_packages folder
 
 let tray;
-
-/* extesions for contex menu */
-const pluginsMenu = {};
-
-const loadedElectronExtensions = new Set();
-
-pluginsMenu.items = {};
-pluginsMenu.fetch = () => {
-    pluginsMenu.items = {kernel: [], edit: [], view: [], file: [], misc: []}
-
-    const loadElectronExtension = (electronEntry, packageJsonPath) => {
-        if (!electronEntry) return;
-
-        const packageDir = path.dirname(packageJsonPath);
-        const entries = Array.isArray(electronEntry) ? electronEntry : [electronEntry];
-
-        entries.forEach(entry => {
-            if (!entry || typeof entry !== 'string') return;
-
-            const entryPath = path.isAbsolute(entry)
-                ? entry
-                : path.join(packageDir, entry);
-
-            let resolvedPath;
-
-            try {
-                resolvedPath = require.resolve(entryPath);
-            } catch (err) {
-                console.error(`Failed to resolve electron extension "${entry}" from "${packageDir}"`, err);
-                return;
-            }
-
-            if (loadedElectronExtensions.has(resolvedPath)) {
-                return;
-            }
-
-            try {
-                loadedElectronExtensions.add(resolvedPath);
-            } catch (err) {
-                console.error(`Failed to load electron extension "${resolvedPath}"`, err);
-            }
-        });
-    };
-
-    const appendItem = (item, p) => {
-        if (fs.existsSync(p)) {
-            const package = JSON.parse(fs.readFileSync(p, 'utf8'));
-
-            if (package["wljs-meta"]["menu"]) {
-                package["wljs-meta"]["menu"].forEach(mi => {
-                    const mitem = {
-                        label: mi["label"],
-                        click: async(ev) => {
-                            console.log(ev);
-                            windows.focused.call('extension', mi["event"]);
-                        }
-                    };
-
-                    if (mi["accelerator"]) {
-                        mitem.accelerator = isMac ? mi["accelerator"][0] : mi["accelerator"][1];
-                    }
-
-                    if (package["wljs-meta"]["priority"]) {
-                        mitem.priority = package["wljs-meta"]["priority"];
-                    } else {
-                        mitem.priority = 1;
-                    }
-
-                    let section = mi["section"];
-                    if (!section) section = "misc";
-
-                    if (!(pluginsMenu.items[section].find((el) => { return el.label == mitem.label })))
-                        pluginsMenu.items[section].push(mitem);
-                });
-            }
-
-            if (package["wljs-meta"]["contextMenu"]) {
-                package["wljs-meta"]["contextMenu"].forEach(mi => {
-                    const mitem = {
-                        label: mi["label"],
-                        event: mi["event"],
-                        visible: true,
-                    };
-
-                    if (mi["visible"]) {
-                        mitem.visible = mi["visible"];
-                    }
-
-                    if (!(contextMenuExtensions.find((el) => { return el.label == mitem.label })))
-                        contextMenuExtensions.push(mitem);
-                });
-            }
-
-            if (package["wljs-meta"]["electron"]) {
-                loadElectronExtension(package["wljs-meta"]["electron"], p);
-                
-            }
-        }
-    }
-
-    const defaultPath = path.join(rootAppFolder, 'modules');
-
-    if (!fs.existsSync(defaultPath)) return;
-
-    fs.readdirSync(defaultPath, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
-        const p = path.join(defaultPath, item.name, 'package.json');
-        appendItem(item, p);
-    });
-
-    if (!fs.existsSync(userExtensions)) return;
-
-    fs.readdirSync(userExtensions, { withFileTypes: true }).filter(item => item.isDirectory()).map(item => {
-        const p = path.join(userExtensions, item.name, 'package.json');
-        appendItem(item, p);
-    });
-}
-
-
-//load shortcuts
-let shortcuts_table = require("./shortcuts.json");
-if (fs.existsSync(path.join(appDataFolder, "Electron", "shortcuts.json"))) {
-    shortcuts_table = JSON.parse(fs.readFileSync(path.join(appDataFolder, "Electron", "shortcuts.json"), 'utf8'));
-} 
-
-const { spawnSync, spawn } = require('child_process');
-const shortcut = (id) => {
-
-    if (! shortcuts_table[id]) return undefined;
-    if (process.platform === 'darwin') return shortcuts_table[id][0]
-    return shortcuts_table[id][1]
-}
-
-
-//build TOP MENU
-
-const callFakeMenu = {}
-
-let buildMenu = {};
-buildMenu = (opts) => {
-    //default options
-    const defaults = {
-        footermenu: [],
-        localmenu: true,
-        plugins: []
-    };
-
-    const options = Object.assign({}, defaults, opts);
-
-    const template = [
-        // { role: 'appMenu' }
-        ...(isMac ? [{
-            label: app.name,
-            submenu: [
-                { role: 'about' },
-                { type: 'separator' },
-                { role: 'hide' },
-                { role: 'hideOthers' },
-                { role: 'unhide' },
-                { type: 'separator' },
-                ...(options.footermenu),
-                { label: 'Close app', accelerator: shortcut('quit'), click: (ev) => {
-                    console.warn('Quit dialog');
-                    dialog.showMessageBox({message: 'Are you sure you want to quit?', type:'question', buttons:['Yes', 'No']}).then((res) => {
-                        if (res.response == 0) {
-                            app.quit();
-                        }
-                    })
-                    
-                }}
-            ]
-        }] : []),
-        // { role: 'fileMenu' }
-        {
-            label: 'File',
-            submenu: [{
-                    label: 'New',
-                    accelerator: shortcut('new_file'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('newshortnote', true);
-                    }
-                },
-                {
-                    label: 'Open File',
-                    accelerator: shortcut('open_file'),
-                    click: async() => {
-                        const promise = dialog.showOpenDialog({
-                            title: 'Open File',
-                            filters: [
-                                { name: 'Notebooks', extensions: ['wln', 'nb', 'md', 'html', 'wlw', 'wl'] }
-                            ],
-                            properties: ['openFile']
-                        });
-
-                        promise.then((res) => {
-                            if (!res.canceled) {
-                                app.addRecentDocument(res.filePaths[0]);
-                                create_window({url: server.url.default('local') + `/` + encodeURIComponent(res.filePaths[0]), title: res.filePaths[0]});
-                            }
-                        });
-                    }
-                },
-                { type: 'separator' },
-                {
-                    label: 'New note in folder',
-                    accelerator: shortcut('new_file_folder'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('newnotebook', true);
-                    }
-                },              
-                ...(options.plugins.file.sort((a, b)=> (a.priority - b.priority))),
-                { type: 'separator' },
-                {
-                    label: 'Prompt call',
-                    click: async(ev) => {
-                        console.log(ev);
-                        if (server.running)
-                            create_window({url: server.url.default() + '/prompt', title: 'Overlay', overlay: true, show: true, focus: true});
-                    }
-                }, 
-                { type: 'separator' },                 
-                ...((options.localmenu) ? [
-                    {
-                        label: 'Open Folder',
-
-                        click: async() => {
-                            const promise = dialog.showOpenDialog({ title: 'Open Vault', properties: ['openDirectory'] });
-                            promise.then((res) => {
-                                if (!res.canceled) {
-                                    app.addRecentDocument(res.filePaths[0]);
-                                    create_window({url: server.url.default('local') + `/folder/` + encodeURIComponent(res.filePaths[0]), title: res.filePaths[0]});
-                                }
-                            });
-                        }
-                    },
-                    {
-                        "label":"Open Recent",
-                        "role":"recentdocuments",
-                        "submenu":[
-                          {
-                            "label":"Clear Recent",
-                            "role":"clearrecentdocuments"
-                          }
-                        ]
-                      }
-                ] : []),
-                { type: 'separator' },
-                {
-                    label: 'Save',
-                    accelerator: shortcut('save'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('save', true);
-                        
-                    }
-                },
-                {
-                    label: 'Save As',
-                    click: async() => {
-                        const promise = dialog.showSaveDialog({ title: 'Save as', properties: ['createDirectory'], filters: [
-                            { name: 'Notebooks', extensions: ['wln'] }
-                        ],});
-                        promise.then((res) => {
-                            if (!res.canceled) {
-                                app.addRecentDocument(res.filePath);
-                                
-                                console.log(res.filePath);
-                                windows.focused.call('saveas', encodeURIComponent(res.filePath) );
-                            }
-                        });
-                    }
-                },
-                { type: 'separator' },
-                {
-                    label: 'Print',
-                    click: async(ev) => {
-                
-                        windows.focused.call('print', true);
-                        //windows.focused.win.webContents.print({silent: false, printBackground: false, deviceName: ''}, console.log);
-                    }
-                },
-                /*{ type: 'separator' },
-                {
-                    label: 'Share',
-                    submenu: [{
-                            label: 'HTML',
-                            click: async(ev) => {
-                                windows.focused.call('share', 'HTML');
-                            }
-                        },
-
-                        {
-                            label: 'React',
-                            click: async(ev) => {
-                                windows.focused.call('share', 'React');
-                            }
-                        }
-                    ]
-                },*/
-                ...((options.localmenu) ? [{ type: 'separator' },
-                    {
-                        label: 'Open Examples',
-                        click: async(ev) => {
-                            create_window({url: server.url.default('local') + `/folder/` + encodeURIComponent(path.join(app.getPath('documents'), 'WLJS Notebooks', 'Demos')), title: 'Examples'});
-                        }
-                    },
-                    { type: 'separator' },
-                    {
-                        label: 'Reopen as quick note',
-                        click: (ev) => {
-                            windows.focused.call('reopenasquick', true);
-                        }
-                    },
-
-                    {
-                        label: 'Reopen in browser',
-                        click: (ev) => {
-                            server.browserMode = true;
-                            shell.openExternal(windows.focused.win.webContents.getURL());
-                        }
-                    },
-                    ...(isMac ? [{ type: 'separator' }] : [
-                        { label: 'Close app', accelerator: shortcut('quit'), click: (ev) => {
-                            console.warn('Quit dialog');
-                            dialog.showMessageBox({message: 'Are you sure you want to quit?', type:'question', buttons:['Yes', 'No']}).then((res) => {
-                                if (res.response == 0) {
-                                    app.quit();
-                                }
-                            })
-                    
-                        }}
-                    ])
-                ] : []),
-                //win.webContents.send('context', 'Iconize');
-                ...(isMac ? [] : [{ type: 'separator' }, ...(options.footermenu)])
-            ]
-        },
-        // { role: 'editMenu' }
-        {
-            label: 'Edit',
-            submenu: [
-                { role: 'undo' },
-                { role: 'redo' },
-                { type: 'separator' },
-                { role: 'cut' },
-                { role: 'copy' },
-                { role: 'paste' },
-                /*{ type: 'separator' },
-                {
-                    label: 'Find',
-                    accelerator: shortcut('find'),
-                    click: (ev) => {
-                        windows.focused.call('Find');
-                    }
-                },*/
-                { type: 'separator' },
-                {
-                    label: 'Hide/Unhide cell',
-                    accelerator: shortcut('toggle_cell'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('togglecell');
-                    }
-                },
-                {
-                    label: 'Unhide All Cells',
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('unhideallcells', true);
-                    }
-                },
-
-                { type: 'separator' },
-                {
-                    label: 'Delete cell',
-                    accelerator: shortcut('delete_cell'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('deletecell', true);
-                    }
-                },
-                { type: 'separator' },
-                ...(options.plugins.edit.sort((a, b)=> (b.priority - a.priority))),
-                ...(isMac ? [
-                    { role: 'pasteAndMatchStyle' },
-                    { role: 'delete' },
-                    { role: 'selectAll' },
-                    { type: 'separator' },
-                    {
-                        label: 'Speech',
-                        submenu: [
-                            { role: 'startSpeaking' },
-                            { role: 'stopSpeaking' }
-                        ]
-                    }
-                ] : [
-                    { role: 'delete' },
-                    { type: 'separator' },
-                    { role: 'selectAll' }
-                ])
-            ]
-        },
-        // { role: 'windowMenu' }
-        {
-            label: 'Window',
-            submenu: [
-                { role: 'reload' },
-                { role: 'forceReload' },
-                { role: 'toggleDevTools' },
-                { type: 'separator' },
-                { role: 'minimize' },
-                { role: 'zoom' },
-                {
-                    label: 'Always on top',
-                    click: async(ev) => {
-                        console.log(ev);
-                        if (windows.focused.win.isAlwaysOnTop()) {
-                            windows.focused.win.setAlwaysOnTop(false);
-                        } else {
-                            windows.focused.win.setAlwaysOnTop(true);
-                        }
-                    }
-                },
-                ...(options.plugins.view.sort((a, b)=> (a.priority - b.priority))),
-                { type: 'separator' },
-                { role: 'resetZoom' },
-                { role: 'zoomIn' },
-                { role: 'zoomOut' },
-                { type: 'separator' },
-                { role: 'togglefullscreen' },
-                ...(isMac ? [
-                    { type: 'separator' },
-                    { role: 'front' }
-                ] : [])
-            ]
-        },
-
-        {
-            label: 'Evaluation',
-            submenu: [{
-                    label: 'Abort',
-                    accelerator: shortcut('abort'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('abort', true);
-                    }
-                },
-
-                {
-                    label: 'Evaluate Initializing Cells',
-                    accelerator: shortcut('evaluate_init'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('evaluateinit', true);
-                    }
-                },
-                {
-                    label: 'Evaluate All Cells',
-                    accelerator: shortcut('evaluate_all'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('evaluateall', true);
-                    }
-                },                
-                { type: 'separator' },
-                {
-                    label: 'Clear Output Cells',
-                    accelerator: shortcut('clear_outputs'),
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('clearoutputs', true);
-                    }
-                },
-                {
-                    label: 'Trashed Cells',
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('untrashcell', true);
-                    }
-                },                
-
-                {
-                    label: 'Change Kernel',
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('changekernel', true);
-                    }
-                },
-
-                ...(options.plugins.kernel.sort((a, b)=> (a.priority - b.priority))),
-
-                { type: 'separator' },
-
-                {
-                    label: 'Kernel',
-                    submenu: [{
-                            label: 'New Evaluation Kernel',
-                            click: async(ev) => {
-                                console.log(ev);
-                                windows.focused.call('newlocalkernel', true);
-                            }
-                        },
-                        {
-                            label: 'Restart',
-                            click: async(ev) => {
-                                console.log(ev);
-                                windows.focused.call('restartkernel', true);
-                            }
-                        },
-                        {
-                            label: 'Shutdown all',
-                            click: async(ev) => {
-                                console.log(ev);
-                                windows.focused.call('killallkernels', true);
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-       
-        {
-            label: 'Misc',
-            submenu: [{
-                    label: 'Settings',
-                    click: async(ev) => {
-                        console.log(ev);
-                        windows.focused.call('settings', true);
-                    }
-                },
-
-                { type: 'separator' },
-
-                ...(options.plugins.misc.sort((a, b)=> (a.priority - b.priority)))               
-            ]
-        }
-    ];
-
-    const noMenu = [
-        // { role: 'appMenu' }
-        ...(isMac ? [{
-            label: app.name,
-            submenu: [
-                { role: 'about' },
-                { type: 'separator' },
-                ...(options.footermenu),
-                { label: 'Close app', accelerator: shortcut('quit'), click: (ev) => {
-                    console.warn('Quit dialog');
-                    dialog.showMessageBox({message: 'Are you sure you want to quit?', type:'question', buttons:['Yes', 'No']}).then((res) => {
-                        if (res.response == 0) {
-                            app.quit();
-                        }
-                    })
-                    
-                }}
-            ]
-        }] : []),
-        // { role: 'fileMenu' }
-        ...(isMac ? [] : [{
-            label: 'File',
-            submenu: [
-                    ...(isMac ? [{ type: 'separator' }] : [
-                        { label: 'Close app', accelerator: shortcut('quit'), click: (ev) => {
-                            console.warn('Quit dialog');
-                            dialog.showMessageBox({message: 'Are you sure you want to quit?', type:'question', buttons:['Yes', 'No']}).then((res) => {
-                                if (res.response == 0) {
-                                    app.quit();
-                                }
-                            })
-                    
-                        }}
-                    ])
-            ]
-        }]),
-
-        {
-            label: 'Window',
-            submenu: [
-                { role: 'toggleDevTools' }
-            ]
-        }        
-    ];
-
-    buildMenu.small = Menu.buildFromTemplate(noMenu);
-    buildMenu.main  = Menu.buildFromTemplate(template);
-}
-
-callFakeMenu["openFile"] = async () => {
-    const promise = dialog.showOpenDialog({
-        title: 'Open File',
-        filters: [
-            { name: 'Notebooks', extensions: ['wln', 'nb', 'md', 'html', 'wlw', 'wl'] }
-        ],
-        properties: ['openFile']
-    });
-
-    promise.then((res) => {
-        if (!res.canceled) {
-            app.addRecentDocument(res.filePaths[0]);
-            create_window({url: server.url.default('local') + `/` + encodeURIComponent(res.filePaths[0]), title: res.filePaths[0]});
-        }
-    });
-}
-
-callFakeMenu["openFolder"] = async () => {
-    const promise = dialog.showOpenDialog({ title: 'Open Vault', properties: ['openDirectory'] });
-    promise.then((res) => {
-        if (!res.canceled) {
-            app.addRecentDocument(res.filePaths[0]);
-            create_window({url: server.url.default('local') + `/folder/` + encodeURIComponent(res.filePaths[0]), title: res.filePaths[0]});
-        }
-    });
-}
-
-callFakeMenu["Save"] = async () => {
-    windows.focused.call('save', true);
-}
-
-callFakeMenu["print"] = async (ev) => {
-    windows.focused.call('print', true);
-    //windows.focused.call('print', true);
-}
-
-
-callFakeMenu["SaveAs"] = async () => {
-    const promise = dialog.showSaveDialog({ title: 'Save as', properties: ['createDirectory'], filters: [
-        { name: 'Notebooks', extensions: ['wln'] }
-    ],});
-    promise.then((res) => {
-        if (!res.canceled) {
-            app.addRecentDocument(res.filePath);
-            console.log(res.filePath);
-            windows.focused.call('saveas', encodeURIComponent(res.filePath) );
-        }
-    });
-}
-
-callFakeMenu["OnTop"] = async(ev) => {
-    console.log(ev);
-    if (windows.focused.win.isAlwaysOnTop()) {
-        windows.focused.win.setAlwaysOnTop(false);
-    } else {
-        windows.focused.win.setAlwaysOnTop(true);
-    }
-}
-
-callFakeMenu["new"] = async(ev) => {
-    console.log(ev);
-    windows.focused.call('newnotebook', true);
-}
-
-callFakeMenu["newshort"] = async(ev) => {
-    windows.focused.call('newshortnote', true);
-}
-
-callFakeMenu["acknowledgments"] = async(ev) => {
-    windows.focused.call('acknowledgments', true);
-}
-
-
-callFakeMenu["browser"] = async(ev) => {
-    server.browserMode = true;
-    shell.openExternal(windows.focused.win.webContents.getURL());
-}
-
-callFakeMenu["abort"] = () => {
-    windows.focused.call('abort', true);
-}
-
-
-callFakeMenu["untrashcell"] = () => {
-    windows.focused.call('untrashcell', true);
-}
-
-callFakeMenu["clearoutputs"] = () => {
-    windows.focused.call('clearoutputs', true);
-}
-
-callFakeMenu["togglecells"] = () => {
-    windows.focused.call('togglecell', true);
-}
-
-callFakeMenu["evalInit"] = () => {
-    windows.focused.call('evaluateinit', true);
-}
-
-callFakeMenu["evalAll"] = () => {
-    windows.focused.call('evaluateall', true);
-}
-
-callFakeMenu["restartkernels"] = () => {
-    windows.focused.call('restartkernel', true);
-}
-
-callFakeMenu["newlocalkernel"] = () => {
-    windows.focused.call('newlocalkernel', true);
-}
-
-callFakeMenu["shutdownall"] = () => {
-    windows.focused.call('killallkernels', true);
-}
-
-callFakeMenu["zoomIn"] = () => {
-    windows.focused.call('zoomIn', true);
-}
-
-callFakeMenu["devTools"] = () => {
-    windows.focused.win.webContents.openDevTools()
-}
-
-callFakeMenu["zoomOut"] = () => {
-    windows.focused.call('zoomOut', true);
-}
-
-callFakeMenu["zoomReset"] = () => {
-    windows.focused.call('zoomReset', true);
-}
-
-
-callFakeMenu["locateExamples"] = async(ev) => {
-    create_window({url: server.url.default('local') + `/folder/` + encodeURIComponent(path.join(app.getPath('documents'), 'WLJS Notebooks', 'Demos')), title: 'Examples'});
-}
-
-callFakeMenu["locateAppData"] = async(ev) => {
-    console.log(ev);
-    shell.showItemInFolder(appDataFolder);
-}
-
-callFakeMenu["reload"] = () => {
-    windows.focused.win.webContents.reloadIgnoringCache();
-}
-
-callFakeMenu["docsx"] = () => {
-    shell.openExternal('http://127.0.0.1:20540')
-}
-
-callFakeMenu["prompt"] = () => {
-    if (server.running)
-        create_window({url: server.url.default() + '/prompt', title: 'Overlay', overlay: true, show: true, focus: true});
-}
-
-
-callFakeMenu["quickmode"] = () => {
-    windows.focused.call('reopenasquick', true);
-}
-
-
-callFakeMenu["exit"] = () => {
-    dialog.showMessageBox({message: 'Are you sure you want to quit?', type:'question', buttons:['Yes', 'No']}).then((res) => {
-                        if (res.response == 0) {
-                            app.quit();
-                        }
-                    })
-}
-
-let deviceDialogOpen = false;
-// Track callbacks we've already used so we never call the same Electron callback twice
-const usedHIDCallbacks = new WeakSet();
-
-const createHIDDialog = (deviceList, cbk) => {
-    // If Electron passes us a callback we've already used, never touch it again.
-    if (usedHIDCallbacks.has(cbk)) {
-        console.log('HID: callback already used, ignoring this event');
-        return;
-    }
-
-    // If a dialog is already open, ignore new events and let the existing
-    // dialog eventually resolve its callback.
-    if (deviceDialogOpen) {
-        console.log('HID: dialog already open, ignoring this event');
-        return;
-    }
-
-    deviceDialogOpen = true;
-    let done = false;
-
-    const finish = (id) => {
-        if (done) return; // never call the same callback more than once
-        done = true;
-        deviceDialogOpen = false;
-
-        if (!usedHIDCallbacks.has(cbk)) {
-            usedHIDCallbacks.add(cbk);
-        }
-
-        try {
-            cbk(id);
-        } catch (err) {
-            console.error('Error in HID callback:', err);
-        }
-    };
-
-    console.log('HID Dialog (dialog.showMessageBox)!');
-
-    const list = (deviceList || []).map((e) => ({
-        name: e.name || e.deviceName || 'Unknown device',
-        id: e.deviceId
-    }));
-
-    // No devices -> show info dialog, then "cancel" selection
-    if (!list.length) {
-        dialog.showMessageBox({
-            type: 'info',
-            buttons: ['OK'],
-            defaultId: 0,
-            title: 'Device selector',
-            message: 'No devices available',
-            detail: 'No HID-compatible devices are currently available. Please connect a device and try again.',
-            noLink: true,
-            normalizeAccessKeys: true
-        })
-        .finally(() => {
-            finish(''); // signal "no selection"
-        });
-
-        return;
-    }
-
-    const buttons = list.map(d => d.name);
-    buttons.push('Cancel');
-    const cancelId = buttons.length - 1;
-
-    dialog.showMessageBox({
-        type: 'question',
-        buttons,
-        cancelId,
-        defaultId: 0,
-        title: 'Device selector',
-        message: 'Select a HID device',
-        detail: 'Choose the device you want to use from the list below.',
-        noLink: true,
-        normalizeAccessKeys: true
-    })
-    .then(({ response }) => {
-        if (response === cancelId) {
-            finish('');
-        } else {
-            const selected = list[response];
-            finish(selected ? selected.id : '');
-        }
-    })
-    .catch((err) => {
-        console.error('Error showing HID selection dialog:', err);
-        finish('');
-    });
-};
-
-/* permissions for the main window, special headers */
-const setHID = (/** @type {BrowserWindow} */ mainWindow) => {
-
-
-    mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
-        console.log('Select HID (bluetooth)');
-        event.preventDefault();
-        createHIDDialog(deviceList, callback);
-        return false;
-    });
-    
-    mainWindow.webContents.session.on('select-hid-device', (event, details, callback) => {
-        console.log('Select HID');
-        event.preventDefault();
-        createHIDDialog(details.deviceList, callback);
-        return false;
-    });
-
-    mainWindow.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-        return true
-    })
-
-    mainWindow.webContents.session.setDevicePermissionHandler((details) => {
-        return true
-    })
-
-    session.fromPartition("default").setPermissionRequestHandler((webContents, permission, callback) => {
-        let allowedPermissions = ["audioCapture", "desktopCapture"]; // Full list here: https://developer.chrome.com/extensions/declare_permissions#manifest
-
-        if (allowedPermissions.includes(permission)) {
-            callback(true); // Approve permission request
-        } else {
-            console.error(
-                `The application tried to request permission for '${permission}'. This permission was not whitelisted and has been blocked.`
-            );
-
-            callback(false); // Deny
-        }
-    });
-
-    let currentOS;
-    if (isWindows) currentOS = 'Windows';
-    if (isWindows && (!IS_WINDOWS_11 || server.frontend.WindowsLegacy)) currentOS = 'WindowsLegacy';
-    if (isMac) currentOS = 'OSX';
-    if (!isMac && !isWindows) currentOS = 'Unix';
-
-
-
-    session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-        details.requestHeaders['Electron'] = majorVersion;
-        details.requestHeaders['AppOS'] = currentOS;
-        callback({ requestHeaders: details.requestHeaders })
-    });
-
-}
 
 var majorVersion = app.getVersion().split('.');
 majorVersion.pop();
 majorVersion = majorVersion.join('');
 
 let server;
+let wolframRuntime;
 
 const initServer = () => {
     server = {
@@ -1337,37 +163,37 @@ const initServer = () => {
                 return this.local;
             }
         },
-    
+
         wolfram: {
             process: undefined,
             path: 'wolframscript',
             args: []
         },
-    
+
         frontend: {},
-    
-    
+
+
         shutdown (forced = false) {
             if (server.startedQ || forced) {
                 this.startedQ = false;
                 this.running = false;
                 console.log(this.wolfram.process.pid);
-    
+
                 this.wolfram.process.kill('SIGINT');
                 this.wolfram.process.stdin.write("exit\n");
-    
+
                 this.wolfram.process.stdin.end();
                 this.wolfram.process.stdout.destroy();
                 this.wolfram.process.stderr.destroy();
-    
+
                 this.wolfram.process.kill('SIGKILL');
                 console.log('Killed?');
-    
+
                 if (!isWindows) {
                     //bug on Unix
-                    kill_all(() => console.log('killed!'));
+                    wolframRuntime.killAll(() => console.log('killed!'));
                 }
-    
+
                 //this.wolfram.process.kill('SIGINT');
                 //this.wolfram.process.stdin.write("exit\n");
             }
@@ -1376,6 +202,16 @@ const initServer = () => {
 }
 
 initServer();
+
+const devicePermissions = createDevicePermissions({
+    dialog,
+    isMac,
+    isWindows,
+    isWindows11: IS_WINDOWS_11,
+    majorVersion,
+    server,
+    session
+});
 
 /* working windows */
 const windows = {
@@ -1444,14 +280,14 @@ const windows = {
               win = new BrowserWindow({
                 vibrancy: "sidebar", // in my case...
                 frame: true,
-                
+
                 titleBarStyle: 'hiddenInset',
                 width: 600,
                 height: 660,
                 resizable: false,
                 title: 'Launcher',
                 contextMenu: true,
-                
+
                 webPreferences: {
                     preload: path.join(__dirname, 'preload_log.js'),
                     webSecurity: false,
@@ -1516,7 +352,7 @@ const windows = {
                         backgroundThrottling:  false ,
                         contextMenu: true
                     }
-                 });                
+                 });
             }
 
             contextMenu({
@@ -1526,7 +362,7 @@ const windows = {
                     actions.copy(),
                     actions.paste()
                 ]
-            });            
+            });
 
             win.webContents.setWindowOpenHandler((details) => {
                 shell.openExternal(details.url); // Open URL in user's browser.
@@ -1543,7 +379,7 @@ const windows = {
             } else {
                 win.loadFile(path.join(__dirname, 'log_padded.html'));
             }
-            
+
 
             if ((!isMac && !isWindows) || (isWindows && (!IS_WINDOWS_11 || server.frontend.WindowsLegacy))) {
                                 const checkTheme = () => {
@@ -1671,7 +507,7 @@ function parseNewsItems(html, source, pathPrefix) {
     while ((match = regex.exec(html))) {
         matchCount++;
         if (matchCount > 50) break; // safety limit
-        
+
         const block = match[0];
         const hrefMatch = block.match(/href="(\/[^\"]+)"/);
         const titleMatch = block.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
@@ -1749,7 +585,7 @@ const read_wl_settings = () => {
         return s;
     }
 
-      
+
     server.frontend = {};
     while (m = r.exec(file)) {
         server.frontend[m[1].slice(1,-1)] = parse(m[2]);
@@ -1757,7 +593,7 @@ const read_wl_settings = () => {
 
     //if ('RunInTray' in server.frontend && ! server.frontend.RunInTray) {
         //server.frontend.RunInTray = false;
-   // } 
+   // }
 
     console.log(server.frontend);
 }
@@ -1775,16 +611,16 @@ const closing_handler = (event, id) => {
         blocked_windows_messages[uid] = (result) => {
             if (!blocked_windows[id]) return;
 
-            if (!result) return; 
+            if (!result) return;
             const win = blocked_windows[id].window;
             delete blocked_windows[id];
-                
+
             win.close();
-            return; 
+            return;
         }
 
         const res = dialog.showMessageBox({message: blocked_windows[id].message, buttons: ['Cancel', 'Close'],  noLink:true, type:'question'});
-        
+
         res.then((r) => {
             blocked_windows_messages[uid](r.response == 1);
         });
@@ -1855,11 +691,11 @@ function create_window(opts, cbk = () => {}) {
         options.minWidth = 576;
         if (!isMac) {
             options.minWidth = 700;
-        }       
-        
+        }
+
         if (isWindows) {
             options.disallowFullscreen = true;
-            
+
         }
 
         if ((new RegExp(/docFind/)).exec(options.url)) {
@@ -1874,7 +710,7 @@ function create_window(opts, cbk = () => {}) {
             options.contextMenu = true;
             options.override.maximizable = false;
         }
-        
+
 
         if (new RegExp(/acknowledgments/).exec(options.url)) {
             options.height = 310;
@@ -1892,8 +728,8 @@ function create_window(opts, cbk = () => {}) {
             options.override.maximizable = true;
             options.disallowFullscreen = false;
             //options.override.fullScreenable = true;
-        }        
-        
+        }
+
 
         if ((new RegExp(/little/)).exec(options.url)) {
             options.minWidth = 500*1024.0/800.0;;
@@ -1915,7 +751,7 @@ function create_window(opts, cbk = () => {}) {
             options.override.titleBarStyle = undefined;
             options.override.titleBarOverlay = undefined;
             options.override.vibrancy = undefined;
-            options.override.backgroundMaterial = false; 
+            options.override.backgroundMaterial = false;
             options.override.maximizable = false;
         }
 
@@ -1933,7 +769,7 @@ function create_window(opts, cbk = () => {}) {
             }
         }
 
-        if (options.offscreen) { 
+        if (options.offscreen) {
           options.override.width = 1920;
           options.override.height = 1280;
           options.override.show = false;
@@ -2092,7 +928,7 @@ function create_window(opts, cbk = () => {}) {
                 },
                 width: Math.round(options.width),
                 height: Math.round(options.height),
-                
+
                 minWidth: Math.round(options.minWidth),
                 title: options.title,
                 //transparent:true,
@@ -2175,10 +1011,10 @@ function create_window(opts, cbk = () => {}) {
                 const pos = options.parent.getPosition();
                 pos[0] = pos[0] + (options.features.right || 0) - (options.features.left || 0);
                 pos[1] = pos[1] + (options.features.top || 0) - (options.features.bottom || 0);
-                
+
                 if(pos[0] < 0) pos[0] = 0;
                 if(pos[1] < 0) pos[1] = 0;
-                
+
                 win.setPosition(pos[0], pos[1], true);
             }
         }
@@ -2190,7 +1026,7 @@ function create_window(opts, cbk = () => {}) {
         });
 
         //permissions of the window
-        setHID(win);
+        devicePermissions.attach(win);
 
         //focus window
         if (options.focus && !options.offscreen) {
@@ -2320,13 +1156,45 @@ function create_window(opts, cbk = () => {}) {
 
 
 
+const {
+    buildMenu,
+    callFakeMenu,
+    pluginsMenu,
+    shortcut
+} = createMenuManager({
+    Menu,
+    app,
+    appDataFolder,
+    contextMenuExtensions,
+    createWindow: create_window,
+    dialog,
+    extensionManager,
+    fs,
+    isMac,
+    path,
+    rootAppFolder,
+    server,
+    shell,
+    userExtensions,
+    windows
+});
+
 /* APP Logic */
+
+let electronExtensionsClosed = false;
 
 app.on('will-quit', (e) => {
     console.log('exiting the server...');
 
-    //e.preventDefault();
     server.shutdown();
+
+    if (!electronExtensionsClosed && extensionManager.hasCloseHandlers()) {
+        e.preventDefault();
+        void extensionManager.close().finally(() => {
+            electronExtensionsClosed = true;
+            app.exit(0);
+        });
+    }
 });
 
 app.on('before-quit', (e) => {
@@ -2341,21 +1209,21 @@ app.on('before-quit', (e) => {
         });
         return false;
     }
-    
+
     //server.shutdown();
     if ((server.browserMode || server.frontend.RunInTray) && process.platform !== 'darwin') {
-    
+
         e.preventDefault();
         tray.fireBallon()
 
-        
+
     }
 })
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin' && !(server.browserMode || server.frontend.RunInTray)) {app.quit()} else {
         if ((server.browserMode || server.frontend.RunInTray) && process.platform !== 'darwin') {
-            
+
             tray.fireBallon()
         }
     }
@@ -2404,10 +1272,10 @@ function parseArgs(args) {
     const pendingFlags = [];
     const booleanShortFlags = ['cdn']; // flags like -cdn that are boolean
     const startIndex = 1; // skip the path at index 0
-  
+
     for (let i = startIndex; i < args.length; i++) {
       const arg = args[i];
-  
+
       if (arg.startsWith('--')) {
         result[arg.slice(2)] = true;
       } else if (arg.startsWith('-')) {
@@ -2425,12 +1293,12 @@ function parseArgs(args) {
         }
       }
     }
-  
+
     // Assign empty string to any flags that didn't get a value
     for (const flag of pendingFlags) {
       result[flag] = '';
     }
-  
+
     return result;
   }
 // Behaviour on the second instance for the parent process
@@ -2548,8 +1416,6 @@ const powerSaver = () => {
     })
 }
 
-const os = require('node:os');
-
 const draggingIcon = nativeImage.createFromPath(path.join(__dirname, 'build', 'file', 'File-512x512.png'));
 
 /* App Ready */
@@ -2595,15 +1461,15 @@ app.whenReady().then(() => {
                 largeIcon: false
               });
               console.log("Balloon")
-        }  
+        }
 
-          
+
     }
 
     pluginsMenu.fetch();
     buildMenu({plugins: pluginsMenu.items});
     Menu.setApplicationMenu(buildMenu.small);
-    
+
 
 
     powerSaver();
@@ -2631,12 +1497,18 @@ app.whenReady().then(() => {
 
     const splash = require('./coffee.js').showCoffeeSplash;
     const coffee = nativeImage.createFromPath(path.join(__dirname, 'build', 'coffee.png'));
-    
+
     //make a log window and start WL
     windows.log.construct((log_window) => {
         windows.log.version(app.getVersion());
         //new promt('input', 'Do you have Wolfram Engine installed?', (answer) => console.log(answer), log_window);
-        check_installed(() => check_wl(load_configuration(), () => store_configuration(() => start_server(log_window)), log_window), log_window);
+        wolframRuntime.checkInstalled(() => {
+            wolframRuntime.checkWolfram(
+                wolframRuntime.loadConfiguration(),
+                () => wolframRuntime.storeConfiguration(() => start_server(log_window)),
+                log_window
+            );
+        }, log_window);
     });
 
     //again in a case if something changed
@@ -2650,437 +1522,36 @@ app.whenReady().then(() => {
         onClick: () => shell.openExternal('https://wljs.io/frontend/Support')
       })
     }, 1000*60*45);
-    
+
     if (!server.frontend.NoUpdates) autoUpdater.checkForUpdatesAndNotify();
 
-    
-    ipcMain.on('system-harptic', () => {
-        trackpadUtils.triggerFeedback();
-    });
-
-    ipcMain.on('system-window-zoom-set', (e, value) => {
-        e.sender.setZoomLevel(value-1);
-    });
-
-    ipcMain.handle('system-window-zoom-get', async (e) => {
-        return e.sender.getZoomLevel()+1;
-    });
-
-    ipcMain.on('print', (e, opts) => {
-        e.sender.print({printBackground: true})
-    });
-
-    ipcMain.handle('print-pdf', async (e, opts) => {
-        const promiseBuf = await e.sender.printToPDF({
-            printBackground:false,
-            ...opts
-        });
-
-        const margin = opts.margin || 10;
-
-        if (opts.crop) {
-            console.log('Cropping...');
-            const cropped = await cropPdfBuffer(promiseBuf, margin)
-            return cropped
-        }
-
-        return promiseBuf
-    });
-
-
-    ipcMain.handle('createMenu', async (e, args) => {
-        //const w = BrowserWindow.fromWebContents(e.sender);
-        const p = new Deferred();
-        let closedQ = false;
-
-        const menu = Menu.buildFromTemplate(args.map((assoc) => {
-            const ref = assoc.ref;
-            if (!ref) {
-                return assoc;
-            }
-            const copy = {...assoc};
-            if (Array.isArray(copy.accelerator)) {
-                copy.accelerator = isMac ? copy.accelerator[1] : copy.accelerator[0];
-            }
-            return {
-                ...copy,
-                click: () => {
-                    p.resolve(ref);
-                    closedQ = true;
-                }
-            }
-        }));
-        
-        menu.popup({callback: () => {
-            if (!closedQ) p.resolve(false);
-        }});
-
-        return await p.promise;
-    })
-    
-    const savedBlobs = new Map();
-
-    async function writeOneBlob({ uid, filePath }) {
-      const blob = savedBlobs.get(uid);
-      if (!blob) return false;
-    
-      const data = blob.toPNG();
-    
-      await mkdir(path.dirname(filePath), { recursive: true });
-      await writeFile(filePath, data); // overwrites by default
-    
-      savedBlobs.delete(uid);
-      return true;
-    }
-    
-    async function writeManyBlobs(
-      items,
-      concurrency = 1,
-    ) {
-      let index = 0;
-      const results = new Array(items.length);
-    
-      async function worker() {
-        while (index < items.length) {
-          const currentIndex = index++;
-          results[currentIndex] = await writeOneBlob(items[currentIndex]);
-        }
-      }
-    
-      await Promise.all(
-        Array.from(
-          { length: Math.min(concurrency, items.length) },
-          worker,
-        ),
-      );
-    
-      return results;
-    }
-    
-    ipcMain.handle(
-      'binaryBlobWrite',
-      async (e, payload) => {
-        if (Array.isArray(payload)) {
-          return writeManyBlobs(payload);
-        }
-    
-        return writeOneBlob(payload);
-      },
-    );
-
-    function trimTransparent(nativeImage) {
-      const { width, height } = nativeImage.getSize();
-      const bitmap = nativeImage.toBitmap(); // BGRA on Electron
-    
-      let minX = width;
-      let minY = height;
-      let maxX = -1;
-      let maxY = -1;
-    
-      for (let y = 0; y < height; y++) {
-        for (let x = 0; x < width; x++) {
-          const offset = (y * width + x) * 4;
-          const alpha = bitmap[offset + 3];
-    
-          if (alpha !== 0) {
-            if (x < minX) minX = x;
-            if (y < minY) minY = y;
-            if (x > maxX) maxX = x;
-            if (y > maxY) maxY = y;
-          }
-        }
-      }
-    
-      if (maxX === -1) {
-        return nativeImage; // fully transparent
-      }
-    
-      return nativeImage.crop({
-        x: minX,
-        y: minY,
-        width: maxX - minX + 1,
-        height: maxY - minY + 1,
-      });
-    }
-
-    ipcMain.handle('capture', async (e, area) => {
-        let zoom = e.sender.zoomFactor;
-        const windowId = e.sender.id;
-
-        if (area) {
-          area.x = Math.round(area.x * zoom);
-          area.y = Math.round(area.y * zoom);
-          area.width = Math.round(area.width * zoom);
-          area.height = Math.round(area.height * zoom);
-          //a bug. it always adds transparent region on the right side
-          //it only occurs for offscreen window
-          const img = trimTransparent(await e.sender.capturePage(area));
-          if (area.toBlob) {
-            const uid = uuid4();
-            savedBlobs.set(uid, img);
-            return uid;
-          }
-
-          return img.toDataURL();
-        } else {
-          const img = await e.sender.capturePage(area)
-          return img.toDataURL();
-        }
-    });   
-
-    ipcMain.on('set-progress', (e, p) => {
-        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
-        if (senderWindow)
-            senderWindow.setProgressBar(p);
-    });
-
-    ipcMain.on('confirmed', (e, p) => {
-        if (blocked_windows_messages[p.uid]) {
-            blocked_windows_messages[p.uid](p.result);
-            delete blocked_windows_messages[p.uid];
-        }
-    });
-
-
-    ipcMain.on('block-window', (e, p) => {
-        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
-        if (senderWindow) {
-            if (p.state) {
-                if (!blocked_windows[senderWindow.id]) {
-                    blocked_windows[senderWindow.id] = {window: senderWindow, message:p.message};
-                }
-            } else {
-                if (blocked_windows[senderWindow.id]) {
-                    delete blocked_windows[senderWindow.id];
-                }
-            }
-        }
-    });
-
-    ipcMain.on('system-window-enlarge-if-needed', (e, p) => {
-        const bonds = windows.focused.win.getBounds();
-        if (bonds.width < 800) {
-            windows.focused.win.setBounds({ width: 800 , animate: true}, true);
-        }
-    });
-
-    ipcMain.on('clear-cache', (e) => {
-        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
-        windows.log.print('Cache reset');
-
-        session.defaultSession.clearStorageData();
-        session.defaultSession.clearCache();
-
-        if (senderWindow) {
-            const ses = senderWindow.webContents.session;
-            ses.clearCache();
-        }
-    });
-
-    ipcMain.on('resize-window-by', (e, delta) => {
-        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
-        if (senderWindow) {
-            const bonds = senderWindow.getBounds();
-            const pos = senderWindow.getPosition();
-            const dims = senderWindow.getSize();
-
-            const primaryDisplay = screen.getPrimaryDisplay();
-            const { width, height } = primaryDisplay.workAreaSize;
-
-            if (delta[0] === 0) {
-                if (bonds.height + delta[1] > height*0.5) {
-                    console.log('Large resize. Adjusting...');
-                    let mid = height/2.0 - ((bonds.height + delta[1])/2.0);
-                    if (mid < 0)
-                        mid = 100;
-
-                    let wheight = bonds.height + delta[1];
-                    if (wheight + mid > height) {
-                        console.log('OVERLOFW!');
-                        wheight = height - mid - 100;
-                    }
-                    console.log({ y: mid, height: wheight, animate: true});
-                    senderWindow.setBounds({  height: wheight, animate: true}, true);
-                    if (wheight > height / 1.45) senderWindow.center();
-                } else {
-                    console.log('Not too big');
-                    let mid = bonds.y;
-                    let wheight = bonds.height + delta[1];
-                    if (wheight + mid > height) wheight = height - mid - 100;
-
-                    console.log({ height: wheight, animate: true});
-                    senderWindow.setBounds({ height: wheight, animate: true}, true);
-                    if (wheight > height / 1.45) senderWindow.center();
-                }
-                //senderWindow.center();
-            } else {
-                let wwidth = bonds.width + delta[0];
-                if (bonds.height + delta[1] > height*0.5) {
-                    console.log('Large resize. Adjusting...');
-                    let mid = height/2.0 - ((bonds.height + delta[1])/2.0);
-                    if (mid < 0)
-                        mid = 100;
-
-                    let wheight = bonds.height + delta[1];
-                    if (wheight + mid > height) {
-                        console.log('OVERLOFW!');
-                        wheight = height - mid - 100;
-                    }
-
-                    senderWindow.setBounds({  width: wwidth, height: wheight, animate: true}, true);
-                    if (wheight > height / 1.45) senderWindow.center();
-                } else {
-                    console.log('Not too big');
-                    let mid = bonds.y;
-                    let wheight = bonds.height + delta[1];
-                    if (wheight + mid > height) wheight = height - mid - 100;
-
-                    senderWindow.setBounds({ width: wwidth, height: wheight, animate: true}, true);
-                    if (wheight > height / 1.45) senderWindow.center();
-                }              
-                
-                //senderWindow.center();
-            }
-            
-        }
-    })
-
-    ipcMain.on('set-min-size', (e, minWidth, minHeight) => {
-        const senderWindow = BrowserWindow.fromWebContents(e.sender); // BrowserWindow or null
-        if (
-            senderWindow &&
-            Number.isFinite(minWidth) && minWidth >= 0 &&
-            Number.isFinite(minHeight) && minHeight >= 0
-        ) {
-            senderWindow.setMinimumSize(Math.round(minWidth), Math.round(minHeight));
-        }
-    });
-
-    ipcMain.on('system-window-toggle', (e, p) => {
-        const bonds = windows.focused.win.getBounds();
-        if (bonds.width < 800) {
-            if (windows.focused.win.previousWidth) {
-                windows.focused.win.setBounds({ width: windows.focused.win.previousWidth , animate: true}, true);
-            } else {
-                windows.focused.win.setBounds({ width: 800 , animate: true}, true);
-            }
-        } else {
-            windows.focused.win.previousWidth = bonds.width;
-            windows.focused.win.setBounds({ width: 600 , animate: true}, true);
-        }
-    });
-
-    ipcMain.handle('showOpenDialog', async (event, p) => {
-        console.log(p);
-        const result = await dialog.showOpenDialog(p);
-        return result;
-    }); 
-
-    ipcMain.handle('showSaveDialog', async (event, p) => {
-        console.log(p);
-        const result = await dialog.showSaveDialog(p);
-        return result;
-    }); 
-
-    ipcMain.handle('showMessageBox', async (event, p) => {
-        console.log(p);
-        const result = await dialog.showMessageBox(p);
-        return result;
-    });     
-
-    ipcMain.handle('showErrorBox', async (event, p) => {
-        console.log(p);
-        const result = await dialog.showErrorBox(p.title, p.content);
-        return result;
-    });     
-
-    ipcMain.on('system-window-expand', (e, p) => {
-        windows.focused.win.setBounds({ width: 800 , animate: true});
-    });
-
-    ipcMain.on('open-tools', () => {
-        console.warn('Dev tools!');
-        windows.focused.win.webContents.openDevTools()
-    });
-
-    ipcMain.on('system-window-shrink', (e, p) => {
-        windows.focused.win.setBounds({ width: 600 , animate: true});
-    });
-
-    //set up search on-page (any focused windows)
-    ipcMain.on('search-text', (event, arg) => {
-        let nextRes = arg.direction == 'next' ? true : false
-        const requestId = windows.focused.win.webContents.findInPage(arg.searchText, {
-            forward: true,
-            findNext: nextRes,
-            matchCase: false
-        });
-    });
-    ipcMain.on('stop-search', (event, arg) => {
-        windows.focused.win.webContents.stopFindInPage('clearSelection');
-    });
-
-    //system commands to open file explorers and etc
-    ipcMain.on('system-open', (e, p) => {
-        const dir = JSON.parse(p);
-        if (dir[0].length == 0) {
-            shell.showItemInFolder('/'+path.join(...dir));
-        } else {
-            shell.showItemInFolder(path.join(...dir));
-        }
-    });
-
-    ipcMain.on('system-menu', (e, p) => {
-        const menusection = p;
-        callFakeMenu[menusection]();
-    });
-
-    ipcMain.on('system-open-external', (e, p) => {
-        const url = p;
-        console.log('Open url: ', p);
-        shell.openExternal(url);
-    });
-
-    ipcMain.on('system-open-path', (e, p) => {
-        const url = path.join(...p);
-        console.log('Open path: ', url);
-        if (!fs.existsSync(url)) {
-            shell.openPath('/'+url);
-        } else {
-            shell.openPath(url);
-        }
-    });
-
-    ipcMain.on('system-show-folder', (e, p) => {
-        const url = path.join(...p);
-        console.log('Open dir: ', url);
-        if (!fs.existsSync(url)) {
-            shell.showItemInFolder('/'+url);
-        } else {
-            shell.showItemInFolder(url);
-        }        
-    });
-
-    
-
-    ipcMain.on('system-beep', (e, p) => {
-        shell.beep();
-    });    
-
-
-
-    //promts resolver
-    ipcMain.on('promt-resolve', (e, id, val) => {
-        promts_hash[id].resolve(val);
-    });
-
-    ipcMain.on('locate-logfile', () => {
-        shell.showItemInFolder(appDataFolder);
-    });
-
-    globalShortcut.register(shortcut("overlay"), () => {
-        if (server.running)
-            create_window({url: server.url.default() + '/prompt', title: 'Overlay', overlay: true, show: true, focus: true});
+    registerIpcHandlers({
+        BrowserWindow,
+        Deferred,
+        Menu,
+        appDataFolder,
+        blockedWindows: blocked_windows,
+        blockedWindowMessages: blocked_windows_messages,
+        callFakeMenu,
+        createWindow: create_window,
+        cropPdfBuffer,
+        dialog,
+        fs,
+        globalShortcut,
+        ipcMain,
+        isMac,
+        mkdir,
+        path,
+        screen,
+        server,
+        session,
+        shell,
+        shortcut,
+        trackpadUtils,
+        uuid4,
+        windows,
+        wolframRuntime,
+        writeFile
     });
 
     //purge cache if an update was detected (using a special file created by WL)
@@ -3102,7 +1573,7 @@ app.whenReady().then(() => {
 
 function start_server (window) {
     console.log('Started! app');
-    if (window) check_cli_installed(window);
+    if (window) cliInstaller.checkInstalled(window);
     // app.quit();
     if (!server.startedQ) {
         windows.log.clear();
@@ -3122,11 +1593,11 @@ function start_server (window) {
 
 
     if (!accentColor) {
-        accentColor = '#f67070'; 
+        accentColor = '#f67070';
     } else {
         if (accentColor.charAt(0) != '#') accentColor = '#'+accentColor;
         if (accentColor.length > 7) accentColor = accentColor.slice(0, 7);
-        
+
     }
 
 
@@ -3136,7 +1607,7 @@ function start_server (window) {
     server.wolfram.process.stdin.write('System`$Env = <|"AppData"->URLDecode["'+encodeURIComponent(appDataFolder)+'"], "ElectronCode"->'+server.electronCode+', "AccentColor"->"'+accentColor+'"|>;');
     server.wolfram.process.stdin.write(`Get[URLDecode["${encodeURIComponent(runPath)}"]]\n`);
 
-   
+
     let buf = "";
 
     const ipc = {
@@ -3156,7 +1627,7 @@ function start_server (window) {
                nativeTheme.themeSource = server.frontend.Theme.toLowerCase();
                nativeImage.__emitterPool.forEach((el) => el());
                console.log('Update theme!');
-           } 
+           }
         },
         'createWindow': (path, title, rest = {}) => {
             console.log(rest);
@@ -3166,12 +1637,12 @@ function start_server (window) {
 
     server.wolfram.streamer = (chunk) => {
         buf += chunk;
-  
+
         let nl;
         while ((nl = buf.indexOf("\n")) !== -1) {
           const line = buf.slice(0, nl);
           buf = buf.slice(nl + 1);
-  
+
           if (line.startsWith("<<<IPC>>>")) {
             try {
                 const payload = JSON.parse(line.slice("<<<IPC>>>".length));
@@ -3200,23 +1671,18 @@ function start_server (window) {
 
 //applicable only to the first time!!!
 function create_first_window() {
-    
-    loadedElectronExtensions.forEach(fn => {
-        console.log('loading ...', fn);
-        const g = require(fn);
-        if (g.epilog) g.epilog(app, {}, []); else g(app, {}, []);
-    });
+    void extensionManager.start('epilog');
 
 
     const parsedCommndLine = parseArgs(process.argv);
     const commandOnly = parsedCommndLine.a;
 
     if (commandOnly) net.fetch(server.url.default('local') + `/cmdapi/` + encodeURIComponent(JSON.stringify(parsedCommndLine)))
-   
+
 
     //Windows/Unix open a file
     if (!isMac && server.startedQ && !server.running && process.argv[1] && !commandOnly) {
-        console.log('OPEN a FILE WIN/Linux'); 
+        console.log('OPEN a FILE WIN/Linux');
 
 
         const protocol = new RegExp('wljs-url-message:\/\/(.*)').exec(process.argv[process.argv.length - 1]);
@@ -3238,7 +1704,7 @@ function create_first_window() {
                 }
             }
 
-        
+
 
                 // AppImage desktop entries can supply only Electron flags (for example, --no-sandbox).
                 const requestedPath = process.argv[pos];
@@ -3251,7 +1717,7 @@ function create_first_window() {
                 } else {
                     create_window({url: server.url.default() + '/folder/' + encodeURIComponent(requestedPath), title:  path.basename(requestedPath), show: false, focus: true, cacheClear: server.wasUpdated});
                 }
-            
+
 
         } else  {
             create_window({url: server.url.default(), title: 'Default', show: false, focus: false, cacheClear: server.wasUpdated});
@@ -3294,638 +1760,6 @@ function create_first_window() {
 }
 
 
-const promts_hash = {}
-class promt {
-    constructor(type = 'binary', title, cbk, window) {
-        this.uuid = uuid4();
-        const self = this;
-
-        switch(type) {
-            case 'binary':
-                const res = dialog.showMessageBox({message: title, buttons: ['No', 'Yes'], noLink:true});
-                res.then((r) => {
-                    self.resolve(r.response == 1);
-                });
-                this.promise = (result) => cbk(result)
-            break;
-
-            case 'input':
-                window.webContents.send('promt', this.uuid, title);
-                this.promise = (result) => cbk(result)
-                //prompt('Action needed', title).then((result) => {
-                  //  cbk(result)
-                //});
-            break;
-        }
-
-        promts_hash[this.uuid] = this;
-    }
-
-    resolve(value) {
-        this.promise(value);
-        delete promts_hash[this.uuid];
-    }
-}
-
-function store_configuration(cbk) {
-    const opts = {
-        wolfram: server.wolfram,
-        version: app.getVersion()
-    };
-
-    fs.writeFile(path.join(appDataFolder, 'configuration.ini'), JSON.stringify(opts), function(err) {
-        if (err) throw err;
-    });
-
-    cbk();
-}
-
-function clearAllCache() {
-    session.defaultSession.clearStorageData();
-    session.defaultSession.clearCache();
-    console.log('Cache was nuked');
-}
-
-function load_configuration() {
-    if (!fs.existsSync(path.join(appDataFolder, 'configuration.ini'))) {
-        clearAllCache();
-        return undefined;
-    }
-    const content = fs.readFileSync(path.join(appDataFolder, 'configuration.ini'), 'utf8');
-    if (content.length == 0) {
-        clearAllCache();
-        return undefined;
-    }
-
-    const parsed = JSON.parse(content);
-    if (!parsed) return undefined;
-
-    if (parsed.version != app.getVersion()) {
-        clearAllCache();
-    }
-
-    return parsed;
-}
-
-//checking if there is working Wolfram Kernel.
-function check_wl (configuration, cbk, window) {
-    if (configuration) server.wolfram = {...server.wolfram, ...configuration.wolfram};
-
-    windows.log.print(`WLJS Notebooks
-Copyright (c) 2026 Coffee liqueur
-Licensed under the AGPLv3. See /LICENSE.md.
-
-This product bundles third-party FOSS. 
-Wolfram Engine is proprietary and distributed by Wolfram Research.
-
-`);
-    windows.log.info("Starting wolframscript");
-    windows.log.print("Starting wolframscript by path: " + server.wolfram.path);
-    let program;
-
-    let cautch = false;
-
-    try{
-        console.log('TRY');
-        program = spawn(server.wolfram.path, server.wolfram.args, { cwd: workingDir });
-    } catch (err) {
-        console.log('catch::err');
-        windows.log.clear();
-        windows.log.print(err);
-        console.log(err);
-        windows.log.info("wolframscript was not found!");
-
-        cautch = true;
-        //windows.log.print('Do you have Wolfram Engine installed?', '\x1b[42m');
-        new promt('binary', 'Do you have Wolfram Engine installed?', (answer) => {
-            if (answer) {
-                windows.log.print("");
-                new promt('binary', 'Please, locate an executable called wolframscript or WolframKernel', ()=>{
-                    setTimeout(() => {
-                        const promise = dialog.showOpenDialog({ title: 'Locate wolframscript', properties: ['openFile', 'showHiddenFiles', 'treatPackageAsDirectory', 'dontAddToRecent']});
-                        promise.then((res) => {
-                            if (!res.canceled) {
-                                server.wolfram.path = res.filePaths[0];
-                                console.log(res.filePaths);
-                                windows.log.clear();
-                                check_wl(undefined, cbk, window);
-                            } else {
-                                windows.log.clear();
-                                check_wl(undefined, cbk, window);
-                            }
-                        });
-                    }, 1000);                    
-                }, window);
-                windows.log.print('Please, locate an executable called `wolframscript` or `WolframKernel`', '\x1b[44m');
-
-            } else {
-                install_wl(window);
-            }
-        }, window);
-        return;
-    }
-
-
-    program.on('close', (code) => {
-        console.log('on::close');
-
-        if (_nohup) {
-            windows.log.info("Process exited with code "+code);
-            windows.log.print("Process exited with code "+code);
-            windows.log.print("No hup");
-            program.exitedAlready = true;
-
-        } else {
-
-            windows.log.info("Process exited abnormally with code "+code);
-            windows.log.print("Process exited abnormally with code "+code);
-            if (cautch) return;
-            cautch = true;
-            windows.log.print("Restarting soon...");
-            setTimeout(() => {
-                check_wl(undefined, cbk, window);
-            }, 3000);
-        }
-
-    });
-
-    //error
-    program.on('error', function(err) {
-        console.log('on::error');
-        
-        windows.log.print("");
-        windows.log.info("Cannot execute a given process");
-        windows.log.print("Cannot execute a given process", '\x1b[46m');
-        windows.log.print(String(err));
-
-        if (cautch) return;
-        cautch = true;
-        console.log("Cannot execute a given process");
-
-        setTimeout(() => {
-            windows.log.clear();
-            windows.log.print(err);
-            console.log(err);
-            console.log('Do you have Wolfram Engine installed?');
-            windows.log.info("Cannot locate wolframscript!");
-            new promt('binary', 'Do you have Wolfram Engine installed?', (answer) => {
-                if (answer) {
-                    windows.log.print("");
-                    
-                    windows.log.print('Please, locate an executable called `wolframscript` or `WolframKernel`', '\x1b[44m');
-
-                    new promt('binary', 'Please, locate an executable called wolframscript or WolframKernel', () => {
-                        setTimeout(() => {
-                            const promise = dialog.showOpenDialog({ title: 'Locate wolframscript or WolframKernel', properties: ['openFile', 'showHiddenFiles', 'treatPackageAsDirectory', 'dontAddToRecent']});
-                            promise.then((res) => {
-                                if (!res.canceled) {
-                                    //throw ;
-                                    if (path.basename(res.filePaths[0]) == 'Wolfram Engine' && isMac) {
-
-                                        windows.log.clear();
-                                        windows.log.print("Error!");
-                                        windows.log.print('Please do not select "Wolfram Engine" Unix binary on OSX! Use WolframKernel link file instead', '\x1b[44m');
-                                        windows.log.print('Restarting in 2 seconds...');
-
-                                        setTimeout(() => {check_wl(undefined, cbk, window);}, 2000);
-
-                                        return;
-                                    }
-                                    server.wolfram.path = res.filePaths[0];
-                                    console.log(res.filePaths);
-                                    windows.log.clear();
-                                    check_wl(undefined, cbk, window);
-                                } else {
-                                    windows.log.clear();
-                                    check_wl(undefined, cbk, window);
-                                }
-                            });
-                        }, 1000);
-                    }, window);
-
-                } else {
-                    install_wl(window);
-                }
-            }, window);
-            return;
-        }, 2000);
-
-    });
-
-    let _nohup = false;
-
-    //for debugging only
-    /*program.stderr.on('data', (data) => {
-        windows.log.print(data.toString());
-    });
-
-    program.stdout.on('data', (data) => {
-        windows.log.print(data.toString());
-    }); */
-
-    program.stderr.once('data', (data) => {
-        console.log('stderr::data');
-        console.warn(data.toString());
-        if (_nohup) return;
-        _nohup = true;
-
-        windows.log.print("");
-
-        //TROUBLESHOOTING
-        if (default_error_handling(()=>{
-            //If managed
-            //Wolframscript started
-            console.log('Working!');
-            server.wolfram.process = program;
-            server.running = false;
-            server.startedQ = true;
-            //windows.log.clear();
-            cbk();
-        },
-        () => {
-            //if failed
-            if (server.down) return;
-
-            windows.log.clear();
-
-            program.stdin.end();
-            program.stdout.destroy();
-            program.stderr.destroy();
-
-            program.kill('SIGKILL');
-            kill_all(() => console.log('killed!'));
-            check_wl(undefined, cbk, window);
-        }, data.toString(), program, window)) return;
-
-        //if we did not manage to fix issues...
-        windows.log.print(data.toString(), '\x1b[46m');
-        windows.log.print("");
-
-        //this is a sign that the command was not found
-        setTimeout(() => {
-            windows.log.clear();
-            check_wl(undefined, cbk, window);
-
-        }, 3000);
-    });
-
-
-
-    program.stdout.once('data', (data) => {
-        //this is ok. wolframscript now is running
-        if (_nohup) return;
-        _nohup = true;
-
-        const s = data.toString();
-
-        windows.log.print("");
-
-        //TROUBLESHOOTING
-        if (default_error_handling(()=>{
-            //If managed
-            //Wolframscript started
-            //windows.log.clear();
-            server.wolfram.process = program;
-            server.running = false;
-            server.startedQ = true;
-            cbk();
-        },
-        () => {
-            //if failed
-            if (server.down) return;
-
-            program.stdin.end();
-            program.stdout.destroy();
-            program.stderr.destroy();
-
-
-            program.kill('SIGKILL');
-            kill_all(() => console.log('killed!'));
-            windows.log.clear();
-            check_wl(undefined, cbk, window);
-        }, s, program, window)) return;
-
-        //If OK
-        //Wolframscript started
-        if (new RegExp('Wolfram').exec(s)) {
-            windows.log.print(s);
-            server.wolfram.process = program;
-            server.running = false;
-            server.startedQ = true;
-            //windows.log.clear();
-            cbk();
-            return;
-        }
-
-
-        windows.log.print("");
-        windows.log.print(s);
-
-        //wait for more output
-        program.stdout.once('data', (data) => {
-            //If OK
-            //Wolframscript started
-            if (new RegExp('Wolfram').exec(data.toString())) {
-                windows.log.print(data.toString());
-                server.wolfram.process = program;
-                server.running = false;
-                server.startedQ = true;
-                cbk();
-                return;
-            }
-
-            //if not
-            windows.log.print("");
-            windows.log.print(data.toString());
-            windows.log.print("");
-            windows.log.print("Unexpected reply from wolframscript. Restart in 5 sec", '\x1b[46m');
-            windows.log.info("Unexpected reply from wolframscript. Restart in 5 sec");
-            windows.log.print("Expected 'Wolfram' string");
-
-            setTimeout(()=>{
-                if (server.down) return;
-
-                program.stdin.end();
-                program.stdout.destroy();
-                program.stderr.destroy();
-
-
-                program.kill('SIGKILL');
-                kill_all(() => console.log('killed!'));
-                windows.log.clear();
-                check_wl(undefined, cbk, window);
-            }, 5000);
-        });
-    });
-
-}
-
-function default_error_handling(success, reject, s, program, window) {
-    if (new RegExp('Wolfram ID', 'i').exec(s)) {
-        windows.log.info('Activation required');
-        activate_wl(program, success, () => {
-            windows.log.clear();
-            reject();
-        }, window);
-        return true;
-    }
-
-    //1# activation issues
-    if (new RegExp('Wolfram product is not activated').exec(s)) {
-        windows.log.print("Automatic activation in 3 seconds...", '\x1b[44m');
-        windows.log.info("Automatic activation in 3 seconds...");
-
-        setTimeout(() => {
-            if (!server.wolfram.args.includes('-activate')) server.wolfram.args.push('-activate');
-            windows.log.clear();
-            reject();
-        }, 3000);
-        return true;
-    }
-
-    //on success of activation
-    if (new RegExp('activated').exec(s)) {
-        server.wolfram.args.pop();
-        windows.log.clear();
-        reject();
-        return true;
-    }
-
-
-    //#2 Too many running Kernels
-    if (new RegExp('The Wolfram Engine could not be').exec(s)) {
-        windows.log.print("It seems you have some Wolfram Kernels running in the background or on another machine. Due to the Wolfram licensing limitations it is not allowed to run more than 2. WLJS Notebook requires exactly 2 to run locally.", '\x1b[44m');
-        windows.log.print("");
-        windows.log.info('It seems you have other Wolfram Kernels running in the background. Please stop them');
-
-        //windows.log.print('Should we try to kill other processes?', '\x1b[42m');
-        new promt('binary','Should we try to kill other Wolfram processes?', (answer) => {
-            if (!answer) {
-                kill_all(() => {
-                    windows.log.clear();
-                    reject();
-                }, window);
-            } else {
-                windows.log.clear();
-                reject();
-            }
-        }, window);
-        return true;
-    }
-
-
-    //#3 Activation
-    if (new RegExp('The Wolfram Engine requires one-time').exec(s)) {
-        //windows.log.print('Do you have a developer license from Wolfram?', '\x1b[42m');
-        windows.log.info('Activation required');
-
-        new promt('binary', 'Do you have a developer license activated?', (answer) => {
-
-
-            if (!answer) {
-                windows.log.clear();
-                windows.log.print('Please get the license from Wolfram website. A window will open shortly...');
-                shell.openExternal("https://www.wolfram.com/engine/free-license/");
-                setTimeout(() => {
-                    windows.log.clear();
-                    activate_wl(program, success, () => {
-                        //if rejected
-                        windows.log.clear();
-                        reject();
-                    }, window);
-                }, 3000);
-
-            } else {
-                
-
-                if (program.exitedAlready) {
-                    windows.log.print('Something went wrong with wolframscript.\n\r Try to run wolframscript from your terminal');
-                    windows.log.print('Quitting in 5 seconds');
-                    setTimeout(() => {
-                        app.quit();
-                    }, 5000);
-                    return;
-                }
-
-                windows.log.clear();
-
-                activate_wl(program, success, () => {
-                    //if rejected
-                    windows.log.clear();
-                    reject();
-                }, window);
-            }
-        }, window);
-
-        return true;
-    }
-
-    return false;
-}
-
-function kill_all(cbk, window) {
-
-    switch(process.platform) {
-        case 'win32':
-            exec('taskkill /F /IM WolframKernel.exe /T');
-        break;
-        default: // Linux + Darwin
-            exec('pkill -9 -f Wolfram');
-        break;
-    }
-
-    //windows.log.print('probably killed');
-    setTimeout(cbk, 2000);
-}
-
-
-function activate_wl(program, success, rejection, window) {
-    windows.log.clear();
-
-    if (program.exitedAlready) {
-        windows.log.print('Something went wrong with wolframscript.\n\r Try to run wolframscript from your terminal');
-        windows.log.print('Quitting in 5 seconds');
-        setTimeout(() => {
-            app.quit();
-        }, 5000);
-        return;
-    }
-
-    //answer checkers
-    const check = (string) => {
-        //keep going...
-        if (string.trim().length == 0) return false;
-
-        if (new RegExp('Incorrect').exec(string)) {
-            //windows.log.print('Incorrect');
-            windows.log.info('Incorrect login/password');
-            setTimeout(rejection, 3000);
-            //stop
-            return true;
-        }
-
-        if (new RegExp('Wolfram Language').exec(string)) {
-            //windows.log.print('Success!');
-            windows.log.info('Activated');
-            success();
-            return true;
-        }
-
-        //continue
-        return false;
-    }
-
-
-    windows.log.print('Enter your Wolfram ID in the field box at the bottom');
-
-    new promt('input', 'Wolfram ID', (result) => {
-        program.stdin.write(result.trim());
-        program.stdin.write('\n');
-
-        windows.log.clear();
-        windows.log.print('Please, enter your password in the field box');
-        new promt('input', 'Password', (result) => {
-            program.stdin.write(result.trim());
-            program.stdin.write('\n');
-
-            windows.log.clear();
-            windows.log.print('Waiting for the response from wolframscript');
-
-            let _nohup = false;
-            let timer = setTimeout(() => {
-                if (server.down) return;
-
-                windows.log.print('Timeout. Restarting in 3 seconds...', '\x1b[42m');
-                program.stdin.end();
-                program.stdout.destroy();
-                program.stderr.destroy();
-
-
-                program.kill('SIGKILL');
-                kill_all(() => console.log('killed!'));
-                setTimeout(rejection, 3000);
-            }, 15000);
-
-            program.stderr.once('data', (data) => {
-                if (_nohup) return;
-                _nohup = true;
-
-                clearTimeout(timer);
-
-                windows.log.print(data.toString());
-                if (check(data.toString())) return;
-
-                windows.log.print('please, wait...');
-                windows.log.info('Please wait');
-
-                program.stderr.once('data', (data) => {
-                    if (server.down) return;
-
-                    windows.log.print(data.toString());
-                    if (check(data.toString())) return;
-                    //timeout to retry
-
-                    program.stdin.end();
-                    program.stdout.destroy();
-                    program.stderr.destroy();
-
-
-                    program.kill('SIGKILL');
-                    kill_all(() => console.log('killed!'));
-                    setTimeout(rejection, 3000);
-                });
-            });
-
-            program.stdout.once('data', (data) => {
-                if (server.down) return;
-                if (_nohup) return;
-                _nohup = true;
-
-                clearTimeout(timer);
-
-                windows.log.print(data.toString());
-                if (check(data.toString())) return;
-
-                windows.log.print('please, wait...');
-                windows.log.info('Please wait');
-
-                program.stdout.once('data', (data) => {
-                    windows.log.print(data.toString());
-                    if (check(data.toString())) return;
-                    //timeout to retry
-                    program.kill('SIGKILL');
-                    kill_all(() => console.log('killed!'));
-                    setTimeout(rejection, 3000);
-                });
-            });
-        }, window);
-    }, window);
-}
-
-function install_wl(window) {
-    windows.log.clear();
-    windows.log.info('Wolfram Engine is required');
-    windows.log.print("Please download and install Wolfram Engine manually. A windows will open shortly. A feature for auto-installation is not supported for now.");
-    
-    new promt('binary', 'Please download and install freeware Wolfram Engine manually. A window will open shortly. ', () => {
-        setTimeout(() => {
-            shell.openExternal("https://www.wolfram.com/engine/");
-            app.quit();
-        }, 1000);        
-    }, window);
-}
-
-
-
-function check_installed (cbk, window) {
-    return cbk(); 
-}
-
-
-
-
-
-
 /* uuid v4 generator */
 var uuid4 = () => {
     var h=['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
@@ -3937,6 +1771,23 @@ var uuid4 = () => {
     }
     return u
 }
+
+wolframRuntime = createWolframRuntime({
+    app,
+    appDataFolder,
+    dialog,
+    exec,
+    fs,
+    isMac,
+    path,
+    server,
+    session,
+    shell,
+    spawn,
+    uuid4,
+    windows,
+    workingDir
+});
 
 var unshift = (array, value) => {
     array.unshift(value);

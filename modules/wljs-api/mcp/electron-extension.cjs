@@ -75,7 +75,7 @@ startWljsNotebookMcpExtension.prolog = async function (a,b,c, options = {}) {
     throw new Error('wljs-mcp.mjs does not export default or startWljsNotebookMcp');
   }
 
-  start(a,b,c, options)
+  return start(a,b,c, options);
 }
 
 startWljsNotebookMcpExtension.close = async function closeWljsNotebookMcpExtension() {
