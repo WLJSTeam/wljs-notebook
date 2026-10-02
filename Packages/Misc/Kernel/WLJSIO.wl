@@ -29,11 +29,13 @@ System`WLJSIOFetch;
 
 System`SlientPing;
 
+System`$CurrentWebSocket;
+
 WLJSIOImport[data_] := ImportByteArray[URLDecode[data]//StringToByteArray, "RawJSON"]
 
 SetAttributes[Offload, HoldFirst]
 
-WLJSTransportHandler[cl_, data_ByteArray] := Block[{Global`$Client = cl},
+WLJSTransportHandler[cl_, data_ByteArray] := Block[{$CurrentWebSocket = cl},
     ToExpression[data//ByteArrayToString];
 ]
 
@@ -41,7 +43,7 @@ WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSeri
 
 $DefaultSerializer = ExportByteArray[#, "ExpressionJSON", Compact->0]&
 
-WLJSIOAddTracking[symbol_] := With[{cli = Global`$Client, name = SymbolName[Unevaluated[symbol]]},
+WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]]},
     WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
         WebSocketUSend[client, WLJSIOUpdateSymbol[name, value] // $DefaultSerializer]
     ]]
@@ -49,18 +51,18 @@ WLJSIOAddTracking[symbol_] := With[{cli = Global`$Client, name = SymbolName[Unev
 
 SetAttributes[WLJSIOAddTracking, HoldFirst]
 
-WLJSIOGetSymbol[uid_, params_][expr_] := With[{client = Global`$Client},
+WLJSIOGetSymbol[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
     WLJSTransportHandler["GetSymbol"][expr, client, Function[result,
         WebSocketUSend[client, WLJSIOPromiseResolve[uid, result] // $DefaultSerializer] 
     ]]
 ];
 
-WLJSIOPromise[uid_, params_][expr_] := With[{client = Global`$Client},
+WLJSIOPromise[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
     (*Print["WLJS promise >> get with id "<>uid];*)
     WebSocketUSend[client, WLJSIOPromiseResolve[uid, expr] // $DefaultSerializer];
 ];
 
-WLJSIOFetch[uid_][symbol_] := With[{client = Global`$Client},
+WLJSIOFetch[uid_][symbol_] := With[{client = $CurrentWebSocket},
     (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[symbol],
         Then[symbol, Function[res,
@@ -71,7 +73,7 @@ WLJSIOFetch[uid_][symbol_] := With[{client = Global`$Client},
     ]
 ];
 
-WLJSIOFetch[uid_][r_, args_List] := With[{client = Global`$Client, symbol = r @@ args},
+WLJSIOFetch[uid_][r_, args_List] := With[{client = $CurrentWebSocket, symbol = r @@ args},
     (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[symbol],
         Then[symbol, Function[res,
@@ -82,7 +84,7 @@ WLJSIOFetch[uid_][r_, args_List] := With[{client = Global`$Client, symbol = r @@
     ]
 ];
 
-WLJSIORequest[uid_][ev_String, pattern_, data_] := With[{client = Global`$Client, res = EventFire[ev, pattern, data]},
+WLJSIORequest[uid_][ev_String, pattern_, data_] := With[{client = $CurrentWebSocket, res = EventFire[ev, pattern, data]},
     (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[res],
         Then[res, Function[r,
@@ -93,7 +95,7 @@ WLJSIORequest[uid_][ev_String, pattern_, data_] := With[{client = Global`$Client
     ]
 ];
 
-WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = Global`$Client},
+WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
     (*Print["WLJS promise >> get with id "<>uid];*)
     expr[Function[result, 
         WebSocketUSend[client, WLJSIOPromiseResolve[uid, result] // $DefaultSerializer];
@@ -101,7 +103,7 @@ WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = Global`$Client},
 ];
 
 IDCards = <||>;
-WLJSIDCardRegister[uid_String] := (Print["Transport registered as "<>uid]; IDCards[uid] = Global`$Client)
+WLJSIDCardRegister[uid_String] := (Print["Transport registered as "<>uid]; IDCards[uid] = $CurrentWebSocket)
 
 WLJSAliveQ[uid_String] := (
     If[KeyExistsQ[IDCards, uid],

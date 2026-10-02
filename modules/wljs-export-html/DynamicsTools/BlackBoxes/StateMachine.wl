@@ -124,7 +124,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
     events = machine["Events"][[All, "FullForm"]],
     notification = Notifications`Custom["Topic"->"State Machine", "Body"->infoWindow["Channel"->channel, "Message"->"Sampling states", "Client"->client, "Log"->messager, "Notebook"->notebookOnLine], "Controls"->False]
   },
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
       Echo["Total states: "<>ToString[total] ];
       EventFire[messager, notification, True];
       EventFire[channel, "Progress", <|"Bar"->0, "Max"->1.0, "Info"->StringJoin[ToString[total], " to be sampled"]|>];

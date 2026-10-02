@@ -26,7 +26,7 @@ EventHandler[Controller1, {
     ], 
 
     "Connected" -> Function[Null,
-        AppendTo[cli, Global`$Client];
+        AppendTo[cli, $CurrentWebSocket];
     ]
 }];
 

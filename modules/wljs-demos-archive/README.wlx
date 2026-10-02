@@ -8,7 +8,7 @@ Component[path_String, OptionsPattern[]] := With[{
     log = OptionValue["Messanger"]
 },
     EventHandler[EventChannel, {
-        "Loaded" -> Function[Null, With[{cli = Global`$Client(*`*)},
+        "Loaded" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
             EventFire[Controls, "Load", <|"Data" -> URLEncode[mdLoad[path]], "Client" -> cli|>];
 
             With[{

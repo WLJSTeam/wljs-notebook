@@ -137,7 +137,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
 },
     If[!TrueQ[notebookOnLine["Evaluator"]["Kernel"]["ContainerReadyQ"] ], 
-        Block[{Global`$Client = client}, (* [FIXME] *)
+        Block[{$CurrentWebSocket = client}, (* [FIXME] *)
             Echo[messager];
             Echo[client];
             EventFire[messager, "Warning", "Kernel is not attached or intialized"];
@@ -181,7 +181,7 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
         Echo[">> Synced wapi`"];
         With[{widgets = Select[Select[Values[wapi`Tools`HashMap], MatchQ[#, _wapi`Tools`WidgetLike]& ], Function[item, item["Notebook"] === notebookHash && item["Online"] ] ]},
             If[Length[widgets] == 0,
-                Block[{Global`$Client = client}, (* [FIXME] *)
+                Block[{$CurrentWebSocket = client}, (* [FIXME] *)
                     EventFire[messager, "Warning", "No active Widget-like expressions associated with opened notebook were found"];   
                 ];     
                 Return[];
@@ -440,7 +440,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
                             Export[FileNameJoin[{newDir, "attachments", notebookOnLine["Hash"]<>".txt"}], generateMDXStore[notebookOnLine], "Text" ];
                             Export[FileNameJoin[{newDir, "attachments", "kernel-"<>ToString[Hash[name] ]<>".txt"}], ExportString[machinesData, "ExpressionJSON", "Compact"->1], "Text" ];
                             
-                            Block[{Global`$Client = client},
+                            Block[{$CurrentWebSocket = client},
                                 WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
                                 EventFire[messager, "Saved", "Exported to "<>filename];
                             ];

@@ -75,7 +75,7 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
         "ClearSystem" -> Function[Null,
             EventFire[NotebookEditorChannel, "ClearRuntimeAssets", True];
             EventFire[log, Notifications`NotificationMessage["Info"](*`*), "Done"];
-            EventFire[refreshAssets, "Refresh", <|"Client"->Global`$Client (*`*)|>]
+            EventFire[refreshAssets, "Refresh", <|"Client"->$CurrentWebSocket (*`*)|>]
         ]                
     }];
 

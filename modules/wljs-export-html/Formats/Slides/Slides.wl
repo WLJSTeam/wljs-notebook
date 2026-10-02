@@ -57,7 +57,7 @@ pdfEndpoint["Destroy", OptionsPattern[] ] := With[{p = Promise[], channel = Crea
 ]
 
 
-Options[pdfEndpoint] = {"Crop"->True, "Window" :> Global`$Client, "ExposureTime" -> 2.0, "ImageUpscaling"->1, "Landscape"->True}
+Options[pdfEndpoint] = {"Crop"->True, "Window" :> $CurrentWebSocket, "ExposureTime" -> 2.0, "ImageUpscaling"->1, "Landscape"->True}
 
 
 

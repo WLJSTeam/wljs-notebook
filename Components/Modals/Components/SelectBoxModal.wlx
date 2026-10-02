@@ -156,7 +156,7 @@ Component[OptionsPattern[]] := With[{
     ,   
         EventHandler[Port, {
             "SelectBox" -> Function[data,
-                EventFire[LazyLoad, "Load", Join[data, <|"Client" -> If[SymbolQ[cli], Global`$Client, cli], "LazyLoad" -> LazyLoad|>]];
+                EventFire[LazyLoad, "Load", Join[data, <|"Client" -> If[SymbolQ[cli], $CurrentWebSocket, cli], "LazyLoad" -> LazyLoad|>]];
             ]
         }];
 

@@ -6,7 +6,7 @@ generator[proto_] := With[{Component = Unique["splitNotebookComp"]},
     Component[OptionsPattern[] ] := With[{Id = CreateUUID[], log = OptionValue["Messager"], event = OptionValue["Event"]},
         EventHandler[event, {
             "SplitNotebook" -> Function[uid,
-                With[{cell = cell`HashMap[uid](*`*), cli = Global`$Client},
+                With[{cell = cell`HashMap[uid](*`*), cli = $CurrentWebSocket},
                     With[{
                         list = SequenceCases[cell["Notebook"]["Cells"], {cell, ___}][[1]],
                         n = nb`NotebookObj[],

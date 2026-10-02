@@ -88,8 +88,8 @@ Component[OptionsPattern[]] := With[{
 },
 
   EventHandler[localState, Function[Null,
-    timedSaveButton[Global`$Client(*`*), localController, Controls, parameters];
-    subscribeToNotebookSocketState[Global`$Client(*`*), messages, localController];
+    timedSaveButton[$CurrentWebSocket(*`*), localController, Controls, parameters];
+    subscribeToNotebookSocketState[$CurrentWebSocket(*`*), messages, localController];
   ]];
 
     <div style="z-index: 100; -webkit-app-region: drag" class="atitlebar flex sticky top-0 z-40 flex h-10 win:h-titlebar owin:h-titlebar linux:h-titlebar shrink-0 items-center wljs-topbar px-2 pl-20 win:pl-0 owin:pl-0 linux:pl-2">

@@ -1,5 +1,5 @@
 core.FSAskKernelSocket = async (args, env) => {
-    return await server.kernel.ask('Global`$Client');
+    return await server.kernel.ask('$CurrentWebSocket');
 }
 
 core.FSAsk = async (args, env) => {

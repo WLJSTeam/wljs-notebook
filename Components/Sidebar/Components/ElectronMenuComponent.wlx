@@ -3,7 +3,7 @@ Component[OptionsPattern[]] := With[{
     Port = OptionValue["Port"]
 },
     EventHandler[Port, {
-        "Change" -> Function[Null, WebUISubmit[UISidebarRescanContext[], Global`$Client]],
+        "Change" -> Function[Null, WebUISubmit[UISidebarRescanContext[], $CurrentWebSocket]],
         "BubbleUp" -> Function[arr, EventFire[Port, FileOperate[arr[[2]]], arr[[1]] ]]
     }];
 

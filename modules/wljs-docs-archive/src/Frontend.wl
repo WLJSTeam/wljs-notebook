@@ -30,7 +30,7 @@ AppExtensions`TemplateInjection["AppScripts"] = ("
 
 EventHandler[AppExtensions`AppEvents// EventClone, {
     "open_docs" -> Function[Null,
-        With[{cli = Global`$Client},
+        With[{cli = $CurrentWebSocket},
             WebUISubmit[OpenDocs["https://wljs.io/frontend/Reference/"], cli];
         ]
     ]

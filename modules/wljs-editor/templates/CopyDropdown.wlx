@@ -1,7 +1,7 @@
 Component[OptionsPattern[]] := With[{Id = CreateUUID[], log = OptionValue["Messager"], event = OptionValue["Event"]},
     EventHandler[event, {
         "CopyCell" -> Function[uid,
-            With[{cell = cell`HashMap[uid](*`*), cli = Global`$Client},
+            With[{cell = cell`HashMap[uid](*`*), cli = $CurrentWebSocket},
                 With[{list = First[SequenceCases[cell["Notebook"]["Cells"], {cell, ___?cell`OutputCellQ(*`*)}] ]},
                     With[{compressed = Compress[Map[Function[c, <|"Data"->c["Data"], "Type"->c["Type"], "Display"->c["Display"]|>], list]]},
                         WebUISubmit[InsertToClipBoard[StringJoin["jsfc4uri", compressed]], cli];

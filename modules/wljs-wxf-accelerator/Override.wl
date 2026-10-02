@@ -6,7 +6,7 @@ System`WLJSIOUpdateSymbol;
 
 (*** Override handlers for symbols updates to use binary websockets ***)
 
-WLJSIOAddTracking[symbol_] := With[{cli = Global`$Client, name = SymbolName[Unevaluated[symbol]], context = Context[Unevaluated[symbol]]},
+WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]], context = Context[Unevaluated[symbol]]},
 	If[context == "Global`" || context == "System`",
     	WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
         	BinaryWrite[client, encodeFrame[ExportByteArray[WLJSIOUpdateSymbol[name, value], "WXF"] ] ]

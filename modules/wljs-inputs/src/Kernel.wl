@@ -747,13 +747,13 @@ DatasetWrapperBox[ l: List[__List], form_ ] := With[{
 
 				EventHandler[event, {
 					"Part"->Function[part,
-						WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+						WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 								store = splitDataset[sorted];
-								WLJSTransportSend[req[store[[1]]], Global`$Client ]
+								WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -788,13 +788,13 @@ DatasetWrapperBox[ l: List[__List], StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"->Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -822,13 +822,13 @@ DatasetWrapperBox[ l_List , form_ ] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -864,13 +864,13 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"->Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -924,13 +924,13 @@ DatasetWrapperBox[ l : List[__Association] , form_] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[assocKeys[[col]] ]& ], True, Reverse @ SortBy[l, #[assocKeys[[col]] ]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -1013,12 +1013,12 @@ TabularPreviewBox[t_Tabular] := With[{
 			With[{out = tbView[ transform /@ data, props, heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
 				EventHandler[event, {
 					"Part"->Function[part,
-						WLJSTransportSend[req[takePart[t, reduced, transform][part] ], Global`$Client ] 
+						WLJSTransportSend[req[takePart[t, reduced, transform][part] ], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[keys[[col]] ]& ], True, Reverse @ enshureNormal @ SortBy[t, #[keys[[col]] ]& ] ]},
-								WLJSTransportSend[req[takePart[sorted, reduced, transform][1] ], Global`$Client ]
+								WLJSTransportSend[req[takePart[sorted, reduced, transform][1] ], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -1033,12 +1033,12 @@ TabularPreviewBox[t_Tabular] := With[{
 			With[{out = tbView[data, transformProp /@ schema["ColumnProperties"], heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
 				EventHandler[event, {
 					"Part"-> Function[part,
-						WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], Global`$Client ] 
+						WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[[col]]& ], True, Reverse @ enshureNormal @ SortBy[t, #[[col]]& ] ]},
-								WLJSTransportSend[req[takePart[sorted, reduced, Identity][1] ], Global`$Client ]
+								WLJSTransportSend[req[takePart[sorted, reduced, Identity][1] ], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -1060,13 +1060,13 @@ DatasetWrapperBox[ l : List[__Association] ,  StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[assocKeys[[col]] ]& ], True, Reverse @ SortBy[l, #[assocKeys[[col]] ]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]

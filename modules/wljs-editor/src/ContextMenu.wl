@@ -260,8 +260,8 @@ addListeners[notebook_nb`NotebookObj, controls_, logs_, cli_] := With[{},
 sniffer[ OptionsPattern[] ] := With[{logs = OptionValue["Messager"], notebook = OptionValue["Notebook"], controls = OptionValue["Controls"] // EventClone, event = OptionValue["Event"] // EventClone},
     EventHandler[event, {
         "Load" -> Function[Null,
-            addListeners[notebook, controls, logs, Global`$Client];
-            With[{cloned = EventClone[Global`$Client]},
+            addListeners[notebook, controls, logs, $CurrentWebSocket];
+            With[{cloned = EventClone[$CurrentWebSocket]},
       
                 EventHandler[cloned, {
                     "Closed" -> Function[Null,

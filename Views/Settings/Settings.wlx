@@ -64,7 +64,7 @@ Component[OptionsPattern[]] := With[{
             
 
             (* /* Destructor */ *)
-            With[{socket = EventClone[Global`$Client(*`*)]},
+            With[{socket = EventClone[$CurrentWebSocket(*`*)]},
                 EventHandler[socket, {"Closed" -> Function[Null,
                     Echo[">> SOCKET CLOSED!!!"];
                     EventRemove[socket];

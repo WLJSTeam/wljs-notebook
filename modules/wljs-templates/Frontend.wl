@@ -36,7 +36,7 @@ With[{
     EventHandler[EventClone[Controls], {"new_from_template" -> Function[Null, 
         With[{
             promise = Promise[],
-            cli = Global`$Client
+            cli = $CurrentWebSocket
         }, 
             EventFire[Modals, "SelectBox", <|"Promise"->promise, "title"->"Template", "message"->"Choose one below", "list"->Keys[database]|>];
             Echo["Promise SelectBox:"]; Echo[promise];

@@ -825,7 +825,7 @@ Script[OptionsPattern[]] := With[{
             }
 
             core.UINotebook.KernelSocket = async (args, env) => {
-                return await server.kernel.ask('Global`$Client');
+                return await server.kernel.ask('$CurrentWebSocket');
             }
 
             core.UINotebook.WSConnect = async (args, env) => {
@@ -1240,7 +1240,7 @@ Component[OptionsPattern[]] := With[{
             appGlobals["CurrentNotebook"] = notebook;
 
             (* /* Destructor */ *)
-            With[{socket = EventClone[Global`$Client(*`*)]},
+            With[{socket = EventClone[$CurrentWebSocket(*`*)]},
                 EventHandler[socket, {"Closed" -> Function[Null,
                     Echo[">> SOCKET CLOSED!!!"];
                     EventRemove[socket];

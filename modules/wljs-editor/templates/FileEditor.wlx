@@ -62,7 +62,7 @@ Component[path_String, OptionsPattern[]] := With[{
     log = OptionValue["Messanger"]
 },
     EventHandler[EventChannel, {
-        "Loaded" -> Function[Null, With[{cli = Global`$Client(*`*)},
+        "Loaded" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
             EventFire[Controls, "Load", <|"Data" -> URLEncode[cacheLoad[path]], "Client" -> cli|>];
             WebUISubmit[UIAutocompleteActivate[], cli];
 
@@ -84,9 +84,9 @@ Component[path_String, OptionsPattern[]] := With[{
             cacheUpdate[path, URLDecode @ content]
         ],
 
-        "Save" -> (save[path, log, Global`$Client(*`*)]&),
+        "Save" -> (save[path, log, $CurrentWebSocket(*`*)]&),
 
-        "SaveAs" -> (save[{#, path}, log, Global`$Client(*`*) ]&),
+        "SaveAs" -> (save[{#, path}, log, $CurrentWebSocket(*`*) ]&),
 
         any_ :> Function[Null,
             EventFire[log, "Warning", "Operation is not possible. This is a text editor"]

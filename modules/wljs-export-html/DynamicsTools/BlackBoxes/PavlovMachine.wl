@@ -82,7 +82,7 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
 
     machine["Interpolation"] = Lookup[settings, "HTMLExportStatesInterpolation", True];
 
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
         EventFire[messager, notification, True];
     ];
 

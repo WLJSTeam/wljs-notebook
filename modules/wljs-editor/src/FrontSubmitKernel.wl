@@ -28,9 +28,9 @@ CoffeeLiqueur`Extensions`Communication`Internal`$lastClient;
 
 CurrentWindow[] := WindowObj[<|"Socket" -> If[AssociationQ[System`$EvaluationContext], 
     System`$EvaluationContext["KernelWebSocket"], 
-    If[Head[Global`$Client] === Symbol, 
+    If[Head[$CurrentWebSocket] === Symbol, 
         CoffeeLiqueur`Extensions`Communication`Internal`$lastClient, 
-        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = Global`$Client
+        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = $CurrentWebSocket
     ] 
 ] |>]
 

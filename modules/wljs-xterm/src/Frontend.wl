@@ -70,7 +70,7 @@ With[{
     Controls = OptionValue["Controls"]
 },
     EventHandler[EventClone[Controls], {"xterm_open" -> Function[Null, 
-        WebUILocation["/xterm", Global`$Client, "Target"->_, "Features"->"width=660, height=500, top=0, left=800"]
+        WebUILocation["/xterm", $CurrentWebSocket, "Target"->_, "Features"->"width=660, height=500, top=0, left=800"]
     ]}];
     ""
 ]

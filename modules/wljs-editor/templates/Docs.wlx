@@ -32,7 +32,7 @@ App[request_] := Module[{client, channel, target}, With[{
 
 
     EventHandler[secret, {
-        "Load" -> Function[Null, With[{cli = Global`$Client(*`*)},
+        "Load" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
             If[MissingQ[doc], 
                 WebUIClose[cli],
                 

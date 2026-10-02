@@ -22,7 +22,7 @@ shareDefinitions[cli_, set_List] := With[{
 
 EventHandler["autocomplete", {
     "Connect" -> Function[Null,
-        With[{client = Global`$Client},
+        With[{client = $CurrentWebSocket},
   
 
             clients = Append[clients, client];

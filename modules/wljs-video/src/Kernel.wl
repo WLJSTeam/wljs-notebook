@@ -235,7 +235,7 @@ With[{
 
                     playing = True;   
 
-                    With[{socket = EventClone[Global`$Client]},
+                    With[{socket = EventClone[$CurrentWebSocket]},
                         EventHandler[socket, {
                             "Closed" -> Function[Null,
                                 EventRemove[socket];

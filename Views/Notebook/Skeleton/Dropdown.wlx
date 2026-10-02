@@ -3,7 +3,7 @@ Component[OptionsPattern[]] := With[
   {additionalButtons = ExtesionInjector["Template"->"CellDropdown", "Messager" -> Messager, "Event"->Event]},
 
   EventHandler[Event, {
-    "CallDropdown" -> ((Print["CallDropdown!"]; WebUISubmit[Global`UICellsDropdown[#], Global`$Client])&)
+    "CallDropdown" -> ((Print["CallDropdown!"]; WebUISubmit[Global`UICellsDropdown[#], $CurrentWebSocket])&)
   }];
 
   If[OptionValue["ElectronQ"],

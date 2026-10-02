@@ -70,7 +70,7 @@ animationMachine /: blackBox`process[machine_animationMachine, {controls_, modal
 
     machine["Interpolation"] = Lookup[settings, "HTMLExportStatesInterpolation", True];
   
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
         EventFire[messager, notification, True];
     ];
 

@@ -90,23 +90,23 @@ handle[data_Association] := Module[{spinner, promise}, With[{
                     Echo["Installer Resolved!"];
 
                     If[FailureQ[result["Result"] ],
-                        Block[{Global`$Client = client}, EventFire[spinner["Promise"], Resolve, Null] ];
-                        Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Error", StringRiffle[result["MessagesText"] ] ] ];
+                        Block[{$CurrentWebSocket = client}, EventFire[spinner["Promise"], Resolve, Null] ];
+                        Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Error", StringRiffle[result["MessagesText"] ] ] ];
                         Return[Null, Module];
                     ];
 
                     With[{newPaclets = Complement[<|"Paclet"->Import[#, "WL"], "Dir"->DirectoryName[#]|> &/@ (DeleteDuplicatesBy[FileNames["PacletInfo.wl" | "PacletInfo.m", {#}, {2}], DirectoryName]& @ FileNameJoin[{dir, "wl_packages"}]), oldPaclets]},
-                            Block[{Global`$Client = client}, EventFire[spinner["Promise"], Resolve, Null] ];
+                            Block[{$CurrentWebSocket = client}, EventFire[spinner["Promise"], Resolve, Null] ];
 
                             If[Length[newPaclets] == 0, 
-                                Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Warning", "Already installed" ] ];
+                                Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Warning", "Already installed" ] ];
                                 Return[Null, Module];
                             ];
 
                             Module[{paclet = newPaclets[[1]]["Paclet"], dir = newPaclets[[1]]["Dir"]},
 
                                 If[MatchQ[paclet, _PacletObject],
-                                    Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Info", "Installation was succesfull" ] ];
+                                    Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Info", "Installation was succesfull" ] ];
                                     printCell[assoc, StringTemplate["PacletDirectoryLoad[FileNameJoin[{\"wl_packages\", \"``\"}]];\n\n``"][
                                         FileNameSplit[dir][[-1]],
                                         Echo["New paclet: "];
@@ -114,7 +114,7 @@ handle[data_Association] := Module[{spinner, promise}, With[{
                                         If[KeyExistsQ[paclet[[1]], "PrimaryContext"], "<<"<>newPaclets[[1]][[1]]["PrimaryContext"], ""]
                                     ] ]
                                 ,
-                                    Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Error", "Installation was not succesfull" ] ];
+                                    Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Error", "Installation was not succesfull" ] ];
                                 ]
                             ]
                         ]

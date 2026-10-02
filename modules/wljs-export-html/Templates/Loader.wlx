@@ -2,7 +2,7 @@
 
 Component[OptionsPattern[]] := With[{EventChannel = CreateUUID[], decode = OptionValue["Decoder"], Color = If[StringQ[#], #, "{Color}"]& @ (OptionValue["Parameters"]["AccentColor"]), Path = OptionValue["Path"], Messager = OptionValue["Messanger"], Controls = OptionValue["Controls"], iframeQ = OptionValue["IframeQ"]},  
   EventHandler[EventChannel, Function[Null,
-    With[{client = Global`$Client(*`*)},
+    With[{client = $CurrentWebSocket(*`*)},
     Echo[client];
    
     

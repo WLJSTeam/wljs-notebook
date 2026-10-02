@@ -51,7 +51,7 @@ With[{
         "open_debugger" -> Function[Null, 
             With[{
                 notebook = getNotebook[Controls],
-                cli = Global`$Client
+                cli = $CurrentWebSocket
             },
                 If[!MatchQ[notebook, _nb`NotebookObj],
                     EventFire[Messanger, "Warning", "Notebook not found"];

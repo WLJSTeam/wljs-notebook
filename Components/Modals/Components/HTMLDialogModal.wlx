@@ -33,7 +33,7 @@ SymbolQ = Function[x, MatchQ[x, _Symbol]];
 Component[OptionsPattern[]] := With[{Port = OptionValue["Port"], Channel = CreateUUID[], LazyLoad = CreateUUID[], Cli = OptionValue["Client"]}, Module[{loaded = False},
     EventHandler[Port, {
         "HTMLWindow" -> Function[data,
-            EventFire[LazyLoad, "Load", Join[data, <|"Client" -> If[SymbolQ[Cli], Global`$Client, Cli], "LazyLoad" -> LazyLoad|>]];
+            EventFire[LazyLoad, "Load", Join[data, <|"Client" -> If[SymbolQ[Cli], $CurrentWebSocket, Cli], "LazyLoad" -> LazyLoad|>]];
         ]
     }];
 

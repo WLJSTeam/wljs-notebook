@@ -22,7 +22,7 @@ WebUILazyLoad[content_, OptionsPattern[]] := With[{event = EventClone[OptionValu
                 WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, ToString[content] ] ];
             ]
         ,
-            WebSocketUSend[Global`$Client (*`*), $DefaultSerializer @ UILazyLoad["Load", uid, ToString[content] ] ];
+            WebSocketUSend[$CurrentWebSocket (*`*), $DefaultSerializer @ UILazyLoad["Load", uid, ToString[content] ] ];
         ]
       ]
     ],
@@ -51,9 +51,9 @@ SetAttributes[WebUILazyLoad, HoldFirst];
 System`UILocation(*`*);
 System`UILocationBlank(*`*);
 
-WebUISubmit[expr_, client_:Global`$Client (*`*)] := WebSocketUSend[client, $DefaultSerializer @ expr ];
+WebUISubmit[expr_, client_:$CurrentWebSocket (*`*)] := WebSocketUSend[client, $DefaultSerializer @ expr ];
 
-WebUILocation[loc_String, client_:Global`$Client (*`*), OptionsPattern[]] := With[{},
+WebUILocation[loc_String, client_:$CurrentWebSocket (*`*), OptionsPattern[]] := With[{},
     If[OptionValue["Target"] === _,
         WebUISubmit[UILocationBlank[loc, "Features"->OptionValue["Features"]], client]
     ,
@@ -65,8 +65,8 @@ Options[WebUILocation] = {"Target" -> "Same", "Features"->False}
 
 System`UIClose;(*`*)
 
-WebUIClose[cli_:Global`$Client (*`*)] := WebUISubmit[UIClose[], cli]
-WebUIClose[cli_:Global`$Client (*`*), "Reload"] := WebUISubmit[UIClose["Reload"], cli]
+WebUIClose[cli_:$CurrentWebSocket (*`*)] := WebUISubmit[UIClose[], cli]
+WebUIClose[cli_:$CurrentWebSocket (*`*), "Reload"] := WebUISubmit[UIClose["Reload"], cli]
 
 
 (* /* WLX Refresher */ *)
@@ -176,7 +176,7 @@ WebUIOnLoad[OptionsPattern[]] := With[{Event = OptionValue["Event"], Type = Opti
     </script>
 ]
 
-WebUIAliveQ[client_:Global`$Client(*`*)] := If[!FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], !FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], False]
+WebUIAliveQ[client_:$CurrentWebSocket(*`*)] := If[!FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], !FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], False]
 
 
 Options[WebUIOnLoad] = {"Event" -> "xyz", "Pattern"->"Default"};
@@ -223,7 +223,7 @@ Options[WebUIKeyListener] = {"Event"->"", "Pattern"->"Pressed"};
 
 System`UIAsk(*`*);
 
-WebUIFetch[expr_, client_:Global`$Client(*`*), OptionsPattern[]] := With[{format = OptionValue["Format"], event = CreateUUID[], promise = Promise[]},
+WebUIFetch[expr_, client_:$CurrentWebSocket(*`*), OptionsPattern[]] := With[{format = OptionValue["Format"], event = CreateUUID[], promise = Promise[]},
     EventHandler[event, Function[payload,
         EventRemove[event];
 

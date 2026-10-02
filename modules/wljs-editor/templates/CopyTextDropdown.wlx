@@ -29,7 +29,7 @@ combineText[list_] := StringRiffle[Map[Function[cell,
 Component[OptionsPattern[]] := With[{Id = CreateUUID[], log = OptionValue["Messager"], event = OptionValue["Event"]},
     EventHandler[event, {
         "CopyCellText" -> Function[uid,
-            With[{cell = cell`HashMap[uid](*`*), cli = Global`$Client},
+            With[{cell = cell`HashMap[uid](*`*), cli = $CurrentWebSocket},
                 With[{list = First[SequenceCases[cell["Notebook"]["Cells"], {cell, ___?cell`OutputCellQ(*`*)}] ]},
                     With[{compiled = combineText[list]},
                         WebUISubmit[InsertToClipBoard[compiled//URLEncode, True], cli];

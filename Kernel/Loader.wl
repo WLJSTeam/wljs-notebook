@@ -198,11 +198,11 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
                             If[TrueQ[result] || result["response"] === 0,
                                 EventRemove[request];
                                 loadToCache[h, path, path, opts];
-                                WebUILocation[URLEncode[path] , Global`$Client ];                            
+                                WebUILocation[URLEncode[path] , $CurrentWebSocket ];                            
                             ,
                                 EventRemove[request];
                                 loadToCache[path, path, path, opts];
-                                WebUILocation[URLEncode[path] , Global`$Client ];                            
+                                WebUILocation[URLEncode[path] , $CurrentWebSocket ];                            
                             ]
                         ] ];
 

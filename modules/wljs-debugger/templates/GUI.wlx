@@ -251,7 +251,7 @@ setThingsUp[state_] := With[{
     utilsTransition[notebook["Evaluator"]["Kernel"], "Logger"->(state["Info", #]&)];
 
     state["Warning", messsage_] := (
-        Block[{Global`$Client = origin(*`*)}, EventFire[messanger, "Warning", messsage] ];
+        Block[{$CurrentWebSocket = origin(*`*)}, EventFire[messanger, "Warning", messsage] ];
         EventFire[logWindow, "Warning", <|"Client"->cli, "Message"->messsage|>];
     );
 
@@ -273,7 +273,7 @@ setThingsUp[state_] := With[{
 
                 Map[Function[cell,
                     cell["State"] = "Idle";
-                    Block[{Global`$Client = origin(*`*)}, EventFire[cell, "State", "Idle"]];
+                    Block[{$CurrentWebSocket = origin(*`*)}, EventFire[cell, "State", "Idle"]];
                 ], Select[notebook["Cells"], (#["State"] =!= "Idle") &]];
 
             ], Function[messsage,
@@ -370,7 +370,7 @@ App[request_] := Module[{
     },
 
         EventHandler[secret, {
-            "Load" -> Function[Null, With[{cli = Global`$Client(*`*)},
+            "Load" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
 
                 state["ValidQ"] = True;
                 state["Client"] = cli;

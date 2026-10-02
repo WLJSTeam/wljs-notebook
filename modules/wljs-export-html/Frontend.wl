@@ -192,7 +192,7 @@ requestMarkdownProcessor[client_][data_] :=requestMarkdownProcessor[client][ToSt
 requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client, "Format"->"RawJSON"]
 
 collectStaticData[client_, messager_, notebook_] := Block[{
-    Global`$Client = client
+    $CurrentWebSocket = client
 },
     Pause[0.25];
     (* EventFire[messager, Notifications`NotificationMessage["Info"], "Collecting notebook data"]; *)

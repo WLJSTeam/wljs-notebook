@@ -140,7 +140,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
     If[total > 750,
 
-      Block[{Global`$Client = client},
+      Block[{$CurrentWebSocket = client},
         EventFire[messager, "Warning", StringTemplate["Too many states (``) to sample! Try to reduce step sizes or use manual sampling"][total] ];
       ];
 
@@ -155,7 +155,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
 
 
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
       Echo["Total states: "<>ToString[total] ];
       EventFire[messager, notification, True];
       If[reducedQ,

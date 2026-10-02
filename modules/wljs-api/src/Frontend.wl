@@ -975,7 +975,7 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                 accumulatedMessages = Unique[]
             },
                 (*fixme*)
-                Block[{Global`$Client = socket}, With[{
+                Block[{$CurrentWebSocket = socket}, With[{
                     timer = SetTimeout[
                         EventFire[controller, "Abort", Null];
                         EventFire[promise, Resolve, "$TimedOut" ]; 
@@ -1094,7 +1094,7 @@ apiCall[request_, "/api/notebook/cells/project/"] := Module[{body = request["Bod
         If[TrueQ[notebook["Opened"] ], 
             With[{controller = notebook["Controller"], socket = notebook["Socket"]},
                 (*fixme*)
-                Block[{Global`$Client = socket},
+                Block[{$CurrentWebSocket = socket},
                     EventFire[controller, "NotebookCellProject", cell];
                     "Window was created"
                 ]

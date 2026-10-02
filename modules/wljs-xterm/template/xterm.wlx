@@ -75,7 +75,7 @@ App[request_] := Module[{client, channel, target}, With[{
 
     EventHandler[secret, {
         "Load" -> Function[Null,
-            client = Global`$Client(*`*);
+            client = $CurrentWebSocket(*`*);
             cachedClient = client;
             channel = CreateUUID[];
 

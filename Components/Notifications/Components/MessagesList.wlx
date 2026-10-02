@@ -12,7 +12,7 @@ Component[OptionsPattern[]] := With[{Controller = OptionValue["Controller"]}, We
   },
 
     EventHandler[UId, Function[Null,
-      EventFire[Controller, "Remove", <|"Client"->Global`$Client (*`*)|>];
+      EventFire[Controller, "Remove", <|"Client"->$CurrentWebSocket (*`*)|>];
       EventRemove[UId];
     ]];
 

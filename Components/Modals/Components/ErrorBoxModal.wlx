@@ -11,7 +11,7 @@ Component[OptionsPattern[]] := With[{
 }, Module[{},
     EventHandler[Port, {
         "ErrorBox" -> Function[data,
-            WebUISubmit[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], Global`$Client, cli]];
+            WebUISubmit[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], $CurrentWebSocket, cli]];
         ]
     }];
 

@@ -200,7 +200,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
 },
     If[!TrueQ[notebookOnLine["Evaluator"]["Kernel"]["ContainerReadyQ"] ], 
-        Block[{Global`$Client = client}, (* [FIXME] *)
+        Block[{$CurrentWebSocket = client}, (* [FIXME] *)
             Echo[messager];
             Echo[client];
             EventFire[messager, "Warning", "Kernel is not attached or intialized"];
@@ -244,7 +244,7 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
         Echo[">> Synced wapi`"];
         With[{widgets = Select[Select[Values[wapi`Tools`HashMap], MatchQ[#, _wapi`Tools`WidgetLike]& ], Function[item, item["Notebook"] === notebookHash && item["Online"] ] ]},
             If[Length[widgets] == 0,
-                Block[{Global`$Client = client}, (* [FIXME] *)
+                Block[{$CurrentWebSocket = client}, (* [FIXME] *)
                     EventFire[messager, "Warning", "No active Widget-like expressions associated with opened notebook were found"];   
                 ];     
                 Return[];
@@ -424,7 +424,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[analyzed, Function[data,
                     With[{newHash = Hash[data]},
                         If[newHash =!= hash,
-                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{Global`$Client = client}, (* [FIXME] *)
+                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{$CurrentWebSocket = client}, (* [FIXME] *)
                                 Echo["ERROR!"];
                                 Echo[err];
                                 ClearAll[hash];
@@ -486,7 +486,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
 
                Then[proto["collectStaticData"], Function[Null,
                 Export[filename, generateNotebook["MachineData"->machinesData, "Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
-                Block[{Global`$Client = client},
+                Block[{$CurrentWebSocket = client},
                     WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
                     EventFire[messager, "Saved", "Exported to "<>filename];
                 ];

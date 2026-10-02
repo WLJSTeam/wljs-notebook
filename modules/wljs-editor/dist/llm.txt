@@ -133054,12 +133054,12 @@ Component[OptionsPattern[]] := With[{
 
     EventHandler[listener, {
         "Button" -> Function[Null,
-            processRequest[globalControls, modals, messager, Global`$Client (*`*)]
+            processRequest[globalControls, modals, messager, $CurrentWebSocket (*`*)]
         ]
     }];
 
     EventHandler[EventClone[globalControls], {
-        "example-eval-all" -> Function[Null, processRequest[globalControls, modals, messager, Global`$Client (*`*)]]
+        "example-eval-all" -> Function[Null, processRequest[globalControls, modals, messager, $CurrentWebSocket (*`*)]]
     }];
 
     {

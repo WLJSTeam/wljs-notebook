@@ -97,7 +97,7 @@ DocWindow /: DeleteObject[d_DocWindow] := With[{uid = d["UId"]},
 
 findDocWindow[cli_] := SelectFirst[Values[DocWindowHashMap], Function[d, d["AssociatedSocket"] === cli] ];
 
-EventHandler["autocompleteFindDoc", Function[label, With[{cli = Global`$Client}, {w = findDocWindow[cli]},
+EventHandler["autocompleteFindDoc", Function[label, With[{cli = $CurrentWebSocket}, {w = findDocWindow[cli]},
     If[MissingQ[w],
         With[{doc = DocWindow["Label"->label, "URL"->makeURL[label], "AssociatedSocket"->cli]},
             WebUILocation["/docFind/"<>doc["UId"], cli, "Target"->_];
