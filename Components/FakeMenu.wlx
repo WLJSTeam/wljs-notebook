@@ -57,7 +57,8 @@ LayoutView = ExportString[{
     <|"label"->"Zoom out", "name"->"zoomOut"|>,
     <|"label"->"Actual size", "name"->"zoomReset"|>,
     <|"type"->"separator"|>,
-    <|"label"->"Dev Tools", "name"->"devTools"|>
+    <|"label"->"Dev Tools", "name"->"devTools"|>,
+    <|"label"->"Open logs", "name"->"showProcessLogs"|>
    }
   
   } // Flatten, "JSON"]

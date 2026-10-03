@@ -12,6 +12,7 @@ function createMenuManager({
     rootAppFolder,
     server,
     shell,
+    showProcessLogs,
     userExtensions,
     windows
 }) {
@@ -490,7 +491,10 @@ function createMenuManager({
                             windows.focused.call('settings', true);
                         }
                     },
-
+                    {
+                        label: 'Show logs',
+                        click: showProcessLogs
+                    },
                     { type: 'separator' },
 
                     ...(options.plugins.misc.sort((a, b)=> (a.priority - b.priority)))
@@ -669,6 +673,8 @@ function createMenuManager({
     callFakeMenu["devTools"] = () => {
         windows.focused.win.webContents.openDevTools()
     }
+
+    callFakeMenu["showProcessLogs"] = showProcessLogs;
 
     callFakeMenu["zoomOut"] = () => {
         windows.focused.call('zoomOut', true);

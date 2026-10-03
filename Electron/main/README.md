@@ -9,6 +9,8 @@ that can evolve independently:
   retry, and shutdown behavior. Keep its stream and timer ordering intact.
 - `menu-manager.js` builds native menus and renderer-triggered menu actions.
 - `ipc-handlers.js` registers renderer IPC contracts.
+- `process-log-buffer.js` keeps a bounded stdout/stderr history and renders the
+  on-demand diagnostic window.
 - `device-permissions.js` owns HID selection and permission/header handlers.
 - `cli-installer.js` owns the optional system CLI installation prompt.
 - `pdf-tools.js` implements PDF rendering and crop calculations.
