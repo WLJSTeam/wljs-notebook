@@ -174,6 +174,9 @@ Wolfram Engine is proprietary and distributed by Wolfram Research.
                     `Wolfram process exited unexpectedly (code: ${code}, signal: ${signal || 'none'})`
                 );
                 setImmediate(showProcessLogs);
+                dialog.showErrorBox('Wolfram Kernel Crashed',
+                'The Wolfram Kernel has crashed. Please report this issue on GitHub and include the log from the window that has opened in the background.'
+                );
             }
 
         });

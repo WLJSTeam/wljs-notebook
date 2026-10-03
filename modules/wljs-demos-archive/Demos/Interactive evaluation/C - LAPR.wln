@@ -1,0 +1,110 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Limit of Algebraic Polynomial Roots
+
+This notebook visualizes how the roots of a family of random complex polynomials are distributed in the complex plane. For each degree from 4 through 50, the notebook generates polynomial roots with `NSolve` and renders them as disks whose size decreases as the degree increases.
+
+The visualization is animated by varying $\\theta$. This rotates selected polynomial terms and updates the root cloud, making it possible to watch how the collection of roots changes as the parameter evolves. The random coefficients are generated reproducibly with `SeedRandom[7]`. The second cell sets `TransitionType -> None` to avoid interpolating disk positions: `NSolve` does not guarantee that roots are returned in the same order on successive evaluations, so interpolation could connect different roots and create misleading motion.
+
+This notebook is an adaptation of the Wolfram Community work [“Limit of algebraic polynomial roots: playing around with randomness and algebraic numbers”](https://community.wolfram.com/t/limit-of-algebraic-polynomial-roots-playing-around-with-randomness-and-algebraic-numbers/16509).
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Limit of Algebraic Polynomial Roots
+
+This notebook visualizes how the roots of a family of random complex polynomials are distributed in the complex plane. For each degree from 4 through 50, the notebook generates polynomial roots with `NSolve` and renders them as disks whose size decreases as the degree increases.
+
+The visualization is animated by varying $\\theta$. This rotates selected polynomial terms and updates the root cloud, making it possible to watch how the collection of roots changes as the parameter evolves. The random coefficients are generated reproducibly with `SeedRandom[7]`. The second cell sets `TransitionType -> None` to avoid interpolating disk positions: `NSolve` does not guarantee that roots are returned in the same order on successive evaluations, so interpolation could connect different roots and create misleading motion.
+
+This notebook is an adaptation of the Wolfram Community work [“Limit of algebraic polynomial roots: playing around with randomness and algebraic numbers”](https://community.wolfram.com/t/limit-of-algebraic-polynomial-roots-playing-around-with-randomness-and-algebraic-numbers/16509).
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SeedRandom[7];
+
+coef[n_, k_] := coef[n, k] = (RandomReal[{-1, 1}] + RandomReal[{-1, 1}] I);
+
+solve[theta_, n_] := NSolve[
+   Sum[coef[n, k] z^k, {k, 1, n}] + 0.2 E^(I theta) + 
+     0.9 E^(I 2 theta) z^3 If[n >= 3, 1, 0] + 
+     0.9 E^(I 3 theta) z^6 If[n >= 6, 1, 0] == 0,
+   z
+];
+
+disks[theta_, n_] := 
+  List @@@ Flatten[
+    Table[{Re[z], Im[z], Max[0.3/n, 0.001]} /. solve[theta, n], 
+      {n, 4, 50}], 1
+  ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animate it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animate it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+data = disks[0, n];
+\[Theta] = 0;
+
+Graphics[{
+  Black, Opacity[0.85], 
+  Table[
+    With[{i = i}, 
+      Disk[data[[i]], data[[i]][[3]]] // Offload
+    ], 
+    {i, Length[data]}
+  ],
+  EventHandler[AnimationFrameListener[data // Offload],   Function[Null,
+    data = disks[\[Theta], n];
+    \[Theta] = \[Theta] + 0.05;
+  ]]
+  },
+  PlotRange -> 1.5{{-1, 1}, {-1, 1}}, 
+  TransitionType -> None, 
+  ImageSize -> 500
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
