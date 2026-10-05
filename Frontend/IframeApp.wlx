@@ -340,7 +340,7 @@ App[request_] := With[{
 
 Script[Rule["Secret", Secret_]] := With[{},
   <script type="module">
-    core.<UIAPISend/> = async (args, env) => {
+    core['<UIAPISend/>'] = async (args, env) => {
       if (window.iframeAPI) {
         const type = await interpretate(args[0], env);
         const url = await interpretate(args[1], env);

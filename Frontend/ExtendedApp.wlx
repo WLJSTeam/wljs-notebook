@@ -525,7 +525,7 @@ App[request_] := With[{
 
 Script[OptionsPattern[]] := With[{Secret = OptionValue["Secret"], GlobalControls = OptionValue["GlobalControls"]},
   <script type="module">
-    core.<UIPrintPDF/> = async (args, env) => {
+    core['<UIPrintPDF/>'] = async (args, env) => {
       if (!(window?.electronAPI?.toPDF)) {
           return [];
       }
@@ -536,7 +536,7 @@ Script[OptionsPattern[]] := With[{Secret = OptionValue["Secret"], GlobalControls
       })
       return p.promise;      
     }
-    core.<UIToggleWindowBonds/> = async (args, env) => {
+    core['<UIToggleWindowBonds/>'] = async (args, env) => {
       if (document.documentElement.getAttribute('sidebar') === 'hidden' || window.innerWidth < 800) {
         document.documentElement.setAttribute('sidebar', 'show');
         server.io.fire('<Secret/>', 'show', 'SaveSidebarState');

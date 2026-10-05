@@ -68,17 +68,17 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
             if (window.electronAPI) window.electronAPI.setMinSize(100,100);
 
-            core.<UIWindow/> = async (args, env) => {
+            core['<UIWindow/>'] = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                return await core.<UIWindow/>[type](args.slice(1), env);
+                return await core['<UIWindow/>'][type](args.slice(1), env);
             }
 
-            core.<UIWindow/>.CreateServer = async (args, env) => {
+            core['<UIWindow/>'].CreateServer = async (args, env) => {
                 server.kernel = new Server('Evaluation Kernel');
                 console.warn("server.kernel :: created, waiting for initialization...");
             }
 
-            core.<UIWindow/>.WSConnect = async (args, env) => {
+            core['<UIWindow/>'].WSConnect = async (args, env) => {
                 const options = await core._getRules(args, env);
                 const port = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
@@ -128,26 +128,26 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                 connectNow();
             }
 
-            core.<UIWindow/>.Unload = async (args, env) => {
+            core['<UIWindow/>'].Unload = async (args, env) => {
                 autoSizeController?.stop();
                 autoSizeController = undefined;
                 supp.forEach(el=>el.dispose());
                 wrap.dispose(); supp = [];
             }
 
-            core.<UIWindow/>.LoadSupplimentary = async (args, env) => {
+            core['<UIWindow/>'].LoadSupplimentary = async (args, env) => {
                 const store    = await interpretate(args[0], env);
                 supp.push(new WindowWrapperSupplimentary(store));
             }
 
-            core.<UIWindow/>.KernelSocket = async (args, env) => {
+            core['<UIWindow/>'].KernelSocket = async (args, env) => {
                 return await server.kernel.ask('$CurrentWebSocket');
             }
             
             
-            core.<UIWindow/>.autoSizeWindow = async (args, env) => {
+            core['<UIWindow/>'].autoSizeWindow = async (args, env) => {
               if (!window.electronAPI) return;
-              core.<UIWindow/>.autoSizeWindow = () => {};
+              core['<UIWindow/>'].autoSizeWindow = () => {};
               let allowedQ = true; let skipNext = false;
               addEventListener("resize", (event) => {
                 if (!skipNext) allowedQ = false;
@@ -206,7 +206,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             };
             
 
-            core.<UIWindow/>.Load = async (args, env) => {
+            core['<UIWindow/>'].Load = async (args, env) => {
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
 

@@ -517,7 +517,7 @@ App[request_] := With[{
 
 Script[OptionsPattern[]] := With[{Secret = OptionValue["Secret"], GlobalControls = OptionValue["GlobalControls"]},
   <script type="module">
-    core.<UIPrintPDF/> = async (args, env) => {
+    core['<UIPrintPDF/>'] = async (args, env) => {
       if (!(window?.electronAPI?.toPDF)) {
           return [];
       }

@@ -11,7 +11,7 @@ Component[OptionsPattern[]] := With[
   If[OptionValue["ElectronQ"],
       With[{ExtraButtons = ExportString[If[ListQ[additionalButtons], #["Native"] &/@ additionalButtons, {}], "JSON", "Compact"->0]},
        <script type="module">
-           core.<UICellsDropdown/> = async (args, env) => {
+           core['<UICellsDropdown/>'] = async (args, env) => {
                const uid = await interpretate(args[0], env);
                const res = await (window.electronAPI || window.iframeAPI).createMenu([
                 {label:'Clear output', ref:'ClearOutputs'},

@@ -102,7 +102,7 @@ addListeners[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
         "New Cell" -> Function[cell,
             Echo["New cell"];
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI], cell`Serialize[cell] , list, secret], client]
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell] , list, secret], client]
             ];
         ],
 
@@ -126,7 +126,7 @@ restoreCells[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     Map[
         Function[cell,
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
             ]
         ]   
     ,    
@@ -707,7 +707,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
             Echo["Morphing..."];
             cell["Type"] = "Input";
 
-            With[{template = CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI]},
+            With[{template = CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook]},
                 WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] (*`*)], client];
             ];
         ];
@@ -815,21 +815,21 @@ Script[OptionsPattern[]] := With[{
         <script type="module">
             CellWrapper.inputSaveDelay = <InputSaveDelay/>;
 
-            core.<UINotebook/> = async (args, env) => {
+            core['<UINotebook/>'] = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                return await core.<UINotebook/>[type](args.slice(1), env);
+                return await core['<UINotebook/>'][type](args.slice(1), env);
             }
 
-            core.<UINotebook/>.CreateServer = async (args, env) => {
+            core['<UINotebook/>'].CreateServer = async (args, env) => {
                 server.kernel = new Server('Evaluation Kernel');
                 console.warn("server.kernel :: created, waiting for initialization...");
             }
 
-            core.<UINotebook/>.KernelSocket = async (args, env) => {
+            core['<UINotebook/>'].KernelSocket = async (args, env) => {
                 return await server.kernel.ask('$CurrentWebSocket');
             }
 
-            core.<UINotebook/>.WSConnect = async (args, env) => {
+            core['<UINotebook/>'].WSConnect = async (args, env) => {
                 
                 const options = await core._getRules(args, env);
                 const port = await interpretate(args[0], env);
@@ -872,7 +872,7 @@ Script[OptionsPattern[]] := With[{
                 return {Connected:true};
             }
 
-            core.<UINotebook/>.Morph = async (args, env) => {
+            core['<UINotebook/>'].Morph = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const template = await interpretate(args[1], env);
                 const props = await interpretate(args[2], env);
@@ -880,36 +880,36 @@ Script[OptionsPattern[]] := With[{
                 CellWrapper.morph(uid, template, props);
             } 
 
-            core.<UINotebook/>.UnhideAllCells  = async (args, env) => {
+            core['<UINotebook/>'].UnhideAllCells  = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.unhideAll(uid); 
             }
 
-            core.<UINotebook/>.ToggleCell = async (args, env) => {
+            core['<UINotebook/>'].ToggleCell = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.toggleCell(uid); 
             }
 
-            core.<UINotebook/>.ToggleInitGroup = async (args, env) => {
+            core['<UINotebook/>'].ToggleInitGroup = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.setInit(uid, state);
             }
-            core.<UINotebook/>.ToggleFade = async (args, env) => {
+            core['<UINotebook/>'].ToggleFade = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.fadeCell(uid, state);
             }      
-            core.<UINotebook/>.ToggleLock = async (args, env) => {
+            core['<UINotebook/>'].ToggleLock = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.lockCell(uid, state);
             }             
 
-            core.<UINotebook/>.ToggleInvisible = async (args, env) => {
+            core['<UINotebook/>'].ToggleInvisible = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
@@ -917,14 +917,14 @@ Script[OptionsPattern[]] := With[{
             }      
 
 
-            core.<UINotebook/>.RemoveCell = async (args, env) => {
+            core['<UINotebook/>'].RemoveCell = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
 
                 CellWrapper.remove(uid, ev);
             }        
 
-            core.<UINotebook/>.NewCell = async (args, env) => {
+            core['<UINotebook/>'].NewCell = async (args, env) => {
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
                 const list     = await interpretate(args[2], env);
@@ -1385,7 +1385,7 @@ Component[OptionsPattern[]] := With[{
                     Echo["Morphing..."];
                     cell["Type"] = "Input";
     
-                    With[{template = CellGenerator[cell, $CurrentWebSocket, parameters, extensions, "NotebookUI"->NotebookUI]},
+                    With[{template = CellGenerator[cell, $CurrentWebSocket, parameters, extensions, "UINotebook"->UINotebook]},
                         WebUISubmit[UINotebook["Morph", payload[[1]], template, cell`Serialize[cell, "MetaOnly"->True]], $CurrentWebSocket];
                     ];
                 ];                

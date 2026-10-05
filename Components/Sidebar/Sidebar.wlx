@@ -219,7 +219,7 @@ With[{
     ]
   ,
     <script type="module">
-      core.<UIOpenExplorer/> = async (args, env) => {
+      core['<UIOpenExplorer/>'] = async (args, env) => {
         const filename = await interpretate(args[0], env);
         console.warn(filename);
         
@@ -228,7 +228,7 @@ With[{
         }   
       }
 
-      core.<UIOpenDownloadWindow/> = async (args, env) => {
+      core['<UIOpenDownloadWindow/>'] = async (args, env) => {
         const url = await interpretate(args[0], env);
         const name = await interpretate(args[1], env);
         const  link = document.createElement("a")
@@ -237,7 +237,7 @@ With[{
         link.click();        
       }
 
-      core.<UIOpenWindow/> = async (args, env) => {
+      core['<UIOpenWindow/>'] = async (args, env) => {
         const url = await interpretate(args[0], env);
         const  link = document.createElement("a")
         link.href = '/folder/' + url;
@@ -245,7 +245,7 @@ With[{
         link.click();
       }
 
-      core.<UIOpenCopyLink/> = async (args, env) => {
+      core['<UIOpenCopyLink/>'] = async (args, env) => {
        const url = await interpretate(args[0], env);
        try {
          await navigator.clipboard.writeText(url);
