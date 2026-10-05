@@ -727,7 +727,7 @@
       const ev = opts.Event;
       env.element.addEventListener('click', () => {
         console.log('clicked!');
-        server.kernel.emitt(ev, 'True', 'Click')
+        server.kernel.io.fire(ev, true, 'Click')
       })
     }    
   }
@@ -1918,7 +1918,7 @@
     env.element.appendChild(editor); 
     if (options.Event) {
       env.element.addEventListener('click', () => {
-        server.kernel.emitt(options.Event, 'True', 'Click')
+        server.kernel.io.fire(options.Event, true, 'Click')
       })
     }    
   }
@@ -2187,7 +2187,7 @@
       const ev = await interpretate(opts.Event, env);
       env.element.addEventListener('click', () => {
         console.log('clicked!');
-        server.kernel.emitt(ev, 'True', 'Click')
+        server.kernel.io.fire(ev, true, 'Click')
       })
     }
   }
@@ -3033,7 +3033,7 @@
       env.element.appendChild(editor); 
       if (options.Event) {
         env.element.addEventListener('click', () => {
-          server.kernel.emitt(options.Event, 'True', 'Click')
+          server.kernel.io.fire(options.Event, true, 'Click')
         })
       }
     }

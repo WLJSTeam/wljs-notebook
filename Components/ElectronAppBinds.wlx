@@ -4,22 +4,22 @@ Component[OptionsPattern[]] := With[{Controls = OptionValue["Controls"]},
     const api = window.electronAPI || window.iframeAPI;
     if (api) {
         api.listener('extension', (ev, pattern) => {
-            server.emitt('<Controls/>', 'True', pattern);
+            server.io.fire('<Controls/>', true, pattern);
         });
         api.listener('context', (ev, pattern) => {
-            server.emitt('<Controls/>', 'True', pattern);
+            server.io.fire('<Controls/>', true, pattern);
         });     
         api.listener('settings', (ev, pattern) => {
             open('/settings', '_blank');
         });    
         api.listener('newnotebook', () => {
             console.log('note');
-            server.emitt('<Controls/>', 'True', '_NewNotebook');
+            server.io.fire('<Controls/>', true, '_NewNotebook');
         });
 
         api.listener('print', () => {
             console.log('note');
-            server.emitt('<Controls/>', 'True', 'PrintPDF');
+            server.io.fire('<Controls/>', true, 'PrintPDF');
         });
 
         api.listener('acknowledgments', () => {
@@ -27,12 +27,12 @@ Component[OptionsPattern[]] := With[{Controls = OptionValue["Controls"]},
         });
 
         api.listener('checkupdates', (ev) => {
-            server.emitt('<Controls/>', `True`, 'CheckUpdates');
+            server.io.fire('<Controls/>', true, 'CheckUpdates');
         });
         
 
         api.listener('newshortnote', () => {
-            server.emitt('<Controls/>', 'True', '_NewQuickNotebook');
+            server.io.fire('<Controls/>', true, '_NewQuickNotebook');
         });     
     }
 </script>

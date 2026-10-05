@@ -1,3 +1,7 @@
+(* 
+    Selftest helper
+*)
+
 http                      =  $Options["HTTPUHandler"];
 
 App[request_] := With[{

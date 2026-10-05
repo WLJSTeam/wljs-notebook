@@ -24,6 +24,7 @@ With[{},
 Component[cell_cell`CellObj, cli_, parameters_, OptionsPattern[]] := With[{
     ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"], 
     ExtensionTemplateWrapper = OptionValue["ExtensionTemplateWrapper"],
+    NotebookUI = OptionValue["NotebookUI"],
     Class = StringJoin["hover:b0g-", (If[StringQ[#], #, "teal"]&) @ (parameters["AccentColor"]), "-700/5", " ", If[TrueQ[cell["Invisible"]], "invisible-cell", ""]],
     Style = "border-radius:2px"
 },
@@ -44,7 +45,7 @@ Component[cell_cell`CellObj, cli_, parameters_, OptionsPattern[]] := With[{
                     <ExtensionTemplateWrapper Template={"CellWrapper"} Cell={cell} Client={cli}>
                         <CellWrapper Parameters={parameters} Cell={cell}/>
                     </ExtensionTemplateWrapper>
-                    <EvaluationBar Cell={cell} Client={cli}/>
+                    <EvaluationBar Cell={cell} Client={cli} NotebookUI={NotebookUI}/>
                     <Hr Cell={cell}/> 
                     <ExtensionTemplateWrapper Template={"Children"} Cell={cell} Client={cli}>
                         <Children Cell={cell}/>
@@ -75,7 +76,7 @@ Component[cell_cell`CellObj, cli_, parameters_, OptionsPattern[]] := With[{
 emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 
 
-Options[Component] = {"ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction}
+Options[Component] = {"ExtensionTemplateWrapper"-> sequenceIdentity, "ExtensionTemplateInjection" -> emptyStringFunction, "NotebookUI"->""}
 
 Script = With[{},
     ""

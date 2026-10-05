@@ -4,6 +4,14 @@ BeginPackage["CoffeeLiqueur`Notebook`Cells`", {
     "CoffeeLiqueur`Notebook`Transactions`"
 }]
 
+(*
+    Notebook cells abstraction
+    
+    This package defines properties of Cell objects and connects events and triggers with the parent notebook (if there is one).
+
+    It does not define renderer (view) and controller, however it automatically manages the life cycle of a cell and its children / parent. Input and output cells follow child-parent relations only implicitly though ordering. WLJS Notebook has a flat structure.
+*)
+
 Needs["CoffeeLiqueur`Notebook`" -> "notebook`"];
 
 CellObj::usage = "CellObj[opts__] _CellObj creates a new cell"

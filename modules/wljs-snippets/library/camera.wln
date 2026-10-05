@@ -63,7 +63,7 @@ EventHandler[win, {"Closed" -> Function[Null,
 
 EventHandler[CanvasUId, {
   "Capture" -> Function[Null,
-    Then[FrontFetchAsync[jswebcam`cam["Capture", CanvasUId], "Format"->"JSON", "Window" -> win],
+    Then[FrontFetchAsync[jswebcam`cam["Capture", CanvasUId], "Window" -> win],
       Function[raw,
         With[{img = Partition[Take[#, 3]&/@ Partition[raw, 4], 320] // NumericArray // Image},
           NotebookWrite[NotebookLocationSpecifier[parent, "After"], ExpressionCell[img, "Input"]];
@@ -160,12 +160,12 @@ function stopCamera() {
    ========================= */
 document.getElementById(`${uid}-capture`)
   .addEventListener('click', () =>
-    server.kernel.emitt(uid, 'True', 'Capture')
+    server.kernel.io.fire(uid, true, 'Capture')
   );
 
 document.getElementById(`${uid}-cancel`)
   .addEventListener('click', () =>
-    server.kernel.emitt(uid, 'True', 'Cancel')
+    server.kernel.io.fire(uid, true, 'Cancel')
   );
 
 /* =========================

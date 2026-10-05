@@ -150,7 +150,7 @@ class EditorWidget {
         ]
       })});
 
-      if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');  
+      if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');  
 
     });
 
@@ -208,7 +208,7 @@ class EditorWidget {
     }  
     this.editors.forEach((i)=>i.destroy());
 
-    if(this.events) server.kernel.emitt(this.events, 'Null', 'Destroy');
+    if(this.events) server.kernel.io.fire(this.events, null, 'Destroy');
 
     delete this.data;
   }

@@ -4,7 +4,6 @@ BeginPackage["CoffeeLiqueur`Extensions`Debugger`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`",
-    "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",

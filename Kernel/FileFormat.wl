@@ -1,5 +1,13 @@
 BeginPackage["CoffeeLiqueur`Notebook`FileFormat`"];
 
+(*
+    WLN Notebook Format
+    - serializer
+    - deserialier
+
+    A human readable format for storing WLJS notebooks
+*)
+
 readNotebook;
 writeNotebook;
 

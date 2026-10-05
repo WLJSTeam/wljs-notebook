@@ -4,7 +4,6 @@ BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",    
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
@@ -60,6 +59,7 @@ GetDefaults := With[{},
     <|"hash" -> Hash[defaults], "data" -> defaults|>
 ]
 
+UIAutocompleteConnect; (* private frontend symbol *)
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
     Echo["Attach event listeners to notebook from EXTENSION"];
@@ -71,7 +71,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             ], "Once"->True];
          
 
-            WebUISubmit[ Global`UIAutocompleteConnect[Hash[defaults] ], payload["Client"] ];
+            WebUISubmit[UIAutocompleteConnect[Hash[defaults] ], payload["Client"] ];
         ]
     }]; 
 ]

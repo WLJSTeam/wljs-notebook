@@ -135,7 +135,7 @@ Component[OptionsPattern[]] := With[{
           const offset = 'data:image/png;base64,'.length;
           const base64data = reader.result.slice(offset);                
 
-          server.kernel.emitt('<Event/>', '"'+base64data+'"', '<Topic/>');
+          server.kernel.io.fire('<Event/>', String(base64data), '<Topic/>');
           return;
       }
           });

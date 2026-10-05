@@ -74,7 +74,7 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
 processSelected[text_, notebook_, controls_, logs_, cli_, head_:""] := With[{},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
             Then[evaluationInPlace[text, notebook, controls, logs, cli, head], 
                 Function[result,
@@ -91,7 +91,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, head_:""] := With[{},
 
 processSelected[text_, notebook_, controls_, logs_, cli_, "Iconize"] := With[{},
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
             With[{
                 payload = If[TrueQ[CheckSyntax[StringTrim[text] ] ], {"Iconize", text}, {"BoxForm`IconizeSequence", "{"<>StringTrim[text]<>"}"}]
@@ -114,7 +114,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Iconize"] := With[{},
 processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[ReadSelectionInDoc[], cli, "Format"->"JSON"],
+    Then[WebUIFetch[ReadSelectionInDoc[], cli],
         Function[text,
             Then[evaluationInPlace[ToString[text, InputForm], notebook, controls, logs, cli, "Speak"], 
                 Function[result,
@@ -133,7 +133,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
 processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
             Then[evaluationInPlace[text, notebook, controls, logs, cli, "TeXForm"], 
                 Function[result,
@@ -155,7 +155,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{
 processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With[{},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
             Then[evaluationInPlace[text, notebook, controls, logs, cli, "(ToString[#, InputForm]&)"], 
                 Function[result,
@@ -179,7 +179,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With
 processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid = (Internal`NoWR`RandomWord[])<>"-"<>StringTake[CreateUUID[], 3]},
     Echo["Evaluate in PLACE!!!!"];
     If[!checkLink[notebook, logs], Return[] ];
-    Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"],
+    Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
             Then[evaluationInPlace[text, notebook, controls, logs, cli, "Function[data, NotebookWrite[NotebookStore[\""<>uid<>"\"] , data]]"], 
                 Function[result,
@@ -227,7 +227,7 @@ addListeners[notebook_nb`NotebookObj, controls_, logs_, cli_] := With[{},
         
 
         "comment_selected" -> Function[Null,
-            Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"], Function[text,
+            Then[WebUIFetch[FrontEditorSelected["Get"], cli], Function[text,
                 With[{trimmed = StringTrim[text]},
                 
                     If[StringTake[trimmed, 2] === "(*" && StringTake[trimmed, -2] === "*)",
@@ -248,7 +248,7 @@ addListeners[notebook_nb`NotebookObj, controls_, logs_, cli_] := With[{},
         ],
 
         "highlight_selected" -> Function[Null,
-            Then[WebUIFetch[FrontEditorSelected["Get"], cli, "Format"->"JSON"], Function[text,
+            Then[WebUIFetch[FrontEditorSelected["Get"], cli], Function[text,
                 With[{new = StringRiffle[{"(*BB[*)(", text, ")(*,*)(*", ToString[Compress[Hold[StyleBox[Background->RGBColor[1.,1.,0.] ] ] ], InputForm], "*)(*]BB*)"}, ""]},
                     WebUISubmit[FrontEditorSelected["Set", new ], cli];
                 ]

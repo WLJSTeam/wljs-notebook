@@ -407,17 +407,17 @@ window.CellWrapper = class {
   setProp(key, value) {
     this.props[key] = value;
     const uid = this.uid;
-    server.emitt(this.channel, '"'+JSON.stringify({Cell: uid, Key: key, Value: value}).replace(/"/gm, "\\\"")+'"', "SetProperty");
+    server.io.fire(this.channel, {Cell: uid, Key: key, Value: value}, "SetProperty");
     this._event('property', {key: key, value: value, self:this});
   }
 
   addCellAfter() {
-    server.emitt(this.channel, '"'+this.uid+'"', 'AddAfter');
+    server.io.fire(this.channel, this.uid, 'AddAfter');
     this._event('addafter', {uid: this.uid, self:this});
   }
 
   addCellBefore() {
-    server.emitt(this.channel, '"'+this.uid+'"', 'AddBefore');
+    server.io.fire(this.channel, this.uid, 'AddBefore');
     this._event('addbefore', {uid: this.uid, self:this});
   }  
 
@@ -474,7 +474,7 @@ window.CellWrapper = class {
     }, 300);
 
     this.throttledSave = throttle((content) => {
-      server.emitt(self.channel, '{"'+self.uid+'","'+(content)+'"}', "UpdateCell");
+      server.io.fire(self.channel, [self.uid, content], "UpdateCell");
     }, CellWrapper.inputSaveDelay);
 
     CellWrapper.prolog.forEach((f) => f({cell: self, props: input, event: eventid}));
@@ -726,13 +726,13 @@ window.CellWrapper = class {
 
   eval(content) {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
-    server.emitt(this.channel, '"'+this.uid+'"', 'Evaluate');  
+    server.io.fire(this.channel, this.uid, 'Evaluate');  
     this._event('eval', {self:this});
   }  
 
   evalToWindow() {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
-    server.emitt(this.channel, '"'+this.uid+'"', 'ProjectOrUpdate');  
+    server.io.fire(this.channel, this.uid, 'ProjectOrUpdate');  
     this._event('eval', {self:this});    
   }
 
@@ -740,7 +740,7 @@ window.CellWrapper = class {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
     //jump to the next
     this.focusNext(true, 0, true);
-    server.emitt(this.channel, '"'+this.uid+'"', 'Evaluate');  
+    server.io.fire(this.channel, this.uid, 'Evaluate');  
     this._event('eval', {self:this});
   }  
   
@@ -768,7 +768,7 @@ window.CellWrapper = class {
   }
   
   remove(jump = true, direction = -1) {
-    server.emitt(this.channel, '"'+this.uid+'"', 'RemoveCell');
+    server.io.fire(this.channel, this.uid, 'RemoveCell');
     if (jump) {
       if (this.type == 'Output') {
         if (direction < 0) this.focusPrev(); else this.focusNext();

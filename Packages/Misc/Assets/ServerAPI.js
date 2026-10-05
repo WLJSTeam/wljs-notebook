@@ -1,7 +1,3 @@
-core.SlientPing = () => {
-  console.log('Ppspsp... server is there');
-}
-
 class fakeSocket {
 
 q = []
@@ -215,84 +211,11 @@ core.WLJSIOPromiseResolve = (args, env) => {
   delete promises[uid];
 }
 
-core.FireEvent = function(args, env) {
-  const key = interpretate(args[0], env);
-  const data = interpretate(args[1], env);
-
-  server.kernel.emitt(key, data);
-}
-
-core.KernelFire = function(args, env) {
-  const data = interpretate(args[0], env);
-
-  server.talkKernel(data);
-}
-
-core.KernelEvaluate = function(args, env) {
-  const data = interpretate(args[0], env);
-
-  server.askKernel(data);
-}
-
-core.TalkMaster = async(args, env) => {
-  const data = await interpretate(args[0], env);
-  const wrapper = await interpretate(args[1], env);
-  server.send(wrapper + '["' + JSON.stringify(data).replace(/"/gm, "\\\"") + '"]');
-}
-
-core.TalkKernel = async(args, env) => {
-  const data = await interpretate(args[0], env);
-  const wrapper = await interpretate(args[1], env);
-  server.kernel.send(wrapper + '["' + JSON.stringify(data).replace(/"/gm, "\\\"") + '"]');
-}
-
-const bjtag = decodeURIComponent('%3Cscript%20type%3D%22module%22%3E');
-const ejtsg = decodeURIComponent('%3C%2Fscript%3E');
-
-core.WLXEmbed = async (args, env) => {
-  const options = await core._getRules(args, {...env, hold:true});
-  let html = await interpretate(args[0], env);
-
-  if (Array.isArray(html)) {
-    html = html.join('\n');   
-  }
-
-  setInnerHTML(env.element, html);
-
-  if ('SideEffect' in options) {
-    await interpretate(options.SideEffect, env);
-  }
-}   
-
-core.WLXEmbed.destroy = async (args, env) => {
-  await core._getRules(args, {...env});
-  await interpretate(args[0], env);
-}
 
 let tryreload;
 let attempts = 0;
 
 tryreload = (failed) => {
-  /*var state = history.state || {};
-  var reloadCount = state.reloadCount || 0;
-  if (performance.navigation.type === 1) { // Reload
-      state.reloadCount = ++reloadCount;
-      history.replaceState(state, null, document.URL);
-  } else if (reloadCount) {
-      reloadCount = 0;
-      delete state.reloadCount;
-      history.replaceState(state, null, document.URL);
-  }
-
-
-  if (reloadCount > 3) {
-      reloadCount = 0;
-      delete state.reloadCount;
-      history.replaceState(state, null, document.URL);
-      failed();
-      return;
-  }*/
-
   document.body.style.filter = "blur(10px)";
   attempts++;
 

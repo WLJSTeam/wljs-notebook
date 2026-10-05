@@ -51,12 +51,10 @@ import {
 
     progress(0);
     handler.transaction(ev, view, id, list.length);
-   // server.kernel.emitt('<Event/>', `<|"Id" -> "${id}", "Length" -> ${list.length}|>`, 'Transaction');
     
     for (const file of list) {
         readFile(file, (name, result) => {
             handler.file(ev, view, id, name, result);
-            //server.kernel.emitt('id', `<|"Transaction" -> "${id}", "Name" -> "${name}", "Data" -> "${result}"|>`, 'File');
             count++;
             progress(count);
             if (count >= list.length && view.dom) {

@@ -5,8 +5,6 @@ BeginPackage["CoffeeLiqueur`Extensions`NotebookDirectory`", {
 }]
 
 
-SetKernelDirectory::usage="";
-
 Begin["`Private`"]
 
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
@@ -15,6 +13,7 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
+SetKernelDirectory; (* Private frontend symbol *)
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 

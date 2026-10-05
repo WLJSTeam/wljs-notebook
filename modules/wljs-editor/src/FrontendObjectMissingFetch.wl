@@ -9,7 +9,7 @@ Begin["`Internal`"]
 
 (* if doen't exists, try to fetch it from an active Window *)
 CoffeeLiqueur`Extensions`FrontendObject`Internal`$MissingHandler[uid_String, "Private"] := With[{win = CurrentWindow[]},
-    With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["Get", uid], "Window"->win, "Format"->"ExpressionJSON"]},
+    With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["Get", uid], "Window"->win]},
         If[FailureQ[result] || MatchQ[result, _$Failed],
             (* try to fetch from Master *)
             With[{promise = Promise[]},

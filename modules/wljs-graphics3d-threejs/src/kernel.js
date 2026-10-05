@@ -5422,7 +5422,7 @@ g3d.EventListener.transform = (uid, object, env) => {
   env.global.scene.add(gizmo); 
 
   const updateData = throttle((x,y,z) => {
-    server.kernel.emitt(uid, `<|"position"->{${x.toFixed(4)}, ${y.toFixed(4)}, ${z.toFixed(4)}}|>`, 'transform')
+    server.kernel.io.fire(uid, {position:[x, y, z]}, 'transform')
   });
 
   control.addEventListener( 'change', function(event) {

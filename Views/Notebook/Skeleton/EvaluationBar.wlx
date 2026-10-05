@@ -1,20 +1,20 @@
-Element[OptionsPattern[]] := With[{cell = OptionValue["Cell"], client = OptionValue["Client"]},
+Element[OptionsPattern[]] := With[{cell = OptionValue["Cell"], client = OptionValue["Client"], UINotebook = OptionValue["UINotebook"]},
     With[{uid = cell["Hash"], State = cell["State"]},
         EventHandler[cell,
             {
                 "State" -> Function[state,
                     Print["State update"];
-                    WebUISubmit[Global`UINotebook["CellState", uid, state] (*`*), client];
+                    WebUISubmit[UINotebook["CellState", uid, state] (*`*), client];
                 ],
                 "ChangeContent" -> Function[content,
                     Print["ChangeContent update"];
-                    WebUISubmit[Global`UINotebook["CellContent", uid, content] (*`*), client];
+                    WebUISubmit[UINotebook["CellContent", uid, content] (*`*), client];
                 ],                
                 "Info" -> Function[state,
-                    WebUISubmit[Global`UINotebook["CellInfo", uid, state] (*`*), client];
+                    WebUISubmit[UINotebook["CellInfo", uid, state] (*`*), client];
                 ],
                 "Error" -> Function[state,
-                    WebUISubmit[Global`UINotebook["CellError", uid, ToString[state]] (*`*), client];
+                    WebUISubmit[UINotebook["CellError", uid, ToString[state]] (*`*), client];
                 ]
             }
         ];
@@ -30,9 +30,9 @@ Element[OptionsPattern[]] := With[{cell = OptionValue["Cell"], client = OptionVa
     ]
 ];
 
-Options[Element] = {"Cell"->Null, "Client"->""};
+Options[Element] = {"Cell"->Null, "Client"->"", "UINotebook"->""};
 
-Script = With[{},
+Script[OptionsPattern[]] := With[{UINotebook = OptionValue["UINotebook"]},
     <Placebo>
         const callElectronProgress = (p) => {
             if (window.electronAPI) {
@@ -40,12 +40,12 @@ Script = With[{},
             }
         }
 
-        core.UINotebook.CellContent = async (args, env) => {
+        core.<UINotebook/>.CellContent = async (args, env) => {
             const uid      = await interpretate(args[0], env);
             const content    = await interpretate(args[1], env);
             CellWrapper.setContent(uid, content);
         }
-        core.UINotebook.CellError = async (args, env) => {
+        core.<UINotebook/>.CellError = async (args, env) => {
             const uid      = await interpretate(args[0], env);
             const state    = await interpretate(args[1], env);
             const info = document.getElementById('info-'+uid);
@@ -56,7 +56,7 @@ Script = With[{},
             info.parentNode.style.position = "relative";
             info.parentNode.style.height = "1rem";
         }        
-        core.UINotebook.CellState = async (args, env) => {
+        core.<UINotebook/>.CellState = async (args, env) => {
             const uid      = await interpretate(args[0], env);
             const state    = await interpretate(args[1], env);
             const cell = document.getElementById(uid);
@@ -98,5 +98,6 @@ Script = With[{},
     </Placebo>
 ]
 
+Options[Script] = {"UINotebook"->""}
 
 {Element, Script}

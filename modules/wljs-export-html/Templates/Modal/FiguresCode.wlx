@@ -48,7 +48,7 @@ EventHandler[OnLoad, Function[Null,
     let close;
     close = () => {
                 window.removeEventListener('click', close);  
-                server.emitt('<ModalController/>', 'True', 'Close');
+                server.io.fire('<ModalController/>', true, 'Close');
             };
 
     window.addEventListener('click', close); 

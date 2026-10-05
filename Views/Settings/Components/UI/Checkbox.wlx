@@ -17,9 +17,9 @@ Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = ToStr
 
             el.addEventListener('change', (event)=>{
                 if (event.currentTarget.checked) 
-                    server.kernel._emitt('<Event/>', 'True', '<Topic/>');
+                    server.kernel.io.fire('<Event/>', true, '<Topic/>');
                 else
-                    server.kernel._emitt('<Event/>', 'False', '<Topic/>');       
+                    server.kernel.io.fire('<Event/>', false, '<Topic/>');       
             });
         </script>
     }

@@ -98,7 +98,7 @@ EventHandler[OnLoad, Function[Null,
                 document.removeEventListener('keydown', keyListener);
                 //element.removeEventListener('click', submit);
                 window.removeEventListener('click', close);  
-                server.emitt('<Event/>', index + 1, 'Ok');
+                server.io.fire('<Event/>', index + 1, 'Ok');
                 submit = () => {};
             };
 
@@ -106,7 +106,7 @@ EventHandler[OnLoad, Function[Null,
                 document.removeEventListener('keydown', keyListener);
                 //element.removeEventListener('click', submit);
                 window.removeEventListener('click', close);  
-                server.emitt('<Event/>', 'Null', 'Cancel');
+                server.io.fire('<Event/>', null, 'Cancel');
             };
 
             window.addEventListener('click', close);   

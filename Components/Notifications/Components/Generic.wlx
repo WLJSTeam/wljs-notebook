@@ -186,7 +186,7 @@ Script[OptionsPattern[]] := With[{Controller = OptionValue["Controller"], BackCo
         }
 
         showall() {
-          //server.emitt('<BackController/>', 'True', 'ShowAll');
+
         }
 
         dispose() {

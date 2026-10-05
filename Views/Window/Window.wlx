@@ -1,6 +1,8 @@
 {WindowGenerator, WindowGeneratorScript}   = ImportComponent["WindowGenerator.wlx"];
 Container := ImportComponent["Components/Container.wlx"];
 
+UIWindow = Unique["notebookUI"];
+
 addListeners[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
     (* /* don't clone  event, must be one ! */ *)
     Echo["Add listeners::::"];
@@ -15,21 +17,21 @@ addListeners[window_, secret_String, client_, modals_, parameters_, extensions__
                     (* /* This you might need to copy to the window, since they might contain scripts and styles */ *)
                     If[Length[htmlJsCells] > 0,
                         Echo["Found JS and HTML cells, projecting too..."];
-                        WebUISubmit[Global`UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
+                        WebUISubmit[UIWindow["LoadSupplimentary", <|"Display"->#["Display"], "Data"->#["Data"]|> ], client] &/@ htmlJsCells;
                     ];
                 ]
             ];
 
-            WebUISubmit[Global`UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client];
+            WebUISubmit[UIWindow["Load", WindowGenerator[window, client, parameters, extensions], win`Serialize[window] ,  secret], client];
             Echo["Autosize"];
-            If[window[ImageSize] === Automatic, WebUISubmit[Global`UIWindow["autoSizeWindow", window["Hash"], 1, {320, 240}], client]];
+            If[window[ImageSize] === Automatic, WebUISubmit[UIWindow["autoSizeWindow", window["Hash"], 1, {320, 240}], client]];
             EventFire[window, "AfterLoad", window];
 
         ],
 
         "OnReload" -> Function[Null,
             Echo["Window >> reload!"];
-            WebUISubmit[Global`UIWindow["Unload" ], client];
+            WebUISubmit[UIWindow["Unload" ], client];
             Then[EventFire[window, "AfterReload", client], Function[Null,
                 EventFire[window, "Ready", Null];
             ] ];
@@ -55,7 +57,7 @@ checkWSLink[window_, client_, event_String] := Module[{},
         Return[];
     ];
 
-    WebUISubmit[Global`UIWindow["WSConnect", window["WebSocketPort"], event, "PrefixMode"->$Env["ws2prefix"] ] (*`*), client];
+    WebUISubmit[UIWindow["WSConnect", window["WebSocketPort"], event, "PrefixMode"->$Env["ws2prefix"] ] (*`*), client];
 ];
 
 
@@ -66,17 +68,17 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             addEventListener("beforeunload", ()=>{server.io.fire('<Secret/>', true, 'ManuallyClosed');});
             if (window.electronAPI) window.electronAPI.setMinSize(100,100);
 
-            core.UIWindow = async (args, env) => {
+            core.<UIWindow/> = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                return await core.UIWindow[type](args.slice(1), env);
+                return await core.<UIWindow/>[type](args.slice(1), env);
             }
 
-            core.UIWindow.CreateServer = async (args, env) => {
+            core.<UIWindow/>.CreateServer = async (args, env) => {
                 server.kernel = new Server('Evaluation Kernel');
                 console.warn("server.kernel :: created, waiting for initialization...");
             }
 
-            core.UIWindow.WSConnect = async (args, env) => {
+            core.<UIWindow/>.WSConnect = async (args, env) => {
                 const options = await core._getRules(args, env);
                 const port = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
@@ -103,7 +105,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                   socket.onopen = function(e) {
                     console.log("[open]");
                     server.kernel.init({socket: socket});
-                    server.emitt(ev, 'True', 'WebSocketConnected');
+                    server.io.fire(ev, true, 'WebSocketConnected');
                     server.kernel.connected = true;
                     server.kernel.connecting = false;
                   };
@@ -117,7 +119,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                     if (<RetryWebSocket/> && !server.kernel.connected) {
                         console.warn('Retrying in 1700 ms');
                         setTimeout(() => window.location.reload(), 1700);
-                    } else {server.emitt(ev, 'True', 'WebSocketLost');}
+                    } else {server.io.fire(ev, true, 'WebSocketLost');}
 
                     server.kernel.connected = false;
                   };
@@ -126,26 +128,26 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
                 connectNow();
             }
 
-            core.UIWindow.Unload = async (args, env) => {
+            core.<UIWindow/>.Unload = async (args, env) => {
                 autoSizeController?.stop();
                 autoSizeController = undefined;
                 supp.forEach(el=>el.dispose());
                 wrap.dispose(); supp = [];
             }
 
-            core.UIWindow.LoadSupplimentary = async (args, env) => {
+            core.<UIWindow/>.LoadSupplimentary = async (args, env) => {
                 const store    = await interpretate(args[0], env);
                 supp.push(new WindowWrapperSupplimentary(store));
             }
 
-            core.UIWindow.KernelSocket = async (args, env) => {
+            core.<UIWindow/>.KernelSocket = async (args, env) => {
                 return await server.kernel.ask('$CurrentWebSocket');
             }
             
             
-            core.UIWindow.autoSizeWindow = async (args, env) => {
+            core.<UIWindow/>.autoSizeWindow = async (args, env) => {
               if (!window.electronAPI) return;
-              core.UIWindow.autoSizeWindow = () => {};
+              core.<UIWindow/>.autoSizeWindow = () => {};
               let allowedQ = true; let skipNext = false;
               addEventListener("resize", (event) => {
                 if (!skipNext) allowedQ = false;
@@ -204,7 +206,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             };
             
 
-            core.UIWindow.Load = async (args, env) => {
+            core.<UIWindow/>.Load = async (args, env) => {
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
 
@@ -286,7 +288,7 @@ Component[OptionsPattern[] ] := With[{
             (* /* Add all listeners to a **notebook** */ *)
             addListeners[window, secret, $CurrentWebSocket, modals, parameters, extensions];
 
-            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $CurrentWebSocket];
+            WebUISubmit[UIWindow["CreateServer"](*`*), $CurrentWebSocket];
 
             (* /* Establish WS Connection to a Kernel (if available) */ *)
             checkWSLink[window, $CurrentWebSocket, secret];
@@ -299,7 +301,7 @@ Component[OptionsPattern[] ] := With[{
 
         "WebSocketConnected" -> Function[Null, With[{cli = $CurrentWebSocket},
             Echo["window.wlx >> WebSocket link to evaluation Kernel was established"];
-            Then[WebUIFetch[Global`UIWindow["KernelSocket"], $CurrentWebSocket ], Function[data,
+            Then[WebUIFetch[UIWindow["KernelSocket"], $CurrentWebSocket ], Function[data,
                 window["WebSocketQ"] = True;
                 window["KernelWebSocket"] = data;
 
@@ -319,7 +321,7 @@ Component[OptionsPattern[] ] := With[{
             window["WebSocketQ"] = False;
 
             (* /* reset a preliminary link */ *)
-            WebUISubmit[Global`UIWindow["CreateServer"](*`*), $CurrentWebSocket];
+            WebUISubmit[UIWindow["CreateServer"](*`*), $CurrentWebSocket];
         ]
 
         else_String :> (Echo[StringTemplate["Unknown window view event ``: ``"][else, #]]&)

@@ -9,7 +9,6 @@ BeginPackage["CoffeeLiqueur`Extensions`Terminal`", {
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
     "CoffeeLiqueur`Extensions`CommandPalette`",
-    "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CodeFormatter`",
     "CoffeeLiqueur`UObjects`"

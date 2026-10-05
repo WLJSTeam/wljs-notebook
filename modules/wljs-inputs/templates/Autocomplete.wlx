@@ -186,10 +186,10 @@ AutocompleteComponent[OptionsPattern[]] := With[{
       inputField.blur();
       if (typeof data == 'string') {
         if (data.trim() == '') return;
-        server.kernel.emitt('<Event/>', '"'+data+'"', "Entered");
+        server.kernel.io.fire('<Event/>', String(data), "Entered");
       } else {
         if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;
-        server.kernel.emitt('<Event/>', '"'+renderedArray[data].name+'"', "Selected");
+        server.kernel.io.fire('<Event/>', String(renderedArray[data].name), "Selected");
       }
     } 
 

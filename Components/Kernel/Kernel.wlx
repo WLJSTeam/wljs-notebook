@@ -121,13 +121,13 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
    <script type="module">
     if (window.electronAPI) {
       //window.electronAPI.openFinder(JSON.stringify(filename));
-      window.electronAPI.listener('newmasterkernel', () => server.emitt('<ButtonId/>', '"Master"', 'New'));
-      window.electronAPI.listener('newlocalkernel', () => server.emitt('<ButtonId/>', '"Local"', 'New'));
+      window.electronAPI.listener('newmasterkernel', () => server.io.fire('<ButtonId/>', "Master", 'New'));
+      window.electronAPI.listener('newlocalkernel', () => server.io.fire('<ButtonId/>', "Local", 'New'));
       window.electronAPI.listener('restartkernel', () => {
-        server.emitt('<ButtonId/>', 'True', "Restart")
+        server.io.fire('<ButtonId/>', true, "Restart")
       });
       window.electronAPI.listener('killallkernels', () => {
-        server.emitt('<ButtonId/>', 'True', "KillAll")
+        server.io.fire('<ButtonId/>', true, "KillAll")
       });
     }   
    </script>

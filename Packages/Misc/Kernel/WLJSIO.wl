@@ -4,11 +4,10 @@ BeginPackage["CoffeeLiqueur`Misc`WLJS`Transport`", {
     "CoffeeLiqueur`Misc`Events`"
 }]; 
 
-WLJSTransportHandler::usage = ""
-WLJSTransportScript::usage = ""
-WLJSAliveQ::usage = ""
+WLJSTransportHandler;
+WLJSTransportScript;
 
-WLJSTransportSend::usage = ""
+WLJSTransportSend;
 
 System`Offload;
 Offload::usage = "Hold expression to be evaluated on a frontend"
@@ -27,6 +26,7 @@ System`WLJSIOPromiseCallback;
 System`WLJSIORequest;
 System`WLJSIOFetch;
 
+
 System`SlientPing;
 
 System`$CurrentWebSocket;
@@ -39,9 +39,16 @@ WLJSTransportHandler[cl_, data_ByteArray] := Block[{$CurrentWebSocket = cl},
     ToExpression[data//ByteArrayToString];
 ]
 
-WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSerializer]
+$DefaultSerializer[expr_] :=
+  Block[
+    {
+      $Context = "dsc$`",
+      $ContextPath = {"dsc$`", "System`", "Global`"}
+    },
+    ExportByteArray[expr, "ExpressionJSON"]
+];
 
-$DefaultSerializer = ExportByteArray[#, "ExpressionJSON", Compact->0]&
+WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSerializer]
 
 WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]]},
     WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
@@ -105,17 +112,6 @@ WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = $CurrentWebSocket}
 IDCards = <||>;
 WLJSIDCardRegister[uid_String] := (Print["Transport registered as "<>uid]; IDCards[uid] = $CurrentWebSocket)
 
-WLJSAliveQ[uid_String] := (
-    If[KeyExistsQ[IDCards, uid],
-        With[{res = !FailureQ[WebSocketUSend[IDCards[uid], SlientPing // $DefaultSerializer]]},
-            If[!res, IDCards[uid] = .];
-            res
-        ]
-    ,
-        Missing[]
-    ]
-)
-
 WLJSTransportScript[OptionsPattern[] ] := If[NumberQ[OptionValue["Port"] ],
     Switch[{OptionValue["TwoKernels"], OptionValue["Event"], OptionValue["Host"]},
         {False, Null, Null},
@@ -125,7 +121,7 @@ WLJSTransportScript[OptionsPattern[] ] := If[NumberQ[OptionValue["Port"] ],
         ScriptTemplate[OptionValue["PrefixMode"], OptionValue["Port"], "server.init({socket: socket, kernel: true})" ]
     ,
         {False, _String, Null},
-        ScriptTemplate[OptionValue["PrefixMode"], OptionValue["Port"], "server.init({socket: socket}); server.emitt('"<>OptionValue["Event"]<>"', 'True', 'Connected');" ]
+        ScriptTemplate[OptionValue["PrefixMode"], OptionValue["Port"], "server.init({socket: socket}); server.io.fire('"<>OptionValue["Event"]<>"', true, 'Connected');" ]
     ,
         {True, _, Null},
         ScriptTemplate[OptionValue["PrefixMode"], OptionValue["Port"], "server.init({socket: socket, kernel: true}); " ]

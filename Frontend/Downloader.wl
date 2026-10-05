@@ -3,6 +3,12 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`"
 }]
+
+(* 
+    HTTP 1.1 Downloader/Streamer
+    Allows partial requests and the rest of HTTP 1.0
+*)
+
     module;
     
     Begin["`Internal`"]
@@ -26,6 +32,7 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
         Echo[k];
     )
 
+    (* add modules / extensions to PATH *)
     wljsPackages = FileNameJoin[{Directory[], "modules"}];
 
 

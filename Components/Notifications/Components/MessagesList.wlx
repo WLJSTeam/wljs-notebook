@@ -43,7 +43,7 @@ Component[OptionsPattern[]] := With[{Controller = OptionValue["Controller"]}, We
               list.classList.add('translate-x-5', 'opacity-0');
               list.classList.remove('translate-x-0', 'opacity-100');
               setTimeout(() => {
-                server.emitt('<UId/>', 'True', 'Remove');
+                server.io.fire('<UId/>', true, 'Remove');
               }, 300);
             }
             ev.stopPropagation();

@@ -103,7 +103,7 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
     
 
 
-    Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client, "Format"->"RawJSON"], Function[hashes,
+    Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client], Function[hashes,
       Echo["Got hashes:: "]; Echo[hashes];
 
       MapThread[Function[{hash, data},

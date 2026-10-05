@@ -219,7 +219,7 @@ core.PCMPlayer = async (args, env) => {
 
   if (opts.Event) {
     call = (time) => {
-        server.kernel.emitt(opts.Event, time, 'More');
+        server.kernel.io.fire(opts.Event, time, 'More');
     }
   }
 

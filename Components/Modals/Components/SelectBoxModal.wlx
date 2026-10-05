@@ -93,7 +93,7 @@ Window[OptionsPattern[]] := With[{promise = OptionValue["Data"]["Promise"],  Opt
                             document.removeEventListener('keydown', keyListener);
                             //element.removeEventListener('click', submit);
                             window.removeEventListener('click', close);  
-                            server.emitt('<Uid/>', index + 1, 'Ok');
+                            server.io.fire('<Uid/>', index + 1, 'Ok');
                             submit = () => {};
                         };
 
@@ -101,7 +101,7 @@ Window[OptionsPattern[]] := With[{promise = OptionValue["Data"]["Promise"],  Opt
                             document.removeEventListener('keydown', keyListener);
                             //element.removeEventListener('click', submit);
                             window.removeEventListener('click', close);  
-                            server.emitt('<Uid/>', 'Null', 'Cancel');
+                            server.io.fire('<Uid/>', null, 'Cancel');
                         };
 
                         window.addEventListener('click', close);   

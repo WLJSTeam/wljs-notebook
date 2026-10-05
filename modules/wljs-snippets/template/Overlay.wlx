@@ -359,7 +359,7 @@ With[{
             ]}];
 
             EventHandler[typeWritter, {"Type" -> Function[text,            
-                currentText = URLDecode[text];
+                currentText = text;
             ]}];
 
     ];
@@ -497,7 +497,7 @@ With[{
                 if (!window.electronAPI) {
                     window.addEventListener("keydown", function (e) {
                         if (e.ctrlKey && e.key == "p" || e.metaKey && e.key == "p") {
-                            server.emitt('<LocalControls/>', 'True', 'Open');
+                            server.io.fire('<LocalControls/>', true, 'Open');
                             e.preventDefault();
                             return false;
                         }
@@ -549,7 +549,7 @@ With[{
                         if (withinBoundaries) {
                           console.log('Click happened inside element');
                         } else {
-                          server.emitt('<CancelListener/>', 'True', 'Click');
+                          server.io.fire('<CancelListener/>', true, 'Click');
                           document.removeEventListener('click', clickOutside);
                         }
                 };
@@ -568,7 +568,7 @@ With[{
                     for (let i=0; i<storage.length; ++i) {
                         storage[i].addEventListener('click', (event) => {
                             console.log(['<ClickActions/>', '"'+storage[i].getAttribute("tag")+'"', 'Click']);
-                            server.emitt('<ClickActions/>', '"'+storage[i].getAttribute("tag")+'"', 'Click');
+                            server.io.fire('<ClickActions/>', String(storage[i].getAttribute("tag")), 'Click');
                             event.stopPropagation();
                         });
                     }
@@ -576,7 +576,7 @@ With[{
                     for (let i=0; i<btags.length; ++i) {
                         btags[i].addEventListener('click', (event) => {
                             console.log(['<ClickActions/>', '"'+btags[i].getAttribute("tag")+'"', 'Click']);
-                            server.emitt('<ClickActions/>', '"'+btags[i].getAttribute("btag")+'"', 'Click');
+                            server.io.fire('<ClickActions/>', String(btags[i].getAttribute("btag")), 'Click');
                             event.stopPropagation();
                         });
                     }

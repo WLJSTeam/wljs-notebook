@@ -7,9 +7,11 @@ BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
     "CoffeeLiqueur`Extensions`Notifications`"
 }];
 
-UIAutocompleteExtend;
 
-Begin["`Private`"]
+
+Begin["`Private`"];
+
+UIAutocompleteExtend;
 
 definitions = {};
 clients = {};
@@ -17,7 +19,7 @@ clients = {};
 shareDefinitions[cli_, set_List] := With[{
     data = set
 },
-    If[FailureQ @ WebSocketUSend[cli, ExportByteArray[UIAutocompleteExtend[data], "ExpressionJSON"] ], clients = clients /. {cli -> Nothing}];
+    If[FailureQ @ WLJSTransportSend[UIAutocompleteExtend[data], cli ], clients = clients /. {cli -> Nothing}];
 ]
 
 EventHandler["autocomplete", {

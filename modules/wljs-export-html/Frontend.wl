@@ -189,7 +189,7 @@ askIfDynamic[modals_, callback1_, callback2_] := With[{
 renderMarkdownToString;
 
 requestMarkdownProcessor[client_][data_] :=requestMarkdownProcessor[client][ToString[data] ]
-requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client, "Format"->"RawJSON"]
+requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client]
 
 collectStaticData[client_, messager_, notebook_] := Block[{
     $CurrentWebSocket = client

@@ -6,7 +6,6 @@ BeginPackage["CoffeeLiqueur`Extensions`CommandPalette`Github`", {
     "CoffeeLiqueur`Misc`Language`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`WLX`",
-    "CoffeeLiqueur`WLX`WLJS`",
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`",     

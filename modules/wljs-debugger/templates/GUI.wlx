@@ -65,7 +65,7 @@ generateEntry[Name_String, UId_, LocalControls_] := With[{
                 core.EditorView([['JSObject', '???'], ['Rule', "'ReadOnly'", true]], env);
 
                 breakCheckbox.addEventListener('change', () => {
-                    server.emitt('<LocalControls/>', '"'+breakCheckbox.checked+'"');
+                    server.io.fire('<LocalControls/>', String(breakCheckbox.checked));
                 });
 
                 let synced = false;
@@ -387,7 +387,7 @@ App[request_] := Module[{
         <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}"> 
             <Head AccentColor={accentColor} Title={"Debugger"} Settings={settings}>
                 <meta charset="utf-8"/>
-                <WLJSHeader List={ExtensionsJS}/>  
+                <WebUIHeaderJS List={ExtensionsJS}/>  
                 <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>   
                 <ExtensionsStyles/>  
                 <WebUIInitializationScript/>

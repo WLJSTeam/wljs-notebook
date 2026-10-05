@@ -1,8 +1,24 @@
+(*
+    Prompt window app component
+    no actual view component (reuses main app views)
+
+    This one is called on Shift+Alt+Space
+    a single cell floating bar.
+
+    This prompt window is just a temporal notebook with truncated UI
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 env                       =  $Options["Env"];
 AppEvent                  =  $Options["AppEvent"];
 ExtensionTemplates        =  $Options["ExtensionTemplates"];
 ExtensionSidebarIcons        =  $Options["ExtensionSidebarIcons"];
+
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -24,6 +40,8 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 
+(* Notebook and kernel helpers *)
+
 {saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 {deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
@@ -40,6 +58,10 @@ EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
     settings = newData;
 ]}];
 
+(* Handler for saving notebooks *)
+(* this basically uses abstract loaders to actually read and write notebooks on a disk *)
+(* and then open/reopen windows accordingly *)
+
 NotebookQ[str_] := FileExtension[str] === "wln"
 
 
@@ -49,23 +71,30 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
   ,
   Then[saveNotebook[notebook, "Events"->AppEvent, "Modals"->ModalController, "Client"->client], 
   Function[result,
-    Print[result]
+    Echo[result]
   ], 
   Function[error,
+    Echo[error];
     EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
   ]
-]
+   ]
   ]
 ]
 
 
+(* Build JS/CSS headers from extensions *)
 
 ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
-defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, settings]["Home"] ];
+(* Home folder *)
+
+defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir |>, settings]["Home"] ];
+
+(* Build menu *)
+(* actually it is not used here *)
 
 ExtensionMenuItems = <|"file"->{}, "misc"->{}, "kernel"->{}, "view"->{}, "edit"->{}|>;
 
@@ -79,11 +108,13 @@ Map[Function[item,
   ];
 ], Select[Flatten[WLJSPackages`Packages[#, "wljs-meta", "menu"] &/@ Keys[WLJSPackages`Packages]], AssociationQ]];
 
+(* Here is our temporal notebook for a prompt window *)
 temporalNotebook = Null;
 
+(* Transform to a normal one if needed *)
 
 transformNotebook[n_, cli_] := With[{},
-  n["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir(*`*), StringJoin[(Internal`NoWR`RandomWord[]), StringTake[CreateUUID[], 3], ".wln"]}];
+  n["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, StringJoin[(Internal`NoWR`RandomWord[]), StringTake[CreateUUID[], 3], ".wln"]}];
   n["HaveToSaveAs"] = True;
   dumpNotebook[n, Null, Null, Null];
   
@@ -92,10 +123,12 @@ transformNotebook[n_, cli_] := With[{},
   temporalNotebook = Null;
 ]
 
+(* Clean up cells and create an empty one *)
+
 recreateNotebook[modals_] := With[{n = nb`NotebookObj[]},
   temporalNotebook = n;
   cell`CellObj["Notebook"->temporalNotebook];
-  temporalNotebook["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir(*`*), "overlayNote.wln"}];
+  temporalNotebook["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, "overlayNote.wln"}];
   dumpNotebook[temporalNotebook, Null, Null, Null];
 
   With[{cloned = EventClone[n]},
@@ -160,12 +193,14 @@ recreateNotebook[modals_] := With[{n = nb`NotebookObj[]},
   }];
 ] ]
 
+(* Provide special extension templates for view components *)
+(* this one is for top bar with 2 buttons *)
 
 localTemplates = <||>;
 localTemplates["Notebook-Prolog"] = {PromptTools}
 
 
-
+(* Entry point of an app *)
 
 App[request_] := Module[{localExtensions}, With[{
   Secret = CreateUUID[], 
@@ -175,11 +210,6 @@ App[request_] := Module[{localExtensions}, With[{
   cachedClient = Unique["cachedClient"],
   OnLoad    = CreateUUID[]
 },
-
-
-  Echo[temporalNotebook];
-  Echo["Created temporal notebook"];
-
   
   With[{
         
@@ -187,7 +217,7 @@ App[request_] := Module[{localExtensions}, With[{
         ModalController = CreateUUID[],
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         GlobalMessanger = CreateUUID[],
-        kernels = Hold[AppExtensions`KernelList] (*`*),
+        kernels = Hold[AppExtensions`KernelList] ,
         GlobalParameters = Join[<|"Draggable"->True, "Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
         AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
         NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"],
@@ -200,7 +230,7 @@ App[request_] := Module[{localExtensions}, With[{
         
     },
 
-
+    (* Proxy to inject our template extensions *)
     localExtensions[ opts__Rule ] := With[{t = Association[opts]["Template"]},
 
       With[{template = If[KeyExistsQ[localTemplates, t],
@@ -219,6 +249,7 @@ App[request_] := Module[{localExtensions}, With[{
     Echo[n["Path"]];
 
     EventHandler[OnLoad, Function[Null,
+      (* After UI has been loaded *)
       cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
 
@@ -230,12 +261,13 @@ App[request_] := Module[{localExtensions}, With[{
           EventRemove[GlobalControls];
           EventRemove[ModalController];
           EventRemove[GlobalMessanger];
-          ClearAll[cachedClient];
+          ClearAll[cachedClient, localExtensions];
           EventFire[AppEvent, "AppUIDestroy", True];
         ]}]
       ];      
     ]];
 
+    (* React to controls *)
     EventHandler[promtEventUID, {
       
       "CleanUp" -> Function[Null, With[{notebook = n},
@@ -275,7 +307,7 @@ App[request_] := Module[{localExtensions}, With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}" > 
         <Head Title={FileNameTake[Path]} AccentColor={accentColor} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -327,6 +359,8 @@ App[request_] := Module[{localExtensions}, With[{
   } // StringRiffle
 ] ] ];
 
+(* Automatic window resizer script *)
+
 Script[Rule["Secret", Secret_]] := With[{},
   <script type="module">
     const checkOverflow = (el) => {
@@ -356,6 +390,8 @@ Script[Rule["Secret", Secret_]] := With[{},
     interval = setInterval(checkBorders, 300);
   </script>
 ] ;
+
+(* Assign a handler *)
 
 http["MessageHandler", "PromptWindow"] = AssocUMatchQ[<|"Method" -> "GET", "Path" -> "/prompt" ~~___|>] -> App;
 

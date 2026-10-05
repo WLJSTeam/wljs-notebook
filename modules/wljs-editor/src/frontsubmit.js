@@ -2,14 +2,11 @@ core.FSAskKernelSocket = async (args, env) => {
     return await server.kernel.ask('$CurrentWebSocket');
 }
 
-core.FSAsk = async (args, env) => {
+core['CoffeeLiqueur`Extensions`Communication`Private`FSAsk'] = async (args, env) => {
     const result = await interpretate(args[0], env);
     const uid = await interpretate(args[1], env);
     console.warn("A request from kernel server");
-    //console.log(result);
-    //console.log(JSON.stringify(result));
-
-    server.kernel.emitt(uid, '"' + encodeURIComponent(JSON.stringify(result)) + '"');
+    server.kernel.io.fire(uid, result);
 }
 
 const references = {};

@@ -1,3 +1,15 @@
+(*
+    Stripped version of main app component
+    no sidebar
+    no actual view component
+
+    This is used in autotests and for embedding
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 env                       =  $Options["Env"];
 AppEvent                  =  $Options["AppEvent"];
@@ -5,6 +17,7 @@ ExtensionTemplates        =  $Options["ExtensionTemplates"];
 ExtensionSidebarIcons        =  $Options["ExtensionSidebarIcons"];
 middleware                = $Options["Middleware"];
 
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -26,9 +39,13 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = ImportComponent["Components/FakeMenu.wlx"];
 
+(* Notebook and kernel tools *)
+
 {saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 {deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
+
+(* Settings helpers *)
 
 {loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
@@ -43,21 +60,17 @@ loadSettingsOnceMore := With[{},
   loadSettings[settings];
 ];
 
+(* Handlers for saving/renaming/loading/creating/checking notebooks *)
+(* this basically uses abstract loaders to actually read and write notebooks on a disk *)
+(* and then open/reopen windows accordingly *)
+
+(* Here saving cannot be used directly, only via parent window postMessage *)
 
 NotebookQ[str_] := FileExtension[str] === "wln"
 
 reopenNotebookAsQuick[_, GlobalMessanger_, __] := EventFire[GlobalMessanger, "Info", "You are already in a quick view"]
 
-checkUpdates[GlobalMessanger_, ModalController_, Client_] := With[{},
-  DeleteFile[FileNameJoin[{Directory[], ".wljs_timestamp"}] ];
-  DeleteFile[FileNameJoin[{Directory[], ".wl_timestamp"}] ];
-
-  WebUISubmit[Global`UIClearCache[](*`*), Client];
-
-  EventFire[GlobalMessanger, "Warning", "Restart is required"];
-]
-
-Global`UIAPISend;
+UIAPISend = Unique["notebookUI"];
 
 renameFile[notebook_nb`NotebookObj, name_String, client_] := Module[{filename = name, oldPath = notebook["Path"]},
   If[StringTake[filename, -3] =!= "wln", filename = StringJoin[filename, ".wln"]];
@@ -72,12 +85,12 @@ createNotebook[props_Association, assoc_Association, GlobalMessanger_, ModalCont
   Then[saveNotebook[path, "Props"->props, "Events"->AppEvent, "Modals"->ModalController, "Client"->client], Function[result,
 
       Print[result];
-      EventFire[AppEvent, Notebook["OnCreate"], result];
+      EventFire[AppEvent, "Notebook:OnCreate", result];
       EventFire[GlobalMessanger, "Log", "Created! Please wait"];
       Print["Redirect"];
       Print[result["Path"]];
       
-      WebUISubmit[Global`UIAPISend["open", StringJoin["/iframe/", URLEncode[ result["Path"] ]]], client];
+      WebUISubmit[UIAPISend["open", StringJoin["/iframe/", URLEncode[ result["Path"] ]]], client];
 
       
     
@@ -173,12 +186,14 @@ If[TrueQ[notebook["ReadOnly?"]],
 promise
 ]
 
+(* Build JS/CSS headers from extensions *)
 
 ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
+(* App entry point *)
 
 App[request_] := With[{
   Secret = CreateUUID[], 
@@ -198,7 +213,7 @@ App[request_] := With[{
   ] 
 },
 
-  Print["## Loading by path : "]; Print[Path];
+  Echo["Loading by path : "]; Print[Path];
 
   If[KeyExistsQ[query, "root"],
     Print["## Extening HTTP path using provided root directory"];
@@ -210,7 +225,7 @@ App[request_] := With[{
         SidebarId = CreateUUID[],
         OnLoad    = CreateUUID[],
         cachedClient = Unique["cachedClient"],
-        kernels = Hold[AppExtensions`KernelList] (*`*),
+        kernels = Hold[AppExtensions`KernelList] ,
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         GlobalParameters = Join[<|"Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
         AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
@@ -234,6 +249,7 @@ App[request_] := With[{
     loadSettingsOnceMore;
 
     EventHandler[OnLoad, Function[Null,
+      (* After UI has been loaded *)
       cachedClient = $CurrentWebSocket;
       EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "IFrameQ"->True|>];
 
@@ -274,10 +290,10 @@ App[request_] := With[{
     }]; 
 
    
-    (*/* Hard logic */*)
+    (*/* Handle controls */*)
     EventHandler[EventClone[GlobalControls], {
       "RenameFile" -> ((renameFile @@ #) &),
-       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir(*`*)|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+       ("NewNotebook" | "_NewNotebook" | "_NewQuickNotebook") -> (createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
       "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
       "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
       "DumpSaveTemporal" -> (backupNotebook[#, GlobalMessanger, $CurrentWebSocket]&),
@@ -290,7 +306,7 @@ App[request_] := With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="false" > 
         <Head Title={FileNameTake[Path]} Settings={settings} AccentColor={accentColor}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} Port={$Env["ws"]} PrefixMode={$Env["wsprefix"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -320,26 +336,21 @@ App[request_] := With[{
   } // StringRiffle
 ] ];
 
+(* Supporting script to send event via iframe *)
+
 Script[Rule["Secret", Secret_]] := With[{},
   <script type="module">
-    core.UIClearCache = async (args, env) => {
-      if (window.electronAPI) {
-        if (window.electronAPI.clearCache) {
-          window.electronAPI.clearCache();
-        }
-      }
-    }
-
-    core.UIAPISend = async (args, env) => {
+    core.<UIAPISend/> = async (args, env) => {
       if (window.iframeAPI) {
         const type = await interpretate(args[0], env);
         const url = await interpretate(args[1], env);
         window.iframeAPI.sendMessage(type, url);
       }
     }
-
   </script>
 ];
+
+(* Assign to a route *)
 
 http["MessageHandler", "Iframe"] = AssocUMatchQ[<|"Method" -> "GET", "Path" -> "/iframe/" ~~ ___|>] -> middleware[App];
 

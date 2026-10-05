@@ -1,6 +1,6 @@
 BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`"]
 
-(* we have to expose them to System, otherwise Boxes won't work from Mathematica's packages *)
+(* we expose them to System *)
 
 System`CreateFrontEndObject;
 System`FrontEndRef;
@@ -36,7 +36,21 @@ compression;
 (*        Otherwise ExpressionJSON uncontrollably lifts the context from symbols depending where forntend object was created, *)
 (*        this leads to some symbols to be falsly assumed to be in Global`, which will throw errors on the frontend *)
 (*        The only way to avoid this is to deffer compression and ExpressionJSON convertion.                        *)
-(* [FIXME] for the future: switch to Compress and WXF formats instead of JSON !!! *)
+
+
+
+(* [TODO] [FIXME] for the future: switch to 
+
+ ExportithContext[expr_] :=
+  Block[
+    {
+      $Context = "cwc$`",
+      $ContextPath = {"cwc$`", "System`", "Global`"}
+    },
+    ExportByteArray[expr]
+  ];
+ 
+  *)
 
 (* apply only on large objects*)
 compression[expr_, {"ExpressionJSON", "ZLIB", "Defer"}] := Hold[expr] /; (ByteCount[expr] < 0.1 * 1024 * 1024);

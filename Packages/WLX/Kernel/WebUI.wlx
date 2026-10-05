@@ -1,12 +1,11 @@
 (* /* WLX Lazy loader */ *)
 (* /* holds expressions inside and loads by a signal via WebSockets */ *)
 
-$DefaultSerializer = ExportByteArray[#, "ExpressionJSON"]&
-
 WebUIServerReference = If[TrueQ[Internal`Kernel`WLJSQ], "kernel", "self"];
 
-System`WebUILazyLoadDataProvided(*`*);
-System`UILazyLoad(*`*);
+UILazyLoad; (* Private *)
+(* System`WebUIContainerChild;  removed from system *)
+(* System`WebUILazyLoadDataProvided; removed from system *)
 
 WebUILazyLoad[content_, OptionsPattern[]] := With[{event = EventClone[OptionValue["Event"]], uid = CreateUUID[], tag = OptionValue["Tag"], class = OptionValue["Class"]},
     EventHandler[event, {
@@ -16,27 +15,27 @@ WebUILazyLoad[content_, OptionsPattern[]] := With[{event = EventClone[OptionValu
         If[AssociationQ[data],
             If[KeyExistsQ[data, "Downvalues"],
                 With[{data = content @@ (data["Downvalues"])},
-                    WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, ToString[data] ] ];
+                    WLJSTransportSend[UILazyLoad["Load", uid, ToString[data] ], data["Client"]];
                 ]
             ,
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, ToString[content] ] ];
+                WLJSTransportSend[UILazyLoad["Load", uid, ToString[content] ], data["Client"]];
             ]
         ,
-            WebSocketUSend[$CurrentWebSocket (*`*), $DefaultSerializer @ UILazyLoad["Load", uid, ToString[content] ] ];
+            WLJSTransportSend[UILazyLoad["Load", uid, ToString[content] ], $CurrentWebSocket];
         ]
       ]
     ],
 
     "Remove" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Remove", uid] ];
+        WLJSTransportSend[UILazyLoad["Remove", uid], data["Client"]];
     ],
 
     "Hide" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Hide", uid] ];
+        WLJSTransportSend[UILazyLoad["Hide", uid], data["Client"]];
     ],
 
     "Show" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Show", uid] ];
+        WLJSTransportSend[UILazyLoad["Show", uid], data["Client"]];
     ]
 
     }];
@@ -48,12 +47,12 @@ Options[WebUILazyLoad] = {"Event" -> "", "Tag" -> "div", "Class" -> ""};
 
 SetAttributes[WebUILazyLoad, HoldFirst];
 
-System`UILocation(*`*);
-System`UILocationBlank(*`*);
+UILocation; (* Private *)
+UILocationBlank; (* Private *)
 
-WebUISubmit[expr_, client_:$CurrentWebSocket (*`*)] := WebSocketUSend[client, $DefaultSerializer @ expr ];
+WebUISubmit = WLJSTransportSend;
 
-WebUILocation[loc_String, client_:$CurrentWebSocket (*`*), OptionsPattern[]] := With[{},
+WebUILocation[loc_String, client_:$CurrentWebSocket , OptionsPattern[]] := With[{},
     If[OptionValue["Target"] === _,
         WebUISubmit[UILocationBlank[loc, "Features"->OptionValue["Features"]], client]
     ,
@@ -63,10 +62,10 @@ WebUILocation[loc_String, client_:$CurrentWebSocket (*`*), OptionsPattern[]] := 
 
 Options[WebUILocation] = {"Target" -> "Same", "Features"->False}
 
-System`UIClose;(*`*)
+UIClose; (* Private *)
 
-WebUIClose[cli_:$CurrentWebSocket (*`*)] := WebUISubmit[UIClose[], cli]
-WebUIClose[cli_:$CurrentWebSocket (*`*), "Reload"] := WebUISubmit[UIClose["Reload"], cli]
+WebUIClose[cli_:$CurrentWebSocket ] := WebUISubmit[UIClose[], cli]
+WebUIClose[cli_:$CurrentWebSocket , "Reload"] := WebUISubmit[UIClose["Reload"], cli]
 
 
 (* /* WLX Refresher */ *)
@@ -78,23 +77,23 @@ WebUIRefresh[Content__, OptionsPattern[]] := With[{event = OptionValue["Event"],
     "Refresh" -> Function[data,
         If[KeyExistsQ[data, "Downvalues"],
             With[{data = Content @@ (data["Downvalues"])},
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, ToString[data] ] ];
+                WLJSTransportSend[UILazyLoad["Load", uid, ToString[data] ], data["Client"]];
             ]
         ,
-            WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, ToString[StringRiffle[{Content}]] ] ];
+            WLJSTransportSend[UILazyLoad["Load", uid, ToString[StringRiffle[{Content}]] ], data["Client"] ];
         ];
     ],
 
     "Clear" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Load", uid, "" ] ];
+        WLJSTransportSend[UILazyLoad["Load", uid, "" ], data["Client"]];
     ],
 
     "Hide" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Hide", uid] ];
+        WLJSTransportSend[UILazyLoad["Hide", uid], data["Client"]];
     ],
     
     "Show" -> Function[data,
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyLoad["Show", uid] ];
+        WLJSTransportSend[UILazyLoad["Show", uid], data["Client"]];
     ]    
 
     }];
@@ -111,27 +110,27 @@ SetAttributes[WebUIRefresh, HoldAll];
 
 (* /* WebUIContainer */ *)
 
-System`UILazyContainer(*`*);
+UILazyContainer; (* Private *)
 
-System`WebUIContainerChild(*`*);
+WebUIContainerChild; (* Package symbol  *)
 
 WebUIContainer[arg_, OptionsPattern[]] := With[{Uid = CreateUUID[], Event = OptionValue["Event"], after = OptionValue["ApplyAfter"]},
     EventHandler[EventClone[Event], {
         "Append" -> Function[data,
             If[AssociationQ[data["Data"]],
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendAfterParent", Uid,  data["Data"]["HTML"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ]];
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendScript", data["Data"]["Script"]] ];
+                WLJSTransportSend[UILazyContainer["AppendAfterParent", Uid,  data["Data"]["HTML"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ], data["Client"]];
+                WLJSTransportSend[UILazyContainer["AppendScript", data["Data"]["Script"]] , data["Client"]];
             ,
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendAfterParent", Uid,  data["Data"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ]];
+                WLJSTransportSend[UILazyContainer["AppendAfterParent", Uid,  data["Data"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ], data["Client"]];
             ]
         ],
 
         "Prepend" -> Function[data,
             If[AssociationQ[data["Data"]],
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendBeforeParent", Uid,  data["Data"]["HTML"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after]] ];
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendScript", data["Data"]["Script"]] ];
+                WLJSTransportSend[UILazyContainer["AppendBeforeParent", Uid,  data["Data"]["HTML"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after]], data["Client"] ];
+                WLJSTransportSend[UILazyContainer["AppendScript", data["Data"]["Script"]], data["Client"] ];
             ,
-                WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyContainer["AppendBeforeParent", Uid,  data["Data"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ]];
+                WLJSTransportSend[UILazyContainer["AppendBeforeParent", Uid,  data["Data"], If[KeyExistsQ[data, "ApplyAfter"], data["ApplyAfter"], after] ], data["Client"]];
             ]
         ]        
     }];
@@ -149,12 +148,12 @@ Options[WebUIContainer] = {"Event" -> Null, "ApplyAfter" -> Identity};
 (* /* WLX JS Binder */ *)
 (* /* connects arbitary JS scripts with WL Event system */ *)
 
-System`UILazyEventDispatch(*`*);
+UILazyEventDispatch; (* Private *)
 
 WebUIJSBind[Script__String, OptionsPattern[]] := With[{Event = OptionValue["Event"], Uid = CreateUUID[], Str = StringJoin[Script]},
     EventHandler[EventClone[Event], {any_String :> Function[data,
         If[!AssociationQ[data], Return[]];
-        WebSocketUSend[data["Client"], $DefaultSerializer @ UILazyEventDispatch[Uid, any, data]];
+        WLJSTransportSend[UILazyEventDispatch[Uid, any, data], data["Client"]];
     ]}];
 
     If[!OptionValue["ScriptTag"],
@@ -172,11 +171,9 @@ Options[WebUIJSBind] = {"Event" -> "", "ScriptTag"->True};
 
 WebUIOnLoad[OptionsPattern[]] := With[{Event = OptionValue["Event"], Type = OptionValue["Pattern"]},
     <script type="module">
-        server.<WebUIServerReference/>.emitt('<Event/>', 'True', '<Type/>');
+        server.<WebUIServerReference/>.io.fire('<Event/>', 'True', '<Type/>');
     </script>
 ]
-
-WebUIAliveQ[client_:$CurrentWebSocket(*`*)] := If[!FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], !FailureQ[WebSocketUSend[client, $DefaultSerializer @ 7]], False]
 
 
 Options[WebUIOnLoad] = {"Event" -> "xyz", "Pattern"->"Default"};
@@ -185,12 +182,11 @@ Options[WebUIOnLoad] = {"Event" -> "xyz", "Pattern"->"Default"};
 (* /* adds an event listener to an DOM element and sends generated data to Kernel via WebSockets */ *)
 
 
-
 WebUIEventListener[OptionsPattern[]] := With[{Pattern = OptionValue["Pattern"], Property = OptionValue["Property"], Event = OptionValue["Event"], Type = OptionValue["Type"], Id = OptionValue["Id"]},
     <script type="module">
         const el = document.getElementById('<Id/>');
         el.addEventListener('<Type/>', function (e) {
-            server.<WebUIServerReference/>.io.fire('<Event/>', encodeURIComponent(String(el.<Property/>)), '<Pattern/>');
+            server.<WebUIServerReference/>.io.fire('<Event/>', String(el.<Property/>), '<Pattern/>');
         });
     </script>
 ];
@@ -203,9 +199,9 @@ WebUIKeyListener[OptionsPattern[]] := With[{Pattern = OptionValue["Pattern"], Ev
     <script type="module">
         const keyListener = (e) => {
             console.log(['<Event/>', e.keyCode, '<Pattern/>']);
-            server.<WebUIServerReference/>.emitt('<Event/>', e.keyCode, '<Pattern/>');
+            server.<WebUIServerReference/>.io.fire('<Event/>', e.keyCode, '<Pattern/>');
         }
-        core.UILazyEventDispatch['<InternalEvent/>'] = function (type, data, env) {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILazyEventDispatch']['<InternalEvent/>'] = function (type, data, env) {
             console.log(type);
             switch (type) {
                 case 'Start':
@@ -221,27 +217,15 @@ WebUIKeyListener[OptionsPattern[]] := With[{Pattern = OptionValue["Pattern"], Ev
 
 Options[WebUIKeyListener] = {"Event"->"", "Pattern"->"Pressed"};
 
-System`UIAsk(*`*);
+UIAsk; (* Private *)
 
-WebUIFetch[expr_, client_:$CurrentWebSocket(*`*), OptionsPattern[]] := With[{format = OptionValue["Format"], event = CreateUUID[], promise = Promise[]},
+WebUIFetch[expr_, client_:$CurrentWebSocket, OptionsPattern[]] := With[{event = CreateUUID[], promise = Promise[]},
     EventHandler[event, Function[payload,
         EventRemove[event];
-
-        With[{result = Switch[format,
-            "Raw",
-                FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"],
-            "ExpressionJSON",
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "ExpressionJSON"],
-            "RawJSON",
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "RawJSON"],    
-            _,
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "JSON"]
-        ]},
-            If[FailureQ[result],
-                EventFire[promise, Reject, result]
-            ,
-                EventFire[promise, Resolve, result]
-            ]
+        If[FailureQ[result],
+            EventFire[promise, Reject, result]
+        ,
+            EventFire[promise, Resolve, result]
         ]
     ]];
 
@@ -252,44 +236,37 @@ WebUIFetch[expr_, client_:$CurrentWebSocket(*`*), OptionsPattern[]] := With[{for
     promise
 ]
 
-Options[WebUIFetch] = {"Format"->"ExpressionJSON"};
-
 (* /* PUT IT TO THE HEADER */ *)
 WebUIInitializationScript = With[{},
     <script type="module">
-        core.UIAsk = async (args, env) => {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UIAsk'] = async (args, env) => {
             const result = await interpretate(args[0]);
             const uid = await interpretate(args[1]);
             console.warn("A request from server");
-            //console.log(result);
-            //console.log(JSON.stringify(result));
-
-            server.<WebUIServerReference/>.emitt(uid, '"' + encodeURIComponent(JSON.stringify(result)) + '"');
+            server.<WebUIServerReference/>.io.fire(uid, result);
         }
-
-        core.UIClose = async (args, env) => {
-            
+        
+        let unload = false;
+        core['CoffeeLiqueur`WLX`WebUI`Private`UIClose'] = async (args, env) => {
             console.warn('close');
-            if (core.UIClose.unload) return;
+            if (unload) return;
             if (args.length > 0) {window.location.reload(); return;}
             window.close();
         }
 
-        core.UIClose.unload = false;
-
         window.addEventListener('beforeunload', function (e) {
             console.warn('unload');
             //prevent closing the window if a user reloaded the current one
-            core.UIClose.unload = true;
+            unload = true;
         });
 
-        core.UILocation = async (args, env) => {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILocation'] = async (args, env) => {
             const url = await interpretate(args[0], env);
             server.socket.close();
             window.location = url;
         }
 
-        core.UILocationBlank = async (args, env) => {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILocationBlank'] = async (args, env) => {
             const opts = await core._getRules(args, env);
             const url = await interpretate(args[0], env);
 
@@ -304,12 +281,12 @@ WebUIInitializationScript = With[{},
             }
         }        
 
-        core.UILazyContainer = async (args, env) => {
+        const uilc = async (args, env) => {
             const type = await interpretate(args[0], env);
-            await core.UILazyContainer[type](args.slice(1), env);
+            await uilc[type](args.slice(1), env);
         }
 
-        core.UILazyContainer.AppendAfterParent = async (args, env) => {
+        uilc.AppendAfterParent = async (args, env) => {
             const uid = await interpretate(args[0], env);
             const data = await interpretate(args[1], env);
 
@@ -341,7 +318,7 @@ WebUIInitializationScript = With[{},
           });
         }
 
-        core.UILazyContainer.AppendBeforeParent = async (args, env) => {
+        uilc.AppendBeforeParent = async (args, env) => {
             const uid = await interpretate(args[0], env);
             const data = await interpretate(args[1], env);
 
@@ -372,53 +349,57 @@ WebUIInitializationScript = With[{},
               
               oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
             });
-        }        
+        }   
+   
+        
 
-        core.UILazyContainer.AppendScript = async (args, env) => {
-           
+        uilc.AppendScript = async (args, env) => {
             const data = await interpretate(args[0], env);
             const script = document.createElement('script');
             script.textContent = data;
             document.body.appendChild(script);
         }
 
-        core.UILazyLoad = async (args, env) => {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILazyContainer'] = uilc;
+
+        const uill = async (args, env) => {
             const type = await interpretate(args[0], env);
-            await core.UILazyLoad[type](args.slice(1), env);
+            await uill[type](args.slice(1), env);
         }
 
-        core.UILazyLoad.Load = async (args, env) => {
+        uill.Load = async (args, env) => {
             const uid = await interpretate(args[0], env);
             const data = await interpretate(args[1], env);
-
             setInnerHTML(document.getElementById(uid), data);
         }
 
-        core.UILazyLoad.Hide = async (args, env) => {
+        uill.Hide = async (args, env) => {
             const uid = await interpretate(args[0], env);
             document.getElementById(uid).classList.add("hidden");
         } 
 
-        core.UILazyLoad.Remove = async (args, env) => {
+        uill.Remove = async (args, env) => {
             const uid = await interpretate(args[0], env);
             document.getElementById(uid).innerHTML = "";
             document.getElementById(uid).classList.remove("hidden");
         }         
 
-        core.UILazyLoad.Show = async (args, env) => {
+        uill.Show = async (args, env) => {
             const uid = await interpretate(args[0], env);
             document.getElementById(uid).classList.remove("hidden");
         }     
 
-        core.UILazyEventDispatch = async (args, env) => {
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILazyLoad'] = uill;
+
+        const uiled = async (args, env) => {
             const uid = await interpretate(args[0], env);
             const type = await interpretate(args[1], env);
             
-            if (!core.UILazyEventDispatch[uid]) {
+            if (!uiled[uid]) {
                 console.warn(`Event listener ${uid} does not exist`);
                 return;
             }
-            core.UILazyEventDispatch[uid](type, args[2], env);
+            uiled[uid](type, args[2], env);
         }  
 
         window.UIJSScript = class {
@@ -427,7 +408,7 @@ WebUIInitializationScript = With[{},
             constructor(opts) {
                 this.event = opts.uid
                 const self = this;
-                core.UILazyEventDispatch[this.event] = function (type, data, env) {
+                uiled[this.event] = function (type, data, env) {
                     if (type in self.listeners) {
                         self.listeners[type](data, env);
                     } else {
@@ -442,7 +423,9 @@ WebUIInitializationScript = With[{},
             on(type, handler) {
                 this.listeners[type] = handler;
             }
-        }      
+        }  
+    
+        core['CoffeeLiqueur`WLX`WebUI`Private`UILazyEventDispatch'] = uiled;
 
     </script>
 ];

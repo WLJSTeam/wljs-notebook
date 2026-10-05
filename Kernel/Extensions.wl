@@ -1,5 +1,17 @@
 BeginPackage["CoffeeLiqueur`ExtensionManager`"];
 
+(*
+    WLJS Extensions Manager
+    This is superset of Wolfram Paclets and Node modules
+
+    A manager allows to discover extensions, install them or read their properties
+    Extensions can include JS, CSS, or even Node assets alongside with WL packages
+
+    NOTE: This package was heavily reduced due to versioning and source clutter
+        Most of the symbols are unused by WLJS
+        Core extensions are immutable, while user's extensions can be added or removed
+*)
+
 InstallAll;
 Packages;
 

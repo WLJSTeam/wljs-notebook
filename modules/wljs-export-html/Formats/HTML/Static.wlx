@@ -5,9 +5,6 @@ CellsContainer := ImportComponent["Components/CellsContainer.wlx"];
 
 root = $InputFileName // DirectoryName // ParentDirectory // ParentDirectory;
 
-Global`UINotebook (*`*);
-
-
 GetAssetsData[Rule["Notebook", notebook_]] := If[
   MemberQ[notebook["Properties"], "RuntimeCache"],
     StringRiffle[Select[Flatten[{EventFire[NotebookEditorChannel, "GetRuntimeAssetsBundle", notebook["RuntimeCache"]] } ], StringQ]]

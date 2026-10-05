@@ -116,7 +116,7 @@ recorder.Create = async (args, env) => {
     
 
     setTimeout(() => {
-        server.kernel.emitt(channel, 'True');
+        server.kernel.io.fire(channel, true);
     }, time);
 }
 

@@ -61,7 +61,7 @@ App[request_] := Module[{client, channel, target}, With[{
     <html class="h-full"> 
         <Head AccentColor={accentColor} Title={"Documentation"} Settings={Association[{}]}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript PrefixMode={$Env["wsprefix"]} TwoKernels={False} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>

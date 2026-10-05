@@ -13,7 +13,8 @@ KernelIndicator = ImportComponent["Skeleton/KernelIndicator.wlx"];
 
 ElectronBinds  = ImportComponent["Skeleton/ElectronBinds.wlx"];
 
-Global`UINotebook (*`*);
+(* Frontend symbol *)
+UINotebook = Unique["notebookUI"];
 
 ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final]]]
 ApplySync[f_, w_, {}, final_] := final[];
@@ -101,7 +102,7 @@ addListeners[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
         "New Cell" -> Function[cell,
             Echo["New cell"];
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions], cell`Serialize[cell] , list, secret], client]
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI], cell`Serialize[cell] , list, secret], client]
             ];
         ],
 
@@ -125,7 +126,7 @@ restoreCells[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     Map[
         Function[cell,
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
             ]
         ]   
     ,    
@@ -706,7 +707,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
             Echo["Morphing..."];
             cell["Type"] = "Input";
 
-            With[{template = CellGenerator[cell, client, parameters, extensions]},
+            With[{template = CellGenerator[cell, client, parameters, extensions, "NotebookUI"->NotebookUI]},
                 WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] (*`*)], client];
             ];
         ];
@@ -814,21 +815,21 @@ Script[OptionsPattern[]] := With[{
         <script type="module">
             CellWrapper.inputSaveDelay = <InputSaveDelay/>;
 
-            core.UINotebook = async (args, env) => {
+            core.<UINotebook/> = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                return await core.UINotebook[type](args.slice(1), env);
+                return await core.<UINotebook/>[type](args.slice(1), env);
             }
 
-            core.UINotebook.CreateServer = async (args, env) => {
+            core.<UINotebook/>.CreateServer = async (args, env) => {
                 server.kernel = new Server('Evaluation Kernel');
                 console.warn("server.kernel :: created, waiting for initialization...");
             }
 
-            core.UINotebook.KernelSocket = async (args, env) => {
+            core.<UINotebook/>.KernelSocket = async (args, env) => {
                 return await server.kernel.ask('$CurrentWebSocket');
             }
 
-            core.UINotebook.WSConnect = async (args, env) => {
+            core.<UINotebook/>.WSConnect = async (args, env) => {
                 
                 const options = await core._getRules(args, env);
                 const port = await interpretate(args[0], env);
@@ -854,7 +855,7 @@ Script[OptionsPattern[]] := With[{
                 socket.onopen = function(e) {
                   console.warn("[open] Evaluation Kernel");
                   server.kernel.init({socket: socket});
-                  server.emitt(ev, 'True', 'WebSocketConnected');
+                  server.io.fire(ev, true, 'WebSocketConnected');
                 }; 
 
                 
@@ -866,12 +867,12 @@ Script[OptionsPattern[]] := With[{
                   server.kernel.connected = false;
                   server.kernel.dispose();
 
-                  server.emitt(ev, 'True', 'WebSocketLost');
+                  server.io.fire(ev, true, 'WebSocketLost');
                 }; 
                 return {Connected:true};
             }
 
-            core.UINotebook.Morph = async (args, env) => {
+            core.<UINotebook/>.Morph = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const template = await interpretate(args[1], env);
                 const props = await interpretate(args[2], env);
@@ -879,36 +880,36 @@ Script[OptionsPattern[]] := With[{
                 CellWrapper.morph(uid, template, props);
             } 
 
-            core.UINotebook.UnhideAllCells  = async (args, env) => {
+            core.<UINotebook/>.UnhideAllCells  = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.unhideAll(uid); 
             }
 
-            core.UINotebook.ToggleCell = async (args, env) => {
+            core.<UINotebook/>.ToggleCell = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.toggleCell(uid); 
             }
 
-            core.UINotebook.ToggleInitGroup = async (args, env) => {
+            core.<UINotebook/>.ToggleInitGroup = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.setInit(uid, state);
             }
-            core.UINotebook.ToggleFade = async (args, env) => {
+            core.<UINotebook/>.ToggleFade = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.fadeCell(uid, state);
             }      
-            core.UINotebook.ToggleLock = async (args, env) => {
+            core.<UINotebook/>.ToggleLock = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.lockCell(uid, state);
             }             
 
-            core.UINotebook.ToggleInvisible = async (args, env) => {
+            core.<UINotebook/>.ToggleInvisible = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
@@ -916,14 +917,14 @@ Script[OptionsPattern[]] := With[{
             }      
 
 
-            core.UINotebook.RemoveCell = async (args, env) => {
+            core.<UINotebook/>.RemoveCell = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
 
                 CellWrapper.remove(uid, ev);
             }        
 
-            core.UINotebook.NewCell = async (args, env) => {
+            core.<UINotebook/>.NewCell = async (args, env) => {
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
                 const list     = await interpretate(args[2], env);
@@ -935,7 +936,7 @@ Script[OptionsPattern[]] := With[{
                 new CellWrapper(template, store, list, ev, opts);
             };;
             <CellGeneratorScript/>;;
-            <EvaluationBarScript/>;;
+            <EvaluationBarScript UINotebook={UINotebook}/>;;
             <ControlsScript/>;;
             <HrScript/>;;
             <DropdownScript/>;;
@@ -1384,7 +1385,7 @@ Component[OptionsPattern[]] := With[{
                     Echo["Morphing..."];
                     cell["Type"] = "Input";
     
-                    With[{template = CellGenerator[cell, $CurrentWebSocket, parameters, extensions]},
+                    With[{template = CellGenerator[cell, $CurrentWebSocket, parameters, extensions, "NotebookUI"->NotebookUI]},
                         WebUISubmit[UINotebook["Morph", payload[[1]], template, cell`Serialize[cell, "MetaOnly"->True]], $CurrentWebSocket];
                     ];
                 ];                
@@ -1399,7 +1400,7 @@ Component[OptionsPattern[]] := With[{
 
         "SetProperty" -> Function[json,
             Print["Prop set..."];
-            With[{obj = ImportString[json, "JSON"] // Association},
+            With[{obj = json},
                 If[AssociationQ[obj],
                     With[{c = cell`HashMap[obj["Cell"]]  (*`*), key = obj["Key"]},
                         c["Props", key] = obj["Value"];
@@ -1420,18 +1421,22 @@ Component[OptionsPattern[]] := With[{
 
         "AddBefore" -> (addBeforeHelper[notebook, ##]&),        
 
-        Global`Forwarded[type_] (*`*):> Function[data,
-            (*/* redirected events to Controls */*)
-            Echo["Forward events >> "];
-            If[AssociationQ[data],
-                EventFire[controller, type, Join[data, <|"Notebook"->notebook|>]];
-            ,
-                EventFire[controller, type, data];
-            ]   
-            
-        ],
+        "Evaluate" -> Function[celluid, evaluateCell[cell`HashMap[celluid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
 
-        "Evaluate" -> Function[celluid, evaluateCell[cell`HashMap[celluid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]]
+        unknown_String :> Function[data,
+        
+            (*/* Redirect special type of events XX:YY to controls */*)
+            
+            If[StringMatchQ[__~~":"~~__][unknown],
+                Echo["Forward event >> "]; Echo[unknown];
+                If[AssociationQ[data],
+                    EventFire[controller, unknown, Join[data, <|"Notebook"->notebook|>]];
+                ,
+                    EventFire[controller, unknown, data];
+                ]             
+            ]
+            
+        ]
     }];
 
     With[{nid = notebook["Hash"], mainStyle = If[TrueQ[parameters["Draggable"]], "app-region: drag", "app-region: no-drag"]},

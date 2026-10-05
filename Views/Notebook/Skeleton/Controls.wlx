@@ -55,14 +55,14 @@ Script = With[{},
                 console.log(group);
                 button.addEventListener('click', () => {
 
-                    server.emitt(event, '"'+cell.uid+'"', 'AddAfterOutputs');
+                    server.io.fire(event, cell.uid, 'AddAfterOutputs');
                 });
             };
 
             {
                 const button = group.getElementsByClassName('button-cplay')[0];
                 button.addEventListener('click', () => {
-                    server.emitt(cell.channel, '"'+cell.uid+'"', 'Evaluate');
+                    server.io.fire(cell.channel, cell.uid, 'Evaluate');
                 });
             };  
             
@@ -70,7 +70,7 @@ Script = With[{},
                 const button = group.getElementsByClassName('button-cmore')[0];
                 button.addEventListener('click', () => {
                     //alert('call!');
-                    server.emitt(cell.channel, '"'+cell.uid+'"', "CallDropdown");
+                    server.io.fire(cell.channel, cell.uid, "CallDropdown");
                 });
             };              
 

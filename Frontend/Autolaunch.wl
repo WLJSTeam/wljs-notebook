@@ -8,6 +8,10 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelAutolaunch`", {
   "CoffeeLiqueur`Misc`WLJS`Transport`"
 }];
 
+(* 
+    Kernel autolaunch helper
+*)
+
 autostart;
 
 Begin["`Internal`"];

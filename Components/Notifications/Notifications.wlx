@@ -14,6 +14,9 @@ Filter[_Notifications`NotificationMessage(*`*)]   = True
 
 beepTimeout = Now
 
+(* Make it global/system as it was Beep *)
+System`HapticFeedback;
+
 assignClient[target_, data_, buffer_, evCloned_] := With[{c = EventClone[data]},
     target = data;
     EventHandler[c, {

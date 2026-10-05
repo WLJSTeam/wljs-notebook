@@ -1,5 +1,11 @@
 BeginPackage["CoffeeLiqueur`Notebook`Windows`", {"CoffeeLiqueur`Notebook`AppExtensions`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Notebook`Transactions`"}]
 
+(* 
+    Window object abstraction used for projected cells outputs, CreateWindow or for mini app windows 
+    
+    This does not define its renderer and controls 
+*)
+
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 

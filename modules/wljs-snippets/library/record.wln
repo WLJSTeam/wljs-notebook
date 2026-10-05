@@ -176,7 +176,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         text.innerText = "Piping data...";
         
         const base64data = reader.result.split(',')[1];
-        server.kernel.emitt(channel, '"'+base64data+'"');
+        server.kernel.io.fire(channel, base64data);
       };
 
       reader.readAsDataURL(audioBlob);

@@ -76,7 +76,7 @@ probeState[action_, kernel_, symbols_, delay_, aborted_, {values_, events_}, cli
   promise = Promise[]
 },
 
-  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage", "Delay"->delay], client, "Format"->"RawJSON"], Function[hash,
+  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage", "Delay"->delay], client], Function[hash,
 
     Then[KernelSniffer[kernel, "FetchSymbols", symbols], Function[data,
 
@@ -226,7 +226,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
         dynamicAnalyzer`Sniffer["Retrack"],
         dynamicAnalyzer`Sniffer["Inject"],
         dynamicAnalyzer`Sniffer["Confirm"]
-      }, client, "Format"->"Raw"], Function[Null,
+      }, client], Function[Null,
 
       Echo["Reset pool"];
       KernelSniffer[machine["Kernel"], "Reset"];

@@ -155,10 +155,13 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             ];            
 
             With[{promise = Promise[]},
-                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllUids"] , opts["Client"] , "Format"->"ExpressionJSON"],
+                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllUids"] , opts["Client"]],
                     Function[uids,
                         Echo["uids resolved!"];
                         Echo[uids];
+
+                        Echo["Implement me!!!"];
+                        Return[];
 
                         LeakyModule[{
                             monitor, monitorHandler,
@@ -169,7 +172,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
 
                             WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", True], opts["Client"]];
 
-                            With[{requests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetById", i, "MonitorEvent"->monitor] , opts["Client"] , "Format"->"ExpressionJSON"], {i, uids}]},
+                            With[{requests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetById", i, "MonitorEvent"->monitor] , opts["Client"]], {i, uids}]},
                                 Echo["Number of requests to resolve: "<>ToString[Length[requests] ] ];
                                 If[Length[requests] == 0,
                                     promises = Promise[];

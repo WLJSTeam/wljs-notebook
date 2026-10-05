@@ -7385,7 +7385,7 @@ return object;
   g2d.EventListener.onload = (uid, object, env) => {
 
     console.log('onload event generator');
-    server.kernel.emitt(uid, `True`, 'onload');
+    server.kernel.io.fire(uid, true, 'onload');
   };  
 
   g2d.MiddlewareListener = async (args, env) => {
@@ -7409,7 +7409,7 @@ return object;
   g2d.MiddlewareListener.end = (uid, params, env) => {
     const threshold = params.Threshold || 1.0;
     
-    server.kernel.emitt(uid, `True`, 'end');
+    server.kernel.io.fire(uid, true, 'end');
     console.log("pre Fire");
 
     return (object) => {
@@ -7419,7 +7419,7 @@ return object;
       return object.then((r) => r.tween(uid, function (d) {
         return function (t) {
           if (t >= threshold && !state) {
-            server.kernel.emitt(uid, `True`, 'end');
+            server.kernel.io.fire(uid, true, 'end');
             state = true;
           }
         }
@@ -7760,7 +7760,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
     el.node().addEventListener('keydown', (e) => {
       //console.log(e);
-      server.kernel.emitt(uid, '"'+e.code+'"', 'capturekeydown');
+      server.kernel.io.fire(uid, String(e.code), 'capturekeydown');
       e.preventDefault();
     });
   };  
@@ -7798,7 +7798,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
     el.addEventListener('keydown', (e) => {
       //console.log(e);
-      server.kernel.emitt(uid, '"'+e.code+'"', 'keydown');
+      server.kernel.io.fire(uid, String(e.code), 'keydown');
       //e.preventDefault();
     });
   };  

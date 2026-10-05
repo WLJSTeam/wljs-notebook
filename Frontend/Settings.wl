@@ -1,5 +1,9 @@
 BeginPackage["CoffeeLiqueur`Notebook`SettingsUtils`"];
 
+(* 
+    Settings serializer/deserializer helper
+*)
+
 initialize;
 storeConfiguration;
 events;

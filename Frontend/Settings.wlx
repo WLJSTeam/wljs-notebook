@@ -1,6 +1,17 @@
+(*
+    Settings app component
+    no actual view component
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 AppEvent                  =  $Options["AppEvent"];
 ExtensionTemplates        =  $Options["ExtensionTemplates"];
+
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -9,7 +20,11 @@ Notifications  = ImportComponent["Components/Notifications/Notifications.wlx"];
 Alert           = ImportComponent["Components/Alert.wlx"];
 Modals           = ImportComponent["Components/Modals/Modals.wlx"];
 
+(* Settings I/O helpers *)
+
 {Settings, SettingsScript, Initialization}           = ImportComponent["Views/Settings/Settings.wlx"];
+
+(* Extensions scripts and styles *)
 
 ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
@@ -23,9 +38,13 @@ settings = <||>;
 
 loadSettings[settings];
 
+(* Reload settings if needed *)
+
 EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
     settings = newData;
 ]}];
+
+(* App entry point *)
 
 App[request_] := With[{
         Secret = CreateUUID[], 
@@ -41,6 +60,7 @@ App[request_] := With[{
     },
 
     EventHandler[OnLoad, Function[Null,
+      (* After UI has been loaded *)
       cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
 
@@ -58,11 +78,13 @@ App[request_] := With[{
     ]];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalMessanger], {
       any_ :> (EventFire[AppEvent, Messanger[any], #]&)
     }];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalControls], {
       any_ :> (EventFire[AppEvent, any, #]&)
     }]; 
@@ -70,7 +92,7 @@ App[request_] := With[{
     <html class="h-full" os="{NavigatorOS}"> 
         <Head AccentColor={accentColor} Title={"Settings"} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -94,6 +116,7 @@ App[request_] := With[{
     </html>
 ];
 
+(* Assign a route *)
 
 http["MessageHandler", "Settings"] = AssocUMatchQ[<|"Path" -> "/settings"|>] -> App;
 Print["Settings Loaded!"];

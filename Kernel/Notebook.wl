@@ -4,6 +4,13 @@ BeginPackage["CoffeeLiqueur`Notebook`", {
     "CoffeeLiqueur`UObjects`"
 }]
 
+(*
+	Notebook object definition
+	events, properties, serializers, deserializers
+
+	This does not define its controller or renderer
+*)
+
 NotebookObj;
 
 HashMap;

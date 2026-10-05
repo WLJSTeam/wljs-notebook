@@ -1,10 +1,11 @@
 const codemirror = window.SupportedCells['codemirror'].context;
 
 let timeout = false;
+let ae;
 
-core.UIAutocompleteConnect = async (args, env) => {
+core['CoffeeLiqueur`Extensions`Autocomplete`Private`UIAutocompleteConnect'] = async (args, env) => {
     console.log('Autocomplete connected to a server');
-    core.UIAutocompleteExtend.symbols = new Set();
+    ae.symbols = new Set();
     
     const hash = await interpretate(args[0], env);
     //const channel = await interpretate(args[1], env);
@@ -22,14 +23,14 @@ core.UIAutocompleteConnect = async (args, env) => {
       codemirror.EditorAutocomplete.replaceAll(JSON.parse(localStorage.getItem("codemirror-autocomplete")));
     }
     
-    server.kernel.emitt('autocomplete', 'True', 'Connect');
+    server.kernel.io.fire('autocomplete', true, 'Connect');
 }
 
 core['CoffeeLiqueur`Extensions`FileEditor`WL`Internal`UIAutocompleteActivate'] = async (args, env) => {
     codemirror.EditorAutocomplete.replaceAll(JSON.parse(localStorage.getItem("codemirror-autocomplete")));
 }
 
-core.UIAutocompleteExtend = async (args, env) => {
+ae = async (args, env) => {
     
 
     const data = await interpretate(args[0], env);
@@ -40,7 +41,7 @@ core.UIAutocompleteExtend = async (args, env) => {
       const name = element[0];
       const usage = element[1];
   
-      if (!core.UIAutocompleteExtend.symbols.has(name)) {
+      if (!ae.symbols.has(name)) {
         codemirror.EditorAutocomplete.extend([  
           {
               "label": name,
@@ -49,14 +50,13 @@ core.UIAutocompleteExtend = async (args, env) => {
               "c": true
           }]);
   
-        core.UIAutocompleteExtend.symbols.add(name);
+        ae.symbols.add(name);
       }
     });
 
     codemirror.EditorAutocomplete.refresh();
 }
 
-core["CoffeeLiqueur`Extensions`Autocomplete`UIAutocompleteExtend"] = core.UIAutocompleteExtend
 
-
-core.UIAutocompleteExtend.symbols = new Set();
+ae.symbols = new Set();
+core['CoffeeLiqueur`Extensions`Autocomplete`Private`UIAutocompleteExtend'] = ae;

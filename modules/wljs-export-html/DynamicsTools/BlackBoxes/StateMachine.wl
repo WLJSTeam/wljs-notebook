@@ -78,7 +78,7 @@ probeState[action_, kernel_, symbol_, aborted_, {values_, events_}, client_] := 
   promise = Promise[]
 },
 
-  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage"], client, "Format"->"RawJSON"], Function[hash,
+  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage"], client], Function[hash,
 
     Then[KernelSniffer[kernel, "FetchSymbol", symbol], Function[data,
 

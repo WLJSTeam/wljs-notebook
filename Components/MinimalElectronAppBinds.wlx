@@ -3,11 +3,11 @@ Controls = $Options["Controls"];
 <script type="module">
     if (window.electronAPI) {
         window.electronAPI.listener('extension', (ev, pattern) => {
-            server.emitt('<Controls/>', 'True', pattern);
+            server.io.fire('<Controls/>', true, pattern);
         });
         
         window.electronAPI.listener('context', (ev, pattern) => {
-            server.emitt('<Controls/>', 'True', pattern);
+            server.io.fire('<Controls/>', true, pattern);
         });        
         
         window.electronAPI.listener('acknowledgments', () => {
@@ -15,7 +15,7 @@ Controls = $Options["Controls"];
         });
 
         window.electronAPI.listener('checkupdates', (ev) => {
-            server.emitt('<Controls/>', `True`, 'CheckUpdates');
+            server.io.fire('<Controls/>', true, 'CheckUpdates');
         });
         
     }

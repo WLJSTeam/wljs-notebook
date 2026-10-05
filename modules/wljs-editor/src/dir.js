@@ -1,4 +1,4 @@
-core.SetKernelDirectory = async (args, env) => {
+core['CoffeeLiqueur`Extensions`NotebookDirectory`Private`SetKernelDirectory'] = async (args, env) => {
     const path = await interpretate(args[0], env);
     const event = await interpretate(args[1], env);
 
@@ -9,7 +9,7 @@ core.SetKernelDirectory = async (args, env) => {
         if (server.kernel.socket.readyState != 1) {
             return;
         }
-        server.kernel.emitt(event, '"'+path+'"');
+        server.kernel.io.fire(event, String(path));
     });
 
     let caller;
@@ -23,7 +23,7 @@ core.SetKernelDirectory = async (args, env) => {
             caller();
             return;
         }
-        server.kernel.emitt(event, '"'+path+'"');
+        server.kernel.io.fire(event, Stirng(path));
         caller = () => {};
     }, 300);
 

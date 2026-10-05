@@ -1,10 +1,12 @@
+UISidebarRescanContext = Unique["notebookUI"];
+
 Component[OptionsPattern[]] := With[{
     NavID = OptionValue["NavID"],
     Port = OptionValue["Port"]
 },
     EventHandler[Port, {
         "Change" -> Function[Null, WebUISubmit[UISidebarRescanContext[], $CurrentWebSocket]],
-        "BubbleUp" -> Function[arr, EventFire[Port, FileOperate[arr[[2]]], arr[[1]] ]]
+        "BubbleUp" -> Function[arr, EventFire[Port, arr[[2]], arr[[1]] ]]
     }];
 
     <script type="module">
@@ -45,7 +47,7 @@ Component[OptionsPattern[]] := With[{
                 if (value) server.io.fire('<Port/>', [path, value], 'BubbleUp');
             })
         }        
-        core.UISidebarRescanContext = async () => {
+        core.<UISidebarRescanContext/> = async () => {
             console.log('Rescan');
             const doc = document.getElementById('<NavID/>');
             const dirs = doc.querySelectorAll('[data-type="dir"]');
@@ -72,7 +74,7 @@ Component[OptionsPattern[]] := With[{
                 });
             }
         }
-        core.UISidebarRescanContext();
+        core.<UISidebarRescanContext/>();
     </script>
 ]
 

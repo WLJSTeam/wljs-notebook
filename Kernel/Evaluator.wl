@@ -1,5 +1,11 @@
 BeginPackage["CoffeeLiqueur`Notebook`Evaluator`", {"CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Notebook`Transactions`"}]
 
+(*
+    Abstraction of evaluator objects
+    
+    This package initializes a container for various evaluators connecting single evaluation kernel and multiple abstract evaluators as well as patches signals (abortiong) between them.
+*)
+
 StandardEvaluator::usage = "StandardEvaluator[opts__] creates a basic Evaluator"
 EvaluateTransaction;
 TerminateTransactions;

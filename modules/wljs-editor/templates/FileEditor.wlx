@@ -126,11 +126,11 @@ Component[path_String, OptionsPattern[]] := With[{
                         blockUpdates = false;
                         return;
                     }
-                    server.emitt('<EventChannel/>', '"'+content+'"', 'Upload');
+                    server.io.fire('<EventChannel/>', content, 'Upload');
                   },
 
                   eval: (content) => {
-                    server.emitt('<EventChannel/>', '"'+content+'"', 'Eval');
+                    server.io.fire('<EventChannel/>', content, 'Eval');
                   },
 
                   focusNext: () => {},
@@ -144,28 +144,28 @@ Component[path_String, OptionsPattern[]] := With[{
             
             if (api) {
                 api.listener('save', () => {
-                    server.emitt('<EventChannel/>', 'True', 'Save');
+                    server.io.fire('<EventChannel/>', true, 'Save');
                 });
         
                 api.listener('saveas', (ev, path) => {
-                    server.emitt('<EventChannel/>', `"${path}"`, 'SaveAs');
+                    server.io.fire('<EventChannel/>', path, 'SaveAs');
                 });
                 
             } else {
                 window.addEventListener("keydown", function (e) {
                     if (e.ctrlKey && e.key == "s" || e.metaKey && e.key == "s") {
-                        server.emitt('<EventChannel/>', 'True', 'Save');
+                        server.io.fire('<EventChannel/>', true, 'Save');
                         e.preventDefault();
                         return false;
                     }
                     if (e.altKey && e.key == "." || e.metaKey && e.key == ".") {
-                        server.emitt('<EventChannel/>', 'True', 'Abort');
+                        server.io.fire('<EventChannel/>', true, 'Abort');
                         e.preventDefault();
                         return false;
                     }           
                     
                     if (e.altKey && e.key == "2" || e.metaKey && e.key == "2") {
-                        server.emitt('<EventChannel/>', 'True', 'ToggleFocusedCell');
+                        server.io.fire('<EventChannel/>', true, 'ToggleFocusedCell');
                         e.preventDefault();
                         return false;
                     }

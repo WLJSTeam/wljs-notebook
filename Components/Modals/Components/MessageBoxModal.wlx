@@ -10,7 +10,7 @@ Component[OptionsPattern[]] := With[{
 }, Module[{},
     EventHandler[Port, {
         "MessageBox" -> Function[data, With[{},
-            Then[WebUIFetch[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], $CurrentWebSocket, cli], "Format"->"RawJSON"], Function[result,
+            Then[WebUIFetch[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], $CurrentWebSocket, cli]], Function[result,
                 EventFire[data["Promise"], Resolve, result];
             ]];
         ] ]

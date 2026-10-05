@@ -1,5 +1,12 @@
 BeginPackage["CoffeeLiqueur`Notebook`Kernel`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`UObjects`"}]
 
+(*
+    Generic kernel abstraction
+
+    This is not an implementation
+    but can be used as parent class
+*)
+
 Kernel;
 KernelQ;
 

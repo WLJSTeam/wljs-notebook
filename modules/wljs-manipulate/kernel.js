@@ -19,7 +19,7 @@ core.RefreshBox = async (args, env) => {
             if (!env.local.readyQ) return;
             console.log('Fire!', event);
             env.local.readyQ = false;
-            server.kernel.emitt(event, 'True');
+            server.kernel.io.fire(event, true);
         }, interval);
     }
 }

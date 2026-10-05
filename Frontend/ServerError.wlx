@@ -1,3 +1,7 @@
+(* 
+    Generic server error template
+*)
+
 {
     "<!DOCTYPE html>"
 ,

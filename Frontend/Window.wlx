@@ -1,6 +1,21 @@
+(*
+    Window app component
+    no actual view component
+    (don't mix up with generic windows!)
+
+    This takes care of dettached output cells or mini apps windows 
+    see ./../Kernel/Windows.wl
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 AppEvent                  =  $Options["AppEvent"];
 ExtensionTemplates        =  $Options["ExtensionTemplates"];
+
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -8,6 +23,8 @@ Notifications  = ImportComponent["Components/Notifications/Notifications.wlx"];
 
 Alert           = ImportComponent["Components/Alert.wlx"];
 Modals           = ImportComponent["Components/Modals/Modals.wlx"];
+
+(* Settings helpers *)
 
 {loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
@@ -18,7 +35,11 @@ EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
     settings = newData;
 ]}];
 
+(* Window components *)
+
 {Window, WindowScript}           = ImportComponent["Views/Window/Window.wlx"];
+
+(* Extensions, initialization scripts and styles *)
 
 ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
@@ -43,6 +64,8 @@ ScriptInitialization[OptionsPattern[]] := With[{WinSize = OptionValue["ImageSize
 
 Options[ScriptInitialization] = {"ImageSize"->Null};
 
+(* Placeholder for non existing WindowObj *)
+
 WindowView[opts__] := If[MatchQ["Window" /. List[opts], _win`WindowObj],
   Window[opts]
 ,
@@ -50,6 +73,8 @@ WindowView[opts__] := If[MatchQ["Window" /. List[opts], _win`WindowObj],
     <span class="mt-auto mb-auto">Window does not exist</span>
   </div>
 ]
+
+(* Entry point of a view component *)
 
 App[request_] := With[{
         Secret = CreateUUID[], 
@@ -61,7 +86,7 @@ App[request_] := With[{
         OnLoad = CreateUUID[],
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
         GlobalParameters = <|"ElectronQ" -> ElectronQ[request], "AccentColor"->"teal"|>,
-        window        = win`HashMap[request["Query", "id"]] (*`*),
+        window        = win`HashMap[request["Query", "id"]] ,
         NavigatorOS = If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]
     },
     {
@@ -70,6 +95,8 @@ App[request_] := With[{
     },
 
     EventHandler[OnLoad, Function[Null,
+      (* run after UI has been loaded *)
+      
       cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
       EventFire[AppEvent, "AfterUILoad", <|"Client"->$CurrentWebSocket, "Settings"->settings, "Env"->env, "Controls"->GlobalControls, "WindowQ"->True|>];
@@ -89,21 +116,25 @@ App[request_] := With[{
     ]];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalMessanger], {
       any_ :> (EventFire[AppEvent, Messanger[any], #]&)
     }];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalControls], {
       any_ :> (EventFire[AppEvent, any, #]&)
     }]; 
+
+    
     {
       "<!DOCTYPE html>"
     ,
     <html class="h-full" os="{NavigatorOS}"> 
         <Head AccentColor={accentColor} Title={windowTitle} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -132,6 +163,7 @@ App[request_] := With[{
   } // StringRiffle
 ];
 
+(* Assign to a route *)
 
 http["MessageHandler", "Window"] = AssocUMatchQ[<|"Path" -> "/window"|>] -> App;
 Print["Window Loaded!"];

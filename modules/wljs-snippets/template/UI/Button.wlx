@@ -14,7 +14,7 @@ Component[OptionsPattern[]] := With[{
         <script type="module">
             const el = document.getElementById('<Uid/>');
             el.addEventListener('click', (event)=>{
-                server.kernel._emitt('<Event/>', 'True', '<Topic/>');     
+                server.kernel.io.fire('<Event/>', true, '<Topic/>');     
             });
         </script>
     } // ToStringRiffle

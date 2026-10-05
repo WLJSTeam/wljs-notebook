@@ -35034,7 +35034,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"wl"|>`, 'Forwarded["CM:DropEvent"]');
+        server.io.fire(channel, {Channel: String(id), Length: length, CellType: 'wl'}, 'CM:DropEvent');
       }
     },
 
@@ -35052,7 +35052,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:InsertFilePaths"]');
+        server.io.fire(channel, {JSON: String(encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))), CellType: "wl"}, "CM:InsertFilePaths");
       }
     },
 
@@ -35060,7 +35060,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:DropFilePaths"]');
+        server.io.fire(channel, {JSON: String(encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))), CellType: "wl"}, "CM:DropFilePaths");
       }
     },
 
@@ -35072,10 +35072,10 @@ const wlDrop = {
         if (result.length > 5 * 1024 * 1024) {
           const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
           chunks.forEach((chunk, index) => {
-            server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+            server.io.fire(id, {Data: String(chunk), Name: name, Chunks: chunks.length, Chunk: index+1}, "Chunk");
           });
         } else {
-          server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+          server.io.fire(id, {Data: result, Name: name}, "File");
         }
       }
     }
@@ -35086,7 +35086,7 @@ const wlPaste = {
     console.log(view.dom.ocellref);
     if (view.dom.ocellref) {
       const channel = view.dom.ocellref.origin.channel;
-      server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"wl"|>`, 'Forwarded["CM:PasteEvent"]');
+      server.io.fire(channel, {Channel: id, Length: length, CellType: "wl"}, "CM:PasteEvent");
     }
   },
 
@@ -35101,7 +35101,7 @@ const wlPaste = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:InsertFilePaths"]');
+        server.io.fire(channel, {JSON: encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent))), CellType: "wl"}, "CM:InsertFilePaths");
       }
   },
 
@@ -35109,7 +35109,7 @@ const wlPaste = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:DropFilePaths"]');
+        server.io.fire(channel, {JSON: encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent))), CellType: "wl"}, "CM:DropFilePaths");
       }
   },  
 
@@ -35119,10 +35119,10 @@ const wlPaste = {
       if (result.length > 5 * 1024 * 1024) {
         const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
         chunks.forEach((chunk, index) => {
-          server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+          server.io.fire(id, {Data: String(chunk), Name: name, Chunk: index+1, Chunks: chunks.length}, "Chunk");
         });
       } else {
-        server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+        server.io.fire(id, {Data: result, Name: name}, "File");
       }
     }
   }
@@ -35133,7 +35133,7 @@ const wlCellPaste = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${content}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCellEvent"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: String(content), CellType: "wl"}, "CM:PasteCellEvent");
   }  
 };
 
@@ -35142,7 +35142,7 @@ const wlPasteCrappy1 = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${encodeURIComponent(content)}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCrappy1Event"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: encodeURIComponent(content), CellType: "wl"}, "CM:PasteCrappy1Event");
   }  
 };
 
@@ -35151,7 +35151,7 @@ const wlPasteCrappy2 = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${encodeURIComponent(content)}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCrappy2Event"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: encodeURIComponent(content), CellType: "wl"}, "CM:PasteCrappy2Event");
   }  
 };
 

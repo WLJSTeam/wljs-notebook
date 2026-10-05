@@ -4,6 +4,11 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
     "CoffeeLiqueur`WLX`WebUI`"
 }];
 
+(*
+	File operations on Notebook objects
+	This implements saving, loading, renaming, clonings
+*)
+
     save;
     load;
     rename;

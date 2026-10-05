@@ -32,7 +32,7 @@ Component[OptionsPattern[]] := With[{
                     opts = opts.map((el) => document.getElementById(el));
                     opts.forEach((o) => {
                         o.addEventListener('change', () => {
-                            server.emitt('<OnChange/>', '"'+o.value+'"', '<Pattern/>');
+                            server.io.fire('<OnChange/>', String(o.value), '<Pattern/>');
                         })
                     })
                 </script>

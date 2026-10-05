@@ -1,5 +1,7 @@
 #!/usr/bin/env wolframscript
 
+(* Backends *)
+
 Internal`WoxiQ = StringStartsQ[ToString[$Version], "Woxi"];
 Internal`SymjaQ = StringStartsQ[ToString[$Version], "Symja"];
 Internal`WolframQ = !Internal`WoxiQ && !Internal`SymjaQ;
@@ -57,7 +59,8 @@ WLJSPackages`Load[FileNameJoin[{Directory[], "modules"}] ];
 
 "WLJS Notebook does not collect or transmit your data unless you explicitly choose a feature that needs the network." // Print;
 
-(* web-server *)
+(* Web server packages *)
+
 Needs["CoffeeLiqueur`CUSockets`"]
 Needs["CoffeeLiqueur`UObjects`"]
 Needs["CoffeeLiqueur`UInternal`"]
@@ -69,6 +72,7 @@ Needs["CoffeeLiqueur`WebUSocketHandler`"]
 
 Needs["LetWL`"]
 
+(* Notebook-related packages *)
 
 Needs["CoffeeLiqueur`Notebook`Utils`"];
 
@@ -86,43 +90,42 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 (* WLJS transport *)
 Needs["CoffeeLiqueur`Misc`WLJS`Transport`"]
 
-(* event system  *)
+(* Event system  *)
 Needs["CoffeeLiqueur`Misc`Events`"]
 Needs["CoffeeLiqueur`Misc`Events`Promise`"]
 
+(* Async packages  *)
 Needs["CoffeeLiqueur`Misc`Async`"]
-
 Needs["CoffeeLiqueur`Misc`Parallel`"]
 
-
-
+(* Local kernel implementation *)
 Needs["CoffeeLiqueur`Notebook`LocalKernel`" -> "LocalKernel`"];
+
+(* Misc helpers *)
 Needs["CoffeeLiqueur`Notebook`Transactions`"]
-
-
 Needs["CoffeeLiqueur`CUSockets`EventsExtension`"]
 
 (* WLX template engine *)
 Needs["CoffeeLiqueur`WLX`"]
 Needs["CoffeeLiqueur`WLX`Importer`"]
-Needs["CoffeeLiqueur`WLX`WLJS`"]
 
-(* WebUI Toolkit *)
+(* WebUI kit *)
 Needs["CoffeeLiqueur`WLX`WebUI`"]
 
+(* Code parser *)
 Needs["CodeParser`"]
 
 
-(* Frontend Helper Tools *)
+(* Notebook loader helper *)
 Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 
+(* Kernel utils helper *)
 Needs["CoffeeLiqueur`Notebook`KernelUtils`"->"kernelUtils`", FileNameJoin[{ Directory[], "Frontend", "KernelUtils.wl"}] ];
 
 
-(* env parameters *)
+(* Env variable *)
+
 System`$Env;
-
-
 $Env = Join[<|
   "host" -> "127.0.0.1",
   "http" -> 20560,
@@ -137,6 +140,7 @@ $Env = Join[<|
   (*,"docs" -> 20540*)
 |>, If[AssociationQ[$Env], $Env, <||> ] ];
 
+(* FWD parameters from the command line *)
 If[$ScriptCommandLine =!= {},
   With[{argv = Rest @ $ScriptCommandLine},
     Echo["Command line: "];
@@ -169,6 +173,7 @@ With[{appJSON = Import[FileNameJoin[{Directory[], "package.json"}], "RawJSON"]},
 ];
 
 
+(* Define shared directories and files *)
 
 syncDemoFolders[path_String] := Null;
 
@@ -197,7 +202,7 @@ If[KeyExistsQ[$Env, "store_config_in_docs"],
   AppExtensions`AppConfig = FileNameJoin[{AppExtensions`DefaultDocumentsDir, "config.wl"}];
 ];
 
-(* ~~check version~~ *)
+(* ~~Debug info~~ *)
 Echo["Checking version of WLJS Notebook ..."];
 Echo[AppExtensions`FrontendEnv["AppJSON"]["version"] ];
 
@@ -211,30 +216,38 @@ Echo[">> AppDataDir: "<> AppExtensions`AppDataDir];
 Echo[">> AppConfig: "<> AppExtensions`AppConfig];
 Echo[">> Root: "<> Directory[] ];
 
-(* load users extensions *)
+(* Load core and user's extensions *)
 WLJSPackages`Load[ AppExtensions`ExtensionsDir ];
 
+(* Settings helpers *)
 Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
 
 
 Echo["\n\nWe are looking for funding ❤️  https://wljs.io/frontend/Support\n\n"];
 Echo["\n\n"];
 
-
+(* WR services patches *)
 Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ]
 
+(* Cache assets of loaded extensions *)
 WLJSPackages`Includes["js"];
 WLJSPackages`Includes["frontend"];
 
+(* Sync WL packages of loaded extensions *)
 WLJSPackages`SyncShared[{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}, FileNameJoin[{AppExtensions`AppDataDir, "__shared"}] ];
 
-(*EventHandler[AppExtensions`AppEvents // EventClone, {
- any_ :> (Echo[StringTemplate["App Event ``: ``"][any, #]]&)
-}];*)
 
-(* start a bit earlier, so that extensions can hook on*)
+(* Start a web server *)
+
 $Server = <||>;
-$DefaultSerializer = ExportByteArray[#, "ExpressionJSON"]&
+$DefaultSerializer[expr_] :=
+  Block[
+    {
+      $Context = "dsc$`",
+      $ContextPath = {"dsc$`", "System`", "Global`"}
+    },
+    ExportByteArray[expr, "ExpressionJSON"]
+];
 
 Print["Staring HTTP server..."];
 
@@ -247,6 +260,7 @@ $Server["HTTPUHandler"] = http;
 
 AppExtensions`HTTPUHandler = http;
 
+(* Clean up temporal files *)
 
 With[{now = Now},
   Function[file,
@@ -261,7 +275,7 @@ With[{now = Now},
 ];
 
 
-(* load stuff into frontend *)
+(* Load frontend / master kernel extensions *)
 Echo["Loading core packages..."];
 
 If[FailureQ[
@@ -278,11 +292,13 @@ If[FailureQ[
 
 CoffeeLiqueur`WLX`Importer`Private`CacheControl["Hour"];
 
+(* Shared list of kernels *)
 AppExtensions`KernelList = {};
 
 
 
-(* Entrypoint of an app *)
+(* Load app components - entry points *)
+
 ServerError       := ImportComponent["Frontend/ServerError.wlx"];
 Protocol          := ImportComponent["Frontend/Protocol.wlx"];
 ExtendedApp               := ImportComponent["Frontend/ExtendedApp.wlx"];
@@ -292,14 +308,17 @@ PromptWindow         := ImportComponent["Frontend/PromptWindow.wlx"];
 Window      := ImportComponent["Frontend/Window.wlx"];
 Settings    := ImportComponent["Frontend/Settings.wlx"];
 
+(* Downloader module *)
+
 Needs["CoffeeLiqueur`Notebook`HTTPDownLoader`" -> "downloader`", FileNameJoin[{Directory[], "Frontend", "Downloader.wl"}] ];
 Downloader   = downloader`module;
 
-(* Global variables *)
+(* Global server variables *)
 
 $ExposedDirectories = {FileNameJoin[{Directory[], "modules"}], FileNameJoin[{Directory[], "Assets"}], Directory[], AppExtensions`ExtensionsDir, "/", ""}
 $ExposedRoutes = <||>;
 
+(* Handle signals on PATH and routes extension *)
 
 EventHandler[AppExtensions`AppEvents // EventClone, {
  "Notebook:Close" -> Function[notebook,
@@ -307,17 +326,16 @@ EventHandler[AppExtensions`AppEvents // EventClone, {
   (*$ExposedDirectories = ReplacePart[$ExposedDirectories, FirstPosition[$ExposedDirectories, notebook["Path"] // DirectoryName ] -> Nothing];*)
  ],
  "Loader:NewNotebook" -> Function[notebook,
-  Echo["New notebook load and add it to the path! >>"];
+  Echo["A new notebook was added to PATH"];
 
   If[MemberQ[notebook["Properties"], "WorkingDirectory"],
     $ExposedDirectories = Append[$ExposedDirectories, notebook["WorkingDirectory"] ]  // DeleteDuplicates;
   ,
-    $ExposedDirectories = Append[$ExposedDirectories, notebook["Path"] // DirectoryName ]  // DeleteDuplicates;
+    $ExposedDirectories = Append[$ExposedDirectories, notebook["Path"] // DirectoryName ] // DeleteDuplicates;
   ];
  ],
  "Loader:LoadNotebook" -> Function[notebook,
-  Echo["Load notebook and adding it to the path! >>"];
-  
+  Echo["A notebook was added to PATH"];
 
   If[MemberQ[notebook["Properties"], "WorkingDirectory"],
     Echo[notebook["WorkingDirectory"] ];
@@ -330,30 +348,35 @@ EventHandler[AppExtensions`AppEvents // EventClone, {
  ],
 
  "App:ExtendPath" -> Function[path,
+  Echo["Extend PATH"];
   $ExposedDirectories = Append[$ExposedDirectories, path] // DeleteDuplicates;
  ],
 
  "App:ExtendRoute" -> Function[route,
+  Echo["Extend route"];
   $ExposedRoutes = Join[$ExposedRoutes, route];
  ], 
 
  "App:RemovePath" -> Function[paths, Module[{p = $ExposedDirectories},
-    $ExposedDirectories = p /. {paths -> Nothing};
+   Echo["Shrink PATH"];
+   $ExposedDirectories = p /. {paths -> Nothing};
   ] ]
 }];
 
 
-
+(* HTTP handler helpers *)
 
 ElectronQ[request_] := (KeyExistsQ[request["Headers"], "Electron"]);
 ElectronGetVersion[request_] := If[KeyExistsQ[request["Headers"], "Electron"], request["Headers", "Electron"], "false"];
 
 (* serve static *)
 AppExtensions`HTTPFileExtensions = {"jpeg", "jp2", "json", "wlx", "csv", "tsv", "ppt", "avi", "mp2", "pptx", "doc", "docx", "txt", "ttf", "mp4", "xls", "xlsx", "mov", "wav", "mp3", "ogg", "otf", "woff", "woff2", "css", "js", "png", "jpg", "webp", "svg", "pdf", "gif", "dat"};
+
 http["MessageHandler", "File"]  = GetFileURequestQ[AppExtensions`HTTPFileExtensions] -> (
   ImportUFile[#, "Base":>$ExposedDirectories, "Routes":>$ExposedRoutes] &
 )
 
+(* Open HTTP port *)
 SocketListen[USocketOpen[$Env["host"], $Env["http"]], tcp@#&]
 
 Print["Staring WS/HTTP server..."];
@@ -368,10 +391,10 @@ $Server["WebSocketUHandler"] = ws;
 (* configure the handler for WLJS communications *)
 ws["MessageHandler", "Evaluate"]  = Function[True] -> WLJSTransportHandler
 
-
+(* Open WebSockets port *)
 SocketListen[USocketOpen[$Env["host"], $Env["ws"] ], wcp@#&, "SocketEventsHandler"->CSocketsClosingHandler];
 
-(* start all webservers from extensions *)
+(* Start all extra webservers loaded from extensions *)
 Map[Function[key, 
   With[{server = AppExtensions`WebServers[key]},
     Echo[StringTemplate["Starting App extension server `` on ``:``"][key, server["Host"], server["Port"]]];
@@ -382,20 +405,22 @@ Map[Function[key,
 
 (* reseved keyword for WLJS interpreter *)
 (* What a heck does it do here?! *)
+(* let's not touch it *)
 SetAttributes[Offload, HoldFirst];
 
 middleware[app_][request_] := app[request]
 
-
+(* Intialize downloader endpoint *)
 Downloader["HTTPUHandler"->http];
 
-(* Start evaluation kernel a bit earlier *)
+(* Launch evaluation kernel a bit earlier *)
 Needs["CoffeeLiqueur`Notebook`KernelAutolaunch`"->"kaf`", FileNameJoin[{Directory[], "Frontend", "Autolaunch.wl"}] ];
+
 kaf`autostart[LocalKernel`LocalKernel[ "Name"->Internal`NoWR`RandomWord[] ], Hold[AppExtensions`KernelList], kernelUtils`initializeKernel[<|"env" -> $Env|>], kernelUtils`deinitializeKernel];
 
 
 
-(* hook all routes handlers *)
+(* Intialize all endpoints *)
 
 Protocol["HTTPUHandler"->http, "AppProtocol" -> AppExtensions`AppProtocol, "Middleware"->Identity, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 Settings["HTTPUHandler"->http, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates]
@@ -404,6 +429,8 @@ PromptWindow["HTTPUHandler"->http, "AppEvent"->AppExtensions`AppEvents, "Extensi
 ExtendedApp["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 IframeApp["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
 App["HTTPUHandler"->http, "Middleware"->middleware, "AppEvent"->AppExtensions`AppEvents, "ExtensionTemplates"->AppExtensions`Templates, "ExtensionSidebarIcons"->AppExtensions`SidebarIcons, "Env"->$Env];
+
+(* Send a text message for a user *)
 
 SetTimeout[
   StringTemplate["Open http://``:`` in your browser"][$Env["host"], $Env["http"]] // Print;
@@ -430,9 +457,13 @@ SetTimeout[
 , 1000
 ];
 
+(* Send a request to open the first window for Electron *)
+(* if available *)
 ElectronIPCSend["runningAt", $Env["host"], $Env["http"] ];
 
-(* Main sync thread *)
+(* Main loop *)
+(* here it is reused for deferred micro tasks *)
+(* to free up the session event loop *)
 
 While[True,
   MicrotasksRun[];

@@ -1,15 +1,17 @@
+UICellsDropdown = Unique["notebookUI"];
+
 Component[OptionsPattern[]] := With[
   {Messager = OptionValue["Messager"],  Color = (If[StringQ[#], #, "teal"]&) @ OptionValue["Parameters"]["AccentColor"], Event = OptionValue["Event"], ExtesionInjector = OptionValue["ExtesionInjector"]},
   {additionalButtons = ExtesionInjector["Template"->"CellDropdown", "Messager" -> Messager, "Event"->Event]},
 
   EventHandler[Event, {
-    "CallDropdown" -> ((Print["CallDropdown!"]; WebUISubmit[Global`UICellsDropdown[#], $CurrentWebSocket])&)
+    "CallDropdown" -> ((Print["CallDropdown!"]; WebUISubmit[UICellsDropdown[#], $CurrentWebSocket])&)
   }];
 
   If[OptionValue["ElectronQ"],
       With[{ExtraButtons = ExportString[If[ListQ[additionalButtons], #["Native"] &/@ additionalButtons, {}], "JSON", "Compact"->0]},
        <script type="module">
-           core.UICellsDropdown = async (args, env) => {
+           core.<UICellsDropdown/> = async (args, env) => {
                const uid = await interpretate(args[0], env);
                const res = await (window.electronAPI || window.iframeAPI).createMenu([
                 {label:'Clear output', ref:'ClearOutputs'},
@@ -142,7 +144,7 @@ Component[OptionsPattern[]] := With[
                     const el = buttons[i];
                     if (!el.dataset.name) continue;
                     el.addEventListener('click', () => {
-                        server.emitt('<Event/>', '"'+currentCell+'"', el.dataset.name);
+                        server.io.fire('<Event/>', currentCell, el.dataset.name);
                     });
                 }
               

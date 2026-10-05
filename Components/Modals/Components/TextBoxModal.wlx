@@ -94,7 +94,7 @@ Component[OptionsPattern[]] := With[{
       With[{},
         EventHandler[Port, {
             "TextBox" -> Function[data, With[{},
-                Then[WebUIFetch[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], $CurrentWebSocket, cli], "Format"->"RawJSON"], Function[result,
+                Then[WebUIFetch[ModalController[KeyDrop[data, {"Promise", "Client"}]], If[SymbolQ[cli], $CurrentWebSocket, cli]], Function[result,
                     EventFire[data["Promise"], Resolve, If[StringQ[result], URLDecode[result], result]];
                 ]];                
             ] ]

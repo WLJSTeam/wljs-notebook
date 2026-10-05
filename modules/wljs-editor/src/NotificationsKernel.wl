@@ -1,6 +1,6 @@
 BeginPackage["CoffeeLiqueur`Extensions`Notifications`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`Extensions`RemoteCells`"}]
 
-
+System`HapticFeedback; (* make it on the same level as Beep *)
 HapticFeedback::usage = "HapticFeedback[] make a haptic feedback on MacOS devices (Desktop App only)"
 
 

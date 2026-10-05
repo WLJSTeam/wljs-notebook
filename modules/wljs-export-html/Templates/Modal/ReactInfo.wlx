@@ -27,7 +27,7 @@ Component[OptionsPattern[]] := With[{
     let close;
     close = () => {
                 window.removeEventListener('click', close);  
-                server.emitt('<ModalController/>', 'True', 'Close');
+                server.io.fire('<ModalController/>', true, 'Close');
             };
 
     window.addEventListener('click', close); 

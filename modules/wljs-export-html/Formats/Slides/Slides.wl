@@ -32,21 +32,21 @@ pdfEndpoint["Create", feobject_, OptionsPattern[] ] := With[{p = Promise[], chan
 ]
 
 pdfEndpoint["Capture", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window], Function[payload,
       EventFire[p, Resolve,  ByteArray[payload] ];
   ] ];
   p
 ]
 
 pdfEndpoint["CaptureToMerger", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[AccumulatePDF @ GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[AccumulatePDF @ GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window], Function[payload,
       EventFire[p, Resolve,  True ];
   ] ];
   p
 ]
 
 pdfEndpoint["FlushAndMerge", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[FlushPDF[], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[FlushPDF[], window], Function[payload,
       EventFire[p, Resolve,  ByteArray[payload] ];
   ] ];
   p
@@ -70,7 +70,7 @@ captureSlide[count_, log_, win_, delay_, p_] := With[{},
     Then[pdfEndpoint["CaptureToMerger", "Window"->win ], Function[Null,
         EventFire[log, Notifications`NotificationMessage["Renderer"], StringTemplate["Captured slide ``"][count]];
         count++;
-        Then[WebUIFetch[GetNextSlide[delay], win, "Format"->"JSON"], Function[result, 
+        Then[WebUIFetch[GetNextSlide[delay], win], Function[result, 
             Echo["Result:"]; Echo[result];
             If[!TrueQ[result], 
                 EventFire[p, Resolve, True];
