@@ -220,7 +220,7 @@ Options[WebUIKeyListener] = {"Event"->"", "Pattern"->"Pressed"};
 UIAsk; (* Private *)
 
 WebUIFetch[expr_, client_:$CurrentWebSocket, OptionsPattern[]] := With[{event = CreateUUID[], promise = Promise[]},
-    EventHandler[event, Function[payload,
+    EventHandler[event, Function[result,
         EventRemove[event];
         If[FailureQ[result],
             EventFire[promise, Reject, result]
@@ -240,8 +240,8 @@ WebUIFetch[expr_, client_:$CurrentWebSocket, OptionsPattern[]] := With[{event = 
 WebUIInitializationScript = With[{},
     <script type="module">
         core['CoffeeLiqueur`WLX`WebUI`Private`UIAsk'] = async (args, env) => {
-            const result = await interpretate(args[0]);
-            const uid = await interpretate(args[1]);
+            const result = await interpretate(args[0], env);
+            const uid = await interpretate(args[1], env);
             console.warn("A request from server");
             server.<WebUIServerReference/>.io.fire(uid, result);
         }

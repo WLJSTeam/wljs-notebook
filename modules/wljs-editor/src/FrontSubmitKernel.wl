@@ -121,7 +121,7 @@ FrontInstanceGroup /: MakeBoxes[f: FrontInstanceGroup[uid_], StandardForm] := Mo
 exec;
 
 FrontFetchAsync[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["Socket"],  event = CreateUUID[], promise = Promise[]},
-    EventHandler[event, Function[payload,
+    EventHandler[event, Function[result,
         EventRemove[event];
 
         If[FailureQ[result],

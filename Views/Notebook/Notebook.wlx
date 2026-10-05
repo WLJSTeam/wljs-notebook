@@ -826,7 +826,10 @@ Script[OptionsPattern[]] := With[{
             }
 
             core['<UINotebook/>'].KernelSocket = async (args, env) => {
-                return await server.kernel.ask('$CurrentWebSocket');
+                const raw = await server.kernel.ask('$CurrentWebSocket');
+                console.warn(raw);
+                raw[1] = await interpretate(raw[1], env);
+                return {Head: raw[0], Arg: raw[1]};
             }
 
             core['<UINotebook/>'].WSConnect = async (args, env) => {
@@ -1286,7 +1289,8 @@ Component[OptionsPattern[]] := With[{
             Echo["Notebook.wlx >> WebSocket link to evaluation Kernel was established"];
             Then[WebUIFetch[UINotebook["KernelSocket"], $CurrentWebSocket ], Function[data,
                 notebook["WebSocketQ"] = True;
-                notebook["KernelWebSocket"] = data;
+                notebook["KernelWebSocket"] = ToExpression[data["Head"]][data["Arg"]];
+                Echo["Kernel socket object: ", ToString[notebook["KernelWebSocket"], InputForm]];
                 Then[EventFire[notebook, "OnWebSocketConnected", <|"Client" -> $CurrentWebSocket|>], Function[Null,
                     EventFire[notebook, "AfterWebSocketConnected", <|"Client" -> $CurrentWebSocket|>]
                 ] ];

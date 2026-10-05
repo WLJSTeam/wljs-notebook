@@ -1,7 +1,3 @@
-core.FSAskKernelSocket = async (args, env) => {
-    return await server.kernel.ask('$CurrentWebSocket');
-}
-
 core['CoffeeLiqueur`Extensions`Communication`Private`FSAsk'] = async (args, env) => {
     const result = await interpretate(args[0], env);
     const uid = await interpretate(args[1], env);
