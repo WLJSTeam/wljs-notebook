@@ -989,6 +989,8 @@ askForReload[notebook_, controller_, modals_, client_] := Module[{}, With[{promi
     |>]; 
 ] ]
 
+forwardedQ = StringMatchQ[__~~":"~~__];
+
 (* /*  Exstension API */  *)
 (* /*  Prolog, Epilog, Mesis, EventHandler */  *)
 
@@ -1427,19 +1429,16 @@ Component[OptionsPattern[]] := With[{
 
         "Evaluate" -> Function[celluid, evaluateCell[cell`HashMap[celluid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
 
-        unknown_String :> Function[data,
+        unknown_?forwardedQ :> Function[data,
         
             (*/* Redirect special type of events XX:YY to controls */*)
             
-            If[StringMatchQ[__~~":"~~__][unknown],
-                Echo["Forward event >> "]; Echo[unknown];
-                If[AssociationQ[data],
-                    EventFire[controller, unknown, Join[data, <|"Notebook"->notebook|>]];
-                ,
-                    EventFire[controller, unknown, data];
-                ]             
-            ]
-            
+            Echo["Forward event >> "]; Echo[unknown];
+            If[AssociationQ[data],
+                EventFire[controller, unknown, Join[data, <|"Notebook"->notebook|>]];
+            ,
+                EventFire[controller, unknown, data];
+            ]                 
         ]
     }];
 

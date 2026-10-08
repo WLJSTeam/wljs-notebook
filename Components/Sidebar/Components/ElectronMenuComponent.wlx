@@ -6,7 +6,7 @@ Component[OptionsPattern[]] := With[{
 },
     EventHandler[Port, {
         "Change" -> Function[Null, WebUISubmit[UISidebarRescanContext[], $CurrentWebSocket]],
-        "BubbleUp" -> Function[arr, EventFire[Port, arr[[2]], arr[[1]] ]]
+        "BubbleUp" -> Function[arr, EventFire[Port, StringJoin["IO:", arr[[2]]], arr[[1]] ]]
     }];
 
     <script type="module">
@@ -26,6 +26,7 @@ Component[OptionsPattern[]] := With[{
              {label: 'Delete', ref: 'Delete'}
             ]);
             res.then((value) => {
+                console.log([path, value]);
                 if (value) server.io.fire('<Port/>', [path, value], 'BubbleUp');
             })
             
@@ -44,6 +45,7 @@ Component[OptionsPattern[]] := With[{
             ]);
 
             res.then((value) => {
+                console.log([path, value]);
                 if (value) server.io.fire('<Port/>', [path, value], 'BubbleUp');
             })
         }        

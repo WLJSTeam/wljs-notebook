@@ -133,7 +133,7 @@ Component[OptionsPattern[]] := With[{Filename = URLEncode[OptionValue["Filename"
             for (let i=0; i<buttons.length; i++) {
                 const el = buttons[i];
                 el.addEventListener('click', () => {
-                    server.io.fire('<Port/>', '<Filename/>', el.dataset.name);
+                    server.io.fire('<Port/>', '<Filename/>', 'IO:'+String(el.dataset.name));
                 });
             }
 

@@ -23,7 +23,7 @@ core['CoffeeLiqueur`Extensions`NotebookDirectory`Private`SetKernelDirectory'] = 
             caller();
             return;
         }
-        server.kernel.io.fire(event, Stirng(path));
+        server.kernel.io.fire(event, String(path));
         caller = () => {};
     }, 300);
 

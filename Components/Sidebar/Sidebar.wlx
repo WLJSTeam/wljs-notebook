@@ -103,6 +103,7 @@ Controller["Window", __] := Function[name,
 
 orderlessSameQ[a_List, b_List] := (Length@a == Length@b) && (Sort@Tally@a === Sort@Tally@b);
 
+fileOpQ = StringMatchQ["IO:"~~__]
 
 Component[OptionsPattern[]] :=  Module[{timer, cached},
 With[{
@@ -151,7 +152,7 @@ With[{
         ]
       ];
     ],
-    any_ :> Controller[any, SidebarId, modals, Path, Controls, Secret]
+    any_?fileOpQ :> Controller[StringDrop[any, 3], SidebarId, modals, Path, Controls, Secret]
   }];
 
   EventHandler[Button1Id, Function[Null,
@@ -246,7 +247,8 @@ With[{
       }
 
       core['<UIOpenCopyLink/>'] = async (args, env) => {
-       const url = await interpretate(args[0], env);
+       let url = await interpretate(args[0], env);
+       url = window.location.origin + '/' + url;
        try {
          await navigator.clipboard.writeText(url);
          console.log('Link copied to clipboard!');

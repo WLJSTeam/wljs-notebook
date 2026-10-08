@@ -15,12 +15,16 @@ BeginPackage["CoffeeLiqueur`Extensions`Terminal`", {
 }]
 
 
+
+
+Begin["`Private`"]
+
+(* frontend symbols *)
 UIXtermLoad;
 UIXtermPrint;
 UIXtermResolve;
 UIXtermColorize;
 
-Begin["`Private`"]
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];

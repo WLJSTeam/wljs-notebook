@@ -122,7 +122,7 @@ With[{
       
       const color = picker.getElementsByTagName('input')[0];
       color.addEventListener("change", (event) => {
-        server.kernel.io.fire('<Event/>', Stirng(event.target.value), '<Pattern/>');
+        server.kernel.io.fire('<Event/>', String(event.target.value), '<Pattern/>');
       }, false);
       
       document.getElementById(uid).addEventListener('click', () => {
@@ -192,7 +192,7 @@ With[{
         const el = list[i];
         const value = el.name;
         el.addEventListener('click', () => {
-          server.kernel.io.fire('<Event/>', '\' + value, '<Pattern/>');
+          server.kernel.io.fire('<Event/>', ('\\' + value).slice(1), '<Pattern/>');
           close();
         })
       }

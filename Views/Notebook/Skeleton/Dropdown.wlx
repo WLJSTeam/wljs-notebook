@@ -148,7 +148,7 @@ Component[OptionsPattern[]] := With[
                     });
                 }
               
-                core.UICellsDropdown = async (args, env) => {
+                core['<UICellsDropdown/>'] = async (args, env) => {
                     const uid = await interpretate(args[0], env);
                     console.warn(uid);
                     currentCell = uid;

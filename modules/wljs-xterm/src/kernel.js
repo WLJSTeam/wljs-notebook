@@ -6,7 +6,7 @@ import { LocalEchoAddon } from '@gytx/xterm-local-echo';
 let terminal = {};
 let localEcho = null;
 
-core.UIXtermPrint = async (args, env) => {
+core['CoffeeLiqueur`Extensions`Terminal`Private`UIXtermPrint'] = async (args, env) => {
   if (!terminal.loaded) return;
   const data = interpretate(args[0], env);
   // Preserve newlines as CRLF for terminals
@@ -20,7 +20,7 @@ function randomChoice(arr) {
 
 let globalCallback = undefined;
 
-core.UIXtermResolve = (args, env) => {
+core['CoffeeLiqueur`Extensions`Terminal`Private`UIXtermResolve'] = (args, env) => {
   if (!terminal.loaded) return;
   const data = interpretate(args[0], env);
   const decoded = decodeURIComponent(String(data));
@@ -53,7 +53,7 @@ function stopSpinner(intervalId, statusRow) {
   terminal.write(`\x1b[s\x1b[${statusRow + 1};1H\x1b[2K\x1b[u`);
 }
 
-core.UIXtermLoad = async (args, env) => {
+core['CoffeeLiqueur`Extensions`Terminal`Private`UIXtermLoad'] = async (args, env) => {
   terminal = new Terminal({
     cursorBlink: true,
     cursorStyle: 'block',
