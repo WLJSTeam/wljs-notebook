@@ -32,6 +32,7 @@ Phase I
 - [ ] html export, 
 - [ ] slide export, 
 - [x] save boxes, 
+- [x] add bg to kernels 
 - [x] message boxes, 
 - [x] input string and etc, 
 - [x] dropdown menu, 
@@ -62,6 +63,6 @@ Phase II
 Phase III
 - [ ] Test FEM
 - [ ] WLX add NewLine tag
-- [ ] cache time reduce
+- [x] cache time reduce
 - [ ] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] SystemDialogInputAsync no need in Window and for other

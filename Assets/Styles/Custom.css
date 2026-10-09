@@ -505,7 +505,9 @@ input::selection {
     box-shadow: 0px 1px 2px 0px #CFCFCF;
 }
 
-
+.wljs-panel-bg {
+    background: rgb(240, 240, 240);
+}
 
 .wljs-root-bg {
   background: white;
@@ -542,6 +544,10 @@ input::selection {
  }
 
 @media (prefers-color-scheme: dark) {
+    .wljs-panel-bg {
+        background: rgb(52, 52, 52);
+    }
+    
     .wljs-topbar {
         background: rgb(52, 52, 52);
         border-bottom-width: 0;

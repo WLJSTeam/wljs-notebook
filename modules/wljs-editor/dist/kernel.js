@@ -12557,6 +12557,7 @@ const tooltipPlugin = /*@__PURE__*/ViewPlugin.fromClass(class {
             this.container = document.createElement("div");
             this.container.style.position = "relative";
             this.container.className = this.view.themeClasses;
+            this.container.classList.add('dark:invert');
             this.parent.appendChild(this.container);
         }
         else {
@@ -29497,12 +29498,10 @@ const transferFiles = async (list, ev, view, handler) => {
       if (hue > 360) hue = 0;
     }, 30);
     handler.transaction(ev, view, id, list.length);
-   // server.kernel.emitt('<Event/>', `<|"Id" -> "${id}", "Length" -> ${list.length}|>`, 'Transaction');
     
     for (const file of list) {
         readFile(file, (name, result) => {
             handler.file(ev, view, id, name, result);
-            //server.kernel.emitt('id', `<|"Transaction" -> "${id}", "Name" -> "${name}", "Data" -> "${result}"|>`, 'File');
             count++;
             if (count >= list.length && view.dom) {
               if (view.dom.loadingMark) {
@@ -33687,7 +33686,7 @@ let EditorWidget$1 = class EditorWidget {
 
           env.global.element.appendChild(aa);
 
-          if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');
+          if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');
 
           return;
         }
@@ -33748,7 +33747,7 @@ let EditorWidget$1 = class EditorWidget {
           ]
         });
 
-        if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');  
+        if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');  
 
       }, (err) => {errBox(span, self, err);});
 
@@ -33803,7 +33802,7 @@ let EditorWidget$1 = class EditorWidget {
     }  
     this.editor.destroy();
 
-    if(this.events) server.kernel.emitt(this.events, 'Null', 'Destroy');
+    if(this.events) server.kernel.io.fire(this.events, null, 'Destroy');
 
     delete this.data;
   }
@@ -34064,7 +34063,7 @@ class EditorWidget {
         ]
       })});
 
-      if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');  
+      if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');  
 
     });
 
@@ -34121,7 +34120,7 @@ class EditorWidget {
     }  
     this.editors.forEach((i)=>i.destroy());
 
-    if(this.events) server.kernel.emitt(this.events, 'Null', 'Destroy');
+    if(this.events) server.kernel.io.fire(this.events, null, 'Destroy');
 
     delete this.data;
   }
@@ -34918,7 +34917,7 @@ compactWLEditor = (args) => {
     args.extensions || [],   
     minimalSetup,
     editorCustomThemeCompact,  
-    tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+    tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
     wolframLanguage.of(EditorAutocomplete, false),
     FractionBoxWidget(compactWLEditor),
@@ -35261,7 +35260,7 @@ const EditorExtensionsMinimal = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches()
 ]; 
@@ -35288,7 +35287,7 @@ const EditorExtensions = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
@@ -35623,11 +35622,11 @@ class CodeMirrorCell {
         }
 
         console.log('editor view emitt data: '+data); //[FIXME] move to a new API
-        server.kernel.emitt(options.Event, '"'+data.replaceAll('\\\"', '\\\\\"').replaceAll('\"', '\\"')+'"', 'Input');
+        server.kernel.io.fire(options.Event, String(data), 'Input');
       };
 
       evalFunction = () => {
-        server.kernel.emitt(options.Event, '"'+state.replaceAll('\\\"', '\\\\\"').replaceAll('\"', '\\"')+'"', 'Evaluate');
+        server.kernel.io.fire(options.Event, String(state), 'Evaluate');
       };
       
     }

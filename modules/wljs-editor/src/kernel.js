@@ -627,7 +627,7 @@ compactWLEditor = (args) => {
     args.extensions || [],   
     minimalSetup,
     editorCustomThemeCompact,  
-    tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+    tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
     wolframLanguage.of(EditorAutocomplete, false),
     FractionBoxWidget(compactWLEditor),
@@ -974,7 +974,7 @@ const EditorExtensionsMinimal = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches()
 ] 
@@ -1001,7 +1001,7 @@ const EditorExtensions = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
@@ -1340,7 +1340,7 @@ class CodeMirrorCell {
       }
 
       evalFunction = () => {
-        server.kernel.io.fireoptions.Event, String(state), 'Evaluate');
+        server.kernel.io.fire(options.Event, String(state), 'Evaluate');
       }
       
     }

@@ -109,7 +109,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   
     <WebUIContainer Event={Controller}>
       <div class="mt-0 shrink-0 gap-y-1 flex flex-col" style="-webkit-app-region:none">
-          <WebUILazyLoad Event={EventClone[LazyLoad]}>
+          <WebUILazyLoad Event={EventClone[LazyLoad]} Class="gap-y-1 flex flex-col">
             <KernelListComponent/>
           </WebUILazyLoad>
           <WebUIContainerChild/> 

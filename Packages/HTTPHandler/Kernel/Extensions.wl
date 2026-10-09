@@ -86,7 +86,7 @@ importFile[path_String, opts:OptionsPattern[]] := With[{body = ReadByteArray[pat
                 "Content-Length" -> Length[body], 
                 "Connection"-> "Keep-Alive", 
                 "Keep-Alive" -> "timeout=5, max=1000", 
-                "Cache-Control" -> "max-age=60480"
+                "Cache-Control" -> "max-age=21600"
             |>
         |>
       ,
