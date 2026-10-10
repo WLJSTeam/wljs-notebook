@@ -1096,7 +1096,7 @@ Component[OptionsPattern[]] := With[{
         ]]],   
         
         "WindowFocus" -> Function[Null,
-            appGlobals["CurrentNotebook"] = notebook;
+            If[appGlobals =!= Null, appGlobals["CurrentNotebook"] = notebook];
         ],
 
         "ChangeKernel" -> Function[p, Module[{kernel, client, payload = <||>},
@@ -1243,7 +1243,7 @@ Component[OptionsPattern[]] := With[{
             notebook["MessangerChannel"] = log;
             notebook["Controller"] = controller;
 
-            appGlobals["CurrentNotebook"] = notebook;
+            If[appGlobals =!= Null, appGlobals["CurrentNotebook"] = notebook];
 
             (* /* Destructor */ *)
             With[{socket = EventClone[$CurrentWebSocket(*`*)]},

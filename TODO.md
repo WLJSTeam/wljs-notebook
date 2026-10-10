@@ -7,7 +7,7 @@ Phase I
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
 - [x] Try saving dataset with many many FEs
-- [ ] Test mini apps context
+- [x] Test mini apps context
 - [x] DATA COmpression roundtrip!!!!!!!
 - [x] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
 - [x] Clean up FE creation, plain blocked ExportByteArray + comp
@@ -21,8 +21,8 @@ Phase I
 - [x] server._emitt: remove it completely
 - [x] Views/Notebook/Notebook.wlx: Replace Forwarded with some text stuff
 - [x] rename WLJS.wl inside WLX package into something else. Used only for loading scripts
-- [ ] Kick out sync from frontend, only ids
-- [ ] Fix FrontRef to fetch the missing from master kernel
+- [x] Kick out sync from frontend, only ids
+- [x] Fix FrontRef to fetch the missing from master kernel
 - [ ] Run tests
 - [x] Run manual test on printing, 
 - [x] sidebar, 
@@ -31,7 +31,7 @@ Phase I
 - [x] uploading, 
 - [x] spinner
 - [x] snippets, 
-- [ ] odd error when first time run prompt window
+- [x] odd error when first time run prompt window
 - [ ] exports as widgets, 
 - [x] check settings reload, 
 - [ ] html export, 
