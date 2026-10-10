@@ -226,7 +226,8 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Unprotect = asyn
 
 core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllObjects = async (args, env) => {
   garbageCollect();
-  return Object.values(ObjectHashMap);
+  console.log(Object.keys(ObjectHashMap));
+  return Object.keys(ObjectHashMap);
 }
 
 core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllSymbols = async (args, env) => {
@@ -244,6 +245,7 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllSymbols = 
     }
     message.push(list[i]);
   }
+  console.log(message);
   return message;
 }
 

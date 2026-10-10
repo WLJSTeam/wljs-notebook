@@ -577,7 +577,7 @@ App[request_] := Module[{
                     		state.innerText = text;
 
                             if (prev) {
-                                prev.classList.remove(...('bg-gray-100 dark:bg-gray-700 dark:text-white'.split(' ')));
+                                prev.classList.remove('bg-gray-100', 'dark:bg-gray-700');
                                 prev.firstChild.classList.remove('text-teal-500');
                                 prev = false;
                             } 
@@ -593,7 +593,7 @@ App[request_] := Module[{
 
                             switch(text) {
                                 case 'Inspect':
-                                    inspect.classList.add(...('bg-gray-100 dark:bg-gray-700 dark:text-white'.split(' ')));
+                                    inspect.classList.add('bg-gray-100', 'dark:bg-gray-700');
                                     inspect.firstChild.classList.add('text-teal-500');
                                     prev = inspect;
                                 break;

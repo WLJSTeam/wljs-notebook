@@ -6,11 +6,15 @@ Phase I
 - [x] FrontFetch: Remove "Format" option, restict to plain JS objects
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
+- [ ] Try saving dataset with many many FEs
+- [ ] DATA COmpression roundtrip!!!!!!!
+- [ ] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
 - [ ] Clean up FE creation, plain blocked ExportByteArray + comp
 - [ ] Use AsyncFunction during the sync
 - [ ] Move WLJSTranspost and Interpreer to its own package, expose assets dir via some variable (so it can be added to PATH). Add WebUSoceckSendBinary[]
 - [ ] Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
 - [ ] With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
+- [x] GetSymbol function seems to use some sort of communication with kernel. check misc 
 - [x] server.emitt: remove it completely
 - [x] server.kernel.emitt: remove it completely
 - [x] server._emitt: remove it completely
@@ -25,10 +29,10 @@ Phase I
 - [ ] Look though all modules  
 - [x] uploading, 
 - [x] spinner
-- [ ] snippets, 
+- [x] snippets, 
 - [ ] odd error when first time run prompt window
 - [ ] exports as widgets, 
-- [ ] check settings reload, 
+- [x] check settings reload, 
 - [ ] html export, 
 - [ ] slide export, 
 - [x] save boxes, 
@@ -42,13 +46,14 @@ Phase I
 - [x] xterm, 
 - [x] greek character 
 - [x] from specialchars table, 
+- [x] check debugger 
 - [ ] animation framework, 
-- [ ] export animation, 
-- [ ] export Animate, 
-- [ ] export PDF, 
-- [ ] Rasterize, 
+- [x] export animation, 
+- [x] export Animate, 
+- [x] export PDF, 
+- [x] Rasterize, 
 - [ ] test MCP, 
-- [ ] test drag  and drop
+- [x] test drag  and drop
 
 - [ ] make WLJSIO.wl -> Interpeter?
 - [ ] move wljs-cells to views?

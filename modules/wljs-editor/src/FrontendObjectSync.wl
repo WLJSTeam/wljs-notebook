@@ -6,6 +6,7 @@ BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`Sync`", {
     "CoffeeLiqueur`WLX`WebUI`", 
     "CoffeeLiqueur`Misc`WLJS`Transport`",
     "CoffeeLiqueur`Misc`Language`",
+    "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Extensions`Editor`"
 }]
 
@@ -19,8 +20,6 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Begin["`Private`"]
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
-
-syncMonitor = ImportComponent[FileNameJoin[{rootDir, "templates", "SyncMonitor.wlx"}] ];
 
 EventHandler[NotebookEditorChannel // EventClone, {
     "FetchFrontEndObject" -> Function[data,
@@ -37,70 +36,27 @@ EventHandler[NotebookEditorChannel // EventClone, {
     ]
 }];
 
-syncMonitorConstructor[uids_List, opts_Association, title_String: "Syncing data"] := LeakyModule[{
-    object, 
-    monitor = CreateUUID[], 
-    time = AbsoluteTime[],
-    cnt = 0,
-    controller = CreateUUID[]
-},
-
-    If[Length[uids] < 3, 
+fetchFromKernel[keys_, kernel_, test_, default_, function_] := With[{promise = Promise[], prePromise = Promise[]}, {
+    watchdog = SetTimeout[
+            Echo["Kernel fetch request timed out!"];
+            EventFire[promise, Resolve, default], 
+        1000 45]
+}, 
+    Then[prePromise, Function[results,
+        TaskRemove[watchdog];
+        EventFire[promise, Resolve, If[test[results], results, default]];
+    ]];
     
-        EventHandler[monitor, Function[Null,
-            cnt = cnt + 1;
-            Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-        ] ];
-
-        object /: Delete[object] := (
-            EventRemove[monitor];
-            ClearAll[cnt];
-            ClearAll[time];
-            ClearAll[controller];
-            ClearAll[object];
-            Echo["SyncMonitor >> removed"];
-        );
-
-        Return[{object, monitor}];
+    GenericKernel`SendAsync[kernel, 
+        EventFire[
+            Internal`Kernel`RemoteEvent[prePromise // First], 
+            Resolve, 
+            function[keys]
+        ] 
     ];
 
-    With[{notification = Notifications`Custom["Topic"->title, "Body"->syncMonitor[controller], "Controls"->False]},
-        
-        object /: Delete[object] := (
-            EventRemove[monitor];
-            EventRemove[controller];
-            ClearAll[cnt];
-            ClearAll[time];
-            ClearAll[object];
-            ClearAll[controller];
-            Delete[notification];
-            Echo["SyncMonitor >> removed"];
-        );
-        
-        EventHandler[monitor, Function[Null,
-            cnt = cnt + 1;
-            Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-            With[{t = AbsoluteTime[]},
-                If[t - time > 2,
-                    Echo["SyncMonitor >> Too long"];
-
-                    EventFire[opts["Log"], notification, True];
-                    EventFire[controller, "Sync", <|"Client"->opts["Client"], "Current"->cnt, "Total"->Length[uids] |>];
-
-                    EventHandler[monitor, Function[Null,
-                        cnt = cnt + 1;
-                        Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-                        EventFire[controller, "Sync", <|"Client"->opts["Client"], "Current"->cnt, "Total"->Length[uids] |>];
-                    ] ];
-                ];
-            ];
-        ] ];
-
-
-    ];
-
-    {object, monitor}
-]
+    promise
+]; 
 
 WLJSTransportHandler["GetSymbol"] = Function[{expr, client, callback},
               Print["evaluating cached symbol"];
@@ -123,7 +79,7 @@ filterEmptyOrFailed[keys_, values_] := With[{t = {keys, values} // Transpose},
     Select[t, Function[val, !FailureQ[val[[2]]] && val[[2]] =!= False ] ] // Transpose
 ]
 
-(* [TODO] [REFACTOR] *)
+(* Good enough*)
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
     Echo["Attach event listeners to notebook from EXTENSION"];
@@ -142,8 +98,8 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                 Echo["FrontendObject`Sync >> nothing to restore "];
             ];
         ],
-        "OnBeforeSave" -> Function[opts,
-            Echo["OnBefore Save!!!!!!!!"];
+        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel},
+            Echo["OnBefore Save!"];
 
             If[!MemberQ[notebook["Properties"], "Objects"], 
                 notebook["Objects"] = <||>;
@@ -152,143 +108,64 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             If[!MemberQ[notebook["Properties"], "Symbols"], 
                 notebook["Symbols"] = <||>;
                 notebook["ObjectFields"] = Join[notebook["ObjectFields"], {"Symbols"}] // DeleteDuplicates;
-            ];            
+            ]; 
+ 
+            Echo["Getting objects from the frontend"];
+            objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllObjects"] , opts["Client"]] // Await;
+            
+            Echo[StringTemplate["``: ``"]["Resolved uids", objects]];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
+            
+            StringTemplate["Total: `` Missing: ``"][Length[objects], Length[missing]] // Echo;
 
-            With[{promise = Promise[]},
-                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllUids"] , opts["Client"]],
-                    Function[uids,
-                        Echo["uids resolved!"];
-                        Echo[uids];
+            kernel = notebook["Evaluator"]["Kernel"];
+            If[TrueQ[kernel["ReadyQ"]],
+                Echo["Kernel is available, fetching from it"];
+                missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[x, KeyTake[x][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects] ]] // Await;
+                
+                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, missing];
+                missing = Keys[missing];
+                StringTemplate["Fetched: `` "][Length[missing]] // Echo;
+            ];
 
-                        Echo["Implement me!!!"];
-                        Return[];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
+            objects = Complement[objects, missing];
 
-                        LeakyModule[{
-                            monitor, monitorHandler,
-                            monitorSym, monitorHandlerSym, promises
-                        },
+            notebook["Objects"] = Map[<|"Public"->#["Public"]|>&, KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]];
 
-                            {monitorHandler, monitor} = syncMonitorConstructor[uids, opts];
+            Echo["Getting symbols from the frontend"];
+            objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbols"] , opts["Client"]] // Await;
+            
+            Echo[StringTemplate["``: ``"]["Resolved names", objects]];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
+            
+            StringTemplate["Total: `` Missing: ``"][Length[objects], Length[missing]] // Echo;
 
-                            WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", True], opts["Client"]];
+            kernel = notebook["Evaluator"]["Kernel"];
+            If[TrueQ[kernel["ReadyQ"]],
+                Echo["Kernel is available, fetching from it"];
+                
+                missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[names, 
+                    AssociationMap[Function[name, With[{r = ToExpression[name]},
+                        If[MatchQ[_Symbol][r], $Failed, r]
+                    ]], names]
+                ]] // Await;
 
-                            With[{requests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetById", i, "MonitorEvent"->monitor] , opts["Client"]], {i, uids}]},
-                                Echo["Number of requests to resolve: "<>ToString[Length[requests] ] ];
-                                If[Length[requests] == 0,
-                                    promises = Promise[];
-                                    EventFire[promises, Resolve, {}];
-                                ,
-                                    promises = requests;
-                                ];
-                                
-                                If[Length[requests] == 0 && False, (* just pass though *)
-                                    notebook["Objects"] = <||>;
-                                    notebook["Symbols"] = <||>;
-                                    EventFire[promise, Resolve, True];
-                                    WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                , 
+                missing = Select[missing, Not@*FailureQ];
+                
+                CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, missing];
+                missing = Keys[missing];
+                StringTemplate["Fetched: `` "][Length[missing]] // Echo;                
+            ];
 
-                                    Echo["Promises: "<>ToString[requests ] ];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
+            objects = Complement[objects, missing];
 
-                                    Then[promises,
-                                        Function[results,
-                                            Echo["results resolved!"];
+            notebook["Symbols"] = KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
 
-
-                                            With[{processed = With[{fixed = filterEmptyOrFailed[uids, results]}, If[Length[fixed]==0, <||>, Map[<|"Public"->#|>&, AssociationThread[Rule @@ fixed ] ] ] ]},
-                                                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects , processed];
-                                                notebook["Objects"] = processed;
-
-                                                monitorHandler // Delete;
-                                                ClearAll[monitor];
-                                                ClearAll[monitorHandler];
-
-                                                Echo["FrontendObject`Sync`Objects >> ok "];
-
-
-                                                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbolsNames"] , opts["Client"] ],
-                                                    Function[names,
-                                                        Echo["symbols names resolved!"];
-                                                        Echo[names];
-
-                                                        {monitorHandlerSym, monitorSym} = syncMonitorConstructor[names, opts, "Syncing symbols"];
-
-                                                        With[{symRequests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetSymbolByName", i, "MonitorEvent"->monitorSym] , opts["Client"] ], {i, names}]},
-                                                            If[Length[symRequests] == 0,
-                                                                notebook["Symbols"] = <||>;
-                                                                EventFire[promise, Resolve, True];
-                                                                WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                                                ClearAll[promises];
-                                                            , 
-                                                                Then[symRequests,
-                                                                    Function[symResults,
-                                                                        Echo["symbols resolved!"];
-                                                          
-
-                                                                        notebook["Symbols"] = AssociationThread[names -> symResults];
-
-                                                                        Delete[monitorHandlerSym];
-
-                                                                        ClearAll[monitorSym];
-                                                                        ClearAll[monitorHandlerSym];
-
-                                                                        Echo["FrontendObject`Sync`Symbols >> ok "];
-                                                                        EventFire[promise, Resolve, True];
-                                                                        WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                                                        ClearAll[promises];
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ];
-                                            ]
-                                        ],
-                                        Function[rejected,
-                                            Echo["REJECTED: "<>ToString[rejected ] ];
-                                            Echo["FIXME!"];
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ];
-                    ], 
-                    Function[error,
-                        Echo["FrontendObject`Sync >> Syncing error!"];
-                        Echo[error]
-                    ]
-                ];
-
-                (*Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAll"] , opts["Client"] ],
-                    Function[pay,
-                        Echo["resolved!"];
-                        With[{processed = Map[<|"Public"->#|>&, pay]},
-                            CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects , processed];
-                            notebook["Objects"] = processed;
-
-                            Echo["FrontendObject`Sync`Objects >> ok "];
-                            Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbols"] , opts["Client"] ],
-                                Function[symbols,
-                                    notebook["Symbols"] = symbols;
-                                    
-
-                                    Echo["FrontendObject`Sync`Symbols >> ok "];
-                                    EventFire[promise, Resolve, True];
-                                ]
-                            ]
-                            
-                        ];
-                    ]
-                , Function[error,
-                    Echo["FrontendObject`Sync >> Syncing error!"];
-                    Echo[error]
-                ] ];*)
-
-                promise
-            ]
-
-        
-        ]
+            Echo["Almost done"];
+            ClearAll[objects, missing, kernel];
+        ] ]
     }]; 
 ]
 
