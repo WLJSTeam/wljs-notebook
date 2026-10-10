@@ -6,14 +6,15 @@ Phase I
 - [x] FrontFetch: Remove "Format" option, restict to plain JS objects
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
-- [ ] Try saving dataset with many many FEs
-- [ ] DATA COmpression roundtrip!!!!!!!
-- [ ] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
-- [ ] Clean up FE creation, plain blocked ExportByteArray + comp
-- [ ] Use AsyncFunction during the sync
+- [x] Try saving dataset with many many FEs
+- [ ] Test mini apps context
+- [x] DATA COmpression roundtrip!!!!!!!
+- [x] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
+- [x] Clean up FE creation, plain blocked ExportByteArray + comp
+- [x] Use AsyncFunction during the sync
 - [ ] Move WLJSTranspost and Interpreer to its own package, expose assets dir via some variable (so it can be added to PATH). Add WebUSoceckSendBinary[]
-- [ ] Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
-- [ ] With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
+- [x] Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
+- [x] With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
 - [x] GetSymbol function seems to use some sort of communication with kernel. check misc 
 - [x] server.emitt: remove it completely
 - [x] server.kernel.emitt: remove it completely

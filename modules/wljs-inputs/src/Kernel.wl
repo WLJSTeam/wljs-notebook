@@ -612,7 +612,7 @@ applyPatch := (
 		DatasetWrapperBox[d   // Normal, StandardForm] (*FIXME do not use Normal*)
 	,
 
-		With[{o = CreateFrontEndObject[d   ]}, {out = MakeBoxes[o, StandardForm]},
+		With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]   ]}, {out = MakeBoxes[o, StandardForm]},
 			ViewBox[out, o]
 		]
 	] ];
@@ -620,7 +620,7 @@ applyPatch := (
 	Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 		DatasetWrapperBox[d   // Normal, WLXForm] (*FIXME do not use Normal*)
 	,
-		With[{o = CreateFrontEndObject[d  ]},
+		With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]  ]},
 			MakeBoxes[o, WLXForm]
 		]
 	] ];
@@ -659,7 +659,7 @@ System`WLXForm;
 Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 	DatasetWrapperBox[d // Normal, WLXForm] (*FIXME do not use Normal*)
 ,
-	With[{o = CreateFrontEndObject[d]},
+	With[{o = CreateFrontEndObject[ProvidedOptions[d, "HashFunction"->"V2"]]},
 		MakeBoxes[o, WLXForm]
 	]
 ] ];
@@ -667,7 +667,7 @@ Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Interna
 Dataset`MakeDatasetWLXBoxes[d_Dataset ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 	DatasetWrapperBox[d // Normal, WLXForm] (*FIXME do not use Normal*)
 ,
-	With[{o = CreateFrontEndObject[d]},
+	With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]]},
 		MakeBoxes[o, WLXForm]
 	]
 ] ];

@@ -879,7 +879,9 @@ core.Dataset = async (args, env) => {
   const data = await interpretate(args[0], {...env, hold:true, context: datasetContext});
   
   let hashFunction = interpretate.hash;
-  if (env?.options?.HashFunction == 'V2') hashFunction = interpretate.hashv2;
+  if (env?.options?.HashFunction == 'V2') {
+    hashFunction = interpretate.hashv2;
+  }
   
 
   
