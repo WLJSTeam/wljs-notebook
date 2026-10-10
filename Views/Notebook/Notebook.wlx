@@ -71,7 +71,7 @@ getTopic = "1:eJw9kFFKBDEMQEcRFJQVEUT/6gG8xAr6466yPUGnm5kGO8nQZFy8vYmL/oTmvSRN+9
 addAfterHelper[notebook_, uid_] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->"", "After"-> o];   
     ]
 ]
@@ -79,7 +79,7 @@ addAfterHelper[notebook_, uid_] := With[{},
 addAfterHelper[notebook_, {uid_, data_}] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->data, "After"-> o];   
     ]
 ]
@@ -87,7 +87,7 @@ addAfterHelper[notebook_, {uid_, data_}] := With[{},
 addBeforeHelper[notebook_, uid_] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->"", "Before"-> o];   
     ]
 ]
@@ -95,7 +95,7 @@ addBeforeHelper[notebook_, uid_] := With[{},
 addBeforeHelper[notebook_, {uid_, data_}] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->data, "Before"-> o];   
     ]
 ]
@@ -130,7 +130,7 @@ restoreCells[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     Map[
         Function[cell,
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] , client];
             ]
         ]   
     ,    
@@ -712,7 +712,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
             cell["Type"] = "Input";
 
             With[{template = CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook]},
-                WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] (*`*)], client];
+                WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] ], client];
             ];
         ];
     ];
@@ -1250,7 +1250,7 @@ Component[OptionsPattern[]] := With[{
             If[appGlobals =!= Null, appGlobals["CurrentNotebook"] = notebook];
 
             (* /* Destructor */ *)
-            With[{socket = EventClone[$CurrentWebSocket(*`*)]},
+            With[{socket = EventClone[$CurrentWebSocket]},
                 EventHandler[socket, {"Closed" -> Function[Null,
                     Echo[">> SOCKET CLOSED!!!"];
                     EventRemove[socket];
@@ -1318,7 +1318,7 @@ Component[OptionsPattern[]] := With[{
 
         "MakeInit" -> Function[uid,
             Echo["Toggle initialization cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"InitGroup" -> !TrueQ[cell["Props", "InitGroup"]]|>];
                 WebUISubmit[UINotebook["ToggleInitGroup", uid, TrueQ[cell["Props", "InitGroup"]]], $CurrentWebSocket];
             ]
@@ -1326,7 +1326,7 @@ Component[OptionsPattern[]] := With[{
 
         "Lock" -> Function[uid,
             Echo["Lock cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"Locked" -> !TrueQ[cell["Props", "Locked"]]|>];
                 WebUISubmit[UINotebook["ToggleLock", uid, TrueQ[cell["Props", "Locked"]]], $CurrentWebSocket];
             ]
@@ -1334,14 +1334,14 @@ Component[OptionsPattern[]] := With[{
 
         "Hide" -> Function[uid,
             Echo["Fade cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            With[{cell = cell`HashMap[uid]},
                 WebUISubmit[UINotebook["ToggleCell", cell["Hash"]], $CurrentWebSocket];
             ]            
         ],         
         
         "Fade" -> Function[uid,
             Echo["Fade cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"Fade" -> !TrueQ[cell["Props", "Fade"]]|>];
                 WebUISubmit[UINotebook["ToggleFade", uid, TrueQ[cell["Props", "Fade"]]], $CurrentWebSocket];
             ]
@@ -1349,18 +1349,18 @@ Component[OptionsPattern[]] := With[{
 
         "ClearOutputs" -> Function[uid,
             Echo["Clear outputs"];
-            With[{cell = cell`HashMap[uid](*`*)},
-                Delete /@ cell`SelectCells[cell["Notebook"]["Cells"], Sequence[cell, __?cell`OutputCellQ]](*`*);
+            With[{cell = cell`HashMap[uid]},
+                Delete /@ cell`SelectCells[cell["Notebook"]["Cells"], Sequence[cell, __?cell`OutputCellQ]];
             ]
         ],
 
         "Vanish" -> Function[uid,
-            If[!TrueQ[cell`HashMap[uid]["Invisible"](*`*)],
+            If[!TrueQ[cell`HashMap[uid]["Invisible"]],
                 With[{promise = Promise[]},
                     Then[promise, Function[result, 
                         If[TrueQ[result] || (result["response"] === 0),
 
-                            With[{cell = cell`HashMap[uid](*`*)},
+                            With[{cell = cell`HashMap[uid]},
                                 cell["Invisible"] = !TrueQ[cell["Invisible"]];
                                 WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $CurrentWebSocket];
                             ];
@@ -1377,20 +1377,29 @@ Component[OptionsPattern[]] := With[{
 
                 ];
             ,
-                With[{cell = cell`HashMap[uid](*`*)},
+                With[{cell = cell`HashMap[uid]},
                     cell["Invisible"] = !TrueQ[cell["Invisible"]];
                     WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $CurrentWebSocket];
                 ] 
             ];
         ],
 
-        "Project" -> Function[uid, projectCell[cell`HashMap[uid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "Project" -> Function[uid, projectCell[cell`HashMap[uid], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
 
-        "ProjectOrUpdate" -> Function[uid, projectCellOrUpdate[cell`HashMap[uid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "ProjectOrUpdate" -> Function[uidOrArray, 
+            If[ListQ[uidOrArray], 
+              With[{cell = cell`HashMap[uidOrArray[[1]]]},
+                cell["Data"] = Identity[uidOrArray[[2]]];
+                projectCellOrUpdate[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+              ]
+            ,
+                projectCellOrUpdate[cell`HashMap[uidOrArray], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+            ]
+        ],
 
         "UpdateCell" -> Function[payload,
-            With[{cell = cell`HashMap[payload[[1]] ], content = payload[[2]] (*`*)},
-                cell["Data"] = URLDecode[content];
+            With[{cell = cell`HashMap[payload[[1]] ], content = payload[[2]] },
+                cell["Data"] = Identity[content];
                 If[cell["Type"] == "Output",
                     Echo["Morphing..."];
                     cell["Type"] = "Input";
@@ -1404,7 +1413,7 @@ Component[OptionsPattern[]] := With[{
 
         "RemoveCell" -> Function[uid,
             trashCell[notebook, cell`HashMap[uid]];
-            cell`HashMap[uid] (*`*) //Delete;
+            cell`HashMap[uid]  //Delete;
             If[Select[notebook["Cells"], Function[c, !TrueQ[c["Invisible"]] && cell`InputCellQ[c]]] === {}, cell`CellObj["Notebook"->notebook, "Data"->""]];
         ],
 
@@ -1412,7 +1421,7 @@ Component[OptionsPattern[]] := With[{
             Print["Prop set..."];
             With[{obj = json},
                 If[AssociationQ[obj],
-                    With[{c = cell`HashMap[obj["Cell"]]  (*`*), key = obj["Key"]},
+                    With[{c = cell`HashMap[obj["Cell"]]  , key = obj["Key"]},
                         c["Props", key] = obj["Value"];
                     ];
                 ];
@@ -1424,14 +1433,22 @@ Component[OptionsPattern[]] := With[{
         "AddAfterOutputs" -> Function[uid,
             (*/* request from the client with event provided */*)
 
-            With[{o = cell`HashMap[uid] (*`*)},
+            With[{o = cell`HashMap[uid] },
                 cell`CellObj["Notebook"->notebook, "Data"->"", "After"-> Sequence[o, ___?cell`OutputCellQ]];   
             ]
         ],        
 
         "AddBefore" -> (addBeforeHelper[notebook, ##]&),        
 
-        "Evaluate" -> Function[celluid, evaluateCell[cell`HashMap[celluid](*`*), notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "Evaluate" -> Function[uidOrArray, 
+            If[ListQ[uidOrArray], 
+             With[{cell = cell`HashMap[uidOrArray[[1]]]}, 
+                cell["Data"] = Identity[uidOrArray[[2]]];
+                evaluateCell[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+             ],
+             evaluateCell[cell`HashMap[uidOrArray], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+            ]
+        ],
 
         unknown_?forwardedQ :> Function[data,
         
@@ -1478,4 +1495,3 @@ emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 
 
 {Component, ""&}
-

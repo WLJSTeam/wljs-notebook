@@ -719,13 +719,13 @@ window.CellWrapper = class {
 
   eval(content) {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
-    server.io.fire(this.channel, this.uid, 'Evaluate');  
+    if (content !== undefined) server.io.fire(this.channel, [this.uid, content], 'Evaluate'); else server.io.fire(this.channel, this.uid, 'Evaluate');
     this._event('eval', {self:this});
   }  
 
-  evalToWindow() {
+  evalToWindow(content) {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
-    server.io.fire(this.channel, this.uid, 'ProjectOrUpdate');  
+    if (content !== undefined) server.io.fire(this.channel, [this.uid, content], 'ProjectOrUpdate'); else server.io.fire(this.channel, this.uid, 'ProjectOrUpdate');
     this._event('eval', {self:this});    
   }
 
@@ -733,7 +733,7 @@ window.CellWrapper = class {
     if (this.type == "Output") console.warn('Output cell cannot be evaluated, but we will try to convert it');
     //jump to the next
     this.focusNext(true, 0, true);
-    server.io.fire(this.channel, this.uid, 'Evaluate');  
+    if (content !== undefined) server.io.fire(this.channel, [this.uid, content], 'Evaluate'); else server.io.fire(this.channel, this.uid, 'Evaluate');
     this._event('eval', {self:this});
   }  
   
