@@ -119,13 +119,12 @@ function getObject(server, id) {
     return server.ask('CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject["'+id+'"]'); 
 }
 
+//legacy polyfill (do not remove!)
 core.FrontEndVirtual = async (args, env) => {
   const copy = {...env};
   const store = args[0];
   const instance = new ExecutableObject('fevirtual-'+uuidv4(), copy, store);
   instance.assignScope(copy);
-
-
   return await instance.execute();
 }
 

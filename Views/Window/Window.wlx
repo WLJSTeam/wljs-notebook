@@ -3,6 +3,12 @@ Container := ImportComponent["Components/Container.wlx"];
 
 UIWindow = Unique["notebookUI"];
 
+(* Add cell wrapper tools *)
+(* Assuming that root directory is in the PATH of HTTPHandler *)
+With[{}, (* use with With, so WLX importer won't localize HeaderAssets *)
+    AppExtensions`HeaderAssets = {AppExtensions`HeaderAssets, <|"Type"->"JS", "Path"->"/Views/Common/Assets/wrappers.js"|>} // Flatten // DeleteDuplicates;
+];
+
 addListeners[window_, secret_String, client_, modals_, parameters_, extensions__] := Module[{},
     (* /* don't clone  event, must be one ! */ *)
     Echo["Add listeners::::"];

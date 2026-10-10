@@ -2,7 +2,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ContextMenu`", {
     "CoffeeLiqueur`Notebook`Transactions`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`WLX`WebUI`",
     "CoffeeLiqueur`CUSockets`EventsExtension`",
     "CoffeeLiqueur`Extensions`EditorViewMinimal`",

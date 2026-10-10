@@ -10,7 +10,8 @@ Head        = ImportComponent["Components/Head.wlx"];
 
 Alert           = ImportComponent["Components/Alert.wlx"];
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS =  extensionsJS;
 
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
@@ -387,6 +388,7 @@ App[request_] := Module[{
         <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}"> 
             <Head AccentColor={accentColor} Title={"Debugger"} Settings={settings}>
                 <meta charset="utf-8"/>
+                <WLJSInterpreterScript/>
                 <WebUIHeaderJS List={ExtensionsJS}/>  
                 <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>   
                 <ExtensionsStyles/>  

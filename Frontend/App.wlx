@@ -292,7 +292,8 @@ printPDF[client_, ModalController_, log_] := Module[{
 
 (* Build JS/CSS headers from extensions *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -329,6 +330,9 @@ App[request_] := With[{
   GlobalControls  = CreateUUID[],
   ModalController = CreateUUID[],
   GlobalMessanger = CreateUUID[],
+  
+  ExtensionsJS = Join[Select[AppExtensions`HeaderAssets, (#["Type"] === "JS")&][[All, "Path"]], extensionsJS],
+  
   Path = Switch[$OperatingSystem,
     "Windows",  
     URLDecode @ StringDrop[request["Path"],1],  
@@ -482,6 +486,7 @@ App[request_] := With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}" > 
         <Head Title={FileNameTake[Path]} Settings={settings} AccentColor={accentColor}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} Port={$Env["ws"]} PrefixMode={$Env["wsprefix"]}/>     
             <WebUIInitializationScript/>

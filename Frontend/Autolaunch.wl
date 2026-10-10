@@ -5,7 +5,7 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelAutolaunch`", {
   "CoffeeLiqueur`UInternal`",
   "CoffeeLiqueur`TCPUServer`",
   "CoffeeLiqueur`WebUSocketHandler`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`"
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
 
 (* 

@@ -7,12 +7,13 @@ Phase I
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
 - [x] Try saving dataset with many many FEs
+- [ ] replace server.ask and etc 
 - [x] Test mini apps context
 - [x] DATA COmpression roundtrip!!!!!!!
 - [x] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
 - [x] Clean up FE creation, plain blocked ExportByteArray + comp
 - [x] Use AsyncFunction during the sync
-- [ ] Move WLJSTranspost and Interpreer to its own package, expose assets dir via some variable (so it can be added to PATH). Add WebUSoceckSendBinary[]
+- [x] Move WLJSTranspost and Interpreer to its own package, expose assets dir via some variable (so it can be added to PATH). Add WebUSoceckSendBinary[]
 - [x] Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
 - [x] With[{result = FrontFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObject
 - [x] GetSymbol function seems to use some sort of communication with kernel. check misc 
@@ -23,7 +24,7 @@ Phase I
 - [x] rename WLJS.wl inside WLX package into something else. Used only for loading scripts
 - [x] Kick out sync from frontend, only ids
 - [x] Fix FrontRef to fetch the missing from master kernel
-- [ ] Run tests
+- [x] Run tests. PASSED!
 - [x] Run manual test on printing, 
 - [x] sidebar, 
 - [x] context menu,
@@ -56,11 +57,11 @@ Phase I
 - [ ] test MCP, 
 - [x] test drag  and drop
 
-- [ ] make WLJSIO.wl -> Interpeter?
-- [ ] move wljs-cells to views?
+- [x] make WLJSIO.wl -> Interpeter?
+- [x] move wljs-cells to views?
 
 Phase II
-- [ ] modules/wljs-editor/src/FrontendObject.wl: Remove deferred compression and use explicit ExpressionJSON convertion with neutral context
+- [x] modules/wljs-editor/src/FrontendObject.wl: Remove deferred compression and use explicit ExpressionJSON convertion with neutral context
 
 - [ ] Switch to WXF
 - [ ] Find all [TODO] tags

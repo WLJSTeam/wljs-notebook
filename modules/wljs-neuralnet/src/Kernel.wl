@@ -4,7 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`NeuralNet`", {
     "CoffeeLiqueur`Extensions`InputsOutputs`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Language`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Boxes`",
     "CoffeeLiqueur`Extensions`EditorView`"
 }]

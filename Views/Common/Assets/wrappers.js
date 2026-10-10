@@ -1,4 +1,3 @@
-;;
 function __emptyFalse(a) {
   if (a === '') return false;
   return a;
@@ -33,12 +32,6 @@ function throttle(func, ms) {
 
   return wrapper;
 }
-
-//CELL TYPES / LANGUAGES
-window.SupportedCells = {};
-window.SupportedLanguages = [];
-//GLobals
-window.Extensions = [];
 
 window.CellHashStorage = {};
 

@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`RuntimeTools`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`Async`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Editor`",
     "CoffeeLiqueur`WLX`WebUI`"  
 }]

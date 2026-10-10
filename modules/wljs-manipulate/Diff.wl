@@ -1,7 +1,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`Manipulate`Diff`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Language`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Extensions`EditorView`",

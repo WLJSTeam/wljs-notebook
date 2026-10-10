@@ -41,7 +41,8 @@ EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
 
 (* Extensions, initialization scripts and styles *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -80,6 +81,7 @@ App[request_] := With[{
         Secret = CreateUUID[], 
         GlobalControls  = CreateUUID[],
         ModalController = CreateUUID[],
+        ExtensionsJS = Join[Select[AppExtensions`HeaderAssets, (#["Type"] === "JS")&][[All, "Path"]], extensionsJS],
         isElectron = ElectronQ[request],
         cachedClient = Unique["cachedClient"],
         GlobalMessanger = CreateUUID[],
@@ -134,6 +136,7 @@ App[request_] := With[{
     <html class="h-full" os="{NavigatorOS}"> 
         <Head AccentColor={accentColor} Title={windowTitle} Settings={settings}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>

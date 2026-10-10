@@ -130,6 +130,7 @@ App[request_] := Module[{client, channel, target}, With[{
     <html class="h-full"> 
         <Head AccentColor={accentColor} Title={"xTerm"} Settings={settings}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <script type="module" src="/wljs-xterm/dist/kernel.js"></script>
             <WLJSTransportScript PrefixMode={$Env["wsprefix"]} TwoKernels={False} Port={$Env["ws"]}/>     

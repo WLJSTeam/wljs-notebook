@@ -69,7 +69,9 @@ loadSettingsOnceMore := With[{},
 
 (* Extension scripts and styles *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS = extensionsJS;
+
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -176,6 +178,7 @@ App[request_] := With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}" > 
         <Head AccentColor={accentColor} Title={FileNameTake[Path]} Settings={settings}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>

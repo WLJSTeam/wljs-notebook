@@ -5,13 +5,10 @@ BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`"]
 System`CreateFrontEndObject;
 System`FrontEndRef;
 System`FrontEndExecutable;
-System`FrontEndVirtual;
 
 CreateFrontEndObject::usage = "CreateFrontEndObject[expr_, uid_] compresses and expression to a frontend object. \nThe output is only evaluatable on the frontend. To get the original expression apply FrontEndRef on the generated uid"
 FrontEndRef::usage = "A readable by kernel representation of a frontend object"
 FrontEndExecutable::usage = "A readable by frontend representation of a frontend object"
-
-FrontEndVirtual::usage = "[LEGACY]"
 
 Begin["`Internal`"]
 

@@ -152,17 +152,7 @@ window.Server = class {
 
     return promise.promise 
   };
-  //fire event on the secondary kernel (your working area) (no reply)
-  emitt(uid, data, type = 'Default') { // DEPRICATED!!! needs to keep to support legacy code (NOT SECURE)
-    this.socket.send('EventFire["'+uid+'", "'+type+'", '+data+']');
-  };
-
-  _emitt(uid, data, type) { // DEPRICATED!!! needs to keep to support legacy code (NOT SECURE)
-    //unescaped version
-    console.log({uid:uid, data:data, type:type});
-    this.socket.send('EventFire["'+uid+'", '+type+', '+data+']');
-  };    
-
+ 
   send(expr) { //// DEPRICATED!!! needs to keep to support legacy code (NOT SECURE)
     this.socket.send(expr);
   };

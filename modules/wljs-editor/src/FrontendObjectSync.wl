@@ -4,7 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`Sync`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Misc`Language`",
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Extensions`Editor`"

@@ -23,7 +23,8 @@ $loadedPackages = {
   "<<CoffeeLiqueur`Misc`Parallel`",
   "<<CoffeeLiqueur`Misc`Workers`",
   "<<CoffeeLiqueur`WebUSocketHandler`",
-  "<<CoffeeLiqueur`Misc`WLJS`Transport`",
+  "<<CoffeeLiqueur`WLJS`Tools`",
+  "<<CoffeeLiqueur`WLJS`Transport`",
   "<<CoffeeLiqueur`CUSockets`EventsExtension`",
   "<<LetWL`"
 };

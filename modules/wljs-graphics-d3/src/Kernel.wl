@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Graphics`", {
     "CoffeeLiqueur`Extensions`Communication`", 
     "CoffeeLiqueur`Extensions`FrontendObject`", 
     "CoffeeLiqueur`Extensions`Boxes`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 

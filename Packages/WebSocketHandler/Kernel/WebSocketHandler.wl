@@ -56,9 +56,11 @@ WebSocketUPacketLength::usage =
 "WSLength[client, message] get expected message length."; 
 
 
-WebSocketUSend::uasge = 
+WebSocketUSend::usage = 
 "WebSocketUSend[client, message] send message via WebSocket protocol."; 
 
+WebSocketUSendBinary::usage = 
+"WebSocketUSendBinary[client, message] send message via WebSocket protocol as binary frame."; 
 
 WebSocketUChannel::usage = 
 "WebSocketUChannel[name] multiple client connection."; 
@@ -540,6 +542,33 @@ Module[{fragments, clientBuffer},
 	]
 ]; 
 
+
+encodeBinaryFrame[message_ByteArray] := 
+Module[{byte1, fin, opcode, length, mask, lengthBytes, reserved}, 
+	fin = {1}; 
+	
+	reserved = {0, 0, 0}; 
+
+	opcode = IntegerDigits[2, 2, 4]; 
+
+	byte1 = ByteArray[{FromDigits[Join[fin, reserved, opcode], 2]}]; 
+
+	length = Length[message]; 
+
+	Which[
+		length < 126, 
+			lengthBytes = ByteArray[{length}], 
+		126 <= length < 2^16, 
+			lengthBytes = ByteArray[Join[{126}, IntegerDigits[length, 256, 2]]], 
+		2^16 <= length < 2^64, 
+			lengthBytes = ByteArray[Join[{127}, IntegerDigits[length, 256, 8]]]
+	]; 
+
+	(*Return: _ByteArray*)
+	ByteArray[Join[byte1, lengthBytes, message]]
+]; 
+
+WebSocketUSendBinary[client_, message_ByteArray] := BinaryWrite[client, encodeFrame[ message ] ]
 
 (*::Section::Close::*)
 (*End private*)

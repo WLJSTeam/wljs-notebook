@@ -1300,13 +1300,13 @@ BoxForm`ArrangeSummaryBox[head_, interpretation_, icon_, above_List, _List, BoxF
           If[interpretationHead =!= headString && !StringQ[head],
             RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]          
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ,
           If[interpretationHead =!= headString && !StringQ[head],
             RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ]
       

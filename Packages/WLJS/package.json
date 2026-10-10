@@ -1,0 +1,27 @@
+{
+  "name": "wljs-interpreter",
+  "version": "1.0.0",
+  "description": "A core library and WL interpreter written in pure JS",
+  "defaultPackage": true,
+  "author": "Kirill Vasin",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "build": "node --max-old-space-size=8192 ./node_modules/.bin/rollup --config rollup.config.mjs"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "fflate": "^0.8.2",
+    "rollup": "^3.21.6"
+  },
+  "staticFiles": [
+    {
+      "staticPath": "static"
+    },
+    {
+      "staticPath": "src"
+    }
+  ]
+}

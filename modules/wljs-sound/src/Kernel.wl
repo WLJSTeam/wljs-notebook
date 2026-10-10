@@ -2,7 +2,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Sound`", {
     "CoffeeLiqueur`Misc`Language`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
 	"CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Extensions`FrontendObject`"
 }]

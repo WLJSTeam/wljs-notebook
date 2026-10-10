@@ -188,7 +188,8 @@ promise
 
 (* Build JS/CSS headers from extensions *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -224,6 +225,7 @@ App[request_] := With[{
         
         SidebarId = CreateUUID[],
         OnLoad    = CreateUUID[],
+        ExtensionsJS = Join[Select[AppExtensions`HeaderAssets, (#["Type"] === "JS")&][[All, "Path"]], extensionsJS],
         cachedClient = Unique["cachedClient"],
         kernels = Hold[AppExtensions`KernelList] ,
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
@@ -306,6 +308,7 @@ App[request_] := With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="false" > 
         <Head Title={FileNameTake[Path]} Settings={settings} AccentColor={accentColor}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} Port={$Env["ws"]} PrefixMode={$Env["wsprefix"]}/>     
             <WebUIInitializationScript/>

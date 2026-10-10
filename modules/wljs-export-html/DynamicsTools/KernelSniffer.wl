@@ -1,7 +1,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`KernelSniffer`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 KernelSniffer;

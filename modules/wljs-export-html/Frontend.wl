@@ -5,8 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
-    "CoffeeLiqueur`Extensions`WLJSInterpreter`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];

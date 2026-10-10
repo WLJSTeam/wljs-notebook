@@ -51,7 +51,7 @@ Component[OptionsPattern[]] := With[{EventChannel = CreateUUID[], decode = Optio
                     ,
 
                     _,
-                      WebUISubmit[System`Alert["Unknown loader message"](*`*), client];
+                      Echo["Unknown loader message"];
                   ];
               ];
 

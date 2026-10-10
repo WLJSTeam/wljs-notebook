@@ -2,7 +2,6 @@
 window.server = undefined;
 
 interpretate.anonymous = async (d, org) => {
-  //TODO Check if it set delayed or set... if set, then one need only to cache it
   console.log('Anonimous symbol: ' + JSON.stringify(d));  
 
   let name;
@@ -21,7 +20,7 @@ interpretate.anonymous = async (d, org) => {
   let packed = false;
 
   //request it from the server
-  console.log('sending request to a server... for'+name);
+  console.log('sending request to a server... for '+name);
   if (!server || !server?.kernel) {
     console.log('no evaluation kernel available, trying master...');
     data = await server.getSymbol(name); //get the data
@@ -34,8 +33,6 @@ interpretate.anonymous = async (d, org) => {
       data = await server.kernel.getSymbol(name); //get the data
     }
   }
-  console.log('got');
-  //console.log(data);
   
   //check for strings 
   let symbolQ = typeof data === 'string';
@@ -45,20 +42,20 @@ interpretate.anonymous = async (d, org) => {
     if (isNumeric(data)) symbolQ = false;
   }
 
-  //if it is a shit
+  //if it is a undefined structure
   if ((symbolQ && !(data in core)) || typeof data == 'undefined') {
     console.log('checking... '+name);
     throw('symbol '+data+' is not defined in any contextes and packing on frontend'); 
   }
 
-  //if it is OK
+  //if already requested
   if (name in core) {
-    //already requested
     console.log('it was already requested');
     return interpretate(d, org);
   }
 
   if (!associationQ) {
+    //normal, typical path - plain symbol
     core[name] = async (args, env) => {
       const data = await interpretate(core[name].data, env);
       if (env.root && !env.novirtual) core[name].instances[env.root.uid] = env.root; 
@@ -78,6 +75,7 @@ interpretate.anonymous = async (d, org) => {
       return data;
     }      
   } else {
+    //if this is an accociation
     core[name] = async (args, env) => {
       const key = await interpretate(args[0], env);
       let data = await interpretate(core[name].data, env);
@@ -98,16 +96,19 @@ interpretate.anonymous = async (d, org) => {
 
   core[name].data = data; //get the data
 
+  //subscribe to it
   server.kernel.addTracker(name);
   server.kernel.trackedSymbols[name] = true;
 
+  //allow instancing
   core[name].virtual = true;
   core[name].instances = {};
 
-  //interpretate it AGAIN!
+  //interpretate it AGAIN
   return interpretate(d, org);
 }
 
+//aka Hold with extra features
 core.Offload = (args, env) => {
   if (args.length > 1) {
       //alternative path - checking options
@@ -155,17 +156,6 @@ core.Offload.update = (args, env) => {
   }
 
   return interpretate(args[0], env);
-}
-
-//a default fallback!!!
-core.FrontEndVirtual = async (args, env) => {
-  const copy = {...env};
-  const store = args[0];
-  const instance = new ExecutableObject('fevirtual-fallback-'+uuidv4(), copy, store);
-  instance.assignScope(copy);
-
-
-  return await instance.execute();
 }
 
 core.Offload.destroy = (args, env) => {

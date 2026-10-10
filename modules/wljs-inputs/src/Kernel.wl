@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`InputsOutputs`", {
 	"CoffeeLiqueur`Misc`Events`Promise`",
 	"CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
-	"CoffeeLiqueur`Misc`WLJS`Transport`",
+	"CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
 	"CoffeeLiqueur`Misc`Language`",
 	"CoffeeLiqueur`Extensions`EditorView`",
 	"CoffeeLiqueur`Extensions`FrontendObject`",

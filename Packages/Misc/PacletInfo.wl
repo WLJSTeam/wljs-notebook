@@ -18,7 +18,6 @@ PacletObject[
           {"CoffeeLiqueur`Misc`Events`", "Events.wl"}, 
           {"CoffeeLiqueur`Misc`Parallel`", "Parallel.wl"}, 
           {"CoffeeLiqueur`Misc`Events`Promise`", "Promise.wl"},
-          {"CoffeeLiqueur`Misc`WLJS`Transport`", "WLJSIO.wl"}, 
           {"CoffeeLiqueur`Misc`Async`", "Async.wl"}, 
           {"CoffeeLiqueur`Misc`Workers`", "Workers.wl"},
           {"CoffeeLiqueur`Misc`Language`", "Language.wl"}

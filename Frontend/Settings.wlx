@@ -26,7 +26,8 @@ Modals           = ImportComponent["Components/Modals/Modals.wlx"];
 
 (* Extensions scripts and styles *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS = Join[{}, extensionsJS];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -92,6 +93,7 @@ App[request_] := With[{
     <html class="h-full" os="{NavigatorOS}"> 
         <Head AccentColor={accentColor} Title={"Settings"} Settings={settings}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>

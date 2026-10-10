@@ -19,7 +19,11 @@ UINotebook = Unique["notebookUI"];
 ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final]]]
 ApplySync[f_, w_, {}, final_] := final[];
 
-
+(* Add cell wrapper tools *)
+(* Assuming that root directory is in the PATH of HTTPHandler *)
+With[{}, (* use with With, so WLX importer won't localize HeaderAssets *)
+    AppExtensions`HeaderAssets = {AppExtensions`HeaderAssets, <|"Type"->"JS", "Path"->"/Views/Common/Assets/wrappers.js"|>} // Flatten // DeleteDuplicates;
+];
 
 trashCell[notebook_, cell_] := Module[{},
     If[!cell`InputCellQ[cell], Return[Null, Module]];

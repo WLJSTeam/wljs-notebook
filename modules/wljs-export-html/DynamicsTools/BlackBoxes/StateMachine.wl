@@ -5,7 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`StateMachine`", {
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`UObjects`"
 }]
 

@@ -8,6 +8,8 @@ BeginPackage["CoffeeLiqueur`Notebook`AppExtensions`"]
 AppExtensions;
 ExtensionEvent;
 
+HeaderAssets;
+
 AppEvents;
 AppProtocol;
 FrontendEnv;
@@ -35,6 +37,8 @@ Templates;
 TemplateInjection;
 
 Begin["`Internal`"];
+
+HeaderAssets = {};
 
 templates = <||>;
 

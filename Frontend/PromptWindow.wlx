@@ -84,7 +84,8 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
 
 (* Build JS/CSS headers from extensions *)
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -208,7 +209,8 @@ App[request_] := Module[{localExtensions}, With[{
   promtEventUID = CreateUUID[],
   isElectron = ElectronQ[request],
   cachedClient = Unique["cachedClient"],
-  OnLoad    = CreateUUID[]
+  OnLoad    = CreateUUID[],
+  ExtensionsJS = Join[Select[AppExtensions`HeaderAssets, (#["Type"] === "JS")&][[All, "Path"]], extensionsJS]
 },
   
   With[{
@@ -307,6 +309,7 @@ App[request_] := Module[{localExtensions}, With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}" > 
         <Head Title={FileNameTake[Path]} AccentColor={accentColor} Settings={settings}>
             <meta charset="utf-8"/>
+            <WLJSInterpreterScript/>
             <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>

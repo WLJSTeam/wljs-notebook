@@ -3,7 +3,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`Communication`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 (*Offload::usage = "Offload[exp] to keep it from evaluation on Kernel"*)

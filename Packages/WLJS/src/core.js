@@ -245,57 +245,31 @@ core.URLEncode = async (args, env) => {
 
 core.URLEncode.update = core.URLEncode;
 
-core.ReadClipboard = async(args, env) => {
+core['CoffeeLiqueur`WLJS`Tools`ReadClipboard'] = async(args, env) => {
     const clipText = await navigator.clipboard.readText();
     return clipText;
 }
 
-core['CoffeeLiqueur`Extensions`WLJSInterpreter`ReadClipboard'] = core.ReadClipboard;
+//legacy alias
+core.ReadClipboard = core['CoffeeLiqueur`WLJS`Tools`ReadClipboard'];
 
+//legacy
 core.FrontEndDispose = function(args, env) {
     //no need anymore
     console.log('garbage removed');
 }
 
+//legacy
 core.NoVirtual = async(args, env) => {
     return await interpretate(args, {
         ...env,
         novirtual: true
     })
 }
-
+//legacy
 core.NoVirtual.destroy = core.NoVirtual
 
-
-core.FlipSymbols = async function(args, env) {
-    const key1 = args[0];
-    const key2 = args[1];
-
-    if (args.length > 2) {
-        console.log('applying function ' + args[2]);
-        const temp = await interpretate([args[2], key1], {
-            ...env,
-            novirtual: true
-        });
-        core[key1].data = core[key2].data;
-        core[key2].data = temp;
-    } else {
-        const temp = core[key1].data;
-        core[key1].data = core[key2].data;
-        core[key2].data = temp;
-    }
-
-
-
-    Object.values(core[key1].instances).forEach((inst) => {
-        inst.update();
-    });
-
-    Object.values(core[key2].instances).forEach((inst) => {
-        inst.update();
-    });
-}
-
+//legacy
 core.Unsafe = async function(args, env) {
     return await interpretate(args[0], {
         ...env,
@@ -303,33 +277,35 @@ core.Unsafe = async function(args, env) {
     });
 }
 
+//legacy
 core.GlobalThrottle = async function(args, env) {
     interpretate.throttle = await interpretate(args[0], env);
 }
 
+//legacy
 core.FrontEndExecutableHold = core.FrontEndExecutable;
 //to prevent codemirror 6 from drawing it
 core.FrontEndRef = core.FrontEndExecutable;
-//another alias
+//legacy
 core.FrontEndExecutableWrapper = core.FrontEndExecutable;
-//hold analogue for the backend
-
+//legacy
 core.FrontEndOnly = (args, env) => {
     return interpretate(args[0], env);
 };
-
+//legacy
 core.FrontEndOnly.update = (args, env) => {
     return interpretate(args[0], env);
 };
-
+//legacy
 core.FrontEndOnly.destroy = (args, env) => {
     interpretate(args[0], env);
 };
-
+//legacy
 core.FHold = core.FrontEndOnly;
-
+//legacy
 core.Hold = core.FrontEndOnly;
 
+//Just a warning
 core.Dynamic = () => {
     console.warn('Dynamic is not supported. Use Offload! Ignored...');
 };
@@ -838,11 +814,12 @@ core.Equals = async(args, env) => {
 core.Equals.update = core.Equals
 core.Equals.destroy = core.Equals
 
-core.Alert = async(args, env) => {
+core['CoffeeLiqueur`WLJS`Tools`Alert'] = async(args, env) => {
     interpretate.alert(await interpretate(args[0], env));
 }
-//alias
-core['CoffeeLiqueur`Extensions`WLJSInterpreter`Alert'] = core.Alert;
+
+//legacy alias
+core.Alert = core['CoffeeLiqueur`WLJS`Tools`Alert'];
 
 core.Print = async(args, env) => {
     console.log('Out:\t' + JSON.stringify(await interpretate(args[0], env)));
@@ -860,31 +837,32 @@ core.N = (args, env) => {
     return interpretate(args[0], copy);
 }
 
-core.AttachDOM = async(args, env) => {
+const attachDOM = async (args, env) => {
     //used to attach dom element to the containirized function
-    if (!env.root) {
-        console.warn('Using AttachDOM on pure function is not recommended. Consider to use virtual or real containers instead!');
-    }
+    if (!env.root) console.warn(`This is not a good idea`);
 
     const id = await interpretate(args[0], env);
     env.element = document.getElementById(id);
     return id;
 }
 
-core.AttachDOM.destroy = async(args, env) => {}
-core.AttachDOM.update = async(args, env) => {}
+attachDOM.destroy = async(args, env) => {}
+attachDOM.update = async(args, env) => {}
 
-core['Global`AttachDOM'] = core.AttachDOM
+core['CoffeeLiqueur`WLJS`Tools`AttachDOM'] = attachDOM;
 
-core['CoffeeLiqueur`Extensions`WLJSInterpreter`AttachDOM'] = core.AttachDOM
+//legacy aliases
+core.AttachDOM = attachDOM;
+core['Global`AttachDOM'] = attachDOM;
 
 
-core.WindowScope = async(args, env) => {
+core['CoffeeLiqueur`WLJS`Tools`WindowScope'] = async(args, env) => {
     const key = interpretate(args[0]);
     return window[key];
 }
 
-core['CoffeeLiqueur`Extensions`WLJSInterpreter`WindowScope'] = core.WindowScope
+//legacy alias
+core.WindowScope = core['CoffeeLiqueur`WLJS`Tools`WindowScope'];
 
 core.Evaluate = async(args, env) => {
     const i = await interpretate(args[0], env);
@@ -1499,4 +1477,23 @@ core.ProvidedOptions = async (args, env) => {
 core.ProvidedOptions.update = core.ProvidedOptions
 core.ProvidedOptions.destroy = core.ProvidedOptions
 
+const iWXF = interpretate.deserializeWXF;
+core['Internal`PackedArrayWXF'] = async (args, env) => {
+  const byte = await interpretate(args[0], env);
+  return await interpretate(iWXF(byte), env);
+}
+
+//legacy
+core._NotebookUI = true;
+
+//global throttling
+interpretate.throttle = 40;
+
 window.core = core;
+
+//this should not be here [FIXME]
+//but one need to initialize it at the very beginning anyway
+//despite the naming, it is used almost everywhere
+window.SupportedCells = {};
+window.SupportedLanguages = [];
+window.Extensions = [];

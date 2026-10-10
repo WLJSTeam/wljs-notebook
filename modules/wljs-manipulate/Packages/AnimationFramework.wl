@@ -6,7 +6,7 @@ BeginPackage["AnimationFramework`", {
   "CoffeeLiqueur`Extensions`Communication`", 
   "CoffeeLiqueur`Extensions`FrontendObject`", 
   "CoffeeLiqueur`Extensions`Boxes`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`",
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
   "CoffeeLiqueur`UObjects`",
   "CoffeeLiqueur`WLX`",
   "CoffeeLiqueur`WLX`Importer`",

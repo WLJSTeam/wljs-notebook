@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Excalidraw`", {
     "CoffeeLiqueur`Misc`Events`Promise`", 
     "CoffeeLiqueur`Extensions`Communication`", 
     "CoffeeLiqueur`Extensions`FrontendObject`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 Begin["`Private`"]

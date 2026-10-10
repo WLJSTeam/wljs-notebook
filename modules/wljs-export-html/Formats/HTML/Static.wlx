@@ -337,6 +337,7 @@ Component[OptionsPattern[]] := Module[{mainClass, bodyClass}, With[{
             <RootStyles/>  
             <ExtensionsStyles Settings={settings}/>
             <ExtensionsStylesAlt Settings={settings}/>
+            <WLJSInterpreterScript/>
             <ExtensionsJS Settings={settings}/> 
             <WebUIInitializationScript/> 
             <WLJSTransportScript Port={0}/>

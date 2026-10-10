@@ -87,8 +87,9 @@ Needs["CoffeeLiqueur`Notebook`Windows`" -> "win`"];
 
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
-(* WLJS transport *)
-Needs["CoffeeLiqueur`Misc`WLJS`Transport`"]
+(* WL <-> JS transport *)
+Needs["CoffeeLiqueur`WLJS`Tools`"];
+Needs["CoffeeLiqueur`WLJS`Transport`"];
 
 (* Event system  *)
 Needs["CoffeeLiqueur`Misc`Events`"]
@@ -315,7 +316,7 @@ Downloader   = downloader`module;
 
 (* Global server variables *)
 
-$ExposedDirectories = {FileNameJoin[{Directory[], "modules"}], FileNameJoin[{Directory[], "Assets"}], Directory[], AppExtensions`ExtensionsDir, "/", ""}
+$ExposedDirectories = {FileNameJoin[{Directory[], "modules"}], FileNameJoin[{Directory[], "Packages"}], FileNameJoin[{Directory[], "Assets"}], Directory[], AppExtensions`ExtensionsDir, "/", ""}
 $ExposedRoutes = <||>;
 
 (* Handle signals on PATH and routes extension *)

@@ -1,18 +1,22 @@
-BeginPackage["CoffeeLiqueur`Misc`WLJS`Transport`", {
-    "CoffeeLiqueur`WebUSocketHandler`",
-    "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`Events`"
+BeginPackage["CoffeeLiqueur`WLJS`Transport`", {
+    "CoffeeLiqueur`WebUSocketHandler`"
 }]; 
+
+(* Public API *)
 
 WLJSTransportHandler;
 WLJSTransportScript;
+$WLJSTransportAssets;
 
 WLJSTransportSend;
 
-System`Offload;
-Offload::usage = "Hold expression to be evaluated on a frontend"
+Begin["`Internal`"]
 
-Begin["`Private`"]
+
+(* System-wide symbols *)
+(* Exposing them reduces the payload on very fast updates             *)
+(* Normally, you should keep them in the internal (private)  context  *)
+(* and use their full name when defining them on JS side              *)
 
 System`WLJSIOImport;
 System`WLJSIOUpdateSymbol;
@@ -26,15 +30,15 @@ System`WLJSIOPromiseCallback;
 System`WLJSIORequest;
 System`WLJSIOFetch;
 
-
-System`SlientPing;
-
 System`$CurrentWebSocket;
+System`Offload;
+
+Offload::usage = "Hold expression to be evaluated on the frontend"
+SetAttributes[Offload, HoldFirst]
 
 WLJSIOImport[data_] := ImportByteArray[URLDecode[data]//StringToByteArray, "RawJSON"]
 
-SetAttributes[Offload, HoldFirst]
-
+(* Main handler will evaluate any WebSocket message *)
 WLJSTransportHandler[cl_, data_ByteArray] := Block[{$CurrentWebSocket = cl},
     ToExpression[data//ByteArrayToString];
 ]
@@ -50,13 +54,25 @@ $DefaultSerializer[expr_] :=
 
 WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSerializer]
 
-WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]]},
-    WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
-        WebSocketUSend[client, WLJSIOUpdateSymbol[name, value] // $DefaultSerializer]
-    ]]
+(* performance critical part! streaming large chunks of data upon symbol update *)
+WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]], context = Context[Unevaluated[symbol]]},
+	If[context == "Global`" || context == "System`",
+    	WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
+                (* bypass $DefaultSerializer for faster path *)
+                WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[name, value], "WXF"] ];
+    	] ]
+	,
+		With[{fullName = StringJoin[context, name]},
+    		WLJSTransportHandler["AddTracking"][symbol, fullName, cli, Function[{client, value},
+                (* bypass $DefaultSerializer for faster path *)
+                WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[fullName, value], "WXF"] ];
+    		] ]
+		]
+	]
 ]
 
 SetAttributes[WLJSIOAddTracking, HoldFirst]
+
 
 WLJSIOGetSymbol[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
     WLJSTransportHandler["GetSymbol"][expr, client, Function[result,
@@ -65,12 +81,10 @@ WLJSIOGetSymbol[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
 ];
 
 WLJSIOPromise[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
-    (*Print["WLJS promise >> get with id "<>uid];*)
     WebSocketUSend[client, WLJSIOPromiseResolve[uid, expr] // $DefaultSerializer];
 ];
 
 WLJSIOFetch[uid_][symbol_] := With[{client = $CurrentWebSocket},
-    (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[symbol],
         Then[symbol, Function[res,
             WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
@@ -81,7 +95,6 @@ WLJSIOFetch[uid_][symbol_] := With[{client = $CurrentWebSocket},
 ];
 
 WLJSIOFetch[uid_][r_, args_List] := With[{client = $CurrentWebSocket, symbol = r @@ args},
-    (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[symbol],
         Then[symbol, Function[res,
             WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
@@ -92,7 +105,6 @@ WLJSIOFetch[uid_][r_, args_List] := With[{client = $CurrentWebSocket, symbol = r
 ];
 
 WLJSIORequest[uid_][ev_String, pattern_, data_] := With[{client = $CurrentWebSocket, res = EventFire[ev, pattern, data]},
-    (*Print["WLJS promise >> get with id "<>uid];*)
     If[PromiseQ[res],
         Then[res, Function[r,
             WebSocketUSend[client, WLJSIOPromiseResolve[uid, r] // $DefaultSerializer];
@@ -109,8 +121,8 @@ WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = $CurrentWebSocket}
     ]];
 ];
 
-IDCards = <||>;
-WLJSIDCardRegister[uid_String] := (Print["Transport registered as "<>uid]; IDCards[uid] = $CurrentWebSocket)
+(* Script for embeding *)
+
 
 WLJSTransportScript[OptionsPattern[] ] := If[NumberQ[OptionValue["Port"] ],
     Switch[{OptionValue["TwoKernels"], OptionValue["Event"], OptionValue["Host"]},
@@ -138,19 +150,22 @@ WLJSTransportScript[OptionsPattern[] ] := If[NumberQ[OptionValue["Port"] ],
 
 Options[WLJSTransportScript] = {"Port"->Null, "Host"->Null, "PrefixMode"->False, "Regime"->"Standalone", "Event"->Null, "TwoKernels" -> False}
 
-assets = $InputFileName // DirectoryName // ParentDirectory;
+rootDir = $InputFileName // DirectoryName // ParentDirectory;
+root = rootDir // FileNameSplit // Last;
+commonScript = Table[StringTemplate["<script type=\"module\" src=\"``\"></script>"]["/"<>root<>"/"<>p], {p, {
+    "src/api.js",
+    "src/extension.js"
+}}] // StringRiffle;
 
-commonScript = StringRiffle[{
-    Import[FileNameJoin[{assets, "Assets", "ServerAPI.js"}], "String"],
-    Import[FileNameJoin[{assets, "Assets", "InterpreterExtension.js"}], "String"]
-}, "\n"];
-
+$WLJSTransportAssets = {
+    FileNameJoin[{rootDir, "src", "api.js"}],
+    FileNameJoin[{rootDir, "src", "extension.js"}]
+};
 
 ScriptTemplate[_, port_, initCode_] := 
     StringTemplate["
+        ``
         <script type=\"module\">
-            ``
-            ;
             const wport = ``;
             var socket = new WebSocket((window.location.protocol == \"https:\" ? \"wss://\" : \"ws://\")+window.location.hostname+':'+wport);
             window.server = new Server('Master Kernel');
@@ -183,9 +198,8 @@ ScriptTemplate[_, port_, initCode_] :=
 
 ScriptTemplate[_, port_, host_, initCode_] := 
     StringTemplate["
+        ``
         <script type=\"module\">
-            ``
-            ;
             const wport = ``;
             var socket = new WebSocket((window.location.protocol == \"https:\" ? \"wss://\" : \"ws://\")+'``'+':'+wport);
             window.server = new Server('Master Kernel');
@@ -220,9 +234,8 @@ ScriptTemplate[_, port_, host_, initCode_] :=
 
 ScriptTemplate[prefix_String, port_, initCode_] := 
     StringTemplate["
+        ``
         <script type=\"module\">
-            ``
-            ;
             const wport = ``;
             var socket = new WebSocket((window.location.protocol == \"https:\" ? \"wss://\" : \"ws://\")+window.location.hostname+':'+window.location.port+'/``');
             window.server = new Server('Master Kernel');
@@ -255,9 +268,8 @@ ScriptTemplate[prefix_String, port_, initCode_] :=
 
 ScriptTemplate[prefix_String, port_, host_, initCode_] := 
     StringTemplate["
+        ``
         <script type=\"module\">
-            ``
-            ;
             const wport = ``;
             var socket = new WebSocket((window.location.protocol == \"https:\" ? \"wss://\" : \"ws://\")+'``/``');
             window.server = new Server('Master Kernel');
@@ -288,9 +300,127 @@ ScriptTemplate[prefix_String, port_, host_, initCode_] :=
         </script>
     "][commonScript, port, host, prefix, initCode]    
 
+(* 
+    Override ExpressionJSON exports to use WXF for packed arrays 
+    This is hacky, since it uses internal private symbols of WL14+
 
-End[];
+    It significantly improves performance (especially on floats) and memory usage
 
-EndPackage[];
+    here we create a new structure Internal`PackedArrayWXF
+    this will be defined on the frontend too
+*)
 
-System`WLXEmbed;
+(* frontend symbol *)
+Internal`PackedArrayWXF;
+
+(* force the converter package to load *)
+ExportString[0, "ExpressionJSON"];
+
+ClearAll[expressionJSONPackableArrayQ, expressionJSONPackedWXF, toExpressionJSONPackedWXF];
+
+(* Use it only on "large" objects *)
+
+expressionJSONPackableArrayQ[x_] :=
+  NumericArrayQ[x] || (ListQ[x] && If[Developer`PackedArrayQ[x], ByteCount[x]> 1024, False]);
+
+expressionJSONPackedWXF[x_] :=
+  Internal`PackedArrayWXF[Developer`WriteWXFByteArray[x]];
+
+Quiet[
+ toExpressionJSONPackedWXF[Image[data_, rest___]] /;
+    expressionJSONPackableArrayQ[data] :=
+  Image[expressionJSONPackedWXF[data], rest];
+
+ toExpressionJSONPackedWXF[Image3D[data_, rest___]] /;
+    expressionJSONPackableArrayQ[data] :=
+  Image3D[expressionJSONPackedWXF[data], rest];
+
+ toExpressionJSONPackedWXF[Audio[data_, rest___]] /;
+    expressionJSONPackableArrayQ[data] :=
+  Audio[expressionJSONPackedWXF[data], rest];
+];
+
+$expressionJSONHeldAttributes = {
+  HoldFirst, HoldRest, HoldAll, HoldAllComplete
+};
+
+heldHeadQ[head_Symbol] :=
+  Intersection[Attributes[head], $expressionJSONHeldAttributes] =!= {};
+
+heldHeadQ[_] := False;
+
+toExpressionJSONPackedWXF[x_NumericArray] :=
+  expressionJSONPackedWXF[x];
+
+toExpressionJSONPackedWXF[x_List] :=
+  expressionJSONPackedWXF[x] /; If[Developer`PackedArrayQ[x], ByteCount[x] >  1024, False];
+
+toExpressionJSONPackedWXF[x_?AtomQ] := x;
+
+toExpressionJSONPackedWXF[x_RuleDelayed] := x;
+
+toExpressionJSONPackedWXF[x_] := x /; heldHeadQ[Head[Unevaluated[x]]];
+
+toExpressionJSONPackedWXF[x_] :=
+  Map[toExpressionJSONPackedWXF, x];
+
+Unprotect[System`Convert`JSONDump`writeExpressionJSON];
+
+System`Convert`JSONDump`writeExpressionJSON[
+  stream_OutputStream, expr_, opts___
+] :=
+  Developer`WriteExpressionJSONStream[
+    stream,
+    toExpressionJSONPackedWXF[expr],
+    "IssueMessagesAs" -> Export,
+    FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONStream]]
+  ];
+
+System`Convert`JSONDump`writeExpressionJSON[
+  filename_String, expr_, opts___
+] :=
+  Developer`WriteExpressionJSONFile[
+    filename,
+    toExpressionJSONPackedWXF[expr],
+    "IssueMessagesAs" -> Export,
+    FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONFile]]
+  ];
+
+Protect[System`Convert`JSONDump`writeExpressionJSON];
+
+(* force reader package to load *)
+
+ImportString["0", "ExpressionJSON"];  
+
+(* Inverse convertion *)
+
+ClearAll[fromExpressionJSONPackedWXF];
+
+fromExpressionJSONPackedWXF[x_] :=
+  x /. Internal`PackedArrayWXF[ba_ByteArray] :>
+    Developer`ReadWXFByteArray[ba];
+
+Unprotect[System`Convert`ExpressionJSONDump`readExpressionJSON];
+
+System`Convert`ExpressionJSONDump`readExpressionJSON[filename_String, opts___] :=
+  "Expression" -> fromExpressionJSONPackedWXF[
+    Developer`ReadExpressionJSONFile[
+      filename,
+      "IssueMessagesAs" -> Import
+    ]
+  ];
+
+System`Convert`ExpressionJSONDump`readExpressionJSON[stream_InputStream, opts___] :=
+  "Expression" -> fromExpressionJSONPackedWXF[
+    Developer`ReadExpressionJSONStream[
+      stream,
+      "IssueMessagesAs" -> Import
+    ]
+  ];
+
+Protect[System`Convert`ExpressionJSONDump`readExpressionJSON];
+
+
+
+End[]
+EndPackage[]
