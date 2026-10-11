@@ -57,13 +57,16 @@ export const evaluate = async (page, input="1+1", timeout=5000, extra=500) => {
   await delay(200);
   await editor.click();
   await delay(200);
-  // Type text into the editor
   await page.keyboard.type(input);
   await delay(400);
   await page.keyboard.type(' ');
   await delay(200);
+  //await page.keyboard.type(input, { delay: 100 });
+  await delay(300);
   const play = page.locator('.button-cplay').first();
-  play.click();
+  await play.click();
+  await delay(300);
+  await delay(100);
 
   if (page.kernelQ != 9) {
     await page.kernelQ;
@@ -71,24 +74,21 @@ export const evaluate = async (page, input="1+1", timeout=5000, extra=500) => {
   
   await page.waitForSelector('.cout', {timeout:timeout});
   await delay(3.0*extra);
+  await delay(1000);
   const outputCell = page.locator('.cout').first();
   return outputCell;
 }
 
 
 export const clearCell = async (page, timeout=1000) => {
-  let inputcell = page.locator('.cin').first();
-  await inputcell.waitFor({ state: 'visible' });
-  const id = await inputcell.getAttribute('id');
-
-  const menu = page.locator('.button-cmore').first();
-  menu.click();
-  
-  await page.locator('[id="dropdown-float"]').waitFor({ state: 'visible' });
-  const clearOutputsButton = page.locator('button[data-name="RemoveCell"]').first();
-  await clearOutputsButton.waitFor({ state: 'visible' }); // Ensures it appears
-  await clearOutputsButton.click();
-
-  inputcell = page.locator(`[id="${id}"]`);
-  await inputcell.waitFor({ state: "detached" })
+  const editor = page.locator('.cm-editor').first();
+  // Click to focus
+  await delay(200);
+  await editor.click();
+  await delay(200);
+  await page.keyboard.press('ControlOrMeta+A');
+  await delay(200);
+  await page.keyboard.press('Backspace');
+  await delay(200);
+  await delay(200);
 }

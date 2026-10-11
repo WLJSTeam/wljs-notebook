@@ -49,7 +49,7 @@ import { EditorState, Compartment, Facet, StateField, StateEffect, Prec, EditorS
 import { syntaxHighlighting, indentOnInput, bracketMatching, HighlightStyle, foldGutter} from "@codemirror/language"
 import { history, historyKeymap } from "@codemirror/commands"
 import { highlightSelectionMatches } from "@codemirror/search"
-import { autocompletion, closeBrackets, acceptCompletion } from "@codemirror/autocomplete"
+import { autocompletion, closeBrackets, acceptCompletion, closeCompletion } from "@codemirror/autocomplete"
 import {tooltips} from "@codemirror/view";
 
 import {
@@ -1435,6 +1435,7 @@ class CodeMirrorCell {
       linter: linter,
       EditorView: EditorView,
       EditorState: EditorState,
+      closeCompletion: closeCompletion,
       highlightSpecialChars: highlightSpecialChars,
       syntaxHighlighting: syntaxHighlighting,
       defaultHighlightStyle: defaultHighlightStyle,

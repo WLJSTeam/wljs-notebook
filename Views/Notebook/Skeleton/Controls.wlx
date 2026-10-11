@@ -62,7 +62,7 @@ Script = With[{},
             {
                 const button = group.getElementsByClassName('button-cplay')[0];
                 button.addEventListener('click', () => {
-                    server.io.fire(cell.channel, cell.uid, 'Evaluate');
+                    cell.eval();
                 });
             };  
             

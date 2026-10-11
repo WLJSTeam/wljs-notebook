@@ -35721,6 +35721,7 @@ class CodeMirrorCell {
       linter: linter,
       EditorView: EditorView,
       EditorState: EditorState,
+      closeCompletion: closeCompletion,
       highlightSpecialChars: highlightSpecialChars,
       syntaxHighlighting: syntaxHighlighting,
       defaultHighlightStyle: defaultHighlightStyle,

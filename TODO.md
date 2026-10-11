@@ -33,10 +33,7 @@ Phase I
 - [x] spinner
 - [x] snippets, 
 - [x] odd error when first time run prompt window
-- [ ] exports as widgets, 
 - [x] check settings reload, 
-- [ ] html export, 
-- [ ] slide export, 
 - [x] save boxes, 
 - [x] add bg to kernels 
 - [x] message boxes, 
@@ -56,16 +53,18 @@ Phase I
 - [x] Rasterize, 
 - [ ] test MCP, 
 - [x] test drag  and drop
-
 - [x] make WLJSIO.wl -> Interpeter?
 - [x] move wljs-cells to views?
 
 Phase II
-- [x] modules/wljs-editor/src/FrontendObject.wl: Remove deferred compression and use explicit ExpressionJSON convertion with neutral context
-
 - [ ] Switch to WXF
 - [ ] Find all [TODO] tags
-
+- [ ] REDO ALL TESTS from Phase I
+- [ ] Update docs
+- [ ] Fix plugins examples!!! or extensions exmaples
+- [ ] exports as widgets, 
+- [ ] html export, 
+- [ ] slide export,  
 
 Phase III
 - [ ] Test FEM
