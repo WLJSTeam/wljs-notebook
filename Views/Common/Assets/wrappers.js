@@ -143,6 +143,8 @@ window.CellWrapper = class {
   inner = {
     focusable: []
   };
+  _ignoreNextUpdate = false
+
 
   static forceFocusNew = () => {
     forceFocusNew = true;
@@ -175,8 +177,8 @@ window.CellWrapper = class {
     element.appendChild(cell.element);
   }
 
-  static setContent = (uid, content) => {
-    CellHash.get(uid).setContent(content);
+  static setContent = (uid, content, visOnlyQ=false) => {
+    CellHash.get(uid).setContent(content, visOnlyQ);
   }
 
   static toggleCell = (uid) => {
@@ -214,6 +216,10 @@ window.CellWrapper = class {
   }
 
   channel;
+
+  ignoreNextUpdate() {
+    this._ignoreNextUpdate = true;
+  }
 
   focusNext(skipOutputs = false, findex = 0, skipFocusable = false) {
     //console.log(this.inner.focusable);
@@ -423,6 +429,11 @@ window.CellWrapper = class {
 
   save(content) {
     //const fixed = content.replaceAll('\\\"', '\\\\\"').replaceAll('\"', '\\"');
+    if (this._ignoreNextUpdate) {
+      this._ignoreNextUpdate = false;
+      console.log('update was ignored');
+      return;
+    }
     this.throttledSave(content);
     this._event('saved', {uid: this.uid, self:this});
   }
@@ -640,11 +651,11 @@ window.CellWrapper = class {
     this.element.scrollIntoView(opts)
   }
 
-  setContent(content) {
+  setContent(content, visOnlyQ) {
     
     if (!this.display.editor) return;
     if (this.display.setContent) {
-      this.display.setContent(content);
+      this.display.setContent(content, visOnlyQ);
       this._event('contentmutate', {self:this});
     }
   }

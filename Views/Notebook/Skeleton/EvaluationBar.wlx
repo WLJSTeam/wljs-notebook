@@ -8,8 +8,8 @@ Element[OptionsPattern[]] := With[{cell = OptionValue["Cell"], client = OptionVa
                 ],
                 "ChangeContent" -> Function[content,
                     Print["ChangeContent update"];
-                    WebUISubmit[UINotebook["CellContent", uid, content] (*`*), client];
-                ],                
+                    WebUISubmit[UINotebook["CellContent", uid, content, True] (*`*), client];
+                ],         
                 "Info" -> Function[state,
                     WebUISubmit[UINotebook["CellInfo", uid, state] (*`*), client];
                 ],
@@ -43,7 +43,8 @@ Script[OptionsPattern[]] := With[{UINotebook = OptionValue["UINotebook"]},
         core['<UINotebook/>'].CellContent = async (args, env) => {
             const uid      = await interpretate(args[0], env);
             const content    = await interpretate(args[1], env);
-            CellWrapper.setContent(uid, content);
+            const visibleOnlyQ    = await interpretate(args[2], env);
+            CellWrapper.setContent(uid, content, visibleOnlyQ);
         }
         core['<UINotebook/>'].CellError = async (args, env) => {
             const uid      = await interpretate(args[0], env);

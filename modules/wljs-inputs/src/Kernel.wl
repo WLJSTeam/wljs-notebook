@@ -1090,7 +1090,10 @@ buggedDefs = {
 	TemporalData[TimeSeries, list_List, bool_, n_Integer] :> TemporalData[TimeSeries, list, bool, N[n] ] 
 }
 
-DatasetMakeBox[expr_String, uid_String] := CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] /. buggedDefs, StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet
+DatasetMakeBox[expr_String, uid_String] := With[{},
+    CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] /. buggedDefs, StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet;
+    uid
+]
 
 
 listener[p_, list_, uid_] := With[{}, With[{

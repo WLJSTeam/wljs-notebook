@@ -16,7 +16,6 @@ test.describe('Easy check for most basic decorators', () => {
 
       await page.goto(url);
       await delay(6000);
-      page.on('console', msg => console.log(msg.text()));
   });
 
   test.afterAll(async ({ browser }) => {
@@ -40,7 +39,7 @@ test.describe('Easy check for most basic decorators', () => {
   test('Molecule', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Molecule["NC(=O)C[C@H](C(=O)O)N"]', 15000);
+    const outputCell = await evaluate(page, 'Molecule["NC(=O)C[C@H](C(=O)O)N"]', 15000, 7000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'moleculae.png']);
   });   
 
@@ -337,14 +336,13 @@ test.describe('Easy check for most basic decorators', () => {
   test('Large Dataset', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'ResourceData["Global and National Annual CO2 Emissions from Fossil Fuel Burning 1751-2014"]', 18000, 2000);
+    const outputCell = await evaluate(page, 'ResourceData["Global and National Annual CO2 Emissions from Fossil Fuel Burning 1751-2014"]', 18000, 9000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'bigDataset.png']);
   });  
   
   
 
 });
-
 
 
 

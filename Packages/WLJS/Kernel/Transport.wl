@@ -1,5 +1,7 @@
 BeginPackage["CoffeeLiqueur`WLJS`Transport`", {
-    "CoffeeLiqueur`WebUSocketHandler`"
+    "CoffeeLiqueur`WebUSocketHandler`",
+    "CoffeeLiqueur`Misc`Events`",
+    "CoffeeLiqueur`Misc`Events`Promise`"
 }]; 
 
 (* Public API *)
@@ -94,7 +96,7 @@ WLJSIOFetch[uid_][symbol_] := With[{client = $CurrentWebSocket},
     ]
 ];
 
-WLJSIOFetch[uid_][r_, args_List] := With[{client = $CurrentWebSocket, symbol = r @@ args},
+WLJSIOFetch[uid_][r_, args_] := With[{client = $CurrentWebSocket, symbol = r @@ args},
     If[PromiseQ[symbol],
         Then[symbol, Function[res,
             WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];

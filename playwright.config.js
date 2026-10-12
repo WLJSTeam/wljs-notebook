@@ -1,6 +1,10 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
 
+const updatingSnapshots = process.argv.some((argument) =>
+  argument === '--update-snapshots' || argument.startsWith('--update-snapshots='),
+);
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -18,8 +22,8 @@ export default defineConfig({
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 0 : 0,
+  /* Retry failed tests once, except while regenerating screenshots. */
+  retries: updatingSnapshots ? 0 : 1,
 
   timeout: 90000,
 
@@ -28,7 +32,10 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['./tests/reporters/final-attempt-only.mjs'],
+    ['html'],
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -74,4 +81,3 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
-

@@ -253,7 +253,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                 If[TrueQ[cell["Notebook"]["Opened"] ] && cell["Type"] === "Input",
                     EventFire[cell, "ChangeContent", assoc["Data"] ];
-                    (*no need in setting also in an object, it will be done for the feedback from CM6 editor*)                
+                    cell["Data"] = assoc["Data"];               
                 ,
                     cell["Data"] = assoc["Data"];
                 ]

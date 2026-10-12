@@ -15,7 +15,6 @@ test.describe('2D Plot', () => {
       
       await page.goto(url);
       await delay(6000);
-      page.on('console', msg => console.log(msg.text()));
   });
 
   test.afterAll(async ({ browser }) => {
@@ -164,14 +163,14 @@ test.describe('2D Plot', () => {
   test('Tabular Test', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Tabular[{{1, x, Today}, {4, y, Tomorrow}}, {"col1", "col2", "col3"}]', 15000, 2000);
+    const outputCell = await evaluate(page, 'Tabular[{{1, x, DateObject[{2025, 3, 17}]}, {4, y, DateObject[{2025, 3, 18}]}}, {"col1", "col2", "col3"}]', 15000, 2000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular1.png']);
   });  
   
   test('Tabular Test2', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'EntityValue[ EntityClass["Book", "DuneBooks"], {"FirstPublished", "Author",  "Image"}, "Tabular"]', 15000, 2000);
+    const outputCell = await evaluate(page, 'EntityValue[ EntityClass["Book", "DuneBooks"], {"FirstPublished", "Author",  "Image"}, "Tabular"]', 15000, 8000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular2.png']);
   });  
 

@@ -13,8 +13,10 @@
     "start": "wolframscript -f Scripts/run.wls",
     "el": "electron .",
     "test": "npx playwright test",
+    "test-failed": "npx playwright test --last-failed",
     "test:electron-main": "node --test Electron/main.test.js",
     "test-update": "npx playwright test --update-snapshots",
+    "test-update-failed": "npx playwright test --last-failed --update-snapshots",
     "dist-mac": "electron-builder --mac --arm64 --publish always",
     "dist-mac86": "electron-builder --mac --x64 --publish always",
     "dist-win86": "electron-builder --win --x64 --publish always",
@@ -196,6 +198,7 @@
   "homepage": "https://github.com/WLJSTeam/wljs-notebook#readme",
   "devDependencies": {
     "@electron/notarize": "^2.3.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "@playwright/test": "^1.51.0",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@types/node": "^22.13.10",

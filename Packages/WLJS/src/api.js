@@ -191,6 +191,7 @@ core.WLJSIOUpdateSymbol = async (args, env) => {
 }
 
 core.WLJSIOPromiseResolve = (args, env) => {
+  console.log('Resolve!');
   const uid = interpretate(args[0], env);
   if (args[1] == '$Failed') {
     promises[uid].reject(args[1]);

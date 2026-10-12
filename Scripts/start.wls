@@ -70,8 +70,6 @@ Needs["CoffeeLiqueur`HTTPUHandler`"]
 Needs["CoffeeLiqueur`HTTPUHandler`Extensions`"]
 Needs["CoffeeLiqueur`WebUSocketHandler`"]
 
-Needs["LetWL`"]
-
 (* Notebook-related packages *)
 
 Needs["CoffeeLiqueur`Notebook`Utils`"];

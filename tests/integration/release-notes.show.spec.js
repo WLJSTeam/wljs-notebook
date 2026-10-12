@@ -14,7 +14,6 @@ test.describe('Release note expressions (3.0.5+)', () => {
 
     await page.goto(url);
     await delay(6000);
-    page.on('console', msg => console.log(msg.text()));
   });
 
   test.afterAll(async () => {

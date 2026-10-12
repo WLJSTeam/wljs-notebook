@@ -4,6 +4,8 @@ Phase I
 - [x] $DefaultSerializer replace
 - [x] Check WebUIKeyListener and others
 - [x] FrontFetch: Remove "Format" option, restict to plain JS objects
+- [ ] set_cell_lines race conditions
+- [x] LargeDataset
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
 - [x] Try saving dataset with many many FEs
@@ -65,6 +67,9 @@ Phase II
 - [ ] exports as widgets, 
 - [ ] html export, 
 - [ ] slide export,  
+- [ ] update tutorials on plugins
+- [ ] update tutorials on JS-WL comm
+- [ ] Remove LetWL from docs
 
 Phase III
 - [ ] Test FEM

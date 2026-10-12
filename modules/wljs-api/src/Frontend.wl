@@ -538,7 +538,8 @@ deleteCell[cell_] := If[TrueQ[cell["Notebook"]["Opened"] ],
 
 updateCellContent[cell_, newData_] :=  If[TrueQ[cell["Notebook"]["Opened"] ],
                 (* use interactive notebook API. for updating lively *)
-                EventFire[cell, "ChangeContent", newData ];
+                EventFire[cell, "ChangeContent", newData ]; 
+                cell["Data"] = newData;
             ,
                 (* directly set the property *)
                 cell["Data"] = newData;

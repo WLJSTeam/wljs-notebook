@@ -34869,7 +34869,7 @@ const EditorSelected = {
   },
 
   setContent: (data, e) => {
-    const editor = e || selectedEditor;
+    let editor = e || selectedEditor;
 
     if (!editor) return;
     if (!editor.viewState) return;
@@ -35394,8 +35394,9 @@ class CodeMirrorCell {
     }
 
 
-    setContent (data) {
+    setContent (data, visQOnly = false) {
       console.warn('content mutation!');
+      if (visQOnly) console.log('prevent saving');
       if (!this.editor.viewState) return;
   
   const editor = this.editor;
@@ -35408,6 +35409,7 @@ class CodeMirrorCell {
         , insert: ''}
     });  */ //FIXED already
 
+      if (visQOnly === true) this.origin?.ignoreNextUpdate();
       this.editor.dispatch({
           changes: {
             from: 0,

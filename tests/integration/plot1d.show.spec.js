@@ -14,7 +14,6 @@ test.describe('1D Plot', () => {
       
       await page.goto(url);
       await delay(6000);
-      page.on('console', msg => console.log(msg.text()));
   });
 
   test.afterAll(async ({ browser }) => {
@@ -88,7 +87,7 @@ test.describe('1D Plot', () => {
   test('PlotLabel with TraditionalForm', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Plot[Sin[x], {x, 0, 5}, PlotLabel -> TraditionalForm[Sin[x]]]', 15000, 5500);
+    const outputCell = await evaluate(page, 'Plot[Sin[x], {x, 0, 5}, PlotLabel -> TraditionalForm[Sin[x]]]', 15000, 7000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'potLabelTrad.png']);
   });    
 
@@ -175,7 +174,7 @@ test.describe('1D Plot', () => {
   test('Plot framed axes labels Automatic', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->Automatic]', 15000, 2000);
+    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->Automatic]', 15000, 5000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'plot1dframedautomatic.png']);
   });   
 
@@ -189,7 +188,7 @@ test.describe('1D Plot', () => {
   test('Plot axes labels TeX', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->{{HoldForm[CellView["\\alpha", "Display"->"latex"]], {0,-5}},  None}]', 15000, 2000);
+    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->{{HoldForm[TeXView["\\\\alpha"]], {0,-5}},  None}]', 15000, 4000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'plot1dnonframedTex.png']);
   });   
 

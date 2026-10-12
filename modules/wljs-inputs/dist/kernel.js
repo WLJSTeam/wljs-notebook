@@ -594,6 +594,7 @@ atoms.Blank = async (data, contextEnv, element, store, hashFunction = interpreta
     } catch(err) {
       console.warn('Creating FE object by id '+hash);
       await server.kernel.io.fetch('CoffeeLiqueur`Extensions`InputsOutputs`Private`DatasetMakeBox', [JSON.stringify(data), hash]);
+      console.warn('Waiting for '+hash);
       storage = await obj.get();
     }
     

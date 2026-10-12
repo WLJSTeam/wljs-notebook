@@ -25,8 +25,7 @@ $loadedPackages = {
   "<<CoffeeLiqueur`WebUSocketHandler`",
   "<<CoffeeLiqueur`WLJS`Tools`",
   "<<CoffeeLiqueur`WLJS`Transport`",
-  "<<CoffeeLiqueur`CUSockets`EventsExtension`",
-  "<<LetWL`"
+  "<<CoffeeLiqueur`CUSockets`EventsExtension`"
 };
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
