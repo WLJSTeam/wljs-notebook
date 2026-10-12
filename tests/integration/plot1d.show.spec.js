@@ -188,7 +188,7 @@ test.describe('1D Plot', () => {
   test('Plot axes labels TeX', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->{{HoldForm[TeXView["\\\\alpha"]], {0,-5}},  None}]', 15000, 8000);
+    const outputCell = await evaluate(page, 'Plot[x, {x,0,1}, Frame->True, FrameLabel->{{HoldForm[TeXView["\\\\alpha"]], {0,0}},  None}]', 15000, 8000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'plot1dnonframedTex.png']);
   });   
 
