@@ -134,45 +134,14 @@ window.Server = class {
     }
   }
 
-  //evaluate something on the master kernel and make a promise for the reply
-  ask(expr, mode = undefined) { // DEPRICATED!!! needs to keep to support legacy code (NOT SECURE)
-    const uid = uuidv4();
-
-    const promise = new Deferred();
-    promises[uid] = promise;
-    console.log('Asking expr');
-    console.log(expr);
-
-    if (mode == 'callback') {
-      this.socket.send('WLJSIOPromiseCallback["'+uid+'", ""]['+expr+']');
-    } else {
-      this.socket.send('WLJSIOPromise["'+uid+'", ""]['+expr+']');
-    }
-    
-
-    return promise.promise 
-  };
- 
-  send(expr) { //// DEPRICATED!!! needs to keep to support legacy code (NOT SECURE)
-    this.socket.send(expr);
-  };
-
   getSymbol(expr) {
-    const uid = uuidv4();
-
-    const promise = new Deferred();
-    promises[uid] = promise;
-    //not implemented
-    //console.error('askKernel is not implemented');
-    //console.log('NotebookPromiseKernel["'+uid+'", ""][Hold['+expr+']]');
-    this.socket.send('WLJSIOGetSymbol["'+uid+'", ""]["'+expr+'"]');
-
-    return promise.promise     
+    console.warn('requested '+expr);
+    return this.io.fetch('WLJSIOGetSymbol', [expr]);    
   }
 
   addTracker(name) {
     console.warn('added tracker for '+name);
-    this.socket.send('WLJSIOAddTracking["'+name+'"]')
+    return this.io.fetch('WLJSIOAddTracking', [name]);    
   }
 }
 

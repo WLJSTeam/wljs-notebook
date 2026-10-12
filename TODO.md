@@ -9,7 +9,8 @@ Phase I
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
 - [x] Try saving dataset with many many FEs
-- [ ] replace server.ask and etc 
+- [x] replace server.ask and etc 
+- [ ] CHeck InputAutocomplete[]
 - [x] Test mini apps context
 - [x] DATA COmpression roundtrip!!!!!!!
 - [x] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip

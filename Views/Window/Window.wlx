@@ -147,7 +147,7 @@ Script[OptionsPattern[] ] := With[{Secret = OptionValue["Event"], ExtensionTempl
             }
 
             core['<UIWindow/>'].KernelSocket = async (args, env) => {
-                const raw = await server.kernel.ask('$CurrentWebSocket');
+                const raw = await server.kernel.io.fetch('$CurrentWebSocket');
                 raw[1] = await interpretate(raw[1], env);
                 return {Head: raw[0], Arg: raw[1]};
             }

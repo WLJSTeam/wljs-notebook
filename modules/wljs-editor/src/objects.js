@@ -116,7 +116,7 @@ core['CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed'] = async (arg
 //Extend Server Class
 function getObject(server, id) {
     //console.log(server);
-    return server.ask('CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject["'+id+'"]'); 
+    return server.io.fetch('CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject', [id]); 
 }
 
 //legacy polyfill (do not remove!)

@@ -12,7 +12,7 @@ core['CoffeeLiqueur`Extensions`Autocomplete`Private`UIAutocompleteConnect'] = as
 
     //check the store
     if (localStorage.getItem("codemirror-autocomplete-hash") != String(hash)) {
-      let completeInfo = await server.ask('CoffeeLiqueur`Extensions`Autocomplete`Private`GetDefaults');
+      let completeInfo = await server.io.fetch('CoffeeLiqueur`Extensions`Autocomplete`Private`GetDefaults');
       completeInfo = await interpretate(completeInfo, env);
       console.warn('Update static autocomplete info');
       console.warn(completeInfo);

@@ -222,7 +222,12 @@ InputAutocomplete[autocomplete_, opts: OptionsPattern[] ] := With[{},
 
 InputAutocomplete[autocomplete_, default_String, opts: OptionsPattern[] ] := With[{},
 	With[{uid = OptionValue["Event"], handler = Unique["System`xhxComplete"]},
-		handler[data_String][cbk_] := autocomplete[data // URLDecode, cbk];
+		handler[data_String] := With[{promise = Promise[]}, 
+		   autocomplete[data, Function[cbk,
+		    EventFire[promise, Resolve, cbk]
+		   ]];
+		   promise
+		];
 
 		EventObject[<|
 	     "Id"->uid, 

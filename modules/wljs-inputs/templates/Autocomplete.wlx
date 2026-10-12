@@ -203,7 +203,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
                 document.addEventListener("keydown", keyHandler);
                 window.addEventListener('click', outOfFocus);
             }
-            server.kernel.ask('<HandlerSymbol/>["'+encodeURIComponent(trimmed)+'"]', 'callback').then(async (result) => {
+            server.kernel.io.fetch('<HandlerSymbol/>', [trimmed]).then(async (result) => {
                 const assoc = await interpretate(result, {});
                 if (!assoc) return;
                 if (!assoc.length) return;

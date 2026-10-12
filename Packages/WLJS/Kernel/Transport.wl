@@ -66,16 +66,18 @@ WLJSIOAddTracking[symbol_String] := With[{
            (* bypass $DefaultSerializer for faster path *)
            WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[symbol, value],   "WXF"] ];
          ] ]
-    ]
+    ];
+    True
 ]
 
 SetAttributes[WLJSIOAddTracking, HoldFirst]
 
 
-WLJSIOGetSymbol[uid_, params_][exprString_] := With[{client = $CurrentWebSocket},
+WLJSIOGetSymbol[exprString_] := With[{client = $CurrentWebSocket, promise = Promise[]},
     WLJSTransportHandler["GetSymbol"][exprString, client, Function[result,
-        WebSocketUSend[client, WLJSIOPromiseResolve[uid, result] // $DefaultSerializer] 
-    ]]
+        EventFire[promise, Resolve, result]; 
+    ]];
+    promise
 ];
 
 WLJSIOPromise[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
