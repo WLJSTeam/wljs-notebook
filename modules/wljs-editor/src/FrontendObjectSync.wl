@@ -58,11 +58,11 @@ fetchFromKernel[keys_, kernel_, test_, default_, function_] := With[{promise = P
     promise
 ]; 
 
-WLJSTransportHandler["GetSymbol"] = Function[{expr, client, callback},
-              Print["evaluating cached symbol"];
-              With[{name = StringDrop[StringDrop[ToString[expr], StringLength["Hold["] ], -1]},
+WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
+              Echo["Getting cached symbol"];
+              With[{name = exprString},
                 If[KeyExistsQ[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, name],
-                    Print[name];
+                    Echo[name];
                     callback[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols[name] ]
                 ,
                     callback[$Failed]
@@ -98,7 +98,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                 Echo["FrontendObject`Sync >> nothing to restore "];
             ];
         ],
-        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel},
+        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel, extra},
             Echo["OnBefore Save!"];
 
             If[!MemberQ[notebook["Properties"], "Objects"], 
@@ -131,6 +131,22 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
             objects = Complement[objects, missing];
 
+            Echo["Last sweep. Check all input and output cells for uids."];
+            (* This would not cover hidden UIDs in compressed expr *)
+            (* Why do we do that? An editor does not render the content, which is too far from the scroll, i.e. virtual rendering *)
+            (* May be we should consider removing this feature *)
+            With[{
+                cellData = Map[(#["Data"])&, notebook["Cells"]],
+                allUIDs = Keys @ CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects,
+                oldLength = Length[objects]
+            },
+                extra = Select[allUIDs, Function[key, Or @@ StringContainsQ[cellData, key]]];
+                objects = Join[objects, extra] // DeleteDuplicates;
+                
+                StringTemplate["Found in addition: ``"][Length[objects] - oldLength] // Echo;
+            ];
+            (* Nah... 100 uids x 30-50 cells = too much? *)
+
             notebook["Objects"] = Map[<|"Public"->#["Public"]|>&, KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]];
 
             Echo["Getting symbols from the frontend"];
@@ -161,10 +177,11 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
             objects = Complement[objects, missing];
 
+
             notebook["Symbols"] = KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
 
             Echo["Almost done"];
-            ClearAll[objects, missing, kernel];
+            ClearAll[objects, missing, kernel, extra];
         ] ]
     }]; 
 ]

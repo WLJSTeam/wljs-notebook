@@ -49,11 +49,11 @@ Phase I
 - [x] from specialchars table, 
 - [x] check debugger 
 - [x] animation framework, 
-- [ ] ERROR: had to kick out WXF patch for ExportByteArray
+- [x] ERROR: had to kick out WXF patch for ExportByteArray
 - [x] ERROR: Manipulate does not work in projected window
 - [x] Check if Rasterize still works...
-- [ ] ERROR: @\t;\u0001
-- [ ] ERROR: ToExpression::sntx: Invalid syntax in or before " WLJSIOGetSymbol["526b57db-5096-4037-8cd8-4b5843b6ddb0", ""][Hold[@ ". \:008d;$Scaling]]
+- [x] ERROR: @\t;\u0001
+- [x] ERROR: ToExpression::sntx: Invalid syntax in or before " WLJSIOGetSymbol["526b57db-5096-4037-8cd8-4b5843b6ddb0", ""][Hold[@ ". \:008d;$Scaling]]
 - [x] export animation, 
 - [x] export Animate, 
 - [x] export PDF, 
@@ -61,7 +61,7 @@ Phase I
 - [x] test MCP, 
 - [x] test drag  and drop
 - [x] make WLJSIO.wl -> Interpeter?
-- [ ] Add StringContainsQ[] for cells before removing 
+- [x] Add StringContainsQ[] for cells before removing 
 - [x] move wljs-cells to views?
 
 Phase II
@@ -83,4 +83,5 @@ Phase III
 - [ ] Tooltip lists vetors render withut Edtior
 - [x] cache time reduce
 - [ ] NotebookClose on CurrentWindow[] should send WebUIClose
+- [ ] PauseAsync[1]~Then~MessageDialog
 - [ ] SystemDialogInputAsync no need in Window and for other

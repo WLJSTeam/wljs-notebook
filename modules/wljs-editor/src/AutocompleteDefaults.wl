@@ -1638,11 +1638,7 @@ in <i>video</i>."|>, <|"label" -> "AudioPartition", "type" -> "keyword",
 object into non-overlapping segments of duration \
 <i>dur</i>.\n\nAudioPartition[<i>audio</i>,<i>dur</i>,<i>offset</i>] \
 generates segments with specified <i>offset</i>."|>, 
- <|"label" -> "AudioPause", "type" -> "keyword", 
-  "info" -> "AudioPause[] pauses the playback of all AudioStream \
-objects.\n\nAudioPause[<i>astream</i>] pauses the playback of the AudioStream \
-object <i>astream</i>.\n\nAudioPause[<i>audio</i>] pauses the playback for \
-all streams originated by <i>audio</i>."|>, <|"label" -> "AudioPitchShift", 
+ <|"label" -> "AudioPitchShift", 
   "type" -> "keyword", "info" -> "AudioPitchShift[<i>audio</i>,<i>r</i>] \
 applies pitch shifting to <i>audio</i> by the ratio <i>r</i>, shifting every \
 frequency f to r f.\n\nAudioPitchShift[<i>video</i>,<i>r</i>] applies pitch \
@@ -21986,12 +21982,7 @@ components of \
 computes the property \"<i>prop</i>\" and selects the first <i>n</i> in \
 sorted \
 order.\n\nSelectComponents[...,\"<i>prop</i>\",<i>n</i>,<i>p</i>] \
-sorts computed properties using the ordering function <i>p</i>."|>, 
- <|"label" -> "SelectedCells", "type" -> "keyword", 
-  "info" -> "SelectedCells[<i>notebook</i>] returns a list of CellObject \
-expressions corresponding to the currently selected cells in \
-<i>notebook</i>.\n\nSelectedCells[] returns the currently selected cells in \
-the notebook in which this function is being evaluated."|>, 
+sorts computed properties using the ordering function <i>p</i>."|>,  
  <|"label" -> "SelectFirst", "type" -> "keyword", 
   "info" -> "SelectFirst[<i>data</i>,<i>crit</i>] gives the first \
 <i>e</i><sub><i>i</i></sub> of <i>data</i> for which \
@@ -26844,13 +26835,6 @@ applies <i>f</i> to partitions with offset \
 <i>d</i>.\n\nVideoMapTimeSeries[<i>f</i>,{<i>video</i><sub>1</sub>,<i>video</\
 i><sub>2</sub>,...},...] applies <i>f</i> to a list of inputs \
 extracted from each <i>video</i><sub><i>i</i></sub>."|>, 
- <|"label" -> "VideoPause", "type" -> "keyword", 
-  "info" -> "VideoPause[] pauses the playback of all VideoStream \
-objects.\n\nVideoPause[<i>vstream</i>] pauses the playback of the VideoStream \
-object <i>vstream</i>."|>, <|"label" -> "VideoPlay", "type" -> "keyword", 
-  "info" -> "VideoPlay[<i>video</i>] returns a new VideoStream object from \
-<i>video</i> and starts the playback.\n\nVideoPlay[<i>vstream</i>] starts \
-playing a VideoStream object <i>vstream</i>."|>, 
  <|"label" -> "VideoQ", "type" -> "keyword", "info" -> "VideoQ[<i>video</i>] \
 yields True if <i>video</i> has the form of a valid Video object, and False \
 otherwise."|>, <|"label" -> "VideoReplace", "type" -> "keyword",

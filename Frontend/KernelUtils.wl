@@ -90,18 +90,22 @@ wsStartListerning[kernel_, port_, host_] := With[{},
           Off[Function::fpct]; (* fixme, when a symbol gets cleared, see  Experimental`ValueFunction *)
           
           (* symbols tracking *)
-          WLJSTransportHandler["AddTracking"] = Function[{symbol, name, cli, callback},
+          WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
               (*Print["Add tracking... for "<>name];*)
-              Experimental`ValueFunction[ Unevaluated[symbol] ] = Function[{y,x}, 
+              Experimental`ValueFunction[ fullName ] = Function[{y,x}, 
                 If[FailureQ[callback[cli, x] ], 
-                  Experimental`ValueFunction[ Unevaluated[symbol] ] // Unset
+                  Experimental`ValueFunction[ fullName ] // Unset
                 ];
               ];
           , HoldFirst];
 
-          WLJSTransportHandler["GetSymbol"] = Function[{expr, client, callback},
+          WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
               (*Print["evaluating the desired symbol on the Kernel"];*)
-              callback[expr // ReleaseHold];
+              If[ToExpression[exprString, InputForm, ValueQ],
+                callback[ToExpression[exprString, InputForm]];
+              ,
+                callback[$Failed];
+              ]
           ];
 
           (*Echo[StringTemplate["starting @ ``:port ``"][Internal`Kernel`Host, port] ];*)

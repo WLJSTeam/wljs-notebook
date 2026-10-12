@@ -57,27 +57,23 @@ $DefaultSerializer[expr_] :=
 WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSerializer]
 
 (* performance critical part! streaming large chunks of data upon symbol update *)
-WLJSIOAddTracking[symbol_] := With[{cli = $CurrentWebSocket, name = SymbolName[Unevaluated[symbol]], context = Context[Unevaluated[symbol]]},
-	If[context == "Global`" || context == "System`",
-    	WLJSTransportHandler["AddTracking"][symbol, name, cli, Function[{client, value},
-                (* bypass $DefaultSerializer for faster path *)
-                WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[name, value], "WXF"] ];
-    	] ]
-	,
-		With[{fullName = StringJoin[context, name]},
-    		WLJSTransportHandler["AddTracking"][symbol, fullName, cli, Function[{client, value},
-                (* bypass $DefaultSerializer for faster path *)
-                WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[fullName, value], "WXF"] ];
-    		] ]
-		]
-	]
+WLJSIOAddTracking[symbol_String] := With[{
+    cli = $CurrentWebSocket, name = StringSplit[symbol, "`"][[-1]], 
+    context = Quiet[Context[symbol]]
+},
+    If[StringQ[context],
+        WLJSTransportHandler["AddTracking"][symbol, context<>name, cli, Function[{client, value},
+           (* bypass $DefaultSerializer for faster path *)
+           WebSocketUSendBinary[client, ExportByteArray[WLJSIOUpdateSymbol[symbol, value],   "WXF"] ];
+         ] ]
+    ]
 ]
 
 SetAttributes[WLJSIOAddTracking, HoldFirst]
 
 
-WLJSIOGetSymbol[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
-    WLJSTransportHandler["GetSymbol"][expr, client, Function[result,
+WLJSIOGetSymbol[uid_, params_][exprString_] := With[{client = $CurrentWebSocket},
+    WLJSTransportHandler["GetSymbol"][exprString, client, Function[result,
         WebSocketUSend[client, WLJSIOPromiseResolve[uid, result] // $DefaultSerializer] 
     ]]
 ];

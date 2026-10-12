@@ -165,14 +165,14 @@ window.Server = class {
     //not implemented
     //console.error('askKernel is not implemented');
     //console.log('NotebookPromiseKernel["'+uid+'", ""][Hold['+expr+']]');
-    this.socket.send('WLJSIOGetSymbol["'+uid+'", ""][Hold['+expr+']]');
+    this.socket.send('WLJSIOGetSymbol["'+uid+'", ""]["'+expr+'"]');
 
     return promise.promise     
   }
 
   addTracker(name) {
     console.warn('added tracker for '+name);
-    this.socket.send('WLJSIOAddTracking['+name+']')
+    this.socket.send('WLJSIOAddTracking["'+name+'"]')
   }
 }
 
