@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { delay, evaluate, clearCell} from './common'
+import { delay, evaluate, clearCell, loadPage} from './common'
 
 import path from 'path';
 
@@ -22,7 +22,7 @@ test.describe('Cell types', () => {
   });
 
   /*test('Import mathematica', async () => {
-    await page.goto('http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.nb')));
+    await loadPage(page, 'http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.nb')));
     await delay(3000);
 
     let kernelSelection = page.locator('button').filter({ hasText: 'Auto' });
@@ -38,14 +38,14 @@ test.describe('Cell types', () => {
   }); */  
 
   test('Import markdown', async () => {
-    await page.goto('http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.md')));
+    await loadPage(page, 'http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.md')));
     await delay(8000);
 
     await expect(page).toHaveScreenshot(['screenshorts', 'markdown.png']);
   });  
 
   test('Import html', async () => {
-    await page.goto('http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.html')));
+    await loadPage(page, 'http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'import.html')));
     await delay(8000);
 
     await expect(page).toHaveScreenshot(['screenshorts', 'html.png']);

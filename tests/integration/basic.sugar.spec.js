@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import {url, delay, evaluate, clearCell} from './common'
+import {url, delay, evaluate, clearCell, loadPage} from './common'
 
 test.describe.configure({ mode: 'default' });
 
@@ -14,7 +14,7 @@ test.describe('Easy check for most basic decorators', () => {
       page = await context.newPage();
       page.route('**', route => route.continue());
 
-      await page.goto(url);
+      await loadPage(page, url);
       await delay(6000);
   });
 
@@ -247,7 +247,7 @@ test.describe('Easy check for most basic decorators', () => {
   test('Derivative Decoration', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'D[f[x], x]', 15000);
+    const outputCell = await evaluate(page, 'Clear[f,x];\n D[f[x], x]', 15000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'deriv.png']);
   });
 

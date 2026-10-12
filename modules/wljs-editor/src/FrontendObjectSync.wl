@@ -28,7 +28,7 @@ EventHandler[NotebookEditorChannel // EventClone, {
                 (* [FIXME] Include these symbols normally using Needs[] *)
                 (* we release any possible deferred compression wrappers *)
                 With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Public"]},
-                    With[{c =  CoffeeLiqueur`Extensions`FrontendObject`Internal`releaseCompression[result]},
+                    With[{c =  result},
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, c ] ];
                     ];
                 ];

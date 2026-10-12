@@ -239,14 +239,6 @@ WLJSPackages`SyncShared[{FileNameJoin[{Directory[], "modules"}], AppExtensions`E
 (* Start a web server *)
 
 $Server = <||>;
-$DefaultSerializer[expr_] :=
-  Block[
-    {
-      $Context = "dsc$`",
-      $ContextPath = {"dsc$`", "System`", "Global`"}
-    },
-    ExportByteArray[expr, "ExpressionJSON"]
-];
 
 Print["Staring HTTP server..."];
 

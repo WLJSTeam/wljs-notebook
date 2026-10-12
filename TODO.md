@@ -4,7 +4,7 @@ Phase I
 - [x] $DefaultSerializer replace
 - [x] Check WebUIKeyListener and others
 - [x] FrontFetch: Remove "Format" option, restict to plain JS objects
-- [ ] set_cell_lines race conditions
+- [x] set_cell_lines race conditions
 - [x] LargeDataset
 - [x] WebUIFetch: Remove "Format" option
 - [x] "KernelSocket" check how ot transfer
@@ -48,14 +48,20 @@ Phase I
 - [x] greek character 
 - [x] from specialchars table, 
 - [x] check debugger 
-- [ ] animation framework, 
+- [x] animation framework, 
+- [ ] ERROR: had to kick out WXF patch for ExportByteArray
+- [x] ERROR: Manipulate does not work in projected window
+- [x] Check if Rasterize still works...
+- [ ] ERROR: @\t;\u0001
+- [ ] ERROR: ToExpression::sntx: Invalid syntax in or before " WLJSIOGetSymbol["526b57db-5096-4037-8cd8-4b5843b6ddb0", ""][Hold[@ ". \:008d;$Scaling]]
 - [x] export animation, 
 - [x] export Animate, 
 - [x] export PDF, 
 - [x] Rasterize, 
-- [ ] test MCP, 
+- [x] test MCP, 
 - [x] test drag  and drop
 - [x] make WLJSIO.wl -> Interpeter?
+- [ ] Add StringContainsQ[] for cells before removing 
 - [x] move wljs-cells to views?
 
 Phase II
@@ -74,6 +80,7 @@ Phase II
 Phase III
 - [ ] Test FEM
 - [ ] WLX add NewLine tag
+- [ ] Tooltip lists vetors render withut Edtior
 - [x] cache time reduce
 - [ ] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] SystemDialogInputAsync no need in Window and for other

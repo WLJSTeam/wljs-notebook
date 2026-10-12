@@ -568,7 +568,7 @@ Module[{byte1, fin, opcode, length, mask, lengthBytes, reserved},
 	ByteArray[Join[byte1, lengthBytes, message]]
 ]; 
 
-WebSocketUSendBinary[client_, message_ByteArray] := BinaryWrite[client, encodeFrame[ message ] ]
+WebSocketUSendBinary[client_, message_ByteArray] := BinaryWrite[client, encodeBinaryFrame[ message ] ]
 
 (*::Section::Close::*)
 (*End private*)

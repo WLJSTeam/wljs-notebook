@@ -75,14 +75,6 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
-        System`$DefaultSerializer[expr_] :=
-          Block[
-            {
-              $Context = "ksc$`",
-              $ContextPath = {"ksc$`", "System`", "Global`"}
-            },
-            ExportByteArray[expr, "ExpressionJSON"]
-        ];
         
         Module[{Internal`Kernel`wcp, Internal`Kernel`ws},
           Internal`Kernel`wcp = TCPUServer[];

@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import {url, delay, evaluate, clearCell} from './common'
+import {url, delay, evaluate, clearCell, loadPage} from './common'
 
 test.describe.configure({ mode: 'default' });
 
@@ -13,7 +13,7 @@ test.describe('Wolfram Expressions Styling', () => {
       page = await context.newPage();
       page.route('**', route => route.continue());
       
-      await page.goto(url);
+      await loadPage(page, url);
       await delay(6000);
   });
 

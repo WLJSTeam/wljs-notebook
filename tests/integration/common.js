@@ -5,6 +5,7 @@ import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/
 const notebookPath = path.resolve(__dirname, 'notebook.wln');
 const mcpUrl = new URL(process.env.WL_MCP_URL ?? 'http://127.0.0.1:20564/');
 const sessions = new WeakMap();
+let sharedClientPromise;
 const slowDataRender = /\b(?:Dataset|Tabular)\b|\bResourceData\s*\[/;
 const slowDataRenderDelay = 5000;
 
@@ -13,6 +14,12 @@ export const url = 'http://127.0.0.1:20560/iframe/' + encodeURIComponent(noteboo
 console.warn(`Using url:${url}`);
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const loadPage = async (page, target, options) => {
+  const response = await page.goto(target, options);
+  await delay(500);
+  return response;
+};
 
 const resultText = (result) => result.content
   ?.filter((item) => item.type === 'text')
@@ -77,6 +84,25 @@ const findInputCell = async (session) => {
   return cell;
 };
 
+const getClient = () => {
+  if (!sharedClientPromise) {
+    sharedClientPromise = (async () => {
+      const client = new Client({
+        name: 'wljs-playwright-tests',
+        version: '1.0.0',
+      });
+
+      await client.connect(new StreamableHTTPClientTransport(mcpUrl));
+      return client;
+    })().catch((error) => {
+      sharedClientPromise = undefined;
+      throw error;
+    });
+  }
+
+  return sharedClientPromise;
+};
+
 const clearGlobalSymbols = async (session) => {
  
 };
@@ -85,25 +111,13 @@ const getSession = async (page) => {
   let session = sessions.get(page);
   if (session) return session;
 
-  const client = new Client({
-    name: 'wljs-playwright-tests',
-    version: '1.0.0',
-  });
-
-  await client.connect(new StreamableHTTPClientTransport(mcpUrl));
+  const client = await getClient();
   session = { client };
-
-  try {
-    session.notebook = await findNotebook(session);
-  } catch (error) {
-    await client.close().catch(() => {});
-    throw error;
-  }
+  session.notebook = await findNotebook(session);
 
   sessions.set(page, session);
   page.once('close', () => {
     sessions.delete(page);
-    client.close().catch(() => {});
   });
 
   return session;
@@ -128,7 +142,7 @@ const replaceInputCell = async (page, content) => {
 export const evaluate = async (page, input = '1+1', timeout = 5000, extra = 500) => {
 
   let finput;
-  if (input.charAt(0) != '.' && input.length > 3) {
+  if (input.charAt(0) != '.' && input.length > 3 && false) {
     finput = 'Clear["Global`*"]; '+input;
   } else {
     finput = input;

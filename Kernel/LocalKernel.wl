@@ -143,12 +143,16 @@ generateConnectFunction[o_LocalKernelObject] := With[{
         Internal`Kernel`Watchdog["Test"] := Module[{firedTags},
             KeyValueMap[Function[{key, value},
                 If[Internal`Kernel`Watchdog`state[key] =!= ReleaseHold[value[[1]]],
+
                     Internal`Kernel`Watchdog`$Journal = Append[Internal`Kernel`Watchdog`$Journal, {StringTemplate[Internal`Kernel`Watchdog::assert][key], Now} ];
                     
                     If[!TrueQ[firedTags[value[[3]] ] ], value[[2]] // ReleaseHold];
                     With[{v = value[[3]]}, firedTags[v] = True];
                     
                     Internal`Kernel`Watchdog`state[key] = ReleaseHold[value[[1]]];
+                    With[{msg = StringTemplate[Internal`Kernel`Watchdog::assert][key]},
+                        LinkWrite[$ParentLink, MessagePacket["Silent", msg]];
+                    ];
                 ];
             ], Internal`Kernel`Watchdog`store ];
             
@@ -322,7 +326,7 @@ start[k_LocalKernelObject] := Module[{link},
                 )&),
                 MessagePacket[symbol_, type_] :> ((
                     EchoLabel["KernelWarning"][StringTemplate["``::``"][symbol, type]];
-                    EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]
+                    If[symbol =!= "Silent", EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]];
                 )&),
                 any_ :> (Echo[any]&)
             }];

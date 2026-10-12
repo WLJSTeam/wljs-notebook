@@ -49,7 +49,7 @@ $DefaultSerializer[expr_] :=
   Block[
     {
       $Context = "dsc$`",
-      $ContextPath = {"dsc$`", "System`", "Global`"}
+      $ContextPath = {"dsc$`", "Global`", "System`"}
     },
     ExportByteArray[expr, "ExpressionJSON"]
 ];
@@ -302,127 +302,128 @@ ScriptTemplate[prefix_String, port_, host_, initCode_] :=
         </script>
     "][commonScript, port, host, prefix, initCode]    
 
-(* 
-    Override ExpressionJSON exports to use WXF for packed arrays 
-    This is hacky, since it uses internal private symbols of WL14+
 
-    It significantly improves performance (especially on floats) and memory usage
+    (* 
+        Override ExpressionJSON exports to use WXF for packed arrays 
+        This is hacky, since it uses internal private symbols of WL14+
+    
+        It significantly improves performance (especially on floats) and memory usage
+    
+        here we create a new structure Internal`PackedArrayWXF
+        this will be defined on the frontend too
+    *)
+    
+    (* frontend symbol *)
+    Internal`PackedArrayWXF;
+    
+    (* force the converter package to load *)
+    ExportString[0, "ExpressionJSON"];
+    ExportByteArray[0, "ExpressionJSON"];
+    
+    ClearAll[expressionJSONPackableArrayQ, expressionJSONPackedWXF, toExpressionJSONPackedWXF];
+    
+    (* Use it only on "large" objects *)
+    
+    expressionJSONPackableArrayQ[x_] :=
+      NumericArrayQ[x] || (ListQ[x] && If[Developer`PackedArrayQ[x], ByteCount[x]> 1024, False]);
+    
+    expressionJSONPackedWXF[x_] :=
+      Internal`PackedArrayWXF[Developer`WriteWXFByteArray[x]];
+    
+    Quiet[
+     toExpressionJSONPackedWXF[Image[data_, rest___]] /;
+        expressionJSONPackableArrayQ[data] :=
+      Image[expressionJSONPackedWXF[data], rest];
+    
+     toExpressionJSONPackedWXF[Image3D[data_, rest___]] /;
+        expressionJSONPackableArrayQ[data] :=
+      Image3D[expressionJSONPackedWXF[data], rest];
+    
+     toExpressionJSONPackedWXF[Audio[data_, rest___]] /;
+        expressionJSONPackableArrayQ[data] :=
+      Audio[expressionJSONPackedWXF[data], rest];
+    ];
+    
+    $expressionJSONHeldAttributes = {
+      HoldFirst, HoldRest, HoldAll, HoldAllComplete
+    };
+    
+    heldHeadQ[head_Symbol] :=
+      Intersection[Attributes[head], $expressionJSONHeldAttributes] =!= {};
+    
+    heldHeadQ[_] := False;
+    
+    toExpressionJSONPackedWXF[x_NumericArray] :=
+      expressionJSONPackedWXF[x];
+    
+    toExpressionJSONPackedWXF[x_List] :=
+      expressionJSONPackedWXF[x] /; If[Developer`PackedArrayQ[x], ByteCount[x] >  1024, False];
+    
+    toExpressionJSONPackedWXF[x_?AtomQ] := x;
+    
+    toExpressionJSONPackedWXF[x_RuleDelayed] := x;
+    
+    toExpressionJSONPackedWXF[x_] := x /; heldHeadQ[Head[Unevaluated[x]]];
+    
+    toExpressionJSONPackedWXF[x_] :=
+      Map[toExpressionJSONPackedWXF, x];
+    
+    Unprotect[System`Convert`JSONDump`writeExpressionJSON];
+    
+    System`Convert`JSONDump`writeExpressionJSON[
+      stream_OutputStream, expr_, opts___
+    ] :=
+      Developer`WriteExpressionJSONStream[
+        stream,
+        toExpressionJSONPackedWXF[expr],
+        "IssueMessagesAs" -> Export,
+        FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONStream]]
+      ];
+    
+    System`Convert`JSONDump`writeExpressionJSON[
+      filename_String, expr_, opts___
+    ] :=
+      Developer`WriteExpressionJSONFile[
+        filename,
+        toExpressionJSONPackedWXF[expr],
+        "IssueMessagesAs" -> Export,
+        FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONFile]]
+      ];
+    
+    Protect[System`Convert`JSONDump`writeExpressionJSON];
+    
+    (* force reader package to load *)
+    
+    ImportString["0", "ExpressionJSON"];  
+    
+    (* Inverse convertion *)
+    
+    ClearAll[fromExpressionJSONPackedWXF];
+    
+    fromExpressionJSONPackedWXF[x_] :=
+      x /. Internal`PackedArrayWXF[ba_ByteArray] :>
+        Developer`ReadWXFByteArray[ba];
+    
+    Unprotect[System`Convert`ExpressionJSONDump`readExpressionJSON];
+    
+    System`Convert`ExpressionJSONDump`readExpressionJSON[filename_String, opts___] :=
+      "Expression" -> fromExpressionJSONPackedWXF[
+        Developer`ReadExpressionJSONFile[
+          filename,
+          "IssueMessagesAs" -> Import
+        ]
+      ];
+    
+    System`Convert`ExpressionJSONDump`readExpressionJSON[stream_InputStream, opts___] :=
+      "Expression" -> fromExpressionJSONPackedWXF[
+        Developer`ReadExpressionJSONStream[
+          stream,
+          "IssueMessagesAs" -> Import
+        ]
+      ];
+    
+    Protect[System`Convert`ExpressionJSONDump`readExpressionJSON];
 
-    here we create a new structure Internal`PackedArrayWXF
-    this will be defined on the frontend too
-*)
-
-(* frontend symbol *)
-Internal`PackedArrayWXF;
-
-(* force the converter package to load *)
-ExportString[0, "ExpressionJSON"];
-
-ClearAll[expressionJSONPackableArrayQ, expressionJSONPackedWXF, toExpressionJSONPackedWXF];
-
-(* Use it only on "large" objects *)
-
-expressionJSONPackableArrayQ[x_] :=
-  NumericArrayQ[x] || (ListQ[x] && If[Developer`PackedArrayQ[x], ByteCount[x]> 1024, False]);
-
-expressionJSONPackedWXF[x_] :=
-  Internal`PackedArrayWXF[Developer`WriteWXFByteArray[x]];
-
-Quiet[
- toExpressionJSONPackedWXF[Image[data_, rest___]] /;
-    expressionJSONPackableArrayQ[data] :=
-  Image[expressionJSONPackedWXF[data], rest];
-
- toExpressionJSONPackedWXF[Image3D[data_, rest___]] /;
-    expressionJSONPackableArrayQ[data] :=
-  Image3D[expressionJSONPackedWXF[data], rest];
-
- toExpressionJSONPackedWXF[Audio[data_, rest___]] /;
-    expressionJSONPackableArrayQ[data] :=
-  Audio[expressionJSONPackedWXF[data], rest];
-];
-
-$expressionJSONHeldAttributes = {
-  HoldFirst, HoldRest, HoldAll, HoldAllComplete
-};
-
-heldHeadQ[head_Symbol] :=
-  Intersection[Attributes[head], $expressionJSONHeldAttributes] =!= {};
-
-heldHeadQ[_] := False;
-
-toExpressionJSONPackedWXF[x_NumericArray] :=
-  expressionJSONPackedWXF[x];
-
-toExpressionJSONPackedWXF[x_List] :=
-  expressionJSONPackedWXF[x] /; If[Developer`PackedArrayQ[x], ByteCount[x] >  1024, False];
-
-toExpressionJSONPackedWXF[x_?AtomQ] := x;
-
-toExpressionJSONPackedWXF[x_RuleDelayed] := x;
-
-toExpressionJSONPackedWXF[x_] := x /; heldHeadQ[Head[Unevaluated[x]]];
-
-toExpressionJSONPackedWXF[x_] :=
-  Map[toExpressionJSONPackedWXF, x];
-
-Unprotect[System`Convert`JSONDump`writeExpressionJSON];
-
-System`Convert`JSONDump`writeExpressionJSON[
-  stream_OutputStream, expr_, opts___
-] :=
-  Developer`WriteExpressionJSONStream[
-    stream,
-    toExpressionJSONPackedWXF[expr],
-    "IssueMessagesAs" -> Export,
-    FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONStream]]
-  ];
-
-System`Convert`JSONDump`writeExpressionJSON[
-  filename_String, expr_, opts___
-] :=
-  Developer`WriteExpressionJSONFile[
-    filename,
-    toExpressionJSONPackedWXF[expr],
-    "IssueMessagesAs" -> Export,
-    FilterRules[Flatten[{opts}], Options[Developer`WriteExpressionJSONFile]]
-  ];
-
-Protect[System`Convert`JSONDump`writeExpressionJSON];
-
-(* force reader package to load *)
-
-ImportString["0", "ExpressionJSON"];  
-
-(* Inverse convertion *)
-
-ClearAll[fromExpressionJSONPackedWXF];
-
-fromExpressionJSONPackedWXF[x_] :=
-  x /. Internal`PackedArrayWXF[ba_ByteArray] :>
-    Developer`ReadWXFByteArray[ba];
-
-Unprotect[System`Convert`ExpressionJSONDump`readExpressionJSON];
-
-System`Convert`ExpressionJSONDump`readExpressionJSON[filename_String, opts___] :=
-  "Expression" -> fromExpressionJSONPackedWXF[
-    Developer`ReadExpressionJSONFile[
-      filename,
-      "IssueMessagesAs" -> Import
-    ]
-  ];
-
-System`Convert`ExpressionJSONDump`readExpressionJSON[stream_InputStream, opts___] :=
-  "Expression" -> fromExpressionJSONPackedWXF[
-    Developer`ReadExpressionJSONStream[
-      stream,
-      "IssueMessagesAs" -> Import
-    ]
-  ];
-
-Protect[System`Convert`ExpressionJSONDump`readExpressionJSON];
-
-
-
+    
 End[]
 EndPackage[]

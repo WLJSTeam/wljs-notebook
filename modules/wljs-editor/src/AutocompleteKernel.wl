@@ -146,33 +146,32 @@ reBuildVocabulary := With[{},
     ]
 ]
 
+globalNames;
+scanGlobalNames;
+
+(* Never use $NewSymbol, it switches the context and slows down the evaluation!!! *)
+
 StartTracking := (
     StartTracking = Null;
-    If[Internal`Kernel`Type =!= "LocalKernel",
-        Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"];
-    ,
-        If[$VersionNumber >= 14.3,
-            $NewSymbol = If[#2 === "Global`", (
-                If[skip > 0,
-                    skip--;
-                ,
-                    definitions = Append[definitions, {#1, "User's defined symbol"} ]; 
-                    extend[{{#1, "User's defined symbol"}}];
-                ];
-            )]&;        
-        ,
-            SetTimeout[
-                $NewSymbol = If[#2 === "Global`", (
-                    If[skip > 0,
-                        skip--;
-                    ,
-                        definitions = Append[definitions, {#1, "User's defined symbol"} ]; 
-                        extend[{{#1, "User's defined symbol"}}];
-                    ];
-                )]&;
-            , 3000];
+    globalNames = Names["Global`*"];
+    
+    scanGlobalNames[] := Module[{current, added},
+        If[Length[clients] == 0, Return[]];
+        current = Names["Global`*"];
+        added = Complement[current, globalNames];
+        globalNames = current;
+    
+        If[added =!= {},
+            With[{
+                new = {#, "User's defined symbol"} & /@ added
+            },
+                definitions = DeleteDuplicates@Join[definitions, new];
+                extend[new];
+            ];
         ];
     ];
+    
+    SetInterval[scanGlobalNames[], 4000];
 )
 
 End[]

@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { url, delay, evaluate, clearCell } from './common';
+import { url, delay, evaluate, clearCell, loadPage } from './common';
 
 test.describe.configure({ mode: 'default' });
 
@@ -12,7 +12,7 @@ test.describe('Release note expressions (3.0.5+)', () => {
     page = await context.newPage();
     page.route('**', route => route.continue());
 
-    await page.goto(url);
+    await loadPage(page, url);
     await delay(6000);
   });
 
@@ -43,11 +43,11 @@ test.describe('Release note expressions (3.0.5+)', () => {
   });
 
   test('3.0.5 Inset size', async () => {
-    await snapshot('g = Plot[Sin[x], {x, 0, 10}, Frame -> True, FrameTicks -> None, AspectRatio -> Full]; Graphics[{Inset[g, Automatic, Automatic, {2, 2}], Circle[{0, 0}, 2]}, Frame -> True, ImageSize -> 150]', '305-inset-size.png', 30000, 2000);
+    await snapshot('Clear[g];\ng = Plot[Sin[x], {x, 0, 10}, Frame -> True, FrameTicks -> None, AspectRatio -> Full]; Graphics[{Inset[g, Automatic, Automatic, {2, 2}], Circle[{0, 0}, 2]}, Frame -> True, ImageSize -> 150]', '305-inset-size.png', 30000, 2000);
   });
 
   test('3.0.7 compound Disk and Circle coordinates', async () => {
-    await snapshot('pts = {{-1., -1.}, {1., 1.}}; Graphics[{Disk[pts // Offload, 0.08], Red, Circle[pts // Offload, 0.11]}, PlotRange -> 1.3, ImageSize -> 180, "Controls" -> False]', '307-compound-disk-circle.png');
+    await snapshot('Clear[pts];\npts = {{-1., -1.}, {1., 1.}}; Graphics[{Disk[pts // Offload, 0.08], Red, Circle[pts // Offload, 0.11]}, PlotRange -> 1.3, ImageSize -> 180, "Controls" -> False]', '307-compound-disk-circle.png');
   });
 
   test('3.0.8 typed Shallow', async () => {
@@ -63,7 +63,7 @@ test.describe('Release note expressions (3.0.5+)', () => {
   });
 
   test('3.0.8 offloaded BezierCurve', async () => {
-    await snapshot('pts = {{0., 0.}, {0.2, 1.}, {0.8, -1.}, {1., 0.}}; Graphics[{Thick, BezierCurve[pts // Offload]}, PlotRange -> All, ImageSize -> 180]', '308-offloaded-bezier-curve.png');
+    await snapshot('Clear[pts];\npts = {{0., 0.}, {0.2, 1.}, {0.8, -1.}, {1., 0.}}; Graphics[{Thick, BezierCurve[pts // Offload]}, PlotRange -> All, ImageSize -> 180]', '308-offloaded-bezier-curve.png');
   });
 
   test('3.0.8 Around rounding', async () => {
@@ -79,7 +79,7 @@ test.describe('Release note expressions (3.0.5+)', () => {
   });
 
   test('3.0.9 Grid layout options', async () => {
-    await snapshot('Grid[Table[x, {3}, {7}], Dividers -> {{False, False, True}, {False, True}}, Spacings -> 2, Alignment -> {{Right, Center, Left}, Center}]', '309-grid-options.png');
+    await snapshot('Clear[x];\nGrid[Table[x, {3}, {7}], Dividers -> {{False, False, True}, {False, True}}, Spacings -> 2, Alignment -> {{Right, Center, Left}, Center}]', '309-grid-options.png');
   });
 
   test('3.0.9 Column layout options', async () => {
@@ -111,7 +111,7 @@ test.describe('Release note expressions (3.0.5+)', () => {
   });
 
   test('3.0.9 frontend Association keys', async () => {
-    await snapshot('a = <|"a" -> 1, "b" -> 0.3|>; Column[{TextView[a["a"] // Offload], TextView[a["b"] // Offload]}]', '309-association-keys.png');
+    await snapshot('Clear[a]; \n a = <|"a" -> 1, "b" -> 0.3|>; Column[{TextView[a["a"] // Offload], TextView[a["b"] // Offload]}]', '309-association-keys.png');
   });
 
   test('3.0.9 Transparent graphics directive', async () => {
