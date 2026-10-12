@@ -114,6 +114,8 @@ generateConnectFunction[o_LocalKernelObject] := With[{
         (* therefore we have to contineously test if our FormatValues are still ours, and if not - then reload some of the system packages on-fly *)
         (* i guess this is a price of closed systems *)
         (* in practice it happens 1-2 times per long evaluation sessions and it is cured immediately *)
+         
+        (*$NewSymbol = If[#==="expr", Print[$InputFileName]; Pause[2]; Exit[-1]]&;*)
 
         Internal`Kernel`Watchdog;
         Internal`Kernel`Watchdog`store = <||>;

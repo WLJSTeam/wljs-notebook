@@ -27,13 +27,13 @@ Compressed[string_String, {"ExpressionJSON", "ZLIB"}] := ImportByteArray[ByteArr
 
 compression;
 
-exportWithContext[expr_] :=
+exportWithContext[cwc$`expr_] :=
  Block[
    {
      $Context = "cwc$`",
      $ContextPath = {"cwc$`", "System`", "Global`"}
    },
-   ExportByteArray[expr, "ExpressionJSON"]
+   ExportByteArray[cwc$`expr, "ExpressionJSON"]
  ];
 
 (* apply only on large objects*)

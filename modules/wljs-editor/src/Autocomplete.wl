@@ -66,8 +66,8 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
-                CoffeeLiqueur`Extensions`Autocomplete`Private`BuildVocabularAsync;
                 CoffeeLiqueur`Extensions`Autocomplete`Private`StartTracking;
+                CoffeeLiqueur`Extensions`Autocomplete`Private`BuildVocabularAsync;
             ], "Once"->True];
          
 

@@ -23,7 +23,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry failed tests once, except while regenerating screenshots. */
-  retries: updatingSnapshots ? 0 : 0,
+  retries: updatingSnapshots ? 0 : 1,
 
   timeout: 90000,
 

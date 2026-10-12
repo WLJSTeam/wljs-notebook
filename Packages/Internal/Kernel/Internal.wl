@@ -179,13 +179,12 @@ FileNameJoin[{
 	$SystemID
 }]; 
 
-bytesPosition := bytesPosition = FileNameJoin[{$directory, "Kernel", "bytesPosition.wl"}] // Get
-
+bytesPosition = FileNameJoin[{$directory, "Kernel", "bytesPosition.wl"}] // Get
 
 ByteUMask[key_ByteArray, data_ByteArray] :=  
 byteMask[data, Length[data], key, Length[key] ]
 
-byteMask := byteMask = FileNameJoin[{$directory, "Kernel", "byteMask.wl"}] // Get
+byteMask = FileNameJoin[{$directory, "Kernel", "byteMask.wl"}] // Get
 
 (*End private*)
 

@@ -92,11 +92,11 @@ wsStartListerning[kernel_, port_, host_] := With[{},
           (* symbols tracking *)
           WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
               (*Print["Add tracking... for "<>name];*)
-              Experimental`ValueFunction[ fullName ] = Function[{y,x}, 
-                If[FailureQ[callback[cli, x] ], 
+              Experimental`ValueFunction[ fullName ] = ( 
+                If[FailureQ[callback[cli, #2] ], 
                   Experimental`ValueFunction[ fullName ] // Unset
                 ];
-              ];
+              )&;
           , HoldFirst];
 
           WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
