@@ -199,6 +199,7 @@ const errText = String(err);
     updateDOM(dom, view) {
       //console.log(this.visibleValue);
       //console.log(this);
+      this.DOMElement = dom;
       console.log('update widget DOM');
       dom.EditorWidget.update(this.visibleValue);
   
@@ -214,6 +215,8 @@ const errText = String(err);
       span.classList.add("frontend-view");
   
       span.EditorWidget = new EditorWidget(this.visibleValue, view, span);
+
+      this.DOMElement = span;
   
       this.reference.push({destroy: () => {
         self.destroy(span);

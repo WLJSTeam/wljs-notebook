@@ -10,7 +10,7 @@ Phase I
 - [x] "KernelSocket" check how ot transfer
 - [x] Try saving dataset with many many FEs
 - [x] replace server.ask and etc 
-- [ ] CHeck InputAutocomplete[]
+- [x] CHeck InputAutocomplete[]
 - [x] Test mini apps context
 - [x] DATA COmpression roundtrip!!!!!!!
 - [x] Legacy notebooks may not be correctly uncompressed when FE is requested, since now they dot do a roundtrip
@@ -31,7 +31,7 @@ Phase I
 - [x] Run manual test on printing, 
 - [x] sidebar, 
 - [x] context menu,
-- [ ] Look though all modules  
+- [x] Look though all modules  
 - [x] uploading, 
 - [x] spinner
 - [x] snippets, 
