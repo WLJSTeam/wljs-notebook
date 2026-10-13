@@ -39,8 +39,8 @@ EventHandler[NotebookEditorChannel // EventClone, {
 fetchFromKernel[keys_, kernel_, test_, default_, function_] := With[{promise = Promise[], prePromise = Promise[]}, {
     watchdog = SetTimeout[
             Echo["Kernel fetch request timed out!"];
-            EventFire[promise, Resolve, default], 
-        1000 45]
+            EventFire[promise, Resolve, $TimedOut], 
+        1000 12]
 }, 
     Then[prePromise, Function[results,
         TaskRemove[watchdog];
@@ -98,7 +98,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                 Echo["FrontendObject`Sync >> nothing to restore "];
             ];
         ],
-        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel, extra},
+        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel, extra, timedOut = False},
             Echo["OnBefore Save!"];
 
             If[!MemberQ[notebook["Properties"], "Objects"], 
@@ -122,6 +122,13 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             If[TrueQ[kernel["ReadyQ"]],
                 Echo["Kernel is available, fetching from it"];
                 missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[x, KeyTake[x][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects] ]] // Await;
+
+                If[missing === $TimedOut,
+                    timedOut = True;
+                    missing = <||>;
+                    
+                    EventFire[opts["Log"], "Warning", "Some objects could not be saved since the kernel link had been lost"];
+                ];
                 
                 CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, missing];
                 missing = Keys[missing];
@@ -158,7 +165,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             StringTemplate["Total: `` Missing: ``"][Length[objects], Length[missing]] // Echo;
 
             kernel = notebook["Evaluator"]["Kernel"];
-            If[TrueQ[kernel["ReadyQ"]],
+            If[TrueQ[kernel["ReadyQ"]] && !timedOut,
                 Echo["Kernel is available, fetching from it"];
                 
                 missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[names, 
@@ -181,7 +188,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             notebook["Symbols"] = KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
 
             Echo["Almost done"];
-            ClearAll[objects, missing, kernel, extra];
+            ClearAll[objects, missing, kernel, extra, timedOut];
         ] ]
     }]; 
 ]

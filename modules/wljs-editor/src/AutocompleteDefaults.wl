@@ -6489,91 +6489,17 @@ arrays.\n\nDotLayer[{<i>spec</i><sub>1</sub>,<i>spec</i><sub>2</sub>,\
 and should no longer be used. "|>, <|"label" -> "Dotted", 
   "type" -> "keyword", "info" -> "Dotted is a graphics directive specifying \
 that lines that follow should be drawn dotted."|>, 
- <|"label" -> "DoubleBracketingBar", "type" -> "keyword", 
-  "info" -> "DoubleBracketingBar[<i>x</i>,<i>y</i>,...] displays as \
-\[LeftDoubleBracketingBar]<i>x</i>,<i>y</i>,...\
-\[RightDoubleBracketingBar]."|>, <|"label" -> "DoubleDownArrow", 
-  "type" -> "keyword", "info" -> "DoubleDownArrow[<i>x</i>,<i>y</i>,\
-...] displays as <i>x</i>\[DoubleDownArrow]<i>\[UnknownGlyph]</i>."|>\
-, <|"label" -> "DoubleLeftArrow", "type" -> "keyword", 
-  "info" -> "DoubleLeftArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLeftArrow]<i>y</i>\[DoubleLeftArrow]...."|>, 
- <|"label" -> "DoubleLeftRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLeftRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLeftRightArrow]<i>y</i>\[DoubleLeftRightArrow]...."|>\
-, <|"label" -> "DoubleLeftTee", "type" -> "keyword", 
-  "info" -> "DoubleLeftTee[<i>x</i>,<i>y</i>] displays as \
-x\[DoubleLeftTee]y."|>, <|"label" -> "DoubleLongLeftArrow", 
-  "type" -> "keyword", "info" -> "DoubleLongLeftArrow[<i>x</i>,<i>y</i>,\
-...] displays as \
-<i>x</i>\[DoubleLongLeftArrow]<i>y</i>\[DoubleLongLeftArrow]...."|>, 
- <|"label" -> "DoubleLongLeftRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLongLeftRightArrow[<i>x</i>,<i>y</i>,...] displays \
-as \
-<i>x</i>\[DoubleLongLeftRightArrow]<i>y</i>\[DoubleLongLeftRightArrow]\
-...."|>, <|"label" -> "DoubleLongRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLongRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLongRightArrow]<i>y</i>\[DoubleLongRightArrow]...."|>\
-, <|"label" -> "DoubleRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleRightArrow]<i>y</i>\[DoubleRightArrow]...."|>, 
- <|"label" -> "DoubleRightTee", "type" -> "keyword", 
-  "info" -> 
-   "DoubleRightTee[<i>x</i>,<i>y</i>] displays as x\[DoubleRightTee]y."|>, 
- <|"label" -> "DoubleUpArrow", "type" -> "keyword", 
-  "info" -> "DoubleUpArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleUpArrow]<i>y</i>\[DoubleUpArrow]...."|>, 
- <|"label" -> "DoubleUpDownArrow", "type" -> "keyword", 
-  "info" -> "DoubleUpDownArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleUpDownArrow]<i>y</i>\[DoubleUpDownArrow]...."|>, 
- <|"label" -> "DoubleVerticalBar", "type" -> "keyword", 
-  "info" -> "DoubleVerticalBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleVerticalBar]<i>y</i>\[DoubleVerticalBar]...."|>, 
  <|"label" -> "DoublyInfinite", "type" -> "keyword", 
   "info" -> "DoublyInfinite is an option for LerchPhi. With DoublyInfinite -> \
 True, the summation is taken from -Infinity to Infinity. With DoublyInfinite \
 -> False, the summation is taken from zero to Infinity."|>, 
- <|"label" -> "DownArrow", "type" -> "keyword", 
-  "info" -> "DownArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrow]<i>y</i>\[DownArrow]...."|>, 
- <|"label" -> "DownArrowBar", "type" -> "keyword", 
-  "info" -> "DownArrowBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrowBar]<i>y</i>\[DownArrowBar]...."|>, 
- <|"label" -> "DownArrowUpArrow", "type" -> "keyword", 
-  "info" -> "DownArrowUpArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrowUpArrow]<i>y</i>\[DownArrowUpArrow]...."|>, 
- <|"label" -> "DownLeftRightVector", "type" -> "keyword", 
-  "info" -> "DownLeftRightVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftRightVector]<i>y</i>\[DownLeftRightVector]...."|>, 
- <|"label" -> "DownLeftTeeVector", "type" -> "keyword", 
-  "info" -> "DownLeftTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftTeeVector]<i>y</i>\[DownLeftTeeVector]...."|>, 
- <|"label" -> "DownLeftVector", "type" -> "keyword", 
-  "info" -> "DownLeftVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftVector]<i>y</i>\[DownLeftVector]...."|>, 
- <|"label" -> "DownLeftVectorBar", "type" -> "keyword", 
-  "info" -> "DownLeftVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftVectorBar]<i>y</i>\[DownLeftVectorBar]...."|>, 
- <|"label" -> "DownRightTeeVector", "type" -> "keyword", 
-  "info" -> "DownRightTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightTeeVector]<i>y</i>\[DownRightTeeVector]...."|>, 
- <|"label" -> "DownRightVector", "type" -> "keyword", 
-  "info" -> "DownRightVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightVector]<i>y</i>\[DownRightVector]...."|>, 
- <|"label" -> "DownRightVectorBar", "type" -> "keyword", 
-  "info" -> "DownRightVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightVectorBar]<i>y</i>\[DownRightVectorBar]...."|>, 
  <|"label" -> "Downsample", "type" -> "keyword", 
   "info" -> "Downsample[<i>array</i>,<i>n</i>] returns a downsampled version \
 of the array by sampling every <i>n</i><sup>th</sup> \
 element.\n\nDownsample[<i>array</i>,<i>n</i>,<i>offset</i>] starts sampling \
 from the element at position \
 <i>offset</i>.\n\nDownsample[<i>image</i>,...] downsamples an image."\
-|>, <|"label" -> "DownTee", "type" -> "keyword", 
-  "info" -> "DownTee[<i>x</i>,<i>y</i>] displays as x\[DownTee]y."|>, 
- <|"label" -> "DownTeeArrow", "type" -> "keyword", 
-  "info" -> "DownTeeArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownTeeArrow]<i>y</i>\[DownTeeArrow]...."|>, 
+|>, 
  <|"label" -> "DownValues", "type" -> "keyword", 
   "info" -> "DownValues[<i>f</i>] gives a list of transformation rules \
 corresponding to all downvalues (values for <i>f</i>[<i>...</i>]) \

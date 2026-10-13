@@ -66,9 +66,9 @@ Phase I
 - [x] move wljs-cells to views?
 
 Phase II
-- [ ] Switch to WXF
+- [x] Switch to WXF
 - [ ] Find all [TODO] tags
-- [ ] REDO ALL TESTS from Phase I
+- [x] REDO ALL TESTS from Phase I
 - [ ] Update docs
 - [ ] Fix plugins examples!!! or extensions exmaples
 - [ ] exports as widgets, 

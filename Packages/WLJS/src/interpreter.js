@@ -449,80 +449,592 @@ interpretate.zlib64String = async (input) => {
     return btoa(binary);
 };
 
-function readVarint(dataView, offset) {
-    let value = 0, shift = 0, byte = 0;
-    do {
-        byte = dataView.getUint8(offset++);
-        value |= (byte & 0x7F) << shift;
-        shift += 7;
-    } while (byte & 0x80);
-    return { value, offset };
-}
+const wxfTextEncoder = new TextEncoder();
+const wxfTextDecoder = new TextDecoder("utf-8");
+const wxfLittleEndian = new Uint8Array(new Uint16Array([1]).buffer)[0] === 1;
+const wxfMinSafeInteger = BigInt(Number.MIN_SAFE_INTEGER);
+const wxfMaxSafeInteger = BigInt(Number.MAX_SAFE_INTEGER);
+const wxfNumericArrayTypes = {
+    0:  { constructor: Int8Array,       size: 1, getter: "getInt8" },
+    16: { constructor: Uint8Array,      size: 1, getter: "getUint8" },
+    1:  { constructor: Int16Array,      size: 2, getter: "getInt16" },
+    17: { constructor: Uint16Array,     size: 2, getter: "getUint16" },
+    2:  { constructor: Int32Array,      size: 4, getter: "getInt32" },
+    18: { constructor: Uint32Array,     size: 4, getter: "getUint32" },
+    3:  { constructor: BigInt64Array,   size: 8, getter: "getBigInt64" },
+    19: { constructor: BigUint64Array,  size: 8, getter: "getBigUint64" },
+    34: { constructor: Float32Array,    size: 4, getter: "getFloat32" },
+    35: { constructor: Float64Array,    size: 8, getter: "getFloat64" }
+};
 
 function readNumericArray(dataView, offset, length, type) {
-    let arr;
-    let rawLength;
-    switch (type) {
-        case 0: // int8
-            arr = new Int8Array(dataView.buffer, offset, length);
-            rawLength = length;
-            break;
-        
-        case 16:
-            arr = new Uint8Array(dataView.buffer, offset, length);
-            rawLength = length;
-            break;
-        
-        case 1: // int16
-            arr = new Int16Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 2;
-            break;
-        
-        case 17:
-            arr = new Uint16Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 2;
-            break;
-        
-         case 2: // 
-            arr = new Int32Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 4;
-            break;
-        
-        case 18:
-            arr = new Uint32Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 4;
-            break; 
-        
-        case 3: // 
-            arr = new Int64Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 8;
-            break;
-        
-        case 19:
-            arr = new Uint64Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 8;
-            break;        
-        
-        case 34:
-            arr = new Float32Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 4;        
-            break;
-        
-        case 35:
-            arr = new Float64Array(dataView.buffer.slice(offset), 0, length);
-            rawLength = length * 8;
-            //console.log(length);
-            break;
-        default:
-            throw new Error(`Unsupported numeric array type: ${type}`);
+    const info = wxfNumericArrayTypes[type];
+
+    if (!info) {
+        throw new Error(`Unsupported numeric array type: ${type}`);
     }
-    return {array: arr, length: rawLength};
+
+    const rawLength = length * info.size;
+    if (!Number.isSafeInteger(rawLength) || offset + rawLength > dataView.byteLength) {
+        throw new Error("Unexpected end of buffer while reading numeric array.");
+    }
+
+    const start = dataView.byteOffset + offset;
+
+    // WXF numbers are little-endian. Reuse the input storage whenever the host
+    // byte order and alignment allow it; image-sized byte arrays are always
+    // zero-copy. Misaligned multi-byte arrays need one compact copy because JS
+    // typed-array constructors reject unaligned byte offsets.
+    if (info.size === 1 || (wxfLittleEndian && start % info.size === 0)) {
+        return new info.constructor(dataView.buffer, start, length);
+    }
+
+    if (wxfLittleEndian) {
+        const bytes = dataView.buffer.slice(start, start + rawLength);
+        return new info.constructor(bytes, 0, length);
+    }
+
+    const arr = new info.constructor(length);
+    {
+        for (let i = 0; i < length; ++i) {
+            arr[i] = dataView[info.getter](offset + i * info.size, true);
+        }
+    }
+    return arr;
 }
 
 function readString(dataView, offset, length) {
-    let decoder = new TextDecoder("utf-8");
-    let bytes = new Uint8Array(dataView.buffer, offset, length);
-    return decoder.decode(bytes);
+    let bytes = new Uint8Array(dataView.buffer, dataView.byteOffset + offset, length);
+    return wxfTextDecoder.decode(bytes);
+}
+
+class WXFByteWriter {
+    constructor(capacity = 64) {
+        this.buffer = new Uint8Array(capacity);
+        this.view = null;
+        this.offset = 0;
+    }
+
+    ensure(length) {
+        const required = this.offset + length;
+        if (required <= this.buffer.length) return;
+
+        const next = new Uint8Array(Math.max(required, this.buffer.length * 2));
+        next.set(this.buffer);
+        this.buffer = next;
+        if (this.view) this.view = new DataView(next.buffer);
+    }
+
+    dataView() {
+        return this.view || (this.view = new DataView(this.buffer.buffer));
+    }
+
+    u8(value) {
+        this.ensure(1);
+        this.buffer[this.offset++] = value;
+    }
+
+    i16(value) {
+        this.ensure(2);
+        this.dataView().setInt16(this.offset, value, true);
+        this.offset += 2;
+    }
+
+    u16(value) {
+        this.ensure(2);
+        this.dataView().setUint16(this.offset, value, true);
+        this.offset += 2;
+    }
+
+    i32(value) {
+        this.ensure(4);
+        this.dataView().setInt32(this.offset, value, true);
+        this.offset += 4;
+    }
+
+    u32(value) {
+        this.ensure(4);
+        this.dataView().setUint32(this.offset, value, true);
+        this.offset += 4;
+    }
+
+    i64(value) {
+        this.ensure(8);
+        this.dataView().setBigInt64(this.offset, value, true);
+        this.offset += 8;
+    }
+
+    u64(value) {
+        this.ensure(8);
+        this.dataView().setBigUint64(this.offset, value, true);
+        this.offset += 8;
+    }
+
+    f32(value) {
+        this.ensure(4);
+        this.dataView().setFloat32(this.offset, value, true);
+        this.offset += 4;
+    }
+
+    f64(value) {
+        this.ensure(8);
+        this.dataView().setFloat64(this.offset, value, true);
+        this.offset += 8;
+    }
+
+    bytes(value) {
+        this.ensure(value.byteLength);
+        this.buffer.set(value, this.offset);
+        this.offset += value.byteLength;
+    }
+
+    varuint(value) {
+        this.ensure(wxfVaruintSize(value));
+        do {
+            const byte = value % 128;
+            value = Math.floor(value / 128);
+            this.buffer[this.offset++] = byte + (value ? 128 : 0);
+        } while (value);
+    }
+
+    finish() {
+        if (this.offset === this.buffer.byteLength) return this.buffer.buffer;
+        return this.buffer.buffer.slice(0, this.offset);
+    }
+}
+
+function wxfVaruintSize(value) {
+    let size = 1;
+    while (value >= 128) {
+        value = Math.floor(value / 128);
+        ++size;
+    }
+    return size;
+}
+
+function wxfNumberPayloadSize(value) {
+    if (!Number.isFinite(value)) return 6; // symbol Null
+    if (!Object.is(value, -0) && Number.isSafeInteger(value)) {
+        if (value >= -128 && value <= 127) return 2;
+        if (value >= -32768 && value <= 32767) return 3;
+        if (value >= -2147483648 && value <= 2147483647) return 5;
+    }
+    return 9;
+}
+
+function initialWXFCapacity(value) {
+    if (value === null || value === undefined) return 8;
+
+    switch (typeof value) {
+        case "boolean": return value ? 8 : 9;
+        case "number":
+            if (!Number.isFinite(value)) return 8;
+            if (!Object.is(value, -0) && Number.isSafeInteger(value)) {
+                if (value >= -128 && value <= 127) return 4;
+                if (value >= -32768 && value <= 32767) return 5;
+                if (value >= -2147483648 && value <= 2147483647) return 7;
+            }
+            return 11;
+        case "bigint": {
+            if (value >= -9223372036854775808n && value <= 9223372036854775807n) return 11;
+            const digits = value.toString().length;
+            return 3 + wxfVaruintSize(digits) + digits;
+        }
+        case "string":
+            // UTF-8 is at least one byte per UTF-16 code unit for ASCII-heavy
+            // protocol traffic. The writer grows only if non-ASCII needs more.
+            return Math.max(8, 3 + wxfVaruintSize(value.length) + value.length);
+    }
+
+    if (ArrayBuffer.isView(value)) {
+        const type = getWXFNumericArrayType(value);
+        if (type !== undefined) {
+            return 5 + wxfVaruintSize(value.length) + value.byteLength;
+        }
+    }
+
+    if (Array.isArray(value)) {
+        // Every supported value occupies at least two bytes. This is exact for
+        // the common large list of Int8-range numbers and never over-allocates.
+        const minimum = 9 + wxfVaruintSize(value.length) + value.length * 2;
+
+        // Homogeneous ordinary float/wider-integer arrays are also common.
+        // Size those exactly so serialization needs neither growth buffers nor
+        // a final trimming copy. Int8-range lists already use the exact minimum
+        // and deliberately skip this extra traversal.
+        if (value.length && typeof value[0] === "number") {
+            const elementSize = wxfNumberPayloadSize(value[0]);
+            if (elementSize !== 2) {
+                // Sample across the list rather than making serialization walk
+                // every element twice. Homogeneous numerical data gets one
+                // exact allocation; mixed data safely falls back to growth.
+                const samples = Math.min(value.length, 8);
+                for (let i = 1; i < samples; ++i) {
+                    const item = value[Math.floor(i * (value.length - 1) / (samples - 1))];
+                    if (typeof item !== "number" || wxfNumberPayloadSize(item) !== elementSize) {
+                        return minimum;
+                    }
+                }
+                return 9 + wxfVaruintSize(value.length) + value.length * elementSize;
+            }
+        }
+        return minimum;
+    }
+
+    return 64;
+}
+
+function writeWXFText(writer, token, value) {
+    const bytes = wxfTextEncoder.encode(value);
+    writer.u8(token);
+    writer.varuint(bytes.byteLength);
+    writer.bytes(bytes);
+}
+
+function writeWXFSymbol(writer, value) {
+    writeWXFText(writer, 115, value); // "s"
+}
+
+function writeWXFNull(writer) {
+    writeWXFSymbol(writer, "Null");
+}
+
+function writeWXFNumber(writer, value) {
+    if (!Number.isFinite(value)) {
+        writeWXFNull(writer);
+        return;
+    }
+
+    if (!Object.is(value, -0) && Number.isSafeInteger(value)) {
+        if (value >= -128 && value <= 127) {
+            writer.ensure(2);
+            writer.buffer[writer.offset++] = 67; // "C"
+            writer.buffer[writer.offset++] = value & 0xff;
+            return;
+        }
+
+        if (value >= -32768 && value <= 32767) {
+            writer.ensure(3);
+            writer.buffer[writer.offset++] = 106; // "j"
+            writer.dataView().setInt16(writer.offset, value, true);
+            writer.offset += 2;
+            return;
+        }
+
+        if (value >= -2147483648 && value <= 2147483647) {
+            writer.ensure(5);
+            writer.buffer[writer.offset++] = 105; // "i"
+            writer.dataView().setInt32(writer.offset, value, true);
+            writer.offset += 4;
+            return;
+        }
+
+        writer.ensure(9);
+        writer.buffer[writer.offset++] = 76; // "L"
+        writer.dataView().setBigInt64(writer.offset, BigInt(value), true);
+        writer.offset += 8;
+        return;
+    }
+
+    writer.ensure(9);
+    writer.buffer[writer.offset++] = 114; // "r"
+    writer.dataView().setFloat64(writer.offset, value, true);
+    writer.offset += 8;
+}
+
+function writeWXFBigInt(writer, value) {
+    const minInt64 = -9223372036854775808n;
+    const maxInt64 = 9223372036854775807n;
+
+    if (value >= minInt64 && value <= maxInt64) {
+        writer.ensure(9);
+        writer.buffer[writer.offset++] = 76; // "L"
+        writer.dataView().setBigInt64(writer.offset, value, true);
+        writer.offset += 8;
+        return;
+    }
+
+    writeWXFText(writer, 73, value.toString()); // "I"
+}
+
+function getWXFNumericArrayType(value) {
+    if (value instanceof Int8Array) return 0;
+    if (value instanceof Uint8Array || value instanceof Uint8ClampedArray) return 16;
+    if (value instanceof Int16Array) return 1;
+    if (value instanceof Uint16Array) return 17;
+    if (value instanceof Int32Array) return 2;
+    if (value instanceof Uint32Array) return 18;
+    if (typeof BigInt64Array !== "undefined" && value instanceof BigInt64Array) return 3;
+    if (typeof BigUint64Array !== "undefined" && value instanceof BigUint64Array) return 19;
+    if (value instanceof Float32Array) return 34;
+    if (value instanceof Float64Array) return 35;
+    return undefined;
+}
+
+function getWXFNumericArrayObjectMetadata(value) {
+    const data = value.buffer;
+    const type = ArrayBuffer.isView(data)
+        ? getWXFNumericArrayType(data)
+        : undefined;
+    if (type === undefined) {
+        throw new TypeError("NumericArrayObject.buffer must be a supported TypedArray.");
+    }
+
+    const dims = value.dims;
+    if (!Array.isArray(dims) || dims.length === 0) {
+        throw new TypeError("NumericArrayObject.dims must be a non-empty array.");
+    }
+
+    let length = 1;
+    for (let i = 0; i < dims.length; ++i) {
+        const dimension = dims[i];
+        if (!Number.isSafeInteger(dimension) || dimension < 0) {
+            throw new RangeError("NumericArrayObject dimensions must be non-negative safe integers.");
+        }
+        length *= dimension;
+        if (!Number.isSafeInteger(length)) {
+            throw new RangeError("NumericArrayObject dimensions exceed JavaScript's safe integer range.");
+        }
+    }
+    if (length !== data.length) {
+        throw new RangeError(
+            `NumericArrayObject dimensions require ${length} elements, but its buffer has ${data.length}.`
+        );
+    }
+
+    return { data, dims, type };
+}
+
+function writeWXFNumericArrayData(writer, value, type) {
+    if (wxfLittleEndian || value.BYTES_PER_ELEMENT === 1) {
+        writer.bytes(new Uint8Array(value.buffer, value.byteOffset, value.byteLength));
+        return;
+    }
+
+    for (let i = 0; i < value.length; ++i) {
+        switch (type) {
+            case 1: writer.i16(value[i]); break;
+            case 17: writer.u16(value[i]); break;
+            case 2: writer.i32(value[i]); break;
+            case 18: writer.u32(value[i]); break;
+            case 3: writer.i64(value[i]); break;
+            case 19: writer.u64(value[i]); break;
+            case 34: writer.f32(value[i]); break;
+            case 35: writer.f64(value[i]); break;
+        }
+    }
+}
+
+function writeWXFNumericArray(writer, value, type, dims) {
+    writer.u8(194); // numeric array
+    writer.u8(type);
+    if (dims) {
+        writer.varuint(dims.length);
+        for (let i = 0; i < dims.length; ++i) writer.varuint(dims[i]);
+    } else {
+        writer.varuint(1); // TypedArrays are rank-one arrays
+        writer.varuint(value.length);
+    }
+    writeWXFNumericArrayData(writer, value, type);
+}
+
+function writeWXFValue(writer, value) {
+    if (value === null || value === undefined) {
+        writeWXFNull(writer);
+        return;
+    }
+
+    switch (typeof value) {
+        case "boolean":
+            writeWXFSymbol(writer, value ? "True" : "False");
+            return;
+        case "string":
+            writeWXFText(writer, 83, value); // "S"
+            return;
+        case "number":
+            writeWXFNumber(writer, value);
+            return;
+        case "bigint":
+            writeWXFBigInt(writer, value);
+            return;
+    }
+
+    if (value instanceof NumericArrayObject) {
+        const metadata = getWXFNumericArrayObjectMetadata(value);
+        writeWXFNumericArray(writer, metadata.data, metadata.type, metadata.dims);
+        return;
+    }
+
+    const numericArrayType = ArrayBuffer.isView(value)
+        ? getWXFNumericArrayType(value)
+        : undefined;
+
+    if (numericArrayType !== undefined) {
+        writeWXFNumericArray(writer, value, numericArrayType);
+        return;
+    }
+
+    if (Array.isArray(value)) {
+        writer.u8(102); // "f"
+        writer.varuint(value.length);
+        writeWXFSymbol(writer, "List");
+        for (let i = 0; i < value.length; ++i) {
+            const item = value[i];
+            if (typeof item === "number") writeWXFNumber(writer, item);
+            else writeWXFValue(writer, item);
+        }
+        return;
+    }
+
+    if (typeof value === "object") {
+        const keys = Object.keys(value);
+        writer.u8(65); // "A"
+        writer.varuint(keys.length);
+        for (const key of keys) {
+            writer.u8(45); // "-"
+            writeWXFText(writer, 83, key);
+            writeWXFValue(writer, value[key]);
+        }
+        return;
+    }
+
+    writeWXFNull(writer);
+}
+
+function writeWXFVaruintToBuffer(buffer, offset, value) {
+    do {
+        const byte = value % 128;
+        value = Math.floor(value / 128);
+        buffer[offset++] = byte + (value ? 128 : 0);
+    } while (value);
+    return offset;
+}
+
+function serializeWXFTextValue(token, value) {
+    const encoded = wxfTextEncoder.encode(value);
+    const output = new Uint8Array(3 + wxfVaruintSize(encoded.byteLength) + encoded.byteLength);
+    output[0] = 56; // "8"
+    output[1] = 58; // ":"
+    output[2] = token;
+    const offset = writeWXFVaruintToBuffer(output, 3, encoded.byteLength);
+    output.set(encoded, offset);
+    return output.buffer;
+}
+
+function serializeWXFFiniteNumber(value) {
+    let size;
+    let token;
+    if (!Object.is(value, -0) && Number.isSafeInteger(value)) {
+        if (value >= -128 && value <= 127) {
+            const output = new Uint8Array(4);
+            output[0] = 56;
+            output[1] = 58;
+            output[2] = 67;
+            output[3] = value & 0xFF;
+            return output.buffer;
+        }
+        if (value >= -32768 && value <= 32767) {
+            size = 5;
+            token = 106;
+        } else if (value >= -2147483648 && value <= 2147483647) {
+            size = 7;
+            token = 105;
+        } else {
+            size = 11;
+            token = 76;
+        }
+    } else {
+        size = 11;
+        token = 114;
+    }
+
+    const output = new ArrayBuffer(size);
+    const bytes = new Uint8Array(output);
+    const view = new DataView(output);
+    bytes[0] = 56;
+    bytes[1] = 58;
+    bytes[2] = token;
+    if (token === 106) view.setInt16(3, value, true);
+    else if (token === 105) view.setInt32(3, value, true);
+    else if (token === 76) view.setBigInt64(3, BigInt(value), true);
+    else view.setFloat64(3, value, true);
+    return output;
+}
+
+function serializeWXFNumericArrayValue(value, type, dims) {
+    const rank = dims ? dims.length : 1;
+    let metadataSize = wxfVaruintSize(rank);
+    if (dims) {
+        for (let i = 0; i < dims.length; ++i) metadataSize += wxfVaruintSize(dims[i]);
+    } else {
+        metadataSize += wxfVaruintSize(value.length);
+    }
+
+    const output = new Uint8Array(4 + metadataSize + value.byteLength);
+    output[0] = 56; // "8"
+    output[1] = 58; // ":"
+    output[2] = 194; // numeric array
+    output[3] = type;
+    let dataOffset = writeWXFVaruintToBuffer(output, 4, rank);
+    if (dims) {
+        for (let i = 0; i < dims.length; ++i) {
+            dataOffset = writeWXFVaruintToBuffer(output, dataOffset, dims[i]);
+        }
+    } else {
+        dataOffset = writeWXFVaruintToBuffer(output, dataOffset, value.length);
+    }
+
+    if (wxfLittleEndian || value.BYTES_PER_ELEMENT === 1) {
+        output.set(new Uint8Array(value.buffer, value.byteOffset, value.byteLength), dataOffset);
+    } else {
+        const writer = new WXFByteWriter(output.byteLength);
+        writer.buffer = output;
+        writer.offset = dataOffset;
+        writeWXFNumericArrayData(writer, value, type);
+    }
+    return output.buffer;
+}
+
+function serializeWXF(value) {
+    if (value === null || value === undefined) return serializeWXFTextValue(115, "Null");
+
+    switch (typeof value) {
+        case "boolean":
+            return serializeWXFTextValue(115, value ? "True" : "False");
+        case "string":
+            return serializeWXFTextValue(83, value);
+        case "number":
+            return Number.isFinite(value)
+                ? serializeWXFFiniteNumber(value)
+                : serializeWXFTextValue(115, "Null");
+        case "bigint":
+            if (value >= -9223372036854775808n && value <= 9223372036854775807n) {
+                const output = new ArrayBuffer(11);
+                const bytes = new Uint8Array(output);
+                bytes[0] = 56;
+                bytes[1] = 58;
+                bytes[2] = 76;
+                new DataView(output).setBigInt64(3, value, true);
+                return output;
+            }
+            return serializeWXFTextValue(73, value.toString());
+    }
+
+    if (value instanceof NumericArrayObject) {
+        const metadata = getWXFNumericArrayObjectMetadata(value);
+        return serializeWXFNumericArrayValue(metadata.data, metadata.type, metadata.dims);
+    }
+
+    if (ArrayBuffer.isView(value)) {
+        const type = getWXFNumericArrayType(value);
+        if (type !== undefined) return serializeWXFNumericArrayValue(value, type);
+    }
+
+    const writer = new WXFByteWriter(initialWXFCapacity(value));
+    writer.u8(56); // "8"
+    writer.u8(58); // ":"
+    writeWXFValue(writer, value);
+    return writer.finish();
 }
 
 //a tiny math library of functions
@@ -611,166 +1123,222 @@ fwxf.Pow = (args) => {
 fwxf.Pi = (args) => Math.PI 
 fwxf.E = (args) => Math.E
 
-function deserializeWXF(buffer) {
-    let dataView = new DataView(buffer);
-    let offset = 0;
+function wxfInteger64ToJS(value) {
+    return value >= wxfMinSafeInteger && value <= wxfMaxSafeInteger
+        ? Number(value)
+        : value;
+}
 
-    // Parse the WXF version header
-    if (dataView.getUint8(offset++) !== 56 || dataView.getUint8(offset++) !== 58) {
-        throw new Error("Invalid WXF header.");
+function wxfBigRealToNumber(value) {
+    const exponentIndex = value.indexOf("*^");
+    let mantissa = exponentIndex === -1 ? value : value.slice(0, exponentIndex);
+    const precisionIndex = mantissa.indexOf("`");
+    if (precisionIndex !== -1) mantissa = mantissa.slice(0, precisionIndex);
+
+    const exponent = exponentIndex === -1 ? "" : `e${value.slice(exponentIndex + 2)}`;
+    return Number.parseFloat(mantissa + exponent);
+}
+
+function deserializeWXFGeneral(buffer) {
+    let dataView;
+    if (buffer instanceof ArrayBuffer) {
+        dataView = new DataView(buffer);
+    } else if (ArrayBuffer.isView(buffer)) {
+        dataView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    } else {
+        throw new TypeError("WXF input must be an ArrayBuffer or an ArrayBuffer view.");
     }
-    
-    //console.log("WXF version header recognized.");
 
-    function parseWXF(opts = {}) {
+    let offset;
+    if (dataView.byteLength >= 2 && dataView.getUint16(0, true) === 0x3A38) {
+        offset = 2; // "8:"
+    } else if (
+        dataView.byteLength >= 3 &&
+        dataView.getUint8(0) === 56 &&
+        dataView.getUint8(1) === 67 &&
+        dataView.getUint8(2) === 58
+    ) {
+        const compressedBytes = new Uint8Array(
+            dataView.buffer,
+            dataView.byteOffset + 3,
+            dataView.byteLength - 3
+        );
+        const uncompressedBytes = unzlibSync(compressedBytes);
+        dataView = new DataView(
+            uncompressedBytes.buffer,
+            uncompressedBytes.byteOffset,
+            uncompressedBytes.byteLength
+        );
+        offset = 0;
+    } else {
+        throw new Error("Invalid or unsupported WXF header.");
+    }
+
+    // Fixed-width scalar messages are common in high-frequency streams. Return
+    // them before creating the recursive parser and its text/varint closures.
+    const rootToken = dataView.getUint8(offset++);
+    switch (rootToken) {
+        case 67:
+            return dataView.getInt8(offset);
+        case 106:
+            return dataView.getInt16(offset, true);
+        case 105:
+            return dataView.getInt32(offset, true);
+        case 76:
+            return wxfInteger64ToJS(dataView.getBigInt64(offset, true));
+        case 114:
+            return dataView.getFloat64(offset, true);
+        default:
+            --offset;
+    }
+
+    function readVaruint() {
+        let byte = dataView.getUint8(offset++);
+        let value = byte & 0x7F;
+        if (!(byte & 0x80)) return value;
+
+        let multiplier = 128;
+        do {
+            byte = dataView.getUint8(offset++);
+            value += (byte & 0x7F) * multiplier;
+            if (!Number.isSafeInteger(value)) {
+                throw new Error("WXF varint exceeds JavaScript's safe integer range.");
+            }
+            multiplier *= 128;
+        } while (byte & 0x80);
+        return value;
+    }
+
+    function readText() {
+        const length = readVaruint();
+        const value = readString(dataView, offset, length);
+        offset += length;
+        return value;
+    }
+
+    // `inline` replaces the former options objects. It avoids one allocation
+    // for every member of ordinary Lists and Associations.
+    function parseWXF(inline = false) {
         if (offset >= dataView.byteLength) {
-          throw new Error("Unexpected end of buffer.");
+            throw new Error("Unexpected end of buffer.");
         }
 
-        let token = dataView.getUint8(offset++);
-        //console.log(`Processing token: ${token}`);
-
+        const token = dataView.getUint8(offset++);
         switch (token) {
             case 102: { // "f" - function
-                let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                offset = newOffset;
-                let head = parseWXF();
-                let args = [];
-              
-                //optimizations for numerical Lists bypass all checks
-                if (head == "List") {
-                  for (let i = 0; i < length; i++) {
-                      args.push(parseWXF({...opts, listQ: true}));
-                  }
-                  
-                  if (opts.listQ || opts.assocQ) return args;
-                  return ['JSObject', args];   
-                  
+                const length = readVaruint();
+                const head = parseWXF(false);
+
+                if (head === "List") {
+                    const args = new Array(length);
+                    for (let i = 0; i < length; ++i) args[i] = parseWXF(true);
+                    return inline ? args : ['JSObject', args];
                 }
 
-                
-                
-                //process arguments, bypass all checks
-                for (let i = 0; i < length; i++) {
-                  args.push(parseWXF(opts));
-                }      
-                
-                //optimization for lists again!
-                //if bump into non number, but a simbol being inside a list
-                if (opts.listQ || opts.assocQ) {
-                    return fwxf[head](args); //run a tiny math library to calculate beforehand
-                    //window.interpretate is too slow for updates
+                if (inline) {
+                    const args = new Array(length);
+                    for (let i = 0; i < length; ++i) args[i] = parseWXF(true);
+                    return fwxf[head](args);
                 }
-                
-                return [head, ...args];
-                
+
+                const expression = new Array(length + 1);
+                expression[0] = head;
+                for (let i = 0; i < length; ++i) expression[i + 1] = parseWXF(false);
+                return expression;
             }
-            case 67: { // "C" - signed 8-bit integer
+            case 67: // "C" - signed 8-bit integer
                 return dataView.getInt8(offset++);
-            }
             case 106: { // "j" - signed 16-bit integer
-                let value = dataView.getInt16(offset, true);
+                const value = dataView.getInt16(offset, true);
                 offset += 2;
                 return value;
             }
             case 105: { // "i" - signed 32-bit integer
-                let value = dataView.getInt32(offset, true);
+                const value = dataView.getInt32(offset, true);
                 offset += 4;
                 return value;
             }
+            case 76: { // "L" - signed 64-bit integer
+                const value = dataView.getBigInt64(offset, true);
+                offset += 8;
+                return wxfInteger64ToJS(value);
+            }
             case 114: { // "r" - IEEE double-precision real
-                let value = dataView.getFloat64(offset, true);
+                const value = dataView.getFloat64(offset, true);
                 offset += 8;
                 return value;
             }
-            case 82: { // 'R' - string like Real number with precision
-                let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                offset = newOffset;
-                let str = readString(dataView, offset, length);
-                offset += length;
-
-                return parseFloat(str.split('`')); //ignore precision
-            }
+            case 73: // "I" - arbitrary-precision integer
+                return BigInt(readText());
+            case 82: // "R" - arbitrary-precision real
+                return wxfBigRealToNumber(readText());
             case 83: { // "S" - string
-                let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                offset = newOffset;
-                let str = readString(dataView, offset, length);
+                const value = readText();
+                return inline ? value : "'" + value + "'";
+            }
+            case 66: { // "B" - binary string
+                const length = readVaruint();
+                const bytes = new Uint8Array(
+                    dataView.buffer,
+                    dataView.byteOffset + offset,
+                    length
+                );
                 offset += length;
-
-                if (opts.listQ || opts.assocQ) { //if inside list, just paste JS object directly
-                    return str;
-                }
-
-                return "'"+str+"'";
+                return inline ? bytes : ['JSObject', bytes];
             }
-            case 193: // "Á" - packed array
-            case 194: { // "Â" - numeric array
-                let arrayType = dataView.getUint8(offset++);
-                let rank = dataView.getUint8(offset++);
-                let dims = [];
+            case 193: // packed array
+            case 194: { // numeric array
+                const arrayType = dataView.getUint8(offset++);
+                const rank = readVaruint();
+                const dims = new Array(rank);
                 let length = 1;
-                for (let i=0; i<rank; ++i) {
-                  let { value: len, offset: newOffset } =readVarint(dataView, offset)
-                  //const len = dataView.getUint8(offset++);
-                  offset = newOffset;
-                  
-                  length *= len;
-                  dims.push(len);
-                }
-                //let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                //console.log({value: length, offset: length, dims: dims});
-                //offset = newOffset;
-                let array = readNumericArray(dataView, offset, length, arrayType);
-                offset += array.length;
-
-                if (opts.listQ || opts.assocQ) { //mixure of lists and (packed) arrays FIXME //cannot treat!
-                    return (new NumericArrayObject(array.array, dims)).normal();
+                for (let i = 0; i < rank; ++i) {
+                    const dimension = readVaruint();
+                    dims[i] = dimension;
+                    length *= dimension;
+                    if (!Number.isSafeInteger(length)) {
+                        throw new Error("WXF numeric array is too large for JavaScript.");
+                    }
                 }
 
-                return ['JSObject', new NumericArrayObject(array.array, dims)];
+                const array = readNumericArray(dataView, offset, length, arrayType);
+                offset += array.byteLength;
+                const numericArray = new NumericArrayObject(array, dims);
+                return inline ? numericArray.normal() : ['JSObject', numericArray];
             }
-            case 45: { // rule in association
-                return [parseWXF(opts), parseWXF(opts)];
-            }
-
-            case 65: { // "A" - association
-                let assoc = {};
-                let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                offset = newOffset;
-                for (let i = 0; i < length; i++) {
-                    let keyvalue = parseWXF({...opts, assocQ:true});
-                    //let value = parseWXF();
+            case 45: // rule
+            case 58: // delayed rule
+                return [parseWXF(inline), parseWXF(inline)];
+            case 65: { // association
+                const length = readVaruint();
+                const assoc = {};
+                for (let i = 0; i < length; ++i) {
+                    const keyvalue = parseWXF(true);
                     assoc[keyvalue[0]] = keyvalue[1];
                 }
-
-                if (opts.listQ || opts.assocQ) return assoc;
-
-                return ['JSObject', assoc];
+                return inline ? assoc : ['JSObject', assoc];
             }
-            case 67: { // "C" - signed 8-bit integer
-                return dataView.getInt8(offset++);
-            }
-            case 115: { // "s" - symbol
-                let { value: length, offset: newOffset } = readVarint(dataView, offset);
-                offset = newOffset;
-                let symbol = readString(dataView, offset, length);
-                offset += length;
-                // Return as a symbol object or just the string for now
-                return symbol;
-            }
+            case 115: // "s" - symbol
+                return readText();
             default:
                 throw new Error(`Unknown token: ${token} at offset ${offset - 1}`);
         }
     }
 
-    try {
-        return parseWXF();
-    } catch (error) {
-        console.error(`Deserialization error: ${error.message}`);
-        throw error;
-    }
+    return parseWXF(false);
 }
 
+function deserializeWXF(buffer) {
+    if (buffer && buffer.byteLength === 4 && buffer.buffer === undefined) {
+        const bytes = new Uint8Array(buffer);
+        if (bytes[0] === 56 && bytes[1] === 58 && bytes[2] === 67) {
+            return bytes[3] << 24 >> 24;
+        }
+    }
+    return deserializeWXFGeneral(buffer);
+}
+
+interpretate.serializeWXF = serializeWXF;
 interpretate.deserializeWXF = deserializeWXF;
 
 interpretate.handleMessage = (event) => {
@@ -792,32 +1360,11 @@ interpretate.anonymous = async (d, org) => {
   throw('Unknown symbol '+ JSON.stringify(d));
 }
 
-function jsonStringifyRecursive(obj) {
-  const cache = new Set();
-  return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-          if (cache.has(value)) {
-              // Circular reference found, discard key
-              return;
-          }
-          // Store value in our collection
-          cache.add(value);
-      }
-      return value;
-  }, 4);
-}
-
-
 var InstancesHashMap = {}
 
 window.InstancesHashMap = InstancesHashMap
 
 let garbageTimeout = false;
-
-const renewGarbageTimer = () => {
-  if (garbageTimeout) clearTimeout(garbageTimeout);
-  garbageTimeout = setTimeout(collectGarbage, 10000);
-}
 
 const collectGarbage = () => {
   console.log('collecting garbage...');

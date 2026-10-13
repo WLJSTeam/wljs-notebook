@@ -20,17 +20,10 @@ Begin["`Internal`"]
 (* Normally, you should keep them in the internal (private)  context  *)
 (* and use their full name when defining them on JS side              *)
 
-System`WLJSIOImport;
 System`WLJSIOUpdateSymbol;
 System`WLJSIOAddTracking;
 System`WLJSIOGetSymbol;
-System`WLJSIOPromise;
 System`WLJSIOPromiseResolve;
-System`WLJSIDCardRegister;
-System`WLJSIOPromiseCallback;
-
-System`WLJSIORequest;
-System`WLJSIOFetch;
 
 System`$CurrentWebSocket;
 System`Offload;
@@ -38,11 +31,11 @@ System`Offload;
 Offload::usage = "Hold expression to be evaluated on the frontend"
 SetAttributes[Offload, HoldFirst]
 
-WLJSIOImport[data_] := ImportByteArray[URLDecode[data]//StringToByteArray, "RawJSON"]
+eventHandler;
 
 (* Main handler will evaluate any WebSocket message *)
 WLJSTransportHandler[cl_, data_ByteArray] := Block[{$CurrentWebSocket = cl},
-    ToExpression[data//ByteArrayToString];
+    eventHandler@@ImportByteArray[data, "WXF"];
 ]
 
 $DefaultSerializer[expr_] :=
@@ -55,6 +48,45 @@ $DefaultSerializer[expr_] :=
 ];
 
 WLJSTransportSend[expr_, client_] := WebSocketUSend[client, expr // $DefaultSerializer]
+
+(* 1:: Normal event *)
+eventHandler[1, uid_, object_, pattern_] := EventFire[uid, pattern, object]
+
+(* 2:: Hot-path event, no payload *)
+eventHandler[2, uid_] := EventFire[uid, True]
+
+(* 3:: Normal event with return *)
+eventHandler[3, uid_, ev_, object_, pattern_] := With[{client = $CurrentWebSocket, res = EventFire[ev, pattern, object]},
+    If[PromiseQ[res],
+        Then[res, Function[r,
+            WebSocketUSend[client, WLJSIOPromiseResolve[uid, r] // $DefaultSerializer];
+        ] ];
+    ,
+        WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
+    ]
+];
+
+(* 4:: Fetch request *)
+eventHandler[4, uid_, symbolString_] := With[{client = $CurrentWebSocket, symbol = ToExpression[symbolString, InputForm]},
+    If[PromiseQ[symbol],
+        Then[symbol, Function[res,
+            WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
+        ] ];
+    ,
+        WebSocketUSend[client, WLJSIOPromiseResolve[uid, symbol] // $DefaultSerializer];
+    ]
+];
+
+(* 5:: Fetch request with payload *)
+eventHandler[5, uid_, symbolString_, args_] := With[{client = $CurrentWebSocket, symbol = (ToExpression[symbolString, InputForm])@@args},
+    If[PromiseQ[symbol],
+        Then[symbol, Function[res,
+            WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
+        ] ];
+    ,
+        WebSocketUSend[client, WLJSIOPromiseResolve[uid, symbol] // $DefaultSerializer];
+    ]
+];
 
 (* performance critical part! streaming large chunks of data upon symbol update *)
 WLJSIOAddTracking[symbol_String] := With[{
@@ -80,46 +112,6 @@ WLJSIOGetSymbol[exprString_] := With[{client = $CurrentWebSocket, promise = Prom
     promise
 ];
 
-WLJSIOPromise[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
-    WebSocketUSend[client, WLJSIOPromiseResolve[uid, expr] // $DefaultSerializer];
-];
-
-WLJSIOFetch[uid_][symbol_] := With[{client = $CurrentWebSocket},
-    If[PromiseQ[symbol],
-        Then[symbol, Function[res,
-            WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
-        ] ];
-    ,
-        WebSocketUSend[client, WLJSIOPromiseResolve[uid, symbol] // $DefaultSerializer];
-    ]
-];
-
-WLJSIOFetch[uid_][r_, args_] := With[{client = $CurrentWebSocket, symbol = r @@ args},
-    If[PromiseQ[symbol],
-        Then[symbol, Function[res,
-            WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
-        ] ];
-    ,
-        WebSocketUSend[client, WLJSIOPromiseResolve[uid, symbol] // $DefaultSerializer];
-    ]
-];
-
-WLJSIORequest[uid_][ev_String, pattern_, data_] := With[{client = $CurrentWebSocket, res = EventFire[ev, pattern, data]},
-    If[PromiseQ[res],
-        Then[res, Function[r,
-            WebSocketUSend[client, WLJSIOPromiseResolve[uid, r] // $DefaultSerializer];
-        ] ];
-    ,
-        WebSocketUSend[client, WLJSIOPromiseResolve[uid, res] // $DefaultSerializer];
-    ]
-];
-
-WLJSIOPromiseCallback[uid_, params_][expr_] := With[{client = $CurrentWebSocket},
-    (*Print["WLJS promise >> get with id "<>uid];*)
-    expr[Function[result, 
-        WebSocketUSend[client, WLJSIOPromiseResolve[uid, result] // $DefaultSerializer];
-    ]];
-];
 
 (* Script for embeding *)
 

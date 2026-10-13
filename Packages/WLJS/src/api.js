@@ -25,12 +25,13 @@ class ServerIO {
   }
 
   fire(uid, object, pattern = "Default") { //regular event call
-    const data = encodeURIComponent(JSON.stringify(object));
-    this.server.socket.send(this.headSymbol+'["'+uid+'", "'+pattern+'", WLJSIOImport["'+data+'"]]');
+    const data = interpretate.serializeWXF([1, uid, object, pattern]);
+    this.server.socket.send(data);
   }
 
   poke(uid) { //superfast just send a dummy message (can be used for calling animation frame)
-    this.server.socket.send(this.headSymbol+'["'+uid+'", True]');
+    const data = interpretate.serializeWXF([2, uid]);
+    this.server.socket.send(data);
   }
 
   request(ev, object, pattern = "Default") { //the same as event call, but returns the result
@@ -39,8 +40,8 @@ class ServerIO {
     const promise = new Deferred();
     promises[uid] = promise;
 
-    const data = encodeURIComponent(JSON.stringify(object));
-    this.server.socket.send('WLJSIORequest["'+uid+'"]["'+ev+'", "'+pattern+'", WLJSIOImport["'+data+'"]]');
+    const data = interpretate.serializeWXF([3, uid, ev, object, pattern]);
+    this.server.socket.send(data);
 
     return promise.promise     
   }
@@ -52,12 +53,13 @@ class ServerIO {
     promises[uid] = promise;
 
     if (args) {
-      const data = encodeURIComponent(JSON.stringify(args));
-      this.server.socket.send('WLJSIOFetch["'+uid+'"]['+symbol+', WLJSIOImport["'+data+'"]]');
+      const data = interpretate.serializeWXF([5, uid, symbol, args]);
+      this.server.socket.send(data);
       return promise.promise     
     }
 
-    this.server.socket.send('WLJSIOFetch["'+uid+'"]['+symbol+']');
+    const data = interpretate.serializeWXF([4, uid, symbol]);
+    this.server.socket.send(data);
     
     return promise.promise     
   }
