@@ -77,12 +77,13 @@ Phase II
 - [ ] update tutorials on plugins
 - [ ] update tutorials on JS-WL comm
 - [ ] Remove LetWL from docs
+- [ ] Improve NB files import
 
 Phase III
 - [ ] Test FEM
-- [ ] WLX add NewLine tag
-- [ ] Tooltip lists vetors render withut Edtior
+- [x] WLX add NewLine tag
+- [?] Tooltip lists vetors render withut Edtior
 - [x] cache time reduce
-- [ ] NotebookClose on CurrentWindow[] should send WebUIClose
+- [x] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] PauseAsync[1]~Then~MessageDialog
-- [ ] SystemDialogInputAsync no need in Window and for other
+- [x] SystemDialogInputAsync no need in Window and for other

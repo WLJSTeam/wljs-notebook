@@ -174,10 +174,9 @@ core.WLJSIOPromiseResolve = (args, env) => {
 }
 
 
-let tryreload;
 let attempts = 0;
 
-tryreload = (failed) => {
+window.tryreload = (failed) => {
   document.body.style.filter = "blur(10px)";
   attempts++;
 
@@ -195,11 +194,11 @@ tryreload = (failed) => {
         window.location.reload();
       } else {
         console.warn('Checking connection... FAILED');
-        setTimeout(() => tryreload(failed), 500);
+        setTimeout(() => window.tryreload(failed), 500);
       }
     }, (rej)=>{
       console.warn('Checking connection... FAILED');
-      setTimeout(() => tryreload(failed), 500);
+      setTimeout(() => window.tryreload(failed), 500);
     });
 
     

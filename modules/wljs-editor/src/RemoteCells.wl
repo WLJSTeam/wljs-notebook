@@ -498,7 +498,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                         ];
 
                         If[socketRef === Null,
-                            Echo["Trying to find any opened window"];
+                            Echo["Trying to find any opened window (even if useTemporal)"];
                             With[{
                                 ws = SortBy[Select[Values[win`HashMap], TrueQ[#["Opened"] ]&], Function[w, -w["Date"] ] ]
                             },   
@@ -692,7 +692,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                             ,
                                 Echo["Search for opened windows associated with a notebook"];
                                 With[{wins = Values[win`HashMap]},
-                                    With[{filtered = Select[wins, (TrueQ[#["Opened"] ])&]},
+                                    With[{filtered = Select[wins, (TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]])&]},
                                         If[Length[filtered] > 0,
                                             With[{w = (filtered // First)},
                                                 EventFire[w["ModalsChannel"], "HTMLWindow", <|
@@ -702,14 +702,23 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                 |>];                                                                                        
                                             ]
                                         ,
+                                            (* General case, this needs to be a normal window, not offscreen *)
                                             Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
-                                            With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ]},
+                                            With[{win = win`WindowObj["Data"->" ", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ], proxi = Promise[]},
+                                                win["useTemporal"] = True;
                                                 EventHandler[win // EventClone, {"Ready" -> Function[Null,
                                                     EventFire[win["ModalsChannel"], "HTMLWindow", <|
-                                                        "Promise"-> p,
+                                                        "Promise"-> proxi,
                                                         "Data" -> payload,
                                                         "Content" -> messageDialog
-                                                    |>];    
+                                                    |>];  
+                                                    Then[proxi, Function[res, 
+                                                        WebUIClose[win["Socket"]];
+                                                        EventFire[p, Resolve, res];
+                                                    ], Function[err,
+                                                        WebUIClose[win["Socket"]];
+                                                        EventFire[p, Reject, err];
+                                                    ]];
                                                 ]}];
                                                 ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message"];
                                             ];
@@ -737,6 +746,54 @@ EventHandler[NotebookEditorChannel // EventClone,
             ];
         ],
 
+        "NotebookMessageRequest" -> Function[assoc, With[{
+            kernel = GenericKernel`HashMap[ assoc["Kernel"] ],
+            promise = assoc["Promise"],
+            request = assoc["Request"]
+        },
+            Echo["Search for opened notebooks"];
+            With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
+                If[Length[nbs] > 0,
+                    Then[WebUIFetch[request, nbs[[1]]["Socket"]], Function[result,
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
+                    ], Function[err,
+                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
+                    ]];
+                ,
+                    Echo["Search for opened windows"];
+                    With[{wins = Values[win`HashMap]},
+                        With[{filtered = Select[wins, ( TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]] )&]},
+                            If[Length[filtered] > 0,
+                                With[{w = (filtered // First)},
+                                    Then[WebUIFetch[request, w["Socket"]], Function[result,
+                                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
+                                    ], Function[err,
+                                        GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
+                                    ]];                                                                                       
+                                ]
+                            ,
+                                Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"], "Offscreen"->True ]},
+                                    win["useTemporal"] = True;
+                                    With[{cloned = win // EventClone}, EventHandler[cloned, {"Ready" -> Function[Null,
+                                        Then[WebUIFetch[request, win["Socket"]], Function[result,
+                                                GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
+                                                Echo["Autoclose temporal window"]; WebUIClose[win["Socket"]]
+                                            ], Function[err,
+                                                GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
+                                                Echo["Autoclose temporal window"]; WebUIClose[win["Socket"]]
+                                        ]]; 
+                                        EventRemove[cloned];
+                                    ]}]];
+                                    ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message", <|"offscreen"->True|>];
+                                ];                                
+                            ]
+                        ]
+                    ] 
+                ]
+            ]              
+        ]],
+
         "NotebookMessageDialogNative" -> Function[assoc,
             With[{
                 notebook = nb`HashMap[ assoc["Ref"] ], 
@@ -758,9 +815,9 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     "Promise"-> p
                                 |>, payload] ]; 
                             ,
-                                Echo["Search for opened windows associated with a notebook"];
+                                Echo["Search for opened windows "];
                                 With[{wins = Values[win`HashMap]},
-                                    With[{filtered = Select[wins, ( TrueQ[#["Opened"] ])&]},
+                                    With[{filtered = Select[wins, ( TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]] )&]},
                                         If[Length[filtered] > 0,
                                             With[{w = (filtered // First)},
                                                 EventFire[w["ModalsChannel"], type, Join[<|
@@ -769,14 +826,28 @@ EventHandler[NotebookEditorChannel // EventClone,
                                             ]
                                         ,
                                             Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
-                                            With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ]},
-                                                EventHandler[win // EventClone, {"Ready" -> Function[Null,
+                                            With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"], "Offscreen"->True ]},
+                                                win["useTemporal"] = True;
+                                                
+                                                With[{cloned = win // EventClone, proxi = Promise[]}, EventHandler[cloned, {"Ready" -> Function[Null,
                                                     EventFire[win["ModalsChannel"], type, Join[<|
-                                                    "Promise"-> p
-                                                    |>, payload] ];    
-                                                ]}];
-                                                ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message"];
-                                            ];                                
+                                                        "Promise"-> proxi
+                                                    |>, payload] ];  
+                                                    EventRemove[cloned];
+                                                    Then[proxi, Function[res,
+                                                        Echo["Closing temporal"];
+                                                        WebUIClose[win["Socket"]];
+                                                        EventFire[p, Resolve, res];
+                                                    ], Function[err, 
+                                                        Echo["Closing temporal"];
+                                                        WebUIClose[win["Socket"]];
+                                                        EventFire[p, Reject, err];
+                                                    ]];
+                                                    
+                                                    
+                                                ]}]];
+                                                ElectronIPCSend["createWindow",  StringJoin["/window?id=", win["Hash"] ], "Message", <|"offscreen"->True|>];
+                                            ];  
                                         ]
                                     ]
                                 ] 

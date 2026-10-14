@@ -12,6 +12,8 @@
   <|"label" -> "CurrentNotebookImage", "type"->"keyword", "info"->"CurrentNotebookImage[] rasterizes current notebook content into an image"|>,
   <|"label" -> "Tooltip", "type" -> "keyword", "info" -> "Tooltip[expr, label] display label when the mouse is moved over expr"|>,
   <|"label" -> "PrintTemporary", "type" -> "keyword", "info"->"PrintTemporary[expr] prints expr and removes it after the evaluation is finished"|>,
+  <|"label" -> "PageBreakAbove", "type" -> "keyword", "info" -> "PageBreakAbove inserts a page break above when printing in the context of WLX, Markdown cnad slide cells"|>,
+  <|"label" -> "PageBreakBelow", "type" -> "keyword", "info" -> "PageBreakBelow inserts a page break below when printing in the context of WLX, Markdown cnad slide cells"|>,
   <|"label" -> "Monitor", "type"->"keyword", "info" -> "Monitor[expr,mon] generates a temporary monitor cell in which the continually updated current value of mon is displayed during the course of evaluation of expr"|>,
   <|"label" -> "ListConvolve", "type"->"keyword", "info" -> "ListConvolve[list, ker] forms the convolution of the kernel ker with list."|>,
   <|"label" -> "ProgressIndicator", "type"->"keyword", "info" -> "ProgressIndicator[val] represents a comple progress bar indicator.\nProgressIndicator[val, {min,max}] represent a progress bar, that rescales val from min to max"|>,

@@ -257,6 +257,8 @@ NotebookClose[RemoteNotebook[uid_] ] := (
 
 NotebookClose[r_RemoteCellObj ] := NotebookDelete[r]
 
+NotebookClose[r_WindowObj ] := FrontSubmit["window.close()", r]
+
 NotebookEvaluateAsModule::noninteractive = "Can't use NotebookEvaluateAsModule outside the interactive session. Please use NotebookEvaluateAsModuleAsync"
 
 NotebookEvaluateAsModuleAsync[path_String | File[path_] ] := NotebookEvaluateAsModuleAsync[NotebookOpen[path, Visible->False] ]
