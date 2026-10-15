@@ -1,0 +1,68 @@
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Release Notes *3.2.0*
+<Now/>
+
+## Summary
+- __Zero-lag saving__
+- Improved equations/objects - mixed content rendering
+- __x8 faster initial evaluation kernel launch__
+- __Faster exports, x2 faster 2D, 3D graphics, audio streaming__
+- __x<ToExpression>74/0.01//Round</ToExpression> faster Javascript to WL pipeline__ (you can literally stream raw video directly from JS to Wolfram)
+- Better Dialog API
+- Access to server logs from the app, Kernel crashing detection
+- Caching improvements
+- Fixed race conditions bugs in MCP server
+- Better internal architecture, __fully refactored in 3 sweeps__
+- __More integration tests (> 200)__
+- Small and tight frontend-backend API, binary-based protocol
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Release Notes *3.2.0*
+Wed 14 Oct 2026 15:27:17
+
+## Summary
+- __Zero-lag saving__
+- Improved equations/objects - mixed content rendering
+- __x8 faster initial evaluation kernel launch__
+- __Faster exports, x2 faster 2D, 3D graphics, audio streaming__
+- __x7400 faster Javascript to WL pipeline__ (you can literally stream raw video directly from JS to Wolfram)
+- Better Dialog API
+- Access to server logs from the app, Kernel crashing detection
+- Caching improvements
+- Fixed race conditions bugs in MCP server
+- Better internal architecture, __fully refactored in 3 sweeps__
+- __More integration tests (> 200)__
+- Small and tight frontend-backend API, binary-based protocol
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

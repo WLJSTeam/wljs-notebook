@@ -1,0 +1,22 @@
+Notebook[{
+ Cell["Notebook import: static displays", "Title"],
+ Cell[BoxData[RowBox[{"wljsImportSentinel", "=", "99"}]], "Input"],
+ Cell["Graphics", "Section"],
+ Cell[BoxData[GraphicsBox[{RGBColor[1,0,0], DiskBox[{0,0},1]}, ImageSize->220]], "Output"],
+ Cell["Graphics3D", "Section"],
+ Cell[BoxData[Graphics3DBox[{RGBColor[0,0,1], SphereBox[{0,0,0},1]}, ImageSize->220]], "Output"],
+ Cell["Image", "Section"],
+ Cell[BoxData[GraphicsBox[TagBox[RasterBox[NumericArray[{{0.,1.},{1.,0.}},"Real32"],{{0,2.},{2.,0}},{0.,1.},ColorFunction->GrayLevel],BoxForm`ImageTag["Real32",ColorSpace->Automatic,Interleaving->None],Selectable->False],DefaultBaseStyle->"ImageGraphics",ImageSizeRaw->{2.,2.},ImageSize->160,PlotRange->{{0,2.},{0,2.}}]],"Output"],
+ Cell["Image3D", "Section"],
+ Cell[BoxData[Graphics3DBox[TagBox[Raster3DBox[NumericArray[{{{0.,1.},{1.,0.}},{{1.,0.},{0.,1.}}},"Real32"],{{0,2,2},{2,0,0}},{0.,1.},{ColorFunction->"GrayLevelDefaultColorFunction",Method->{"FastRendering"->True},{}}],BoxForm`ImageTag["Real32",ColorSpace->Automatic,Interleaving->None],Selectable->False],{},{},AxesStyle->{},Background->None,Boxed->False,BoxRatios->Automatic,DefaultBaseStyle->"Image3DGraphics3D",ImageSizeRaw->2,ImageSize->220,PlotRange->{{0,2},{0,2},{0,2}}]],"Output"],
+ Cell["Equations and layouts", "Section"],
+ Cell[BoxData[RowBox[{"x","\[Equal]","y"}]],"Output"],
+ Cell[BoxData[TemplateBox[{"a","b","c"},"RowDefault"]],"Output"],
+ Cell[BoxData[TemplateBox[{",","\",\"","a","b","c"},"RowWithSeparators"]],"Output"],
+ Cell[BoxData[TagBox[GridBox[{{"a"},{"b"},{"c"}},DefaultBaseStyle->"Column"],"Column"]],"Output"],
+ Cell[BoxData[GridBox[{{"1","2"},{"3","4"}}]],"Output"],
+ Cell[BoxData[TagBox[RowBox[{"(",GridBox[{{"1","2"},{"3","4"}}],")"}],Function[BoxForm`e$,MatrixForm[BoxForm`e$]]]],"Output"],
+ Cell["Dynamic outputs below should be absent", "Section"],
+ Cell[BoxData[DynamicBox[ToBoxes[wljsImportSentinel=100]]],"Output"],
+ Cell[BoxData[InterpretationBox["controls",Manipulate[wljsImportSentinel=101,{x,0,1}]]],"Output"]
+}]

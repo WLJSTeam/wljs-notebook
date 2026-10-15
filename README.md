@@ -143,6 +143,13 @@ You can also help by:
 WLJS does not transfer information to networked systems unless requested by the person installing or operating it. See the [privacy and security policy](SECURITY.md) for details.
 
 
+## AI usage disclosure
+We used LLM to refactor these sources:
+
+- modules/wljs-editor/src/BoxesConverter.wl
+- modules/wljs-export-html/Formats/Mathematica/Mathematica.wl
+- Electron/main.js
+
 
 ## Code signing
 

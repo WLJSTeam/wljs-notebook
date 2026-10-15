@@ -706,15 +706,21 @@ g3d.Tube.destroy = async (args, env) => {
 
 
 g3d.TubeArrow = async (args, env) => {
-
-
-  let radius = 1;
-  if (args.length > 1) radius = await interpretate(args[1], env);
   /**
    * @type {THREE.Vector3}}
    */
-  const coordinates = await interpretate(args[0], env);
-  //throw coordinates;
+  let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
+  const p2 = new THREE.Vector3(...coordinates[0]);
+  const p1 = new THREE.Vector3(...coordinates[1]);
+  const dp = p2.clone().addScaledVector(p1, -1);
+  const length = dp.length();
+  // Automatic dimensions must follow the diagram's scale. A fixed unit-radius
+  // shaft hides small imported diagrams. Explicit Tube/Arrowheads sizes retain
+  // their existing world-coordinate interpretation.
+  const radius = args.length > 1 ? await interpretate(args[1], env) : length * 0.02;
+  const headHeight = env.arrowHeight == null ? length * 0.2 : env.arrowHeight / 60;
+  const headRadius = env.arrowRadius == null ? length * 0.06 : env.arrowRadius / 100;
 
   /**
    * @type {env.material}}
@@ -747,13 +753,7 @@ thickness: env.materialThickness,
     
   });
 
-  //points 1, 2
-  const p2 = new THREE.Vector3(...coordinates[0]);
-  const p1 = new THREE.Vector3(...coordinates[1]);
-  //direction
-  const dp = p2.clone().addScaledVector(p1, -1);
-
-  const geometry = new THREE.CylinderGeometry(radius, radius, dp.length(), 32, 1);
+  const geometry = new THREE.CylinderGeometry(radius, radius, length, 32, 1);
 
   //calculate the center (might be done better, i hope BoundingBox doest not envolve heavy computations)
 
@@ -762,9 +762,9 @@ thickness: env.materialThickness,
   const cylinder = new THREE.Mesh(geometry, material);
 
   //cone
-  const conegeometry = new THREE.ConeGeometry(env.arrowRadius/100.0, env.arrowHeight/60.0, 32 );
+  const conegeometry = new THREE.ConeGeometry(headRadius, headHeight, 32);
   const cone = new THREE.Mesh(conegeometry, material);
-  cone.position.y = dp.length()/2 + env.arrowHeight/120.0;
+  cone.position.y = length / 2 + headHeight / 2;
 
   let group = new THREE.Group();
   group.add(cylinder, cone);
@@ -807,7 +807,8 @@ g3d.TubeArrow.update = async (args, env) => {
    */
   
   
-  const coordinates = await interpretate(args[0], env);
+  let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
   //points 1, 2
   const p2 = new THREE.Vector3(...coordinates[0]);
   const p1 = new THREE.Vector3(...coordinates[1]);
@@ -6145,8 +6146,8 @@ const envcopy = {
   mesh: group,
   metalness: 0,
   emissive: undefined,
-  arrowHeight: 30,
-  arrowRadius: 30,
+  arrowHeight: undefined,
+  arrowRadius: undefined,
   reflectivity: 0.5,
   clearcoat: 0,
   shadows: false,

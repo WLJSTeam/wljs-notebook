@@ -70,6 +70,9 @@ Phase II
 - [ ] Find all [TODO] tags
 - [x] REDO ALL TESTS from Phase I
 - [ ] Update docs
+- [ ] Throttle for Manipulate with failed JIT
+- [ ] Throttle animate if found Graphics or other large objects
+- [ ] MEasure time between calls to estimate throttling
 - [ ] Fix plugins examples!!! or extensions exmaples
 - [ ] exports as widgets, 
 - [ ] html export, 
@@ -77,13 +80,15 @@ Phase II
 - [ ] update tutorials on plugins
 - [ ] update tutorials on JS-WL comm
 - [ ] Remove LetWL from docs
-- [ ] Improve NB files import
+- [x] Improve NB files import
 
 Phase III
 - [ ] Test FEM
 - [x] WLX add NewLine tag
 - [?] Tooltip lists vetors render withut Edtior
 - [x] cache time reduce
+- [ ] SPlit to a new notebook odes not work
+- [x] IMprove NB improting
 - [x] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] PauseAsync[1]~Then~MessageDialog
 - [x] SystemDialogInputAsync no need in Window and for other
