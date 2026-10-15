@@ -509,9 +509,6 @@ rememberImportedObject[notebook_nb`NotebookObj, uid_String] := (
   If[!AssociationQ[notebook["Objects"]], notebook["Objects"] = <||>];
   notebook["Objects"] = Append[notebook["Objects"],
     uid -> <|"Public" -> CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[uid, "Public"]|>];
-  With[{ob = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[uid]},
-    GenericKernel`SendAsync[notebook["Evaluator"]["Kernel"], CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[uid] = ob;];
-  ];
   notebook["ObjectFields"] = Union[notebook["ObjectFields"], {"Objects"}];
 )
 rememberImportedObject[_, _] := Null
@@ -853,7 +850,7 @@ With[{
         Then[promiseRequest, Function[result,
           Switch[result,
               _Integer,
-                With[{data = ReleaseHold[options["Kernels"] ][[result]], currentNotebook = notebook},
+                With[{data = ReleaseHold[options["Kernels"] ][[result]], currentNotebook = notebook, oldKeys = Keys[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]},
                   If[TrueQ[data["ContainerReadyQ"] ],
                     Echo[data];
 
@@ -862,9 +859,17 @@ With[{
                     currentNotebook["AutoconnectKernel"] = data["Hash"];
                     EventFire[options["Messager"], spinner, True];
 
+                    
+
                     ApplySync[Then, convert, {
                       #, notebook, data
                     } &/@ nb[[1]], Function[Null,
+
+                      With[{obs = KeyTake[Complement[Keys[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects], oldKeys]][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]},
+                          StringTemplate["Sync created objects: ``"][Length[Keys[obs]]]//Echo;
+                          GenericKernel`SendAsync[notebook["Evaluator"]["Kernel"], CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, obs]];
+                      ];
+                      
                       Then[saveNotebook[notebook["Path"], notebook, "NoCache"->True], Function[Null,
                         EventFire[promise, Resolve, notebook["Path"] ];
                         Delete /@ notebook["Cells"];

@@ -10,13 +10,13 @@ interpretate.contextExpand(g3d);
 "ColorFunction",
 "ControllerLinking", "ControllerMethod", "ControllerPath", 
 "CoordinatesToolOptions", "DisplayFunction", "Epilog", "FaceGrids", 
-"FaceGridsStyle", "FormatType", "ImageMargins", "ImagePadding", 
+"FaceGridsStyle", "FormatType", "ImageCache", "ImageMargins", "ImagePadding",
 "ImageSize", "ImageSizeRaw", "LabelStyle", "Lighting", "Method", 
 "PlotLabel", "PlotRange", "PlotRangePadding", "PlotRegion", 
 "PreserveImageOptions", "Prolog", "RotationAction", 
 "SphericalRegion", "Ticks", "TicksStyle", "TouchscreenAutoZoom", 
 "ViewAngle", "ViewCenter", "ViewMatrix", "ViewPoint", 
-"ViewProjection", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "VertexNormals", "VertexColors"].map((e)=>{
+"ViewProjection", "ViewSize", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "VertexNormals", "VertexColors"].map((e)=>{
   g3d[e] = () => e;
 });
 
@@ -265,6 +265,10 @@ g3d.Hue = async (args, env) => {
 g3d.EdgeForm = async (args, env) => {
   env.edgecolor = await interpretate(args[0], {...env});
 }
+
+g3d.PointSize = async (args, env) => {
+  env.pointSize = await interpretate(args[0], env);
+};
 
 g3d.RGBColor = async (args, env) => {
   env.colorInherit = false;
@@ -848,6 +852,9 @@ g3d.TubeArrow.update = async (args, env) => {
 
 g3d.Arrow = async (args, env) => {
   let arr;
+  // Saved Mathematica graphics can wrap an arrow's coordinates in Line.
+  // Read those coordinates directly; rendering Line returns a Three.js object.
+  const path = args[0][0] === 'Line' ? args[0][1] : args[0];
 
   if (args.length === 1) {
     if (args[0][0] === 'Tube' || args[0][0] === 'TubeArrow') {
@@ -855,10 +862,10 @@ g3d.Arrow = async (args, env) => {
       args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
+    arr = await interpretate(path, env);
   }
 
   if (arr instanceof NumericArrayObject) arr = arr.normal();
@@ -919,6 +926,7 @@ g3d.Arrow = async (args, env) => {
 
 g3d.Arrow.update = async (args, env) => {
   let arr;
+  const path = args[0][0] === 'Line' ? args[0][1] : args[0];
 
   if (args.length === 1) {
     if (args[0][0] === 'Tube' || args[0][0] === 'TubeArrow') {
@@ -926,14 +934,13 @@ g3d.Arrow.update = async (args, env) => {
       //args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
-    if (arr instanceof NumericArrayObject) {
-      arr = arr.normal();
-    }
+    arr = await interpretate(path, env);
   }
+
+  if (arr instanceof NumericArrayObject) arr = arr.normal();
   
   if (arr.length === 1) arr = arr[0];
 
@@ -1574,6 +1581,40 @@ g3d.Cuboid.destroy = async (args, env) => {
 }
 
 g3d.Cuboid.virtual = true;
+
+// Keep the full affine matrix: decomposing it would lose a skew cell's shear.
+g3d.Parallelepiped = async (args, env) => {
+  const group = new THREE.Group();
+  await g3d.Cuboid([['List', 0, 0, 0]], {...env, mesh: group});
+  group.matrixAutoUpdate = false;
+  env.local.parallelepiped = group;
+  await g3d.Parallelepiped.update(args, env);
+  env.mesh.add(group);
+  return group;
+};
+
+g3d.Parallelepiped.update = async (args, env) => {
+  let origin = await interpretate(args[0], env);
+  let vectors = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(origin)) origin = origin.normal();
+  if (NumericArrayObject.Q(vectors)) vectors = vectors.normal();
+  const [a, b, c] = vectors;
+  env.local.parallelepiped.matrix.set(
+    a[0], b[0], c[0], origin[0],
+    a[1], b[1], c[1], origin[1],
+    a[2], b[2], c[2], origin[2],
+    0, 0, 0, 1
+  );
+  env.local.parallelepiped.matrixWorldNeedsUpdate = true;
+  env.wake(true);
+};
+
+g3d.Parallelepiped.destroy = async (args, env) => {
+  await g3d.Cuboid.destroy(args, env);
+  env.local.geometry.dispose();
+};
+
+g3d.Parallelepiped.virtual = true;
 
 
 g3d.Center = (args, env) => {
@@ -5638,6 +5679,22 @@ async function processLabel(ref0, env) {
           return {offset: offset, element: labelX};
 }
 
+// Mathematica saves BoxRatios -> Automatic even when no explicit ratios were
+// requested. Only numeric triples should override the scene's natural scale.
+const graphics3DBoxScale = (size, ratios) => {
+  if (NumericArrayObject.Q(ratios)) ratios = ratios.normal();
+  const maxSize = Math.max(...size);
+  const modelScale = maxSize > 80 ? 10 / maxSize : 1;
+  if (!Array.isArray(ratios) || ratios.length !== 3 ||
+      !ratios.every(r => Number.isFinite(r) && r > 0)) {
+    return [modelScale, modelScale, modelScale];
+  }
+  const ordered = [ratios[0], ratios[2], ratios[1]];
+  const maxRatio = Math.max(...ordered);
+  return ordered.map((r, i) => size[i] > 0
+    ? (maxSize / size[i]) * (r / maxRatio) * modelScale : modelScale);
+};
+
 core.Graphics3D = async (args, env) => {  
 //Lazy loading
 
@@ -6906,39 +6963,10 @@ group.applyMatrix4(new THREE.Matrix4().set(
   0, -1, 0, 0,
   0, 0, 0, 1));
 
-  let size = [bbox.max.x - bbox.min.x, bbox.max.z - bbox.min.z, bbox.max.y - bbox.min.y];
-  let max = Math.max(...size);
-  const maxSize = Math.max(...size);
-
-if ('BoxRatios' in options) {
-
-  const reciprocal = size.map((e) => 1.0/(e/max));
-
-  console.warn('Rescaling....');
-
-  let ratios = await interpretate(options.BoxRatios, env);
-  ratios = [ratios[0], ratios[2], ratios[1]];
-
-  max = Math.max(...ratios);
-  ratios = ratios.map((e, index) => reciprocal[index] * e/max);
-
-  
-  console.log(max);
-  if (maxSize > 80) {
-    console.warn('Model is too large!');
-    ratios = ratios.map((e) => (e / maxSize) * 10.0);
-  }
-
-  group.applyMatrix4(new THREE.Matrix4().makeScale(...ratios));
-} else {
-  let ratios = [1,1,1];
-  if (maxSize > 80) {
-    console.warn('Model is too large!');
-    ratios = ratios.map((e) => (e / maxSize) * 10.0);
-  }
-
-  group.applyMatrix4(new THREE.Matrix4().makeScale(...ratios));
-}
+const size = [bbox.max.x - bbox.min.x, bbox.max.z - bbox.min.z, bbox.max.y - bbox.min.y];
+const boxRatios = 'BoxRatios' in options
+  ? await interpretate(options.BoxRatios, {...env, context: g3d}) : undefined;
+group.applyMatrix4(new THREE.Matrix4().makeScale(...graphics3DBoxScale(size, boxRatios)));
 
 group.position.add(new THREE.Vector3(0,1,0));
 

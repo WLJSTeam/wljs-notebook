@@ -1,5 +1,10 @@
-(* Run with: wolframscript -f tests/notebook-import-regression.wls *)
-repo = ParentDirectory[DirectoryName[$InputFileName]];
+(* Run with: wolframscript -f modules/wljs-export-html/Formats/Mathematica/tests/notebook-import-regression.wls *)
+testDirectory = DirectoryName[$InputFileName];
+repo = testDirectory;
+While[!FileExistsQ[FileNameJoin[{repo, "Packages", "Misc", "Kernel", "Events.wl"}]],
+  If[ParentDirectory[repo] === repo, Print["Cannot locate WLJS repository root"]; Exit[1]];
+  repo = ParentDirectory[repo]
+];
 SetDirectory[repo];
 
 Quiet[Get["Packages/Misc/Kernel/Events.wl"]];
@@ -480,7 +485,8 @@ styles = {"Text", "Abstract", "Title", "Subtitle", "SectionTitle",
   "NumberedSection", "Chapter", "CodeText", "Section", "Subsection", "Subsubsection", "Item"};
 Do[
   i = Switch[FileBaseName[path],
-    "differential_equations", 1, "christoffel_symbols_and_geodesics", 2,
+    "differential_equations" | "differential_equations_multiline" | "differential_equations_import_only", 1,
+    "christoffel_symbols_and_geodesics" | "christoffel_symbols_and_geodesics_multiline", 2,
     "crystal_structure_visualization", 3, _, 0];
   If[FileExistsQ[path],
     emitted = {};
@@ -559,7 +565,8 @@ Do[
     ];
     Print[path, ": ", actual, " input cells retained"];
 
-    If[StringStartsQ[FileBaseName[path], FromCharacterCode[{1055, 1054, 1051, 1053, 1040, 1071}]],
+    If[FileBaseName[path] === "full_formula_multiline" ||
+        StringStartsQ[FileBaseName[path], FromCharacterCode[{1055, 1054, 1051, 1053, 1040, 1071}]],
       firstSource = First[emitted]["Data"];
       firstHeld = CoffeeLiqueur`Extensions`ExportImport`Mathematica`Internal`parseHeldInputSource[firstSource];
       assert[Length[firstHeld] === 13 && FreeQ[firstHeld,
@@ -646,22 +653,28 @@ Do[
     ];
     Print[path, ": ", Length[staticOutputs], " static displays retained; ",
       Length[dynamicOutputs], " dynamic outputs discarded"];
-    If[FileBaseName[path] === "DM in FeV2O4",
+    If[MemberQ[{"DM in FeV2O4", "dm_fev2o4_rendering", "crystal_structure_visualization"}, FileBaseName[path]],
       displayPayloads = Map[Function[output,
         source = convertBox[output[[1, 1]], "Output"];
         referencedDisplay[source]], staticOutputs];
-      assert[Length[displayPayloads] === 6 && FreeQ[displayPayloads, _Tetrahedron, Infinity],
-        "FeV2O4: all six 3D previews must contain explicit tetrahedron faces"];
+      If[FileBaseName[path] === "crystal_structure_visualization",
+        assert[Length[displayPayloads] > 1 &&
+            !FreeQ[displayPayloads, HoldPattern[Arrow[Line[_], ___]], Infinity],
+          "crystal structure: saved Arrow[Line[points]] displays must exercise the renderer"],
+        assert[Length[displayPayloads] === 6 && FreeQ[displayPayloads, _Tetrahedron, Infinity],
+          "FeV2O4: all six 3D previews must contain explicit tetrahedron faces"]
+      ];
       file = CreateTemporary[];
       Export[file, displayPayloads, "ExpressionJSON"];
-      renderCheck = RunProcess[{"node", "tests/notebook-import-renderer-regression.cjs", file}];
+      renderCheck = RunProcess[{"node", FileNameJoin[{testDirectory, "notebook-import-renderer-regression.cjs"}],
+        file, ToString[Length[displayPayloads]]}];
       DeleteFile[file];
       assert[renderCheck["ExitCode"] === 0,
-        "FeV2O4: renderer geometry check failed: " <> renderCheck["StandardError"]];
+        FileBaseName[path] <> ": renderer geometry check failed: " <> renderCheck["StandardError"]];
       Print[StringTrim[renderCheck["StandardOutput"]]]
     ];
   ],
-  {path, FileNames["*.nb", "tests/nbs"]}
+  {path, FileNames["*.nb", FileNameJoin[{testDirectory, "notebooks"}]]}
 ];
 
 Print["Notebook import regression checks passed (", checks, " assertions)"];

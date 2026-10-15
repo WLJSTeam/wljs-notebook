@@ -21,8 +21,9 @@ notebook structure parser. Import fixes should therefore stay in the master-side
 walk and the held box converter; relying on evaluation-kernel format rules to
 decode `.nb` input makes the result kernel-dependent.
 
-Notebook fixtures and generated imports are in `tests/nbs`, including
-`differential_equations.nb`, `christoffel_symbols_and_geodesics.nb`, and
+Notebook fixtures and generated imports are in
+`modules/wljs-export-html/Formats/Mathematica/tests/notebooks`, including
+`differential_equations_multiline.nb`, `christoffel_symbols_and_geodesics_multiline.nb`, and
 `crystal_structure_visualization.nb`. The regression discovers the `.nb`
 fixtures in that directory; `.wln` files are saved import artifacts.
 
@@ -64,9 +65,10 @@ full WLJS restart, the differential-equations sample imported with the TeX
 fraction and derivative in the saved Markdown, no private `\[DifferentialD]`
 glyphs, and no joined `Null` statements.
 
-Run `wolframscript -f tests/notebook-import-regression.wls` for the held-input,
-input-preservation, group-walk, and text/heading checks. The sample notebook
-checks run when the `tests/nbs` files are present.
+Run `wolframscript -f modules/wljs-export-html/Formats/Mathematica/tests/notebook-import-regression.wls`
+for the held-input, input-preservation, group-walk, and text/heading checks.
+The runner discovers the repository root and fixtures relative to its own
+location. Historical `tests/nbs` paths below refer to imports before this move.
 
 The Plot3D output in the differential-equations sample originally appeared as a
 huge red `Graphics3D[GraphicsComplex[CompressedData[...]]]` source string.
@@ -382,3 +384,36 @@ OwnValues. Hashes of the evaluation kernel's FractionBox, SqrtBox,
 SuperscriptBox, SubscriptBox, InterpretationBox and FormBox DownValues remain
 unchanged across the live imports. No original notebook inputs or saved source
 files were modified by these checks.
+
+## Crystal structure rendering and saved options (2026-10-15)
+
+The crystal-structure notebook saves axis arrows as `Arrow[Line[points]]`.
+The JavaScript Arrow renderer previously interpreted the inner Line as geometry,
+then tried to spread entries of that Three.js Line object as coordinates. This
+reproduces the reported `TypeError: undefined is not iterable`. Arrow now reads
+the Line's coordinate argument directly on creation and update. Ordinary paths,
+packed NumericArrays and Tube arrows keep their existing rendering paths. The
+saved notebook and imported input source do not need rewriting.
+
+The live check then exposed missing ViewSize/ImageCache option symbols and
+missing Parallelepiped/PointSize renderers. These now resolve locally. A
+Parallelepiped reuses Cuboid geometry with the full affine basis matrix, keeping
+skew cell shear on creation and update. Most importantly, BoxRatios -> Automatic
+was treated as a numeric triple and produced NaN scene transforms. Only finite,
+positive numeric triples now override the default scale; Automatic follows the
+same path as an omitted option. Explicit ratios and existing large-model scaling
+are preserved, and flat extents no longer cause division by zero.
+
+The renderer test includes 38 assertions for arrows, skew cells, updates and
+Automatic/explicit box scaling. It also parses saved option names strictly and
+checks world transforms after applying the production scaling helper. All 12
+crystal scenes extracted under HoldComplete from the reported `.wln` produce
+finite geometry with their original options, as do all seven FeV2O4 displays
+(six cached outputs and an embedded input preview). The user confirmed the
+crystal notebook renders after Window -> Force Reload. No notebook input was
+executed by these checks, and checked kernel box definitions stayed unchanged.
+Browser bundles were rebuilt. The Wolfram regression now includes the crystal
+notebook's static displays as well as the six FeV2O4 output scenes; that
+standalone Wolfram suite was not rerun while WLJS was running.
+Both regression entry points locate the repository and fixtures from their new
+directory, and fixture-specific checks recognize the descriptive notebook names.

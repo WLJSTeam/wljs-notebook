@@ -868,10 +868,10 @@ g3d.Arrow = async (args, env) => {
       args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
+    arr = await interpretate(path, env);
   }
 
   if (arr instanceof NumericArrayObject) arr = arr.normal();
@@ -932,6 +932,7 @@ g3d.Arrow = async (args, env) => {
 
 g3d.Arrow.update = async (args, env) => {
   let arr;
+  const path = args[0][0] === 'Line' ? args[0][1] : args[0];
 
   if (args.length === 1) {
     if (args[0][0] === 'Tube' || args[0][0] === 'TubeArrow') {
@@ -939,14 +940,13 @@ g3d.Arrow.update = async (args, env) => {
       //args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
-    if (arr instanceof NumericArrayObject) {
-      arr = arr.normal();
-    }
+    arr = await interpretate(path, env);
   }
+
+  if (arr instanceof NumericArrayObject) arr = arr.normal();
   
   if (arr.length === 1) arr = arr[0];
 
