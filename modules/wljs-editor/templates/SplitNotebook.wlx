@@ -41,7 +41,9 @@ generator[proto_] := With[{Component = Unique["splitNotebookComp"]},
 
                                 WebUILocation[ StringJoin["/", URLEncode[ p ] ], cli, "Target"->_ ];
                             ]
-                        ] ];                 
+                        ],
+                            Function[err, Echo["Failed!"]; Echo[err]]
+                        ];                 
 
                                        
                     ]

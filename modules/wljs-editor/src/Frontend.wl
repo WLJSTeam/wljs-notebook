@@ -2,6 +2,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Editor`", {
     "CodeParser`", 
     "CoffeeLiqueur`Notebook`Transactions`",
     "CoffeeLiqueur`Misc`Events`",
+    "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
