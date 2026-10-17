@@ -513,7 +513,8 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
   LeakyModule[{
     currentExpression = evaluated,
     str = ToString[evaluated, StandardForm],
-    trigger = 0
+    trigger = 0,
+    slowDownFlag = 0
   },
 
   df`Private`resetFailureMessage;
@@ -529,13 +530,20 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
             diffList = Flatten[{df`Private`diff[currentExpression, newExpr, 1, <||>]}]
           },
 
+          slowDownFlag = 0; (* attempts to throttle the update rate *)
+          
           df`Private`processDiffs[diffTable, currentExpression, newExpr, diffList, Function[editorExpr,
+            If[!FreeQ[editorExpr, _Graphics | _Graphics3D | _Image | _Image3D | _Audio | _Sound], 
+                slowDownFlag = 2; (* red flag 2 *)
+            ];
             str = ToString[editorExpr, StandardForm];
+            If[StringLength[str] >  500 && slowDownFlag == 0, slowDownFlag = 1]; (* red flag 1 *)
+            
             False
           ] ];  
 
           currentExpression = newExpr;
-          trigger = 0;      
+          trigger = slowDownFlag;      
         ];
     ] ];
 

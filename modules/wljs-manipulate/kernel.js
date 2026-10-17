@@ -24,8 +24,29 @@ core.RefreshBox = async (args, env) => {
     }
 }
 
-core.RefreshBox.update = (args, env) => {
-    env.local.readyQ = true;   
+core.RefreshBox.update = async (args, env) => {
+    if (env.local.blocked) return;
+    const speedFlag = await interpretate(args[3], env);
+    switch (speedFlag) {
+      case 1:
+        env.local.blocked = true;
+        env.local.readyQ = false;
+        setTimeout(() => {
+          env.local.blocked = false;
+          env.local.readyQ = true;
+        }, 600)
+      break;
+      case 2:
+        env.local.blocked = true;
+        env.local.readyQ = false;
+        setTimeout(() => {
+          env.local.blocked = false;
+          env.local.readyQ = true;
+        }, 800)      
+      break;
+      default:
+        env.local.readyQ = true;
+    }  
 }
 
 core.Appearance = () => 'Appearance'
