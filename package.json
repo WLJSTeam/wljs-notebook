@@ -183,6 +183,7 @@
       "./package.json",
       "./PacletInfo.wl",
       "./LICENSE",
+      "./ACKNOWLEDGMENTS.md",
       "./licenses/**"
     ],
     "asar": false

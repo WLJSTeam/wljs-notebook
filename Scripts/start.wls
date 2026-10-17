@@ -223,6 +223,8 @@ Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Front
 
 
 Echo["\n\nWe are looking for funding ❤️  https://wljs.io/frontend/Support\n\n"];
+
+FilePrint[FileNameJoin[{Directory[], "ACKNOWLEDGMENTS.md"}]];
 Echo["\n\n"];
 
 (* WR services patches *)

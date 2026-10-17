@@ -960,7 +960,7 @@ function createSearchPanel(view) {
 function defaultQuery(state, fallback) {
     var _a, _b, _c, _d;
     let sel = state.selection.main;
-    let selText = sel.empty || sel.to > sel.from + 100 ? "" : state.sliceDoc(sel.from, sel.to);
+    let selText = sel.empty ? "" : state.sliceDoc(sel.from, sel.to);
     if (fallback && !selText)
         return fallback;
     let config = state.facet(searchConfigFacet);

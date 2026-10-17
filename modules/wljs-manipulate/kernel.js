@@ -329,17 +329,23 @@ helper.update = async (args, env) => {
   //Something changed
 
   const sync = await interpretate(args[8], env);
+  
   //1: is this  is a synchronization signal
   //   to trigger an update (evaluation has finished)
   if (env.local.syncIndicator != sync) {
+    if (sync - env.local.syncIndicator > 10) {
+      //throttle signal (jump by more than 10)
+      setTimeout(() => {env.local.readyQ = true}, 800);
+    } else {
+      //go to the next frame
+      env.local.readyQ = true;
+    }    
     env.local.syncIndicator = sync;
-    //go to the next frame
-    env.local.readyQ = true;
   }
 
   //2: this is JIT failure
   if (!env.local.jitTimer) {
-        const innerCode = await interpretate(args[7], env);
+        const innerCode = await interpretate(args[7], env);    
         if (env.local.innerCode == innerCode) return;
         env.local.innerCode = innerCode;
         if (!env.local.jitIcon) return;
