@@ -19,6 +19,8 @@ $WLJSInterpreterAssets;
 Begin["`Private`"]
 
 root = $InputFileName // DirectoryName // ParentDirectory // FileNameSplit // Last;
+rootDir = $InputFileName // DirectoryName // ParentDirectory;
+
 commonScript = Table[StringTemplate["<script type=\"module\" src=\"``\"></script>"]["/"<>root<>"/"<>p], {p, {
     "dist/interpreter.js",
     "src/core.js"
@@ -27,8 +29,8 @@ commonScript = Table[StringTemplate["<script type=\"module\" src=\"``\"></script
 WLJSInterpreterScript = commonScript;
 
 $WLJSInterpreterAssets = {
-    FileNameJoin[{rootDir, "src", "api.js"}],
-    FileNameJoin[{rootDir, "src", "extension.js"}]
+    FileNameJoin[{rootDir, "dist", "interpreter.js"}],
+    FileNameJoin[{rootDir, "src", "core.js"}]
 };
 
 End[];

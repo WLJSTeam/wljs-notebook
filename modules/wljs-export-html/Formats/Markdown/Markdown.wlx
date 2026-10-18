@@ -25,7 +25,7 @@ checkLang[any_] := StringDrop[any, 1];
 cellProcess[data_, "Output", "codemirror", _, _] := <|"Data" -> ""|>;
 cellProcess[data_, "Output", _, _, _] := <|"Data" -> ""|>;
 
-cellProcess[data_, "Input", "codemirror", _, _] := <|"Data" -> With[{splitted = StringSplit[data["Data"], "\n"]},
+cellProcess[data_, "Input", "codemirror", _, _] := <|"Data" -> If[TrueQ[data["Props"]["Hidden"]] || TrueQ[data["Props"]["Invisible"]], "", With[{splitted = StringSplit[data["Data"], "\n"]},
   If[StringTake[data["Data"], 1] === ".",
     With[{lang = checkLang[First @ splitted]},
       If[lang === Null, "",
@@ -37,7 +37,7 @@ cellProcess[data_, "Input", "codemirror", _, _] := <|"Data" -> With[{splitted = 
       StringRiffle[Flatten @ {"```wolfram", StringReplace[data["Data"], RegularExpression["\\(\\*[^\\*]+\\*\\)"] -> ""], "```"}, "\n"]
     ]
   ]
-] |>
+]] |>
 
 removeArrows[str_String] := If[StringLength[str] > 1,
   If[StringTake[str, 1] == ">",
