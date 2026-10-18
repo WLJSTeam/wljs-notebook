@@ -81,13 +81,16 @@ getTitle[notebook_] := With[{},
   ]
 ]
 
-exportStore[notebook_] := With[{
-    objs = ExportByteArray[#["Public"] &/@ notebook["Objects"], "ExpressionJSON", "Compact"->1] // ByteArrayToString,
-    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON", "Compact"->1] // ByteArrayToString
+exportStore[notebook_] := Block[{
+    $Context = "dsc$`",
+    $ContextPath = {"dsc$`", "Global`", "System`"}
+}, With[{
+    objs = ExportByteArray[#["Public"] &/@ notebook["Objects"], "ExpressionJSON"] // ByteArrayToString,
+    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON"] // ByteArrayToString
   },
   
     StringJoin["{\n\"objects\":",objs,", \n\"symbols\":",syms,"\n}"]
-]
+] ]
 
 
 metaCell[notebook_, NId_, dynamicQ_, name_] := With[{},

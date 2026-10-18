@@ -11,6 +11,8 @@ loadSettings[settings];
 updateSettingsProxy[logs_, new_, needRestart_:True] := (
     If[needRestart, EventFire[logs, Notifications`NotificationMessage["Info"](*`*), "Restart is required to see an effect"]];
     settings = Join[settings, new];
+    Echo["Updated settings:"];
+    Echo[settings];
     storeSettings[settings];
     ElectronIPCSend["reloadSettings", {}];
     EventFire[settings`events, "Reload", settings];

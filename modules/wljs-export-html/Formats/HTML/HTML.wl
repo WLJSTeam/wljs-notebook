@@ -18,24 +18,20 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
 Needs["CoffeeLiqueur`Extensions`FrontendObject`" -> "fe`"];
 
-
-
 folder = $InputFileName // DirectoryName;
 rootFolder = folder // ParentDirectory // ParentDirectory;
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`" -> "wapi`", FileNameJoin[{rootFolder, "DynamicsTools", "ESP.wl"}] ];
 
-Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 
-{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+generateHTML     = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
+
 
 Begin["`Static`"]
 
 export;
+check;
 decode;
-
-
-generateNotebook = ImportComponent[FileNameJoin[{folder, "Static.wlx"}] ];
 
 export[outputPath_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{},
     Module[{filename = outputPath},
@@ -44,12 +40,13 @@ export[outputPath_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_
         If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
         If[filename === ".html", filename = name<>filename];
         If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
-
-        Export[filename, generateNotebook["Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"]
+                    Then[generateHTML["MarkdownTransformer"->If[AssociationQ[proto] && KeyExistsQ[proto, "markdownTransformer"], proto["markdownTransformer"], Automatic], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->False, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
+                    ] ];
     ]
 ]
 
-export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{
+export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_, dynamicQ_:False, compressed_:Null] := With[{
 
 },
     With[{
@@ -59,28 +56,35 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
         With[{
             p = Promise[]
         },
-            EventFire[modals, "SaveDialog", <|
-                "Promise"->p,
-                "title"->"Export as portable HTML notebook",
-                "properties"->{"createDirectory", "dontAddToRecent"},
-                "filters"->{<|"extensions"->"html", "name"->"HTML Document"|>}
-            |>];
 
-            Then[p, Function[result, 
-                Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
-                    If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                      Echo["Cancelled saving"]; Echo[result];
-                      Return[];
-                    ];
-                    
+       EventFire[modals, "SaveDialog", <|
+           "Promise"->p,
+           "title"->"Export as portable HTML notebook",
+           "properties"->{"createDirectory", "dontAddToRecent"},
+           "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
+       |>];
+
+       Then[p, Function[result,
+           Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
+               If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0,
+                 Echo["Cancelled saving"]; Echo[result];
+                 Return[];
+               ];
+
                     If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
                     If[filename === ".html", filename = name<>filename];
                     If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
 
-                    Export[filename, generateNotebook["Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
-                    EventFire[messager, "Saved", "Exported to "<>filename];
+                    Then[generateHTML["MarkdownTransformer"->proto["markdownTransformer"], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->False, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
+
+                        EventFire[messager, "Saved", "Exported to "<>filename];
+                    ] ];
+
+
+
                 ];
-            ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
+            ], Function[result, Echo["Exported"]; Echo[result] ] ];
             
         ]
     ]
@@ -94,7 +98,27 @@ check[path_String] := Module[{str, result},
     result
 ]
 
-decode[path_String | path_File, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, symbols, place, compressedFields},
+decode[path_String | path_File, opts: OptionsPattern[] ] := 
+
+(* Modern format HSFN5 *)
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place}, With[{promise = Promise[]},
+    place = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
+    
+    
+    Echo["SAVING////////"];
+    Then[saveNotebook[place, notebook, "NoCache"->True], Function[Null,
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Resolve,  place];
+        Delete /@ notebook["Cells"];
+        Delete[notebook];
+    ] ];
+    
+    
+    promise
+]]
+
+(* Legacy format HSFN4 *)
+decodeHSFN4[path_String | path_File, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, symbols, place, compressedFields},
 With[{
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -174,7 +198,8 @@ With[{
 ] ]
 
 Options[decode] = {"Messager"->"", "Client"->Null}
-
+Options[decodeHSFN4] = {"Messager"->"", "Client"->Null}
+Options[decodeHSFN5] = {"Messager"->"", "Client"->Null}
 
 End[]
 
@@ -183,7 +208,6 @@ Begin["`Dynamic`"]
 
 export;
 
-generateNotebook = ImportComponent[FileNameJoin[{folder, "Static.wlx"}] ];
 analyser = ImportComponent[FileNameJoin[{rootFolder, "DynamicsTools", "Analyser.wlx"}] ];
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`" -> "dynamicAnalyzer`", FileNameJoin[{rootFolder, "DynamicsTools", "DynamicAnalyzer.wl"}] ];
@@ -424,7 +448,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[analyzed, Function[data,
                     With[{newHash = Hash[data]},
                         If[newHash =!= hash,
-                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{$CurrentWebSocket = client}, (* [FIXME] *)
+                            If[Length[data["Symbols"] ] > 8,
                                 Echo["ERROR!"];
                                 Echo[err];
                                 ClearAll[hash];
@@ -438,7 +462,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                                 WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];  
 
                                 EventFire[messager, "Warning", "The process was aborted. Too many symbols to track"];                            
-                            ],
+                            ,
                                 EventFire[snifferControls, "Load", <|"Client" -> client, "Data" -> data |> ];
                                 hash = newHash;
                             ];
@@ -460,6 +484,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
     ];
 ] ];
 
+
 export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] :=  With[{
     machinesData = Map[blackBox`export, machines]
 },     
@@ -468,9 +493,9 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
    },
        EventFire[modals, "SaveDialog", <|
            "Promise"->p,
-           "title"->"Export as portable HTML notebook",
+           "title"->"Export as embeddable HTML",
            "properties"->{"createDirectory", "dontAddToRecent"},
-           "filters"->{<|"extensions"->"html", "name"->"HTML Document"|>}
+           "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
        |>];
 
        Then[p, Function[result, 
@@ -479,19 +504,40 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
                  Echo["Cancelled saving"]; Echo[result];
                  Return[];
                ];
-               
-               If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
-               If[filename === ".html", filename = name<>filename];
-               If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
+                    If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
+                    If[filename === ".html", filename = name<>filename];
+                    If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
 
-               Then[proto["collectStaticData"], Function[Null,
-                Export[filename, generateNotebook["MachineData"->machinesData, "Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
-                Block[{$CurrentWebSocket = client},
-                    WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
-                    EventFire[messager, "Saved", "Exported to "<>filename];
-                ];
-               ] ];
-               
+                    Then[proto["collectStaticData"], Function[Null,
+
+                        Then[generateHTML["MarkdownTransformer"->proto["markdownTransformer"], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->True, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
+                            Export[filename,  generated // ToStringRiffle, "Text"];
+
+                            With[{newDir = DirectoryName[filename]},
+                                If[!FileExistsQ[FileNameJoin[{newDir, "attachments"}] ], CreateDirectory[FileNameJoin[{newDir, "attachments"}] ] ];
+
+                                If[FileExistsQ[FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ],
+                                    (
+                                        Echo["Copying from "<>#<>" >>  to "<>FileNameJoin[{newDir, "attachments", FileNameTake[#]}] ];
+                                        CopyFile[#, FileNameJoin[{newDir, "attachments", FileNameTake[#]}], OverwriteTarget->True];
+
+                                    ) &/@ FileNames["*.*", FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ];
+                                ];
+
+                                CopyFile[notebookOnLine["Path"], FileNameJoin[{newDir, "attachments", "notebook-"<>StringTake[notebookOnLine["Hash"], 3]<>".wln"}] ];
+                                Export[FileNameJoin[{newDir, "attachments", notebookOnLine["Hash"]<>".txt"}], generateHTMLStore[notebookOnLine], "Text" ];
+                                Export[FileNameJoin[{newDir, "attachments", "kernel-"<>ToString[Hash[name] ]<>".txt"}], ExportString[machinesData, "ExpressionJSON", "Compact"->1], "Text" ];
+
+                                Block[{$CurrentWebSocket = client},
+                                    WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
+                                    EventFire[messager, "Saved", "Exported to "<>filename];
+                                ];
+                            ];
+                        ] ];
+
+
+
+                    ] ];
            ];
        ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
        
@@ -499,7 +545,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
 ]
 
 
-
 End[]
+
 
 EndPackage[]

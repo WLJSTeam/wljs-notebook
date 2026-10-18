@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = ToString[OptionValue["Topic"], InputForm], Uid = CreateUUID[], Label = OptionValue["Label"], Description = OptionValue["Description"], Checked = OptionValue["Checked"]},
+Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = OptionValue["Topic"], Uid = CreateUUID[], Label = OptionValue["Label"], Description = OptionValue["Description"], Checked = OptionValue["Checked"]},
     {
         <div class="relative flex items-start">
             <div class="flex h-6 items-center">

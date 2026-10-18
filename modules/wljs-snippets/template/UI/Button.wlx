@@ -1,6 +1,6 @@
 Component[OptionsPattern[]] := With[{
     Event = OptionValue["Event"], 
-    Topic = ToString[OptionValue["Topic"], InputForm], 
+    Topic = OptionValue["Topic"], 
     Uid = CreateUUID[], 
     Label = OptionValue["Label"],
     Class = OptionValue["Class"],

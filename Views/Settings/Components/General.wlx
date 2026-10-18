@@ -99,6 +99,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "ColorChoice" -> Function[state,
             defaultColorChoice = state;
+            Echo[ToString[state, InputForm]];
             If[state === "User",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
             ,

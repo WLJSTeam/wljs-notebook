@@ -63,11 +63,13 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
     tempBuffer = initialValues["ExportHTMLExclude"];
     EventHandler[toggleSwitch, {
         name_String :> Function[state,
+            Echo[ToString[{state, name}, InputForm]];
             If[state,
                 tempBuffer = Append[tempBuffer, name];
             ,
                 tempBuffer = tempBuffer /. {name -> Nothing};
             ];
+            Echo["Updated checkboxes:"]; Echo[ToString[tempBuffer, InputForm]];
             onsave[<|"ExportHTMLExclude" -> tempBuffer|>, False];
         ]
     }];

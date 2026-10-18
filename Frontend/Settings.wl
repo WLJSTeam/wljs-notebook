@@ -13,7 +13,11 @@ Begin["`Internal`"];
 events = CreateUUID[];
 
 loadConfiguration  := If[FileExistsQ[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Get[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Missing[] ];
-storeConfiguration[c_Association] := Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ];
+
+storeConfiguration[c_Association] := With[{},
+    Echo["Storing to a file..."];
+    Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ] // Echo;
+];
 
 initialize[conf_, OptionsPattern[] ] := With[{default = OptionValue["Defaults"]},
     conf = Join[default, (If[MissingQ[#], <||>, #]& ) @ loadConfiguration];
