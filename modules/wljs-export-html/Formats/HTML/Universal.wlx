@@ -245,7 +245,79 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                     left: 0;
                     top: 0;
                     content: "";
-                }                
+                }
+                .wljs-document-layout {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1fr);
+                    gap: 2rem;
+                    align-items: start;
+                }
+                .wljs-document-layout[data-outline="visible"] {
+                    grid-template-columns: minmax(0, 1fr) 16rem;
+                }
+                .wljs-document-layout main {
+                    min-width: 0;
+                }
+                #sidebar-right {
+                    position: sticky;
+                    top: 1rem;
+                    max-height: calc(100vh - 2rem);
+                    overflow-y: auto;
+                    padding: 0.75rem;
+                    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+                    border-radius: 0.5rem;
+                    font-size: 0.875rem;
+                    line-height: 1.3;
+                    scrollbar-width: thin;
+                }
+                #sidebar-right[hidden] {
+                    display: none;
+                }
+                .wljs-outline-title {
+                    margin: 0 0 0.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    opacity: 0.65;
+                }
+                .wljs-outline-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.125rem;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+                .wljs-outline-link {
+                    display: block;
+                    padding: 0.3rem 0.4rem;
+                    border-radius: 0.3rem;
+                    color: inherit;
+                    text-decoration: none;
+                    opacity: 0.72;
+                    overflow-wrap: anywhere;
+                }
+                .wljs-outline-link:hover {
+                    background: color-mix(in srgb, currentColor 7%, transparent);
+                    opacity: 1;
+                }
+                .wljs-outline-link[aria-current="location"] {
+                    color: var(--system-accent-color);
+                    background: color-mix(in srgb, var(--system-accent-color) 12%, transparent);
+                    opacity: 1;
+                }
+                main :is(h1, h2, h3, h4, h5, h6) {
+                    scroll-margin-top: 1rem;
+                }
+                @media (max-width: 1023px) {
+                    .wljs-document-layout[data-outline="visible"] {
+                        grid-template-columns: minmax(0, 1fr);
+                    }
+                    #sidebar-right {
+                        display: none;
+                    }
+                }
                 :root{--system-accent-color: <AccentColor/>; --system-accent-color-25: <AccentColor25/>; accent-color: <AccentColor/>; --editor-selected-tint: <EditorTintColor/>;}
               </style>
               <GetAssetsData Notebook={notebook}/>
@@ -255,15 +327,16 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
             <body class="{bodyClass}" style="margin:0">
               <div>
                 <div class="px-2" id="frame">
-                  <div class="h-full block relative" style="width: calc(100vw - 2rem); overflow-x: hidden;">
+                  <div id="wljs-document-layout" class="wljs-document-layout h-full relative" data-outline="hidden" style="width: calc(100vw - 2rem);">
                     <main class="grow">
                       <EmbeddedCells/>
                     </main>
-                    <div id="sidebar-right" class="relative mt-10 w-full hidden md:flex" style="width: 16rem;height: 100vh;float: right;">
-                      <div class="fixed">
-                        
-                      </div>
-                    </div>
+                    <aside id="sidebar-right" aria-label="Document outline" hidden="true">
+                      <div class="wljs-outline-title">Document outline</div>
+                      <nav aria-label="Table of contents">
+                        <ol class="wljs-outline-list"></ol>
+                      </nav>
+                    </aside>
                   </div>
                 </div>
               </div>
@@ -272,6 +345,97 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 const wljsStoreURL = URL.createObjectURL(new Blob([wljsStorePayload], {type: "application/json"}));
                 document.getElementById("wljs-store").setAttribute("json", wljsStoreURL);
                 window.addEventListener("pagehide", () => URL.revokeObjectURL(wljsStoreURL), {once: true});
+
+                const wljsOutlineLayout = document.getElementById("wljs-document-layout");
+                const wljsOutlineMain = wljsOutlineLayout.querySelector("main");
+                const wljsOutline = document.getElementById("sidebar-right");
+                const wljsOutlineList = wljsOutline.querySelector(".wljs-outline-list");
+                let wljsOutlineHeadings = [];
+                let wljsOutlineLinks = new Map();
+
+                const wljsHeadingId = (heading, index) => {
+                  if (heading.id) return heading.id;
+
+                  const base = heading.textContent
+                    .trim()
+                    .normalize("NFKD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLocaleLowerCase()
+                    .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+                    .replace(/^-+|-+$/g, "") || "section-" + (index + 1);
+
+                  let candidate = base;
+                  let suffix = 2;
+                  while (document.getElementById(candidate)) {
+                    candidate = base + "-" + suffix++;
+                  }
+
+                  heading.id = candidate;
+                  return candidate;
+                };
+
+                const wljsUpdateActiveOutlineItem = () => {
+                  if (wljsOutlineHeadings.length === 0) return;
+
+                  const marker = Math.min(160, window.innerHeight * 0.2);
+                  let active = wljsOutlineHeadings[0];
+                  for (const heading of wljsOutlineHeadings) {
+                    if (Math.sign(heading.getBoundingClientRect().top - marker) !== 1) active = heading;
+                    else break;
+                  }
+
+                  for (const [heading, link] of wljsOutlineLinks) {
+                    if (heading === active) link.setAttribute("aria-current", "location");
+                    else link.removeAttribute("aria-current");
+                  }
+                };
+
+                const wljsBuildOutline = () => {
+                  const headings = Array.from(wljsOutlineMain.querySelectorAll("h1, h2, h3, h4, h5, h6"))
+                    .filter((heading) => heading.textContent.trim().length !== 0 && !heading.closest("[hidden], template"));
+
+                  if ([0, 1, 2, 3].includes(headings.length)) {
+                    wljsOutline.hidden = true;
+                    wljsOutlineLayout.dataset.outline = "hidden";
+                    wljsOutlineList.replaceChildren();
+                    wljsOutlineHeadings = [];
+                    wljsOutlineLinks = new Map();
+                    return;
+                  }
+
+                  const minLevel = Math.min(...headings.map((heading) => Number(heading.tagName.slice(1))));
+                  const items = headings.map((heading, index) => ({
+                    heading,
+                    id: wljsHeadingId(heading, index),
+                    level: Number(heading.tagName.slice(1)),
+                    label: heading.textContent.trim().replace(/\s+/g, " ")
+                  }));
+                  const fragment = document.createDocumentFragment();
+
+                  for (const item of items) {
+                    const listItem = document.createElement("li");
+                    const link = document.createElement("a");
+                    link.className = "wljs-outline-link";
+                    link.href = "#" + encodeURIComponent(item.id);
+                    link.textContent = item.label;
+                    link.style.paddingInlineStart = (0.4 + (item.level - minLevel) * 0.75) + "rem";
+                    link.addEventListener("click", () => {
+                      requestAnimationFrame(wljsUpdateActiveOutlineItem);
+                    });
+                    listItem.appendChild(link);
+                    fragment.appendChild(listItem);
+                    wljsOutlineLinks.set(item.heading, link);
+                  }
+
+                  wljsOutlineList.replaceChildren(fragment);
+                  wljsOutlineHeadings = items.map(({heading}) => heading);
+                  wljsOutline.hidden = false;
+                  wljsOutlineLayout.dataset.outline = "visible";
+                  wljsUpdateActiveOutlineItem();
+                };
+
+                window.addEventListener("scroll", wljsUpdateActiveOutlineItem, {passive: true});
+                wljsBuildOutline();
 
                 <WebComponentsScript/>
               </script>
