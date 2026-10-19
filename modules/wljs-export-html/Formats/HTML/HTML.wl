@@ -23,6 +23,10 @@ rootFolder = folder // ParentDirectory // ParentDirectory;
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`" -> "wapi`", FileNameJoin[{rootFolder, "DynamicsTools", "ESP.wl"}] ];
 
+Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
+
+{saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
+
 
 generateHTML     = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
 
@@ -90,32 +94,112 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
     ]
 ]
 
-check[path_String] := Module[{str, result},
+check[path_String | path_File] := Module[{str, result},
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    result = Find[str, "<meta serializer=\"hsfn-4\"/>"] =!= EndOfFile;
+    result = Find[str, "<meta serializer=\"hsfn-"] =!= EndOfFile;
+    Echo[result];
     Close[str];
     result
 ]
 
-decode[path_String | path_File, opts: OptionsPattern[] ] := 
+getVersion[path_String | path_File] := Module[{str, result},
+    Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
+    str = OpenRead[path];
+    result = Find[str, "<meta serializer=\"hsfn-"];
+    Echo[result];
+    Close[str];
+    If[StringContainsQ[result, "hsfn-5"], Return[5]];
+    If[StringContainsQ[result, "hsfn-4"], Return[4]];
+    result
+]
+
+decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[path],
+    5,
+        decodeHSFN5[path, opts],
+
+    4,
+        decodeHSFN4[path, opts],
+    _,
+        $Failed
+]
 
 (* Modern format HSFN5 *)
-decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place}, With[{promise = Promise[]},
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, str, notebook}, With[{
+    promise = Promise[],
+    dir = AppExtensions`QuickNotesDir,
+    name = FileBaseName[path],
+
+    startStore = "<script id=\"wljs-store-data\" type=\"application/json\">",
+    endStore = "</script>",
+    startCompressed = "<script id=\"wljs-notebook-compressed\" type=\"text/plain\">",
+    endCompressed = "</script>",
+
+    spinner = Notifications`Spinner["Topic"->"Converting to notebook", "Body"->"Please, wait"](*`*),
+    msg = OptionValue["Messager"]    
+},
     place = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
+
+    EventFire[msg, spinner, True];
+
+    str = OpenRead[path];
+    ReadString[str, startStore];
+    ReadList[str, Character, StringLength[startStore] ];
+    raw = ReadString[str, endStore];
+    raw = ImportString[raw, "RawJSON"];
+    objects = raw["objects"] // uncompress;
+    symbols = raw["symbols"] // uncompress;
+
+
+    
+    
+    ReadString[str, startCompressed];
+    ReadList[str, Character, StringLength[startCompressed] ];
+
+    (* we have to write to a temporal file due to CR normalization issues... *)
+    With[{
+        rawBytes = ReadString[str, endCompressed] // Uncompress
+    }, {
+        temporalFile = CreateFile[]
+    }, {
+        stream = OpenWrite[temporalFile, BinaryFormat->True]
+    },
+        BinaryWrite[stream, rawBytes];
+        Close[temporalFile];
+
+        notebook = nb`LoadFromFile[temporalFile];
+        With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
+        With[{n = notebook}, n["Symbols"] = symbols];
+        With[{n = notebook}, n["Path"] = .];
+        DeleteFile[temporalFile];
+    ];
+
+    Echo[notebook];
     
     
     Echo["SAVING////////"];
-    Then[saveNotebook[place, notebook, "NoCache"->True], Function[Null,
+    Then[saveNotebook[place, notebook, "NoCache"->True], Function[result,
+        Echo[result];
         EventFire[spinner["Promise"], Resolve, True];
         EventFire[promise, Resolve,  place];
         Delete /@ notebook["Cells"];
         Delete[notebook];
+        ClearAll[place, objects, symbols, raw, str, notebook];
     ] ];
     
     
     promise
 ]]
+
+uncompress[s_String] :=
+  ImportByteArray[
+    ByteArray[
+      Developer`RawUncompress[
+        Normal @ BaseDecode[s]
+      ]
+    ],
+    "ExpressionJSON"
+  ]
 
 (* Legacy format HSFN4 *)
 decodeHSFN4[path_String | path_File, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, symbols, place, compressedFields},

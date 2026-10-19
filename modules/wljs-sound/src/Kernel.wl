@@ -34,6 +34,8 @@ EmitSound[s_Audio, opts: OptionsPattern[] ] := With[{},
     FrontSubmit[PCMPlayer[s, "AutoRemove"->True, "GUI"->False], opts]
 ]
 
+EmitSound[{a__Audio}, opts:OptionsPattern[]] := EmitSound[AudioJoin[a], opts]
+
 Options[EmitSound] = {"Window" :> CurrentWindow[]}
 
 Unprotect[SoundNote]

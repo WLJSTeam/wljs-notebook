@@ -160,17 +160,19 @@ generateCompressed[notebook_] := With[{
     ]
 ]
 
+compress[expr_ByteArray] := With[{arr = Normal[expr ]}, BaseEncode[ByteArray[Developer`RawCompress[arr] ] ] ]
+
 exportStore[notebook_] := Block[{
     $Context = "dsc$`",
     $ContextPath = {"dsc$`", "Global`", "System`"}
 }, With[{
-    objs = ExportByteArray[#["Public"] &/@ If[MemberQ[notebook["Properties"], "Objects"], notebook["Objects"], <||>], "ExpressionJSON", "Compact"->1] // ByteArrayToString,
-    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON", "Compact"->1] // ByteArrayToString
+    objs = ExportByteArray[#["Public"] &/@ If[MemberQ[notebook["Properties"], "Objects"], notebook["Objects"], <||>], "ExpressionJSON", "Compact"->1] // compress,
+    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON", "Compact"->1] // compress
   },
-    StringJoin["{\n\"objects\":", objs, ", \n\"symbols\":", syms, "\n}"]
+    StringJoin["{\n\"objects\":\"", objs, "\", \n\"symbols\":\"", syms, "\"\n}"]
 ] ]
 
-scriptSafeJSON[str_String] := StringReplace[str, RegularExpression[StringJoin["(?i)<", "/script"]] -> StringJoin["<\\/", "script"]]
+scriptSafeJSON[str_String] := str
 
 metaCell[] := StringJoin["<", "wljs-store id=\"wljs-store\"", ">", "<", "/", "wljs-store", ">", "\r\n\n"]
 
@@ -264,7 +266,6 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                     max-height: calc(100vh - 2rem);
                     overflow-y: auto;
                     padding: 0.75rem;
-                    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
                     border-radius: 0.5rem;
                     font-size: 0.875rem;
                     line-height: 1.3;
@@ -361,7 +362,10 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 </div>
               </div>
               <script type="module">
-                const wljsStorePayload = document.getElementById("wljs-store-data").textContent;
+                const wljsStoreData = JSON.parse(document.getElementById("wljs-store-data").textContent);
+                wljsStoreData.objects = JSON.parse(await interpretate.unzlib64String(wljsStoreData.objects));
+                wljsStoreData.symbols = JSON.parse(await interpretate.unzlib64String(wljsStoreData.symbols));
+                const wljsStorePayload = JSON.stringify(wljsStoreData);
                 const wljsStoreURL = URL.createObjectURL(new Blob([wljsStorePayload], {type: "application/json"}));
                 document.getElementById("wljs-store").setAttribute("json", wljsStoreURL);
                 window.addEventListener("pagehide", () => URL.revokeObjectURL(wljsStoreURL), {once: true});

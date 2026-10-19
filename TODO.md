@@ -77,7 +77,14 @@ Phase II
 - [ ] Fix plugins examples!!! or extensions exmaples
 - [ ] exports as widgets, 
 - [ ] html export, 
-- [ ] slide export,  
+- [ ] slide export,
+- [ ] Fix MDX exports
+- [x] EmitSound -> create a streamer with instance (using FrontSubmit) 
+- [x] Deeplink Open in WLJS 
+- [x] Darkmode exported HTML
+- [x] Fix StandaloneHTML or check it
+- [x] Implement HDFN5 importer
+- [ ] Implement Dynamic StnadaloneHTML export  
 - [ ] update tutorials on plugins
 - [ ] update tutorials on JS-WL comm
 - [ ] Remove LetWL from docs

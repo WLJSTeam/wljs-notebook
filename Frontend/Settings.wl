@@ -16,12 +16,14 @@ loadConfiguration  := If[FileExistsQ[CoffeeLiqueur`Notebook`AppExtensions`AppCon
 
 storeConfiguration[c_Association] := With[{},
     Echo["Storing to a file..."];
-    Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ] // Echo;
+    Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ]
 ];
 
-initialize[conf_, OptionsPattern[] ] := With[{default = OptionValue["Defaults"]},
-    conf = Join[default, (If[MissingQ[#], <||>, #]& ) @ loadConfiguration];
-    storeConfiguration[conf]
+initialize[conf_, OptionsPattern[] ] := With[{default = OptionValue["Defaults"], loaded = loadConfiguration}, 
+    conf = Join[default, (If[MissingQ[#], <||>, #]& ) @ loaded];
+    If[conf =!= loaded,
+        storeConfiguration[conf]
+    ]
 ];
 
 SetAttributes[initialize, HoldFirst];
