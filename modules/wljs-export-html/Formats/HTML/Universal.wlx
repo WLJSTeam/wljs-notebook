@@ -307,6 +307,23 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                     background: color-mix(in srgb, var(--system-accent-color) 12%, transparent);
                     opacity: 1;
                 }
+                .wljs-outline-footer {
+                    margin-top: 0.5rem;
+                    padding-top: 0.5rem;
+                    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+                }
+                .wljs-outline-open {
+                    display: inline-block;
+                    color: inherit;
+                    text-decoration: none;
+                    font-size: 0.75rem;
+                    opacity: 0.55;
+                }
+                .wljs-outline-open:hover {
+                    color: var(--system-accent-color);
+                    text-decoration: underline;
+                    opacity: 1;
+                }
                 main :is(h1, h2, h3, h4, h5, h6) {
                     scroll-margin-top: 1rem;
                 }
@@ -336,6 +353,9 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                       <nav aria-label="Table of contents">
                         <ol class="wljs-outline-list"></ol>
                       </nav>
+                      <div class="wljs-outline-footer">
+                        <a id="wljs-open-in-app" class="wljs-outline-open" href="#">Open in WLJS</a>
+                      </div>
                     </aside>
                   </div>
                 </div>
@@ -350,6 +370,8 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 const wljsOutlineMain = wljsOutlineLayout.querySelector("main");
                 const wljsOutline = document.getElementById("sidebar-right");
                 const wljsOutlineList = wljsOutline.querySelector(".wljs-outline-list");
+                const wljsOpenInApp = document.getElementById("wljs-open-in-app");
+                wljsOpenInApp.href = "wljs-url-message://" + encodeURIComponent(JSON.stringify({type: "open_html", url: window.location.href}));
                 let wljsOutlineHeadings = [];
                 let wljsOutlineLinks = new Map();
 
@@ -394,7 +416,7 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                   const headings = Array.from(wljsOutlineMain.querySelectorAll("h1, h2, h3, h4, h5, h6"))
                     .filter((heading) => heading.textContent.trim().length !== 0 && !heading.closest("[hidden], template"));
 
-                  if ([0, 1, 2, 3].includes(headings.length)) {
+                  if ([0, 1, 2].includes(headings.length)) {
                     wljsOutline.hidden = true;
                     wljsOutlineLayout.dataset.outline = "hidden";
                     wljsOutlineList.replaceChildren();
