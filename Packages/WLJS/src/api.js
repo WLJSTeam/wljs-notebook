@@ -18,19 +18,20 @@ const promises = {}
 
 class ServerIO {
   format = "ExpressionJSON";
-  headSymbol = "EventFire";
+  fid = 1;
+  pid = 2;
 
   constructor(server, opts = {}) {
     this.server = server;
   }
 
   fire(uid, object, pattern = "Default") { //regular event call
-    const data = interpretate.serializeWXF([1, uid, object, pattern]);
+    const data = interpretate.serializeWXF([this.fid, uid, object, pattern]);
     this.server.socket.send(data);
   }
 
   poke(uid) { //superfast just send a dummy message (can be used for calling animation frame)
-    const data = interpretate.serializeWXF([2, uid]);
+    const data = interpretate.serializeWXF([this.pid, uid]);
     this.server.socket.send(data);
   }
 

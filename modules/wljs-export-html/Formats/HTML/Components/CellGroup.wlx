@@ -1,5 +1,0 @@
-id = $Options["Cell"]["Hash"];
-Class = StringJoin[If[KeyExistsQ[$Options, "Class"], $Options["Class"], ""], " ", If[TrueQ[$Options["Cell"]["Invisible"]], "invisible-cell", ""] ];
-Style = $Options["Style"];
-
-<div class="cgroup transition duration-100 ease-linear {Class}" style="{Style}" id="group-{id}"><$Children/></div>

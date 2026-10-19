@@ -75,16 +75,17 @@ Phase II
 - [x] Throttle animate/Refresh if found Graphics or other large objects
 - [x] MEasure time between calls to estimate throttling
 - [ ] Fix plugins examples!!! or extensions exmaples
-- [ ] exports as widgets, 
-- [ ] html export, 
+- [x] exports as widgets, 
+- [x] html export, 
+- [ ] Test export on Animate (JIT and no JIT)
 - [ ] slide export,
-- [ ] Fix MDX exports
+- [ ] CHeck MDX exports -> I mean CDN and how it works with React
 - [x] EmitSound -> create a streamer with instance (using FrontSubmit) 
 - [x] Deeplink Open in WLJS 
 - [x] Darkmode exported HTML
 - [x] Fix StandaloneHTML or check it
 - [x] Implement HDFN5 importer
-- [ ] Implement Dynamic StnadaloneHTML export  
+- [x] Implement Dynamic StnadaloneHTML export  
 - [ ] update tutorials on plugins
 - [ ] update tutorials on JS-WL comm
 - [ ] Remove LetWL from docs

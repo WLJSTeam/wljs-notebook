@@ -443,9 +443,15 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
                     Echo[data[[All, "Summary"]] ];
 
-                    KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
+                    (* Do not start a black-box capture until the manual discovery
+                       sniffer has been fully removed on both sides. Otherwise a
+                       second Inject can overwrite the transport IDs saved by the
+                       first Inject and the final WebUIFetch calls never settle. *)
+                    Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
+                      Then[WebUIFetch[{
+                        dynamicAnalyzer`Sniffer["Eject"],
+                        dynamicAnalyzer`Sniffer["Retrack"]
+                      }, client], Function[Null,
 
                     Map[Function[group,
                         With[{box = blackBox`findBest[group]},
@@ -488,6 +494,16 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                           ] ];
                         ] 
                     ];
+                      ], Function[err,
+                        Echo["Failed to eject the frontend sniffer"];
+                        Echo[err];
+                        EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                      ] ];
+                    ], Function[err,
+                      Echo["Failed to eject the kernel sniffer"];
+                      Echo[err];
+                      EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                    ] ];
                 ] ];
             ],
 
@@ -532,7 +548,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[analyzed, Function[data,
                     With[{newHash = Hash[data]},
                         If[newHash =!= hash,
-                            If[Length[data["Symbols"] ] > 8,
+                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{$CurrentWebSocket = client}, (* [FIXME] *)
                                 Echo["ERROR!"];
                                 Echo[err];
                                 ClearAll[hash];
@@ -546,7 +562,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                                 WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];  
 
                                 EventFire[messager, "Warning", "The process was aborted. Too many symbols to track"];                            
-                            ,
+                            ],
                                 EventFire[snifferControls, "Load", <|"Client" -> client, "Data" -> data |> ];
                                 hash = newHash;
                             ];
@@ -568,65 +584,54 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
     ];
 ] ];
 
-
-export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] :=  With[{
+export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{
     machinesData = Map[blackBox`export, machines]
-},     
-   With[{
-       p = Promise[]
-   },
-       EventFire[modals, "SaveDialog", <|
-           "Promise"->p,
-           "title"->"Export as embeddable HTML",
-           "properties"->{"createDirectory", "dontAddToRecent"},
-           "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
-       |>];
+},
+    With[{
+        p = Promise[]
+    },
+        EventFire[modals, "SaveDialog", <|
+            "Promise"->p,
+            "title"->"Export as portable HTML notebook",
+            "properties"->{"createDirectory", "dontAddToRecent"},
+            "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
+        |>];
 
-       Then[p, Function[result, 
-           Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
-               If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                 Echo["Cancelled saving"]; Echo[result];
-                 Return[];
-               ];
-                    If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
-                    If[filename === ".html", filename = name<>filename];
-                    If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
+        Then[p, Function[result,
+            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
+                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0,
+                    Echo["Cancelled saving"]; Echo[result];
+                    Return[];
+                ];
 
-                    Then[proto["collectStaticData"], Function[Null,
+                If[!StringMatchQ[filename, __~~".html"], filename = filename <> ".html"];
+                If[filename === ".html", filename = name<>filename];
+                If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
 
-                        Then[generateHTML["MarkdownTransformer"->proto["markdownTransformer"], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->True, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
-                            Export[filename,  generated // ToStringRiffle, "Text"];
+                Then[proto["collectStaticData"], Function[Null,
+                    Then[generateHTML[
+                        "MarkdownTransformer"->proto["markdownTransformer"],
+                        "Root"->rootFolder,
+                        "Settings"->settings,
+                        "DynamicQ"->True,
+                        "MachinesData"->machinesData,
+                        "ExtensionTemplates"->ext,
+                        "Notebook"->notebookOnLine,
+                        "Title"->name
+                    ], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
 
-                            With[{newDir = DirectoryName[filename]},
-                                If[!FileExistsQ[FileNameJoin[{newDir, "attachments"}] ], CreateDirectory[FileNameJoin[{newDir, "attachments"}] ] ];
-
-                                If[FileExistsQ[FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ],
-                                    (
-                                        Echo["Copying from "<>#<>" >>  to "<>FileNameJoin[{newDir, "attachments", FileNameTake[#]}] ];
-                                        CopyFile[#, FileNameJoin[{newDir, "attachments", FileNameTake[#]}], OverwriteTarget->True];
-
-                                    ) &/@ FileNames["*.*", FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ];
-                                ];
-
-                                CopyFile[notebookOnLine["Path"], FileNameJoin[{newDir, "attachments", "notebook-"<>StringTake[notebookOnLine["Hash"], 3]<>".wln"}] ];
-                                Export[FileNameJoin[{newDir, "attachments", notebookOnLine["Hash"]<>".txt"}], generateHTMLStore[notebookOnLine], "Text" ];
-                                Export[FileNameJoin[{newDir, "attachments", "kernel-"<>ToString[Hash[name] ]<>".txt"}], ExportString[machinesData, "ExpressionJSON", "Compact"->1], "Text" ];
-
-                                Block[{$CurrentWebSocket = client},
-                                    WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
-                                    EventFire[messager, "Saved", "Exported to "<>filename];
-                                ];
-                            ];
-                        ] ];
-
-
-
+                        Block[{$CurrentWebSocket = client},
+                            WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
+                            EventFire[messager, "Saved", "Exported to "<>filename];
+                        ];
                     ] ];
-           ];
-       ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
-       
-   ]
+                ] ];
+            ];
+        ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
+    ]
 ]
+
 
 
 End[]

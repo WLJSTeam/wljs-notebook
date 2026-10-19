@@ -278,9 +278,13 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
                     Echo[data[[All, "Summary"]] ];
 
-                    KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
+                    (* Do not start a black-box capture until the manual discovery
+                       sniffer has been fully removed on both sides. *)
+                    Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
+                      Then[WebUIFetch[{
+                        dynamicAnalyzer`Sniffer["Eject"],
+                        dynamicAnalyzer`Sniffer["Retrack"]
+                      }, client], Function[Null,
 
                     Map[Function[group,
                         With[{box = blackBox`findBest[group]},
@@ -323,6 +327,16 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                           ] ];
                         ] 
                     ];
+                      ], Function[err,
+                        Echo["Failed to eject the frontend sniffer"];
+                        Echo[err];
+                        EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                      ] ];
+                    ], Function[err,
+                      Echo["Failed to eject the kernel sniffer"];
+                      Echo[err];
+                      EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                    ] ];
                 ] ];
             ],
 

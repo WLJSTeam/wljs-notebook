@@ -224,8 +224,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
       Then[WebUIFetch[{
         dynamicAnalyzer`Sniffer["Retrack"],
-        dynamicAnalyzer`Sniffer["Inject"],
-        dynamicAnalyzer`Sniffer["Confirm"]
+        dynamicAnalyzer`Sniffer["Inject"]
       }, client], Function[Null,
 
       Echo["Reset pool"];
@@ -234,7 +233,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
       Echo["Reset widget state"];
       With[{reset = widget["ResetStateFunction"]},
 
-
+       
         Then[KernelSniffer[machine["Kernel"], Hold[reset[] ], "EvaluateHeld"], Function[Null,
           Echo["Done!"];
           Then[KernelSniffer[machine["Kernel"], "ListSymbols"], Function[report,

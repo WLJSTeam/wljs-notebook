@@ -1,5 +1,21 @@
 (* Self-contained HTML export built on the embeddable web components. *)
 
+GetMachinesData[OptionsPattern[]] := With[{
+    data = OptionValue["Data"],
+    dynamicQ = TrueQ[OptionValue["DynamicQ"]]
+},
+    If[dynamicQ,
+        With[{Data = ExportString[data, "ExpressionJSON", "Compact"->1]},
+            {
+                <script type="application/json" id="json-machines-data"><Data/></script>
+            } // ToStringRiffle
+        ],
+        ""
+    ]
+]
+
+Options[GetMachinesData] = {"Data"->{}, "DynamicQ"->False}
+
 pmIncludes[param_, blacklist_List] :=
 Table[
     Table[
@@ -194,6 +210,21 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
     markdownTransformer = Replace[OptionValue["MarkdownTransformer"], Automatic -> defaultMarkdownTransformer],
     StoreData = scriptSafeJSON[exportStore[OptionValue["Notebook"]]],
     WebComponentsScript = GetWebComponentsScript[OptionValue["Root"]],
+    dynamicQ = TrueQ[OptionValue["DynamicQ"]],
+    machinesData = OptionValue["MachinesData"],
+    MachinesRuntime = If[TrueQ[OptionValue["DynamicQ"]],
+      StringRiffle[{
+        "const wljsMachinesData = document.getElementById(\"json-machines-data\").textContent;",
+        "const wljsMachinesURL = URL.createObjectURL(new Blob([wljsMachinesData], {type: \"application/json\"}));",
+        "document.getElementById(\"wljs-store\").setAttribute(\"kernel\", wljsMachinesURL);",
+        "window.addEventListener(\"pagehide\", () => URL.revokeObjectURL(wljsMachinesURL), {once: true});"
+      }, "\n"],
+      ""
+    ],
+    MachinesRunners = If[TrueQ[OptionValue["DynamicQ"]],
+      Import[FileNameJoin[{OptionValue["Root"], "DynamicsTools", "Runners.js"}], "Text"],
+      ""
+    ],
     DocumentTitle = getTitle[OptionValue["Notebook"]],
     CompressedNotebook = generateCompressed[OptionValue["Notebook"]]
   },
@@ -237,6 +268,7 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                     display: block;
                     padding-left: 0.5rem;
                     margin-bottom: 0.75rem;
+                    font-size: small;
                 }
                 wljs-editor[type="Input"]:after {
                     background: #d5d5d5;
@@ -343,6 +375,7 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
               <script id="wljs-store-data" type="application/json"><StoreData/></script>
             </head>
             <body class="{bodyClass}" style="margin:0">
+              <GetMachinesData Data={machinesData} DynamicQ={dynamicQ}/>
               <div>
                 <div class="px-2" id="frame">
                   <div id="wljs-document-layout" class="wljs-document-layout h-full relative" data-outline="hidden" style="width: calc(100vw - 2rem);">
@@ -369,6 +402,7 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 const wljsStoreURL = URL.createObjectURL(new Blob([wljsStorePayload], {type: "application/json"}));
                 document.getElementById("wljs-store").setAttribute("json", wljsStoreURL);
                 window.addEventListener("pagehide", () => URL.revokeObjectURL(wljsStoreURL), {once: true});
+                <MachinesRuntime/>
 
                 const wljsOutlineLayout = document.getElementById("wljs-document-layout");
                 const wljsOutlineMain = wljsOutlineLayout.querySelector("main");
@@ -464,6 +498,7 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 wljsBuildOutline();
 
                 <WebComponentsScript/>
+                <MachinesRunners/>
               </script>
               <script id="wljs-notebook-compressed" type="text/plain"><CompressedNotebook/></script>
             </body>
@@ -478,6 +513,11 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
   ]
 ]];
 
-Options[Component] = {"MarkdownTransformer"->Automatic, "Title"->"Example", "Notebook"->"", "ExtensionTemplates"->{}, "Settings"-><||>, "Root"->"", "DynamicQ"->False}
+Options[Component] = {
+    "MarkdownTransformer"->Automatic,
+    "Title"->"Example", "Notebook"->"",
+    "MachinesData"->{},
+    "ExtensionTemplates"->{}, "Settings"-><||>, "Root"->"", "DynamicQ"->False
+}
 
 Component

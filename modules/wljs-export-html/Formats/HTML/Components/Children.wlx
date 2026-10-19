@@ -1,3 +1,0 @@
-id = $Options["Cell"]["Hash"];
-
-<div class="cchildren" id="children-{id}"><$Children/></div>

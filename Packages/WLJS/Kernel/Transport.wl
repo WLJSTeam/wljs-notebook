@@ -12,6 +12,8 @@ $WLJSTransportAssets;
 
 WLJSTransportSend;
 
+WLJSTransportEventHandler;
+
 Begin["`Internal`"]
 
 
@@ -87,6 +89,9 @@ eventHandler[5, uid_, symbolString_, args_] := With[{client = $CurrentWebSocket,
         WebSocketUSend[client, WLJSIOPromiseResolve[uid, symbol] // $DefaultSerializer];
     ]
 ];
+
+(* Expose them for external APIs *)
+WLJSTransportEventHandler = eventHandler;
 
 (* performance critical part! streaming large chunks of data upon symbol update *)
 WLJSIOAddTracking[symbol_String] := With[{
