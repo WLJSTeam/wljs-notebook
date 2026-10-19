@@ -1,3 +1,5 @@
+(* Saves and executes WLJS window (.wlw) documents with optional metadata. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`WLW`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -63,6 +65,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 (*                                         WLE Decoder                                          *)
 (*                                             ***                                                 *)
 
+(* Window execution waits for both the container and evaluator to be ready. *)
 checkKernel[getkernel_, cbk_] := With[{
     kernel = getkernel[]
 }, Echo["Checking kernel..."]; 
@@ -113,6 +116,7 @@ parseWindowSize[data_String] := Module[{res},
 parseWindowSize[_] := Automatic
 
 
+(* Metadata in the first Markdown cell controls the native window. *)
 execute[opts__][path_String, secondaryOpts___] := Module[{str, cells, objects, notebook, store, symbols, place, windowTitle, windowSize},
 With[{
     name = FileBaseName[path],

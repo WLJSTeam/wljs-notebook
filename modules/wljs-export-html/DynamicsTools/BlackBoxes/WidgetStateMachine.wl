@@ -1,3 +1,5 @@
+(* Samples widget states into a replayable lookup table for kernel-free exports. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`WidgetStateMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -72,6 +74,7 @@ prepareFeedbackSignal[kernel_] := With[{},
 ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
 ApplySync[f_, w_, {}, final_, reject_] := final[];
 
+(* A state is keyed by the frontend hash; large numeric values travel as WXF. *)
 probeState[action_, kernel_, symbols_, delay_, aborted_, {values_, events_}, client_] := With[{
   promise = Promise[]
 },
@@ -105,6 +108,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr /. {n_NumericArray :>
   ]
 ]
 
+(* Export consumes the sampled machine and releases its backing data structure. *)
 stateMachine /: blackBox`export[machine_stateMachine] := With[{},
 With[{data = <|"CompressedMap" -> compress[KeyValueMap[List, Normal[machine["HashTable"] ] ] ],
   "Basis" -> machine["Basis"],
@@ -222,6 +226,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
       Echo["Injecting sniffers on frontend"];
 
 
+      (* Retrack first so the injected sniffer observes the current frontend graph. *)
       Then[WebUIFetch[{
         dynamicAnalyzer`Sniffer["Retrack"],
         dynamicAnalyzer`Sniffer["Inject"]

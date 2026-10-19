@@ -1,3 +1,5 @@
+(* Builds standalone HTML from notebook cells, assets, and optional replay machines. *)
+
 CellsContainer := ImportComponent["Components/CellsContainer.wlx"];
 {CellGenerator, CellGeneratorScript}   = ImportComponent["CellGenerator.wlx"];
 
@@ -12,6 +14,7 @@ GetAssetsData[Rule["Notebook", notebook_]] := If[
     ""
 ]
 
+(* Machine data and its runtime are omitted entirely for static exports. *)
 GetMachineData[Rule["MachineData", data_]] := With[{
   Data = ExportString[data, "ExpressionJSON", "Compact"->1],
   Runners = Import[FileNameJoin[{root, "DynamicsTools", "Runners.js"}], "Text"]

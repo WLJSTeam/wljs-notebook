@@ -1,3 +1,5 @@
+(* Exports WLJS notebooks to Markdown and imports Markdown into notebook cells. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Markdown`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -83,6 +85,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
 
 
+(* Map fenced-code languages to WLJS first-line display directives. *)
 lang["mathematica"] := ""
 lang["wolfram"] := ""
 lang["wl"] := ""
@@ -159,6 +162,7 @@ fixImages[s_String, r_] := With[{},
   }]
 ]
 
+(* Fenced blocks become input cells; remaining text becomes Markdown output. *)
 decode[path_String, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, root},
 With[{
     dir = DirectoryName[path],

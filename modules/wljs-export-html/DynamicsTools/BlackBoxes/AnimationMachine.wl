@@ -1,3 +1,5 @@
+(* Replays frequently repeated event-driven symbol values as animation frames. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`AnimationMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -34,6 +36,7 @@ blackBox`definedBoxes = Append[blackBox`definedBoxes, animationMachine];
 
 animationMachine /: blackBox`priority[animationMachine] := 10;
 
+(* High duplicate density identifies a periodic stream rather than discrete states. *)
 animationMachine /: blackBox`test[animationMachine, group_Association] := (
 
     If[(Length[group["Summary"]["Symbols"] ] > 0 && Length[group["Summary"]["Events"] ] == 1),
@@ -108,6 +111,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr /. {n_NumericArray :>
 ]
 
 
+(* Export consumes the captured frames to release memory promptly. *)
 animationMachine /: blackBox`export[machine_animationMachine] := With[{},
 With[{data = <|"Compressed" -> compress[ machine["Values"] ],
   "Class" -> "AnimationMachine",

@@ -1,3 +1,5 @@
+(* File-selection modal for choosing notebook-adjacent files to archive. *)
+
 component[files_, cbk_] := With[{
     TList = Table[With[{i = files[[index]]}, With[{Name = FileNameTake[i], Size = If[ DirectoryQ[i], Internal`DirectoryByteCount[i]/1024//N, QuantityMagnitude[FileSize[i], "Megabytes"]]},
       <li class="relative flex items-start"><div class="flex h-6 items-center"><input data-name="{index}" type="checkbox" class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 dark:text-gray-400 text-teal-600 focus:ring-teal-600"/></div><div class="ml-3 text-sm leading-6"><label for="comments" class="font-medium text-gray-900 dark:text-gray-300"><Name/></label><p class="text-gray-500"><Size/> Mb</p></div></li>
@@ -41,6 +43,7 @@ component[files_, cbk_] := With[{
     <script type="module">
       const ul = document.getElementById('<UId/>');
       const inputs = ul.getElementsByTagName('input');
+      // Preserve list order so the boolean mask aligns with the kernel file list.
       const states = Array.from(Array(inputs.length)).map(() => false);
       for (const i of inputs) {
         i.addEventListener('change', () => {

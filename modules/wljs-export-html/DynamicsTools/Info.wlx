@@ -1,3 +1,5 @@
+(* Progress panel used while a dynamic black box is being sampled. *)
+
 Component[OptionsPattern[]] := With[{
     controller = OptionValue["Channel"],
     controller2 = CreateUUID[],
@@ -5,6 +7,7 @@ Component[OptionsPattern[]] := With[{
     Msg = OptionValue["Message"]
 },
 
+(* Bridge kernel events to a client-bound channel owned by this component. *)
 EventHandler[controller, {
     "Progress" -> Function[body,
         EventFire[controller2, "Progress", <|"Client" -> cli, "Message" -> body|>]

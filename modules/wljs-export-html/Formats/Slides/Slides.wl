@@ -1,3 +1,5 @@
+(* Renders a .slides cell offscreen and captures the deck as a merged PDF. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Slides`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -64,6 +66,7 @@ Options[pdfEndpoint] = {"Crop"->True, "Window" :> $CurrentWebSocket, "ExposureTi
 folder = $InputFileName // DirectoryName;
 rootFolder = folder // ParentDirectory // ParentDirectory;
 
+(* The frontend accumulates each page; recursion advances the live slideshow. *)
 captureSlide[count_, log_, win_, delay_] := captureSlide[count, log, win, delay, Promise[] ]
 
 captureSlide[count_, log_, win_, delay_, p_] := With[{},
@@ -82,6 +85,7 @@ captureSlide[count_, log_, win_, delay_, p_] := With[{},
     p
 ] 
 
+(* count must be mutated across asynchronous recursive calls. *)
 SetAttributes[captureSlide, HoldFirst];
 
 slideCellQ[cell_] := If[cell["Type"] === "Input",

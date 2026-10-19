@@ -1,4 +1,4 @@
-(* tokenizer *)
+(* Renders notebook cells as embeddable HTML linked to attachment sidecars. *)
 
 fixLinks[str_] := StringReplace[str, {
     RegularExpression["\\[([^\\[^\\]]*)\\]\\(\\/([^\\[^\\]]+\\))"] :> StringJoin["[$1]", "($2"],
@@ -81,6 +81,7 @@ getTitle[notebook_] := With[{},
   ]
 ]
 
+(* Store data is emitted separately and linked by metaCell. *)
 exportStore[notebook_] := Block[{
     $Context = "dsc$`",
     $ContextPath = {"dsc$`", "Global`", "System`"}

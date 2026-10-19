@@ -1,3 +1,5 @@
+(* Converts between WLJS notebooks and Wolfram Notebook (.nb) documents. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Mathematica`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",

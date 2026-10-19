@@ -1,3 +1,5 @@
+(* Captures kernel-side symbol changes and frontend submissions during sampling. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`KernelSniffer`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -54,6 +56,7 @@ KernelSniffer[kernel_, "Inject"] := With[{
             SetAttributes[Internal`Kernel`CaptureWrapperBlock, HoldFirst];
 
 
+            (* Capture custom transport events, then preserve normal handler behavior. *)
             With[{w = WLJSTransportEventHandler}, 
                 w[69, uid_, object_, pattern_] := Block[{
                     Internal`Kernel`CaptureEvent = Function[changes,
@@ -73,7 +76,7 @@ KernelSniffer[kernel_, "Inject"] := With[{
                 ];
             ];            
 
-            (*** SPY #1 ::: FRAGILE! - SEE Frontend/KernelUnils.wl ***)
+            (* Mirrors AddTracking; keep it aligned with Frontend/KernelUtils.wl. *)
             WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
                 Experimental`ValueFunction[ fullName ] = ( 
                   Internal`Kernel`CaptureEvent[{"Symbol", StringReplace[fullName, {"Global`" -> "", "System`" -> ""}], #2}];
@@ -87,11 +90,11 @@ KernelSniffer[kernel_, "Inject"] := With[{
             Internal`Kernel`CaptureEventPool = {};
         ];
 
-        (* SPY #2: intercept every FrontSubmit overload without relying on DownValues positions. *)
+        (* Wrap all FrontSubmit overloads without depending on DownValues order. *)
         If[!(Internal`Kernel`oldFrontSubmitQ === True),
             With[{definitions = DownValues[CoffeeLiqueur`Extensions`Communication`FrontSubmit]},
                 If[Length[definitions] > 0,
-                    (* Keep an exact snapshot for Eject and delegate through a renamed copy. *)
+                    (* Preserve exact definitions for transparent delegation and restoration. *)
                     Internal`Kernel`oldFrontSubmit = definitions;
                     Internal`Kernel`oldFrontSubmitQ = True;
 

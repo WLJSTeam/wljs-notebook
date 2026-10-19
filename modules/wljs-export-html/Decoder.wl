@@ -1,3 +1,5 @@
+(* Compatibility facade exposing the available notebook-format decoders. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Decoder`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`WLX`Importer`",

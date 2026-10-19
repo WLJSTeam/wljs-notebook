@@ -1,3 +1,5 @@
+(* Orchestrates static and replayable, self-contained HTML exports. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`HTML`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -31,6 +33,7 @@ Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 generateHTML     = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
 
 
+(* Direct export and import support for notebooks without sampled dynamics. *)
 Begin["`Static`"]
 
 export;
@@ -288,6 +291,7 @@ Options[decodeHSFN5] = {"Messager"->"", "Client"->Null}
 End[]
 
 
+(* Dynamic export discovers widgets, samples black boxes, then embeds them. *)
 Begin["`Dynamic`"]
 
 export;
@@ -301,6 +305,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`", FileName
 
 
 
+(* Process black boxes serially to avoid overlapping sniffer lifecycles. *)
 ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
 ApplySync[f_, w_, {}, final_, reject_] := final[];
 
@@ -443,10 +448,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
                     Echo[data[[All, "Summary"]] ];
 
-                    (* Do not start a black-box capture until the manual discovery
-                       sniffer has been fully removed on both sides. Otherwise a
-                       second Inject can overwrite the transport IDs saved by the
-                       first Inject and the final WebUIFetch calls never settle. *)
+                    (* Fully stop discovery before a black box installs its sniffer. *)
                     Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
                       Then[WebUIFetch[{
                         dynamicAnalyzer`Sniffer["Eject"],
@@ -584,6 +586,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
     ];
 ] ];
 
+(* blackBox`export consumes each machine while producing embeddable data. *)
 export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{
     machinesData = Map[blackBox`export, machines]
 },

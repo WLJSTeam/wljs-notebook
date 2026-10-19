@@ -1,3 +1,5 @@
+(* Replays captured FrontSubmit commands by frontend-state hash. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`PavlovMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -60,6 +62,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr, "JSON"] ]},
   ]
 ]
 
+(* Export consumes the hash table after serializing its command map. *)
 pavlovMachine /: blackBox`export[machine_pavlovMachine] := With[{},
 With[{data = <|"CompressedMap" -> compress[KeyValueMap[Function[{key, val}, {key, ExportString[val, "ExpressionJSON", "Compact"->1]}], Normal[machine["HashTable"] ] ] ],
   "Class" -> "PavlovMachine",
@@ -103,6 +106,7 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
     
 
 
+    (* Hashes are calculated in the frontend where the referenced objects live. *)
     Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client], Function[hashes,
       Echo["Got hashes:: "]; Echo[hashes];
 

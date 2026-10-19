@@ -1,3 +1,5 @@
+(* Embeds project files into notebooks and restores them beside the notebook. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`SFX`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -80,6 +82,7 @@ MergeDirectories[source_String, target_String] := (
   ];
 );
 
+(* Clear the field before extraction so restored archives are not re-saved. *)
 extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"] && Length[ n["ZIPArchive"] ] > 0, With[{blob = n["ZIPArchive"]["Main"], dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]},
     n["ZIPArchive"] = <||>;
     With[{arvx = FileNameJoin[{dir, "_wljs_arxv.zip"}]},
@@ -97,6 +100,7 @@ extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"] && Length
     
 ] ]
 
+(* Stage only selected files, then store the archive as base64 notebook data. *)
 embedArchive[n_nb`NotebookObj, files_List] := With[{
     dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]
 },

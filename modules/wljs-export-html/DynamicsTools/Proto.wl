@@ -1,3 +1,5 @@
+(* Normalizes captured events and groups them by affected action. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Proto`"]
 
 create;
@@ -12,6 +14,7 @@ Begin["`Private`"]
 
 create[_] := Null;
 
+(* All FrontSubmit calls share a group; symbols are grouped by name. *)
 actionHash[{"Symbol", ex_, ___}] := Hash[{"Symbol", ex}]
 actionHash[{"FrontSubmit", ___}] := Hash["FrontSubmit"]
 

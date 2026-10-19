@@ -1,3 +1,5 @@
+(* Registers export UI, file routers, settings, and protocol entry points. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -80,6 +82,7 @@ AppExtensions`TemplateInjection["AppNotebookTopBar"] = buttonTemplate["HandlerFu
 
 AppExtensions`SidebarIcons = ImportComponent[FileNameJoin[{rootFolder, "Templates", "Icons.wlx"}] ];
 
+(* The active notebook is discovered through the shared controls event pool. *)
 getNotebook[controls_] := EventFire[controls, "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n};
 
 processRequest[controls_, modals_, messager_, client_, "SFX"] := With[{
@@ -190,6 +193,7 @@ renderMarkdownToString;
 requestMarkdownProcessor[client_][data_] :=requestMarkdownProcessor[client][ToString[data] ]
 requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client]
 
+(* Persist transient frontend objects before any static renderer reads them. *)
 collectStaticData[client_, messager_, notebook_] := Block[{
     $CurrentWebSocket = client
 },

@@ -1,4 +1,6 @@
-(* tokenizer *)
+(* Renders notebook cells as MDX and references store/machine sidecars. *)
+
+(* Locate top-level HTML so MDX receives it through encoded wljs-html nodes. *)
 
 parseTag[str_] := {
     StringPosition[str, RegularExpression["\\<(\\w*)(\\s*(((\\w|-)*)=\\\"([^\"]+)\")*((\\w*)=\\{([^\\<\\>]+)\\})*)*\\>"]],
@@ -154,6 +156,7 @@ getTitle[notebook_] := With[{},
   ]
 ]
 
+(* Store data is emitted separately and linked by metaCell. *)
 exportStore[notebook_] := Block[{
     $Context = "dsc$`",
     $ContextPath = {"dsc$`", "Global`", "System`"}

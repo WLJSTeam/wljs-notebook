@@ -1,3 +1,5 @@
+(* Samples discrete event combinations into a replayable symbol-state table. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`StateMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -54,6 +56,7 @@ stateMachine /: blackBox`construct[stateMachine, group_, kernel_] := With[{symbo
 ]
 
 
+(* Build the Cartesian product while holding values against evaluation. *)
 runOverNested[array_, depth_, res_] := If[depth == Length[array], 
   Table[With[{i=i},Flatten[{res, Hold[i]}] ], {i, array[[depth, "Values"]]}]
 , 
@@ -101,6 +104,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr /. {n_NumericArray :>
   ]
 ]
 
+(* Export consumes the sampled machine and its backing data structure. *)
 stateMachine /: blackBox`export[machine_stateMachine] := With[{},
 With[{data = <|"CompressedMap" -> compress[KeyValueMap[List, Normal[machine["HashTable"] ] ] ],
   "Basis" -> machine["Basis"],

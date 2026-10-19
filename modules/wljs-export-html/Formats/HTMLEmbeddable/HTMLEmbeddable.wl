@@ -1,3 +1,5 @@
+(* Orchestrates embeddable HTML exports backed by attachment sidecars. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`HTMLEmbeddable`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -27,6 +29,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`" -> "wapi`", FileNameJoi
 {generateHTML, generateHTMLStore}      = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
 
 
+(* Static export writes HTML plus notebook/store attachments. *)
 Begin["`Static`"]
 
 export;
@@ -123,6 +126,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 End[]
 
 
+(* Dynamic export discovers widgets and writes sampled machines as a sidecar. *)
 Begin["`Dynamic`"]
 
 export;
@@ -136,6 +140,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`", FileName
 
 
 
+(* Process black boxes serially to avoid overlapping sniffer lifecycles. *)
 ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
 ApplySync[f_, w_, {}, final_, reject_] := final[];
 
@@ -278,8 +283,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
                     Echo[data[[All, "Summary"]] ];
 
-                    (* Do not start a black-box capture until the manual discovery
-                       sniffer has been fully removed on both sides. *)
+                    (* Fully stop discovery before a black box installs its sniffer. *)
                     Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
                       Then[WebUIFetch[{
                         dynamicAnalyzer`Sniffer["Eject"],
@@ -418,6 +422,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 ] ];
 
 
+(* blackBox`export consumes each machine while producing sidecar data. *)
 export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] :=  With[{
     machinesData = Map[blackBox`export, machines]
 },     

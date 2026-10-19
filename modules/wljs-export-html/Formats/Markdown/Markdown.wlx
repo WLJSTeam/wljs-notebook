@@ -1,5 +1,7 @@
 
 
+(* Renders visible notebook cells as a portable Markdown document. *)
+
 (* /* TODO: Add export to SVG for all figures via frontend */  *) 
 (* /* TODO: Add export to equations */  *) 
 (* /* TODO: Move it to a command line utility */  *) 
@@ -25,6 +27,7 @@ checkLang[any_] := StringDrop[any, 1];
 cellProcess[data_, "Output", "codemirror", _, _] := <|"Data" -> ""|>;
 cellProcess[data_, "Output", _, _, _] := <|"Data" -> ""|>;
 
+(* Leading WLJS directives become fenced-code language tags. *)
 cellProcess[data_, "Input", "codemirror", _, _] := <|"Data" -> If[TrueQ[data["Props"]["Hidden"]] || TrueQ[data["Props"]["Invisible"]], "", With[{splitted = StringSplit[data["Data"], "\n"]},
   If[StringTake[data["Data"], 1] === ".",
     With[{lang = checkLang[First @ splitted]},

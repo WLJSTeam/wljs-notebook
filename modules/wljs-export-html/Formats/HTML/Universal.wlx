@@ -1,5 +1,6 @@
 (* Self-contained HTML export built on the embeddable web components. *)
 
+(* Dynamic exports carry replay machines as inert JSON in the document body. *)
 GetMachinesData[OptionsPattern[]] := With[{
     data = OptionValue["Data"],
     dynamicQ = TrueQ[OptionValue["DynamicQ"]]
@@ -194,6 +195,7 @@ metaCell[] := StringJoin["<", "wljs-store id=\"wljs-store\"", ">", "<", "/", "wl
 
 hexColor = (IntegerDigits[ToExpression@StringReplace[#, "#" -> "16^^"], 256, If[StringLength[#] > 7, 4, 3]]) &;
 
+(* Blob URLs adapt embedded payloads to wljs-store; replay code is dynamic-only. *)
 Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[{
     notebook = OptionValue["Notebook"],
     ExtensionTemplates = OptionValue["ExtensionTemplates"],
