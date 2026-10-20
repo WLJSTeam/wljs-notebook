@@ -547,4 +547,6 @@ BlackBox.AnimationMachine = class {
   }
 } 
 
-server.BlackBox = BlackBox;
+// Publish before web components mount; attach immediately when a server already exists.
+globalThis.WLJS_BLACK_BOXES = BlackBox;
+if (globalThis.server) globalThis.server.BlackBox = BlackBox;

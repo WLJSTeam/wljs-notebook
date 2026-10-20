@@ -499,8 +499,8 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 window.addEventListener("scroll", wljsUpdateActiveOutlineItem, {passive: true});
                 wljsBuildOutline();
 
-                <WebComponentsScript/>
                 <MachinesRunners/>
+                <WebComponentsScript/>
               </script>
               <script id="wljs-notebook-compressed" type="text/plain"><CompressedNotebook/></script>
             </body>

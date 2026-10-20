@@ -67,7 +67,7 @@
     "styles": "src/styles.css",
     "priority": -10,
     "important": true,
-    "cellExportRequired": true,
+    "exportable": true,
     "category": "Editor",
     "contextMenu": [
       {

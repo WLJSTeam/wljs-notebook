@@ -149,7 +149,12 @@ processRequest[controls_, modals_, messager_, client_] := With[{
                             askIfDynamic[modals, html`Static`export @@ args, html`Dynamic`export @@ args],
 
                             choise===2,
-                            askIfDynamic[modals, htmle`Static`export @@ args, htmle`Dynamic`export @@ args],
+                            askEmbeddableMode[
+                                modals,
+                                htmle`Static`export @@ args,
+                                htmle`Dynamic`export @@ args,
+                                htmle`Bundle`export[modals, messager, path, settings]
+                            ],
 
                             choise===3,
                             askIfDynamic[modals, mdx`Static`export @@ args, mdx`Dynamic`export @@ args],
@@ -187,6 +192,24 @@ askIfDynamic[modals_, callback1_, callback2_] := With[{
                 ]
             ] ]
 ];
+
+SetAttributes[askEmbeddableMode, HoldRest]
+askEmbeddableMode[modals_, static_, interactive_, bootstrap_] := With[{p = Promise[]},
+    EventFire[modals, "SelectBox", <|
+        "Promise"->p,
+        "title"->"HTML Embeddable",
+        "message"->"Please, choose one below",
+        "list"->{"Static", "Interactive", "Bootstrap"}
+    |>];
+    Then[p, Function[choise,
+        Switch[choise,
+            1, static,
+            2, interactive,
+            3, bootstrap,
+            _, Null
+        ]
+    ]]
+]
 
 renderMarkdownToString;
 

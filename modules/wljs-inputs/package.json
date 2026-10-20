@@ -17,7 +17,7 @@
     "kernel": "src/Kernel.wl",
     "category": "User's GUI",
     "priority": 550,
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

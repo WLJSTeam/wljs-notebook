@@ -13,7 +13,8 @@
     "kernel": ["Diff.wl", "Kernel.wl"],
     "deferred": ["Packages/AnimationFramework", "Packages/AnimationFramework.wl"],
     "category": "Plotting & Graphics",
-    "priority": 5002
+    "priority": 5002,
+    "exportable": true
   },
   "repository": {
     "type": "git",

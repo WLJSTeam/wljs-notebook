@@ -15,12 +15,11 @@
     "styles": [
       "dist/reveal.css",
       "src/style.css",
-      "src/drawer/drawer.css",
       "src/pointer/pointer.css"
     ],
     "priority": 980,
     "category": "Cell types",
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

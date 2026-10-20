@@ -1,0 +1,46 @@
+import React from "react";
+
+const CSS_URLS = /*__WLJS_CSS_URLS__*/ [];
+const ESM_URLS_IN_ORDER = /*__WLJS_ESM_URLS__*/ [];
+const WEB_COMPONENTS_STYLES = {
+  "web-components.css": "common/web-components.css",
+  "web-components.tw.css": "common/web-components.tw.css",
+};
+
+function resolveAsset(BASE, asset) {
+  if (/^(?:https?:)?\/\//.test(asset)) return asset;
+  return `${String(BASE).replace(/\/+$/, "")}/${asset.replace(/^\/+/, "")}`;
+}
+
+// Render during SSR, for example from a Next.js layout or document component.
+export default function WLJSBootstrap({
+  BASE = "/bootstrap/src",
+  preload = true,
+  webComponentsCSS = "web-components.css",
+}) {
+  const selectedStyles = WEB_COMPONENTS_STYLES[webComponentsCSS];
+  if (!selectedStyles) {
+    throw new Error(`Unknown WLJS web-components stylesheet: ${webComponentsCSS}`);
+  }
+
+  const cssURLs = CSS_URLS
+    .map((asset) => asset === "common/web-components.css" ? selectedStyles : asset)
+    .map((asset) => resolveAsset(BASE, asset));
+  const moduleURLs = ESM_URLS_IN_ORDER.map((asset) => resolveAsset(BASE, asset));
+
+  return (
+    <>
+      {cssURLs.map((href) => (
+        <link key={`css:${href}`} rel="stylesheet" href={href} />
+      ))}
+      {preload && moduleURLs.map((href) => (
+        <link key={`preload:${href}`} rel="modulepreload" href={href} />
+      ))}
+      {moduleURLs.map((src) => (
+        <script key={`module:${src}`} type="module" src={src}></script>
+      ))}
+    </>
+  );
+}
+
+export { CSS_URLS, ESM_URLS_IN_ORDER, WEB_COMPONENTS_STYLES };

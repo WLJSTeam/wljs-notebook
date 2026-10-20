@@ -28,6 +28,258 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`" -> "wapi`", FileNameJoi
 
 {generateHTML, generateHTMLStore}      = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
 
+(* Builds a publishable runtime shared by embeddable HTML and MDX exports. *)
+Begin["`Bundle`"]
+
+export;
+export::path = "Cannot create a bootstrap directory from `1`.";
+export::asset = "Required bootstrap asset was not found: `1`.";
+
+asList[value_] := DeleteMissing[Flatten[{value}]]
+
+toURLPath[path_String] := StringRiffle[FileNameSplit[path], "/"]
+
+bundleRoots[] := DeleteDuplicates @ Select[
+    Flatten[{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}],
+    StringQ
+]
+
+excludedPackages[settings_] := If[
+    AssociationQ[settings],
+    asList @ Lookup[settings, "ExportHTMLExclude", {}],
+    {}
+]
+
+bundlePackageKeys[settings_] := With[{excluded = excludedPackages[settings]},
+    Select[WLJSPackages`Packages // Keys, Function[key,
+        TrueQ[WLJSPackages`Packages[key, "wljs-meta", "exportable"]] &&
+        !MemberQ[excluded, WLJSPackages`Packages[key, "name"]] &&
+        Or[
+            KeyExistsQ[WLJSPackages`Packages[key, "wljs-meta"], "js"],
+            KeyExistsQ[WLJSPackages`Packages[key, "wljs-meta"], "styles"]
+        ]
+    ]]
+]
+
+bundleIncludes[param_, packageKeys_List] := Flatten @ Table[
+    With[{name = WLJSPackages`Packages[key, "name"]},
+        FileNameJoin[Prepend[StringSplit[#, "/"], name]] & /@
+            asList[WLJSPackages`Packages[key, "wljs-meta", param]]
+    ],
+    {key, Select[packageKeys,
+        KeyExistsQ[WLJSPackages`Packages[#, "wljs-meta"], param]&
+    ]}
+]
+
+findPackageRoot[name_String] := SelectFirst[
+    FileNameJoin[{#, name}]& /@ bundleRoots[],
+    DirectoryQ,
+    Missing["PackageRoot", name]
+]
+
+ensureDirectory[path_String] := If[
+    FileExistsQ[path],
+    If[!DirectoryQ[path], Throw[Failure["BundlePath", <|"Path"->path|>], "BundleExport"]],
+    CreateDirectory[path, CreateIntermediateDirectories->True]
+]
+
+copyFile[source_String, target_String] := (
+    If[!FileExistsQ[source],
+        Message[export::asset, source];
+        Throw[$Failed, "BundleExport"]
+    ];
+    ensureDirectory[DirectoryName[target]];
+    CopyFile[source, target, OverwriteTarget->True]
+)
+
+browserAssetQ[path_String] := MemberQ[
+    {"js", "mjs", "css", "woff", "woff2", "ttf", "otf", "eot"},
+    ToLowerCase @ FileExtension[path]
+]
+
+(* Preserve package layout so relative imports and lazy chunks remain valid. *)
+copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules", ".git", ".github"}},
+    walk[from_, to_] := (
+        ensureDirectory[to];
+        Scan[Function[item,
+            If[DirectoryQ[item],
+                If[!MemberQ[ignored, FileNameTake[item]],
+                    walk[item, FileNameJoin[{to, FileNameTake[item]}]]
+                ],
+                If[browserAssetQ[item],
+                    copyFile[item, FileNameJoin[{to, FileNameTake[item]}]]
+                ]
+            ]
+        ], FileNames["*", from]]
+    );
+    walk[source, target]
+]
+
+localHeaderAsset[path_String] := Module[{relative, source},
+    relative = FileNameJoin[StringSplit[path, "/"] /. "" -> Nothing];
+    source = SelectFirst[
+        DeleteDuplicates @ Flatten[{
+            If[StringStartsQ[path, "/"], FileNameJoin[{Directory[], relative}], Nothing],
+            path,
+            FileNameJoin[{#, relative}]& /@ Append[bundleRoots[], Directory[]]
+        }],
+        FileExistsQ,
+        Missing["HeaderAsset", path]
+    ];
+    {source, relative}
+]
+
+bootstrapScript[cssURLs_List, esmURLs_List] := StringReplace[
+    Import[FileNameJoin[{folder, "BootstrapTemplate.js.txt"}], "Text"],
+    {
+        "/*__WLJS_CSS_URLS__*/ []" -> ExportString[cssURLs, "RawJSON"],
+        "/*__WLJS_ESM_URLS__*/ []" -> ExportString[esmURLs, "RawJSON"]
+    }
+]
+
+bootstrapLoader[cssURLs_List, esmURLs_List] := StringReplace[
+    Import[FileNameJoin[{folder, "BootstrapLoader.jsx.txt"}], "Text"],
+    {
+        "/*__WLJS_CSS_URLS__*/ []" -> ExportString[cssURLs, "RawJSON"],
+        "/*__WLJS_ESM_URLS__*/ []" -> ExportString[esmURLs, "RawJSON"]
+    }
+]
+
+export[outputPath_, _, path_, _, _, settings_, ___] := Catch[Module[{
+    base, target, sourceRoot, commonRoot, packageKeys, packageNames,
+    packageRoots, cssURLs, esmURLs, coreAssets, coreURLs, headerPaths,
+    localHeaders, remoteHeaders, runnersSource, declaredAssets, missingAssets
+},
+    base = Which[
+        MatchQ[outputPath, _File], First[outputPath],
+        StringQ[outputPath] && StringLength[outputPath] > 0, outputPath,
+        StringQ[path] && StringLength[path] > 0, path,
+        True, Message[export::path, outputPath]; Throw[$Failed, "BundleExport"]
+    ];
+    target = If[FileNameTake[base] === "bootstrap", base, FileNameJoin[{base, "bootstrap"}]];
+    sourceRoot = FileNameJoin[{target, "src"}];
+    commonRoot = FileNameJoin[{sourceRoot, "common"}];
+    ensureDirectory[commonRoot];
+
+    packageKeys = bundlePackageKeys[settings];
+    packageNames = WLJSPackages`Packages[#, "name"]& /@ packageKeys;
+    packageRoots = findPackageRoot /@ packageNames;
+    If[AnyTrue[packageRoots, MissingQ],
+        Message[export::asset, FirstCase[packageRoots, _Missing]];
+        Throw[$Failed, "BundleExport"]
+    ];
+    MapThread[
+        copyTree[#1, FileNameJoin[{sourceRoot, #2}]]&,
+        {packageRoots, packageNames}
+    ];
+    declaredAssets = Join[
+        bundleIncludes["js", packageKeys],
+        bundleIncludes["styles", packageKeys]
+    ];
+    missingAssets = Select[
+        declaredAssets,
+        !FileExistsQ[FileNameJoin[{sourceRoot, #}]]&
+    ];
+    If[Length[missingAssets] > 0,
+        Message[export::asset, First[missingAssets]];
+        Throw[$Failed, "BundleExport"]
+    ];
+
+    coreAssets = Join[
+        CoffeeLiqueur`WLJS`Tools`$WLJSInterpreterAssets,
+        CoffeeLiqueur`WLJS`Transport`$WLJSTransportAssets
+    ];
+    If[AnyTrue[coreAssets, !FileExistsQ[#]&],
+        Message[export::asset, SelectFirst[coreAssets, !FileExistsQ[#]&]];
+        Throw[$Failed, "BundleExport"]
+    ];
+    copyFile[#, FileNameJoin[{commonRoot, FileNameTake[#]}]]& /@ coreAssets;
+    coreURLs = ("common/" <> FileNameTake[#])& /@ coreAssets;
+
+    headerPaths = DeleteDuplicates @ Cases[
+        AppExtensions`HeaderAssets,
+        asset_Association /; asset["Type"] === "JS" :> asset["Path"]
+    ];
+    remoteHeaders = Select[headerPaths, StringMatchQ[#, ("http://" | "https://") ~~ __]&];
+    localHeaders = localHeaderAsset /@ Complement[headerPaths, remoteHeaders];
+    If[Length[localHeaders] > 0 && AnyTrue[localHeaders[[All, 1]], MissingQ],
+        Message[export::asset, FirstCase[localHeaders[[All, 1]], _Missing]];
+        Throw[$Failed, "BundleExport"]
+    ];
+    copyFile[#[[1]], FileNameJoin[{sourceRoot, #[[2]]}]]& /@ localHeaders;
+
+    copyFile[
+        FileNameJoin[{rootFolder, "Assets", "web-components.css"}],
+        FileNameJoin[{commonRoot, "web-components.css"}]
+    ];
+    copyFile[
+        FileNameJoin[{rootFolder, "Assets", "web-components.tw.css"}],
+        FileNameJoin[{commonRoot, "web-components.tw.css"}]
+    ];
+    copyFile[
+        FileNameJoin[{rootFolder, "Assets", "web-components.js"}],
+        FileNameJoin[{commonRoot, "web-components.js"}]
+    ];
+    runnersSource = FileNameJoin[{rootFolder, "DynamicsTools", "Runners.js"}];
+    If[!FileExistsQ[runnersSource],
+        Message[export::asset, runnersSource];
+        Throw[$Failed, "BundleExport"]
+    ];
+    copyFile[
+        runnersSource,
+        FileNameJoin[{sourceRoot, "wljs-export-html", "DynamicsTools", "Runners.js"}]
+    ];
+
+    cssURLs = DeleteDuplicates @ Prepend[toURLPath /@ bundleIncludes["styles", packageKeys], "common/web-components.css"];
+    esmURLs = DeleteDuplicates @ Join[
+        coreURLs,
+        remoteHeaders,
+        toURLPath /@ If[Length[localHeaders] > 0, localHeaders[[All, 2]], {}],
+        toURLPath /@ bundleIncludes["js", packageKeys],
+        {"wljs-export-html/DynamicsTools/Runners.js", "common/web-components.js"}
+    ];
+    Export[
+        FileNameJoin[{commonRoot, "app.js"}],
+        bootstrapScript[cssURLs, esmURLs],
+        "Text"
+    ];
+    Export[
+        FileNameJoin[{commonRoot, "loader.jsx"}],
+        bootstrapLoader[cssURLs, esmURLs],
+        "Text"
+    ];
+
+    target
+], "BundleExport"]
+
+(* Interactive entry point used by the export menu. *)
+export[modals_, messager_, defaultPath_, settings_] := With[{p = Promise[]},
+    EventFire[modals, "OpenDialog", <|
+        "Promise"->p,
+        "title"->"Choose website folder",
+        "defaultPath"->defaultPath,
+        "properties"->{"openDirectory", "createDirectory", "dontAddToRecent"}
+    |>];
+    Then[p, Function[result, Module[{selected, target},
+        selected = Which[
+            StringQ[result] && StringLength[result] > 0, result,
+            AssociationQ[result] && TrueQ[Lookup[result, "canceled", False]], Return[],
+            AssociationQ[result] && Length[Lookup[result, "filePaths", {}]] > 0,
+                First[result["filePaths"]],
+            AssociationQ[result] && StringQ[Lookup[result, "filePath", None]],
+                result["filePath"],
+            True, Return[]
+        ];
+        selected = URLDecode[selected];
+        target = export[selected, Null, selected, Null, Null, settings];
+        If[target === $Failed,
+            EventFire[messager, "Warning", "Failed to create the bootstrap bundle"],
+            EventFire[messager, "Saved", "Bootstrap bundle created at "<>target]
+        ]
+    ]]]
+]
+
+End[]
 
 (* Static export writes HTML plus notebook/store attachments. *)
 Begin["`Static`"]
