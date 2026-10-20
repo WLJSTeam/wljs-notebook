@@ -7,7 +7,6 @@ BeginPackage["CoffeeLiqueur`Extensions`WLXCells`", {
     "CoffeeLiqueur`Extensions`Communication`"
 }];
 
-NewLine::usage = "Represents a forced new line in the context of StandardForm and WLXForm";
 
 Begin["`Private`"]
 
@@ -49,8 +48,6 @@ Unprotect[PageBreakBelow]
 PageBreakAbove /: MakeBoxes[PageBreakAbove, WLXForm] := "<div class=\"print:breakabove\"> </div>"
 PageBreakBelow /: MakeBoxes[PageBreakBelow, WLXForm] := "<div class=\"print:breakbelow\"> </div>"
 
-NewLine /: MakeBoxes[NewLine, WLXForm] := "\n"
-NewLine /: MakeBoxes[NewLine, StandardForm] := "\n"
 
 
 CoffeeLiqueur`WLX`Private`IdentityTransform[x_] := ToBoxes[x , WLXForm]

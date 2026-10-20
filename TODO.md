@@ -67,7 +67,7 @@ Phase I
 
 Phase II
 - [x] Switch to WXF
-- [ ] Find all [TODO] tags
+- [x] Find all [TODO] tags
 - [x] REDO ALL TESTS from Phase I
 - [ ] Update docs
 - [ ] Cell add/remove/copy/cut batch using command palette
@@ -77,9 +77,9 @@ Phase II
 - [ ] Fix plugins examples!!! or extensions exmaples
 - [x] exports as widgets, 
 - [x] html export, 
-- [ ] Test export on Animate (JIT and no JIT)
-- [ ] slide export,
-- [ ] CHeck MDX exports -> I mean CDN and how it works with React
+- [x] Test export on Animate (JIT and no JIT)
+- [x] slide export,
+- [x] CHeck MDX exports -> I mean CDN and how it works with React
 - [x] EmitSound -> create a streamer with instance (using FrontSubmit) 
 - [x] Deeplink Open in WLJS 
 - [x] Darkmode exported HTML
@@ -88,7 +88,6 @@ Phase II
 - [x] Implement Dynamic StnadaloneHTML export  
 - [ ] update tutorials on plugins
 - [ ] update tutorials on JS-WL comm
-- [ ] Remove LetWL from docs
 - [x] Improve NB files import
 
 Phase III
