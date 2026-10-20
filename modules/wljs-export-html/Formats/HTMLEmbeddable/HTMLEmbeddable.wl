@@ -34,6 +34,7 @@ Begin["`Bundle`"]
 export;
 export::path = "Cannot create a bootstrap directory from `1`.";
 export::asset = "Required bootstrap asset was not found: `1`.";
+export::cleanup = "Cannot remove obsolete bootstrap directory: `1`.";
 
 asList[value_] := DeleteMissing[Flatten[{value}]]
 
@@ -98,7 +99,7 @@ browserAssetQ[path_String] := MemberQ[
 ]
 
 (* Preserve package layout so relative imports and lazy chunks remain valid. *)
-copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules", ".git", ".github"}},
+copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules", ".git", ".github", "vendor", "theme"}},
     walk[from_, to_] := (
         ensureDirectory[to];
         Scan[Function[item,
@@ -113,6 +114,20 @@ copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules
         ], FileNames["*", from]]
     );
     walk[source, target]
+]
+
+(* Remove stale copies left by earlier exports into the same bootstrap folder. *)
+removeObsoleteDirectories[root_String] := Module[{directories},
+    directories = Reverse @ SortBy[
+        Select[FileNames[{"vendor", "theme"}, root, Infinity], DirectoryQ],
+        Length @ FileNameSplit[#]&
+    ];
+    Scan[Function[path,
+        If[Quiet @ Check[DeleteDirectory[path, DeleteContents->True]; True, False] =!= True,
+            Message[export::cleanup, path];
+            Throw[$Failed, "BundleExport"]
+        ]
+    ], directories]
 ]
 
 localHeaderAsset[path_String] := Module[{relative, source},
@@ -248,6 +263,8 @@ export[outputPath_, _, path_, _, _, settings_, ___] := Catch[Module[{
         bootstrapLoader[cssURLs, esmURLs],
         "Text"
     ];
+
+    removeObsoleteDirectories[target];
 
     target
 ], "BundleExport"]
