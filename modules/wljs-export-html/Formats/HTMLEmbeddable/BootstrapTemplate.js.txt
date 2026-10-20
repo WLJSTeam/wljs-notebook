@@ -17,6 +17,15 @@ const WLJS_BOOTSTRAP = (() => {
 
   const resolve = (path) => new URL(path, getBaseHref()).href;
 
+  function getModuleLag() {
+    const configured = Number(globalThis.WLJS_MODULE_LAG ?? 0);
+    return Number.isFinite(configured) ? Math.max(0, configured) : 0;
+  }
+
+  const pause = (milliseconds) => new Promise((resolvePromise) => {
+    setTimeout(resolvePromise, milliseconds);
+  });
+
   function loadCSS(path) {
     const href = resolve(path);
     if (loadedCSS.has(href)) return Promise.resolve(href);
@@ -45,11 +54,15 @@ const WLJS_BOOTSTRAP = (() => {
   async function ensureLoaded() {
     // Preserve CSS cascade and module side-effect order.
     for (const path of CSS_URLS) await loadCSS(path);
-    for (const path of ESM_URLS_IN_ORDER) {
+
+    const moduleLag = getModuleLag();
+    const pendingModules = ESM_URLS_IN_ORDER.filter((path) => !importedModules.has(resolve(path)));
+    for (const [index, path] of pendingModules.entries()) {
       const href = resolve(path);
-      if (importedModules.has(href)) continue;
       await import(href);
       importedModules.add(href);
+      // Yield to rendering and input between modules when pacing is requested.
+      if (moduleLag > 0 && index < pendingModules.length - 1) await pause(moduleLag);
     }
 
     if (!window.server) console.warn("[WLJS] window.server not present after bootstrap");

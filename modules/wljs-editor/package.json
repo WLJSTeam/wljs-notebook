@@ -17,7 +17,7 @@
       "src/frontsubmit.js"
     ],
     "js": [
-      "dist/kernel.js",
+      "dist/kernel.min.js",
       "src/boxes.js",
       "src/objects.js",
       "src/autocomplete.js",
