@@ -29482,7 +29482,10 @@ const transferFiles = async (list, ev, view, handler) => {
       }
     }
 
-    const id = new Date().valueOf();
+    // Event channels are keyed by strings on the Wolfram side. The legacy
+    // transport stringified this value implicitly, whereas WXF preserves a
+    // JavaScript number and leaves the follow-up File/Chunk events unmatched.
+    const id = String(new Date().valueOf());
     let count = 0;
 
     view.dom.loadingMark = true;
@@ -29566,6 +29569,18 @@ const regex = new RegExp("^jsfc4uri");
 const crappy1Regex = new RegExp(decodeURIComponent('%EF%9F%81%EF%9F%89%EF%9F%88'));
 const crappyString = decodeURIComponent('%5C!%5C(%5C*');
 
+const activateEditor = (view, ev) => {
+    const selection = view.state.selection;
+    const position = ev
+      ? view.posAtCoords({x: ev.clientX, y: ev.clientY})
+      : null;
+
+    view.dispatch({
+      selection: position === null ? selection : {anchor: position}
+    });
+    view.focus();
+};
+
 //drag and drop and past events
 const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = console.log, crappyHandler2 = console.log) => EditorView.domEventHandlers({
 	drop(ev, view) {
@@ -29592,6 +29607,7 @@ const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = console.l
             });
         }
 
+        if (filesArray.length > 0) activateEditor(view, ev);
         transferFiles(filesArray, ev, view, hd);
 
     },
@@ -29617,12 +29633,15 @@ const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = console.l
                const content = paste.getData("text");
                if (regex.test(content)) {
                  ev.preventDefault();
+                 activateEditor(view);
                  hcc(ev, view, content.slice(8));
                } else if (crappy1Regex.test(content)) {
                  ev.preventDefault();
+                 activateEditor(view);
                  crappyHandler1(ev, view, content);
                } else if (content.includes(crappyString) === true) {
                  ev.preventDefault();
+                 activateEditor(view);
                  crappyHandler2(ev, view, content);                
                }
            
@@ -29631,12 +29650,14 @@ const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = console.l
                
                ev.preventDefault();
                if (stringOnly) return;
+               activateEditor(view);
                transferFiles([obj.getAsFile()], ev, view, hp);
                break;
              }
            } else {
             ev.preventDefault();
             if (stringOnly) return;
+            activateEditor(view);
             transferFiles([obj.getAsFile()], ev, view, hp);
            }
         }
