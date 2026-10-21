@@ -138,15 +138,10 @@
       obj = new ObjectStorage(hash); 
     }
       
-    let storage;
-
-    try {
-      storage = await obj.get();
-    } catch(e) {
+    const storage = await obj.getOrCreate(async () => {
       const res = await server.kernel.io.fetch('BoxForm`LegendMakeLabel', [hash, JSON.stringify(label)]);
       console.log('We got the result: ', res);
-      storage = await obj.get();
-    }
+    });
 
     const instance = new ExecutableObject('legend-stored-'+uuidv4(), env, storage, true);
     instance.assignScope(env);
@@ -205,16 +200,10 @@
       obj = new ObjectStorage(hash); 
     }
       
-    let storage;
-
-    try {
-      storage = await obj.get();
-    } catch(e) {
-      
+    const storage = await obj.getOrCreate(async () => {
       const res = await server.kernel.io.fetch('BoxForm`makeBarLegend', [hash, JSON.stringify(['List', ...args])]);
       console.log('We got the result: ', res);
-      storage = await obj.get();
-    }
+    });
 
     const instance = new ExecutableObject('bar-stored-'+uuidv4(), env, storage, true);
     instance.assignScope(env);

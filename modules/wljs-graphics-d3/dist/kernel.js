@@ -400,31 +400,18 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     //check by hash if there such object, if not. Ask server to create one with EditorView and store.
     //const legacyHash = String(interpretate.hash(data));
     let hash = String(interpretate.hashv2(data))+'2lbl';
-    let obj;
-    let storage;
 
     if (!(hash in ObjectHashMap)) {
       //try legacy hash
       const legacyHash = String(interpretate.hash(data));
       if (legacyHash in ObjectHashMap) hash = legacyHash;
     }
-    
-    if (!(hash in ObjectHashMap)) {
-      obj = new ObjectStorage(hash);
 
-      try {
-        storage = await obj.get();
-      } catch(err) {
-        console.warn('Creating FE object by id '+hash);
-        await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
-        storage = await obj.get();
-      }
-      
-    } else {
-      obj = ObjectHashMap[hash];
-    }
-
-    if (!storage) storage = await obj.get();
+    const obj = ObjectHashMap[hash] || new ObjectStorage(hash);
+    const storage = await obj.getOrCreate(async () => {
+      console.warn('Creating FE object by id '+hash);
+      await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
+    });
 
     console.log("g2d: creating an object");
     console.log('frontend executable');

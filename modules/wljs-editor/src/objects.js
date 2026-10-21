@@ -8,9 +8,15 @@ window.ObjectStorage = class {
     cached = false
     cache = []
     doNotCollect = false
+    initialization = null
   
     garbageCollect() {
       console.warn('garbage collector started...');
+      if (this.initialization) {
+        console.warn('Object initialization is in progress. Keeping...');
+        return;
+      }
+
       let toBeRemoved = true;
       const refs = this.refs;
       Object.keys(refs).forEach((key) => {
@@ -98,6 +104,32 @@ window.ObjectStorage = class {
       })
 
       return promise.promise;
+    }
+
+    // Run the complete lookup/create/lookup sequence only once for this uid.
+    // Concurrent callers share the same task, while failures clear it so a
+    // later render can retry.
+    getOrCreate(create) {
+      if (this.cached) return Promise.resolve(this.cache);
+      if (this.initialization) return this.initialization;
+
+      const task = (async () => {
+        try {
+          return await this.get();
+        } catch (error) {
+          await create(error);
+          return await this.get();
+        }
+      })();
+
+      this.initialization = task;
+
+      const clear = () => {
+        if (this.initialization === task) this.initialization = null;
+      };
+
+      task.then(clear, clear);
+      return task;
     }
 }
 

@@ -4811,8 +4811,6 @@ g3d.DefaultLighting = (args, env) => {
 const makeEditorView = async (data, env = { global: {} }) => {
     //check by hash if there such object, if not. Ask server to create one with EditorView and store.
     let hash = String(interpretate.hashv2(data))+'3lbl';
-    let obj;
-    let storage;
 
     if (!(hash in ObjectHashMap)) {
       //try legacy hash
@@ -4820,22 +4818,11 @@ const makeEditorView = async (data, env = { global: {} }) => {
       if (legacyHash in ObjectHashMap) hash = legacyHash;
     }
 
-    if (!(hash in ObjectHashMap)) {
-      obj = new ObjectStorage(hash);
-
-      try {
-        storage = await obj.get();
-      } catch(err) {
-        console.warn('Creating FE object by id '+hash);
-        await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics3D`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
-        storage = await obj.get();
-      }
-      
-    } else {
-      obj = ObjectHashMap[hash];
-    }
-
-    if (!storage) storage = await obj.get();
+    const obj = ObjectHashMap[hash] || new ObjectStorage(hash);
+    const storage = await obj.getOrCreate(async () => {
+      console.warn('Creating FE object by id '+hash);
+      await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics3D`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
+    });
 
     console.log("g3d: creating an object");
     console.log('frontend executable');
