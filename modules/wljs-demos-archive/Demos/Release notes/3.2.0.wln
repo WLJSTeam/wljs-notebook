@@ -466,6 +466,60 @@ Type: Output
 ## Fixed race conditions in MCP server
 If you ever used WLJS with any coding agents you might have been noticed, that sometimes it had to redo the cell's editing due to some typos. In fact, it wasn't typos! It was a lagged cell state synchronization, which is no longer an issue in 3.2.0.
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Fixed race conditions for inset expressions and labels
+Duplicated labels or expressions inside `Inset` could cause data racing and ended up with one or more missing visual elements. We eliminated it by aggregating all requests into a single task per such expression.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Fixed race conditions for inset expressions and labels
+Duplicated labels or expressions inside `Inset` could cause data racing and ended up with one or more missing visual elements. We eliminated it by aggregating all requests into a single task per such expression.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## More integration tests
+We took tests even more serious and added more integration tests (over __200__). Each test uses fully working notebook enviroment using headless Chromium browser. Our tests cover:
+
+- Full cell evaluation cycle
+- UI interaction
+- Imports of notebooks
+- Complex and simple 2D, 3D graphics and sound
+- `Dataset`, `Tabular` data structures with mixed row types
+- Equations solving, visual output
+- All GUI building blocks such from `InputRange` to `Manipulate`
+- Expressions styling
+- WLX, HTML and JS cells
+- Neural networks
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## More integration tests
+We took tests even more serious and added more integration tests (over __200__). Each test uses fully working notebook enviroment using headless Chromium browser. Our tests cover:
+
+- Full cell evaluation cycle
+- UI interaction
+- Imports of notebooks
+- Complex and simple 2D, 3D graphics and sound
+- `Dataset`, `Tabular` data structures with mixed row types
+- Equations solving, visual output
+- All GUI building blocks such from `InputRange` to `Manipulate`
+- Expressions styling
+- WLX, HTML and JS cells
+- Neural networks
+
 %------------------------------%EndOfCells%-------------------------------%
 
 
