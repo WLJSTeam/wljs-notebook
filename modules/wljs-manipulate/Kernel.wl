@@ -1847,7 +1847,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
     ]
 ] ]
 
-Animate::frclip = "JIT failed. RefreshRate will be limited to 5 FPS";
+Animate::frclip = "RefreshRate will be limited to 5 FPS or less";
 
 AnimationHelper;
 AnimationHelperRun;
