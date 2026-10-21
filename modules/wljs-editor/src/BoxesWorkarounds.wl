@@ -1145,7 +1145,8 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
   },
   With[{
     legend =   With[{options = Association[List[opts] ]}, 
-    Module[{colorConvert, label = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
+    Module[{colorConvert, label = None, frameLabel = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
+      horizontal = Lookup[options, LegendLayout, Automatic] === "Row",
       imageSize = 
         If[KeyExistsQ[options, ImageSize], options[ImageSize], 1.2 370 / 1.6180339  ],
       labelStyle = Lookup[options, LabelStyle, Automatic]},
@@ -1154,12 +1155,15 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
       imageSize = 
         If[!ListQ[imageSize], 
           (* If it's not a list, scale by the golden ratio *)
-          imageSize {0.1, 1.0} ,
+          imageSize If[horizontal, {1.0, 0.1}, {0.1, 1.0}] ,
           (* If it's a list, adjust by the second element *)
           imageSize
         ];
 
-      If[imageSize[[1]] < 50.0, imageSize[[1]] = 50.0];
+      (* The column layout needs room for its right-hand ticks. Horizontal
+         padding is added to the total row size below, so its requested size
+         remains the size of the color bar itself. *)
+      If[!horizontal && imageSize[[1]] < 50.0, imageSize[[1]] = 50.0];
 
       (* Color conversion function based on range *)
       colorConvert[value_] := 
@@ -1175,11 +1179,18 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
         {ticks[[All, 1]], colorConvert /@ ticks[[All, 1]]}
       ];
 
-      vertices = Flatten[({{-1, #}, {1, #}} &) /@ colorPositions, 1];
+      vertices = Flatten[(If[horizontal, {{#, -1}, {#, 1}}, {{-1, #}, {1, #}}] &) /@ colorPositions, 1];
       vertexColors = Flatten[({#, #} &) /@ (colorToRGB /@ sampledColors), 1];
       polygons = Table[{2 i - 1, 2 i, 2 i + 2, 2 i + 1}, {i, Length[colorPositions] - 1}];
 
       label = Replace[Lookup[options, LegendLabel, None] , {Automatic -> None}];
+      (* FrameLabel supports {label, {dx, dy}}, but a positioned right-side
+         label is otherwise ambiguous with its {{left, right}, {bottom, top}}
+         form. Its renderer ignores the trailing element while retaining the
+         absolute offset, which disambiguates the two forms. *)
+      frameLabel = Replace[label, {
+        {content_, offset : {_, _}} :> {content, offset, None}
+      }];
       
       (* Interpolate the sampled colors across a shared polygon mesh. *)
       Graphics[
@@ -1189,15 +1200,23 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
           VertexColors -> vertexColors
         ],
         Axes -> True, Frame -> True, 
-        FrameTicks -> {{ticks, ticks}, {False, False}},
+        FrameTicks -> If[horizontal, {{False, False}, {ticks, ticks}}, {{ticks, ticks}, {False, False}}],
         FrameStyle -> labelStyle,
-        FrameLabel -> {{ None, label}, {None, None}},
+        FrameLabel -> If[horizontal, {{None, None}, {frameLabel, None}}, {{None, frameLabel}, {None, None}}],
         FrameTicksStyle -> labelStyle,
-        TickLabels -> {False, False, False, True}, 
-        PlotRange -> {{-1, 1}, range}, 
+        TickLabels -> If[horizontal, {True, False, False, False}, {False, False, False, True}],
+        PlotRange -> If[horizontal, {range, {-1, 1}}, {{-1, 1}, range}],
         "Controls" -> False, 
-        ImageSize -> imageSize + {If[label =!= Null, 40, 0], 0}, 
-        ImagePadding -> {{0, 25 + If[label =!= Null, 35, 0]}, {35,30}},
+        ImageSize -> If[horizontal,
+          imageSize + {50, 35 + If[label =!= None, 35, 0]},
+          imageSize + {If[label =!= Null, 40, 0], 0}
+        ],
+        ImagePadding -> If[horizontal,
+          (* Match the asymmetric left/right padding of a framed Graphics when
+             the legend is centered above or below it. *)
+          {{21, 29}, {35 + If[label =!= None, 35, 0], 0}},
+          {{0, 25 + If[label =!= Null, 35, 0]}, {35,30}}
+        ],
         "PaddingIsImportant" -> True
       ]
     ]
