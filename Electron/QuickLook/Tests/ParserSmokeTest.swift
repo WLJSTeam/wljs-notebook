@@ -28,10 +28,32 @@ struct ParserSmokeTest {
             cells.allSatisfy { !$0.source.contains("(*FB[") && !$0.source.contains("(*VB[") },
             "Editor wrapper decorations remain"
         )
+        try expect(
+            cells.allSatisfy { !$0.source.contains("%---------") },
+            "End-of-cells marker remains in cell output"
+        )
+
+        let oversizedOutput = String(repeating: "generated-javascript;", count: 1_000)
+        let oversizedSection = """
+        Type: Output
+        %-------------------------------------------------------------------------%
+        \(oversizedOutput)
+        """
+        let truncatedCells = WLNPreviewParser.parse(cellsSection: oversizedSection)
+        try expect(truncatedCells.count == 1, "Oversized output fixture was not parsed")
+        try expect(
+            truncatedCells[0].source.contains("Quick Look preview truncated"),
+            "Oversized output was not truncated"
+        )
+        try expect(
+            truncatedCells[0].source.count < oversizedOutput.count,
+            "Truncated output is not smaller than its source"
+        )
 
         let html = try WLNPreviewParser.makeHTML(fileURL: fileURL)
         try expect(html.contains("Data Visualization"), "Rendered HTML is missing notebook content")
         try expect(!html.contains("%Objects%"), "Rendered HTML contains the Objects section")
+        try expect(!html.contains("border-left"), "Rendered output still contains the left-border decoration")
 
         print("Parsed \(cells.count) cells and rendered \(html.utf8.count) bytes of HTML")
 

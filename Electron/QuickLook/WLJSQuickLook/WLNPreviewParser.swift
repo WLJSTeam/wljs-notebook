@@ -26,6 +26,7 @@ struct WLNPreviewParser {
     private static let cellsEnd = "%EndOfCells%"
     private static let readChunkSize = 64 * 1024
     private static let maximumCellsSize = 16 * 1024 * 1024
+    private static let maximumOutputCharacters = 12_000
 
     private static let cellSeparator = try! NSRegularExpression(
         pattern: #"(?m)^%-{20,}%[\t ]*(?:\r?\n|$)"#
@@ -62,11 +63,16 @@ struct WLNPreviewParser {
                 continue
             }
 
+            let cleanedSource = stripEditorDecorations(from: source)
+            let previewSource = type.caseInsensitiveCompare("Output") == .orderedSame
+                ? truncateOutput(cleanedSource)
+                : cleanedSource
+
             cells.append(WLNPreviewCell(
                 type: type,
                 display: metadataValue(named: "Display", in: metadata),
                 hidden: metadataBool(named: "Hidden", in: metadata),
-                source: stripEditorDecorations(from: source)
+                source: previewSource
             ))
         }
 
@@ -109,7 +115,6 @@ struct WLNPreviewParser {
               font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
             }
             .input { background: #f5f5f7; }
-            .output { border-left: 3px solid #c7c7cc; }
             .label { margin: 0 0 5px; opacity: .55; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
             p { margin: .7em 0; }
             a { color: #06c; }
@@ -117,7 +122,6 @@ struct WLNPreviewParser {
               body { color: #f5f5f7; background: #1c1c1e; }
               header { border-color: #48484a; }
               .input { background: #2c2c2e; }
-              .output { border-color: #636366; }
               a { color: #69a9ff; }
             }
           </style>
@@ -143,13 +147,20 @@ struct WLNPreviewParser {
             guard let chunk = try handle.read(upToCount: readChunkSize), !chunk.isEmpty else { break }
             buffer.append(chunk)
 
-            if startOffset == nil, let startRange = buffer.range(of: startData) {
-                startOffset = startRange.upperBound
+            if startOffset == nil,
+               let startRange = buffer.range(of: startData),
+               let markerLineEnd = buffer[startRange.upperBound...].firstIndex(of: 0x0A) {
+                startOffset = buffer.index(after: markerLineEnd)
             }
 
             if let startOffset,
                let endRange = buffer.range(of: endData, options: [], in: startOffset..<buffer.endIndex) {
-                guard let section = String(data: buffer[startOffset..<endRange.lowerBound], encoding: .utf8) else {
+                let markerPrefix = buffer[startOffset..<endRange.lowerBound]
+                let sectionEnd = markerPrefix.lastIndex(of: 0x0A).map {
+                    buffer.index(after: $0)
+                } ?? startOffset
+
+                guard let section = String(data: buffer[startOffset..<sectionEnd], encoding: .utf8) else {
                     throw WLNPreviewError.unreadableFile
                 }
                 return section
@@ -198,6 +209,17 @@ struct WLNPreviewParser {
             .replacingOccurrences(of: "(*|*)", with: "")
 
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func truncateOutput(_ source: String) -> String {
+        guard source.count > maximumOutputCharacters else { return source }
+
+        let omittedCharacters = source.count - maximumOutputCharacters
+        return """
+        \(source.prefix(maximumOutputCharacters))
+
+        … [Quick Look preview truncated: \(omittedCharacters) characters omitted]
+        """
     }
 
     private static func render(cell: WLNPreviewCell) -> String {
