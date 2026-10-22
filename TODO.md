@@ -70,7 +70,7 @@ Phase II
 - [x] Find all [TODO] tags
 - [x] REDO ALL TESTS from Phase I
 - [ ] Update docs
-- [ ] Cell add/remove/copy/cut batch using command palette
+- [x] Cell add/remove/copy/cut batch using command palette
 - [x] Throttle for Manipulate with failed JIT
 - [x] Throttle animate/Refresh if found Graphics or other large objects
 - [x] MEasure time between calls to estimate throttling
@@ -101,4 +101,5 @@ Phase III
 - [x] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] PauseAsync[1]~Then~MessageDialog
 - [ ] PingPong with realistic paddle and sfx
+- [ ] Test deeplinks
 - [x] SystemDialogInputAsync no need in Window and for other

@@ -153,7 +153,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "include": "./Electron/build/installer.nsh"
     },
     "win": {
       "target": "NSIS",
@@ -193,6 +194,7 @@
       "./Electron/log.html",
       "./Electron/coffee.js",
       "./Electron/sudo.js",
+      "./Electron/Template.wln",
       "./Electron/device.html",
       "./Electron/log_padded.html",
       "./Electron/tailwind.css",
