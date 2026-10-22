@@ -89,8 +89,8 @@ test('menu manager resolves the platform shortcut table from its new location', 
 
     const emptyPlugins = { kernel: [], edit: [], view: [], file: [], misc: [] };
     manager.buildMenu({ plugins: emptyPlugins });
-    const windowMenu = templates[1].find(item => item.label === 'Window');
-    windowMenu.submenu.find(item => item.label === 'Show logs').click();
+    const miscMenu = templates[1].find(item => item.label === 'Misc');
+    miscMenu.submenu.find(item => item.label === 'Show logs').click();
     manager.callFakeMenu.showProcessLogs();
     assert.equal(processLogCalls, 2);
 });
@@ -293,7 +293,7 @@ function createWolframHarness() {
     const runtime = createWolframRuntime({
         app: { getVersion: () => 'test', quit() {} },
         appDataFolder: '/missing',
-        dialog: {},
+        dialog: { showErrorBox() {} },
         exec() {},
         fs: { existsSync: () => false },
         isMac: false,

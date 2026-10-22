@@ -92,10 +92,9 @@ Phase II
 
 Phase III
 - [ ] Test FEM
-- [x] WLX add NewLine tag
 - [?] Tooltip lists vetors render withut Edtior
 - [x] cache time reduce
-- [ ] Horisontal ColorBar
+- [x] Horisontal ColorBar
 - [x] SPlit to a new notebook odes not work
 - [x] IMprove NB improting
 - [x] Find on selection should copy that 

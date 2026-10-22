@@ -46,6 +46,7 @@
     "mac": {
       "icon": "./Electron/build/icon.icns",
       "artifactName": "wljs-notebook-${version}-${arch}-macos.${ext}",
+      "sign": "./Electron/build/mac-sign.js",
       "fileAssociations": [
         {
           "ext": "wln",
@@ -63,7 +64,37 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "extendInfo": {
-        "NSMicrophoneUsageDescription": "Please give us access to your microphone"
+        "NSMicrophoneUsageDescription": "Please give us access to your microphone",
+        "UTExportedTypeDeclarations": [
+          {
+            "UTTypeIdentifier": "com.coffeeliqueur.wljs.notebook",
+            "UTTypeDescription": "WLJS Notebook",
+            "UTTypeConformsTo": [
+              "public.content",
+              "public.data"
+            ],
+            "UTTypeTagSpecification": {
+              "public.filename-extension": [
+                "wln"
+              ],
+              "public.mime-type": "application/x-wljs-notebook"
+            }
+          },
+          {
+            "UTTypeIdentifier": "com.coffeeliqueur.wljs.widget",
+            "UTTypeDescription": "WLJS Widget",
+            "UTTypeConformsTo": [
+              "public.content",
+              "public.data"
+            ],
+            "UTTypeTagSpecification": {
+              "public.filename-extension": [
+                "wlw"
+              ],
+              "public.mime-type": "application/x-wljs-widget"
+            }
+          }
+        ]
       },
       "entitlements": "./Electron/build/entitlements.mac.plist",
       "entitlementsInherit": "./Electron/build/entitlements.mac.plist",
