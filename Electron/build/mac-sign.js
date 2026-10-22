@@ -46,8 +46,8 @@ function configureSignOptions(options) {
 module.exports = async function signMacApplication(options) {
     configureSignOptions(options);
 
-    const { signAsync } = await import('@electron/osx-sign');
-    await signAsync(options);
+    const { sign } = await import('@electron/osx-sign');
+    await sign(options);
 };
 
 module.exports.configureSignOptions = configureSignOptions;
