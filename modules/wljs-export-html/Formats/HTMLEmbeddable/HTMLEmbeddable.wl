@@ -99,7 +99,7 @@ browserAssetQ[path_String] := MemberQ[
 ]
 
 (* Preserve package layout so relative imports and lazy chunks remain valid. *)
-copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules", ".git", ".github", "vendor", "theme"}},
+copyTree[source_String, target_String] := Module[{walk, ignored = {"node_modules", ".git", ".github", "vendor", "theme", "priceless-mathematica"}},
     walk[from_, to_] := (
         ensureDirectory[to];
         Scan[Function[item,

@@ -101,4 +101,5 @@ Phase III
 - [x] Find on selection should copy that 
 - [x] NotebookClose on CurrentWindow[] should send WebUIClose
 - [ ] PauseAsync[1]~Then~MessageDialog
+- [ ] PingPong with realistic paddle and sfx
 - [x] SystemDialogInputAsync no need in Window and for other

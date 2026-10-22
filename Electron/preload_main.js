@@ -1,20 +1,6 @@
 //@ts-check
 const { contextBridge, ipcRenderer, webUtils } = require('electron')
 
-const { webFrame } = require('electron')
-
-ipcRenderer.on('zoomIn', () => {
-  webFrame.setZoomFactor(webFrame.getZoomFactor() * 1.5)
-})
-
-ipcRenderer.on('zoomOut', () => {
-  webFrame.setZoomFactor(webFrame.getZoomFactor() / 1.5)
-})
-
-ipcRenderer.on('zoomReset', () => {
-  webFrame.setZoomFactor(1.0)
-})
-
 let loadingstyle = null;
 
 ipcRenderer.on('will-navigate', () => {

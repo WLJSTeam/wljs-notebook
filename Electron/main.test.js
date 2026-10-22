@@ -95,6 +95,45 @@ test('menu manager resolves the platform shortcut table from its new location', 
     assert.equal(processLogCalls, 2);
 });
 
+test('fake menu zoom changes the main-process webContents state', () => {
+    let zoomFactor = 0.75;
+    const webContents = {
+        getZoomFactor: () => zoomFactor,
+        setZoomFactor: value => {
+            zoomFactor = value;
+        },
+        setZoomLevel: level => {
+            zoomFactor = 1.2 ** level;
+        }
+    };
+
+    const manager = createMenuManager({
+        Menu: { buildFromTemplate: template => template },
+        app: { name: 'WLJS' },
+        appDataFolder: '/missing',
+        contextMenuExtensions: [],
+        createWindow() {},
+        dialog: {},
+        extensionManager: {},
+        fs: { existsSync: () => false },
+        isMac: false,
+        path,
+        rootAppFolder: '/app',
+        server: {},
+        shell: {},
+        showProcessLogs() {},
+        userExtensions: '/extensions',
+        windows: { focused: { win: { webContents } } }
+    });
+
+    manager.callFakeMenu.zoomReset();
+    assert.equal(zoomFactor, 1);
+    manager.callFakeMenu.zoomIn();
+    assert.equal(zoomFactor, 1.5);
+    manager.callFakeMenu.zoomOut();
+    assert.equal(zoomFactor, 1);
+});
+
 test('process log buffer preserves stream order and evicts the oldest lines', () => {
     const buffer = new ProcessLogBuffer({ capacity: 3 });
 

@@ -667,7 +667,8 @@ function createMenuManager({
     }
 
     callFakeMenu["zoomIn"] = () => {
-        windows.focused.call('zoomIn', true);
+        const contents = windows.focused.win.webContents;
+        contents.setZoomFactor(contents.getZoomFactor() * 1.5);
     }
 
     callFakeMenu["devTools"] = () => {
@@ -677,11 +678,12 @@ function createMenuManager({
     callFakeMenu["showProcessLogs"] = showProcessLogs;
 
     callFakeMenu["zoomOut"] = () => {
-        windows.focused.call('zoomOut', true);
+        const contents = windows.focused.win.webContents;
+        contents.setZoomFactor(contents.getZoomFactor() / 1.5);
     }
 
     callFakeMenu["zoomReset"] = () => {
-        windows.focused.call('zoomReset', true);
+        windows.focused.win.webContents.setZoomLevel(0);
     }
 
 
