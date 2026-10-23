@@ -88,6 +88,7 @@ wsStartListerning[kernel_, port_, host_] := With[{},
 
 
           Off[Function::fpct]; (* fixme, when a symbol gets cleared, see  Experimental`ValueFunction *)
+          Off[Function::slotn]; (* fixme they changed it in WL15 *)
           
           (* symbols tracking *)
           WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
