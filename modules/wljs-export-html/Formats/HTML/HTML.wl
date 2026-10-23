@@ -100,7 +100,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 check[path_String | path_File] := Module[{str, result},
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    result = Find[str, "<meta serializer=\"hsfn-"] =!= EndOfFile;
+    result = StringQ[TimeConstrained[Find[str, "<meta serializer=\"hsfn-"], 10, $Failed]];
     Echo[result];
     Close[str];
     result
@@ -109,11 +109,11 @@ check[path_String | path_File] := Module[{str, result},
 getVersion[path_String | path_File] := Module[{str, result},
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    result = Find[str, "<meta serializer=\"hsfn-"];
+    result = TimeConstrained[Find[str, "<meta serializer=\"hsfn-"], 10, $Failed];
     Echo[result];
     Close[str];
-    If[StringContainsQ[result, "hsfn-5"], Return[5]];
-    If[StringContainsQ[result, "hsfn-4"], Return[4]];
+    If[StringQ[result] && StringContainsQ[result, "hsfn-5"], Return[5]];
+    If[StringQ[result] && StringContainsQ[result, "hsfn-4"], Return[4]];
     result
 ]
 
@@ -128,7 +128,7 @@ decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[pa
 ]
 
 (* Modern format HSFN5 *)
-decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, rawBytes, str, notebook}, With[{
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, rawBytes, str, notebook, readResult, reject}, With[{
     promise = Promise[],
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -145,10 +145,19 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     EventFire[msg, spinner, True];
 
+    reject[message_] := (
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|"Message" -> message|>]];
+        promise
+    );
+
     str = OpenRead[path];
-    ReadString[str, startStore];
-    ReadList[str, Character, StringLength[startStore] ];
-    raw = ReadString[str, endStore];
+    readResult = ReadString[str, startStore, TimeConstraint -> 10];
+    If[!StringQ[readResult], Close[str]; Return[reject["The embedded object store was not found"]]];
+    readResult = TimeConstrained[ReadList[str, Character, StringLength[startStore]], 10, $Failed];
+    If[FailureQ[readResult], Close[str]; Return[reject["The embedded object store could not be read"]]];
+    raw = ReadString[str, endStore, TimeConstraint -> 10];
+    If[!StringQ[raw], Close[str]; Return[reject["The embedded object store is incomplete"]]];
     raw = ImportString[raw, "RawJSON"];
     objects = raw["objects"] // uncompress;
     symbols = raw["symbols"] // uncompress;
@@ -156,11 +165,15 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     
     
-    ReadString[str, startCompressed];
-    ReadList[str, Character, StringLength[startCompressed] ];
+    readResult = ReadString[str, startCompressed, TimeConstraint -> 10];
+    If[!StringQ[readResult], Close[str]; Return[reject["The embedded notebook payload was not found"]]];
+    readResult = TimeConstrained[ReadList[str, Character, StringLength[startCompressed]], 10, $Failed];
+    If[FailureQ[readResult], Close[str]; Return[reject["The embedded notebook payload could not be read"]]];
 
-    rawBytes = ReadString[str, endCompressed] // Uncompress;
+    raw = ReadString[str, endCompressed, TimeConstraint -> 10];
     Close[str];
+    If[!StringQ[raw], Return[reject["The embedded notebook payload is incomplete"]]];
+    rawBytes = Quiet[Check[Uncompress[raw], $Failed]];
 
     (* Keep the reconstructed WLN in memory. File-backed text streams have
        platform-specific newline behavior on Windows, while FromCharacterCode
@@ -171,11 +184,7 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
     ];
 
     If[!MatchQ[notebook, _nb`NotebookObj],
-        EventFire[spinner["Promise"], Resolve, True];
-        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|
-            "Message" -> "The embedded notebook payload could not be decoded"
-        |>]];
-        Return[promise];
+        Return[reject["The embedded notebook payload could not be decoded"]];
     ];
 
     With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
@@ -230,17 +239,17 @@ With[{
 
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    ReadString[str, start];
-    ReadList[str, Character, StringLength[start] ];
-    objects = ImportString[ReadString[str, mid1], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid1] ];
-    cells = ImportString[ReadString[str, mid2], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid2] ];
-    store = ImportString[ReadString[str, term], "ExpressionJSON"];
+    ReadString[str, start, TimeConstraint -> 10];
+    TimeConstrained[ReadList[str, Character, StringLength[start]], 10, $Failed];
+    objects = ImportString[ReadString[str, mid1, TimeConstraint -> 10], "ExpressionJSON"];
+    TimeConstrained[ReadList[str, Character, StringLength[mid1]], 10, $Failed];
+    cells = ImportString[ReadString[str, mid2, TimeConstraint -> 10], "ExpressionJSON"];
+    TimeConstrained[ReadList[str, Character, StringLength[mid2]], 10, $Failed];
+    store = ImportString[ReadString[str, term, TimeConstraint -> 10], "ExpressionJSON"];
 
-    ReadString[str, startExtra];
-    ReadList[str, Character, StringLength[startExtra] ];
-    symbols = ReadString[str, termExtra];
+    ReadString[str, startExtra, TimeConstraint -> 10];
+    TimeConstrained[ReadList[str, Character, StringLength[startExtra]], 10, $Failed];
+    symbols = ReadString[str, termExtra, TimeConstraint -> 10];
     If[symbols === EndOfFile, symbols = <||>,
       symbols = ImportString[symbols, "ExpressionJSON"];
     ];
