@@ -235,13 +235,12 @@ EventHandler[AppExtensions`AppProtocol, {
         Module[{path = assoc["url"]},
             If[StringTake[path, 5] === "file:",
                 Echo["Local file!"];
+                (* URLParse decodes the path without leaking a query or an
+                   outline fragment into the local filename. *)
                 path = If[$OperatingSystem === "Windows",
-                    FileNameJoin[StringSplit[StringDrop[path, 6], "/"] ],
-                    "/"<>FileNameJoin[StringSplit[StringDrop[path, 5], "/"] ]
+                    FileNameJoin[DeleteCases[URLParse[path, "Path"], ""]],
+                    FileNameJoin[URLParse[path, "Path"]]
                 ];
-                Echo["Local path:"];
-                Echo[path];
-                path = URLDecode[path];
                 Echo["Local path decoded:"];
                 Echo[path];
             ,

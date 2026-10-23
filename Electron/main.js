@@ -1259,11 +1259,13 @@ app.on('open-file', (ev, path) => {
 })
 
 app.on('open-url', (event, url) => {
+    event.preventDefault();
     const protocol = new RegExp('wljs-url-message:\/\/(.*)').exec(url);
     console.log(protocol);
 
+    if (!protocol) return;
+
     if (!server.running) {
-        server.path.requested = path;
         server.protocol = protocol[1];
         return;
     }

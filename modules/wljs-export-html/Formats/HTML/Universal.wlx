@@ -411,7 +411,9 @@ Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[
                 const wljsOutline = document.getElementById("sidebar-right");
                 const wljsOutlineList = wljsOutline.querySelector(".wljs-outline-list");
                 const wljsOpenInApp = document.getElementById("wljs-open-in-app");
-                wljsOpenInApp.href = "wljs-url-message://" + encodeURIComponent(JSON.stringify({type: "open_html", url: window.location.href}));
+                const wljsSourceURL = new URL(window.location.href);
+                wljsSourceURL.hash = "";
+                wljsOpenInApp.href = "wljs-url-message://" + encodeURIComponent(JSON.stringify({type: "open_html", url: wljsSourceURL.href}));
                 let wljsOutlineHeadings = [];
                 let wljsOutlineLinks = new Map();
 
