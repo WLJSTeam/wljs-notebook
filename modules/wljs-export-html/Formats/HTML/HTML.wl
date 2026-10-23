@@ -128,7 +128,7 @@ decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[pa
 ]
 
 (* Modern format HSFN5 *)
-decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, str, notebook}, With[{
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, rawBytes, str, notebook}, With[{
     promise = Promise[],
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -159,23 +159,28 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
     ReadString[str, startCompressed];
     ReadList[str, Character, StringLength[startCompressed] ];
 
-    (* we have to write to a temporal file due to CR normalization issues... *)
-    With[{
-        rawBytes = ReadString[str, endCompressed] // Uncompress
-    }, {
-        temporalFile = CreateFile[]
-    }, {
-        stream = OpenWrite[temporalFile, BinaryFormat->True]
-    },
-        BinaryWrite[stream, rawBytes];
-        Close[temporalFile];
+    rawBytes = ReadString[str, endCompressed] // Uncompress;
+    Close[str];
 
-        notebook = nb`LoadFromFile[temporalFile];
-        With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
-        With[{n = notebook}, n["Symbols"] = symbols];
-        With[{n = notebook}, n["Path"] = .];
-        DeleteFile[temporalFile];
+    (* Keep the reconstructed WLN in memory. File-backed text streams have
+       platform-specific newline behavior on Windows, while FromCharacterCode
+       preserves the original byte values expected by the WLN parser. *)
+    notebook = If[Head[rawBytes] === ByteArray,
+        nb`LoadFromString[FromCharacterCode[Normal[rawBytes]]],
+        $Failed
     ];
+
+    If[!MatchQ[notebook, _nb`NotebookObj],
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|
+            "Message" -> "The embedded notebook payload could not be decoded"
+        |>]];
+        Return[promise];
+    ];
+
+    With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
+    With[{n = notebook}, n["Symbols"] = symbols];
+    With[{n = notebook}, n["Path"] = .];
 
     Echo[notebook];
     

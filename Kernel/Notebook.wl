@@ -62,7 +62,7 @@ DeserializeFromStream[stream_InputStream, opts: OptionsPattern[] ] := With[{a = 
 
 Options[DeserializeFromStream] = {"Hash" :> CreateUUID[]}
 
-LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ},
+LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ, firstLine},
     If[!FileExistsQ[path],
         Return[$Failed];
     ];
@@ -81,7 +81,8 @@ LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ},
         Echo["Loading failed. Retrying with a legacy .wln parser..."];
         
         stream = OpenRead[path, DOSTextFormat->False];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
@@ -98,7 +99,7 @@ LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ},
     notebook  
 ]
 
-LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ},
+LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ, firstLine},
     If[!FileExistsQ[path],
         Return[$Failed];
     ];
@@ -116,7 +117,8 @@ LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stre
         Echo["Loading failed. Retrying with a legacy .wln parser..."];
         
         stream = OpenRead[path, DOSTextFormat->False];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
@@ -139,7 +141,7 @@ LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stre
 
 Options[LoadFromFile] = {"Hash" :> CreateUUID[]}
 
-LoadFromString[string_String, opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ},
+LoadFromString[string_String, opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ, firstLine},
     Echo["Loading from string"];
     stream = StringToStream[string];
     notebook = DeserializeFromStream[stream, opts];
@@ -151,7 +153,8 @@ LoadFromString[string_String, opts: OptionsPattern[] ] := Module[{stream, notebo
         Echo["Loading failed. Retrying with a legacy .wln parser..."];
         
         stream = StringToStream[string];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
