@@ -151,11 +151,9 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
         promise
     );
 
-    str = OpenRead[path];
+    str = OpenRead[path, BinaryFormat -> True];
     readResult = ReadString[str, startStore, TimeConstraint -> 10];
     If[!StringQ[readResult], Close[str]; Return[reject["The embedded object store was not found"]]];
-    readResult = TimeConstrained[ReadList[str, Character, StringLength[startStore]], 10, $Failed];
-    If[FailureQ[readResult], Close[str]; Return[reject["The embedded object store could not be read"]]];
     raw = ReadString[str, endStore, TimeConstraint -> 10];
     If[!StringQ[raw], Close[str]; Return[reject["The embedded object store is incomplete"]]];
     raw = ImportString[raw, "RawJSON"];
@@ -167,8 +165,6 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
     
     readResult = ReadString[str, startCompressed, TimeConstraint -> 10];
     If[!StringQ[readResult], Close[str]; Return[reject["The embedded notebook payload was not found"]]];
-    readResult = TimeConstrained[ReadList[str, Character, StringLength[startCompressed]], 10, $Failed];
-    If[FailureQ[readResult], Close[str]; Return[reject["The embedded notebook payload could not be read"]]];
 
     raw = ReadString[str, endCompressed, TimeConstraint -> 10];
     Close[str];
@@ -239,17 +235,17 @@ With[{
 
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    ReadString[str, start, TimeConstraint -> 10];
-    TimeConstrained[ReadList[str, Character, StringLength[start]], 10, $Failed];
-    objects = ImportString[ReadString[str, mid1, TimeConstraint -> 10], "ExpressionJSON"];
-    TimeConstrained[ReadList[str, Character, StringLength[mid1]], 10, $Failed];
-    cells = ImportString[ReadString[str, mid2, TimeConstraint -> 10], "ExpressionJSON"];
-    TimeConstrained[ReadList[str, Character, StringLength[mid2]], 10, $Failed];
-    store = ImportString[ReadString[str, term, TimeConstraint -> 10], "ExpressionJSON"];
+    ReadString[str, start];
+    ReadList[str, Character, StringLength[start] ];
+    objects = ImportString[ReadString[str, mid1], "ExpressionJSON"];
+    ReadList[str, Character, StringLength[mid1] ];
+    cells = ImportString[ReadString[str, mid2], "ExpressionJSON"];
+    ReadList[str, Character, StringLength[mid2] ];
+    store = ImportString[ReadString[str, term], "ExpressionJSON"];
 
-    ReadString[str, startExtra, TimeConstraint -> 10];
-    TimeConstrained[ReadList[str, Character, StringLength[startExtra]], 10, $Failed];
-    symbols = ReadString[str, termExtra, TimeConstraint -> 10];
+    ReadString[str, startExtra];
+    ReadList[str, Character, StringLength[startExtra] ];
+    symbols = ReadString[str, termExtra];
     If[symbols === EndOfFile, symbols = <||>,
       symbols = ImportString[symbols, "ExpressionJSON"];
     ];
