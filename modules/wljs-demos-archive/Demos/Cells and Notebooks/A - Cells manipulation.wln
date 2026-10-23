@@ -1,243 +1,366 @@
-<|"Notebook" -> <|"Controller" -> "384f9b2a-5959-4313-8933-fa0578e6ab8b", 
-   "Directory" -> 
-    "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and Notebooks/", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$661], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "c4021c2d-d97b-49eb-a3f9-2fe51322649a", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - Cells manipulation.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Cells Manipulation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$584]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Making new cells", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$584]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Writting to existing cells", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$600]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Reading cells", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$619]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Event handling", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$651]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[4, 
-      "Example: Self-destructing cell", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$660]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Cells Manipulation\n\nWLJS Notebook provides \
-a rich API for programmatic manipulation of notebooks, cells, and windows \
-compatible with Mathematica.\n\n## Making new cells\n\nUse CellPrint to \
-insert a new cell below the currently evaluated one:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d06e61bd-14a1-492d-99ec-77662b76e92f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "# Cells Manipulation\n\nWLJS Notebook provides a rich API for \
-programmatic manipulation of notebooks, cells, and windows compatible with \
-Mathematica.\n\n## Making new cells\n\nUse CellPrint to insert a new cell \
-below the currently evaluated one:", "Display" -> "markdown", 
-    "Hash" -> "9af1e53f-6142-41fe-9e98-a20cf5a7566b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "(* Print an expression as output *)\ncell = \
-CellPrint[Plot[Sin[x], {x, 0, 2Pi}]];\n\n(* Print with specific cell type \
-*)\nCellPrint[Cell[\"<h1>Hello World</h1>\", \"Output\", \"HTML\"]];\n\n(* \
-Print a text cell *)\nCellPrint[TextCell[\"This is a section\", \
-\"Section\"]];", "Display" -> "codemirror", 
-    "Hash" -> "4c74fa43-76e9-4fbe-9d28-f5357ec618a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\nTo delete one, apply", "Display" -> "codemirror", 
-    "Hash" -> "bc22d680-7b02-4cde-a2a3-372be634fddc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "To delete one, apply", "Display" -> "markdown", 
-    "Hash" -> "dd68e80e-9233-4c89-8b43-d784ceb69b04", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "NotebookDelete[cell];", "Display" -> "codemirror", 
-    "Hash" -> "07f9dcc6-6272-42e4-8af0-fb090ba18286", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> 
-     ".md\nUse NotebookWrite for more control over where cells are inserted:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "307434ea-e380-4065-a158-6f4bb53b9dae", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> 
-     "Use NotebookWrite for more control over where cells are inserted:", 
-    "Display" -> "markdown", "Hash" -> 
-     "24d5dbdc-f8d4-42c2-8926-8b67d6f8fb09", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> 
-     "nb = EvaluationNotebook[];\nNotebookWrite[nb, Plot[x, {x, 0, 1}]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8931016d-ee88-439a-8bda-a3aa540a9cad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\nInsert after a specific cell", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d581ebff-2ce2-469c-8ad4-642479fdd332", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "Insert after a specific cell", "Display" -> "markdown", 
-    "Hash" -> "7a2d9330-ef87-4ad9-9837-0e2d03d6b1e5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "NotebookWrite[NotebookLocationSpecifier[EvaluationCell[], \
-\"After\"], Plot[x, {x, 0, 1}]];", "Display" -> "codemirror", 
-    "Hash" -> "bd40e461-f299-4b48-b374-65152a66fe1c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\nAdd a cell by click:", "Display" -> "codemirror", 
-    "Hash" -> "3a2ece67-9018-4f99-b387-36cd755d4cd1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "Add a cell by click:", "Display" -> "markdown", 
-    "Hash" -> "f7654065-bb4a-4ad3-8e7e-40c580fd679c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "nb = EvaluationNotebook[];\nButton[\"Create\", \
-NotebookWrite[nb, Style[\"Hi there!\", Bold]]]", "Display" -> "codemirror", 
-    "Hash" -> "7366a995-06d3-410a-ad02-9f8752fefa08", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\n### Writting to existing cells\nUse `NotebookWrite` on \
-cell objects to overwrite their content:\n\n:::note\nIt only works on input \
-cells\n:::", "Display" -> "codemirror", 
-    "Hash" -> "2568f3e1-d161-418f-b402-21c4f8250a04", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "### Writting to existing cells\nUse `NotebookWrite` on cell \
-objects to overwrite their content:\n\n:::note\nIt only works on input \
-cells\n:::", "Display" -> "markdown", 
-    "Hash" -> "6d1e1c41-40a1-4496-8c79-a3f160d3a42f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "cell = NotebookWrite[EvaluationNotebook[], Cell[\"Timer\", \
-\"Input\"]];\ntimer = SetInterval[\n  NotebookWrite[cell, Now], \n  \
-Quantity[1, \"Seconds\"]\n];\nButton[\"Delete cell\",\n    \
-TaskRemove[timer];\n    NotebookDelete[cell];\n]", "Display" -> "codemirror", 
-    "Hash" -> "f57fbe28-2302-432e-92ed-f662c545ca55", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\n### Reading cells\nRead the focused cell", 
-    "Display" -> "codemirror", "Hash" -> 
-     "130f3b3f-702f-49d8-8861-27f276ab7b7c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "### Reading cells\nRead the focused cell", 
-    "Display" -> "markdown", "Hash" -> 
-     "88dbb3ba-1649-4f72-baa6-075a54da178d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "NotebookRead[NotebookFocusedCell[]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "40a9253a-5e80-4808-a9fc-da9ca7acdfca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "Cell[\"NotebookRead[NotebookFocusedCell[]]\",\"Input\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3c487cd3-ad2c-4920-a63e-94b365750b90", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\n:::warning\n`NotebookRead` is a blocking function. Avoid \
-using it in timers, external event handlers such as `Button`. Use \
-`NotebookReadAsync`.\n\n`NotebookFocusedCell` is also blocking function. Use \
-directly `NotebookReadAsync`.\n:::", "Display" -> "codemirror", 
-    "Hash" -> "e238295d-5b01-44f8-a8bd-8eb8a0412bb5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ":::warning\n`NotebookRead` is a blocking function. Avoid \
-using it in timers, external event handlers such as `Button`. Use \
-`NotebookReadAsync`.\n\n`NotebookFocusedCell` is also blocking function. Use \
-directly `NotebookReadAsync`.\n:::", "Display" -> "markdown", 
-    "Hash" -> "7fb0b524-9280-404b-8df5-3556045292bc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "nb = EvaluationNotebook[];\n\nButton[\"Read Focused\", \
-Then[NotebookReadAsync[nb],\n  Function[focused,\n    \
-Then[NotebookReadAsync[focused], Function[cell,\n      Print[cell];\n    ]]\n \
- ]\n]]", "Display" -> "codemirror", 
-    "Hash" -> "621639d3-17b0-4715-9ccf-205c3dfbb3e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\n### Event handling\nYou can attach event handlers to \
-cells to react to lifecycle events:", "Display" -> "codemirror", 
-    "Hash" -> "fa87100e-ea8b-401d-ae41-d8395b746ed2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "### Event handling\nYou can attach event handlers to cells to \
-react to lifecycle events:", "Display" -> "markdown", 
-    "Hash" -> "f405cd55-7288-4cea-aa3f-4458e5387145", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "With[{},\n  EventHandler[ResultCell[], {\n    \"Destroy\" -> \
-Function[Null,Print[\"Destroyed!\"]]\n  }];\n  \n  Style[\"Remove me\", \
-12]\n]", "Display" -> "codemirror", 
-    "Hash" -> "6a357b8d-3dad-425c-843c-9cb3dc20ea0d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\nTry to clean up the output of the cell above.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b9b8629-bb13-4dc1-a892-53b02161a280", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "Try to clean up the output of the cell above.", 
-    "Display" -> "markdown", "Hash" -> 
-     "a417e037-ee7d-43a5-99e6-ba07187e1512", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> ".md\n#### Example: Self-destructing cell", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d08db994-620e-4fb4-92bf-cd2d0614714e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "#### Example: Self-destructing cell", 
-    "Display" -> "markdown", "Hash" -> 
-     "1ce5095b-ae52-41f6-9ff1-403d7c0bcd63", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>, 
-   <|"Data" -> "With[{cell = EvaluationCell[]},\n  \
-EventHandler[InputButton[\"Delete me\"], Function[Null,\n    cell // \
-NotebookDelete\n  ]]\n]", "Display" -> "codemirror", 
-    "Hash" -> "d0eaa8cb-833b-4529-b773-7d02744ed9e9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5ba6b163-94a1-4457-9217-a8d2925661ae"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Cells Manipulation
+
+WLJS Notebook provides a rich API for programmatic manipulation of notebooks, cells, and windows compatible with Mathematica.
+
+## Making new cells
+
+Use CellPrint to insert a new cell below the currently evaluated one:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Cells Manipulation
+
+WLJS Notebook provides a rich API for programmatic manipulation of notebooks, cells, and windows compatible with Mathematica.
+
+## Making new cells
+
+Use CellPrint to insert a new cell below the currently evaluated one:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Print an expression as output *)
+cell = CellPrint[Plot[Sin[x], {x, 0, 2Pi}]];
+
+(* Print with specific cell type *)
+CellPrint[Cell["<h1>Hello World</h1>", "Output", "HTML"]];
+
+(* Print a text cell *)
+CellPrint[TextCell["This is a section", "Section"]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To delete one, apply
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To delete one, apply
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookDelete[cell];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use NotebookWrite for more control over where cells are inserted:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use NotebookWrite for more control over where cells are inserted:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+nb = EvaluationNotebook[];
+NotebookWrite[nb, Plot[x, {x, 0, 1}]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Insert after a specific cell
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Insert after a specific cell
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookWrite[NotebookLocationSpecifier[EvaluationCell[], "After"], Plot[x, {x, 0, 1}]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Add a cell by click:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Add a cell by click:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ecell = EvaluationCell[];
+Button["Create", NotebookWrite[NotebookLocationSpecifier[ecell, "After"], Style["Hi there!", Bold]]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Writting to existing cells
+Use `NotebookWrite` on cell objects to overwrite their content:
+
+:::note
+It only works on input cells
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Writting to existing cells
+Use `NotebookWrite` on cell objects to overwrite their content:
+
+:::note
+It only works on input cells
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ecell = EvaluationCell[];
+cell = NotebookWrite[NotebookLocationSpecifier[ecell, "After"], Cell["Timer", "Input"]];
+timer = SetInterval[
+  NotebookWrite[cell, Now], 
+  Quantity[1, "Seconds"]
+];
+Button["Delete cell",
+    TaskRemove[timer];
+    NotebookDelete[cell];
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Reading cells
+Read the focused cell
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Reading cells
+Read the focused cell
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookRead[NotebookFocusedCell[]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::warning
+`NotebookRead` is a blocking function. Avoid using it in timers, external event handlers such as `Button`. Use `NotebookReadAsync`.
+
+`NotebookFocusedCell` is also blocking function. Use directly `NotebookReadAsync`.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::warning
+`NotebookRead` is a blocking function. Avoid using it in timers, external event handlers such as `Button`. Use `NotebookReadAsync`.
+
+`NotebookFocusedCell` is also blocking function. Use directly `NotebookReadAsync`.
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+nb = EvaluationNotebook[];
+focusedOne;
+Refresh[focusedOne, 1]
+
+task = SetInterval[
+ Then[NotebookReadAsync[nb],
+  Function[focused,
+    Then[NotebookReadAsync[focused], Function[cell,
+      focusedOne = Pane[cell, 400]//Panel;
+    ]]
+  ]
+ ],
+ Quantity[1, "Seconds"]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Try to change focus on some other cells.
+
+:::warning
+Do not forget to remove task
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Try to change focus on some other cells.
+
+:::warning
+Do not forget to remove task
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TaskRemove[task];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Event handling
+You can attach event handlers to cells to react to lifecycle events:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Event handling
+You can attach event handlers to cells to react to lifecycle events:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ResultCell[]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+RemoteCellObj["6dfacec7-fcf9-4e62-a361-308dd28aa75e"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+With[{},
+  EventHandler[ResultCell[], {
+    "Destroy" -> Function[Null, Print["Destroyed!"]]
+  }];
+  
+  Style["Remove me", 12]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Try to clean up the output of the cell above.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Try to clean up the output of the cell above.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+#### Example: Self-destructing cell
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+#### Example: Self-destructing cell
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{cell = EvaluationCell[]},
+  EventHandler[InputButton["Delete me"], Function[Null,
+    cell // NotebookDelete
+  ]]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

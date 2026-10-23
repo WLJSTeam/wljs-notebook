@@ -564,7 +564,15 @@ EventHandler[NotebookEditorChannel // EventClone,
                     But for windows it is fine *)
 
                 (* WARNING!!! Memory leaks on input cells *)
-                With[{w = If[KeyExistsQ[win`HashMap, hash], EventClone[hash], If[cell`InputCellQ[cell`HashMap[hash]], EventClone[hash], hash]]},
+                With[{w = If[
+                    KeyExistsQ[win`HashMap, hash],
+                    EventClone[hash],
+                    If[
+                        KeyExistsQ[cell`HashMap, hash] && cell`InputCellQ[cell`HashMap[hash]],
+                        EventClone[hash],
+                        hash
+                    ]
+                ]},
                     (* cellClonedEvents[callback] = w; *)
 
                     (* FWD events if all already happend and subscribe *)
