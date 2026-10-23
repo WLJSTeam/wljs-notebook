@@ -87,6 +87,8 @@ checkContext[HoldComplete[s_String, Identity, Last]] := checkContext[s]
 checkContext[s_String] := StringTake[s, -1] == "`"
 checkContext[_] := False
 
+getNames[pattern_] := Select[Names[pattern], FreeQ[Attributes[#], Temporary]&]
+
 timer = Null;
 lastTime = AbsoluteTime[];
 
@@ -109,7 +111,7 @@ reBuildVocabulary := With[{},
                     If[Length[aliases] > 0,
                      Module[{old = definitions, spinner = EchoLabel["Spinner"][  "Rebuilding aliases"]},
 
-                            With[{r = Flatten[Function[f, {f, ToString@Information[f, "Usage"]}] /@ StringReplace[Names[#<>"*"], $ContextAliases[#]->#] &/@ Take[$ContextAliases//Keys ,-1], 1]},
+                            With[{r = Flatten[Function[f, {f, ToString@Information[f, "Usage"]}] /@ StringReplace[getNames[#<>"*"], $ContextAliases[#]->#] &/@ Take[$ContextAliases//Keys ,-1], 1]},
                             definitions = Join[definitions, r] // DeleteDuplicates;
                         ];
 
@@ -124,7 +126,7 @@ reBuildVocabulary := With[{},
                     If[Length[contexts] > 0, 
                         Module[{old = definitions, spinner = EchoLabel["Spinner"]["Rebuilding vocabulary"]},
 
-                            With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
+                            With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ getNames[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
                                 definitions = Join[definitions, r] // DeleteDuplicates;
                             ];
 
@@ -153,11 +155,11 @@ scanGlobalNames;
 
 StartTracking := (
     StartTracking = Null;
-    globalNames = Names["Global`*"];
+    globalNames = getNames["Global`*"];
     
     scanGlobalNames[] := Module[{current, added},
         If[Length[clients] == 0, Return[]];
-        current = Names["Global`*"];
+        current = getNames["Global`*"];
         added = Complement[current, globalNames];
         globalNames = current;
     
