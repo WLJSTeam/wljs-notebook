@@ -147,7 +147,7 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     str = OpenRead[path];
     ReadString[str, startStore, TimeConstraint->10];
-    ReadList[str, Character, StringLength[startStore], TimeConstraint->10 ];
+    ReadList[str, Character, StringLength[startStore]];
     raw = ReadString[str, endStore, TimeConstraint->10];
     raw = ImportString[raw, "RawJSON"];
     objects = raw["objects"] // uncompress;
@@ -157,7 +157,7 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
     
     
     ReadString[str, startCompressed, TimeConstraint->10];
-    ReadList[str, Character, StringLength[startCompressed], TimeConstraint->10 ];
+    ReadList[str, Character, StringLength[startCompressed] ];
 
     (* we have to write to a temporal file due to CR normalization issues... *)
     With[{
@@ -168,7 +168,7 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
         stream = OpenWrite[temporalFile, BinaryFormat->True]
     },
         BinaryWrite[stream, rawBytes];
-        Close[temporalFile];
+        Close[stream];
 
         notebook = nb`LoadFromFile[temporalFile];
         With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
@@ -226,15 +226,15 @@ With[{
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
     ReadString[str, start, TimeConstraint->10];
-    ReadList[str, Character, StringLength[start] , TimeConstraint->10];
+    ReadList[str, Character, StringLength[start] ];
     objects = ImportString[ReadString[str, mid1, TimeConstraint->10], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid1] , TimeConstraint->10];
+    ReadList[str, Character, StringLength[mid1] ];
     cells = ImportString[ReadString[str, mid2, TimeConstraint->10], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid2], TimeConstraint->10 ];
+    ReadList[str, Character, StringLength[mid2] ];
     store = ImportString[ReadString[str, term, TimeConstraint->10], "ExpressionJSON"];
 
     ReadString[str, startExtra, TimeConstraint->10];
-    ReadList[str, Character, StringLength[startExtra], TimeConstraint->10 ];
+    ReadList[str, Character, StringLength[startExtra] ];
     symbols = ReadString[str, termExtra, TimeConstraint->10];
     If[symbols === EndOfFile, symbols = <||>,
       symbols = ImportString[symbols, "ExpressionJSON"];
