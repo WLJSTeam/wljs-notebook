@@ -4,6 +4,11 @@
 !macro customInstall
   ; Add "WLJS Notebook" to File Explorer's New submenu. FileName makes
   ; Explorer copy the notebook template instead of creating an empty file.
+  ; Only one ShellNew creation method should be registered: NullFile would
+  ; take precedence over FileName and cause Windows to ignore the template.
+  DeleteRegValue SHELL_CONTEXT "${WLJS_SHELL_NEW_KEY}" "NullFile"
+  DeleteRegValue SHELL_CONTEXT "${WLJS_SHELL_NEW_KEY}" "Data"
+  DeleteRegValue SHELL_CONTEXT "${WLJS_SHELL_NEW_KEY}" "Command"
   WriteRegStr SHELL_CONTEXT "${WLJS_SHELL_NEW_KEY}" "FileName" "${WLJS_SHELL_NEW_TEMPLATE}"
 
   ; File Explorer caches file associations and the New submenu.

@@ -164,12 +164,14 @@
         {
           "ext": "wln",
           "name": "WLJS Notebook",
+          "description": "WLJS Notebook",
           "role": "Editor",
           "icon": "./Electron/build/file/File.ico"
         },
         {
           "ext": "wlw",
           "name": "WLJS Widget",
+          "description": "WLJS Widget",
           "role": "Viewer",
           "icon": "./Electron/build/file/File-2.ico"
         }
