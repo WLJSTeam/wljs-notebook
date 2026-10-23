@@ -60,6 +60,7 @@ BuildVocabularAsync := With[{},
 ]
 
 currentContextPath = $ContextPath;
+getNames[pattern_] := Select[Names[pattern], FreeQ[Attributes[#], Temporary]&]
 
 contextAliases = {};
 
@@ -86,8 +87,6 @@ BuildVocabular := With[{},
 checkContext[HoldComplete[s_String, Identity, Last]] := checkContext[s]
 checkContext[s_String] := StringTake[s, -1] == "`"
 checkContext[_] := False
-
-getNames[pattern_] := Select[Names[pattern], FreeQ[Attributes[#], Temporary]&]
 
 timer = Null;
 lastTime = AbsoluteTime[];

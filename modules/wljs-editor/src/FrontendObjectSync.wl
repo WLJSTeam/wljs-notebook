@@ -296,7 +296,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             StringTemplate["Total: `` Missing: ``"][Length[objects], Length[missing]] // Echo;
 
             kernel = notebook["Evaluator"]["Kernel"];
-            If[TrueQ[kernel["ReadyQ"]],
+            If[TrueQ[kernel["ReadyQ"]] && Length[missing]>0,
                 Echo["Kernel is available, fetching from it"];
                 missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[x, KeyTake[x][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects] ]] // Await;
 
