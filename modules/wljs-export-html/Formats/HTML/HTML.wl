@@ -100,7 +100,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 check[path_String | path_File] := Module[{str, result},
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    result = StringQ[TimeConstrained[Find[str, "<meta serializer=\"hsfn-"], 10, $Failed]];
+    result = Find[str, "<meta serializer=\"hsfn-"] =!= EndOfFile;
     Echo[result];
     Close[str];
     result
@@ -109,11 +109,11 @@ check[path_String | path_File] := Module[{str, result},
 getVersion[path_String | path_File] := Module[{str, result},
     Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
     str = OpenRead[path];
-    result = TimeConstrained[Find[str, "<meta serializer=\"hsfn-"], 10, $Failed];
+    result = Find[str, "<meta serializer=\"hsfn-"];
     Echo[result];
     Close[str];
-    If[StringQ[result] && StringContainsQ[result, "hsfn-5"], Return[5]];
-    If[StringQ[result] && StringContainsQ[result, "hsfn-4"], Return[4]];
+    If[StringContainsQ[result, "hsfn-5"], Return[5]];
+    If[StringContainsQ[result, "hsfn-4"], Return[4]];
     result
 ]
 
@@ -128,7 +128,7 @@ decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[pa
 ]
 
 (* Modern format HSFN5 *)
-decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, rawBytes, str, notebook, readResult, reject}, With[{
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, str, notebook}, With[{
     promise = Promise[],
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -145,17 +145,10 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     EventFire[msg, spinner, True];
 
-    reject[message_] := (
-        EventFire[spinner["Promise"], Resolve, True];
-        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|"Message" -> message|>]];
-        promise
-    );
-
-    str = OpenRead[path, BinaryFormat -> True];
-    readResult = ReadString[str, startStore, TimeConstraint -> 10];
-    If[!StringQ[readResult], Close[str]; Return[reject["The embedded object store was not found"]]];
-    raw = ReadString[str, endStore, TimeConstraint -> 10];
-    If[!StringQ[raw], Close[str]; Return[reject["The embedded object store is incomplete"]]];
+    str = OpenRead[path];
+    ReadString[str, startStore];
+    ReadList[str, Character, StringLength[startStore] ];
+    raw = ReadString[str, endStore];
     raw = ImportString[raw, "RawJSON"];
     objects = raw["objects"] // uncompress;
     symbols = raw["symbols"] // uncompress;
@@ -163,29 +156,26 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     
     
-    readResult = ReadString[str, startCompressed, TimeConstraint -> 10];
-    If[!StringQ[readResult], Close[str]; Return[reject["The embedded notebook payload was not found"]]];
+    ReadString[str, startCompressed];
+    ReadList[str, Character, StringLength[startCompressed] ];
 
-    raw = ReadString[str, endCompressed, TimeConstraint -> 10];
-    Close[str];
-    If[!StringQ[raw], Return[reject["The embedded notebook payload is incomplete"]]];
-    rawBytes = Quiet[Check[Uncompress[raw], $Failed]];
+    (* we have to write to a temporal file due to CR normalization issues... *)
+    With[{
+        rawBytes = ReadString[str, endCompressed] // Uncompress
+    }, {
+        temporalFile = CreateFile[]
+    }, {
+        stream = OpenWrite[temporalFile, BinaryFormat->True]
+    },
+        BinaryWrite[stream, rawBytes];
+        Close[temporalFile];
 
-    (* Keep the reconstructed WLN in memory. File-backed text streams have
-       platform-specific newline behavior on Windows, while FromCharacterCode
-       preserves the original byte values expected by the WLN parser. *)
-    notebook = If[Head[rawBytes] === ByteArray,
-        nb`LoadFromString[FromCharacterCode[Normal[rawBytes]]],
-        $Failed
+        notebook = nb`LoadFromFile[temporalFile];
+        With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
+        With[{n = notebook}, n["Symbols"] = symbols];
+        With[{n = notebook}, n["Path"] = .];
+        DeleteFile[temporalFile];
     ];
-
-    If[!MatchQ[notebook, _nb`NotebookObj],
-        Return[reject["The embedded notebook payload could not be decoded"]];
-    ];
-
-    With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
-    With[{n = notebook}, n["Symbols"] = symbols];
-    With[{n = notebook}, n["Path"] = .];
 
     Echo[notebook];
     
