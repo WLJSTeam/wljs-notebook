@@ -1260,6 +1260,8 @@ BoxForm`SummaryItem[{label_String, view_}] := With[{encoded = ToString[view, Sta
 
 BoxForm`SummaryItem[{label_String}] := BoxForm`SummaryItemView[label, ""]
 
+BoxForm`SummaryItem[{left_, mid_, right__}] := BoxForm`SummaryItemView[StringRiffle[ToString/@{left,mid,right}, " "], ""]
+
 BoxForm`SummaryItem[{view_}] := BoxForm`SummaryItem[{"", view}]
 
 
