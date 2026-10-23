@@ -232,7 +232,13 @@ EventHandler[AppExtensions`AppProtocol, {
     "open_html" -> Function[assoc,
         Echo[">> Handling URL protocol ! >>"];
         Echo[assoc["url"] ];
-        Module[{path = assoc["url"]},
+        Module[{
+            path = assoc["url"],
+            client = assoc["Client"],
+            messager = assoc["Messanger"],
+            target,
+            task
+        },
             If[StringTake[path, 5] === "file:",
                 Echo["Local file!"];
                 (* URLParse decodes the path without leaking a query or an
@@ -243,13 +249,45 @@ EventHandler[AppExtensions`AppProtocol, {
                 ];
                 Echo["Local path decoded:"];
                 Echo[path];
+
+                WebUILocation[StringJoin["/", URLEncode[path]], client];
             ,
                 Echo["Web resource"];
                 Echo["Downloading..."];
-                path = URLDownload[path];
-            ];
 
-            WebUILocation[ StringJoin["/", URLEncode[ path ] ], assoc["Client"] ];
+                (* Some custom-protocol handlers collapse the two slashes after
+                   the HTTP scheme while forwarding the encoded payload. *)
+                If[StringStartsQ[path, "https:/"] && !StringStartsQ[path, "https://"],
+                    path = StringReplace[path, StartOfString ~~ "https:/" -> "https://"]
+                ];
+                If[StringStartsQ[path, "http:/"] && !StringStartsQ[path, "http://"],
+                    path = StringReplace[path, StartOfString ~~ "http:/" -> "http://"]
+                ];
+
+                target = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".html"}];
+                task = Quiet @ Check[
+                    URLDownloadSubmit[
+                        path,
+                        target,
+                        HandlerFunctions -> <|
+                            "TaskFinished" -> Function[result,
+                                With[{file = Lookup[result, "File", Missing["NotAvailable"]]},
+                                    If[StringQ[file] && FileExistsQ[file] && FileByteCount[file] > 0,
+                                        WebUILocation[StringJoin["/", URLEncode[file]], client],
+                                        EventFire[messager, "Error", "Failed to download the HTML notebook"]
+                                    ]
+                                ]
+                            ]
+                        |>,
+                        HandlerFunctionsKeys -> {"File", "TaskStatus"}
+                    ],
+                    $Failed
+                ];
+
+                If[task === $Failed,
+                    EventFire[messager, "Error", "Failed to start the HTML notebook download"]
+                ];
+            ];
         ];
     ]
 }]

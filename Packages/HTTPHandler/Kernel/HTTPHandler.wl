@@ -171,6 +171,12 @@ Module[{headBytes, head, headline, headers, body, bodyBytes},
 		StringExtract[head, "\r\n" -> 1], 
 		method__ ~~ " " ~~ url__ ~~ " " ~~ version__ :> Join[
 			<|"Method" -> method|>, 
+			(* Alternative that preserves percent-encoded slashes in payloads:
+			<|
+				"Path" -> URLParse[url, "PathString"],
+				"Query" -> Association[URLParse[url, "Query"]]
+			|>,
+			*)
 			MapAt[Association, Key["Query"]] @ 
 			MapAt[URLBuild, Key["Path"]] @ 
 			<|URLParse[url]|>[[{"Path", "Query"}]], 

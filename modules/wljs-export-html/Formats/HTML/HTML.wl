@@ -130,8 +130,13 @@ decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[pa
         $Failed
 ]
 
+readEmbeddedSection[text_String, start_String, end_String] := Module[{result},
+    result = StringCases[text, start ~~ Shortest[content__] ~~ end :> content, 1];
+    If[Length[result] === 1 && StringQ[First[result]], First[result], $Failed]
+]
+
 (* Modern format HSFN5 *)
-decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, raw, str, notebook}, With[{
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, html, raw, rawBytes, notebook, temporalFile, stream, reject}, With[{
     promise = Promise[],
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -148,33 +153,57 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
 
     EventFire[msg, spinner, True];
 
-    str = OpenRead[path, BinaryFormat->True];
-    ReadString[str, startStore, TimeConstraint->10];
-    raw = ReadString[str, endStore, TimeConstraint->10];
-    raw = ImportString[raw, "RawJSON"];
-    objects = raw["objects"] // uncompress;
-    symbols = raw["symbols"] // uncompress;
+    reject[message_] := (
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|"Message" -> message|>]];
+        promise
+    );
 
-    
-    ReadString[str, startCompressed, TimeConstraint->10];
+    (* Read the document once and extract both payloads from the same text.
+       This avoids stream buffering and delimiter scan timeout issues. *)
+    html = Quiet @ Check[Import[path, "Text"], $Failed];
+    If[!StringQ[html], Return[reject["The HTML notebook could not be read"]]];
+
+    raw = readEmbeddedSection[html, startStore, endStore];
+    If[!StringQ[raw], Return[reject["The embedded object store was not found"]]];
+
+    raw = Quiet @ Check[ImportString[raw, "RawJSON"], $Failed];
+    If[
+        !AssociationQ[raw] ||
+        !KeyExistsQ[raw, "objects"] || !StringQ[raw["objects"]] ||
+        !KeyExistsQ[raw, "symbols"] || !StringQ[raw["symbols"]],
+        Return[reject["The embedded object store is invalid"]]
+    ];
+
+    objects = Quiet @ Check[uncompress[raw["objects"]], $Failed];
+    symbols = Quiet @ Check[uncompress[raw["symbols"]], $Failed];
+    If[!AssociationQ[objects] || !AssociationQ[symbols],
+        Return[reject["The embedded object store could not be decoded"]]
+    ];
+
+    raw = readEmbeddedSection[html, startCompressed, endCompressed];
+    If[!StringQ[raw], Return[reject["The embedded notebook payload was not found"]]];
+
+    rawBytes = Quiet @ Check[Uncompress[raw], $Failed];
+    If[Head[rawBytes] =!= ByteArray,
+        Return[reject["The embedded notebook payload could not be decoded"]]
+    ];
 
     (* we have to write to a temporal file due to CR normalization issues... *)
-    With[{
-        rawBytes = ReadString[str, endCompressed, TimeConstraint->10] // Uncompress
-    }, {
-        temporalFile = CreateFile[]
-    }, {
-        stream = OpenWrite[temporalFile, BinaryFormat->True]
-    },
-        BinaryWrite[stream, rawBytes];
-        Close[stream];
+    temporalFile = CreateFile[];
+    stream = OpenWrite[temporalFile, BinaryFormat->True];
+    BinaryWrite[stream, rawBytes];
+    Close[stream];
 
-        notebook = nb`LoadFromFile[temporalFile];
-        With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
-        With[{n = notebook}, n["Symbols"] = symbols];
-        With[{n = notebook}, n["Path"] = .];
-        DeleteFile[temporalFile];
+    notebook = nb`LoadFromFile[temporalFile];
+    DeleteFile[temporalFile];
+    If[!MatchQ[notebook, _nb`NotebookObj],
+        Return[reject["The embedded notebook payload is invalid"]]
     ];
+
+    With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
+    With[{n = notebook}, n["Symbols"] = symbols];
+    With[{n = notebook}, n["Path"] = .];
 
     Echo[notebook];
     
@@ -186,7 +215,7 @@ decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, object
         EventFire[promise, Resolve,  place];
         Delete /@ notebook["Cells"];
         Delete[notebook];
-        ClearAll[place, objects, symbols, raw, str, notebook];
+        ClearAll[place, objects, symbols, html, raw, rawBytes, notebook, temporalFile, stream, reject];
     ] ];
     
     
