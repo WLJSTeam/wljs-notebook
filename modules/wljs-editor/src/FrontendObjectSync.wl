@@ -27,7 +27,7 @@ EventHandler[NotebookEditorChannel // EventClone, {
            With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]}, 
                 (* [FIXME] Include these symbols normally using Needs[] *)
                 (* we release any possible deferred compression wrappers *)
-                With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Public"]},
+                With[{result = Lookup[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ], "Public", CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Private"]]},
                     With[{c =  result},
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, c ] ];
                     ];
