@@ -249,15 +249,7 @@ EventHandler[AppExtensions`AppProtocol, {
                 path = URLDownload[path];
             ];
 
-            With[{p = html`Static`decode[path, "Messager"->assoc["Messanger"], "Client"->assoc["Client"] ]},
-                Then[p, Function[result,
-                  Pause[1];
-                  Echo[result];
-                  (*/*EventFire[spinner["Promise"], Resolve, True];*/*)
-                  WebUILocation[ StringJoin["/", URLEncode[ result ] ], assoc["Client"] ] // Echo;
-
-                ] ];
-            ];
+            WebUILocation[ StringJoin["/", URLEncode[ path ] ], assoc["Client"] ];
         ];
     ]
 }]
