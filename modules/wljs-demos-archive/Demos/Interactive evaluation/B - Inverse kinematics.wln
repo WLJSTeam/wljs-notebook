@@ -1,120 +1,206 @@
-<|"Notebook" -> <|"Controller" -> "52737649-db51-4cfa-a0eb-8462b7731b41", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1496], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "a21d3579-5ec5-412f-b9f6-b8d42e991554", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Inverse kinematics.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> False, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Planar Inverse Kinematics", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1511]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "FABRIK Solver", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1509]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Planar Inverse \
-Kinematics\n\n\n![](/attachments/planar_ik.png)\n\n<small>src. \
-[FOUNDRY](https://learn.foundry.com/modo/content/help/pages/animation/modifie\
-rs/planar_ik.html)</small>\n\n", "Display" -> "codemirror", 
-    "Hash" -> "3e44af8b-e5cf-43a5-9a5a-759aacaeafad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "# Planar Inverse \
-Kinematics\n\n\n![](/attachments/planar_ik.png)<small >src. \
-[FOUNDRY](https://learn.foundry.com/modo/content/help/pages/animation/modifie\
-rs/planar_ik.html)</small>", "Display" -> "markdown", 
-    "Hash" -> "2b1d31d1-a7ff-4def-988a-9e0acc571924", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> ".md\n*the actual implemntation is not well-optimized for \
-Wolfram Language, but serves a good purpose for the demonstration*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "31ef8321-0177-4b27-a464-1b8119d07d86", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "\n*the actual implemntation is not well-optimized for Wolfram \
-Language, but serves a good purpose for the demonstration*", 
-    "Display" -> "markdown", "Hash" -> 
-     "e7453af2-1f4b-4cbd-bac5-fe93d658d5ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> ".md\nDefine a bunch of points connect them into a segmented \
-line with fixed length", "Display" -> "codemirror", 
-    "Hash" -> "93495508-8de0-4f08-b565-9924ce823e9b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "\nDefine a bunch of points connect them into a segmented line \
-with fixed length", "Display" -> "markdown", 
-    "Hash" -> "3057d202-aa90-4a6f-8552-de1d9654a9f1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "chain = Table[Exp[-\[Phi]]{-Cos[\[Phi]], Sin[\[Phi]]}, \
-{\[Phi], 0, \[Pi] - \[Pi]/7, \[Pi]/7.0}];\nGraphics[{\n    Line[chain // \
-Offload], Black, \n    PointSize[0.04], Point[chain // Offload], Red,\n    \
-EventHandler[Point[chain // Last], {\n      \"drag\" -> handler\n    }]\n  \
-},\n  Axes->True, PlotRange->{{-1,0.2}, {0,0.4}}, ImageSize->400\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6ce9054f-81ae-45ed-abcc-cced6fb30e20", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False, "init" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> ".md\n*Try to drag a red dot*", "Display" -> "codemirror", 
-    "Hash" -> "19729d2d-667d-445e-9f3f-7935e20d9a61", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "*Try to drag a red dot*", "Display" -> "markdown", 
-    "Hash" -> "7098b9c1-5bd3-4cca-832c-709638b98bf2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> ".md\n## FABRIK Solver\nOriginal paper published in \
-2011\n\n<iframe class=\"rounded-md border-0 mt-4\" style=\"width:100%; \
-height:400px\" \
-src=\"http://www.andreasaristidou.com/publications/papers/FABRIK.pdf\"></ifra\
-me>", "Display" -> "codemirror", "Hash" -> 
-     "12160823-f74a-47e0-b3f4-a692cc45166e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "## FABRIK Solver\nOriginal paper published in 2011\n\n<iframe \
-class=\"rounded-md border-0 mt-4\" style=\"width:100%; height:400px\" \
-src=\"http://www.andreasaristidou.com/publications/papers/FABRIK.pdf\"></ifra\
-me>", "Display" -> "markdown", "Hash" -> 
-     "08a6eda5-8b96-48cf-a070-86c5f2aa0b71", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> ".md\nFor the demonstration purposes, we implemented this in \
-the simples possible way.", "Display" -> "codemirror", 
-    "Hash" -> "b1d763f4-9b10-4696-b6c5-bcdfa60304a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "For the demonstration purposes, we implemented this in the \
-simples possible way.", "Display" -> "markdown", 
-    "Hash" -> "d084f915-a24b-4f42-94f1-953dd0d627c6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>, 
-   <|"Data" -> "handler = Function[target,\n  Module[{buffer = chain, origin \
-= {-1,0}, prev = chain, lengths = Norm /@ (chain // Reverse // Differences) \
-// Reverse},\n    buffer = Table[With[{p = chain[[-i]]},\n      If[i === 1,\n \
-       prev = target;\n        target\n      ,\n    \n        prev = prev - \
-Normalize[(prev - p)] lengths[[1-i]];\n        prev \n      ]\n    ]   \n    \
-, {i, chain // Length}] // Reverse;\n\n    buffer = Table[With[{p = \
-buffer[[i]]},\n      If[i === 1,\n        prev = origin;\n        origin\n    \
-  ,\n        prev = prev - Normalize[(prev - p)] lengths[[i-1]];\n        \
-prev \n      ]\n    ]\n    , {i, chain // Length}];\n\n    chain = buffer;\n  \
- ]\n];", "Display" -> "codemirror", 
-    "Hash" -> "74d0f845-4d98-4d3c-846d-0d7201793df7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "09a3bd59-456b-47d1-b9fe-05b800c36fe7"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Planar Inverse Kinematics
+
+
+![](/attachments/planar_ik.png)
+
+<small>src. [FOUNDRY](https://learn.foundry.com/modo/content/help/pages/animation/modifiers/planar_ik.html)</small>
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Planar Inverse Kinematics
+
+
+![](/attachments/planar_ik.png)<small >src. [FOUNDRY](https://learn.foundry.com/modo/content/help/pages/animation/modifiers/planar_ik.html)</small>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*the actual implemntation is not well-optimized for Wolfram Language, but serves a good purpose for the demonstration*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+*the actual implemntation is not well-optimized for Wolfram Language, but serves a good purpose for the demonstration*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Define a bunch of points connect them into a segmented line with fixed length
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+Define a bunch of points connect them into a segmented line with fixed length
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+  init: false
+Type: Input
+%-------------------------------------------------------------------------%
+chain = Table[Exp[-ϕ]{-Cos[ϕ], Sin[ϕ]}, {ϕ, 0, π - π/7, π/7.0}];
+Graphics[{
+    Line[chain // Offload], Black, 
+    PointSize[0.04], Point[chain // Offload], 
+    PointSize[0.08], Red,
+    EventHandler[Point[chain // Last], {
+      "drag" -> handler
+    }]
+  },
+  Axes->True, PlotRange->{{-1,0.2}, {0,0.4}}, ImageSize->400
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*Try to drag a red dot*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*Try to drag a red dot*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## FABRIK Solver
+Original paper published in 2011
+
+<iframe class="rounded-md border-0 mt-4" style="width:100%; height:400px" src="http://www.andreasaristidou.com/publications/papers/FABRIK.pdf"></iframe>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## FABRIK Solver
+Original paper published in 2011
+
+<iframe class="rounded-md border-0 mt-4" style="width:100%; height:400px" src="http://www.andreasaristidou.com/publications/papers/FABRIK.pdf"></iframe>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For the demonstration purposes, we implemented this in the simples possible way.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For the demonstration purposes, we implemented this in the simples possible way.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+handler = Function[target,
+  Module[{buffer = chain, origin = {-1,0}, prev = chain, lengths = Norm /@ (chain // Reverse // Differences) // Reverse},
+    buffer = Table[With[{p = chain[[-i]]},
+      If[i === 1,
+        prev = target;
+        target
+      ,
+    
+        prev = prev - Normalize[(prev - p)] lengths[[1-i]];
+        prev 
+      ]
+    ]   
+    , {i, chain // Length}] // Reverse;
+
+    buffer = Table[With[{p = buffer[[i]]},
+      If[i === 1,
+        prev = origin;
+        origin
+      ,
+        prev = prev - Normalize[(prev - p)] lengths[[i-1]];
+        prev 
+      ]
+    ]
+    , {i, chain // Length}];
+
+    chain = buffer;
+   ]
+];
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

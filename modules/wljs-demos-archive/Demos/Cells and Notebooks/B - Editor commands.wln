@@ -1,98 +1,141 @@
-<|"Notebook" -> <|"Controller" -> "78cbbcec-b649-4e9c-a650-41a48db2b6b8", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$647], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "24bcc77f-83a4-4f2c-b5db-9f1dcf78adc9", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/B - Editor commands.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Editor Commands", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$625]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Editor Commands\nYou can send direct \
-commands to the cells editor using `FrontEditorSelected` expression. This \
-function is defined only on the frontend, i.e. it has to be executed using \
-`FrontSubmit` or `FrontFetch`.\n\nFor example, to read the last selected text \
-in a cell:", "Display" -> "codemirror", 
-    "Hash" -> "c5719c38-4af5-4dc1-8aaa-876f135864a9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "## Editor Commands\nYou can send direct commands to the cells \
-editor using `FrontEditorSelected` expression. This function is defined only \
-on the frontend, i.e. it has to be executed using `FrontSubmit` or \
-`FrontFetch`.\n\nFor example, to read the last selected text in a cell:", 
-    "Display" -> "markdown", "Hash" -> 
-     "ee5063a3-5608-416f-8489-2deb6997dfd6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "FrontFetch[FrontEditorSelected[\"Get\"]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d6fe1825-f318-4691-8432-b5fe4030c8b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "\"torSelected[\\\"Get\\\"]]\"", "Display" -> "codemirror", 
-    "Hash" -> "32d4262e-22d2-4ddb-ad7a-270ce873c687", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> ".md\n:::note\n`FrontFetch` is a blocking function, use \
-`FrontFetchAsync` for buttons or any other event handlers\n:::", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b396b4d-1787-4b02-8734-90c1bd4d7619", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> ":::note\n`FrontFetch` is a blocking function, use \
-`FrontFetchAsync` for buttons or any other event handlers\n:::", 
-    "Display" -> "markdown", "Hash" -> 
-     "2351364a-cf46-4623-a6fb-ebd0a733522f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "Button[\"Read selected\", \
-Then[FrontFetchAsync[FrontEditorSelected[\"Get\"]], Print]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "908a843f-257d-4916-a747-bc3bb24eb78d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> ".md\nRead cursor position:", "Display" -> "codemirror", 
-    "Hash" -> "0d52d190-f038-4c9d-acd0-73e686f18f42", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "Read cursor position:", "Display" -> "markdown", 
-    "Hash" -> "c51ae1e7-1dbb-44be-b737-53fe521046fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "Button[\"Read selected\", \
-Then[FrontFetchAsync[FrontEditorSelected[\"Cursor\"]], Print]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "210f35c6-1431-45a0-86de-e41f83661fc2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> ".md\nTo insert or overwrite the content:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c5c8bf45-22e1-4b01-8447-dcd881c6c039", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "To insert or overwrite the content:", 
-    "Display" -> "markdown", "Hash" -> 
-     "0bf6eb6b-92d9-4895-a441-7df266caba65", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>, 
-   <|"Data" -> "Button[\"Overwrite\", \
-FrontSubmit[FrontEditorSelected[\"Set\", \"1+1\"]] ]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f0d95dca-e0b9-4707-8c64-6d3308817861", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d3bae23-cd7e-47f7-8148-693809a5033e"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Editor Commands
+You can send direct commands to the cells editor using `FrontEditorSelected` expression. This function is defined only on the frontend, i.e. it has to be executed using `FrontSubmit` or `FrontFetch`.
+
+For example, to read the last selected text in a cell:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Editor Commands
+You can send direct commands to the cells editor using `FrontEditorSelected` expression. This function is defined only on the frontend, i.e. it has to be executed using `FrontSubmit` or `FrontFetch`.
+
+For example, to read the last selected text in a cell:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontFetch[FrontEditorSelected["Get"]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"lected[\"Ge"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+`FrontFetch` is a blocking function, use `FrontFetchAsync` for buttons or any other event handlers
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+`FrontFetch` is a blocking function, use `FrontFetchAsync` for buttons or any other event handlers
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Read selected", Then[FrontFetchAsync[FrontEditorSelected["Get"]], Print]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Read cursor position:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Read cursor position:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Read selected", Then[FrontFetchAsync[FrontEditorSelected["Cursor"]], Print]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To insert or overwrite the content:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To insert or overwrite the content:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Overwrite", FrontSubmit[FrontEditorSelected["Set", "1+1"]] ]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

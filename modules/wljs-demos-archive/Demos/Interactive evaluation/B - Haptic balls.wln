@@ -1,89 +1,167 @@
-<|"Notebook" -> <|"Controller" -> "07fd548c-0337-41a4-9ecc-8e5adaa332e1", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1218], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "4fc530d1-7e63-42b0-90f4-ca1d4811fdbc", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Haptic balls.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Basic St\[OSlash]rmer-Verlet Integration", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1235]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Basic St\[OSlash]rmer-Verlet \
-Integration\n*with haptic feedback feature*\n\nIn this example, we create a \
-small widget with bouncing balls inside a disk. Each time a ball hits a wall, \
-a short vibration is triggered on a connected haptic \
-device.\n\n:::warning\nThe haptic feature will most likely only work on macOS \
-devices.\n:::\n\nClick to add more balls:", "Display" -> "codemirror", 
-    "Hash" -> "3e957c0f-626c-43a4-a526-608142d75361", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> "## Basic St\[OSlash]rmer-Verlet Integration\n*with haptic \
-feedback feature*\n\nIn this example, we create a small widget with bouncing \
-balls inside a disk. Each time a ball hits a wall, a short vibration is \
-triggered on a connected haptic device.\n\n:::warning\nThe haptic feature \
-will most likely only work on macOS devices.\n:::\n\nClick to add more \
-balls:", "Display" -> "markdown", "Hash" -> 
-     "f48fdb52-6f71-409c-9d48-823e18985772", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> "Module[{balls1, balls2, balls3, handler},\n  balls1 = balls2 \
-= balls3 = {RandomReal[{-0.5,0.5}, 2]};\n  balls2 = balls2 + {0.01 \
-RandomReal[{-1,1}, 2]};\n  \n  handler = Function[Null,\n    balls3 = \
-balls2;\n    balls2 = balls1;\n    balls1 = Map[Function[p, \n      \
-If[Norm[p] > 1,\n        HapticFeedback[]; \n        Normalize[p] 0.99\n      \
-,\n        p\n      ]\n    ], (2 balls2 - balls3)];\n  ];\n\n  Graphics[{\n   \
- LightBlue, EventHandler[Disk[], {\"click\" -> Function[xy,\n      \
-AppendTo[balls1, xy];\n      AppendTo[balls2, xy + 0.01 RandomReal[{-1,1}, \
-2]];\n      AppendTo[balls3, xy];\n    ]}], Black, PointSize[0.08], \
-Point[balls1 // Offload],\n    EventHandler[AnimationFrameListener[balls1 // \
-Offload], handler]\n  }, \"Controls\"->False, \"TransitionType\"->None\n  \
-]\n]", "Display" -> "codemirror", "Hash" -> 
-     "19f5e51b-3145-4ad2-88ae-de2003419d7e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> ".md\n## Physics Behind\nHere we rely on the Verlet \
-integration method, which operates only in coordinate space (no velocities or \
-accelerations need to be stored):\n\n$$\nx_{i+1} = 2x_i - x_{i-1} + a_i\\, \
-\\delta t^2\n$$\n\nIn our case, we have $a_i = 0$, and only boundary \
-conditions are applied afterward, i.e., this part:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "781a41d4-845b-4588-b253-7e5529b4499c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> "## Physics Behind\nHere we rely on the Verlet integration \
-method, which operates only in coordinate space (no velocities or \
-accelerations need to be stored):\n\n$$\nx_{i+1} = 2x_i - x_{i-1} + a_i\\, \
-\\delta t^2\n$$\n\nIn our case, we have $a_i = 0$, and only boundary \
-conditions are applied afterward, i.e., this part:", "Display" -> "markdown", 
-    "Hash" -> "48c23b62-9f85-4391-aaf7-9c02ba8fd592", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> "    balls1 = Map[Function[p, \n      If[Norm[p] > 1,\n        \
-HapticFeedback[]; \n        Normalize[p] 0.99\n      ,\n        p\n      ]\n  \
-  ], (2 balls2 - balls3)];", "Display" -> "codemirror", 
-    "Hash" -> "fcd9718e-09d8-456b-b612-df5751de0da9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> ".md\nTo simulate the \"bounce\" and loss of energy, we force \
-the balls to stay within the boundaries by applying `Normalize` and \
-multiplying by a slightly smaller number.", "Display" -> "codemirror", 
-    "Hash" -> "3542fffb-8956-447f-a40f-96b28c767491", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>, 
-   <|"Data" -> "To simulate the \"bounce\" and loss of energy, we force the \
-balls to stay within the boundaries by applying `Normalize` and multiplying \
-by a slightly smaller number.", "Display" -> "markdown", 
-    "Hash" -> "a2a1d18c-ce8e-426d-8317-27378113f4ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "11ca0115-539d-4fbd-b368-fe993a7e8be1"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Basic Størmer-Verlet Integration
+*with haptic feedback feature*
+
+In this example, we create a small widget with bouncing balls inside a disk. Each time a ball hits a wall, a short vibration is triggered on a connected haptic device.
+
+:::warning
+The haptic feature will most likely only work on macOS devices.
+:::
+
+Click to add more balls:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Basic Størmer-Verlet Integration
+*with haptic feedback feature*
+
+In this example, we create a small widget with bouncing balls inside a disk. Each time a ball hits a wall, a short vibration is triggered on a connected haptic device.
+
+:::warning
+The haptic feature will most likely only work on macOS devices.
+:::
+
+Click to add more balls:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{balls1, balls2, balls3, handler},
+  balls1 = balls2 = balls3 = {RandomReal[{-0.5,0.5}, 2]};
+  balls2 = balls2 + {0.01 RandomReal[{-1,1}, 2]};
+  
+  handler = Function[Null,
+    balls3 = balls2;
+    balls2 = balls1;
+    balls1 = Map[Function[p, 
+      If[Norm[p] > 1,
+        HapticFeedback[]; 
+        Normalize[p] 0.99
+      ,
+        p
+      ]
+    ], (2 balls2 - balls3)];
+  ];
+
+  Graphics[{
+    LightBlue, EventHandler[Disk[], {"click" -> Function[xy,
+      AppendTo[balls1, xy];
+      AppendTo[balls2, xy + 0.01 RandomReal[{-1,1}, 2]];
+      AppendTo[balls3, xy];
+    ]}], Black, PointSize[0.08], Point[balls1 // Offload],
+    EventHandler[AnimationFrameListener[balls1 // Offload], handler]
+  }, "Controls"->False, "TransitionType"->None
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Physics Behind
+Here we rely on the Verlet integration method, which operates only in coordinate space (no velocities or accelerations need to be stored):
+
+$$
+x_{i+1} = 2x_i - x_{i-1} + a_i\, \delta t^2
+$$
+
+In our case, we have $a_i = 0$, and only boundary conditions are applied afterward, i.e., this part:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Physics Behind
+Here we rely on the Verlet integration method, which operates only in coordinate space (no velocities or accelerations need to be stored):
+
+$$
+x_{i+1} = 2x_i - x_{i-1} + a_i\, \delta t^2
+$$
+
+In our case, we have $a_i = 0$, and only boundary conditions are applied afterward, i.e., this part:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+    balls1 = Map[Function[p, 
+      If[Norm[p] > 1,
+        HapticFeedback[]; 
+        Normalize[p] 0.99
+      ,
+        p
+      ]
+    ], (2 balls2 - balls3)];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To simulate the "bounce" and loss of energy, we force the balls to stay within the boundaries by applying `Normalize` and multiplying by a slightly smaller number.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To simulate the "bounce" and loss of energy, we force the balls to stay within the boundaries by applying `Normalize` and multiplying by a slightly smaller number.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -1,178 +1,202 @@
-<|"Notebook" -> <|"Controller" -> "9ae98d75-cf12-4eff-8269-2dece458c036", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$766], "FocusedCellSelection" -> 
-    {439, 438}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "40e88d28-b160-4dfa-a89c-2303b4633a55", 
-   "Objects" -> <|"8e3e1f77-08c5-482e-b844-0b5272354216" -> 
-      <|"Public" -> Hold[CellView["\n| Material                            | \
-V ${}^\\circ/(\\textrm{T}~\\textrm{cm})$ | $\\lambda$ (nm) | Ref.             \
-                    \
-|\n|-------------------------------------|-----------------------------------\
------|-----------------|-------------------------------------------|\n| \
-Bilayer semiconductor MoSe2         | $10^7$                                 \
-| 800             | Benjamin Carey et al. Nature Comm. 2024 15 |\n| Nano \
-particles PS-CoNP              | $10^3$                                 | \
-1310            | Chemistry of Materials 2022 34           |\n| Pr$^{3+}$ \
-doped glass                    | $35$                                     | \
-1310            |                                           |\n| Topological \
-insulator Bi$_2$Se$_3$  | $1000$                        | 8265            | \
-L. Ohnoutek Scientific Reports 6 2016    |\n| FePS3 antiferromagnet           \
-   | $629$                                    | 68879           | Kartik P. \
-et al. arxiv 2025              |\n| Helimagnet CuFe$_{1-x}$Ga$_x$O$_2$ | \
-$450$                                    | $10^6$         | S. Kibayash et \
-al. NATURE COMM. 5:4583   |\n", "Display" -> "markdown"]]|>, 
-     "d9ed024c-bbe4-4008-ad19-eea7099261e3" -> 
-      <|"Public" -> Hold[CellView["\n  graph LR\n      A[Text Header] --> \
-B[Binary Header]\n      B --> C1[Trace 1] --> T1[Samples 1]\n      B --> \
-C2[Trace 2] --> T2[Samples 2]\n", "Display" -> "mermaid", 
-          ImageSize -> 650]]|>, "f75ef757-d7fd-457d-bd6c-5c0ffc3145ac" -> 
-      <|"Public" -> Hold[EditorView["\n1-((*FB[*)((1)(*,*)/(*,*)(6))(*]FB*)) \
-((*SpB[*)Power[x(*|*),(*|*)2](*]SpB*))+((*FB[*)((1)(*,*)/(*,*)(120))(*]FB*)) \
-((*SpB[*)Power[x(*|*),(*|*)4](*]SpB*))-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)6](\
-*]SpB*))(*,*)/(*,*)(5040))(*]FB*)+(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)8](*]SpB\
-*))(*,*)/(*,*)(362880))(*]FB*)-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)10](*]SpB*)\
-)(*,*)/(*,*)(39916800))(*]FB*)"]]|>|>, "Path" -> "/Users/kirill/Github/wolfra\
-m-js-frontend/modules/wljs-demos-archive/Demos/Presentation/B - Misc.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Embed cell views", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$736]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Render Wolfram source code", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$760]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Embed cell views\nIf you paste a \
-nice-looking Markdown table, it will clash with some Markdown syntax reserved \
-to separate slides. However, you can use `CellView` to embed a markdown cell \
-into a slide instead:", "Display" -> "codemirror", 
-    "Hash" -> "849b8f5f-29b7-4f3a-a2a6-0539c407e55e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "# Embed cell views\nIf you paste a nice-looking Markdown \
-table, it will clash with some Markdown syntax reserved to separate slides. \
-However, you can use `CellView` to embed a markdown cell into a slide \
-instead:", "Display" -> "markdown", 
-    "Hash" -> "da32b2b2-1f6f-4055-a79a-e5eb55d240ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "MDTable = CellView[Cell[\"\n| Material                        \
-    | V ${}^\\\\circ/(\\\\textrm{T}~\\\\textrm{cm})$ | $\\\\lambda$ (nm) | \
-Ref.                                 \
-|\n|-------------------------------------|-----------------------------------\
------|-----------------|-------------------------------------------|\n| \
-Bilayer semiconductor MoSe2         | $10^7$                                 \
-| 800             | Benjamin Carey et al. Nature Comm. 2024 15 |\n| Nano \
-particles PS-CoNP              | $10^3$                                 | \
-1310            | Chemistry of Materials 2022 34           |\n| Pr$^{3+}$ \
-doped glass                    | $35$                                     | \
-1310            |                                           |\n| Topological \
-insulator Bi$_2$Se$_3$  | $1000$                        | 8265            | \
-L. Ohnoutek Scientific Reports 6 2016    |\n| FePS3 antiferromagnet           \
-   | $629$                                    | 68879           | Kartik P. \
-et al. arxiv 2025              |\n| Helimagnet CuFe$_{1-x}$Ga$_x$O$_2$ | \
-$450$                                    | $10^6$         | S. Kibayash et \
-al. NATURE COMM. 5:4583   |\n\", \"Output\", \"markdown\"]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0a7de456-bb2a-43d8-a57b-3417f098fe76", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".slide\n\n<MDTable/>", "Display" -> "codemirror", 
-    "Hash" -> "de299e3c-7990-4952-a2ba-b70c07eb732d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> 
-     "<dummy \
->FrontEndExecutable[8e3e1f77-08c5-482e-b844-0b5272354216]</dummy>", 
-    "Display" -> "slide", "Hash" -> "399628a4-3343-4ef9-bd8c-0158c6f35940", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".md\nThe same counts for Mermaid diagrams:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5e693d91-5258-4a05-b3c1-6be2b26a5e2d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "The same counts for Mermaid diagrams:", 
-    "Display" -> "markdown", "Hash" -> 
-     "6c6de687-2433-4b1f-bf42-4526246afcef", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "MermaidDiagram = CellView[Cell[\"\n  graph LR\n      A[Text \
-Header] --> B[Binary Header]\n      B --> C1[Trace 1] --> T1[Samples 1]\n     \
- B --> C2[Trace 2] --> T2[Samples 2]\n\", \"Output\", \"mermaid\"],ImageSize \
--> 650];", "Display" -> "codemirror", 
-    "Hash" -> "80c7b220-f8b4-4117-8340-3ae70bc5b5ff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".slide\n\n<MermaidDiagram/>", "Display" -> "codemirror", 
-    "Hash" -> "4178e663-a66e-4672-a309-48fc948f726a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> 
-     "<dummy \
->FrontEndExecutable[d9ed024c-bbe4-4008-ad19-eea7099261e3]</dummy>", 
-    "Display" -> "slide", "Hash" -> "58268c92-b9fb-4c05-b1ba-a8878bf9427b", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".md\n## Render Wolfram source code\nUsing `EditorView` you \
-can display chunks of Wolfram Language code in your narratives. Here is a \
-helper wrapper:", "Display" -> "codemirror", 
-    "Hash" -> "f2f1f853-18a2-487b-a51a-9f0dd7feee42", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "## Render Wolfram source code\nUsing `EditorView` you can \
-display chunks of Wolfram Language code in your narratives. Here is a helper \
-wrapper:", "Display" -> "markdown", 
-    "Hash" -> "3cdd0262-68b4-434c-aca8-501d0ea37d36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".wlx\nCodeInset[str_String, OptionsPattern[]] := With[{Ev = \
-EditorView[str], size = OptionValue[\"FontSize\"]},\n  <div \
-style=\"text-align: left; \
-font-size:{size}px\"><Ev/></div>\n];\n\nOptions[CodeInset] = {\"FontSize\" -> \
-14};", "Display" -> "codemirror", "Hash" -> 
-     "29bc42c2-abc7-400b-8141-0eed5489d2b2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".md\nThen we can place any valid input expression, which will \
-be directly rendered on a slide:", "Display" -> "codemirror", 
-    "Hash" -> "b0f0c912-8052-4f06-bb70-0d915c2c1120", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "Then we can place any valid input expression, which will be \
-directly rendered on a slide:", "Display" -> "markdown", 
-    "Hash" -> "dd96363f-8824-4f9b-800a-51964955be7a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> ".slide\n## Source code\n\n<CodeInset \
-FontSize={14}>\n1-((*FB[*)((1)(*,*)/(*,*)(6))(*]FB*)) \
-((*SpB[*)Power[x(*|*),(*|*)2](*]SpB*))+((*FB[*)((1)(*,*)/(*,*)(120))(*]FB*)) \
-((*SpB[*)Power[x(*|*),(*|*)4](*]SpB*))-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)6](\
-*]SpB*))(*,*)/(*,*)(5040))(*]FB*)+(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)8](*]SpB\
-*))(*,*)/(*,*)(362880))(*]FB*)-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)10](*]SpB*)\
-)(*,*)/(*,*)(39916800))(*]FB*)\n</CodeInset>", "Display" -> "codemirror", 
-    "Hash" -> "b2ab7ad7-3a46-48c4-8f14-ef64c0d8060d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>, 
-   <|"Data" -> "<dummy >## Source code\n\n<div style=\"text-align: left; \
-font-size:14px\">FrontEndExecutable[f75ef757-d7fd-457d-bd6c-5c0ffc3145ac]</di\
-v></dummy>", "Display" -> "slide", "Hash" -> 
-     "f68aa783-bd8b-4d43-9139-1f2159f4a324", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "fae1acc7-e6d9-4a42-96ce-53bd0b1dcf6e"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Embed cell views
+If you paste a nice-looking Markdown table, it will clash with some Markdown syntax reserved to separate slides. However, you can use `CellView` to embed a markdown cell into a slide instead:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Embed cell views
+If you paste a nice-looking Markdown table, it will clash with some Markdown syntax reserved to separate slides. However, you can use `CellView` to embed a markdown cell into a slide instead:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+MDTable = CellView[Cell["
+| Material                            | V ${}^\\circ/(\\textrm{T}~\\textrm{cm})$ | $\\lambda$ (nm) | Ref.                                 |
+|-------------------------------------|----------------------------------------|-----------------|-------------------------------------------|
+| Bilayer semiconductor MoSe2         | $10^7$                                 | 800             | Benjamin Carey et al. Nature Comm. 2024 15 |
+| Nano particles PS-CoNP              | $10^3$                                 | 1310            | Chemistry of Materials 2022 34           |
+| Pr$^{3+}$ doped glass                    | $35$                                     | 1310            |                                           |
+| Topological insulator Bi$_2$Se$_3$  | $1000$                        | 8265            | L. Ohnoutek Scientific Reports 6 2016    |
+| FePS3 antiferromagnet              | $629$                                    | 68879           | Kartik P. et al. arxiv 2025              |
+| Helimagnet CuFe$_{1-x}$Ga$_x$O$_2$ | $450$                                    | $10^6$         | S. Kibayash et al. NATURE COMM. 5:4583   |
+", "Output", "markdown"]];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<MDTable/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >FrontEndExecutable[F7fd03acd-d19f-45d0-b13c-d1593789fcc3]</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The same counts for Mermaid diagrams:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The same counts for Mermaid diagrams:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MermaidDiagram = CellView[Cell["
+  graph LR
+      A[Text Header] --> B[Binary Header]
+      B --> C1[Trace 1] --> T1[Samples 1]
+      B --> C2[Trace 2] --> T2[Samples 2]
+", "Output", "mermaid"],ImageSize -> 650];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<MermaidDiagram/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >FrontEndExecutable[F6e6dbedd-1332-4158-b725-a4082044eaf5]</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Render Wolfram source code
+Using `EditorView` you can display chunks of Wolfram Language code in your narratives. Here is a helper wrapper:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Render Wolfram source code
+Using `EditorView` you can display chunks of Wolfram Language code in your narratives. Here is a helper wrapper:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+CodeInset[str_String, OptionsPattern[]] := With[{Ev = EditorView[str], size = OptionValue["FontSize"]},
+  <div style="text-align: left; font-size:{size}px"><Ev/></div>
+];
+
+Options[CodeInset] = {"FontSize" -> 14};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Then we can place any valid input expression, which will be directly rendered on a slide:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Then we can place any valid input expression, which will be directly rendered on a slide:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+## Source code
+
+<CodeInset FontSize={14}>
+1-((*FB[*)((1)(*,*)/(*,*)(6))(*]FB*)) ((*SpB[*)Power[x(*|*),(*|*)2](*]SpB*))+((*FB[*)((1)(*,*)/(*,*)(120))(*]FB*)) ((*SpB[*)Power[x(*|*),(*|*)4](*]SpB*))-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)6](*]SpB*))(*,*)/(*,*)(5040))(*]FB*)+(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)8](*]SpB*))(*,*)/(*,*)(362880))(*]FB*)-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)10](*]SpB*))(*,*)/(*,*)(39916800))(*]FB*)
+</CodeInset>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >## Source code
+
+<div style="text-align: left; font-size:14px">FrontEndExecutable[Fa1a7505f-0113-4259-be88-f1b56de8b828]</div></dummy>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: F6e6dbedd-1332-4158-b725-a4082044eaf5
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CellView["\n  graph LR\n      A[Text Header] --> B[Binary Header]\n      B --> C1[Trace 1] --> T1[Samples 1]\n      B --> C2[Trace 2] --> T2[Samples 2]\n", "Display" -> "mermaid", ImageSize -> 650]]|>
+
+%-------------------------------------------------------------------------%
+Key: F7fd03acd-d19f-45d0-b13c-d1593789fcc3
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CellView["\n| Material                            | V ${}^\\circ/(\\textrm{T}~\\textrm{cm})$ | $\\lambda$ (nm) | Ref.                                 |\n|-------------------------------------|----------------------------------------|-----------------|-------------------------------------------|\n| Bilayer semiconductor MoSe2         | $10^7$                                 | 800             | Benjamin Carey et al. Nature Comm. 2024 15 |\n| Nano particles PS-CoNP              | $10^3$                                 | 1310            | Chemistry of Materials 2022 34           |\n| Pr$^{3+}$ doped glass                    | $35$                                     | 1310            |                                           |\n| Topological insulator Bi$_2$Se$_3$  | $1000$                        | 8265            | L. Ohnoutek Scientific Reports 6 2016    |\n| FePS3 antiferromagnet              | $629$                                    | 68879           | Kartik P. et al. arxiv 2025              |\n| Helimagnet CuFe$_{1-x}$Ga$_x$O$_2$ | $450$                                    | $10^6$         | S. Kibayash et al. NATURE COMM. 5:4583   |\n", "Display" -> "markdown"]]|>
+
+%-------------------------------------------------------------------------%
+Key: Fa1a7505f-0113-4259-be88-f1b56de8b828
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["\n1-((*FB[*)((1)(*,*)/(*,*)(6))(*]FB*)) ((*SpB[*)Power[x(*|*),(*|*)2](*]SpB*))+((*FB[*)((1)(*,*)/(*,*)(120))(*]FB*)) ((*SpB[*)Power[x(*|*),(*|*)4](*]SpB*))-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)6](*]SpB*))(*,*)/(*,*)(5040))(*]FB*)+(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)8](*]SpB*))(*,*)/(*,*)(362880))(*]FB*)-(*FB[*)(((*SpB[*)Power[x(*|*),(*|*)10](*]SpB*))(*,*)/(*,*)(39916800))(*]FB*)\n"]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

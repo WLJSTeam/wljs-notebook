@@ -47,23 +47,36 @@ __Source code__
 %-------------------------------------------------------------------------%
 Type: Input
 %-------------------------------------------------------------------------%
-focused = NotebookFocusedCell[];
-Switch[ChoiceDialog["Starting after the focused cell",{"Insert"->"Insert","Delete"->"Delete","Cancel"->Null}],
+focused = NotebookFocusedCell[]; (*sync operation *)
+nb = EvaluationNotebook[];
+cells = Cells[]; (*sync operation *)
+
+AsyncFunction[Null, Module[{dialog, count},
+  dialog = ChoiceDialogAsync["Starting after the focused cell", {"Insert"->"Insert","Delete"->"Delete","Cancel"->Null}, "Notebook"->nb] // Await;
+
+  If[dialog === Null, ClearAll[dialog, count]; Return[Null]];
+
+  count = InputAsync["How many?", 1] // Await;
+
+  If[!TrueQ[count > 0 && count < 99999], ClearAll[dialog, count]; Return[Null]];
+
+ Switch[dialog,
   "Insert",
-    With[{count = Input["How many?", 1]}, If[TrueQ[count > 0 && count < 20], NotebookWrite[
+    NotebookWrite[
       NotebookLocationSpecifier[focused, "After"], 
       CellGroup@Table[Cell["", "Input"], {i, count}]
-    ]]
-   ],
+    ],
   
   "Delete",
-    With[{count = Input["How many?", 1]}, If[TrueQ[count > 0 && count < 200], NotebookDelete /@ Reverse[Drop[First@SequenceCases[Cells[], {focused, Repeated[_, {0,count}]}], 1]]
-    ]
-   ]  
-    ,
+    NotebookDelete /@ Reverse[Drop[First@SequenceCases[cells, {focused, Repeated[_, {0,count}]}], 1]],
+  
   _,
     Null;
-]//Quiet;
+ ]//Quiet;
+
+ ClearAll[dialog, count];
+  
+]][]~Then~Beep;
 
 %-------------------------------------------------------------------------%
 Props:

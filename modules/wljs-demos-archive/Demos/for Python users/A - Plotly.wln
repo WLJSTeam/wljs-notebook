@@ -1,252 +1,225 @@
-<|"Notebook" -> <|"Controller" -> "8c31d1e1-890f-434b-b011-41b73c9022dd", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2459], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "3bba16cc-562e-455a-b0f2-8cac6f6a458a", 
-   "Objects" -> <|"5cab97be-7f56-411c-8c51-a034f8e5778f" -> 
-      <|"Public" -> Hold[{PlotlyNewPlot[{Association[
-             "x" -> {0, 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 
-               0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1, 1.1, 
-               1.2000000000000002, 1.3, 1.4000000000000001, 1.5, 1.6, 
-               1.7000000000000002, 1.8, 1.9000000000000001, 2, 2.1, 2.2, 
-               2.3000000000000003, 2.4000000000000004, 2.5, 2.6, 2.7, 
-               2.8000000000000003, 2.9000000000000004, 3, 3.1, 3.2, 
-               3.3000000000000003, 3.4000000000000004, 3.5, 3.6, 3.7, 
-               3.8000000000000003, 3.9000000000000004, 4, 4.1000000000000005, 
-               4.2, 4.3, 4.4, 4.5, 4.6000000000000005, 4.7, 
-               4.800000000000001, 4.9, 5, 5.1000000000000005, 5.2, 
-               5.300000000000001, 5.4, 5.5, 5.6000000000000005, 5.7, 
-               5.800000000000001, 5.9, 6, 6.1000000000000005, 6.2}, 
-             "y" -> {1, 0.9410707889917257, 0.7766992383060218, 
-               0.5410264615989973, 0.2814429918963127, 0.0470400026866224, 
-               -0.12292234535968133, -0.20751804105085433, 
-               -0.20753429350746674, -0.14310453473259022, 
-               -0.04656924969982098, 0.04720323689596646, 
-               0.11023164775682688, 0.12801837761212884, 0.1017379652486048, 
-               0.04579094280463962, -0.018159039710727225, 
-               -0.0686151654503474, -0.09082742870986033, 
-               -0.08064285312848032, -0.04471440983336958, 
-               0.0026684958112014657, 0.0448540541444867, 
-               0.06838374416261628, 0.067059567815922, 0.04335252267714112, 
-               0.006907285403810403, -0.029161851012251185, 
-               -0.052831371046518125, -0.057049389682220265, 
-               -0.04172151370953756, -0.013278153856807574, 
-               0.017880985876036388, 0.041094633207429565, 
-               0.04900945588934653, 0.03984074469219314, 
-               0.017650485724765744, -0.009339478405710009, 
-               -0.031732226142291445, -0.0421758785521645, 
-               -0.037732431750276, -0.0206462028614074, 
-               0.0026669870049793043, 0.023985853570544054, 
-               0.03614716267017795, 0.03542133068164826, 0.02262235997885476, 
-               0.0026335264391616226, -0.01742323961877004, 
-               -0.030699136333679825, -0.03293438746976206, 
-               -0.023802639471620698, -0.006867068599227058, 
-               0.011783027158788215, 0.02570245325024023, 
-               0.030300359397189915, 0.02433828138471553, 
-               0.010232496168323455, -0.006899758561890269, 
-               -0.021081826995619234, -0.027549412595642104, 
-               -0.024338911040351404, -0.012866825768505778}, 
-             "mode" -> "lines"]}, Association["margin" -> Association[
-              "l" -> 30, "r" -> 30, "b" -> 30, "t" -> 30, "pad" -> 4], 
-            "width" -> 400, "height" -> 300]], FrontInstanceReference[
-           "894418af-0568-4c76-a9a9-f7a389c8f37b"]}]|>, 
-     "998b6f51-7417-4614-a53e-9abf4aec1b1f" -> 
-      <|"Public" -> Hold[{PlotlyNewPlot[{Association["values" -> 
-              {19, 26, 55}, "labels" -> {"Residential", "Non-Residential", 
-               "Utility"}, "type" -> "pie"]}, Association[
-            "margin" -> Association["l" -> 30, "r" -> 30, "b" -> 30, 
-              "t" -> 30, "pad" -> 4], "width" -> 400, "height" -> 300]], 
-          FrontInstanceReference["ba1e6f18-6bc8-4bc4-bd9a-cbc93b31e2f2"]}]|>, 
-     "a5204aec-183f-42a7-819a-2796b31cd9fa" -> 
-      <|"Public" -> Hold[{PlotlyNewPlot[{Association[
-             "x" -> {"giraffes", "orangutans", "monkeys"}, 
-             "y" -> {20, 14, 23}, "type" -> "bar"]}, Association[
-            "margin" -> Association["l" -> 30, "r" -> 30, "b" -> 30, 
-              "t" -> 30, "pad" -> 4], "width" -> 400, "height" -> 300]], 
-          FrontInstanceReference["d2c591a6-06a4-4c26-9a51-d60ba9c4eeee"]}]|>, 
-     "89322229-2393-4060-99a1-f0e3d4695046" -> 
-      <|"Public" -> Hold[{PlotlyNewPlot[{Association["x" -> {1, 2, 3, 4}, 
-             "y" -> {10, 11, 12, 13}, "mode" -> "markers", 
-             "marker" -> Association["size" -> {40, 60, 80, 100}]]}, 
-           Association["margin" -> Association["l" -> 30, "r" -> 30, 
-              "b" -> 30, "t" -> 30, "pad" -> 4], "width" -> 400, 
-            "height" -> 300]], FrontInstanceReference[
-           "810d4273-45c1-4021-b740-d0e483ba9ec3"]}]|>, 
-     "cf3f833e-a0af-46f0-ab3b-8d1f765d5be1" -> 
-      <|"Public" -> Hold[{PlotlyNewPlot[{Association["z" -> {{100, 90, 80, 
-                70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, 
-                -70, -80, -90, -100}, {90, 81, 72, 63, 54, 45, 36, 27, 18, 9, 
-                0, -9, -18, -27, -36, -45, -54, -63, -72, -81, -90}, {80, 72, 
-                64, 56, 48, 40, 32, 24, 16, 8, 0, -8, -16, -24, -32, -40, 
-                -48, -56, -64, -72, -80}, {70, 63, 56, 49, 42, 35, 28, 21, 
-                14, 7, 0, -7, -14, -21, -28, -35, -42, -49, -56, -63, -70}, {
-                60, 54, 48, 42, 36, 30, 24, 18, 12, 6, 0, -6, -12, -18, -24, 
-                -30, -36, -42, -48, -54, -60}, {50, 45, 40, 35, 30, 25, 20, 
-                15, 10, 5, 0, -5, -10, -15, -20, -25, -30, -35, -40, -45, 
-                -50}, {40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0, -4, -8, -12, 
-                -16, -20, -24, -28, -32, -36, -40}, {30, 27, 24, 21, 18, 15, 
-                12, 9, 6, 3, 0, -3, -6, -9, -12, -15, -18, -21, -24, -27, 
-                -30}, {20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0, -2, -4, -6, -8, 
-                -10, -12, -14, -16, -18, -20}, {10, 9, 8, 7, 6, 5, 4, 3, 2, 
-                1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10}, {0, 0, 0, 0, 
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {-10, -9, 
-                -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
-                10}, {-20, -18, -16, -14, -12, -10, -8, -6, -4, -2, 0, 2, 4, 
-                6, 8, 10, 12, 14, 16, 18, 20}, {-30, -27, -24, -21, -18, -15, 
-                -12, -9, -6, -3, 0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30}, {
-                -40, -36, -32, -28, -24, -20, -16, -12, -8, -4, 0, 4, 8, 12, 
-                16, 20, 24, 28, 32, 36, 40}, {-50, -45, -40, -35, -30, -25, 
-                -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50}, 
-               {-60, -54, -48, -42, -36, -30, -24, -18, -12, -6, 0, 6, 12, 
-                18, 24, 30, 36, 42, 48, 54, 60}, {-70, -63, -56, -49, -42, 
-                -35, -28, -21, -14, -7, 0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 
-                70}, {-80, -72, -64, -56, -48, -40, -32, -24, -16, -8, 0, 8, 
-                16, 24, 32, 40, 48, 56, 64, 72, 80}, {-90, -81, -72, -63, 
-                -54, -45, -36, -27, -18, -9, 0, 9, 18, 27, 36, 45, 54, 63, 
-                72, 81, 90}, {-100, -90, -80, -70, -60, -50, -40, -30, -20, 
-                -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}}, 
-             "type" -> "heatmap"]}, Association["margin" -> 
-             Association["l" -> 30, "r" -> 30, "b" -> 30, "t" -> 30, 
-              "pad" -> 4], "width" -> 400, "height" -> 300]], 
-          FrontInstanceReference[
-           "39eb8280-3155-42e4-a47a-af7ff22b33ad"]}]|>|>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/for Python \
-users/A - Plotly.wln", "PublicFields" -> {"Properties"}, "Quick" -> True, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      2, "Plotly Library", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2602]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Other charts", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2578]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Plotly Library\nWe provide direct bindings \
-to API of Plotly.js. Try out some the of basic charts", 
-    "Display" -> "codemirror", "Hash" -> 
-     "868e3218-4d60-4ede-a1e5-26dc777b9607", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "## Plotly Library\nWe provide direct bindings to API of \
-Plotly.js. Try out some the of basic charts", "Display" -> "markdown", 
-    "Hash" -> "e2b8a9fb-cff9-466a-a9f2-b9dcd3f18702", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "data = Table[{x, Sinc[6x]}, {x,0, 2Pi, 0.1}];\n\nplot = \
-Plotly[<|\n  \"x\"->data[[All,1]],\n  \"y\"->data[[All,2]],\n  \
-\"mode\"->\"lines\"\n|>]", "Display" -> "codemirror", 
-    "Hash" -> "a8d5b2ca-d36a-4faf-bc9d-0bce31f7e81a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"5cab97be-7f56-411c-8c51-a034f8e5778f\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmyYnJ\
-lmaJ6XqmqeZmumaGBom61okmxrqJhoYm6RZpJqam1ukAQCKiBWz\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6e6ad9e5-0012-43dc-aab0-fe1adaa260c7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> ".md\nNow `plot` acts like an instance of the visible plot. To \
-add more traces simply evaluate:", "Display" -> "codemirror", 
-    "Hash" -> "0c9a6aab-407e-4c0a-a440-cd563e986c90", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "Now `plot` acts like an instance of the visible plot. To add \
-more traces simply evaluate:", "Display" -> "markdown", 
-    "Hash" -> "abf6b3bc-6da7-464e-a23a-5a6028c71365", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "PlotlyAddTraces[plot, {\n  <|\"x\"->data[[All,1]], \
-\"y\"->Reverse[data[[All,2]]]|>\n}]", "Display" -> "codemirror", 
-    "Hash" -> "61f4df5b-24bd-49b1-9b4d-82438d726739", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> ".md\nPlotly automatically rescales and adds legends. This can \
-be done with almost any plot type.", "Display" -> "codemirror", 
-    "Hash" -> "e4f9365e-113b-4666-a810-666854bcd292", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "Plotly automatically rescales and adds legends. This can be \
-done with almost any plot type.", "Display" -> "markdown", 
-    "Hash" -> "bed3180b-4a8a-4431-ba6c-b19482f1be10", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> ".md\n### Other charts\nPie, bars, bubble chart. Plotly has \
-almost everything!", "Display" -> "codemirror", 
-    "Hash" -> "fa3be66d-21b4-4dce-8caa-44d5c81839f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> 
-     "### Other charts\nPie, bars, bubble chart. Plotly has almost \
-everything!", "Display" -> "markdown", 
-    "Hash" -> "87038125-b2d3-49bb-a20e-d1ebca182382", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "trace = <| \n\t\"values\" -> {19, 26, 55}, \n\t\"labels\" -> \
-{\"Residential\", \"Non-Residential\", \"Utility\"}, \n\t\"type\" -> \"pie\" \
-\n|>;\n\nPlotly[trace]", "Display" -> "codemirror", 
-    "Hash" -> "75c455f6-c304-4550-99bd-1049db0fbadf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"998b6f51-7417-4614-a53e-9abf4aec1b1f\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW1paJ\
-JmlmRrqmpsYmuuamBma6CaaGqfqWiYmpZkkpiYbJhmmAQB40RWq\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fe6e2249-76d3-4c6b-9ace-e2871f2302a4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "trace = <| \n\t\"x\" -> {\"giraffes\", \"orangutans\", \
-\"monkeys\"}, \n\t\"y\" -> {20, 14, 23}, \"type\" -> \"bar\" \
-\n|>;\n\nPlotly[trace] ", "Display" -> "codemirror", 
-    "Hash" -> "5107f780-82f6-43ee-ac89-5dadca47034e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"a5204aec-183f-42a7-819a-2796b31cd9fa\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5oaG\
-ZgkpibrGloYp+maGCWa61oYWibqGplbmiUZGyanWKYlAgCAhBWg\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b58cbf96-313e-4b65-a6de-7baba043f3ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "trace = <|\n\t\"x\" -> {1, 2, 3, 4}, \n\t\"y\" -> {10, 11, \
-12, 13}, \n\t\"mode\" -> \"markers\", \n\t\"marker\" -> <| \"size\" -> {40, \
-60, 80, 100} |> \n|>;\n\nPlotly[trace]", "Display" -> "codemirror", 
-    "Hash" -> "281a5e2e-6f4a-4629-bc4d-930b6681bc14", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"89322229-2393-4060-99a1-f0e3d4695046\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW1gaG\
-wGBpa6RsaWxromBmYGupWWioW6aQapxiomZpamBiRkAZGUUKw==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "afb85d05-9c8b-4b58-9b4a-5a4101bbbadb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "heatmap = <|\n\t\"z\" -> Table[x y, {x,-10,10}, \
-{y,-10,10}],\n\t\"type\" -> \"heatmap\"\n|>;\n\nPlotly[heatmap]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "749c7d31-838a-4e88-b2ba-5060b43756a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"cf3f833e-a0af-46f0-ab3b-8d1f765d5be1\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6cZp\
-1kYG6fqJhokpumamKUZ6CYmGSfpWqQYppmbmaaYJqUaAgCUTxZe\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "14086e98-a2d4-4080-9f73-5d3de7fb317f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "5d979887-f60d-43a0-97d5-020b62e887d7"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Plotly Library
+We provide direct bindings to API of Plotly.js. Try out some the of basic charts
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Plotly Library
+We provide direct bindings to API of Plotly.js. Try out some the of basic charts
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+data = Table[{x, Sinc[6x]}, {x,0, 2Pi, 0.1}];
+
+plot = Plotly[<|
+  "x"->data[[All,1]],
+  "y"->data[[All,2]],
+  "mode"->"lines"
+|>]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlotlyInstance[FrontEndRef["F8beeb8b4-b335-4816-84ab-25d4421292cf"],WindowObj[<|"Socket" -> USocketObject[7]|>]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJWySlpiZZJJnoJhkbm+qaWBia6VqYJCbpGpmmmJgYGRpZGiWnAQCdvhW5"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now `plot` acts like an instance of the visible plot. To add more traces simply evaluate:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now `plot` acts like an instance of the visible plot. To add more traces simply evaluate:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+PlotlyAddTraces[plot, {
+  <|"x"->data[[All,1]], "y"->Reverse[data[[All,2]]]|>
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Missing["NotConnected"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Plotly automatically rescales and adds legends. This can be done with almost any plot type.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Plotly automatically rescales and adds legends. This can be done with almost any plot type.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Other charts
+Pie, bars, bubble chart. Plotly has almost everything!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Other charts
+Pie, bars, bubble chart. Plotly has almost everything!
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+trace = <| 
+	"values" -> {19, 26, 55}, 
+	"labels" -> {"Residential", "Non-Residential", "Utility"}, 
+	"type" -> "pie" 
+|>;
+
+Plotly[trace]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlotlyInstance[FrontEndRef["Ffee7f622-4b0e-4e41-8a96-823ca162820b"],WindowObj[<|"Socket" -> USocketObject[7]|>]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJp6WmmqeZGRnpmiQZpOqapJoY6lokWprpWhgZJycamhlZGBkkAQCfzRW4"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+trace = <| 
+	"x" -> {"giraffes", "orangutans", "monkeys"}, 
+	"y" -> {20, 14, 23}, "type" -> "bar" 
+|>;
+
+Plotly[trace] 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlotlyInstance[FrontEndRef["Feefab1ce-079b-46f6-9218-87d614b1b7ec"],WindowObj[<|"Socket" -> USocketObject[7]|>]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJp6amJSYZJqfqGphbJumamKWZ6VoaGVroWpinmBmaJBkmmacmAwCp5RZU"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+trace = <|
+	"x" -> {1, 2, 3, 4}, 
+	"y" -> {10, 11, 12, 13}, 
+	"mode" -> "markers", 
+	"marker" -> <| "size" -> {40, 60, 80, 100} |> 
+|>;
+
+Plotly[trace]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlotlyInstance[FrontEndRef["F0d7861b0-05d1-4a58-8f9a-13fd95adaf8e"],WindowObj[<|"Socket" -> USocketObject[7]|>]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJG6SYW5gZJhnoGpimGOqaJJpa6FqkWSbqGhqnpViaJqYkplmkAgCS8BYf"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+heatmap = <|
+	"z" -> Table[x y, {x,-10,10}, {y,-10,10}],
+	"type" -> "heatmap"
+|>;
+
+Plotly[heatmap]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlotlyInstance[FrontEndRef["F22d8b2de-6abb-425e-839c-9e81d6f253b0"],WindowObj[<|"Socket" -> USocketObject[7]|>]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJGxmlWCQZpaTqmiUmJemaGJmm6loYWybrWqZaGKaYpRmZGicZAACiaBYc"*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: F0d7861b0-05d1-4a58-8f9a-13fd95adaf8e
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot[{Association["x" -> {1, 2, 3, 4}, "y" -> {10, 11, 12, 13}, "mode" -> "markers", "marker" -> Association["size" -> {40, 60, 80, 100}]]}, Association["margin" -> "autoexpand", ImageSize -> 500], "SystemEvent" -> "198c2f7d-30ad-46e2-b4bf-74b7e2b4969c", Epilog -> FrontInstanceReference["198c2f7d-30ad-46e2-b4bf-74b7e2b4969c"]]]|>
+
+%-------------------------------------------------------------------------%
+Key: F22d8b2de-6abb-425e-839c-9e81d6f253b0
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot[{Association["z" -> {{100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -50, -60, -70, -80, -90, -100}, {90, 81, 72, 63, 54, 45, 36, 27, 18, 9, 0, -9, -18, -27, -36, -45, -54, -63, -72, -81, -90}, {80, 72, 64, 56, 48, 40, 32, 24, 16, 8, 0, -8, -16, -24, -32, -40, -48, -56, -64, -72, -80}, {70, 63, 56, 49, 42, 35, 28, 21, 14, 7, 0, -7, -14, -21, -28, -35, -42, -49, -56, -63, -70}, {60, 54, 48, 42, 36, 30, 24, 18, 12, 6, 0, -6, -12, -18, -24, -30, -36, -42, -48, -54, -60}, {50, 45, 40, 35, 30, 25, 20, 15, 10, 5, 0, -5, -10, -15, -20, -25, -30, -35, -40, -45, -50}, {40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0, -4, -8, -12, -16, -20, -24, -28, -32, -36, -40}, {30, 27, 24, 21, 18, 15, 12, 9, 6, 3, 0, -3, -6, -9, -12, -15, -18, -21, -24, -27, -30}, {20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0, -2, -4, -6, -8, -10, -12, -14, -16, -18, -20}, {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10}, {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {-20, -18, -16, -14, -12, -10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20}, {-30, -27, -24, -21, -18, -15, -12, -9, -6, -3, 0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30}, {-40, -36, -32, -28, -24, -20, -16, -12, -8, -4, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40}, {-50, -45, -40, -35, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50}, {-60, -54, -48, -42, -36, -30, -24, -18, -12, -6, 0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60}, {-70, -63, -56, -49, -42, -35, -28, -21, -14, -7, 0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70}, {-80, -72, -64, -56, -48, -40, -32, -24, -16, -8, 0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80}, {-90, -81, -72, -63, -54, -45, -36, -27, -18, -9, 0, 9, 18, 27, 36, 45, 54, 63, 72, 81, 90}, {-100, -90, -80, -70, -60, -50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}}, "type" -> "heatmap"]}, Association["margin" -> "autoexpand", ImageSize -> 500], "SystemEvent" -> "ecf9050e-18a7-4b8f-911c-3ee8ddc3e27f", Epilog -> FrontInstanceReference["ecf9050e-18a7-4b8f-911c-3ee8ddc3e27f"]]]|>
+
+%-------------------------------------------------------------------------%
+Key: F8beeb8b4-b335-4816-84ab-25d4421292cf
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot[{Association["x" -> {0., 0.1, 0.2, 0.30000000000000004, 0.4, 0.5, 0.6000000000000001, 0.7000000000000001, 0.8, 0.9, 1., 1.1, 1.2000000000000002, 1.3, 1.4000000000000001, 1.5, 1.6, 1.7000000000000002, 1.8, 1.9000000000000001, 2., 2.1, 2.2, 2.3000000000000003, 2.4000000000000004, 2.5, 2.6, 2.7, 2.8000000000000003, 2.9000000000000004, 3., 3.1, 3.2, 3.3000000000000003, 3.4000000000000004, 3.5, 3.6, 3.7, 3.8000000000000003, 3.9000000000000004, 4., 4.1000000000000005, 4.2, 4.3, 4.4, 4.5, 4.6000000000000005, 4.7, 4.800000000000001, 4.9, 5., 5.1000000000000005, 5.2, 5.300000000000001, 5.4, 5.5, 5.6000000000000005, 5.7, 5.800000000000001, 5.9, 6., 6.1000000000000005, 6.2}, "y" -> {1., 0.9410707889917257, 0.7766992383060218, 0.5410264615989973, 0.2814429918963127, 0.0470400026866224, -0.12292234535968133, -0.20751804105085433, -0.20753429350746674, -0.14310453473259022, -0.04656924969982098, 0.04720323689596646, 0.11023164775682688, 0.12801837761212884, 0.1017379652486048, 0.04579094280463962, -0.018159039710727225, -0.0686151654503474, -0.09082742870986033, -0.08064285312848032, -0.04471440983336958, 0.0026684958112014657, 0.0448540541444867, 0.06838374416261628, 0.067059567815922, 0.04335252267714112, 0.006907285403810403, -0.029161851012251185, -0.052831371046518125, -0.057049389682220265, -0.04172151370953756, -0.013278153856807574, 0.017880985876036388, 0.041094633207429565, 0.04900945588934653, 0.03984074469219314, 0.017650485724765744, -0.009339478405710009, -0.031732226142291445, -0.0421758785521645, -0.037732431750276, -0.0206462028614074, 0.0026669870049793043, 0.023985853570544054, 0.03614716267017795, 0.03542133068164826, 0.02262235997885476, 0.0026335264391616226, -0.01742323961877004, -0.030699136333679825, -0.03293438746976206, -0.023802639471620698, -0.006867068599227058, 0.011783027158788215, 0.02570245325024023, 0.030300359397189915, 0.02433828138471553, 0.010232496168323455, -0.006899758561890269, -0.021081826995619234, -0.027549412595642104, -0.024338911040351404, -0.012866825768505778}, "mode" -> "lines"]}, Association["margin" -> "autoexpand", ImageSize -> 500], "SystemEvent" -> "c022fa1d-b00f-4c53-a2a2-532d648155c5", Epilog -> FrontInstanceReference["c022fa1d-b00f-4c53-a2a2-532d648155c5"]]]|>
+
+%-------------------------------------------------------------------------%
+Key: Feefab1ce-079b-46f6-9218-87d614b1b7ec
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot[{Association["x" -> {"giraffes", "orangutans", "monkeys"}, "y" -> {20, 14, 23}, "type" -> "bar"]}, Association["margin" -> "autoexpand", ImageSize -> 500], "SystemEvent" -> "e654aa3a-897f-4097-8117-95a37a92b20a", Epilog -> FrontInstanceReference["e654aa3a-897f-4097-8117-95a37a92b20a"]]]|>
+
+%-------------------------------------------------------------------------%
+Key: Ffee7f622-4b0e-4e41-8a96-823ca162820b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Plotly`Private`iPlotlyNewPlot[{Association["values" -> {19, 26, 55}, "labels" -> {"Residential", "Non-Residential", "Utility"}, "type" -> "pie"]}, Association["margin" -> "autoexpand", ImageSize -> 500], "SystemEvent" -> "37183949-05c0-4666-8492-5c62223294b7", Epilog -> FrontInstanceReference["37183949-05c0-4666-8492-5c62223294b7"]]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -1,245 +1,266 @@
-<|"Notebook" -> <|"Controller" -> "bd7dbb77-661c-4787-8b1d-bbe62fbd2c11", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2429], 
-   "FocusedCellSelection" -> {314, 313}, "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "cad5150d-9fe6-43cf-9b13-79dc92054f38", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Decorating symbols/B - Interpretation.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Interpretation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2378]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Temporary", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2378]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Permanent", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2392]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Interpretation\n## Temporary\nYou can \
-temporarily replace a symbol with an icon by applying `Interpretation`. After \
-the first evaluation, the representation is lost and the true expression is \
-revealed:", "Display" -> "codemirror", 
-    "Hash" -> "850603f2-c938-4a95-a3a0-8914dfeaaf81", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "# Interpretation\n## Temporary\nYou can temporarily replace a \
-symbol with an icon by applying `Interpretation`. After the first evaluation, \
-the representation is lost and the true expression is revealed:", 
-    "Display" -> "markdown", "Hash" -> 
-     "338ab367-e412-4aea-ae4c-679286c97d38", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "Interpretation[\n      Graphics[Rectangle[{-1,-1},{1,1}], \
-ImageSize->{20,20}], \n      1\n]", "Display" -> "codemirror", 
-    "Hash" -> "b1ba6e7e-e1e9-43d6-8560-720b755a58a4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(1)(*,*)(*\"1:eJwlT8tOg0AAJMaD8SuwJyAQgahRk5osZlu2LyxL\
-MEI4AF2B8tgGSoESPtS/keplMjPJTGbuAmp+XzEMU92OAHfJkZZ2Qhr8M0pOsDVX4Ll56R/iJKxck\
-4RHv4gy4vaSIrKSMohsPxJl8EQW5X5EcHImrPTG9qossqo8eDwniGOFMFFeyaK1rDX9wPkm/ZoD6k\
-QQ66f0cfmZrZH2oKc6OI151MGmjmncAJpHioFxuzrLxQwjCJOVpTotJs49AsDyDRRFzxBu9x3dvId\
-2sHCKIF88+YWWz4KDgxLwggAC+7RKq+10Orns8GxN4P8fX49g1hnBNxdC/J1RZN2fa5U1+QVSjFNr\
-\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "faaa2d54-8431-4815-b450-8b1fa682dfbc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\nWe can prove it by:", "Display" -> "codemirror", 
-    "Hash" -> "2cc8006e-eafd-456a-8c4c-fbb410188944", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "We can prove it by:", "Display" -> "markdown", 
-    "Hash" -> "0f921bf6-f02a-475d-9320-118a06bc8d4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(1)(*,*)(*\"1:eJwlT8tOg0AAJMaD8SuwJyAQgahRk5osZlu2LyxL\
-MEI4AF2B8tgGSoESPtS/keplMjPJTGbuAmp+XzEMU92OAHfJkZZ2Qhr8M0pOsDVX4Ll56R/iJKxck\
-4RHv4gy4vaSIrKSMohsPxJl8EQW5X5EcHImrPTG9qossqo8eDwniGOFMFFeyaK1rDX9wPkm/ZoD6k\
-QQ66f0cfmZrZH2oKc6OI151MGmjmncAJpHioFxuzrLxQwjCJOVpTotJs49AsDyDRRFzxBu9x3dvId\
-2sHCKIF88+YWWz4KDgxLwggAC+7RKq+10Orns8GxN4P8fX49g1hnBNxdC/J1RZN2fa5U1+QVSjFNr\
-\"*)(*]VB*) + 1", "Display" -> "codemirror", 
-    "Hash" -> "945823e4-b222-45eb-8f8b-c7bc92145df3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "2", "Display" -> "codemirror", 
-    "Hash" -> "5f0ec819-6516-4259-875c-398d313617b8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\n## Permanent\nTo permanently change how a given symbol \
-is displayed, we should use `MakeBoxes`. Remember to apply `MakeBoxes` to any \
-expression you want to provide to the output so it will propagate down the \
-tree:", "Display" -> "codemirror", "Hash" -> 
-     "74ea47dd-7bb9-4e3a-9666-472c8249cf17", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "## Permanent\nTo permanently change how a given symbol is \
-displayed, we should use `MakeBoxes`. Remember to apply `MakeBoxes` to any \
-expression you want to provide to the output so it will propagate down the \
-tree:", "Display" -> "markdown", "Hash" -> 
-     "5ae1e697-fdae-4bac-8fba-6d02ba84a94a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "morse[s_String];\n\nmorse /: MakeBoxes[m: morse[s_], f: \
-StandardForm] := With[{\n  i = Interpretation[Row[{\"[\", Style[s, 12], \
-\"]\"}], m]\n},\n  MakeBoxes[i, f]\n]", "Display" -> "codemirror", 
-    "Hash" -> "32bf6a8c-fc35-454b-8c07-7d31b232ba44", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\nLet's define a helper constructor for our morse code:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b5b42cec-4f7b-4483-8854-37255b8ebef9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "Let's define a helper constructor for our morse code:", 
-    "Display" -> "markdown", "Hash" -> 
-     "41d0b228-f7d7-41d3-9884-714f1769bb91", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "morseTable = {\"a\" -> \".- \", \"b\" -> \"-... \", \"c\" -> \
-\"-.-. \", \n\"d\" -> \"-.. \", \"e\" -> \". \", \"f\" -> \"..-. \", \"g\" -> \
-\"--. \", \n\"h\" -> \".... \", \"i\" -> \".. \", \"j\" -> \".--- \", \"k\" \
--> \"-.- \", \n\"l\" -> \".-.. \", \"m\" -> \"-- \", \"n\" -> \"-. \", \"o\" \
--> \"--- \", \n\"p\" -> \".--. \", \"q\" -> \"--.- \", \"r\" -> \".-. \", \
-\"s\" -> \"... \", \n\"t\" -> \"- \", \"u\" -> \"..- \", \"v\" -> \"...- \", \
-\"w\" -> \".-- \", \n\"x\" -> \"-..- \", \"y\" -> \"-.-- \", \"z\" -> \"--.. \
-\", \" \" -> \"/ \"};\n\nmorse[s_String] := \
-morse[StringReplace[ToLowerCase[s], morseTable]] /; StringMatchQ[s, \
-___~~WordCharacter..~~___];\n\nmorse /: TextString[morse[s_]] := \
-StringReplace[s, \nMap[Function[r, Rule[r[[2]], r[[1]]]], \
-SortBy[Normal[morseTable], -StringLength[Last[#]] &]]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "445d00a8-b431-42ec-90d1-83ee2421c8ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\nLet's try to create a morse code container:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f492faac-d832-4e32-84d1-24a759669835", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "Let's try to create a morse code container:", 
-    "Display" -> "markdown", "Hash" -> 
-     "482db3b6-f7ec-4fb5-875d-672ec3c5e0a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "morse[\"sos\"]", "Display" -> "codemirror", 
-    "Hash" -> "1f8feedc-9399-478c-af6c-193b8aa36e5f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(morse[\"... --- ... \
-\"])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR\
-0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXC\
-etlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0s\
-NDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJK\
-f55OZVg0ZCi0lQAzblJrw==\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "9f0afbe0-31ad-4267-80ee-64acbdcd45ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> 
-     ".md\nTo check that this is still morse symbol, apply `InputForm`:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "22e1327d-e29c-42cb-b198-69d0ad3ac55f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> 
-     "To check that this is still morse symbol, apply `InputForm`:", 
-    "Display" -> "markdown", "Hash" -> 
-     "63dde1ab-b2a0-447d-b5b9-792ad7a29198", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(morse[\"... --- ... \
-\"])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR\
-0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXC\
-etlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0s\
-NDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJK\
-f55OZVg0ZCi0lQAzblJrw==\"*)(*]VB*) // InputForm", "Display" -> "codemirror", 
-    "Hash" -> "bc93016f-12bb-4590-8090-122d471dbca2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(InputForm[morse[\"... --- ... \
-\"]])(*,*)(*\"1:eJwlT81ugjAAJssOZk/hOEE3SMhiQpbsAFHcIOhsKVs1HjqsrGuhEyQMH2lPK\
-ejl+z18+e6/FNzfaJpW3/Uw2/GjqlLOWvTfWwP4/gaYRqGqmm1027bHlmWNB9a3pgEe+w7ozjML/5\
-IkVu+oWHAy99Qkj1GLPtIlFc0hKyeQCPmA8SqDJJ+liApH1Z6MViJ12WcQ4WK9b8owIDL8zoT8xdO\
-AQCwR5QfK5u5PG7nOAvGnLkGnCPJ86sV596reXvRhf+v7wLxeuO0BNpKh0SAY3S1L2V3SpGrYGccC\
-Q58=\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "1365323f-d741-4a56-a52a-dae08f660a23", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\nLet's convert it back to the text:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6bb461bb-5238-460a-b181-3d56d6ee47cd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "Let's convert it back to the text:", "Display" -> "markdown", 
-    "Hash" -> "0fcf5eb9-1783-42eb-b7ca-e3a52dd6725a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(morse[\"... --- ... \
-\"])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR\
-0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXC\
-etlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0s\
-NDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJK\
-f55OZVg0ZCi0lQAzblJrw==\"*)(*]VB*) // TextString", "Display" -> "codemirror", 
-    "Hash" -> "2347baba-62d6-4446-a941-371d87bc230f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "\"sos\"", "Display" -> "codemirror", 
-    "Hash" -> "16b2eba1-ae75-4f2e-82eb-18e9824b1c03", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> ".md\nFinally, make it audible:", "Display" -> "codemirror", 
-    "Hash" -> "aec1d075-dfdd-4305-b44a-ad1a60cf4a4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "Finally, make it audible:", "Display" -> "markdown", 
-    "Hash" -> "c70e37f7-0048-4b83-bfa2-563f0d72c350", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "silence = Table[0, {t,0,40Pi,0.1}];\ndot = Table[Sin[5 t], \
-{t,0,40Pi,0.1}];\ndash = Join[dot, dot];\n\nmorse /: Play[morse[t_String]] := \
-With[{\n  m = morse[t]\n},\nJoin @@ (Switch[#, \".\", Join[dot, silence], \
-\"-\", Join[dash, silence], _, Join[silence, silence]] & /@ \
-StringSplit[m[[1]], \"\"]) // ListPlay // EmitSound;\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c93a4ec2-6255-4629-a444-598d6ec225b7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>, 
-   <|"Data" -> "(*VB[*)(morse[\"... --- ... \
-\"])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR\
-0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXC\
-etlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0s\
-NDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJK\
-f55OZVg0ZCi0lQAzblJrw==\"*)(*]VB*) // Play", "Display" -> "codemirror", 
-    "Hash" -> "f16c88bd-779d-41dc-aab2-ef6e6b38b5f5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "39150349-98e0-4c57-8510-d734cd3ecde4"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Interpretation
+## Temporary
+You can temporarily replace a symbol with an icon by applying `Interpretation`. After the first evaluation, the representation is lost and the true expression is revealed:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Interpretation
+## Temporary
+You can temporarily replace a symbol with an icon by applying `Interpretation`. After the first evaluation, the representation is lost and the true expression is revealed:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Interpretation[
+      Graphics[Rectangle[{-1,-1},{1,1}], ImageSize->{20,20}], 
+      1
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(1)(*,*)(*"1:eJwlT8tOg0AAJMaD8SuwJyAQgahRk5osZlu2LyxLMEI4AF2B8tgGSoESPtS/keplMjPJTGbuAmp+XzEMU92OAHfJkZZ2Qhr8M0pOsDVX4Ll56R/iJKxck4RHv4gy4vaSIrKSMohsPxJl8EQW5X5EcHImrPTG9qossqo8eDwniGOFMFFeyaK1rDX9wPkm/ZoD6kQQ66f0cfmZrZH2oKc6OI151MGmjmncAJpHioFxuzrLxQwjCJOVpTotJs49AsDyDRRFzxBu9x3dvId2sHCKIF88+YWWz4KDgxLwggAC+7RKq+10Orns8GxN4P8fX49g1hnBNxdC/J1RZN2fa5U1+QVSjFNr"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We can prove it by:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We can prove it by:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(1)(*,*)(*"1:eJwlT8tOg0AAJMaD8SuwJyAQgahRk5osZlu2LyxLMEI4AF2B8tgGSoESPtS/keplMjPJTGbuAmp+XzEMU92OAHfJkZZ2Qhr8M0pOsDVX4Ll56R/iJKxck4RHv4gy4vaSIrKSMohsPxJl8EQW5X5EcHImrPTG9qossqo8eDwniGOFMFFeyaK1rDX9wPkm/ZoD6kQQ66f0cfmZrZH2oKc6OI151MGmjmncAJpHioFxuzrLxQwjCJOVpTotJs49AsDyDRRFzxBu9x3dvId2sHCKIF88+YWWz4KDgxLwggAC+7RKq+10Orns8GxN4P8fX49g1hnBNxdC/J1RZN2fa5U1+QVSjFNr"*)(*]VB*) + 1
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+2
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Permanent
+To permanently change how a given symbol is displayed, we should use `MakeBoxes`. Remember to apply `MakeBoxes` to any expression you want to provide to the output so it will propagate down the tree:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Permanent
+To permanently change how a given symbol is displayed, we should use `MakeBoxes`. Remember to apply `MakeBoxes` to any expression you want to provide to the output so it will propagate down the tree:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+morse[s_String];
+
+morse /: MakeBoxes[m: morse[s_], f: StandardForm] := With[{
+  i = Interpretation[Row[{"[", Style[s, 12], "]"}], m]
+},
+  MakeBoxes[i, f]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's define a helper constructor for our morse code:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's define a helper constructor for our morse code:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+morseTable = {"a" -> ".- ", "b" -> "-... ", "c" -> "-.-. ", 
+"d" -> "-.. ", "e" -> ". ", "f" -> "..-. ", "g" -> "--. ", 
+"h" -> ".... ", "i" -> ".. ", "j" -> ".--- ", "k" -> "-.- ", 
+"l" -> ".-.. ", "m" -> "-- ", "n" -> "-. ", "o" -> "--- ", 
+"p" -> ".--. ", "q" -> "--.- ", "r" -> ".-. ", "s" -> "... ", 
+"t" -> "- ", "u" -> "..- ", "v" -> "...- ", "w" -> ".-- ", 
+"x" -> "-..- ", "y" -> "-.-- ", "z" -> "--.. ", " " -> "/ "};
+
+morse[s_String] := morse[StringReplace[ToLowerCase[s], morseTable]] /; StringMatchQ[s, ___~~WordCharacter..~~___];
+
+morse /: TextString[morse[s_]] := StringReplace[s, 
+Map[Function[r, Rule[r[[2]], r[[1]]]], SortBy[Normal[morseTable], -StringLength[Last[#]] &]]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's try to create a morse code container:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's try to create a morse code container:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+morse["sos"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(morse["... --- ... "])(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXCetlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0sNDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJKf55OZVg0ZCi0lQAzblJrw=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To check that this is still morse symbol, apply `InputForm`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To check that this is still morse symbol, apply `InputForm`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(morse["... --- ... "])(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXCetlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0sNDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJKf55OZVg0ZCi0lQAzblJrw=="*)(*]VB*) // InputForm
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(InputForm[morse["... --- ... "]])(*,*)(*"1:eJwlT81ugjAAJssOZk/hOEE3SMhiQpbsAFHcIOhsKVs1HjqsrGuhEyQMH2lPKejl+z18+e6/FNzfaJpW3/Uw2/GjqlLOWvTfWwP4/gaYRqGqmm1027bHlmWNB9a3pgEe+w7ozjML/5IkVu+oWHAy99Qkj1GLPtIlFc0hKyeQCPmA8SqDJJ+liApH1Z6MViJ12WcQ4WK9b8owIDL8zoT8xdOAQCwR5QfK5u5PG7nOAvGnLkGnCPJ86sV596reXvRhf+v7wLxeuO0BNpKh0SAY3S1L2V3SpGrYGccCQ58="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's convert it back to the text:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's convert it back to the text:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(morse["... --- ... "])(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXCetlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0sNDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJKf55OZVg0ZCi0lQAzblJrw=="*)(*]VB*) // TextString
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"sos"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Finally, make it audible:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Finally, make it audible:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+silence = Table[0, {t,0,40Pi,0.1}];
+dot = Table[Sin[5 t], {t,0,40Pi,0.1}];
+dash = Join[dot, dot];
+
+morse /: Play[morse[t_String]] := With[{
+  m = morse[t]
+},
+Join @@ (Switch[#, ".", Join[dot, silence], "-", Join[dash, silence], _, Join[silence, silence]] & /@ StringSplit[m[[1]], ""]) // ListPlay // EmitSound;
+];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(morse["... --- ... "])(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cEngVwNLXenaC3N6mqlaCUNrRotTR0wqaHlBBLWUNLT01PQ1dVVANFKQGEdkJySoVWqV0VIiG9+QHCuX2aku2O+aXpysGNohGlUVHZBYXCetlNweJR2RJ5bYmR5unOISbprWEVwblRAIVA2OcI0KDI7Rzu0MtA3NL00I9MxyMupICS3oDy8Ij0sNDwqNTUnvTjKOdMgJ9DRtzA9vKLc1lYJZG+skxOIgrtSKVapthYo7A4UhviQBUgEleakBnOAGKmJKf55OZVg0ZCi0lQAzblJrw=="*)(*]VB*) // Play
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

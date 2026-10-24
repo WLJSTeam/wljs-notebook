@@ -1,109 +1,198 @@
-<|"Notebook" -> <|"Controller" -> "5ff8fd14-955b-4c7e-ad08-e71b0aafa172", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$3290], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "dbd4cf0e-f926-4e55-a381-5b709a623a89", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/for Physicists/D - Quantum well.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Quantum well", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$3287]]}|>, 
- "Cells" -> 
-  {<|"Data" -> 
-     ".md\n# Quantum well\nSolving Schrodinger equation in real-time", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8101af88-cd1f-4ec3-a4c0-526c2f900615", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> "># Quantum well\nSolving Schrodinger equation in real-time", 
-    "Display" -> "markdown", "Hash" -> 
-     "5631eeea-e080-4499-9b5f-e600cafeec86", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ".md\nInitial parameters", "Display" -> "codemirror", 
-    "Hash" -> "ee66ebad-d0f7-4fa5-b518-0078fd614419", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ">Initial parameters", "Display" -> "markdown", 
-    "Hash" -> "954d8c81-4cc2-41ce-a6a4-7b4116a43b84", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> "ClearAll[v0, hb, d, m, V, op, u, V, x];\n\nv0 = 8.;\nhb = \
-1.;\nd  = 1.;\nm  = 1.;", "Display" -> "codemirror", 
-    "Hash" -> "766424cb-c006-4835-bc6c-364a9c3d85a1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ".md\nOperator", "Display" -> "codemirror", 
-    "Hash" -> "c8e1addc-5b15-48a9-9e21-257960734988", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ">Operator", "Display" -> "markdown", 
-    "Hash" -> "800383cd-20c1-4051-8e7f-68f1d603e8ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> "V = \
-(*TB[*)Piecewise[{{(*|*)0(*|*),(*|*)-d<=#<d(*|*)},{(*|*)v0(*|*),(*|*)True(*|*\
-)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmcWpTvkVmUxAAQBzVQdd*)(*]TB*) \
-&;\nop[u_[x_]] := - hb^2/(2 m) u''[x] + V[x] u[x];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b09a20f-560f-4f37-8cab-3298d7398ef6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ".md\nControls", "Display" -> "codemirror", 
-    "Hash" -> "ca55bd1a-9f2c-4812-b838-67ca35a51941", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ">Controls", "Display" -> "markdown", 
-    "Hash" -> "eea89b91-e774-4b2d-a72a-bd5a43644246", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> "controls = EventHandler[InputGroup[<|\n  \"m\" -> \
-InputRange[0.1, 5, 0.1, 1.0, \"Label\"->\"Mass\"],\n  \"V\" -> \
-InputRange[0.1, 10, 0.1, 8.0, \"Label\"->\"V0\"],\n  \"d\" -> InputRange[0.1, \
-2, 0.1, 1.0, \"Label\"->\"d\"]\n|>], Function[values,\n      v0 = \
-values[\"V\"];\n      m = values[\"m\"];\n      d = values[\"d\"];\n  \n      \
-vplot = Table[{x,V[x]}, {x,-2,2,0.05}];\n      \n      {ev, ef} = \n        \
-NDEigensystem[{op[u[x]], DirichletCondition[u[x] == 0, True]}, u[x], {x, -2, \
-2}, 6];\n      \n      xaxis = Table[i, {i,-2,2,0.025}];\n      yaxis = \
-Table[Evaluate[ef + ev], {x, xaxis}] // Transpose;\n]];\n\ncontrols // \
-EventFire;", "Display" -> "codemirror", 
-    "Hash" -> "0b18d1d0-822c-4bda-9be4-4110a6448d02", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ".md\nGraphical output", "Display" -> "codemirror", 
-    "Hash" -> "88c67e16-d008-494b-8284-8687c5d6ac48", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> ">Graphical output", "Display" -> "markdown", 
-    "Hash" -> "0d1145c5-7909-455e-a996-45cf5bb981ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>, 
-   <|"Data" -> "Row[\n    {\n        Graphics[\n            {\n               \
- Table[\n                    With[{i = i, color = ColorData[97][i]},\n        \
-                {color, Line[{xaxis, yaxis[[i]]} // Transpose\n               \
-             ] // Offload}\n                    ]\n                    ,\n    \
-                {i, Length[yaxis]}\n                ]\n                ,\n    \
-            AbsoluteThickness[2]\n                ,\n                \
-Line[vplot // Offload]\n            }\n            ,\n            Axes -> \
-True\n            ,\n            PlotRange -> {{-2, 2}, {0, 16}}\n            \
-,\n            ImageSize -> {350, 350}\n        ]\n        ,\n        \
-controls\n    }\n]", "Display" -> "codemirror", 
-    "Hash" -> "14a11dfb-50a6-45db-ac57-9fe5d8417c18", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "650fe95d-ef3c-4ae1-9a2f-226c58f64462"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Quantum well
+Solving Schrodinger equation in real-time
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+># Quantum well
+Solving Schrodinger equation in real-time
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Initial parameters
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Initial parameters
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[v0, hb, d, m, V, op, u, V, x];
+
+v0 = 8.;
+hb = 1.;
+d  = 1.;
+m  = 1.;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Operator
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Operator
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+V = (*TB[*)Piecewise[{{(*|*)0(*|*),(*|*)-d<=#<d(*|*)},{(*|*)v0(*|*),(*|*)True(*|*)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmcWpTvkVmUxAAQBzVQdd*)(*]TB*) &;
+op[u_[x_]] := - hb^2/(2 m) u''[x] + V[x] u[x];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Controls
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Controls
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: false
+Type: Input
+%-------------------------------------------------------------------------%
+controls = EventHandler[InputGroup[<|
+  "m" -> InputRange[0.1, 5, 0.1, 1.0, "Label"->"Mass"],
+  "V" -> InputRange[0.1, 10, 0.1, 8.0, "Label"->"V0"],
+  "d" -> InputRange[0.1, 2, 0.1, 1.0, "Label"->"d"]
+|>], Function[values,
+      v0 = values["V"];
+      m = values["m"];
+      d = values["d"];
+  
+      vplot = Table[{x,V[x]}, {x,-2,2,0.05}];
+      
+      {ev, ef} = 
+        NDEigensystem[{op[u[x]], DirichletCondition[u[x] == 0, True]}, u[x], {x, -2, 2}, 6];
+      
+      xaxis = Table[i, {i,-2,2,0.025}];
+      yaxis = Table[Evaluate[ef + ev], {x, xaxis}] // Transpose;
+]];
+
+controls // EventFire;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Graphical output
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Graphical output
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Row[
+    {
+        Graphics[
+            {
+                Table[
+                    With[{i = i, color = ColorData[97][i]},
+                        {color, Line[{xaxis, yaxis[[i]]} // Transpose
+                            ] // Offload}
+                    ]
+                    ,
+                    {i, Length[yaxis]}
+                ]
+                ,
+                AbsoluteThickness[2]
+                ,
+                Line[vplot // Offload]
+            }
+            ,
+            Axes -> True
+            ,
+            PlotRange -> {{-2, 2}, {0, 16}}
+            ,
+            ImageSize -> {350, 350}
+        ]
+        ,
+        controls
+    }
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

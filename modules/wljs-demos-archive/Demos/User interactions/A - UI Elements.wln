@@ -1,231 +1,293 @@
-<|"Notebook" -> <|"Controller" -> "cf94e53b-7999-48d4-a6fb-626af6f712c3", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1149], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "1015cfed-be18-4571-8a2b-25832acf5191", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/User interactions/A - UI Elements.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "UI Elements", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1056]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Grouping", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1141]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Chaining Events", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1148]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# UI Elements\nWe provide a large set of basic \
-UI elements used for creating buttons, sliders, text fields, and \
-more.\n\nInput elements such as `Button`, `InputRange`, `InputText`, \
-`InputFile`, etc., can be found in the <small>GUI section</small> of the \
-symbols reference documentation.", "Display" -> "codemirror", 
-    "Hash" -> "bca6e87e-8962-4e89-b2cb-8ab1aaf71a92", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "# UI Elements\nWe provide a large set of basic UI elements \
-used for creating buttons, sliders, text fields, and more.\n\nInput elements \
-such as `Button`, `InputRange`, `InputText`, `InputFile`, etc., can be found \
-in the <small >GUI section</small> of the symbols reference documentation.", 
-    "Display" -> "markdown", "Hash" -> 
-     "764d239f-eb9e-4cbb-85f3-f01aeecd8be1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nEach standard input element generates `EventObject`, to \
-which you can assign a handler function. You don't necessarily need to assign \
-it to a variable. For example (see InputButton):", "Display" -> "codemirror", 
-    "Hash" -> "69df3d19-68bc-450f-afd8-6479f60ec9b4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "Each standard input element generates `EventObject`, to which \
-you can assign a handler function. You don't necessarily need to assign it to \
-a variable. For example (see InputButton):", "Display" -> "markdown", 
-    "Hash" -> "5e6f1d3c-a952-4929-9bd0-72da488579f1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "EventHandler[InputButton[\"Click\"], Beep]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d0c0ee8a-b4c6-4b24-8be3-843734f610a3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nis equally valid:", "Display" -> "codemirror", 
-    "Hash" -> "0fc5ed2f-ce2d-4b94-8db7-7b11931e7933", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "is equally valid:", "Display" -> "markdown", 
-    "Hash" -> "a788a220-8bc1-4d03-902e-b89894ab2038", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> 
-     "btn = InputButton[\"Click\"];\nEventHandler[btn, Beep];\nbtn", 
-    "Display" -> "codemirror", "Hash" -> 
-     "61438f72-0050-401d-92f5-52b28702870e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nThere is also a helper symbol `Button` that allows you \
-to assign handlers implicitly:", "Display" -> "codemirror", 
-    "Hash" -> "f5e9da0e-8449-486c-84d6-d9d3c173b8da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "There is also a helper symbol `Button` that allows you to \
-assign handlers implicitly:", "Display" -> "markdown", 
-    "Hash" -> "eeba27de-536c-4746-937f-4d13be4b5a80", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "Button[\"Click\", Beep[]]", "Display" -> "codemirror", 
-    "Hash" -> "d3e7deb7-92de-4f28-be31-a6948219b7fd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nHere are some other examples with `InputRange`:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2d667808-a146-4710-a1f3-829ede594fc1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "Here are some other examples with `InputRange`:", 
-    "Display" -> "markdown", "Hash" -> 
-     "ba06c183-f56a-4de0-8951-cce737f5f174", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "EventHandler[InputRange[0, 1, 0.1], Function[value, radius = \
-value]]\n% // EventFire; (*BB[*)(* just to initialize radius symbol \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n\nGraphics[{LightBlue, Disk[], Pink, Disk[{0,0}, radius // \
-Offload]}, ImageSize->200, \"Controls\"->False]", "Display" -> "codemirror", 
-    "Hash" -> "5bf90e20-dd0d-4a1b-a8cf-7f3ec241e91e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\n:::tip\nApply EventFire to any EventObject to manually \
-fire an event with a default value to initialize your variables, if \
-needed.\n:::\n\nYou can also add a label and an initial values as the 4th \
-argument to an InputRange:", "Display" -> "codemirror", 
-    "Hash" -> "8792caa6-cc32-47a0-af40-891cbb19fc62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ":::tip\nApply EventFire to any EventObject to manually fire \
-an event with a default value to initialize your variables, if \
-needed.\n:::\n\nYou can also add a label and an initial values as the 4th \
-argument to an InputRange:", "Display" -> "markdown", 
-    "Hash" -> "e5ac44a0-8bfb-4230-b000-af2436f55036", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "InputRange[0, 1, 0.1, 0.7, \"Label\" -> \"Radius\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0e374ee5-4563-439f-bc62-0c4635fab600", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nHere is an example using InputSelect:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "28cc3ddb-44f8-4456-ab70-30db8a788876", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "Here is an example using InputSelect:", 
-    "Display" -> "markdown", "Hash" -> 
-     "4b2d6a7d-7cde-40ce-bb97-804f202f4621", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "angle = 45 Degree;\nEventHandler[\n    InputSelect[{Pi/2 -> \
-\"90\", Pi/4 -> \"45\", 0 -> \"0\"}, Pi/4], \n    Function[value, angle = \
-value]\n]\n\nGraphics[{Rotate[Rectangle[{0,0}, {1,1}], angle // Offload]}, \
-\"Controls\"->False, ImageSize->200]", "Display" -> "codemirror", 
-    "Hash" -> "d4734674-53c3-4785-b34c-38772df29e8d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nHere is a simple text input:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "16ad104c-c53e-47be-b6ad-2f2cb94554cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "Here is a simple text input:", "Display" -> "markdown", 
-    "Hash" -> "e49ea418-c2ed-404e-a4a9-0d2d4e9e8fd8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "text = \"Example\";\nEventHandler[InputText[], \
-Function[value, text = value]]\nGraphics[Table[{\n  Hue[i/10., 1., 1.], \
-Rotate[Text[Style[text // Offload, FontSize -> RandomInteger[{12, 24}]], \
-RandomReal[{-1,1}, 2]], RandomChoice[{Pi, Pi/4, Pi/2, 0}]]\n}, {i, 10}]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "27035018-7b3d-464e-a0b7-7fdc40711d8c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\n## Grouping\nTo group elements both visually and at the \
-event level, use InputGroup:", "Display" -> "codemirror", 
-    "Hash" -> "54fdfd49-69c1-42fc-a021-ddc2112a92b3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "## Grouping\nTo group elements both visually and at the event \
-level, use InputGroup:", "Display" -> "markdown", 
-    "Hash" -> "ec5d3120-21c0-4d82-8122-5a9cb95d633d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "slider = InputRange[0, 1, 0.1]; \ncheckbox = \
-InputCheckbox[];\n\nn = EvaluationNotebook[];\njoined = \
-InputGroup[<|\"Checkbox\" -> checkbox, \"Slider\" -> slider|>, \"Label\" -> \
-\"Group\"];\nEventHandler[joined, NotebookWrite[n, #]&]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7529e67f-689e-4ba4-9bd7-ccd15a3be67c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\nIt merges an association (as above) or a list of \
-EventObjects into a new one. You do not need to assign separate EventHandlers \
-- just __one joined handler__ is enough. ", "Display" -> "codemirror", 
-    "Hash" -> "ac2395d0-abe7-441f-a594-0baa8885f38a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "It merges an association (as above) or a list of EventObjects \
-into a new one. You do not need to assign separate EventHandlers - just __one \
-joined handler__ is enough. ", "Display" -> "markdown", 
-    "Hash" -> "d13f3677-00e6-46fc-a283-01490f30faa6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> ".md\n## Chaining Events\nMost GUI elements support chaining, \
-where each reuses the same EventObject. It\[CloseCurlyQuote]s passed as the \
-first argument:", "Display" -> "codemirror", 
-    "Hash" -> "d172912d-c578-401e-b6ce-69db13e1ffbb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "## Chaining Events\nMost GUI elements support chaining, where \
-each reuses the same EventObject. It\[CloseCurlyQuote]s passed as the first \
-argument:", "Display" -> "markdown", 
-    "Hash" -> "62690092-b7f7-4835-8a00-8085f512f813", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>, 
-   <|"Data" -> "ev = EventObject[];\n\nInputButton[ev, \"Topic\" -> \
-\"Button\"]\nInputRange[ev, 0, 1, 0.1, \"Topic\" -> \
-\"Slider\"]\n\nEventHandler[ev, {\n  \"Button\" -> Beep,\n  \"Slider\" -> \
-Print\n}];", "Display" -> "codemirror", 
-    "Hash" -> "d6ef060a-3dec-4122-9f6d-9eed5990cb4c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1ae741de-2491-47ea-90ab-b807369d30e4"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# UI Elements
+We provide a large set of basic UI elements used for creating buttons, sliders, text fields, and more.
+
+Input elements such as `Button`, `InputRange`, `InputText`, `InputFile`, etc., can be found in the <small>GUI section</small> of the symbols reference documentation.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# UI Elements
+We provide a large set of basic UI elements used for creating buttons, sliders, text fields, and more.
+
+Input elements such as `Button`, `InputRange`, `InputText`, `InputFile`, etc., can be found in the <small >GUI section</small> of the symbols reference documentation.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Each standard input element generates `EventObject`, to which you can assign a handler function. You don't necessarily need to assign it to a variable. For example (see InputButton):
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Each standard input element generates `EventObject`, to which you can assign a handler function. You don't necessarily need to assign it to a variable. For example (see InputButton):
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputButton["Click"], Beep]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+is equally valid:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+is equally valid:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+btn = InputButton["Click"];
+EventHandler[btn, Beep];
+btn
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+There is also a helper symbol `Button` that allows you to assign handlers implicitly:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+There is also a helper symbol `Button` that allows you to assign handlers implicitly:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Click", Beep[]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here are some other examples with `InputRange`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here are some other examples with `InputRange`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputRange[0, 1, 0.1], Function[value, radius = value]]
+% // EventFire; (*BB[*)(* just to initialize radius symbol *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+
+Graphics[{LightBlue, Disk[], Pink, Disk[{0,0}, radius // Offload]}, ImageSize->200, "Controls"->False]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::tip
+Apply EventFire to any EventObject to manually fire an event with a default value to initialize your variables, if needed.
+:::
+
+You can also add a label and an initial values as the 4th argument to an InputRange:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::tip
+Apply EventFire to any EventObject to manually fire an event with a default value to initialize your variables, if needed.
+:::
+
+You can also add a label and an initial values as the 4th argument to an InputRange:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+InputRange[0, 1, 0.1, 0.7, "Label" -> "Radius"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is an example using InputSelect:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is an example using InputSelect:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+angle = 45 Degree;
+EventHandler[
+    InputSelect[{Pi/2 -> "90", Pi/4 -> "45", 0 -> "0"}, Pi/4], 
+    Function[value, angle = value]
+]
+
+Graphics[{Rotate[Rectangle[{0,0}, {1,1}], angle // Offload]}, "Controls"->False, ImageSize->200]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is a simple text input:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is a simple text input:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+text = "Example";
+EventHandler[InputText[], Function[value, text = value]]
+Graphics[Table[{
+  Hue[i/10., 1., 1.], Rotate[Text[Style[text // Offload, FontSize -> RandomInteger[{12, 24}]], RandomReal[{-1,1}, 2]], RandomChoice[{Pi, Pi/4, Pi/2, 0}]]
+}, {i, 10}]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Grouping
+To group elements both visually and at the event level, use InputGroup:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Grouping
+To group elements both visually and at the event level, use InputGroup:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+slider = InputRange[0, 1, 0.1]; 
+checkbox = InputCheckbox[];
+
+n = EvaluationNotebook[];
+joined = InputGroup[<|"Checkbox" -> checkbox, "Slider" -> slider|>, "Label" -> "Group"];
+EventHandler[joined, NotebookWrite[n, #]&]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+It merges an association (as above) or a list of EventObjects into a new one. You do not need to assign separate EventHandlers - just __one joined handler__ is enough. 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+It merges an association (as above) or a list of EventObjects into a new one. You do not need to assign separate EventHandlers - just __one joined handler__ is enough. 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Chaining Events
+Most GUI elements support chaining, where each reuses the same EventObject. It’s passed as the first argument:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Chaining Events
+Most GUI elements support chaining, where each reuses the same EventObject. It’s passed as the first argument:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ev = EventObject[];
+
+InputButton[ev, "Topic" -> "Button"]
+InputRange[ev, 0, 1, 0.1, "Topic" -> "Slider"]
+
+EventHandler[ev, {
+  "Button" -> Beep,
+  "Slider" -> Print
+}];
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

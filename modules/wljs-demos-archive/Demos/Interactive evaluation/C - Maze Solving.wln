@@ -1,136 +1,229 @@
-<|"Notebook" -> <|"Controller" -> "48b2cb31-b523-4543-ac32-a8ef50f3e1fd", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1641], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "1ab06b87-6ff5-4bf7-a554-572795220787", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/C - Maze Solving.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Brownian Motion Maze Solving", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1642]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Brownian Motion Maze Solving\nAn adapted \
-example from [Wolfram \
-Community](https://community.wolfram.com/groups/-/m/t/2628034) (Christopher \
-Wolfram)", "Display" -> "codemirror", 
-    "Hash" -> "025f9b68-44b1-4450-ad14-6f1e83c0eab7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "# Brownian Motion Maze Solving\nAn adapted example from \
-[Wolfram Community](https://community.wolfram.com/groups/-/m/t/2628034) \
-(Christopher Wolfram)", "Display" -> "markdown", 
-    "Hash" -> "1c846781-0046-4001-9ab0-18e2374cd11a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "dims={8,12};\nhallwayThickness=0.8;\nballCount=1000; ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "966b8ede-5f7c-459a-8956-e9eceb171a46", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "spanningTree = FindSpanningTree[GridGraph[dims, \
-EdgeWeight->{_:>RandomReal[]}]]", "Display" -> "codemirror", 
-    "Hash" -> "18d6a757-4366-4147-be0e-db659592f8a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> ".md\nCreate walls using regions", "Display" -> "codemirror", 
-    "Hash" -> "1df5ec52-3ac4-4c60-9e8b-30f1d49d46c7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "Create walls using regions", "Display" -> "markdown", 
-    "Hash" -> "6e760479-c868-4a09-8024-3de4f7872fe8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "outerRegion = Rectangle[\n    {1, 1} - 1 + hallwayThickness, \
-\n    Reverse[dims] + 1\n];\n\nwallsRegion = RegionDifference[\n    \
-RegionDifference[\n        Rectangle[\n            {1, 1} - 1 + \
-hallwayThickness, \n            Reverse[dims] + 1\n        ],\n        \
-RegionDilation[\n            DiscretizeGraphics[\n                Line[\n     \
-               GraphEmbedding[spanningTree][[#]] & /@ \n                    \
-List @@@ EdgeList[spanningTree]\n                ] // Graphics\n            \
-],\n            Rectangle[{0, 0}, {1, 1} * hallwayThickness]\n        ]\n    \
-],\n    Rectangle[\n        {dims[[2]], hallwayThickness}, \n        \
-{dims[[2]], 0} + {hallwayThickness, 1}\n    ]\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ebaa536f-331b-41a7-9371-00ebd92ead5c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> ".md\nTesting functions", "Display" -> "codemirror", 
-    "Hash" -> "2bc4de98-fc64-4be7-884f-7a21ba6ed3f5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "Testing functions", "Display" -> "markdown", 
-    "Hash" -> "a95603a5-cc60-43fe-ad6f-967db6e4f493", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "wallMember = RegionMember[wallsRegion];\nmazeMember = \
-RegionMember[outerRegion];\ninitPs = {1 + hallwayThickness/2, dims[[1]] + \
-hallwayThickness/2};", "Display" -> "codemirror", 
-    "Hash" -> "db433660-d096-4921-a0d8-548353b219bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> ".md\n__Run the simulation__", "Display" -> "codemirror", 
-    "Hash" -> "afdd8eff-d149-4b1f-87aa-976cfe74e240", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "__Run the simulation__", "Display" -> "markdown", 
-    "Hash" -> "38dc0f77-5b38-42a4-8b21-2c566047f466", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "positionSeries = \n Module[{ps, vs, vps, skip = 10}, \n   ps \
-= ConstantArray[initPs, ballCount];\n   vps = ps;\n   \n   Show[Graphics[\n   \
- {\n     Orange, \n     Point[vps // Offload]\n    }, \n    ImageSize -> 500, \
-TransitionType->None\n   ], wallsRegion] // Print;\n   \n   \n   Reap[\n     \
-Sow[ps];\n     While[And @@ mazeMember[ps], \n      vs = \
-RandomPoint[Circle[], ballCount] * 0.1;\n      ps += vs;\n      ps -= vs * \
-Boole[wallMember[ps]];\n      If[skip <= 0, vps = ps; skip = 10;, skip--];\n  \
-    Sow[ps]\n     ]\n   ][[2, 1]]\n];", "Display" -> "codemirror", 
-    "Hash" -> "4b21edd2-372d-461c-8dc4-b2e1c4a14f39", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> ".md\nWinning index", "Display" -> "codemirror", 
-    "Hash" -> "e1c4451f-20b2-4c40-8742-85886ac51328", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "Winning index", "Display" -> "markdown", 
-    "Hash" -> "a0e4329b-cc36-4095-834c-2c8a04e3aaa8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> 
-     "winningIndex=FirstPosition[mazeMember@Last@positionSeries,False][[1]] "\
-, "Display" -> "codemirror", "Hash" -> 
-     "59733da0-7a7c-4abe-b7d3-d0ba5ea172ca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> ".md\nShow it on maze", "Display" -> "codemirror", 
-    "Hash" -> "6af4ed03-00e0-42c3-b286-fc3a2bf3d9dd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "Show it on maze", "Display" -> "markdown", 
-    "Hash" -> "162a213b-a4ce-4a4f-8b74-0a7527a1808c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>, 
-   <|"Data" -> "Show[Graphics[{Orange,Line[positionSeries[[All,winningIndex]]\
-]},ImageSize->500], wallsRegion]", "Display" -> "codemirror", 
-    "Hash" -> "8328cd90-46b0-446c-920d-237bc56f3b97", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536bd171-1baa-4e4e-8e19-79e74cfbf1a8"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Brownian Motion Maze Solving
+An adapted example from [Wolfram Community](https://community.wolfram.com/groups/-/m/t/2628034) (Christopher Wolfram)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Brownian Motion Maze Solving
+An adapted example from [Wolfram Community](https://community.wolfram.com/groups/-/m/t/2628034) (Christopher Wolfram)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+dims={8,12};
+hallwayThickness=0.8;
+ballCount=1000; 
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+spanningTree = FindSpanningTree[GridGraph[dims, EdgeWeight->{_:>RandomReal[]}]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Create walls using regions
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Create walls using regions
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+outerRegion = Rectangle[
+    {1, 1} - 1 + hallwayThickness, 
+    Reverse[dims] + 1
+];
+
+wallsRegion = RegionDifference[
+    RegionDifference[
+        Rectangle[
+            {1, 1} - 1 + hallwayThickness, 
+            Reverse[dims] + 1
+        ],
+        RegionDilation[
+            DiscretizeGraphics[
+                Line[
+                    GraphEmbedding[spanningTree][[#]] & /@ 
+                    List @@@ EdgeList[spanningTree]
+                ] // Graphics
+            ],
+            Rectangle[{0, 0}, {1, 1} * hallwayThickness]
+        ]
+    ],
+    Rectangle[
+        {dims[[2]], hallwayThickness}, 
+        {dims[[2]], 0} + {hallwayThickness, 1}
+    ]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Testing functions
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Testing functions
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+wallMember = RegionMember[wallsRegion];
+mazeMember = RegionMember[outerRegion];
+initPs = {1 + hallwayThickness/2, dims[[1]] + hallwayThickness/2};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Run the simulation__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Run the simulation__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+positionSeries = 
+ Module[{ps, vs, vps, skip = 10}, 
+   ps = ConstantArray[initPs, ballCount];
+   vps = ps;
+   
+   Show[Graphics[
+    {
+     Orange, 
+     Point[vps // Offload]
+    }, 
+    ImageSize -> 500, TransitionType->None
+   ], wallsRegion] // Print;
+   
+   
+   Reap[
+     Sow[ps];
+     While[And @@ mazeMember[ps], 
+      vs = RandomPoint[Circle[], ballCount] * 0.1;
+      ps += vs;
+      ps -= vs * Boole[wallMember[ps]];
+      If[skip <= 0, vps = ps; skip = 10;, skip--];
+      Sow[ps]
+     ]
+   ][[2, 1]]
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Winning index
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Winning index
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+winningIndex=FirstPosition[mazeMember@Last@positionSeries,False][[1]] 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+428
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Show it on maze
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Show it on maze
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Show[Graphics[{Orange,Line[positionSeries[[All,winningIndex]]]},ImageSize->500], wallsRegion]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

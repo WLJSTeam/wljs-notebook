@@ -36,6 +36,7 @@ This notebook is an adaptation of the Wolfram Community work [“Limit of algebr
 %-------------------------------------------------------------------------%
 Type: Input
 %-------------------------------------------------------------------------%
+Clear["Global`*"];
 SeedRandom[7];
 
 coef[n_, k_] := coef[n, k] = (RandomReal[{-1, 1}] + RandomReal[{-1, 1}] I);

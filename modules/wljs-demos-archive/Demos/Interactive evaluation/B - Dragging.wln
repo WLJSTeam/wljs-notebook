@@ -1,34 +1,80 @@
-<|"Notebook" -> <|"Controller" -> "7a1c6d48-85b6-4d81-a3c7-921b0e6f19f4", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2066], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "51243720-22e7-45ef-94bb-160f7fcebe0d", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Simple drag.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Dragging", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2069]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Dragging\nA basic example, where we make a \
-point draggable and update other primitives based on the current position:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5c58e007-fe98-4fef-a856-603410a6674d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0c90318-96b7-4163-b7a4-cc19ca8c56f2"|>, 
-   <|"Data" -> "# Dragging\nA basic example, where we make a point draggable \
-and update other primitives based on the current position:", 
-    "Display" -> "markdown", "Hash" -> 
-     "21c73e51-00bf-4d8f-988e-759e5b80e70b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0c90318-96b7-4163-b7a4-cc19ca8c56f2"|>, 
-   <|"Data" -> "target = {0.5,0.5};\n\nGraphics[{\n  Red, PointSize[0.1], \n  \
-EventHandler[Point[{{0.5,0.5}}], { \n    \"drag\" -> Function[x, target = x] \
-\n  }],\n  Line[{{0,0}, target // Offload}]\n}, PlotRange->{{-1,1}, {-1,1}}, \
-\n  \"TransitionDuration\"->300]", "Display" -> "codemirror", 
-    "Hash" -> "27927028-a966-4c73-84a4-5ec8dc0e1ce8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0c90318-96b7-4163-b7a4-cc19ca8c56f2"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Dragging
+A basic example, where we make a point draggable and update other primitives based on the current position:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Dragging
+A basic example, where we make a point draggable and update other primitives based on the current position:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+target = {0.5,0.5};
+
+Graphics[{
+  Red, PointSize[0.1], 
+  EventHandler[Point[{{0.5,0.5}}], { 
+    "drag" -> Function[x, target = x] 
+  }],
+  Line[{{0,0}, target // Offload}]
+}, PlotRange->{{-1,1}, {-1,1}}, 
+  "TransitionDuration"->300]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

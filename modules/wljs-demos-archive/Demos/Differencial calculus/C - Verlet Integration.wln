@@ -1,1670 +1,689 @@
-<|"Notebook" -> <|"Controller" -> "f750ba55-321a-4de0-88bb-e8bf0c3ade12", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$5523], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "3d379a93-d483-4046-83a3-8312c8677d73", 
-   "Objects" -> <|"a5b31a9d-b6d6-4c3e-b884-a85c8357c438" -> 
-      <|"Public" -> Hold[Graphics[{GrayLevel[0.5], Rectangle[{-5, -5}, 
-            {5, 5}], RGBColor[0, 0, 1], {Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[2]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[3]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[4]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[4]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[5]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[5]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[5]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[6]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[7]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[7]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[8]], p$[[10]]}]]]}, RGBColor[1, 0, 0], 
-           Point[Offload[pts0]]}]]|>, 
-     "3bce9eb6-f53f-4ddb-8443-f7d28a8076ec" -> 
-      <|"Public" -> Hold[Graphics[{GrayLevel[0.5], Rectangle[{-5, -5}, 
-            {5, 5}], RGBColor[0, 0, 1], {Offload[Line[With[{p$ = rimR}, {
-                p$[[1]], p$[[2]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[2]], p$[[3]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[3]], p$[[4]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[4]], p$[[5]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[5]], p$[[6]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[6]], p$[[7]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[7]], p$[[8]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[8]], p$[[9]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[9]], p$[[10]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[10]], p$[[11]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[11]], p$[[12]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[12]], p$[[13]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[13]], p$[[14]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[14]], p$[[15]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[15]], p$[[16]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[16]], p$[[17]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[17]], p$[[18]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[18]], p$[[19]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[19]], p$[[20]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[20]], p$[[21]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[21]], p$[[22]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[22]], p$[[23]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[23]], p$[[24]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[24]], p$[[25]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[25]], p$[[26]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[1]], p$[[3]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[3]], p$[[5]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[5]], p$[[7]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[7]], p$[[9]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[9]], p$[[11]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[11]], p$[[13]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[13]], p$[[15]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[15]], p$[[17]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[17]], p$[[19]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[19]], p$[[21]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[21]], p$[[23]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[23]], p$[[25]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[2]], p$[[4]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[4]], p$[[6]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[6]], p$[[8]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[8]], p$[[10]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[10]], p$[[12]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[12]], p$[[14]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[14]], p$[[16]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[16]], p$[[18]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[18]], p$[[20]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[20]], p$[[22]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[22]], p$[[24]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[24]], p$[[2]]}]]], Offload[Line[With[{p$ = rimR}, {
-                p$[[25]], p$[[1]]}]]]}, RGBColor[1, 0, 0], 
-           Point[Offload[rimR]]}, TransitionType -> None, 
-          "Controls" -> False, Epilog -> {{AnimationFrameListener[
-              Offload[rimR], "Event" -> "anim"], Circle[Offload[mousePos], 
-              0.5]}, EventListener[Null, {"mousemove" -> 
-               "00f98aaa-0cc8-4ec0-bcb1-ef95ec9e4633"}]}, 
-          PlotRange -> {{-5, 5}, {-5, 5}}]]|>, 
-     "aedf38f8-67a5-4312-96c9-7572cd18b3d2" -> 
-      <|"Public" -> Hold[Graphics[GraphicsComplex[
-           {{52.84188611699155, 39.47434164902525}, {44.5, 41}, 
-            {43.505311887319905, 58.92731113446333}, {51.00000000000005, 
-             59.50000000000001}, {54, 60.5}, {57.485071250072664, 
-             64.12126781251816}, {60.08056594945108, 69.49346644038783}, 
-            {59.33333333333332, 82}, {56.00000000000001, 82}, 
-            {57.058420623783704, 71.49657530216143}, {54.474341649025256, 
-             64.84188611699159}, {51.99999999999999, 63.50000000000001}, 
-            {43.65317915646707, 62.639839893254255}, {44.81818181818183, 
-             71.22727272727272}, {42.5, 72}, {41.82443827920581, 
-             71.46816458878452}, {40.52831375923613, 63.16586768905983}, 
-            {29.594594594594597, 70.12162162162163}, {27.960127388858552, 
-             77.50159236073193}, {30.14285714285714, 80.21428571428572}, 
-            {25.648648648648656, 81.33783783783785}, {24.809119922790106, 
-             72.46213071324502}, {29.41602514716892, 66.27735009811262}, 
-            {34.44721359549996, 62.77639320225002}, {40.44721359549996, 
-             59.77639320225003}, {41.297195530541906, 40.402088070733164}, 
-            {34.55278640450004, 39.22360679774997}, {30.878732187481837, 
-             37.485071250072664}, {25.609565595278486, 33.31234752377721}, 
-            {20.878732187481834, 25.485071250072668}, {18.944784236962576, 
-             21.50305813266319}, {19.72790444745049, 9.419480643513829}, 
-            {22.5, 7.999999999999999}, {25.609565595278486, 
-             8.687652476222787}, {29.77639320225002, 20.552786404500043}, 
-            {36.40343141007673, 30.295369425234746}, {50.50350586290253, 
-             31.059106444892556}, {57.451430259411964, 28.21496679019618}, 
-            {64.43412157106222, 20.248069469178425}, {70.44721359549996, 
-             7.776393202250019}, {74.33333333333333, 6.666666666666667}, 
-            {75.03834824944236, 14.501472757249209}, {71.24806946917842, 
-             21.565878428937772}, {67.26608577260917, 29.576681725394497}, 
-            {58.5, 36.999999999999986}, {41.17637601922097, 
-             67.31701613892217}, {44.235680487324444, 66.93355631026348}, 
-            {43.24203079627537, 70.36245602518974}, {40.87220456302093, 
-             50.089240636491596}, {44.14871809562423, 34.0045879430362}, 
-            {59.7069496413922, 75.74673322019392}}, 
-           {{Directive[Opacity[0.7], Hue[0.6, 0.7, 0.7], CapForm["Round"]], 
-             Arrowheads[0], {Arrow[{{1, 2}, {1, 37}, {1, 45}, {1, 50}, 
-                {2, 3}, {2, 26}, {2, 49}, {2, 50}, {3, 4}, {3, 13}, {3, 25}, 
-                {3, 49}, {4, 5}, {4, 12}, {4, 13}, {5, 6}, {5, 11}, {5, 12}, 
-                {6, 7}, {6, 10}, {6, 11}, {7, 10}, {7, 51}, {8, 9}, {8, 51}, 
-                {9, 10}, {9, 51}, {10, 11}, {10, 51}, {11, 12}, {12, 13}, 
-                {13, 17}, {13, 25}, {13, 47}, {14, 15}, {14, 47}, {14, 48}, 
-                {15, 16}, {15, 48}, {16, 46}, {16, 48}, {17, 18}, {17, 24}, 
-                {17, 25}, {17, 46}, {17, 47}, {18, 19}, {18, 22}, {18, 23}, 
-                {18, 24}, {19, 20}, {19, 21}, {19, 22}, {20, 21}, {21, 22}, 
-                {22, 23}, {23, 24}, {24, 25}, {25, 49}, {26, 27}, {26, 36}, 
-                {26, 49}, {26, 50}, {27, 28}, {27, 36}, {28, 29}, {28, 36}, 
-                {29, 30}, {29, 35}, {29, 36}, {30, 31}, {30, 35}, {31, 32}, 
-                {31, 34}, {31, 35}, {32, 33}, {32, 34}, {33, 34}, {34, 35}, 
-                {35, 36}, {36, 37}, {36, 50}, {37, 38}, {37, 45}, {37, 50}, 
-                {38, 39}, {38, 44}, {38, 45}, {39, 40}, {39, 42}, {39, 43}, 
-                {39, 44}, {40, 41}, {40, 42}, {41, 42}, {42, 43}, {43, 44}, 
-                {44, 45}, {46, 47}, {46, 48}, {47, 48}}, 
-               0.1275365031823287]}}, {Directive[Hue[0.6, 0.5, 1], 
-              EdgeForm[Directive[GrayLevel[0], Opacity[0.7]]]], 
-             Disk[1, 0.1275365031823287], Disk[2, 0.1275365031823287], 
-             Disk[3, 0.1275365031823287], Disk[4, 0.1275365031823287], 
-             Disk[5, 0.1275365031823287], Disk[6, 0.1275365031823287], 
-             Disk[7, 0.1275365031823287], Disk[8, 0.1275365031823287], 
-             Disk[9, 0.1275365031823287], Disk[10, 0.1275365031823287], 
-             Disk[11, 0.1275365031823287], Disk[12, 0.1275365031823287], 
-             Disk[13, 0.1275365031823287], Disk[14, 0.1275365031823287], 
-             Disk[15, 0.1275365031823287], Disk[16, 0.1275365031823287], 
-             Disk[17, 0.1275365031823287], Disk[18, 0.1275365031823287], 
-             Disk[19, 0.1275365031823287], Disk[20, 0.1275365031823287], 
-             Disk[21, 0.1275365031823287], Disk[22, 0.1275365031823287], 
-             Disk[23, 0.1275365031823287], Disk[24, 0.1275365031823287], 
-             Disk[25, 0.1275365031823287], Disk[26, 0.1275365031823287], 
-             Disk[27, 0.1275365031823287], Disk[28, 0.1275365031823287], 
-             Disk[29, 0.1275365031823287], Disk[30, 0.1275365031823287], 
-             Disk[31, 0.1275365031823287], Disk[32, 0.1275365031823287], 
-             Disk[33, 0.1275365031823287], Disk[34, 0.1275365031823287], 
-             Disk[35, 0.1275365031823287], Disk[36, 0.1275365031823287], 
-             Disk[37, 0.1275365031823287], Disk[38, 0.1275365031823287], 
-             Disk[39, 0.1275365031823287], Disk[40, 0.1275365031823287], 
-             Disk[41, 0.1275365031823287], Disk[42, 0.1275365031823287], 
-             Disk[43, 0.1275365031823287], Disk[44, 0.1275365031823287], 
-             Disk[45, 0.1275365031823287], Disk[46, 0.1275365031823287], 
-             Disk[47, 0.1275365031823287], Disk[48, 0.1275365031823287], 
-             Disk[49, 0.1275365031823287], Disk[50, 0.1275365031823287], 
-             Disk[51, 0.1275365031823287]}}], {FormatType -> TraditionalForm, 
-           FrameTicks -> None, ImagePadding -> None, ImageSize -> 200, 
-           "Controls" -> False}]]|>, 
-     "042dbb94-164f-4875-860c-7e260c54bedb" -> 
-      <|"Public" -> Hold[Graphics[{GrayLevel[0.5], Rectangle[{-5, -5}, 
-            {5, 5}], RGBColor[0, 0, 1], {Offload[Line[With[{p$ = verticesR}, {
-                p$[[1]], p$[[2]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[1]], p$[[37]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[1]], p$[[45]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[1]], p$[[50]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[2]], p$[[3]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[2]], p$[[26]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[2]], p$[[49]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[2]], p$[[50]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[3]], p$[[4]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[3]], p$[[13]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[3]], p$[[25]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[3]], p$[[49]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[4]], p$[[5]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[4]], p$[[12]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[4]], p$[[13]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[5]], p$[[6]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[5]], p$[[11]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[5]], p$[[12]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[6]], p$[[7]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[6]], p$[[10]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[6]], p$[[11]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[7]], p$[[10]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[7]], p$[[51]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[8]], p$[[9]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[8]], p$[[51]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[9]], p$[[10]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[9]], p$[[51]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[10]], p$[[11]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[10]], p$[[51]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[11]], p$[[12]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[12]], p$[[13]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[13]], p$[[17]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[13]], p$[[25]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[13]], p$[[47]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[14]], p$[[15]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[14]], p$[[47]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[14]], p$[[48]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[15]], p$[[16]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[15]], p$[[48]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[16]], p$[[46]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[16]], p$[[48]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[17]], p$[[18]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[17]], p$[[24]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[17]], p$[[25]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[17]], p$[[46]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[17]], p$[[47]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[18]], p$[[19]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[18]], p$[[22]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[18]], p$[[23]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[18]], p$[[24]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[19]], p$[[20]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[19]], p$[[21]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[19]], p$[[22]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[20]], p$[[21]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[21]], p$[[22]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[22]], p$[[23]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[23]], p$[[24]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[24]], p$[[25]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[25]], p$[[49]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[26]], p$[[27]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[26]], p$[[36]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[26]], p$[[49]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[26]], p$[[50]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[27]], p$[[28]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[27]], p$[[36]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[28]], p$[[29]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[28]], p$[[36]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[29]], p$[[30]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[29]], p$[[35]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[29]], p$[[36]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[30]], p$[[31]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[30]], p$[[35]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[31]], p$[[32]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[31]], p$[[34]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[31]], p$[[35]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[32]], p$[[33]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[32]], p$[[34]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[33]], p$[[34]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[34]], p$[[35]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[35]], p$[[36]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[36]], p$[[37]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[36]], p$[[50]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[37]], p$[[38]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[37]], p$[[45]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[37]], p$[[50]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[38]], p$[[39]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[38]], p$[[44]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[38]], p$[[45]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[39]], p$[[40]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[39]], p$[[42]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[39]], p$[[43]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[39]], p$[[44]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[40]], p$[[41]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[40]], p$[[42]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[41]], p$[[42]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[42]], p$[[43]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[43]], p$[[44]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[44]], p$[[45]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[46]], p$[[47]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[46]], p$[[48]]}]]], Offload[Line[With[{p$ = verticesR}, {
-                p$[[47]], p$[[48]]}]]]}, RGBColor[1, 0, 0], 
-           Point[Offload[verticesR]]}, TransitionType -> None, 
-          "Controls" -> False, Epilog -> {{AnimationFrameListener[
-              Offload[verticesR], "Event" -> "anim2"], 
-             Circle[Offload[mousePos], 0.5]}, EventListener[Null, 
-             {"mousemove" -> "75ff4ae8-4205-4669-8a94-656b89a6a619"}]}, 
-          PlotRange -> {{-5, 5}, {-5, 5}}]]|>, 
-     "4e948a73-3bcf-417c-bfe4-7fd90edfff96" -> 
-      <|"Public" -> Hold[Graphics[GraphicsComplex[{{0, -1}, {0, -0.9}, 
-            {-0.5, -0.8660254037844386}, {-0.45, -0.7794228634059948}, 
-            {-0.8660254037844386, -0.5}, {-0.7794228634059948, -0.45}, 
-            {-1, 0}, {-0.9, 0}, {-0.8660254037844386, 0.5}, 
-            {-0.7794228634059948, 0.45}, {-0.5, 0.8660254037844386}, 
-            {-0.45, 0.7794228634059948}, {0, 1}, {0, 0.9}, 
-            {0.5, 0.8660254037844386}, {0.45, 0.7794228634059948}, 
-            {0.8660254037844386, 0.5}, {0.7794228634059948, 0.45}, {1, 0}, 
-            {0.9, 0}, {0.8660254037844386, -0.5}, {0.7794228634059948, 
-             -0.45}, {0.5, -0.8660254037844386}, {0.45, -0.7794228634059948}, 
-            {0, -1}, {0, -0.9}}, {{Directive[Opacity[0.7], Hue[0.6, 0.7, 
-               0.7], CapForm["Round"]], Arrowheads[0], 
-             {Arrow[{{1, 2}, {1, 3}, {1, 25}, {2, 3}, {2, 4}, {2, 24}, 
-                {3, 4}, {3, 5}, {4, 5}, {4, 6}, {5, 6}, {5, 7}, {6, 7}, 
-                {6, 8}, {7, 8}, {7, 9}, {8, 9}, {8, 10}, {9, 10}, {9, 11}, 
-                {10, 11}, {10, 12}, {11, 12}, {11, 13}, {12, 13}, {12, 14}, 
-                {13, 14}, {13, 15}, {14, 15}, {14, 16}, {15, 16}, {15, 17}, 
-                {16, 17}, {16, 18}, {17, 18}, {17, 19}, {18, 19}, {18, 20}, 
-                {19, 20}, {19, 21}, {20, 21}, {20, 22}, {21, 22}, {21, 23}, 
-                {22, 23}, {22, 24}, {23, 24}, {23, 25}, {24, 25}, {25, 26}}, 
-               0.02261146496815286]}}, {Directive[Hue[0.6, 0.5, 1], 
-              EdgeForm[Directive[GrayLevel[0], Opacity[0.7]]]], 
-             Disk[1, 0.02261146496815286], Disk[2, 0.02261146496815286], 
-             Disk[3, 0.02261146496815286], Disk[4, 0.02261146496815286], 
-             Disk[5, 0.02261146496815286], Disk[6, 0.02261146496815286], 
-             Disk[7, 0.02261146496815286], Disk[8, 0.02261146496815286], 
-             Disk[9, 0.02261146496815286], Disk[10, 0.02261146496815286], 
-             Disk[11, 0.02261146496815286], Disk[12, 0.02261146496815286], 
-             Disk[13, 0.02261146496815286], Disk[14, 0.02261146496815286], 
-             Disk[15, 0.02261146496815286], Disk[16, 0.02261146496815286], 
-             Disk[17, 0.02261146496815286], Disk[18, 0.02261146496815286], 
-             Disk[19, 0.02261146496815286], Disk[20, 0.02261146496815286], 
-             Disk[21, 0.02261146496815286], Disk[22, 0.02261146496815286], 
-             Disk[23, 0.02261146496815286], Disk[24, 0.02261146496815286], 
-             Disk[25, 0.02261146496815286], Disk[26, 0.02261146496815286]}}], 
-          {FormatType -> TraditionalForm, FrameTicks -> None, 
-           ImagePadding -> None, ImageSize -> 200, "Controls" -> False}]]|>, 
-     "80599663-0321-47e3-942c-f8dac95d57e1" -> 
-      <|"Public" -> Hold[HTMLView["<div class=\"flex flex-col \
-gap-y-1\"><input type=\"range\" min=\"1\" max=\"50\" value=\"25\" \
-class=\"sm-controls w-full mt-3 mb-3 h-1 bg-gray-200 rounded-lg \
-appearance-none cursor-pointer \" id=\"#instanceId-sizeRange\"/><fieldset \
-><div class=\"mt-2 flex-row gap-x-2 flex\"><div class=\"flex \
-items-center\"><input name=\"#instanceId-colorRadio\" value=\"black\" \
-checked=\"true\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  \
-focus:ring-sys\"/><label class=\"ml-3 block text-sm font-medium  leading-6 \
-text-gray-900\">Black</label></div><div class=\"flex items-center\"><input \
-name=\"#instanceId-colorRadio\" value=\"white\" type=\"radio\" class=\"h-4 \
-w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block \
-text-sm font-medium  leading-6 text-gray-900\">White</label></div><div \
-class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" \
-value=\"red\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  \
-focus:ring-sys\"/><label class=\"ml-3 block text-sm font-medium  leading-6 \
-text-gray-900\">Red</label></div><div class=\"flex items-center\"><input \
-name=\"#instanceId-colorRadio\" value=\"green\" type=\"radio\" class=\"h-4 \
-w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block \
-text-sm font-medium  leading-6 text-gray-900\">Green</label></div><div \
-class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" \
-value=\"blue\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  \
-focus:ring-sys\"/><label class=\"ml-3 block text-sm font-medium  leading-6 \
-text-gray-900\">Blue</label></div><div class=\"flex items-center \
-ml-auto\"><button class=\"sm-controls rounded bg-white px-2 py-1 text-xs \
-font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 \
-hover:bg-gray-50\" \
-id=\"#instanceId-clear\">Clear</button></div></div></fieldset></div>\n<script \
-type=\"module\"> core['handler484'] = async (args, env) => {\n      \
-env.element.classList.add(...((\"sm-controls cursor-default rounded-md 0 py-1 \
-px-2 bg-gray-100 text-left text-gray-500 ring-1 ring-inset ring-gray-400 \
-gap-y-1\").split(\" \")));\n      env.element.style.flexDirection = \
-\"column-reverse\";\n      \n      const sizeElement = \
-document.getElementById(\"#instanceId-sizeRange\");\n      let size = \
-sizeElement.value;\n      sizeElement.oninput = (e) => {\n        size = \
-e.target.value;\n      };\n\n      const colorElement = \
-document.getElementsByName(\"#instanceId-colorRadio\");\n      let color;\n   \
-   colorElement.forEach((c) => {\n        if (c.checked) color = c.value;\n   \
-   });\n\n      colorElement.forEach((c) => {\n        c.onclick = () => {\n  \
-        color = c.value;\n        };\n      });\n\n      const dpr = 1.0 / \
-window.devicePixelRatio;\n\n      function drawOnImage(image = null) {\n      \
-  let canvasElement = env.element.getElementsByTagName(\"canvas\");\n        \
-console.warn(canvasElement);\n\n\n        if (canvasElement.length == 0) {\n  \
-        console.log(\"Creating canvas...\");\n          canvasElement = \
-document.createElement(\"canvas\");\n          let imageWidth, \
-imageHeight;\n\n          const isize =350;\n        \n          if \
-(Array.isArray(isize)) {\n            imageWidth = isize[0];\n            \
-imageHeight = isize[1];\n          } else {\n            imageWidth = \
-isize;\n            imageHeight = isize * 0.75;\n          }\n        \n      \
-    // rescaling the canvas element\n          canvasElement.width = \
-imageWidth;\n          canvasElement.height = imageHeight;\n\n          \
-canvasElement.style.width = imageWidth * dpr + \"px\";\n          \
-canvasElement.style.height = imageHeight * dpr + \"px\";\n\n\n          \
-env.element.appendChild(canvasElement);\n\n        } else {\n          const \
-overlayMode =false;\n          if (overlayMode) {\n            const \
-container = document.createElement(\"div\");\n            \
-container.classList.add(\"relative\");\n            \
-env.element.appendChild(container);\n            \n\n            \
-canvasElement[0].classList.add(\"absolute\", \"inset-0\", \
-\"pointer-events-none\", \"rounded-md\");\n            \
-//canvasElement[0].style.zIndex = -1;\n            \
-canvasElement[0].style.opacity = 0.3;\n            \
-container.appendChild(canvasElement[0]);\n\n            \
-console.log(canvasElement[0]);\n\n            const newCanvasElement = \
-document.createElement(\"canvas\");\n            newCanvasElement.width = \
-canvasElement[0].width;\n            newCanvasElement.height = \
-canvasElement[0].height;\n            newCanvasElement.style.height = \
-canvasElement[0].style.height;\n            newCanvasElement.style.width = \
-canvasElement[0].style.width;\n\n            \
-container.appendChild(newCanvasElement);\n\n\n            \n            \
-canvasElement = newCanvasElement;\n\n\n          } else {\n            \
-canvasElement = canvasElement[0];\n          }\n        }\n\n        \
-canvasElement.classList.add(\"rounded-md\", \"shadow\");\n        const \
-context = canvasElement.getContext(\"2d\");\n      \n        const \
-uploadImage = () => {\n          canvasElement.toBlob((res) => {\n          \
-\n            const reader = new FileReader();\n          \n      \
-reader.readAsDataURL(res); \n      reader.onloadend = function() {\n          \
-const offset = 'data:image/png;base64,'.length;\n          const base64data = \
-reader.result.slice(offset);                \n\n          \
-server.kernel.emitt('1da49344-bc5f-4955-980a-7f4c6c7ca61d', \
-'\"'+base64data+'\"', 'Default');\n          return;\n      }\n          \
-});\n        }\n      \n        const clearElement = \
-document.getElementById(\"#instanceId-clear\");\n        clearElement.onclick \
-= () => {\n          context.clearRect(0, 0, canvasElement.width, \
-canvasElement.height);\n        };\n      \n        let isDrawing;\n        \
-let didMove = false;\n      \n        canvasElement.onmousedown = (e) => {\n  \
-        isDrawing = true;\n          didMove = false;\n          \
-context.beginPath();\n          context.lineWidth = size;\n          \
-context.strokeStyle = color;\n          context.lineJoin = \"round\";\n       \
-   context.lineCap = \"round\";\n          context.moveTo(e.offsetX/dpr, \
-e.offsetY/dpr);\n        };\n      \n        canvasElement.onmousemove = (e) \
-=> {\n        \n          if (isDrawing) {\n            didMove = true;\n     \
-       context.lineTo(e.offsetX/dpr, e.offsetY/dpr);\n            \
-context.stroke();\n\n            if (false) {\n              uploadImage();\n \
-           }\n          }\n        };\n      \n        \
-canvasElement.onmouseup = function (e) {\n          if (!isDrawing) \
-return;\n\n          isDrawing = false;\n\n          if (!didMove) {\n        \
-    context.arc(e.offsetX/dpr, e.offsetY/dpr, size/2, 0, 2*Math.PI);\n        \
-    context.fill();\n          }\n\n          context.closePath();\n          \
-uploadImage();\n\n        };\n      }\n\n\n      drawOnImage();\n\n\n      \
-delete core['handler484'];\n    }</script>", Epilog -> 
-           {FrontEndExecutable["83c7eace-4b9c-410f-a6bf-b50e2bd67134"], 
-            handler484}, Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]]]]|>, 
-     "83c7eace-4b9c-410f-a6bf-b50e2bd67134" -> 
-      <|"Public" -> Hold[
-         CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["eJzs3bG\
-OJclxBVB79jPWlqHumRE4pkwBgn5gIYMQCIEGHUoy9PeCLimBAexsT73q1y/uq+NEcS9wgFiwIyu7\
-C5n7y0+ffv6nP/3+3//w89/99OmXnz59+vlf/utPf/jzH//tH//859//9/+GST/9/M9//I//zD9++\
-uVv/vf8h09//71nHv+aynEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3GLXUriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3z\
-XEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zX\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXE\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEc\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3F\
-HXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FH\
-XEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHX\
-EriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXE\
-riQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEr\
-iQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEri\
-Qdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQ\
-df3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQd\
-f3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf3zXEcx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHXEriQdf\
-3zXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec91Tu5eX1Rvn6+dvHy69fb/33/Hbr\
-v+ftsuVngOM4juM4juM4juM4juM4juM4juM4juM4juO4D3UpiQdd3zfHcRzHcRzHcRzHcRzHcRzHc\
-RzHcRzHcRzHcRzHcRzHcRzHcdxKd/sNsrffd0ve7/+Vlp87juM4juM4juM4juM4juM4juM4juM4ju\
-M4juNucimJB13fN8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3F2de3bJsz8JLT/\
-rHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHHdxl5J40PV9cxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcRzH/ZBz1y75OPny4n5fjuM4juM4juM4juM4juM4juM4juM4juM4jqtwKYkHXd83x\
-3Ecx3Ecx3Ecx3Ecx3Ecx727e325WVadBL6KvP28/e2y5Wed4ziO4ziO4ziO4ziO4ziO4zh395IPlZ\
-+/lcwJx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx13cpSQedH3fHMdxHMdxHMdxHMdxHMdxHPddV3Y\
-ul3wq6d5fjuM4juM4juM4juM4juM4jmtyXd8hSLJrvjiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zju\
-SVxK4kHX981xHMdxHMdxHMdxHMdxHMddwHWdkiXJs9LdvxzHcRzHcRzHcRzHcRzHcRz3CNf1PYEkz\
-8qWyeQ4juM4juM4juM4juM4juM4juM4juM4juO4ZS4l8aDr++Y4juM4juM4juM4juM4juOKXNepVZ\
-JslC8vbgDmOI7jOI7jOI7jOI7jOI7juNtd13cBkjwtX1pmk+M4juM4juM4juM4juM4juM4juM4juM\
-4juOWuZTEg67vm+M4juM4juM4juM4juM4jnuAKzt/SpLXkp+/ffCKwHEcx3Ecx3Ecx3Ecx3Ecx3HP\
-5Mq+C5Dkw2TLTHMcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcnVxK4kHX981xHMdxHMdxHMdxHMdxH\
-MedcF2nQUmS/EHpPl+O4ziO4ziO4ziO4ziO4ziOO+HKvguQ5MNky0xzHMdxHMdxHMdxHMdxHMdxHM\
-dxHMdxHMdx3J1cSuJB1/fNcRzHcRzHcRzHcRzHcRzHnXBdp0FJkry3bFm7OI7jOI7jOI7jOI7jOI7\
-jOO6e7uVb01/3SfJxsmWmOY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO5OLiXxoOv75jiO4ziO4ziO\
-4ziO4ziO4064rtOgJEn+mHz59nqjbFm7OI7jOI7jOI7jOI7jOI7jOG6je/36+WbZ9CWCJLsmk+M4j\
-uM4juM4juM4juM4juM4juM4juM4juPu5FISD7q+b47jOI7jOI7jOI7jOI7jOO6E6zoNSpLkj0m3+X\
-Icx3Ecx3Ecx3Ecx3Ecx3Fck+v6DkGSXfPFcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcXdyKYkHXd8\
-3x3Ecx3Ecx3Ecx3Ecx3Ecd8J1nQYlyWtJN/JyHMdxHMdxHMdxHMdxHMdx3BVc1/cLkjwrWyaT4ziO\
-4ziO4ziO4ziO4ziO4ziO4ziO4ziO495wKYkHXd83x3Ecx3Ecx3Ecx3Ecx3Ecd8J1neokyUbpRl6O4\
-ziO4ziO4ziO4ziO4ziO477vur57kORZ2TKZHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHPeGS0k86P\
-q+OY7jOI7jOI7jOI7jOI7juBOu61QnSf5VfvmHW+XnbzfKlxf38XIcx3Ecx3Ecx3Ecx3Ecx3Ec996\
-u7BsNSZ6VX15KZpPjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j3nApiQdd3zfHcRzHcRzHcRzHcRzH\
-cRx3wpWd6yTJvzw5juM4juM4juM4juM4juM4juPK3evnm//LhVXfdUjyrGyZaY7jOI7jOI7jOI7jO\
-I7jOI7jOI7jOI7jOO4yLiXxoOv75jiO4ziO4ziO4ziO4ziO4064rtOZJNk1XxzHcRzHcRzHcRzHcR\
-zHcRzHce/tur7qkORZ2TKZHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3GVcSuJB1/fNcRzHcRzHcRz\
-HcRzHcRzHnXBdpzNJsmu+OI7jOI7jOI7jOI7jOI7jOI7j3tt1fdUhybOyZTI5juM4juM4juM4juM4\
-juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxH\
-MdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI\
-7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM\
-4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdt\
-cV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474\
-bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4ju\
-O4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0i\
-ya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk\
-13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUx\
-IOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744ju\
-M4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMd\
-xHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vj\
-OI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4j\
-uM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHM\
-dxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7\
-jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdtcV1fg0iya744juM4juM4juM4juM4\
-juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI474bpOZ5Jk13xxHMdxHMdxHMdxHMdxH\
-MdxHMdtcV1fg0iya744juM4juM4juM4juM4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI\
-7jOI474bpOZ5LkWdkymRzHcRzHcRzHcRzHcRzHcRzHce/tur7qkGTXfHEcx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3GXcSmJB13fN8dxHMdxHMdxHMdxHMdxHHfCdZ3OJMmzsmUyOY7jOI7jOI7jOI7jOI7j\
-OI7j3tt1fdUhya754jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4y7jUhIPur5vjuM4juM4juM4juM4j\
-uM47oTrOp1Jkufl55LZ5DiO4ziO4ziO4ziO4ziO4ziOe2/X9l2HJPPkOI7jOI7jOI7jOI7jOI7jOI\
-7jOI7jOI7juF0uJfGg6/vmOI7jOI7jOI7jOI7jOI7jTrjXr683y6ZznSR5VrbMNMdxHMdxHMdxHMd\
-xHMdxHMdx3Pdc19cZkuyaL47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4yLiXxoOv75jiO4ziO4ziO\
-4ziO4ziO4x7guk51kuR5+blkNjmO4ziO4ziO4ziO4ziO4ziO477n2r7PkGSeHMdxHMdxHMdxHMdxH\
-MdxHMdxHMdxHMdxHLfLpSQedH3fHMdxHMdxHMdxHMdxHMdx3ANc16lOkjwv3eHLcRzHcRzHcRzHcR\
-zHcRzHcVy7a/s+Q5J5chzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdwul5J40PV9cxzHcRzHcRzHcRz\
-HcRzHcUWu6zQoSZ6VLZPJcRzHcRzHcRzHcRzHcRzHcdzzu66vLCTZNV8cx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3HcZVxK4kHX981xHMdxHMdxHMdxHMdxHMcVua7ToCR5Xn4umU2O4ziO4ziO4ziO4ziO4\
-ziO457ftX1nIck8OY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOG6XS0k86Pq+OY7jOI7jOI7jOI7jOI\
-7juCJ3+42mXedISfL/5JeS2eQ4juM4juM4juM4juM4juM4rse1fS8hyXOyZTI5juM4juM4juM4juM\
-4juM4juM4juM4juO4y7iUxIOu75vjOI7jOI7jOI7jOI7jOI67gOs6RUqSZ2XLZHIcx3Ecx3HcM7uX\
-L7+7Ub5+fXmAvPk3l9db/+sjt8uWnwGO4ziO4ziOa3BdX0BI8qxsmUyO4ziO4ziO4ziO4ziO4ziO4\
-ziO4ziO4zjuMi4l8aDr++Y4juM4juM4juM4juM4juMu4F6/fr5ZNp0/JcmuyeQ4juM4juO4Bnfivt\
-qq3yPKpLuAOY7jOI7jOO5XnmX7epJ8mGyZaY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4yLiXxoOv\
-75jiO4ziO4ziO4ziO4ziO4y7g3OpLkjtnk+M4juM4juM+9HdD9/OSf5HuBOY4juM4juOe2pXtz0ny\
-YbJlpjmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47jLuJTEg67vm+M4juM4juM4juM4juM4juO+67pOn\
-5Lk42TLTHMcx3Ecx3HP4dzRSz5Ovnz5XcmccBzHcRzHcdd2XftskjwrWyaT4ziO4ziO4ziO4ziO4z\
-iO4ziO4ziO4ziO495wKYkHXd83x3Ecx3Ecx3Ecx3Ecx3Ecx33XdZ1aJclG2bIacBzHcRzHcbuc+33\
-JR8qXkjnhOI7jOI7jru3a9tkkeU62TCbHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHveFSEg+6vm+O\
-4ziO4ziO4ziO4ziO4ziO+67rOrVKkteSLesIx3Ecx3Ecdx/XtXsln01+LpkTjuM4juM47tqubZ9Nk\
-nlyHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3LVdSuJB1/fNcRzHcRzHcRzHcRzHcRzHcd91r1+/3C\
-ybzsmS5LVkywrEcRzHcRzH/bbr2oWSZNd8cRzHcRzHcc/hunbLJNk1XxzHcRzHcRzHcRzHcRzHcRz\
-HcRzHcRzHcRx3J5eSeND1fXMcx3Ecx3Ecx3Ecx3Ecx3Hcu7uuU7IkSe5cSTiO4ziO47jfdl27SZLs\
-mi+O4ziO4zjuOVzXbpkku+aL4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4+7kUhIPur5vjuM4juM4j\
-uM4juM4juM4jlvjuk7XkiS5cyXhOI7jOI5rc127O5I8K1smk+M4juM4jnsO17VbJsmu+eI4juM4ju\
-M4juM4juM4juM4juM4juM4juO4O7mUxIOu75vjOI7jOI7jOI7jOI7jOI7j6l3XqVySJHeuJBzHcRz\
-HcWdd126LJB8nW2aa4ziO4ziO2+W6dr0keVa2TCbHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzH3cml\
-JB50fd8cx3Ecx3Ecx3Ecx3Ecx3Ecd1nXdZqXJMmdKwnHcRzHcVznrokkHydbZprjOI7jOI7b5bp2v\
-SR5VrZMJsdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMfdyaUkHnR93xzHcRzHcRzHcRzHcRzHcRzHHX\
-Rdp4BJkty5knAcx3Ec93yua/dDko+TLTPNcRzHcRzH3cd17V5J8nGyZaY5juM4juM4juM4juM4juM\
-4juM4juM4juM47k4uJfGg6/vmOI7jOI7jOI7jOI7jOI7jOO6DXNfpYZK8lmxZRziO4ziO2+u6dj8k\
-+TjZMtMcx3Ecx3HcfVzX7pUkHydbZprjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j7uRSEg+6vm+O4\
-ziO4ziO4ziO4ziO4ziO45a7rlPHJHkt2bKOcBzHcRx3f9e1iyHJx8mWmeY4juM4juPu47p2ryR5Vr\
-ZMJsdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMctcymJB13fN8dxHMdxHMdxHMdxHMdxHMdxT+q6Tjm\
-T5LVkyzrCcRzHcdyPu67dCEk+TrbMNMdxHMdxHPfbrmsXSpKPky0zzXEcx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3HLXEriQdf3zXEcx3Ecx3Ecx3Ecx3Ecx3EcN55dp6NJkty5knAcx3HcFV3X7oAkz8qWy\
-eQ4juM4juPu47p2ryR5VrZMJsdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMc9iUtJPOj6vjmO4ziO4z\
-iO4ziO4ziO4ziO497FdZ3GJkly50rCcRzHcc2u6y1Pkl3zxXEcx3Ecx+1yXbtekjwrWyaT4ziO4zi\
-O4ziO4ziO4ziO4ziO4ziO4ziO457EpSQedH3fHMdxHMdxHMdxHMdxHMdxHMdxD3Vdp7hJkry3bFm7\
-OI7jOO7Xnl1vXZLsmi+O4ziO4zjuPq5r90qSZ2XLZHIcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Hcx\
-V1K4kHX981xHMdxHMdxHMdxHMdxHMdxHPdQ13X6myTJZ5Qt6yXHcRzX4bregiTZNV8cx3Ecx3HcfV\
-zX7pUkz8qWyeQ4juM4juM4juM4juM4juM4juM4juM4juO4i7uUxIOu75vjOI7jOI7jOI7jOI7jOI7\
-jOK7SdZ0aJ0nyGWXLeslxHMd9rOt6m5Fk13xxHMdxHMdx93Fdu1eSPCtbJpPjOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jOI7jLu5SEg+6vm+O4ziO4ziO4ziO4ziO4ziO47hK13VqnCRJcjw5juO4p3ZdbyWS7\
-JovjuM4juM47j6ua/dKkl3zxXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcTS4l8aDr++Y4juM4ju\
-M4juM4juM4juM4jruU6zqlTpIkOZ4cx3Fchet6u5Bk13xxHMdxHMdx93Fdu1eS7JovjuM4juM4juM\
-4juM4juM4juM4juM4juM4juNucimJB13fN8dxHMdxHMdxHMdxHMdxHMdxHPcDrut0O0mS5HhyHMdx\
-H+q63hIk2TVfHMdxHMdx3G+7rl0oSZ6VLZPJcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdxNLiXxo\
-Ov75jiO4ziO4ziO4ziO4ziO4ziO4+7ouk7FkyRJPlq2rO4cx3Eb11CSPCtb5ovjOI7jOO4qrms3SZ\
-KPky0zzXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcTS4l8aDr++Y4juM4juM4juM4juM4juM4juM\
-Wuq7T9CRJkleULW8UjuMe57pWNZLsmi+O4ziO47iruK7dJEk+TrbMNMdxHMdxHMdxHMdxHMdxHMdx\
-HMdxHMdxHMdxN7mUxIOu75vjOI7jOI7jOI7jOI7jOI7jOI7jyk7vkyRJ9sqW9wLHcedd1+pEkl3zx\
-XEcx3Ec1+a6doUk2ShbVgOO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO425yKYkHXd83x3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx93suk79kyRJ9sqW9wLHca2rDEl2zRfHcRzHcVyb69oVkmSjbFkNOI7jOI7jOI7\
-jOI7jOI7jOI7jOI7jOI7jOI67yaUkHnR93xzHcRzHcRzHcRzHcRzHcRzHcRxX47puGSBJkny0bFnd\
-Oe4ZXddqQZJd88VxHMdxHPco17W7I8lG2bIacBzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3oS4l8\
-aDr++Y4juM4juM4juM4juM4juM4juM47jvPrtsQSJIk30e2rNEct9l1TT1Jds0Xx3Ecx3HcWde1Sy\
-PJRtmyGnAcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3EcV+FSEg+6vm+O4ziO4ziO4ziO4ziO4ziO4zi\
-O45a4rlsbSJIk30e2rNEct32WSPKsbJkvjuM4juO4R+6ZSPJasmU14DiO4ziO4ziO4ziO4ziO4ziO\
-4ziO4ziO4zjuqV1K4kHX981xHMdxHMdxHMdxHMdxHMdxHMdxXLnruiWCJEny0bJldee6XddUkGTXf\
-HEcx3Ec93yua9dEkteSLesIx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FP7VISD7q+b47jOI7jOI\
-7jOI7jOI7jOI7jOI7jLuq6bpcgSZLslS3vBe59XddPKUl2zRfHcRzHcXtd1+6HJK8lW9YRjuM4juM\
-4juM4juM4juM4juM4juM4juM4juO4X3EpiQdd3zfHcRzHcRzHcRzHcRzHcRzHcRzHcdwh13WbBUmS\
-5BVlyxvl2V3XTw1Jds0Xx3Ecx3H3d127GJIkd64kHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx7\
-+hSEg+6vm+O4ziO4ziO4ziO4ziO4ziO4ziO47gPcV23YJAkSZJHZMu7yLuPJPfNCcdxHMdxP+66dh\
-UkSdq7cxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHvbtLSTzo+r45juM4juM4juM4juM4juM4juM\
-4juO4v3l23fJBkiR5RemNQpLmi+M4juM2uK63PEmSe2XLqsdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx\
-HMdxHLfApSQedH3fHMdxHMdxHMdxHMdxHMdxHMdxHMdxXKHrusWEJEmyV1qnySvJln0Qx3Ecx/3as\
-+utS5LkM8qW9ZLjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOK7YpSQedH3fHMdxHMdxHMdxHMdxHM\
-dxHMdxHMdx3IVc160pJEmSJEl+pGzZz3Acx3Ef616/frlZNr0HSZIkx5PjOI7jOI7jOI7jOI7jOI7\
-jOI7jOI7jOI7jOI7b6lISD7q+b47jOI7jOI7jOI7jOI7jOI7jOI7jOI5703Xd0kKSJEmS5P7dBcdx\
-3NXdmZt13clLkiT547LlvcBxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMf9sEtJPOj6vjmO4ziO4\
-ziO4ziO4ziO4ziO4ziO4zjubq7rVhiSJEmSJEmSJEmSJEnyGWTL3844juM4juM4juM4juM4juM4ju\
-M4juM4juM4juO4u7uUxIOu75vjOI7jOI7jOI7jOI7jOI7jOI7jOI7j1rmuW2hIkiRJkiRJkiRJkiT\
-J95Ytf8fiOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j1rqUxIOu75vjOI7jOI7jOI7jOI7jOI7j\
-OI7jOI7jLu+6bsshSZIkSZIkSZIkSZJskC1/GeI4juM4juM4juM4juM4juM4juM4juM4juM4juOez\
-qUkHnR93xzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHfbDrutWHJEmSJEmSJEmSJMmrypa/tXAcx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcX11K4kHX981xHMdxHMdxHMdxHMdxHMdxHMdxHMdx3JO7rtu\
-HSJIkSZIkSZIkSZJ8P9ny1wuO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziOO+lSEg+6vm+O4ziO\
-4ziO4ziO4ziO4ziO4ziO4ziO47h3dV23JJEkSZIkSZIkSZLkbtny9wCO4ziO4ziO4ziO4ziO4ziO4\
-ziO4ziO4ziO4ziOe5BLSTzo+r45juM4juM4juM4juM4juM4juM4juM4juOqXddtTiRJkiRJkiRJkm\
-SrbPk9meM4juM4juM4juM4juM4juM4juM4juM4juM4juMu4lISD7q+b47jOI7jOI7jOI7jOI7jOI7\
-jOI7jOI7jOO6A67qtiiRJkiRJkiRJ8vlky++PHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMfd\
-xaUkHnR93xzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdxi13UbF0mSJEmSJEmSV5Itv1dxHMdxHMdxH\
-MdxHMdxHMdxHMdxHMdxHMdxHMdxHPcULiXxoOv75jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47j/f3\
-bdNkaSJEmSJEmSzyW/3Chbft/gOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI67waUkHnR93xz\
-HcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx32rXdp0aSJEmSJEleQ956j64beDmO4ziO4ziO4ziO4ziO\
-4ziO4ziO4ziO4ziO4ziO4xa4lMSDru+b4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4x7m2m6MI0mSJ\
-EmSvLp0gy7HcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx3d5eSeND1fXMcx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3FcnWu7EY8kHyVbZprjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7\
-juKdyKYkHXd83x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx13Gdd2ySpJnZctkchzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3VC4l8aDr++Y4juM4juM4juM4juM4juM4juM4juM4juM47\
-g3XdTsrSXbNF8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxT+VSEg+6vm+O4ziO4z\
-iO4ziO4ziO4ziO4ziO4ziO4ziO495wXbezkmTXfHEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ec91QuJfGg6/vmOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4N13U7K0l2zRfHcRzHcRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcU/lUhIPur5vjuM4juM4juM4juM4juM4juM4juM4j\
-uM4juPecF23s5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHPdULiXxoOv75j\
-iO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuDdd1OytJds0Xx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3FP5VISD7q+b47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j3nBdt7OSZNd8cRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3VC4l8aDr++Y4juM4juM4juM4juM4juM4j\
-uM4juM4juM47g3XdTsrSXbNF8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxT+VSEg\
-+6vm+O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO495wXbezkmTXfHEcx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ec91QuJfGg6/vmOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4N13U7K0l2\
-zRfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcU/lUhIPur5vjuM4juM4juM4juM4j\
-uM4juM4juM4juM4juPecF23s5Jk13xxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHP\
-dULiXxoOv75jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuDdd1OytJds0Xx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FP5VISD7q+b47jOI7jOI7jOI7jOI7jOI7jOO5/2LuX3cqRHQug\
-4/qdhPP/f62BXRcXze50qSw/DndoTSiAwAI4CUccBUVzHMdxHMdx3IXrms5Kkl3ri+M4juM4juM4j\
-uM4juM4juM4juM4juM4juM4juM4juM4juO4o1xC0oOur5vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI\
-7juAvXNZ2VJLvWF8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxR7mEpAddXzfHcRz\
-HcRzHcRzHcRzHcRzHcRzHcRzHcRzHcReuazorSXatL47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jjnIJSQ+6vm6O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4y5c13RWkuxaXxzHcRzHc\
-RzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHHeUSkh50fd0cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx124rumsJNm1vjiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziOO8olJD3o+ro\
-5juM4juM4juM4juM4juM4juM4juM4juM4jrtwXdNZSbJrfXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecd5RLSHrQ9XVzHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHHfhuqazkmTX+uI4j\
-uM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM47iiXkPSg6+vmOI7jOI7jOI7jOI7jOI7jOI\
-7jOI7jOI7jOO7CdU1nJcmu9cVxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3FEuIel\
-B19fNcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdyF65rOSpJd64vjOI7jOI7jOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jOI7jOI7juKNcQtKDrq+b4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47gL1zWdlSS71\
-hfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcUe5hKQHXV83x3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3EXrms6K0l2rS+O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO445\
-yCUkPur5ujuM4juM4juM4juM4juM4juM4juM4juM4juMuXNd0VpLsWl8cx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecxx3lEpIedH3dHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdduK7pr\
-CTZtb44juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4jjvKJSQ96Pq6OY7jOI7jOI7jOI\
-7jOI7jOI7jOI7jOI7jOI67cF3TWUmya31xHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMd\
-xHHeUS0h60PV1cxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx34bqms5Jk1/riOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4ol5D0oOvr5jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuw\
-nVNZyXJrvXFcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdxRLiHpQdfXzXEcx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcheuazkqSXeuL4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zi\
-O4ziO47ijXELSg66vm+M4juM4juM4juM4juM4juM4juM4juM4juO4C9c1nZUku9YXx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHuYSkB11fN8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxH\
-MdxF65rOitJdq0vjuM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juOOcglJD7q+bo7jOI\
-7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jLlzXdFaS7FpfHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMd\
-xHMdxHMdxHMcd5RKSHnR93RzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHXbiu6awk2bW+OI7jOI7j\
-OI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI47yiUkPej6ujmO4ziO4ziO4ziO4ziO4ziO4ziO4\
-ziO4ziOu3Bd01lJsmt9cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx3lEtIetD1dX\
-Mcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecd+G6prOSZNf64jiO4ziO4ziO4ziO4ziO4ziO4ziO4zi\
-O4ziO4ziO4ziO4zjuKJeQ9KDr6+Y4juM4juM4juM4juM4juM4juM4juM4juM47sJ1TWclya71xXEc\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcUS4h6UHX181xHMdxHMdxHMdxHMdxHMdxH\
-MdxHMdxHMdx3IXrms5Kkl3ri+M4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juO4o1xC0o\
-Our5vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juAvXNZ2VJLvWF8dxHMdxHMdxHMdxHMdxHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxR7mEpAddXzfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcReuazorSXat\
-L47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jjnIJSQ+6vm6O4ziO4ziO4ziO4ziO4\
-ziO4ziO4ziO4ziO4y5c13RWkuxaXxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHHe\
-USkh50fd0cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx124rumsJNm1vjiO4ziO4ziO4ziO4ziO4zi\
-O4ziO4ziO4ziO4ziO4ziO4ziOO8olJD3o+ro5juM4juM4juM4juM4juM4juM4juM4juM4jrtwXdNZ\
-SbJrfXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecd5RLSHrQ9XVzHMdxHMdxHMdxH\
-MdxHMdxHMdxHMdxHMdxHHfhuqazkmTX+uI4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4ju\
-M47iiXkPSg6+vmOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO7CdU1nJcmu9cVxHMdxHMdxHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxHMdxHMdx3FEuIelB19fNcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdyF\
-65rOSpJd64vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juKNcQtKDrq+b4ziO4ziO4\
-ziO4ziO4ziO4ziO4ziO4ziO47gL1zWdlSS71hfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcR\
-zHcRzHcUe5hKQHXV83x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3EXrms6K0l2rS+O4ziO4ziO4zi\
-O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO445yCUkPur5ujuM4juM4juM4juM4juM4juM4juM4juM4\
-juMuXNd0VpLsWl8cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecxx3lEpIedH3dHMdxH\
-MdxHMdxHMdxHMdxHMdxHMdxHMdxHMdduK7prCTZtb44juM4juM4juM4juM4juM4juM4juM4juM4ju\
-M4juM4juM4jjvKJSQ96Pq6OY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI67cF3TWUmya31xHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHHeUS0h60PV1cxzHcRzHcRzHcRzHcRzHcRzHcRzH\
-cRzHcRx34bqms5Jk1/riOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO4ol5D0oOvr5\
-jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuwnVNZyXJrvXFcRzHcRzHcRzHcRzHcRzHcRzHcRzHcR\
-zHcRzHcRzHcRzHcdxRLiHpQdfXzXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcheuazkqSXeuL4zi\
-O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47ijXELSg66vm+M4juM4juM4juM4juM4juM4\
-juM4juM4juO4C9c1nZUku9YXx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3FHuYSkB\
-11fN8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxF65rOitJdq0vjuM4juM4juM4juM4juM4juM4ju\
-M4juM4juM4juM4juM4juOOcglJD7q+bo7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jLlzXdFaS7Fp\
-fHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMcd5RKSHnR93RzHcRzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcRzHXbiu6awk2bW+OI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI47y\
-iUkPej6ujmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziOu3Bd01lJsmt9cRzHcRzHcRzHcRzHcRzHcR\
-zHcRzHcRzHcRzHcRzHcRzHcRx3lEtIetD1dXMcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecd+G6prO\
-SZNf64jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuKJeQ9KDr6+Y4juM4juM4juM4\
-juM4juM4juM4juM4juM47sJ1TWclya71xXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3HcUS4h6UHX181xHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3IXrms5Kkl3ri+M4juM4juM4juM4ju\
-M4juM4juM4juM4juM4juM4juM4juO4o1xC0oOur5vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juAv\
-XNZ2VJLvWF8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxR7mEpAddXzfHcRzHcRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcReuazorSXatL47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jO\
-I7jOI7jjnIJSQ+6vm6O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4y5c13RWkuxaXxzHcRzHcRzHcR\
-zHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHHeUSkh50fd0cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx124rumsJNm1vjiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziOO8olJD3o+ro5juM4\
-juM4juM4juM4juM4juM4juM4juM4jrtwXdNZSbJrfXEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecd5RLSHrQ9XVzHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHHfhuqazkmTX+uI4juM4ju\
-M4juM4juM4juM4juM4juM4juM4juM4juM4juM47iiXkPSg6+vmOI7jOI7jOI7jOI7jOI7jOI7jOI7\
-jOI7jOO7CdU1nJcmu9cVxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3FEuIelB19fN\
-cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdyF65rOSpJd64vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jO\
-I7jOI7jOI7jOI7juKNcQtKDrq+b4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47gL1zWdlSS71hfHcR\
-zHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcUe5hKQHXV83x3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-cx3Ecx3Ecx3EXrms6K0l2rS+O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO445yCUkP\
-ur5ujuM4juM4juM4juM4juM4juM4juM4juM4juMuXNd0VpLsWl8cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecxx3lEpIedH3dHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdduK7prCTZtb\
-44juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4jjvKJSQ96Pq6OY7jOI7jOI7jOI7jOI7\
-jOI7jOI7jOI7jOI67cF3TWUmya31xHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHHeU\
-S0h60PV1cxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx34bqms5Jk1/riOI7jOI7jOI7jOI7jOI7jO\
-I7jOI7jOI7jOI7jOI7jOI7jOO4ol5D0oOvr5jiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zjuwnVNZy\
-VJkiTJHbJln+c4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM47iUuIelB19fNcRzHcRzHcRz\
-HcRzHcRzHcRzHcRzHcRzHcXXu1++327JpDiJJkiRJkh2y5QzFcRzHcRzHcRzHcRzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcUtdQtKDrq+b4ziO4ziO4ziO4ziO4ziO4ziO4ziO445xn5n1aUooSZIkSZIkSZLkf\
-58cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ect9MlJD3o+ro5juM4juM4juM4juM4juM4ju\
-M4juM47tKZrkuSJEmSJEmSJEnuli2/sDmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO47gvcwl\
-JD7q+bo7jOI7jOI7jOI7jOI7jOI7jOI7jOK7QmbNLkiRJkiRJkiRJkiT5zpPjOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jOI7jOI7juCe7hKQHXV83x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec9wWua1oOSZIkSZIkS\
-ZIkSZIk+dWy5T0Wx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecxz3EJSQ96Pq6OY7jOI7jOI7jOI\
-7jOI7jOI7jOI7jVrtfv99uy6Z5MiRJkiRJkiRJkiRJkuSzZcv7Oo7jOI7jOI7jOI7jOI7jOI7jOI7\
-jOI7jOI7jOI4rcwlJD7q+bo7jOI7jOI7jOI7jOI7jOI7jOI7jHuo+M4/XJF+SJEmSJEmSJEmSJEmS\
-PEW2vNHkOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juE+6hKQHXV83x3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3FLnLm8JEmSJEmSJEmSJEmSJEm2yZb3rxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3H5\
-eQ9KDr6+Y4juM4juM4juM4juM4juM4juM47p2nub4kSZIkSZIkSZIkSZIkSZI7Zct7Zo7jOI7jOI7\
-jOI7jOI7jOI7jOI7jOI7jOI7jOG6tS0h60PV1cxzHcRzHcRzHcRzHcRzHcRzHcdzxrmsKBkmSJEmS\
-JEmSJEmSJEmSJLlTtrwV5ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4/61S0h60PV1cxzHcRzHc\
-RzHcRzHcRzHcRzHcdyPu1+/327LpvkSJEmSJEmSJEmSJEmSJEmSJPlK2XJvwHEcx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ect8AlJD3o+ro5juM4juM4juM4juM4juM4juM47rbrmqJAkiRJkiRJkiRJkiR\
-JkiRJkuRm2XI/wnEcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Hc0S4h6UHX181xHMdxHMdxHMdxHMdx\
-HMdxHMcd5LqmBZAkSZIkSZIkSZIkSZIkSZIkSX6VbLnN4TiO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4\
-ziuwiUkPej6ujmO4ziO4ziO4ziO4ziO4ziO47hvdF1f4ZMkSZIkSZIkSZIkSZIkSZIkST5Tttw9cR\
-zHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3oy4h6UHX181xHMdxHMdxHMdxHMdxHMdxHMf9C9f1VTx\
-JkiRJkiRJkiRJkiRJkiRJkiT5U7LlvovjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juFsuIelB19fN\
-cRzHcRzHcRzHcRzHcRzHcRz3KNf1lTpJkiRJkiRJkiRJkiRJkiRJkiR5smy5Y+M4juM4juM4juM4j\
-uM4juM4juM4juM4juO4h7uEpAddXzfHcRzHcRzHcRzHcRzHcRzHcVyl6/pqnCRJkiRJkiRJkiRJki\
-RJkiRJkiS3yJYbQY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI5b5hKSHnR93RzHcRzHcRzHcRzHcRz\
-HcRzHcS91XV9jkyRJkiRJkiRJkiRJkiRJkiRJkiTZcA/JcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzH\
-cd/kEpIedH3dHMdxHMdxHMdxHMdxHMdxHMdxX+K6vnImSZIkSZIkSZIkSZIkSZIkSZIkSbJFttyZc\
-hzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcY9xCUkPur5ujuM4juM4juM4juM4juM4juO48ez66pgkSZ\
-IkSZIkSZIkSZIkSZIkSZIkSfJ92XJPy3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx9W5hKQHXV83x3E\
-cx3Ecx3Ecx3Ecx3Ecx3GHuq6vgEmSJEmSJEmSJEmSJEmSJEmSJEmSJHfJlrthjuM4juM4juM4juM4\
-juM4juM4juM4juM47mUuIelB19fNcRzHcRzHcRzHcRzHcRzHcdxy1/VVLkmSJEmSJEmSJEmSJEmSJ\
-EmSJEmS5Dny7aZsuY/mOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jPu0Skh50fd0cx3Ecx3Ecx3Ecx3\
-Ecx3Ecx/2Qa/u+liRJkiRJkiRJkiRJkiRJkiRJkiRJkrwvzTTmOI7jOI7jOI7jOI7jOI7jOI7jOI7\
-jOI57jEtIetD1dXMcx3Ecx3Ecx3Ecx3Ecx3Ec90HX9r0rSZIkSZIkSZIkSZIkSZIkSZIkSZIk+QzZ\
-cu/OcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRx3oEtIetD1dXMcx3Ecx3Ecx3Ecx3Ecx3HcY13XV6QkS\
-ZIkSZIkSZIkSZIkSZIkSZIkSZIk+X2y5a6f4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zhusUtIetD1dX\
-Mcx3Ecx3Ecx3Ecx3Ecx3Fcvev6qpMkSZIkSZIkSZIkSZIkSZIkSZIkSZIkz5It/QUcx3Ecx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3E/4BKSHnR93RzHcRzHcRzHcRzHcRzHcRy3xnV9ZUmSJEmSJEmSJEmSJEmS\
-JEmSJEmSJEmS5GdlS08Dx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcB1xC0oOur5vjOI7jOI7jOI7jO\
-I7jOI7jvtx1ffVIkiRJkiRJkiRJkiRJkiRJkiRJkiRJkmSjbOmj4DiO4ziO4ziO4ziO4ziO4ziO4z\
-iO4zjukS4h6UHX181xHMdxHMdxHMdxHMdxHMdx77qurxBJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiT\
-/nWzp3eA4juM4juM4juM4juM4juM4juM4juM4rtolJD3o+ro5juM4juM4juM4juM4juO4B7iurwJJ\
-kiRJkiRJkiRJkiRJkiRJkiRJkiRJkiT3ypZ+EY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jVriEpAddX\
-zfHcRzHcRzHcRzHcRzHcRxX5Lq+0iNJkiRJkiRJkiRJkiRJkiRJkiRJkiRJkiTHk+M4juM4juM4ju\
-M4juM4juM4juM4juO4J7qEpAddXzfHcRzHcRzHcRzHcRzHcRz3Atf11RxJkiRJkiRJkiRJkiRJkiR\
-JkiRJkiRJkiT5atnSF8NxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3B9dQtKDrq+b4ziO4ziO4ziO4ziO\
-4ziO+4Tr+oqNJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmSfKJs6cXhOI7jOI7jOI7jOI7jOI7jOI7jO\
-I7juMNdQtKDrq+b4ziO4ziO4ziO4ziO4ziO+6vtqzKSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmS/B\
-nZ0v/DcRzHcRzHcRzHcRzHcRzHcRzHcRzHcSUuIelB19fNcRzHcRzHcRzHcRzHcRx3lOv6yoskSZI\
-kSZIkSZIkSZIkSZIkSZIkSZIkSZIkz5UtPUccx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec98MuIelB19fN\
-cRzHcRzHcRzHcRzHcRy30nV9dUWSJEmSJEmSJEmSJEmSJEmSJEmSJEmSJEmS5FfKlj4njuM4juM4j\
-uM4juM4juM4juM4juM4jrvpEpIedH3dHMdxHMdxHMdxHMdxHMdx3+q6voIiSZIkSZIkSfJVsuU3Ds\
-ed6Lr+WpAkSZIkSZIkSZIkSZIkSf5V8/6V4ziO4ziO4ziO4ziO4ziO4ziO4ziOe7xLSHrQ9XVzHMd\
-xHMdxHMdxHMdxHMd9q+v6mokkSZIkSZIkyc/Jll8qHMe9znX9VSNJkiRJkiRJkiRJkiRJ8hzZ8haV\
-4ziO4ziO4ziO4ziO4ziO4ziO4ziOO8YlJD3o+ro5juM4juM4juM4juM4juP+lev6uogkSZIkSZIky\
-c/Jll8qHMdxHMdxHMf9/2fXrw+SJEmSJEmSJEl3HhzHcRzHcRzHcRzHcRzHcRzHcRzHcdxKl5D0oO\
-vr5jiO4ziO4ziO4ziO4ziO+1eu6yshkiRJkiRJkiTz5DiO4ziO4ziOc39AkiRJkiRJkiT5Qdnyi4z\
-jOI7jOI7jOI7jOI7jOI7jOI7jOI77NpeQ9KDr6+Y4juM4juM4juM4juM47mGu66sdkiRJkiRJkiTz\
-5DiO4ziO4ziO4x7hun6tkiRJkiRJkiSZJ8dxHMdxHMdxHMdxHMdxHMdxHMdxHHeKS0h60PV1cxzHc\
-RzHcRzHcRzHcRxX6rq+oiFJkiRJkiRJMk+O4ziO4ziO4ziOW+S6flWTJEmSJEmSJJknx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ec910uIelB19fNcRzHcRzHcRzHcRzHcVyp6/qqhSRJkiRJkiRPki2/GjiO4zi\
-O4ziO4zhuk+v69U+SJEmSJEmSJ8mWXw0cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3EvdAlJD7q+bo7jOI7j\
-OI7jOI7jOI7jXuy6vjIhSZIkSZIkyZNky68GjuM4juM4juM4juM63jWQJEmSJEmS5Fny7aZs+dXAc\
-RzHcRzHcRzHcRzHcRzHcRzHcRz3v1xC0oOur5vjOI7jOI7jOI7jOI7juC9ybd99kCRJkiRJkiT5V8\
-3vDY7jOI7jOI7jOI7j9ruutyIkSZIkSZIkuU+2nP05juM4juM4juM4juM4juM4juM4jjvSJSQ96Pq\
-6OY7jOI7jOI7jOI7jOI77Itf1FQZJkiRJkiRJniRbfjVwHMdxHMdxHMdxHMd9let6e0OSJEmSJEmS\
-+2TL2Z/jOI7jOI7jOI7jOI7jOI7jOI7juB9xCUkPur5ujuM4juM4juM4juM4juP+z7Pr6waSJEmSJ\
-EmSJPPkOI7jOI7jOI7jOI7juE+4rrdhJEmSJEmSpBtJjuM4juM4juM4juM4juM4juM4juO+xCUkPe\
-j6ujmO4ziO4ziO4ziO4zjuWNf1tQFJkiRJkiRJknlyHMdxHMdxHMdxHMdxXJHrevtGkiRJkiRJugH\
-lOI7jOI7jOI7jOI7jOI7jOI7jOG64hKQHXV83x3Ecx3Ecx3Ecx3Ecx613Xd3/JEmSJEmSJEnmyXEc\
-x3Ecx3Ecx3Ecx3Hcu67rbR9JkiRJkiTpxpXjOI7jOI7jOI7jOI7jOI7jOI7jDnUJSQ+6vm6O4ziO4\
-ziO4ziO4ziO+zHX1Y1PkiRJkiRJkuTf8u2mbPmlwnEcx3Ecx3Ecx3Ecx3FPcG3vJUmSJEmSJJ8u3d\
-NyHMdxHMdxHMdxHMdxHMdxHMdx3I+4hKQHXV83x3Ecx3Ecx3Ecx3Ecx33YtfXVkyRJkiRJkiT5Gdn\
-yS4XjOI7jOI7jOI7jOI7juPfd/Zl0Xe8zSZIkSZIkny5bzqccx3Ecx3Ecx3Ecx3Ecx3Ecx3Ect8Ql\
-JD3o+ro5juM4juM4juM4juM47sOuqzueJEmSJEmSJMk8OY7jOI7jOI7jOI7jOI7jPui63oKSJEmSJ\
-EmSd/+LRMv5lOM4juM4juM4juM4juM4juM4juO+2CUkPej6ujmO4ziO4ziO4ziO4zjuw66tP54kSZ\
-IkSZIkyb9qfm9wHMdxHMdxHMdxHMdxHNfvut6ekiRJkiRJPl22nDI5juM4juM4juM4juM4juM4juM\
-47otdQtKDrq+b4ziO4ziO4ziO4ziOe7Dr6lYnSZIkSZIkSTJPjuM4juM4juM4juM4juO4Q13X21qS\
-JEmSJMlT5NtN2XLK5DiO4ziO4ziO4ziO4ziO4ziO47h3XELSg66vm+M4juM4juM4juM4jnuwa+tXJ\
-0mSJEmSJMlzZMuvBo7jOI7jOI7jOI7jOI7juO2u6+0wSZIkSZLkGbLlrMhxHMdxHMdxHMdxHMdxHM\
-dxHMdx77iEpAddXzfHcRzHcRzHcRzHcRz3YNfVdU6SJEmSJEmSG+XbTdnyq4HjOI7jOI7jOI7jOI7\
-jOO5U1/Y+miRJkiRJcpN0V85xHMdxHMdxHMdxHMdxHMdxHMeVu4SkB11fN8dxHMdxHMdxHMdxHPdg\
-19Z3TpIkSZIkSZLbZMvZn+M4juM4juM4juM4juM4jvsa1/UWmyRJkiRJcpNsOfFxHMdxHMdxHMdxH\
-MdxHMdxHMdxx7uEpAddXzfHcRzHcRzHcRzHcRx3gOvqAidJkiRJkiTJfbLl7M9xHMdxHMdxHMdxHM\
-dxHMc9y3W9bSdJkiRJktxyiuI4juM4juM4juM4juM4juM4juO4d1xC0oOur5vjOI7jOI7jOI7jOI4\
-7wHV1gZMkSZIkSZLkPtly9uc4juM4juM4juM4juM4juO473Rdb/dJkiRJkuyQLSchjuM4juM4juM4\
-juM4juM4juM47niXkPSg6+vmOI7jOI7jOI7jOI7jFrmubm6SJEmSJEmS3Cdbzv4cx3Ecx3Ecx3Ecx\
-3Ecx3Ecd5Lruk0gSZIkSbJDtpyEOI7jOI7jOI7jOI7jOI7jOI7juBqXkPSg6+vmOI7jOI7jOI7jOI\
-7jFrmurmySJEmSJEmS/C7ZcoLnOI7jOI7jOI7jOI7jOI7jOO6+67q9IEmSJEmyQ7achDiO4ziO4zi\
-O4ziO4ziO4ziO47gfdwlJD7q+bo7jOI7jOI7jOI7jOO4bXFeXNEmSJEmSJEl+n3y7KVvO/hzHcRzH\
-cRzHcRzHcRzHcRzH/bxruy8hSZIkSfInpU4FjuM4juM4juM4juM4juM4juM47h2XkPSg6+vmOI7jO\
-I7jOI7jOI7j/sG19TuTJEmSJEmS5DbZcvbnOI7jOI7jOI7jOI7jOI7jOO5813XLQpIkSZLkT8qW8w\
-zHcRzHcRzHcRzHcRzHcRzHcRx32yUkPej6ujmO4ziO4ziO4ziO47h/cF1dyyRJkiRJkiT5XbLlBM9\
-xHMdxHMdxHMdxHMdxHMdxHLfFdd0GkSRJkuST5dtN2XIq4TiO4ziO4ziO4ziO4ziO4ziO4/4OSQ+6\
-vm6O4ziO4ziO4ziO47hHuLb+Y5IkSZIkSZLcJlvO/hzHcRzHcRzHcRzHcRzHcRzHce3u/vTCrvsnk\
-iRJkmyXLWcLjuM4juM4juM4juM4juM4juM47u+Q9KDr6+Y4juM4juM4juM4jnuE6+oiJkmSJEmSJM\
-nvki0neI7jOI7jOI7jOI7jOI7jOI7jOG7/3RNJkiRJPlnenfPfcrbgOI7jOI7jOI7jOI7jOI7jOI4\
-7yCUkPej6ujmO4ziO4ziO4ziO4x7h2vqISZIkSZIkSfJ7ZMsJnuM4juM4juM4juM4juM4juM4jvvo\
-DdLd2YVd910kSZIk2S5bzhYcx3Ecx3Ecx3Ecx3Ecx3Ecx3EHuYSkB11fN8dxHMdxHMdxHMdxXJXr6\
-uolSZIkSZIkye+SLSd4juM4juM4juM4juM4juM4juM4brfruiUjSZIkyX55d85/y9mC4ziO4ziO4z\
-iO4ziO4ziO4zhuoUtIetD1dXMcx3Ecx3Ecx3Ecx1W5tr5ekiRJkiRJkvwe2XKC5ziO4ziO4ziO4zi\
-O4ziO4ziO4850XbdrJEmSJNkuW04IHMdxHMdxHMdxHMdxHMdxHMdxC11C0oOur5vjOI7jOI7jOI7j\
-OK7KdXXnkiRJkiRJkuQ/y5ZzOMdxHMdxHMdxHMdxHMdxHMdxHMd9heu6zSNJkiTJHbJln+c4juM4j\
-uM4juM4juM4juM4jlvoEpIedH3dHMdxHMdxHMdxHMdxL3FdXbYkSZIkSZIk+c+y5RzOcRzHcRzHcR\
-zHcRzHcRzHcRzHca90v36/3ZZN94ckSZIk+ZWyZZ/nOI7jOI7jOI7jOI7jOI7jOI5b6BKSHnR93Rz\
-HcRzHcRzHcRzHcS9xXV22JEmSJEmS5DNky2ma4ziO4ziO4ziO4ziO4ziO4ziO457kum4dSZIkSXKH\
-bNnnOY7jOI7jOI7jOI7jOI7jOI7jvtElJD3o+ro5juM4juM4juM4juNe4rq6ZUmSJEmSJMkm2XIm5\
-jiO4ziO4ziO4ziO4ziO4ziO4zju2v36/XZbNt1zkiRJkuQO2XJC4DiO4ziO4ziO4ziO4ziO4ziO+x\
-cuIelB19fNcRzHcRzHcRzHcRz3EtfV9UqSJEmSJEm+Qt795rflTMxxHMdxHMdxHMdxHMdxHMdxHMd\
-x3Pe5tvtRkiRJktwhdexwHMdxHMdxHMdxHMdxHMdxHHeQS0h60PV1cxzHcRzHcRzHcRzHvcS19b2S\
-JEmSJEmSPy1bTrYcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx53jum5VSZIkSXKHbNnnOY7jOI7jOI7jOI7jO\
-I7jOI57lEtIetD1dXMcx3Ecx3Ecx3Ecx73EdXWvkiRJkiRJkr4D4jiO4ziO4ziO4ziO4ziO4ziO4z\
-iO+/Oz6xaXJEmSJL9Wvt2ULfs8x3Ecx3Ecx3Ecx3Ecx3Ecx3GVLiHpQdfXzXEcx3Ecx3Ecx3Ec9xL\
-X1r9KkiRJkiRJ3pMt51OO4ziO4ziO4ziO4ziO4ziO4ziO47i77v6ExK77X5IkSZL8Stmyz3Mcx3Ec\
-x3Ecx3Ecx3Ecx3EcV+kSkh50fd0cx3Ecx3Ecx3Ecx3EvcV1dqCRJkiRJkk+XLadMjuM4juM4juM4j\
-uM4juM4juM4juO4Ftd1a0ySJEmSXylbdmuO4ziO4ziO4ziO4ziO4ziO4ypdQtKDrq+b4ziO4ziO4z\
-iO4zjuJa6rC5UkSZIkSfIM2XJW5DiO4ziO4ziO4ziO4ziO4ziO4ziOO939+v12WzbdU5MkSZLk63d\
-djuM4juM4juM4juM4juM4juMe5RKSHnR93RzHcRzHcRzHcRzHcS9xXV2oJEmSJEmSu+Td70Rbzooc\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Hcn59t99skSZIk+XWyZbfmOI7jOI7jOI7jOI7jOI7jOO6lLiHpQ\
-dfXzXEcx3Ecx3Ecx3Ec9xLX1U1KkiRJkiS5Sbac+DiO4ziO4ziO4ziO4ziO4ziO4ziO47gdrutWnC\
-RJkiS/Urbs1hzHcRzHcRzHcRzHcRzHcRzHfYlLSHrQ9XVzHMdxHMdxHMdxHMe9xHV1hZIkSZIkSX6\
-9bDm3cRzHcRzHcRzHcRzHcRzHcRzHcRzHcc90XbfwJEmSJPkn+XZTtuzWHMdxHMdxHMdxHMdxHMdx\
-HMcNl5D0oOvr5jiO4ziO4ziO4ziOe4lr6wslSZIkSZL8atlybuM4juM4juM4juM4juM4juM4juM4j\
-uOe6e5PVOy6vydJkiTJ1++6HMdxHMdxHMdxHMdxHMdxHMd9iUtIetD1dXMcx3Ecx3Ecx3Ecx73EdX\
-V3kiRJkiRJbjlFcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdxm13XrT5IkSZJ/knfn47fs1hzHcRzHcRz\
-HcRzHcRzHcRx3qEtIetD1dXMcx3Ecx3Ecx3Ecx73EtfV3kiRJkiRJvvPkOI7jOI7jOI7jOI7jOI7j\
-OI7jOI7jOO6/z/vzFLv6BUiSJEny9bsux3Ecx3Ecx3Ecx3Ecx3Ecx3HDJSQ96Pq6OY7jOI7jOI7jO\
-I7jXuK6ujRJkiRJkjxdtpyhOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO5E19VlQJIkSZJ/knen47fs1h\
-zHcRzHcRzHcRzHcRzHcRy33CUkPej6ujmO4ziO4ziO4ziO417i2vo0SZIkSZI8W7acoTiO4ziO4zi\
-O4ziO4ziO4ziO4ziO4zjuRHd/mmJXfwJJkiRJvn7X5TiO4ziO4ziO4ziO4ziO47hDXULSg66vm+M4\
-juM4juM4juM47iWuq9uSJEmSJMkO2XIS4jiO4ziO4ziO4ziO4ziO4ziO4ziO4zju866rq4EkSZIk/\
-yTvzsZv2a05juM4juM4juM4juM4juM47odcQtKDrq+b4ziO4ziO4ziO4zjuJa6t35IkSZIkyZ+TLe\
-cZjuM4juM4juM4juM4juM4juM4juM4juNe5+5PUuzqoyBJkiTJ1++6HMdxHMdxHMdxHMdxHMdxHLf\
-cJSQ96Pq6OY7jOI7jOI7jOI7jXuK6uiZJkiRJktx/uuA4juM4juM4juM4juM4juM4juM4juM4jrty\
-Xd0XJEmSJPn6vZPjOI7jOI7jOI7jOI7jOI7jlruEpAddXzfHcRzHcRzHcRzHcdxLXFfXJEmSJEmS+\
-08XHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxV+7X77fbsqlvgyRJkjxXtuy5HMdxHMdxHMdxHMdxHM\
-dxHPdDLiHpQdfXzXEcx3Ecx3Ecx3Ec9xLX1TVJkiRJks+VLWcLjuM4juM4juM4juM4juM4juM4juM\
-4juO473Jd3R4kSZLkyfLuZPuWPZfjOI7jOI7jOI7jOI7jOI7jPugSkh50fd0cx3Ecx3Ecx3Ecx3Ev\
-cW19kyRJkiT5VNlytuA4juM4juM4juM4juM4juM4juM4juM4jvsud3/6YlefCEmSJHmubNlzOY7jO\
-I7jOI7jOI7jOI7jOO6DLiHpQdfXzXEcx3Ecx3Ecx3Ec9ynX1cVIkiRJks+VLWcLjuM4juM4juM4ju\
-M4juM4juM4juM4juO4U1xXdwlJkiR5srw72b5lz+U4juM4juM4juM4juM4juMe6xKSHnR93RzHcRz\
-HcRzHcRzHcZ9ybX2MJEmSJPlU2XK24DiO4ziO4ziO4ziO4ziO4ziO4ziO4ziOe7rr6kohSZIkz5Ut\
-OyfHcRzHcRzHcRzHcRzHcRz3WJeQ9KDr6+Y4juM4juM4juM4jvuU6+pGJEmSJMnnypazBcdxHMdxH\
-MdxHMdxHMdxHMdxHMdxHMdxHHfPdXWzkCRJkvvl203ZsnNyHMdxHMdxHMdxHMdxHMdx9S4h6UHX18\
-1xHMdxHMdxHMdxHPcp19aPSJIkSZJPlS1nC47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOO5nXVcXDEm\
-SJLldtux/HMdxHMdxHMdxHMdxHMdxXL1LSHrQ9XVzHMdxHMdxHMdxHMd9ynV1FZIkSZLkc2XL2YLj\
-OI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7rcF3dMyRJkuRPybebsmX/4ziO4ziO4ziO4ziO4ziO49a4h\
-KQHXV83x3Ecx3Ecx3Ecx3Hcp1xbXyFJkiRJPlW2nC04juM4juM4juM4juM4juM4juM4juM4juO4Dn\
-d/2mNX3w1JkiT5M7Jl/+M4juM4juM4juM4juM4juPWuISkB11fN8dxHMdxHMdxHMdxXJ5dXX4kSZI\
-k+VzZcrbgOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7juD89u7p1SJIkyZ+RLbsYx3Ecx3Ecx3Ecx3Ec\
-x3Ect8YlJD3o+ro5juM4juM4juM4juPy7OryI0mSJMnnypazBcdxHMdxHMdxHMdxHMdxHMdxHMdxH\
-MdxHMf96fnr99tt2dTnQ5IkSX5EtuxiHMdxHMdxHMdxHMdxHMdx3BqXkPSg6+vmOI7jOI7jOI7jOO\
-4w19WtR5IkSZLPlS1nC47jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7b4Lq6g0iSJMmPybtT4lt2MY7\
-jOI7jOI7jOI7jOI7jOO7LXULSg66vm+M4juM4juM4juO4w1xbvx5JkiRJPlW2nC04juM4juM4juM4\
-juM4juM4juM4juM4juM4rtl1dRWRJEmSH5EtexHHcRzHcRzHcRzHcRzHcRz35S4h6UHX181xHMdxH\
-MdxHMdx3GGuq+uOJEmSJJ8rW84WHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHPdE19WNRJIk+Uz5dl\
-O27EUcx3Ecx3Ecx3Ecx3Ecx3Hcuy4h6UHX181xHMdxHMdxHMdx3GGure+OJEmSJJ8qW84WHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxHMdxHPdE19WNRJIkSX5EtuxFHMdxHMdxHMdxHMdxHMdx3LsuIelB19fN\
-cRzHcRzHcRzHcdxhrqt7jiRJkiSfK1vOFhzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz3RNfVjUSSJ\
-El+RLbsRRzHcRzHcRzHcRzHcRzHcdy7LiHpQdfXzXEcx3Ecx3Ecx3HcYa6re44kSZIknytbzhYcx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec90T36/fbbdnUx0SSJPlE2bIXcRzHcRzHcRzHcRzHcRzHce+\
-6hKQHXV83x3Ecx3Ecx3Ecx3GHua7uOZIkSZJsly0nBI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j\
-vt91dT+RJEk+U96d896yF3Ecx3Ecx3Ecx3Ecx3Ecxz3AJSQ96Pq6OY7jOI7jOI7jOI47zLX1z5EkS\
-ZJkt2w5IXAcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec9/3u/mzJrr4pkiTJJ8qWvYjjOI7jOI7jOI\
-7jOI7jOO4BLiHpQdfXzXEcx3Ecx3Ecx3HcYa6rC44kSZIkd8iWfZ7jOI7jOI7jOI7jOI7jOI7jOI7\
-jOI7jOI7juPNcV7cVSZLkM+XdKe8texHHcRzHcRzHcRzHcRzHcVyRS0h60PV1cxzHcRzHcRzHcRx3\
-mGvrgyNJkiTJDbJln+c4juM4juM4juM4juM4juM4juM4juM4juM47jx3f7JkV58WSZLkE2XLXsRxH\
-MdxHMdxHMdxHMdxHFfkEpIedH3dHMdxHMdxHMdxHMcd5rq62UiSJP+nnTtmjeOKogDc+2eoUb3rFV\
-itU4S0DqmCC5MsxiDkoMiB/PtEh2zxDDG88Up778zXnMHH+0kX453XXB5J1pBdznmO4ziO4ziO4zi\
-O4ziO4ziO4ziO4ziO4ziO47jTs9eWFkmS5BZllxOF4ziO4ziO4ziO4ziO4ziukUukHmj5uTmO4ziO\
-4ziO4ziOW5nrtc1GkiRJkjVkl3Oe4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zju9Oy1pUWSJLlF2\
-eVE4TiO4ziO4ziO4ziO4ziOa+QSqQdafm6O4ziO4ziO4ziO41bmem2zkSRJkmQN2eWc5ziO4ziO4z\
-iO4ziO4ziO4ziO4ziO4ziO4ziOOz17bWmRJEluUXY5UTiO4ziO4ziO4ziO4ziO4xq5ROqBlp+b4zi\
-O4ziO4ziO47iVuV7bbCRJkiRZQ3Y55zmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO407PXltaJEmS\
-W5RdThSO4ziO4ziO4ziO4ziO47hGLpF6oOXn5jiO4ziO4ziO4zhuZa7XNhtJkiRJnlfuF8ou5zzHc\
-RzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcdzpuT/02u8iSZLcnuxyonAcx3Ecx3Ecx3Ecx3EcxzVyid\
-QDLT83x3Ecx3Ecx3Ecx3Erc7222UiSJEnyvNINwBzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcd9\
-23fbCSJIku8ou5wLHcRzHcRzHcRzHcRzHcVwjl0g90PJzcxzHcRzHcRzHcRy3Mtdrm40kSZIkzym7\
-nNYcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3GXcr22wkiSJPvKLucCx3Ecx3Ecx3Ecx3Ecx3FcI\
-5dIPdDyc3Mcx3Ecx3Ecx3EctzK3vzkslp324EiSJMk1y/1C2eW05jiO4ziO4ziO4ziO4ziO4ziO4z\
-iO4ziO4ziOu5SzbUySJPkyssu5wHEcx3Ecx3Ecx3Ecx3Ec18glUg+0/Nwcx3Ecx3Ecx3Ecx3F59tq\
-CI0mSJOtLN/hyHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMetw3XbXyNJkrys7PJ25ziO4ziO4ziO\
-4ziO4ziOa+QSqQdafm6O4ziO4ziO4ziO47g89zeHxbLT/hxJkiT5MnJ3695fjuM4juM4juM4juM4j\
-uM4juM4juM4juM4juO4dbhe+2skSZKXll3e7hzHcRzHcRzHcRzHcRzHcY1cIvVAy8/NcRzHcRzHcR\
-zHcRz3Xa7X9hxJkiT5MrLLKcZxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMd92+0Pb5bKVntvJEm\
-S55Fd3u4cx3Ecx3Ecx3Ecx3Ecx3GNXCL1QMvPzXEcx3Ecx3Ecx3EcdxHXa+uOJElyi3J3u18ou5xF\
-HMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdx3Lfd/vXtUtlqY44kSfI8ssvbneM4juM4juM4juM4j\
-uM4rpFLpB5o+bk5juM4juM4juM4juNauV7beiRJkpeWbu3lOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI\
-7jOI7jlrndbukGWq9NO5IkyfPILm93juM4juM4juM4juM4juO4Ri6ReqDl5+Y4juM4juM4juM4jtu\
-E67XlR5IkeR7Z5R3NcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHrcPtbw6LZaf9PJIkyeHJcRzH\
-cRzHcRzHcRzHcRzHndslUg+0/Nwcx3Ecx3Ecx3Ecx3HcM7heW4UkST67fH27UHZ563Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcEtdsH5AkyRXKLu9LjuM4juM4juM4juM4juO4DbhE6oGWn5vjOI\
-7jOI7jOI7jOI7jyrvd7X6h7LUXSlaUu93S/31dvl8cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3E\
-c95Juf3NYLDttIJIkWVd2eV9yHMdxHMdxHMdxHMdxHMdtwCVSD7T83BzHcRzHcRzHcRzHcRzHffVc\
-fn/wd9w8/Pp2qbzE7uviab/j39a9uhzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRy3QdfrllCSJ\
-J9bdnl3cRzHcRzHcRzHcRzHcRzHcf/rEqkHWn5ujuM4juM4juM4juM4juM4juM4juM4juM4juM4ju\
-M4juM4juM4juM4juM4juO41q7XLaQkuS3Z5T3CcRzHcRzHcRzHcRzHcRzHnd0lUg+0/Nwcx3Ecx3E\
-cx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3GbdL1uPSXJy8ku32mO4ziO4ziO\
-4ziO4ziO4ziujEukHmj5uTmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4\
-ziO47gJ1+uWVXJt8tDke8JxHMdxHMdxHMdxHMdxHMdt1iVSD7T83BzHcRzHcRzHcRzHcRzHcRzHcR\
-zHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcVxh1+0e2a1I9+VyHMdxHMdxHMdxHMdxHMdx3OASqQd\
-afm6O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO\
-4ziO4ziO4ziOm3GJ1AMtPzfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHc\
-RzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHzbhE6oGWn5vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI\
-7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jZlwi9UDLz81xHMdxHMdxHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxMy6ReqDl\
-5+Y4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4j\
-uM4juM4juO4GZdIPdDyc3Mcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3\
-Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HcjEukHmj5uTmO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zi\
-O4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zhuxiVSD7T83BzHcRzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRw34xKpB1p+b\
-o7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI\
-7jOI7jOI6bcYnUAy0/N8dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMd\
-xHMdxHMdxHMdxHMdxHMdxHMdxHMfNuETqgZafm+M4juM4juM4juM4juM4juM4juM4juM4juM4juM4\
-juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juNmXCL1QMvPzXEcx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3EzLpF6oOXn5j\
-iO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4zi\
-O4ziO47gZl0g90PJzcxzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzH\
-cRzHcRzHcRzHcRzHcRzHcRzHcdyMS6QeaPm5OY7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jO\
-I7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOG7GJVIPtPzcHMdxHMdxHMdxHMdxHMdxHM\
-dxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHDfjEqkHWn5ujuM\
-4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4\
-juM4jptxidQDLT83x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx\
-3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx824ROqBlp+b4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4z\
-iO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO42ZcIvVAy8/NcRzHcRzHcRzHcRzHcRzHcRz\
-HcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcTMukXqg5efmOI7j\
-OI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jO\
-I7juBmXSD3Q8nNzHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHM\
-dxHMdxHMdxHMdxHMdxHMdx3IxLpB5o+bk5juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM\
-4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4bsYlUg+0/Nwcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ec\
-x3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3EcN+MSqQdafm6O4ziO4\
-ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4ziO4z\
-iOm3GJ1AMtPzfHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRzHcRz\
-HcRzHcRzHcRzHcRzHcRzHzbhE6oGWn5vjOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7j\
-OI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jOI7jZlwi9UDLz81xHMdxHMdxHMdxHMdxHMdxHMdxH\
-MdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxHMdxMy6ReqDl5+Y4juM4ju\
-M4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juM4juO\
-4GfcU75/qq+tf7v/89PH++PtP94/Hj8eHN9dXr/JXV9dv/348Xj/90F+fPvjuy90xv+Hqh893nx9+\
-/uPDb//9+frdj29P6quPPv3Qh7vjh78+3X9M8/jw5fjvJ1+9/wee8293", 
-          {"ExpressionJSON", "ZLIB"}]]|>, 
-     "545975a9-aa04-4e6b-84fd-bfb205f610d7" -> 
-      <|"Public" -> Hold[Graphics[{GrayLevel[0.5], Rectangle[{-5, -5}, 
-            {5, 5}], RGBColor[0, 0, 1], {Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[3]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[1]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[5]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[2]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[5]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[3]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[4]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[5]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[5]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[5]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[6]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[6]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {
-                p$[[9]], p$[[10]]}]]]}, RGBColor[1, 0, 0], 
-           Point[Offload[pts0]]}]]|>|>, "Path" -> "/Users/kirill/Github/wolfr\
-am-js-frontend/modules/wljs-demos-archive/Demos/Differencial calculus/C - \
-Verlet Integration.wln", "PublicFields" -> {"Properties"}, "Quick" -> True, 
-   "Storage" -> <|"reburying-4d2" -> "1:eJzt3c+OXEcVB+CGhA3KglfgLVgOYYGyYRHDA\
-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\
-NVHl49/9+HTJ///N7+++vzyfznIMVg=", "carnivorous-284" -> "1:eJzt3UuOXVcVBuBDEjo\
-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"|>, 
-   "Symbols" -> 
-    <|"pts0" -> CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON["JT\
-VCJTVCMC44NjU2MDIzMjUzODU4MDU4JTJDLTAuNDA5NTY2MjM0MTQxNjM2MiU1RCUyQyU1Qi0wLjI\
-0MjQ0MTAxNzA2NDc4MzcxJTJDMC41MzE4MzkzMzM3NjcwMTAyJTVEJTJDJTVCMC41NDg2NzQwNjYw\
-NTEyMDU5JTJDLTAuOTI5MjkyMjU5NjcwMTI0MyU1RCUyQyU1Qi0wLjUxOTY4NDkwMDU3Mjg4ODElM\
-kMtMC40ODg1MDgxNzM2NDQ1OTM3NiU1RCUyQyU1QjAuODU2MjUyMDk0NzE2MDY2MSUyQy0wLjQ1MT\
-g0MTI1NjUwOTU3OTc0JTVEJTJDJTVCMC45MjY4MDA1OTM4NzcxNDcxJTJDMC42NzY1NTA5NjE0MzE\
-4NTEyJTVEJTJDJTVCMC4yMTc0NzMyNTU2ODY5NDU4NyUyQy0wLjM0NzQ1NTA1MDkzNjI4OTklNUQl\
-MkMlNUIwLjQ1NjE4NDI4NTQ3OTkzMTIlMkMwLjQxMzI0Nzk3ODQzNzU5NzMlNUQlMkMlNUItMC42N\
-jQ4MTY1NjA1NjAxODc3JTJDMC4zMTEwMTU0NzQyODk0NzA2MyU1RCUyQyU1Qi0wLjY2ODUwOTE3Mj\
-c1MjkzOTglMkMwLjYzNDA4MzY2OTM4MjY2OTclNUQlNUQ="]|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Basic Verlet Integration Implementation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5567]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Set of Points", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5567]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Procedurally Generated Structures", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5577]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Rim", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5577]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Generate a Mesh from an Image", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$5545]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Basic Verlet Integration \
-Implementation\n*Harnessing the power of Newton's equations and numerical \
-methods to solve the dynamics of arbitrary planar meshes in \
-real-time.*\n\n<br/>\n\n## Set of Points\nDefine a set of random points.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8b38aa93-b6cd-4d61-81ee-9f3d56aae428", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "# Basic Verlet Integration Implementation\n*Harnessing the \
-power of Newton's equations and numerical methods to solve the dynamics of \
-arbitrary planar meshes in real-time.*\n\n<br />\n\n## Set of Points\nDefine \
-a set of random points.", "Display" -> "markdown", 
-    "Hash" -> "5ef918bd-e613-48af-8935-ff39ff5c2909", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "pts0 = RandomReal[{-1,1}, {10, 2}];\npts1 = pts0; pts2 = \
-pts0;\n\nGraphics[{Rectangle[{-10,-10}, {10,10}], Red, Point[pts0 // \
-Offload]}, \"Controls\"->False]", "Display" -> "codemirror", 
-    "Hash" -> "b2f11fbd-45c8-4e50-b117-f354d477915b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(Graphics[{Rectangle[{-10, -10}, {10, 10}], \
-RGBColor[1, 0, 0], Point[Offload[pts0]]}, \"Controls\" -> \
-False])(*,*)(*\"1:eJxdjlsKAjEMResLH7twB67BAccPQakrqDOtBkIzNHXr/ta0pQj+HHLzuLn\
-7B2k3U0rxUnAmHN08q42gD2Z6wcBu0eYX4FjnW4G2QzT+iba22gJ8UkoFf/2dFAXVML/Q/bEjpAA5\
-AqiGmmgluBH4WOVacHUOyYzFc4p8+H3Qb7T3bNmRj4GQy/nJINsvH7wzTQ==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d549b672-a910-4dc5-a20a-66d400d05f50", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nThe **St\[OSlash]rmer\[Dash]Verlet method** is a variant \
-of the discretization of Newton's equations of motion:\n\n$$\nx_{i+1} = 2x_i \
-- x_{i-1} + a_i\\, \\delta t^2\n$$\n\nThis method only requires storing the \
-current position $x_{i+1}$ and the two previous positions $x_i$ and \
-$x_{i-1}$; velocity is not needed. Try running this cell below.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b6141968-476f-4255-8186-2a34c43e5813", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "The **St\[OSlash]rmer\[Dash]Verlet method** is a variant of \
-the discretization of Newton's equations of motion:\n\n$$\nx_{i+1} = 2x_i - \
-x_{i-1} + a_i\\, \\delta t^2\n$$\n\nThis method only requires storing the \
-current position $x_{i+1}$ and the two previous positions $x_i$ and \
-$x_{i-1}$; velocity is not needed. Try running this cell below.", 
-    "Display" -> "markdown", "Hash" -> 
-     "9b9e720e-489b-4fbd-bead-fb8cd56ee6b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "With[{\\[Delta]t = 0.5},\n  pts0  = 2 pts1 - pts2 + \
-Table[{0,-1}, {Length[pts0]}] \
-(*SpB[*)Power[\\[Delta]t(*|*),(*|*)2](*]SpB*);\n  pts2 = pts1;\n  pts1 = \
-pts0;\n]", "Display" -> "codemirror", 
-    "Hash" -> "27d9fbea-a093-4518-adee-1a4d3be3a094", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nWe can add random connections to our points (forming \
-bonds) using graphs.", "Display" -> "codemirror", 
-    "Hash" -> "fbba8290-8b2a-4263-ba65-055e395f81e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "We can add random connections to our points (forming bonds) \
-using graphs.", "Display" -> "markdown", 
-    "Hash" -> "4c0c507c-0301-4ebb-9160-a45d411e7c76", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> 
-     "bonds = RandomGraph[Length[pts0]{1, 2}, VertexCoordinates->pts0]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2c394a11-de8d-4551-98b7-e492dcc6a24a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(Graph[{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {Null, \
-SparseArray[Automatic, {10, 10}, 0, {1, {{0, 4, 7, 12, 15, 20, 26, 29, 32, \
-37, 40}, {{3}, {6}, {8}, {9}, {5}, {7}, {8}, {1}, {5}, {6}, {7}, {9}, {6}, \
-{8}, {10}, {2}, {3}, {6}, {7}, {9}, {1}, {3}, {4}, {5}, {9}, {10}, {2}, {3}, \
-{5}, {1}, {2}, {4}, {1}, {3}, {5}, {6}, {10}, {4}, {6}, {9}}}, Pattern}]}, \
-{VertexCoordinates -> {{0.2126626578645796, 0.8506301137777257}, \
-{-0.9802254366176415, 0.8833724976923256}, {0.6106164552801325, \
-0.0058377193055974}, {-0.9040792039957166, -0.11731512343905948}, \
-{0.5872746970312108, 0.3000207391905336}, {0.006153278514754668, \
--0.5609492226769}, {0.8725662176217783, -0.03600001519931384}, \
-{-0.9511118497129036, -0.6592978283275275}, {-0.932124311790465, \
-0.5010962453657455}, {-0.12320119811984487, \
-0.20360719642477454}}}])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkHAvSizIyE\
-wuhojwI4k45+cW5KRWpIIkuIAYRCe89V3TbnHaniHx65IYi9f2L2Lk9zDGvd+/5nhF2jSXN/ZXqq1\
-atbse2zOoMd/welluH/HjSJP5uzf7GSzrtWI59u036TPw+3LqkX1AzR79LuPL9gxr9snrmVTaKyw9\
-fML788P9GV85/vK/eW3v0HKff0beov0CMdpyTfnv9s/ZFH/ou8TT/TpecbHfLr/dz3PR/t8vjgf2D\
-lsOyMh27d+/4cv7L2f4T9lDfAHypU9mcUkaMyaPE0i4ZBalJpdklqVCAoUdSPgXJCZnllQWpYHBM3\
-uIYhDhUZpaZAwGj+3h0gh1cBOcEwvc8otyg1mB7KD80rwUiBQo5ByLivLLM1ITU4qLGKAAER1gp4G\
-dzQpTmiaCKQnjeYI0GoJJY5wyZjhlLHDKWGKRMQKTpjhlzHHKYLPHGKdpxjhdbYzTHmOcrjbBaZoJ\
-TreZeILEDA2wSJniNM4Up+NMcTrODI8MTidYQqWKOD5e25f4eqp9GjdmCkFN2djTLyTxPYAxPkDTL\
-6ggcE1JTwUlYGyGMcKEgGVDpU9qWWpOJiIRY80+cD+4ZBZnZ4LUIdyOKseER44ZjxwLHjlWPHJseO\
-TY8chx4JHjxCPHhSLHihlvIF5QaU4quKgAxUBiSUhlQSq4LA4pSkzJLMnMz0vMQcQNqoaixNzUkMz\
-k7GKwuF9+XiqaKh4gwzM3MT01IDElJTMvHZc6Tpi64Myq1MwToPhFURAMCgHn/LySovycYnBh5ZaY\
-U5wKAMwig+U=\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "9633d415-b7bf-4ef7-99c0-bdd2cb44e481", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\n<details>\nThe **St\[OSlash]rmer\[Dash]Verlet method** \
-really shines when it comes to solving equations with constraints. In our \
-case, we want to keep the distances between points fixed according to a \
-connection graph. Normally, this would involve approximating motion using a \
-combination of acceleration, velocity, and position.\n\nHowever, things can \
-become complicated quickly. With the St\[OSlash]rmer\[Dash]Verlet method, we \
-only work with positions \\( x_i \\). By directly adjusting the positions of \
-two points connected by a bond to maintain the bond length, we effectively \
-account for all forces in a single step.\n</details>\n\nThe stiffness of the \
-bond is not directly in the differential equation. It\[CloseCurlyQuote]s \
-introduced through how you enforce the constraint \[LongDash] either strictly \
-(hard) or partially (soft). Let's define the initial length \
-$L=|\\\\mathbf{d}|$\n\n$$\n\\\\mathbf{d} := \\\\mathbf{x}_a - \
-\\\\mathbf{x}_b\n$$\n\nTo enforce the bond, we compute the correction \
-vector\n\n$$\n\\\\Delta \\\\mathbf{d} :=  \\\\mathbf{d} \\\\cdot k \\\\Big( \
-\\\\frac{L}{|\\\\mathbf{d}| } - 1 \\\\Big)\n$$\n\nand then apply it to each \
-point\n\n$$\n\\\\begin{align*}\n\\\\mathbf{x}_a &= \\\\mathbf{x}_a +  \
-\\\\frac{1}{2} \\\\Delta \\\\mathbf{d} \\\\\\\\\n\\\\mathbf{x}_b &= \
-\\\\mathbf{x}_b - \\\\frac{1}{2} \\\\Delta \\\\mathbf{d} \
-\\\\\\\\\n\\\\end{align*}\n$$\n\nwhere $k$ is a stiffness parameter. There \
-are two cases:\n\n- $k=1$ hard bond\n- $k < 1$ soft bond (kinda bouncy like a \
-spring)\n\nLet's try to implement this in pure functions.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0224e6dd-f568-4ecd-9e8f-c859e4790199", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "<details >\nThe **St\[OSlash]rmer\[Dash]Verlet method** \
-really shines when it comes to solving equations with constraints. In our \
-case, we want to keep the distances between points fixed according to a \
-connection graph. Normally, this would involve approximating motion using a \
-combination of acceleration, velocity, and position.\n\nHowever, things can \
-become complicated quickly. With the St\[OSlash]rmer\[Dash]Verlet method, we \
-only work with positions \\( x_i \\). By directly adjusting the positions of \
-two points connected by a bond to maintain the bond length, we effectively \
-account for all forces in a single step.\n</details>\n\nThe stiffness of the \
-bond is not directly in the differential equation. It\[CloseCurlyQuote]s \
-introduced through how you enforce the constraint \[LongDash] either strictly \
-(hard) or partially (soft). Let's define the initial length \
-$L=|\\\\mathbf{d}|$\n\n$$\n\\\\mathbf{d} := \\\\mathbf{x}_a - \
-\\\\mathbf{x}_b\n$$\n\nTo enforce the bond, we compute the correction \
-vector\n\n$$\n\\\\Delta \\\\mathbf{d} :=  \\\\mathbf{d} \\\\cdot k \\\\Big( \
-\\\\frac{L}{|\\\\mathbf{d}| } - 1 \\\\Big)\n$$\n\nand then apply it to each \
-point\n\n$$\n\\\\begin{align*}\n\\\\mathbf{x}_a &= \\\\mathbf{x}_a +  \
-\\\\frac{1}{2} \\\\Delta \\\\mathbf{d} \\\\\\\\\n\\\\mathbf{x}_b &= \
-\\\\mathbf{x}_b - \\\\frac{1}{2} \\\\Delta \\\\mathbf{d} \
-\\\\\\\\\n\\\\end{align*}\n$$\n\nwhere $k$ is a stiffness parameter. There \
-are two cases:\n\n- $k=1$ hard bond\n- $k < 1$ soft bond (kinda bouncy like a \
-spring)\n\nLet's try to implement this in pure functions.", 
-    "Display" -> "markdown", "Hash" -> 
-     "34024d62-1171-4021-b529-5b187023674a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "getDir[bonds_, pts_] := Map[(pts[[#[[1]]]] - pts[[#[[2]]]]) \
-&, bonds] \n\napplyBond[pairs_, k_:1.0, maxDelta_:0.1][p_] := Module[{pts = \
-p},\n  MapThread[Function[{edge, length}, With[{\n    diff = pts[[edge[[1]]]] \
-- pts[[edge[[2]]]]\n  },\n    With[{\n      delta =Min[k ( \
-(*FB[*)((length)(*,*)/(*,*)(Norm[diff]+0.001))(*]FB*) - 1), maxDelta] diff\n  \
-  },\n      pts[[edge[[1]]]] += delta/2.0;\n      pts[[edge[[2]]]] -= \
-delta/2.0;\n    ]\n  ] ], RandomSample[pairs]//Transpose];\n\n  pts\n] ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "371e7fe6-cc4e-4231-ad43-7ac37b7db76d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nHere is a helper function to draw bonds, keeping them \
-coupled to a dynamic symbol so that we can see how they change in real time."\
-, "Display" -> "codemirror", "Hash" -> 
-     "41c47a7d-7f41-4423-802f-c5c7589b4e87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Here is a helper function to draw bonds, keeping them coupled \
-to a dynamic symbol so that we can see how they change in real time.", 
-    "Display" -> "markdown", "Hash" -> 
-     "533a0bfa-29a2-4bbc-8bc3-8d50b0b0b0e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "showGeometry[points_, bonds_, opts___] := Graphics[{\n  Gray, \
-Rectangle[5{-1,-1}, 5{1,1}], Blue,\n  \n  Table[\n    With[{i = edge[[1]], j \
-= edge[[2]]},\n      Line[With[{\n        p = points\n      }, {p[[i]], \
-p[[j]]}]] // Offload\n    ]\n  , {edge, bonds}],\n  \n  Red, Point[points // \
-Offload]\n}, opts]\n\nSetAttributes[showGeometry, HoldFirst];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "adbc856f-008c-4d45-9fbe-7c93066027d8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nShow it using our randomly generated points", 
-    "Display" -> "codemirror", "Hash" -> 
-     "40134d44-4404-4a2b-becf-5f3c28ae15a8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Show it using our randomly generated points", 
-    "Display" -> "markdown", "Hash" -> 
-     "e37b2c87-4c82-4dbc-b861-fe0cf5b2101f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "showGeometry[pts0, EdgeList @ bonds]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9eba999d-4ea8-46a2-adb0-6899d2208cbf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"545975a9-aa04-4e6b-84fd-bfb205f610d7\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5qYW\
-pqbJlrqJiYamOiapJol6VqYpKXoJqUlGRmYppkZGqSYAwCAUxWm\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bdcfd383-d8e8-49cc-bb33-05b2773d01a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nWe are almost set for our animation! Let's regenerate \
-random points and connections each time we evaluate the next cell and run the \
-main update loop, which consists of Verlet methods combined with hard \
-constraints", "Display" -> "codemirror", 
-    "Hash" -> "3bf48a9d-d461-49bd-9833-0e67bd9ee5d7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "We are almost set for our animation! Let's regenerate random \
-points and connections each time we evaluate the next cell and run the main \
-update loop, which consists of Verlet methods combined with hard constraints"\
-, "Display" -> "markdown", "Hash" -> "660a964f-0aa6-4970-935f-fd6b2c0ec2bf", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "pts0 = RandomReal[{-1,1}, {10, 2}];\npts1 = pts0; pts2 = \
-pts0;\n\nbonds = EdgeList[RandomGraph[Length[pts0]{1, 3}]];\nlengths = Norm \
-/@ getDir[bonds, pts0];\npairs = {bonds, lengths} // \
-Transpose;\n\nDo[With[{\\[Delta]t = 0.05},\n  pts0 = Clip[applyBond[pairs, \
-1.0][\n    2 pts1 - pts2 + Table[{0,-1}, {i, Length[pts0]}] \
-(*SpB[*)Power[\\[Delta]t(*|*),(*|*)2](*]SpB*)\n  ], {-5,5}];\n  \n  pts2 = \
-pts1;\n  pts1 = pts0;\n  \n  Pause[0.03];\n  \n], {i, 200}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "902fe56f-93da-4582-ac9c-9655a611cc4c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "46153fef-a6f7-466e-8ca1-dff861718aba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\n## Procedurally Generated Structures\nEven without any \
-optimizations of the present code (normally you would need to use \
-vectorization tricks or `Compile` or switch to `OpenCLLink`), we can still \
-try to model something more complex than a random graph of 10 points and add \
-interaction with a user's mouse.\n\n<br/>\n\n### Rim\nHere is a quick way of \
-making this using just tables.", "Display" -> "codemirror", 
-    "Hash" -> "baadd704-f274-4d82-9070-6f49101619f3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "## Procedurally Generated Structures\nEven without any \
-optimizations of the present code (normally you would need to use \
-vectorization tricks or `Compile` or switch to `OpenCLLink`), we can still \
-try to model something more complex than a random graph of 10 points and add \
-interaction with a user's mouse.\n\n<br />\n\n### Rim\nHere is a quick way of \
-making this using just tables.", "Display" -> "markdown", 
-    "Hash" -> "18d74874-8a6c-4b85-90cb-990a7a03fee1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "rim = Join @@\n  (Table[#{Sin[x], Cos[x]}, {x,-Pi, Pi, Pi/6}] \
-&/@ {1, 0.9} // Transpose);\n  \nrbonds = Graph[\n  Join[\n    Table[i<->i+1, \
-{i, 1, Length[rim]-1}],\n    Table[i<->i+2, {i, 1, Length[rim]-2, 2 }],\n    \
-Table[i<->i+2, {i, 2, Length[rim]-4, 2 }],\n    {Length[rim]-2 <-> 2},\n    \
-{Length[rim]-1 <-> 1}\n  ]\n, VertexCoordinates->rim]\n\nrbonds = \
-EdgeList[rbonds];\nrpairs = {rbonds, Norm /@ getDir[rbonds, 2.0 rim]} // \
-Transpose;", "Display" -> "codemirror", 
-    "Hash" -> "c67772d3-075c-4db4-a357-075396a4d7ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(CoffeeLiqueur`Extensions`Boxes`Workarounds`temporal$1\
-937052)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgE\
-Km6RamlgkmhvrGiclp+maGJon6yalpZromqelWBqkpqSlpVmaAQCMShZ+\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7deb8d33-190d-4749-9815-3cf427a9c9ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nPrepare variables for storing positions.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a52d0dc8-eeb1-4e32-adb7-f7daa7706509", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Prepare variables for storing positions.", 
-    "Display" -> "markdown", "Hash" -> 
-     "ff42e5d3-ff4a-4e03-89a0-e02232aed554", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "rim0 = 2.0 rim; rim1 = rim0; rim2 = rim0;\nrimR = \
-rim0;\n\nmousePos   = {100.,0.};", "Display" -> "codemirror", 
-    "Hash" -> "7899b310-930a-48a3-adc0-1696ac54eb5f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nHere we will automate our update cycle by attaching an \
-animation frame listener to the `rimR` symbol. It will trigger an event to \
-prepare the next frame of animation within the update cycle of your screen \
-(actually - the app window). Each time, the timer is reset by an update of \
-the `rimR` symbol, ensuring that the next frame will only come after the \
-previous one has been finished.", "Display" -> "codemirror", 
-    "Hash" -> "d888f743-e3c3-44ea-83cb-09a9f82cedc4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Here we will automate our update cycle by attaching an \
-animation frame listener to the `rimR` symbol. It will trigger an event to \
-prepare the next frame of animation within the update cycle of your screen \
-(actually - the app window). Each time, the timer is reset by an update of \
-the `rimR` symbol, ensuring that the next frame will only come after the \
-previous one has been finished.", "Display" -> "markdown", 
-    "Hash" -> "b06687b0-29a4-4a0c-a9ee-b060b60e9e7e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "EventHandler[\n  showGeometry[rimR, rbonds, \
-TransitionType->None, \"Controls\"->False, Epilog->{\n    \
-AnimationFrameListener[rimR // Offload, \"Event\"->\"anim\"], \n    \
-Circle[mousePos // Offload, 0.5]\n  }, PlotRange->{{-5,5}, {-5,5}}]\n, \
-{\"mousemove\" -> Function[xy,\n    mousePos = xy;\n]}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cf222422-0e1e-4c71-bba0-b230a2b55835", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nAnimation controls.", "Display" -> "codemirror", 
-    "Hash" -> "4a658169-5398-434e-aef3-f0b3223adccf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Animation controls.", "Display" -> "markdown", 
-    "Hash" -> "bcf8bb0a-1586-43bd-8a65-95a8a23965d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Button[\"Start\", \n EventHandler[\"anim\", With[{}, \
-Do[With[{\\[Delta]t = 0.006}, \n  rim0 = applyBond[rpairs, 1.0, 0.8][\n    \
-Clip[(2 rim1 - rim2) + Table[\n       If[Max[Abs[i - mousePos]] < 2.0, {0,-1} \
-- 7.0 (i - mousePos), {0,-1}]\n    , {i, rim0}] \
-(*SpB[*)Power[\\[Delta]t(*|*),(*|*)2](*]SpB*), {-5,5}]\n  ];\n\n  \n  rim2 = \
-rim1;\n  rim1 = rim0;\n  \n ], {i, 10}];\n  rimR = rim0;\n\n ]&]; \n rimR = \
-rim0;\n]\n\nButton[\"Stop\", EventRemove[\"anim\"]]\n\nButton[\"Reset\", \
-With[{}, rim0 = 2.0 rim; rim1 = rim0; rim2 = rim0;\nrimR = rim0;]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fbfd8b4a-c56e-45b5-a7f7-9042db26f6c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "cd00e2d8-d859-4656-a288-532bd7a410c1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\n## Generate a Mesh from an Image\nThe more challenging, \
-the more fun! It would be great to sketch a bitmap image using a brush and \
-transform it into a mesh that can be modeled.", "Display" -> "codemirror", 
-    "Hash" -> "c04b5c55-a794-4981-951d-e6c96cdc2d08", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "## Generate a Mesh from an Image\nThe more challenging, the \
-more fun! It would be great to sketch a bitmap image using a brush and \
-transform it into a mesh that can be modeled.", "Display" -> "markdown", 
-    "Hash" -> "7116783f-07b1-4508-9566-fcc09467b8e8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "mask = \
-NotebookRead[NotebookStore[\"carnivorous-284\"]];\nEventHandler[InputRaster[m\
-ask], (mask = #)&]", "Display" -> "codemirror", 
-    "Hash" -> "eb15b5c8-29d6-434d-80a5-c9b2d6eba546", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(EventObject[<|\"Id\" -> \
-\"3739131e-90d3-4cf3-9216-fd102cc87a94\", \"View\" -> \
-\"80599663-0321-47e3-942c-f8dac95d57e1\"|>])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHv\
-k5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKWxiYWlqamRnrGhgbGeqamKca61qaGCXrplmkJCZ\
-bmqaYmqcaAgBr0xT2\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "220c4b0b-8047-4861-8271-82372502a17f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nNow convert this image to a mesh, triangulate it, and \
-render it as an index graph. Using a `Graph` object is a bit easier than \
-working with a triangulated mesh, since all bonds are sorted and can easily \
-be extracted.", "Display" -> "codemirror", 
-    "Hash" -> "6b7b2c56-b9ed-4d51-9f76-9fd4ca1b1bed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Now convert this image to a mesh, triangulate it, and render \
-it as an index graph. Using a `Graph` object is a bit easier than working \
-with a triangulated mesh, since all bonds are sorted and can easily be \
-extracted.", "Display" -> "markdown", 
-    "Hash" -> "ceafd56e-35ab-43b3-babf-dc9a4059b633", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "mesh = TriangulateMesh[\n  ImageMesh[ImageResize[mask , \
-100]// ColorNegate]\n, MaxCellMeasure->{\"Area\"->100}];\n\ngraph = \
-MeshConnectivityGraph[mesh, 0] // IndexGraph\nvertices = graph // \
-GraphEmbedding;\nedges = (List @@ #) &/@ (graph // EdgeList) (*BB[*)(*convert \
-to list of \
-lists*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+K\
-UXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYC\
-AOFrJEU=\"*)(*]BB*);\n\nvertices = Map[Function[x, x - {0.4,-1.2}], 0.04 \
-vertices] (*BB[*)(*scale and \
-translate*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5u\
-aV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczM\
-QVYCAOFrJEU=\"*)(*]BB*);", "Display" -> "codemirror", 
-    "Hash" -> "d85fb6e6-2b2e-4571-9fbd-4141b9050a34", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "(*VB[*)(CoffeeLiqueur`Extensions`Boxes`Workarounds`temporal$8\
-24230)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEK\
-J6ampBlbpFnompknmuqaGBsa6VqaJVvqmpuaGyWnGFokGacYAQCH7xWE\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2bda6f50-27d8-4535-a86a-efb81fe3a896", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nAnimation cycle (*as before*).", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b3c23a35-9451-4bd1-9f85-f254420d6643", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Animation cycle (*as before*).", "Display" -> "markdown", 
-    "Hash" -> "1d03d4cb-56f4-47f3-b33b-175b8170c314", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "vertices0 =  vertices; vertices1 = vertices0; vertices2 = \
-vertices0;\nverticesR = vertices0;\n\nvpairs = {edges, Norm /@ getDir[edges, \
-vertices0]} // Transpose;\n\nmousePos   = {100.,0.};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3fea85a2-46aa-4845-b203-8fd884c2b402", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "EventHandler[\n  showGeometry[verticesR, edges, \
-TransitionType->None, \"Controls\"->False, Epilog->{\n    \
-AnimationFrameListener[verticesR // Offload, \"Event\"->\"anim2\"], \n    \
-Circle[mousePos // Offload, 0.5]\n  }, PlotRange->{{-5,5}, {-5,5}}]\n, \
-{\"mousemove\" -> Function[xy,\n    mousePos = xy;\n]}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8640f350-3eee-4bf4-856a-4843b8096cde", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> ".md\nAnimation controls:", "Display" -> "codemirror", 
-    "Hash" -> "a1866681-a592-4014-938d-79973b97aa99", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Animation controls:", "Display" -> "markdown", 
-    "Hash" -> "26605c29-b924-49a9-9cc2-ed1716aff397", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>, 
-   <|"Data" -> "Button[\"Start\", \n EventHandler[\"anim2\", With[{}, \
-Do[With[{\\[Delta]t = 0.003}, \n  vertices0 = applyBond[vpairs, 1.0, 0.8][\n  \
-  Clip[(2 vertices1 - vertices2) + Table[\n       If[Max[Abs[i - mousePos]] < \
-2.0, {0,-1} - 7.0 (i - mousePos), {0,-1}]\n    , {i, vertices0}] \
-(*SpB[*)Power[\\[Delta]t(*|*),(*|*)2](*]SpB*), {-5,5}]\n  ];\n\n  \n  \
-vertices2 = vertices1;\n  vertices1 = vertices0;\n  \n ], {i, 3}];\n  \
-verticesR = vertices0;\n\n ]&]; \n verticesR = \
-vertices0;\n]\n\nButton[\"Stop\", \
-EventRemove[\"anim2\"]]\n\nButton[\"Reset\", With[{}, vertices0 =  vertices; \
-vertices1 = vertices0; vertices2 = vertices0;\nverticesR = vertices0;]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3e8e6bb2-af3c-4f2e-80ed-296fbe9b66b7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3d780153-9c40-4c3e-bb86-015046d158c6"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Basic Verlet Integration Implementation
+*Harnessing the power of Newton's equations and numerical methods to solve the dynamics of arbitrary planar meshes in real-time.*
+
+<br/>
+
+## Set of Points
+Define a set of random points.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Basic Verlet Integration Implementation
+*Harnessing the power of Newton's equations and numerical methods to solve the dynamics of arbitrary planar meshes in real-time.*
+
+<br />
+
+## Set of Points
+Define a set of random points.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+pts0 = RandomReal[{-1,1}, {10, 2}];
+pts1 = pts0; pts2 = pts0;
+
+Graphics[{Rectangle[{-10,-10}, {10,10}], Red, Point[pts0 // Offload]}, "Controls"->False]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[{Rectangle[{-10, -10}, {10, 10}], RGBColor[1, 0, 0], Point[Offload[pts0]]}, "Controls" -> False])(*,*)(*"1:eJxdjlsKAjEMResLH7twB67BAccPQakrqDOtBkIzNHXr/ta0pQj+HHLzuLn7B2k3U0rxUnAmHN08q42gD2Z6wcBu0eYX4FjnW4G2QzT+iba22gJ8UkoFf/2dFAXVML/Q/bEjpAA5AqiGmmgluBH4WOVacHUOyYzFc4p8+H3Qb7T3bNmRj4GQy/nJINsvH7wzTQ=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The **Størmer–Verlet method** is a variant of the discretization of Newton's equations of motion:
+
+$$
+x_{i+1} = 2x_i - x_{i-1} + a_i\, \delta t^2
+$$
+
+This method only requires storing the current position $x_{i+1}$ and the two previous positions $x_i$ and $x_{i-1}$; velocity is not needed. Try running this cell below.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The **Størmer–Verlet method** is a variant of the discretization of Newton's equations of motion:
+
+$$
+x_{i+1} = 2x_i - x_{i-1} + a_i\, \delta t^2
+$$
+
+This method only requires storing the current position $x_{i+1}$ and the two previous positions $x_i$ and $x_{i-1}$; velocity is not needed. Try running this cell below.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{\[Delta]t = 0.5},
+  pts0  = 2 pts1 - pts2 + Table[{0,-1}, {Length[pts0]}] (*SpB[*)Power[\[Delta]t(*|*),(*|*)2](*]SpB*);
+  pts2 = pts1;
+  pts1 = pts0;
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We can add random connections to our points (forming bonds) using graphs.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We can add random connections to our points (forming bonds) using graphs.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+bonds = RandomGraph[Length[pts0]{1, 2}, VertexCoordinates->pts0]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graph[{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, {Null, SparseArray[Automatic, {10, 10}, 0, {1, {{0, 4, 7, 12, 15, 20, 26, 29, 32, 37, 40}, {{3}, {6}, {8}, {9}, {5}, {7}, {8}, {1}, {5}, {6}, {7}, {9}, {6}, {8}, {10}, {2}, {3}, {6}, {7}, {9}, {1}, {3}, {4}, {5}, {9}, {10}, {2}, {3}, {5}, {1}, {2}, {4}, {1}, {3}, {5}, {6}, {10}, {4}, {6}, {9}}}, Pattern}]}, {VertexCoordinates -> {{0.2126626578645796, 0.8506301137777257}, {-0.9802254366176415, 0.8833724976923256}, {0.6106164552801325, 0.0058377193055974}, {-0.9040792039957166, -0.11731512343905948}, {0.5872746970312108, 0.3000207391905336}, {0.006153278514754668, -0.5609492226769}, {0.8725662176217783, -0.03600001519931384}, {-0.9511118497129036, -0.6592978283275275}, {-0.932124311790465, 0.5010962453657455}, {-0.12320119811984487, 0.20360719642477454}}}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4HkHAvSizIyEwuhojwI4k45+cW5KRWpIIkuIAYRCe89V3TbnHaniHx65IYi9f2L2Lk9zDGvd+/5nhF2jSXN/ZXqq1atbse2zOoMd/welluH/HjSJP5uzf7GSzrtWI59u036TPw+3LqkX1AzR79LuPL9gxr9snrmVTaKyw9fML788P9GV85/vK/eW3v0HKff0beov0CMdpyTfnv9s/ZFH/ou8TT/TpecbHfLr/dz3PR/t8vjgf2DlsOyMh27d+/4cv7L2f4T9lDfAHypU9mcUkaMyaPE0i4ZBalJpdklqVCAoUdSPgXJCZnllQWpYHBM3uIYhDhUZpaZAwGj+3h0gh1cBOcEwvc8otyg1mB7KD80rwUiBQo5ByLivLLM1ITU4qLGKAAER1gp4GdzQpTmiaCKQnjeYI0GoJJY5wyZjhlLHDKWGKRMQKTpjhlzHHKYLPHGKdpxjhdbYzTHmOcrjbBaZoJTreZeILEDA2wSJniNM4Up+NMcTrODI8MTidYQqWKOD5e25f4eqp9GjdmCkFN2djTLyTxPYAxPkDTL6ggcE1JTwUlYGyGMcKEgGVDpU9qWWpOJiIRY80+cD+4ZBZnZ4LUIdyOKseER44ZjxwLHjlWPHJseOTY8chx4JHjxCPHhSLHihlvIF5QaU4quKgAxUBiSUhlQSq4LA4pSkzJLMnMz0vMQcQNqoaixNzUkMzk7GKwuF9+XiqaKh4gwzM3MT01IDElJTMvHZc6Tpi64Myq1MwToPhFURAMCgHn/LySovycYnBh5ZaYU5wKAMwig+U="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<details>
+The **Størmer–Verlet method** really shines when it comes to solving equations with constraints. In our case, we want to keep the distances between points fixed according to a connection graph. Normally, this would involve approximating motion using a combination of acceleration, velocity, and position.
+
+However, things can become complicated quickly. With the Størmer–Verlet method, we only work with positions \( x_i \). By directly adjusting the positions of two points connected by a bond to maintain the bond length, we effectively account for all forces in a single step.
+</details>
+
+The stiffness of the bond is not directly in the differential equation. It’s introduced through how you enforce the constraint — either strictly (hard) or partially (soft). Let's define the initial length $L=|\\mathbf{d}|$
+
+$$
+\\mathbf{d} := \\mathbf{x}_a - \\mathbf{x}_b
+$$
+
+To enforce the bond, we compute the correction vector
+
+$$
+\\Delta \\mathbf{d} :=  \\mathbf{d} \\cdot k \\Big( \\frac{L}{|\\mathbf{d}| } - 1 \\Big)
+$$
+
+and then apply it to each point
+
+$$
+\\begin{align*}
+\\mathbf{x}_a &= \\mathbf{x}_a +  \\frac{1}{2} \\Delta \\mathbf{d} \\\\
+\\mathbf{x}_b &= \\mathbf{x}_b - \\frac{1}{2} \\Delta \\mathbf{d} \\\\
+\\end{align*}
+$$
+
+where $k$ is a stiffness parameter. There are two cases:
+
+- $k=1$ hard bond
+- $k < 1$ soft bond (kinda bouncy like a spring)
+
+Let's try to implement this in pure functions.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<details >
+The **Størmer–Verlet method** really shines when it comes to solving equations with constraints. In our case, we want to keep the distances between points fixed according to a connection graph. Normally, this would involve approximating motion using a combination of acceleration, velocity, and position.
+
+However, things can become complicated quickly. With the Størmer–Verlet method, we only work with positions \( x_i \). By directly adjusting the positions of two points connected by a bond to maintain the bond length, we effectively account for all forces in a single step.
+</details>
+
+The stiffness of the bond is not directly in the differential equation. It’s introduced through how you enforce the constraint — either strictly (hard) or partially (soft). Let's define the initial length $L=|\\mathbf{d}|$
+
+$$
+\\mathbf{d} := \\mathbf{x}_a - \\mathbf{x}_b
+$$
+
+To enforce the bond, we compute the correction vector
+
+$$
+\\Delta \\mathbf{d} :=  \\mathbf{d} \\cdot k \\Big( \\frac{L}{|\\mathbf{d}| } - 1 \\Big)
+$$
+
+and then apply it to each point
+
+$$
+\\begin{align*}
+\\mathbf{x}_a &= \\mathbf{x}_a +  \\frac{1}{2} \\Delta \\mathbf{d} \\\\
+\\mathbf{x}_b &= \\mathbf{x}_b - \\frac{1}{2} \\Delta \\mathbf{d} \\\\
+\\end{align*}
+$$
+
+where $k$ is a stiffness parameter. There are two cases:
+
+- $k=1$ hard bond
+- $k < 1$ soft bond (kinda bouncy like a spring)
+
+Let's try to implement this in pure functions.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+getDir[bonds_, pts_] := Map[(pts[[#[[1]]]] - pts[[#[[2]]]]) &, bonds] 
+
+applyBond[pairs_, k_:1.0, maxDelta_:0.1][p_] := Module[{pts = p},
+  MapThread[Function[{edge, length}, With[{
+    diff = pts[[edge[[1]]]] - pts[[edge[[2]]]]
+  },
+    With[{
+      delta =Min[k ( (*FB[*)((length)(*,*)/(*,*)(Norm[diff]+0.001))(*]FB*) - 1), maxDelta] diff
+    },
+      pts[[edge[[1]]]] += delta/2.0;
+      pts[[edge[[2]]]] -= delta/2.0;
+    ]
+  ] ], RandomSample[pairs]//Transpose];
+
+  pts
+] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is a helper function to draw bonds, keeping them coupled to a dynamic symbol so that we can see how they change in real time.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is a helper function to draw bonds, keeping them coupled to a dynamic symbol so that we can see how they change in real time.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+showGeometry[points_, bonds_, opts___] := Graphics[{
+  Gray, Rectangle[5{-1,-1}, 5{1,1}], Blue,
+  
+  Table[
+    With[{i = edge[[1]], j = edge[[2]]},
+      Line[With[{
+        p = points
+      }, {p[[i]], p[[j]]}]] // Offload
+    ]
+  , {edge, bonds}],
+  
+  Red, Point[points // Offload]
+}, opts]
+
+SetAttributes[showGeometry, HoldFirst];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Show it using our randomly generated points
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Show it using our randomly generated points
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+showGeometry[pts0, EdgeList @ bonds]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["545975a9-aa04-4e6b-84fd-bfb205f610d7"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5qYWpqbJlrqJiYamOiapJol6VqYpKXoJqUlGRmYppkZGqSYAwCAUxWm"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We are almost set for our animation! Let's regenerate random points and connections each time we evaluate the next cell and run the main update loop, which consists of Verlet methods combined with hard constraints
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We are almost set for our animation! Let's regenerate random points and connections each time we evaluate the next cell and run the main update loop, which consists of Verlet methods combined with hard constraints
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pts0 = RandomReal[{-1,1}, {10, 2}];
+pts1 = pts0; pts2 = pts0;
+
+bonds = EdgeList[RandomGraph[Length[pts0]{1, 3}]];
+lengths = Norm /@ getDir[bonds, pts0];
+pairs = {bonds, lengths} // Transpose;
+
+Do[With[{\[Delta]t = 0.05},
+  pts0 = Clip[applyBond[pairs, 1.0][
+    2 pts1 - pts2 + Table[{0,-1}, {i, Length[pts0]}] (*SpB[*)Power[\[Delta]t(*|*),(*|*)2](*]SpB*)
+  ], {-5,5}];
+  
+  pts2 = pts1;
+  pts1 = pts0;
+  
+  Pause[0.03];
+  
+], {i, 200}]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Procedurally Generated Structures
+Even without any optimizations of the present code (normally you would need to use vectorization tricks or `Compile` or switch to `OpenCLLink`), we can still try to model something more complex than a random graph of 10 points and add interaction with a user's mouse.
+
+<br/>
+
+### Rim
+Here is a quick way of making this using just tables.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Procedurally Generated Structures
+Even without any optimizations of the present code (normally you would need to use vectorization tricks or `Compile` or switch to `OpenCLLink`), we can still try to model something more complex than a random graph of 10 points and add interaction with a user's mouse.
+
+<br />
+
+### Rim
+Here is a quick way of making this using just tables.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+rim = Join @@
+  (Table[#{Sin[x], Cos[x]}, {x,-Pi, Pi, Pi/6}] &/@ {1, 0.9} // Transpose);
+  
+rbonds = Graph[
+  Join[
+    Table[i<->i+1, {i, 1, Length[rim]-1}],
+    Table[i<->i+2, {i, 1, Length[rim]-2, 2 }],
+    Table[i<->i+2, {i, 2, Length[rim]-4, 2 }],
+    {Length[rim]-2 <-> 2},
+    {Length[rim]-1 <-> 1}
+  ]
+, VertexCoordinates->rim]
+
+rbonds = EdgeList[rbonds];
+rpairs = {rbonds, Norm /@ getDir[rbonds, 2.0 rim]} // Transpose;
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(CoffeeLiqueur`Extensions`Boxes`Workarounds`temporal$1937052)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm6RamlgkmhvrGiclp+maGJon6yalpZromqelWBqkpqSlpVmaAQCMShZ+"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Prepare variables for storing positions.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Prepare variables for storing positions.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+rim0 = 2.0 rim; rim1 = rim0; rim2 = rim0;
+rimR = rim0;
+
+mousePos   = {100.,0.};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we will automate our update cycle by attaching an animation frame listener to the `rimR` symbol. It will trigger an event to prepare the next frame of animation within the update cycle of your screen (actually - the app window). Each time, the timer is reset by an update of the `rimR` symbol, ensuring that the next frame will only come after the previous one has been finished.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we will automate our update cycle by attaching an animation frame listener to the `rimR` symbol. It will trigger an event to prepare the next frame of animation within the update cycle of your screen (actually - the app window). Each time, the timer is reset by an update of the `rimR` symbol, ensuring that the next frame will only come after the previous one has been finished.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[
+  showGeometry[rimR, rbonds, TransitionType->None, "Controls"->False, Epilog->{
+    AnimationFrameListener[rimR // Offload, "Event"->"anim"], 
+    Circle[mousePos // Offload, 0.5]
+  }, PlotRange->{{-5,5}, {-5,5}}]
+, {"mousemove" -> Function[xy,
+    mousePos = xy;
+]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animation controls.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animation controls.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Start", 
+ EventHandler["anim", With[{}, Do[With[{\[Delta]t = 0.006}, 
+  rim0 = applyBond[rpairs, 1.0, 0.8][
+    Clip[(2 rim1 - rim2) + Table[
+       If[Max[Abs[i - mousePos]] < 2.0, {0,-1} - 7.0 (i - mousePos), {0,-1}]
+    , {i, rim0}] (*SpB[*)Power[\[Delta]t(*|*),(*|*)2](*]SpB*), {-5,5}]
+  ];
+
+  
+  rim2 = rim1;
+  rim1 = rim0;
+  
+ ], {i, 10}];
+  rimR = rim0;
+
+ ]&]; 
+ rimR = rim0;
+]
+
+Button["Stop", EventRemove["anim"]]
+
+Button["Reset", With[{}, rim0 = 2.0 rim; rim1 = rim0; rim2 = rim0;
+rimR = rim0;]]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Generate a Mesh from an Image
+The more challenging, the more fun! It would be great to sketch a bitmap image using a brush and transform it into a mesh that can be modeled.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Generate a Mesh from an Image
+The more challenging, the more fun! It would be great to sketch a bitmap image using a brush and transform it into a mesh that can be modeled.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+mask = NotebookRead[NotebookStore["carnivorous-284"]];
+EventHandler[InputRaster[mask], (mask = #)&]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(EventObject[<|"Id" -> "eb8dcc57-4c47-41b7-8aba-af01c3bacb48", "View" -> "F0494e471-1dd9-4055-b1f2-16f4a09a285b"|>])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJG5hYmqSamBvqGqakWOqaGJia6iYZphnpGpqlmSQaWCYaWZgmAQCLnhVU"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now convert this image to a mesh, triangulate it, and render it as an index graph. Using a `Graph` object is a bit easier than working with a triangulated mesh, since all bonds are sorted and can easily be extracted.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now convert this image to a mesh, triangulate it, and render it as an index graph. Using a `Graph` object is a bit easier than working with a triangulated mesh, since all bonds are sorted and can easily be extracted.
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+mesh = TriangulateMesh[
+  ImageMesh[ImageResize[mask , 100]// ColorNegate]
+, MaxCellMeasure->{"Area"->100}];
+
+graph = MeshConnectivityGraph[mesh, 0] // IndexGraph
+vertices = graph // GraphEmbedding;
+edges = (List @@ #) &/@ (graph // EdgeList) (*BB[*)(*convert to list of lists*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*);
+
+vertices = Map[Function[x, x - {0.4,-1.2}], 0.04 vertices] (*BB[*)(*scale and translate*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*);
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(CoffeeLiqueur`Extensions`Boxes`Workarounds`temporal$824230)(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6ampBlbpFnompknmuqaGBsa6VqaJVvqmpuaGyWnGFokGacYAQCH7xWE"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animation cycle (*as before*).
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animation cycle (*as before*).
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+vertices0 =  vertices; vertices1 = vertices0; vertices2 = vertices0;
+verticesR = vertices0;
+
+vpairs = {edges, Norm /@ getDir[edges, vertices0]} // Transpose;
+
+mousePos   = {100.,0.};
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[
+  showGeometry[verticesR, edges, TransitionType->None, "Controls"->False, Epilog->{
+    AnimationFrameListener[verticesR // Offload, "Event"->"anim2"], 
+    Circle[mousePos // Offload, 0.5]
+  }, PlotRange->{{-5,5}, {-5,5}}]
+, {"mousemove" -> Function[xy,
+    mousePos = xy;
+]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animation controls:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animation controls:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Start", 
+ EventHandler["anim2", With[{}, Do[With[{\[Delta]t = 0.003}, 
+  vertices0 = applyBond[vpairs, 1.0, 0.8][
+    Clip[(2 vertices1 - vertices2) + Table[
+       If[Max[Abs[i - mousePos]] < 2.0, {0,-1} - 7.0 (i - mousePos), {0,-1}]
+    , {i, vertices0}] (*SpB[*)Power[\[Delta]t(*|*),(*|*)2](*]SpB*), {-5,5}]
+  ];
+
+  
+  vertices2 = vertices1;
+  vertices1 = vertices0;
+  
+ ], {i, 3}];
+  verticesR = vertices0;
+
+ ]&]; 
+ verticesR = vertices0;
+]
+
+Button["Stop", EventRemove["anim2"]]
+
+Button["Reset", With[{}, vertices0 =  vertices; vertices1 = vertices0; vertices2 = vertices0;
+verticesR = vertices0;]]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 4e948a73-3bcf-417c-bfe4-7fd90edfff96
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[GraphicsComplex[{{0, -1}, {0, -0.9}, {-0.5, -0.8660254037844386}, {-0.45, -0.7794228634059948}, {-0.8660254037844386, -0.5}, {-0.7794228634059948, -0.45}, {-1, 0}, {-0.9, 0}, {-0.8660254037844386, 0.5}, {-0.7794228634059948, 0.45}, {-0.5, 0.8660254037844386}, {-0.45, 0.7794228634059948}, {0, 1}, {0, 0.9}, {0.5, 0.8660254037844386}, {0.45, 0.7794228634059948}, {0.8660254037844386, 0.5}, {0.7794228634059948, 0.45}, {1, 0}, {0.9, 0}, {0.8660254037844386, -0.5}, {0.7794228634059948, -0.45}, {0.5, -0.8660254037844386}, {0.45, -0.7794228634059948}, {0, -1}, {0, -0.9}}, {{Directive[Opacity[0.7], Hue[0.6, 0.7, 0.7], CapForm["Round"]], Arrowheads[0], {Arrow[{{1, 2}, {1, 3}, {1, 25}, {2, 3}, {2, 4}, {2, 24}, {3, 4}, {3, 5}, {4, 5}, {4, 6}, {5, 6}, {5, 7}, {6, 7}, {6, 8}, {7, 8}, {7, 9}, {8, 9}, {8, 10}, {9, 10}, {9, 11}, {10, 11}, {10, 12}, {11, 12}, {11, 13}, {12, 13}, {12, 14}, {13, 14}, {13, 15}, {14, 15}, {14, 16}, {15, 16}, {15, 17}, {16, 17}, {16, 18}, {17, 18}, {17, 19}, {18, 19}, {18, 20}, {19, 20}, {19, 21}, {20, 21}, {20, 22}, {21, 22}, {21, 23}, {22, 23}, {22, 24}, {23, 24}, {23, 25}, {24, 25}, {25, 26}}, 0.02261146496815286]}}, {Directive[Hue[0.6, 0.5, 1], EdgeForm[Directive[GrayLevel[0], Opacity[0.7]]]], Disk[1, 0.02261146496815286], Disk[2, 0.02261146496815286], Disk[3, 0.02261146496815286], Disk[4, 0.02261146496815286], Disk[5, 0.02261146496815286], Disk[6, 0.02261146496815286], Disk[7, 0.02261146496815286], Disk[8, 0.02261146496815286], Disk[9, 0.02261146496815286], Disk[10, 0.02261146496815286], Disk[11, 0.02261146496815286], Disk[12, 0.02261146496815286], Disk[13, 0.02261146496815286], Disk[14, 0.02261146496815286], Disk[15, 0.02261146496815286], Disk[16, 0.02261146496815286], Disk[17, 0.02261146496815286], Disk[18, 0.02261146496815286], Disk[19, 0.02261146496815286], Disk[20, 0.02261146496815286], Disk[21, 0.02261146496815286], Disk[22, 0.02261146496815286], Disk[23, 0.02261146496815286], Disk[24, 0.02261146496815286], Disk[25, 0.02261146496815286], Disk[26, 0.02261146496815286]}}], {FormatType -> TraditionalForm, FrameTicks -> None, ImagePadding -> None, ImageSize -> 200, "Controls" -> False}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 545975a9-aa04-4e6b-84fd-bfb205f610d7
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{GrayLevel[0.5], Rectangle[{-5, -5}, {5, 5}], RGBColor[0, 0, 1], {Offload[Line[With[{p$ = pts0}, {p$[[1]], p$[[3]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[1]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[1]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[1]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[2]], p$[[5]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[2]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[2]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[3]], p$[[5]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[3]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[3]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[3]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[4]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[4]], p$[[8]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[4]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[5]], p$[[6]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[5]], p$[[7]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[5]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[6]], p$[[9]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[6]], p$[[10]]}]]], Offload[Line[With[{p$ = pts0}, {p$[[9]], p$[[10]]}]]]}, RGBColor[1, 0, 0], Point[Offload[pts0]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: aedf38f8-67a5-4312-96c9-7572cd18b3d2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[GraphicsComplex[{{52.84188611699155, 39.47434164902525}, {44.5, 41}, {43.505311887319905, 58.92731113446333}, {51.00000000000005, 59.50000000000001}, {54, 60.5}, {57.485071250072664, 64.12126781251816}, {60.08056594945108, 69.49346644038783}, {59.33333333333332, 82}, {56.00000000000001, 82}, {57.058420623783704, 71.49657530216143}, {54.474341649025256, 64.84188611699159}, {51.99999999999999, 63.50000000000001}, {43.65317915646707, 62.639839893254255}, {44.81818181818183, 71.22727272727272}, {42.5, 72}, {41.82443827920581, 71.46816458878452}, {40.52831375923613, 63.16586768905983}, {29.594594594594597, 70.12162162162163}, {27.960127388858552, 77.50159236073193}, {30.14285714285714, 80.21428571428572}, {25.648648648648656, 81.33783783783785}, {24.809119922790106, 72.46213071324502}, {29.41602514716892, 66.27735009811262}, {34.44721359549996, 62.77639320225002}, {40.44721359549996, 59.77639320225003}, {41.297195530541906, 40.402088070733164}, {34.55278640450004, 39.22360679774997}, {30.878732187481837, 37.485071250072664}, {25.609565595278486, 33.31234752377721}, {20.878732187481834, 25.485071250072668}, {18.944784236962576, 21.50305813266319}, {19.72790444745049, 9.419480643513829}, {22.5, 7.999999999999999}, {25.609565595278486, 8.687652476222787}, {29.77639320225002, 20.552786404500043}, {36.40343141007673, 30.295369425234746}, {50.50350586290253, 31.059106444892556}, {57.451430259411964, 28.21496679019618}, {64.43412157106222, 20.248069469178425}, {70.44721359549996, 7.776393202250019}, {74.33333333333333, 6.666666666666667}, {75.03834824944236, 14.501472757249209}, {71.24806946917842, 21.565878428937772}, {67.26608577260917, 29.576681725394497}, {58.5, 36.999999999999986}, {41.17637601922097, 67.31701613892217}, {44.235680487324444, 66.93355631026348}, {43.24203079627537, 70.36245602518974}, {40.87220456302093, 50.089240636491596}, {44.14871809562423, 34.0045879430362}, {59.7069496413922, 75.74673322019392}}, {{Directive[Opacity[0.7], Hue[0.6, 0.7, 0.7], CapForm["Round"]], Arrowheads[0], {Arrow[{{1, 2}, {1, 37}, {1, 45}, {1, 50}, {2, 3}, {2, 26}, {2, 49}, {2, 50}, {3, 4}, {3, 13}, {3, 25}, {3, 49}, {4, 5}, {4, 12}, {4, 13}, {5, 6}, {5, 11}, {5, 12}, {6, 7}, {6, 10}, {6, 11}, {7, 10}, {7, 51}, {8, 9}, {8, 51}, {9, 10}, {9, 51}, {10, 11}, {10, 51}, {11, 12}, {12, 13}, {13, 17}, {13, 25}, {13, 47}, {14, 15}, {14, 47}, {14, 48}, {15, 16}, {15, 48}, {16, 46}, {16, 48}, {17, 18}, {17, 24}, {17, 25}, {17, 46}, {17, 47}, {18, 19}, {18, 22}, {18, 23}, {18, 24}, {19, 20}, {19, 21}, {19, 22}, {20, 21}, {21, 22}, {22, 23}, {23, 24}, {24, 25}, {25, 49}, {26, 27}, {26, 36}, {26, 49}, {26, 50}, {27, 28}, {27, 36}, {28, 29}, {28, 36}, {29, 30}, {29, 35}, {29, 36}, {30, 31}, {30, 35}, {31, 32}, {31, 34}, {31, 35}, {32, 33}, {32, 34}, {33, 34}, {34, 35}, {35, 36}, {36, 37}, {36, 50}, {37, 38}, {37, 45}, {37, 50}, {38, 39}, {38, 44}, {38, 45}, {39, 40}, {39, 42}, {39, 43}, {39, 44}, {40, 41}, {40, 42}, {41, 42}, {42, 43}, {43, 44}, {44, 45}, {46, 47}, {46, 48}, {47, 48}}, 0.1275365031823287]}}, {Directive[Hue[0.6, 0.5, 1], EdgeForm[Directive[GrayLevel[0], Opacity[0.7]]]], Disk[1, 0.1275365031823287], Disk[2, 0.1275365031823287], Disk[3, 0.1275365031823287], Disk[4, 0.1275365031823287], Disk[5, 0.1275365031823287], Disk[6, 0.1275365031823287], Disk[7, 0.1275365031823287], Disk[8, 0.1275365031823287], Disk[9, 0.1275365031823287], Disk[10, 0.1275365031823287], Disk[11, 0.1275365031823287], Disk[12, 0.1275365031823287], Disk[13, 0.1275365031823287], Disk[14, 0.1275365031823287], Disk[15, 0.1275365031823287], Disk[16, 0.1275365031823287], Disk[17, 0.1275365031823287], Disk[18, 0.1275365031823287], Disk[19, 0.1275365031823287], Disk[20, 0.1275365031823287], Disk[21, 0.1275365031823287], Disk[22, 0.1275365031823287], Disk[23, 0.1275365031823287], Disk[24, 0.1275365031823287], Disk[25, 0.1275365031823287], Disk[26, 0.1275365031823287], Disk[27, 0.1275365031823287], Disk[28, 0.1275365031823287], Disk[29, 0.1275365031823287], Disk[30, 0.1275365031823287], Disk[31, 0.1275365031823287], Disk[32, 0.1275365031823287], Disk[33, 0.1275365031823287], Disk[34, 0.1275365031823287], Disk[35, 0.1275365031823287], Disk[36, 0.1275365031823287], Disk[37, 0.1275365031823287], Disk[38, 0.1275365031823287], Disk[39, 0.1275365031823287], Disk[40, 0.1275365031823287], Disk[41, 0.1275365031823287], Disk[42, 0.1275365031823287], Disk[43, 0.1275365031823287], Disk[44, 0.1275365031823287], Disk[45, 0.1275365031823287], Disk[46, 0.1275365031823287], Disk[47, 0.1275365031823287], Disk[48, 0.1275365031823287], Disk[49, 0.1275365031823287], Disk[50, 0.1275365031823287], Disk[51, 0.1275365031823287]}}], {FormatType -> TraditionalForm, FrameTicks -> None, ImagePadding -> None, ImageSize -> 200, "Controls" -> False}]]|>
+
+%-------------------------------------------------------------------------%
+Key: F0494e471-1dd9-4055-b1f2-16f4a09a285b
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[HTMLView["<div class=\"flex flex-col gap-y-1\"><input type=\"range\" min=\"1\" max=\"50\" value=\"25\" class=\"sm-controls w-full mt-3 mb-3 h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer \" id=\"#instanceId-sizeRange\"/><fieldset ><div class=\"mt-2 flex-row gap-x-2 flex\"><div class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" value=\"black\" checked=\"true\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block text-sm   leading-6 text-gray-800\">Black</label></div><div class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" value=\"white\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block text-sm   leading-6 text-gray-800\">White</label></div><div class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" value=\"red\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block text-sm   leading-6 text-gray-800\">Red</label></div><div class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" value=\"green\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block text-sm   leading-6 text-gray-800\">Green</label></div><div class=\"flex items-center\"><input name=\"#instanceId-colorRadio\" value=\"blue\" type=\"radio\" class=\"h-4 w-4 border-gray-300 text-sys  focus:ring-sys\"/><label class=\"ml-3 block text-sm   leading-6 text-gray-800\">Blue</label></div><div class=\"flex items-center ml-auto\"><button class=\"sm-controls rounded wljs-button bg-white px-2 py-1 text-xs text-gray-800\" id=\"#instanceId-clear\">Clear</button></div></div></fieldset></div>\n<script type=\"module\"> core['handler4901'] = async (args, env) => {\n      env.element.classList.add(...((\"sm-controls cursor-default py-1 px-2 bg-gray-50 text-left text-gray-500 wljs-card gap-y-1\").split(\" \")));\n      env.element.style.flexDirection = \"column-reverse\";\n      \n      const sizeElement = document.getElementById(\"#instanceId-sizeRange\");\n      let size = sizeElement.value;\n      sizeElement.oninput = (e) => {\n        size = e.target.value;\n      };\n\n      const colorElement = document.getElementsByName(\"#instanceId-colorRadio\");\n      let color;\n      colorElement.forEach((c) => {\n        if (c.checked) color = c.value;\n      });\n\n      colorElement.forEach((c) => {\n        c.onclick = () => {\n          color = c.value;\n        };\n      });\n\n      const dpr = 1.0 / window.devicePixelRatio;\n\n      function drawOnImage(image = null) {\n        let canvasElement = env.element.getElementsByTagName(\"canvas\");\n        console.warn(canvasElement);\n\n\n        if (canvasElement.length == 0) {\n          console.log(\"Creating canvas...\");\n          canvasElement = document.createElement(\"canvas\");\n          let imageWidth, imageHeight;\n\n          const isize =350;\n        \n          if (Array.isArray(isize)) {\n            imageWidth = isize[0];\n            imageHeight = isize[1];\n          } else {\n            imageWidth = isize;\n            imageHeight = isize * 0.75;\n          }\n        \n          // rescaling the canvas element\n          canvasElement.width = imageWidth;\n          canvasElement.height = imageHeight;\n\n          canvasElement.style.width = imageWidth * dpr + \"px\";\n          canvasElement.style.height = imageHeight * dpr + \"px\";\n\n\n          env.element.appendChild(canvasElement);\n\n        } else {\n          const overlayMode =false;\n          if (overlayMode) {\n            const container = document.createElement(\"div\");\n            container.classList.add(\"relative\");\n            env.element.appendChild(container);\n            \n\n            canvasElement[0].classList.add(\"absolute\", \"inset-0\", \"pointer-events-none\", \"rounded-md\");\n            //canvasElement[0].style.zIndex = -1;\n            canvasElement[0].style.opacity = 0.3;\n            container.appendChild(canvasElement[0]);\n\n            console.log(canvasElement[0]);\n\n            const newCanvasElement = document.createElement(\"canvas\");\n            newCanvasElement.width = canvasElement[0].width;\n            newCanvasElement.height = canvasElement[0].height;\n            newCanvasElement.style.height = canvasElement[0].style.height;\n            newCanvasElement.style.width = canvasElement[0].style.width;\n\n            container.appendChild(newCanvasElement);\n\n\n            \n            canvasElement = newCanvasElement;\n\n\n          } else {\n            canvasElement = canvasElement[0];\n          }\n        }\n\n        canvasElement.classList.add(\"rounded-md\", \"bg-white\");\n        const context = canvasElement.getContext(\"2d\");\n      \n        const uploadImage = () => {\n          canvasElement.toBlob((res) => {\n          \n            const reader = new FileReader();\n          \n      reader.readAsDataURL(res); \n      reader.onloadend = function() {\n          const offset = 'data:image/png;base64,'.length;\n          const base64data = reader.result.slice(offset);                \n\n          server.kernel.io.fire('fe20dcf1-7ea8-4284-9fda-e53035ebd788', String(base64data), 'Default');\n          return;\n      }\n          });\n        }\n      \n        const clearElement = document.getElementById(\"#instanceId-clear\");\n        clearElement.onclick = () => {\n          context.clearRect(0, 0, canvasElement.width, canvasElement.height);\n        };\n      \n        let isDrawing;\n        let didMove = false;\n      \n        canvasElement.onmousedown = (e) => {\n          isDrawing = true;\n          didMove = false;\n          context.beginPath();\n          context.lineWidth = size;\n          context.strokeStyle = color;\n          context.lineJoin = \"round\";\n          context.lineCap = \"round\";\n          context.moveTo(e.offsetX/dpr, e.offsetY/dpr);\n        };\n      \n        canvasElement.onmousemove = (e) => {\n        \n          if (isDrawing) {\n            didMove = true;\n            context.lineTo(e.offsetX/dpr, e.offsetY/dpr);\n            context.stroke();\n\n            if (false) {\n              uploadImage();\n            }\n          }\n        };\n      \n        canvasElement.onmouseup = function (e) {\n          if (!isDrawing) return;\n\n          isDrawing = false;\n\n          if (!didMove) {\n            context.arc(e.offsetX/dpr, e.offsetY/dpr, size/2, 0, 2*Math.PI);\n            context.fill();\n          }\n\n          context.closePath();\n          uploadImage();\n\n        };\n      }\n\n\n      drawOnImage();\n\n\n      delete core['handler4901'];\n    }</script>", Epilog -> {FrontEndExecutable["Fd5e4ab0b-db25-4ed4-9a2a-036bd04fa4cb"], handler4901}, Prolog -> CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[Association["instanceId" -> CreateUUID[]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: Fd5e4ab0b-db25-4ed4-9a2a-036bd04fa4cb
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["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", {"ExpressionJSON", "ZLIB"}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: pts0
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON["JTVCJTVCMC44NjU2MDIzMjUzODU4MDU4JTJDLTAuNDA5NTY2MjM0MTQxNjM2MiU1RCUyQyU1Qi0wLjI0MjQ0MTAxNzA2NDc4MzcxJTJDMC41MzE4MzkzMzM3NjcwMTAyJTVEJTJDJTVCMC41NDg2NzQwNjYwNTEyMDU5JTJDLTAuOTI5MjkyMjU5NjcwMTI0MyU1RCUyQyU1Qi0wLjUxOTY4NDkwMDU3Mjg4ODElMkMtMC40ODg1MDgxNzM2NDQ1OTM3NiU1RCUyQyU1QjAuODU2MjUyMDk0NzE2MDY2MSUyQy0wLjQ1MTg0MTI1NjUwOTU3OTc0JTVEJTJDJTVCMC45MjY4MDA1OTM4NzcxNDcxJTJDMC42NzY1NTA5NjE0MzE4NTEyJTVEJTJDJTVCMC4yMTc0NzMyNTU2ODY5NDU4NyUyQy0wLjM0NzQ1NTA1MDkzNjI4OTklNUQlMkMlNUIwLjQ1NjE4NDI4NTQ3OTkzMTIlMkMwLjQxMzI0Nzk3ODQzNzU5NzMlNUQlMkMlNUItMC42NjQ4MTY1NjA1NjAxODc3JTJDMC4zMTEwMTU0NzQyODk0NzA2MyU1RCUyQyU1Qi0wLjY2ODUwOTE3Mjc1MjkzOTglMkMwLjYzNDA4MzY2OTM4MjY2OTclNUQlNUQ="]
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+Key: reburying-4d2
+%-------------------------------------------------------------------------%
+"1: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"
+
+%-------------------------------------------------------------------------%
+Key: carnivorous-284
+%-------------------------------------------------------------------------%
+"1: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"
+
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

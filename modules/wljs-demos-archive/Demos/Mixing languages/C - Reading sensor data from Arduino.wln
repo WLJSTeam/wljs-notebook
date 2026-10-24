@@ -1,827 +1,615 @@
-<|"Notebook" -> <|"Controller" -> "3245bf85-bc42-49cf-b1d4-57b7635c811a", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$6631], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "20267e41-5e7b-4741-bd7a-3c0e74608e4b", 
-   "Objects" -> <|"6377d64f-10b9-4bb8-8f96-fe24a9672540" -> 
-      <|"Public" -> Hold[Graphics[{{}, Annotation[
-            {{{}, {}, Annotation[{Hue[0.67, 0.6, 0.6], Directive[PointSize[
-                  Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], 
-                 AbsoluteThickness[2]], Line[{{1, 277}, {2, 274}, {3, 275}, 
-                  {4, 272}, {5, 282}, {6, 285}, {7, 278}, {8, 278}, {9, 280}, 
-                  {10, 281}, {11, 273}, {12, 274}, {13, 270}, {14, 267}, 
-                  {15, 264}, {16, 268}, {17, 263}, {18, 265}, {19, 263}, 
-                  {20, 253}, {21, 153}, {22, 153}, {22.645833333333243, 
-                   150.41666666666703}}], Line[{{23.283333333333406, 
-                   150.41666666666703}, {24, 154}, {25, 270}, {26, 272}, 
-                  {27, 272}, {28, 267}, {29, 259}, {30, 261}, {31, 263}, 
-                  {32, 266}, {33, 265}, {34, 260}, {35, 254}, {36, 254}, 
-                  {37, 152}, {38, 160}, {39, 217}, {40, 246}, {41, 244}, 
-                  {42, 237}, {43, 241}, {44, 237}, {45, 230}, {46, 235}, 
-                  {47, 235}, {48, 230}, {49, 233}, {49.699858757062145, 
-                   150.41666666666703}}], Line[{{51.29572271386431, 
-                   150.41666666666703}, {52, 230}, {53, 231}, {54, 233}, 
-                  {55, 236}, {56, 225}, {57, 230}, {58, 239}, {59, 240}, 
-                  {60, 239}, {61, 236}, {61.80738993710691, 
-                   150.41666666666703}}], Line[{{63.33178053830228, 
-                   150.41666666666703}, {64, 258}, {65, 252}, {66, 243}, 
-                  {67, 252}, {68, 258}, {69, 262}, {70, 264}, {71, 269}, 
-                  {72, 270}, {73, 270}, {74, 162}, {75, 160}, {76, 275}, 
-                  {77, 278}, {78, 277}, {79, 278}, {80, 273}, {81, 265}, 
-                  {82, 267}, {83, 265}, {84, 266}, {85, 272}, {86, 156}, 
-                  {86.69791666666663, 150.41666666666703}}], 
-                Line[{{87.02258566978193, 150.41666666666703}, {88, 255}, 
-                  {89, 264}, {90, 264}, {91, 266}, {92, 247}, {93, 251}, 
-                  {94, 256}, {95, 251}, {96, 255}, {97, 253}, 
-                  {97.84084699453551, 150.41666666666703}}], 
-                Line[{{99.19469696969698, 150.41666666666703}, {100, 239}, 
-                  {101, 241}, {102, 237}, {103, 237}, {104, 228}, {105, 238}, 
-                  {106, 234}, {107, 232}, {108, 232}, {109, 232}, {110, 235}, 
-                  {110.70486111111111, 150.41666666666703}}], 
-                Line[{{112.26221264367817, 150.41666666666703}, {113, 236}, 
-                  {114, 233}, {115, 220}, {116, 234}, {117, 240}, {118, 242}, 
-                  {119, 237}, {120, 244}, {121, 237}, {122, 242}, 
-                  {122.63160919540229, 150.41666666666703}}], 
-                Line[{{123.8756830601093, 150.41666666666703}, {124, 158}, 
-                  {125, 246}, {126, 253}, {127, 251}, {128, 262}}]}, 
-               "Charting`Private`Tag#1"]}}, Association[
-             "HighlightElements" -> Association["Label" -> {"XYLabel"}, 
-               "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> 
-              Association["PanelPlotLayout" -> Association[], "PlotRange" -> 
-                {{0, 128}, {150.41666666666703, 285}}, "Frame" -> 
-                {{False, False}, {False, False}}, "AxesOrigin" -> 
-                {0, 150.41666666666703}, "ImageSize" -> {360, 
-                 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> 
-                {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> 
-                {Directive[PointSize[Rational[1, 72]], RGBColor[0.24, 0.6, 
-                   0.8], AbsoluteThickness[2]]}, 
-               "HighlightLabelingFunctions" -> Association[
-                 "CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], 
-                    (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> 
-                  {{Identity, Identity}, {Identity, Identity}}], 
-               "Primitives" -> {}, "GCFlag" -> False], "Meta" -> 
-              Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> 
-                {}, "Function" -> ListLinePlot, "GroupHighlight" -> False]], 
-            "DynamicHighlight"], {{}, {}}}, {DisplayFunction -> Identity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 150.41666666666703}, DisplayFunction :> 
-            Identity, Frame -> {{False, False}, {False, False}}, 
-           FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"AxisPadding" -> Scaled[0.02], "DefaultBoundaryStyle" -> 
-              Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 
-                 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 
-                 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.772079, 0.431554, 0.102387], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], 
-                AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 
-                 0.2125], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.40082222609352647, 0.5220066643438841, 0.85], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 
-                 0.621644452187053, 0.07336199581899142], AbsoluteThickness[
-                 2]], Directive[RGBColor[0.736782672705901, 0.358, 
-                 0.5030266573755369], AbsoluteThickness[2]], Directive[
-                RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], 
-                AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], 
-             "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> Automatic, "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "CoordinatesToolOptions" -> {"DisplayFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotInteractivity :> Association[
-             "SystemLimits" -> 3000, "UserLimits" -> 10000, 
-             "UserInteractivity" -> True], PlotRange -> {{0, 128}, 
-             {150.41666666666703, 285}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, Ticks -> {Automatic, Automatic}, 
-           PlotInteractivity :> $PlotInteractivity}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Mixing \
-languages/C - Arduino.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Arduino AnalogRead", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6622]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Notes on Serial Connection", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6624]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Basic Frame Protocol", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6624]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Set up the board", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6626]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "First contact", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6630]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "ArduinoScope", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6646]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Graph widget", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6655]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Fourier Transform", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6660]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Arduino AnalogRead\n\nIn this example, we \
-stream ADC levels from an Arduino-compatible board using a serial interface. \
-One can use it as an external sensor to probe something and handle data \
-processing and visualization using the Wolfram Language \
-library:\n\n\n![](/attachments/Screenshot%202025-08-25%20at%2011.01.50-fa1.pn\
-g)\n\n\n\n\n", "Display" -> "codemirror", 
-    "Hash" -> "824e2183-0895-4107-90f2-d3117c668433", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "# Arduino AnalogRead\n\nIn this example, we stream ADC levels \
-from an Arduino-compatible board using a serial interface. One can use it as \
-an external sensor to probe something and handle data processing and \
-visualization using the Wolfram Language \
-library:\n\n\n![](/attachments/Screenshot%202025-08-25%20at%2011.01.50-fa1.pn\
-g)", "Display" -> "markdown", "Hash" -> 
-     "400b7244-246f-4e45-a1a9-218c1784aae9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n## Notes on Serial \
-Connection\n\n!![{\"type\":\"rectangle\",\"version\":160,\"versionNonce\":737\
-174800,\"isDeleted\":false,\"id\":\"m2ml0uCwHUS0v4drKtjRW\",\"fillStyle\":\"h\
-achure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roughness\":1,\"opacit\
-y\":100,\"angle\":0,\"x\":280.5390625,\"y\":179.0234375,\"strokeColor\":\"#19\
-71c2\",\"backgroundColor\":\"#a5d8ff\",\"width\":190.08203125,\"height\":150.\
-9921875,\"seed\":109938672,\"groupIds\":[],\"frameId\":null,\"roundness\":nul\
-l,\"boundElements\":[{\"id\":\"8Gy9beQMLdxNua3oV1IJJ\",\"type\":\"arrow\"},{\
-\"id\":\"22sXVjobv2Qs6rO1QBzv_\",\"type\":\"arrow\"}],\"updated\":17561067031\
-17,\"link\":null,\"locked\":false},{\"type\":\"rectangle\",\"version\":102,\"\
-versionNonce\":1272035600,\"isDeleted\":false,\"id\":\"SLbK_fGITp3BUuETbeV_t\
-\",\"fillStyle\":\"solid\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roug\
-hness\":1,\"opacity\":100,\"angle\":0,\"x\":279.60546875,\"y\":208.0485839843\
-75,\"strokeColor\":\"#1971c2\",\"backgroundColor\":\"#ffffff\",\"width\":69.3\
-7109375,\"height\":35,\"seed\":1428590864,\"groupIds\":[],\"frameId\":null,\"\
-roundness\":null,\"boundElements\":[{\"type\":\"text\",\"id\":\"NWmgZMvttrBrc\
-GDsyjYnP\"},{\"id\":\"JG4p3wwRoW6HWAJxsKhAg\",\"type\":\"arrow\"}],\"updated\
-\":1756106787810,\"link\":null,\"locked\":false},{\"type\":\"text\",\"version\
-\":4,\"versionNonce\":1261737968,\"isDeleted\":false,\"id\":\"NWmgZMvttrBrcGD\
-syjYnP\",\"fillStyle\":\"solid\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\
-\"roughness\":1,\"opacity\":100,\"angle\":0,\"x\":293.49102783203125,\"y\":21\
-3.048583984375,\"strokeColor\":\"#1971c2\",\"backgroundColor\":\"transparent\
-\",\"width\":41.5999755859375,\"height\":25,\"seed\":2103757072,\"groupIds\":\
-[],\"frameId\":null,\"roundness\":null,\"boundElements\":[],\"updated\":17561\
-06612985,\"link\":null,\"locked\":false,\"fontSize\":20,\"fontFamily\":1,\"te\
-xt\":\"ADC\",\"textAlign\":\"center\",\"verticalAlign\":\"middle\",\"containe\
-rId\":\"SLbK_fGITp3BUuETbeV_t\",\"originalText\":\"ADC\",\"lineHeight\":1.25,\
-\"baseline\":18},{\"type\":\"text\",\"version\":91,\"versionNonce\":146137872\
-,\"isDeleted\":false,\"id\":\"S5GXM1QRoygc3mEIyTFuN\",\"fillStyle\":\"solid\"\
-,\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roughness\":1,\"opacity\":100,\
-\"angle\":0,\"x\":341.98046875,\"y\":300.103271484375,\"strokeColor\":\"#1e1e\
-1e\",\"backgroundColor\":\"transparent\",\"width\":69.25993347167969,\"height\
-\":25,\"seed\":302210032,\"groupIds\":[],\"frameId\":null,\"roundness\":null,\
-\"boundElements\":[],\"updated\":1756106624507,\"link\":null,\"locked\":false\
-,\"fontSize\":20,\"fontFamily\":1,\"text\":\"Arduino\",\"textAlign\":\"left\"\
-,\"verticalAlign\":\"top\",\"containerId\":null,\"originalText\":\"Arduino\",\
-\"lineHeight\":1.25,\"baseline\":18},{\"type\":\"rectangle\",\"version\":383,\
-\"versionNonce\":1306833168,\"isDeleted\":false,\"id\":\"9JPYgosQm87sCjrL1Zkl\
-R\",\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"r\
-oughness\":1,\"opacity\":100,\"angle\":0,\"x\":687.580078125,\"y\":178.091552\
-734375,\"strokeColor\":\"#2f9e44\",\"backgroundColor\":\"transparent\",\"widt\
-h\":190.08203125,\"height\":150.9921875,\"seed\":1294487312,\"groupIds\":[],\
-\"frameId\":null,\"roundness\":null,\"boundElements\":[{\"id\":\"8Gy9beQMLdxN\
-ua3oV1IJJ\",\"type\":\"arrow\"},{\"id\":\"22sXVjobv2Qs6rO1QBzv_\",\"type\":\"\
-arrow\"}],\"updated\":1756106799209,\"link\":null,\"locked\":false},{\"type\"\
-:\"rectangle\",\"version\":124,\"versionNonce\":184618480,\"isDeleted\":false\
-,\"id\":\"9qyHERwy3znsIHWR3yOjQ\",\"fillStyle\":\"hachure\",\"strokeWidth\":2\
-,\"strokeStyle\":\"solid\",\"roughness\":1,\"opacity\":100,\"angle\":0,\"x\":\
-732.68359375,\"y\":188.118896484375,\"strokeColor\":\"#2f9e44\",\"backgroundC\
-olor\":\"transparent\",\"width\":98.42578125,\"height\":60,\"seed\":505545712\
-,\"groupIds\":[],\"frameId\":null,\"roundness\":null,\"boundElements\":[{\"ty\
-pe\":\"text\",\"id\":\"fsaClo9H1WHK33yVZ7Q8t\"}],\"updated\":1756106753111,\"\
-link\":null,\"locked\":false},{\"type\":\"text\",\"version\":88,\"versionNonc\
-e\":898224112,\"isDeleted\":false,\"id\":\"fsaClo9H1WHK33yVZ7Q8t\",\"fillStyl\
-e\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roughness\":1,\
-\"opacity\":100,\"angle\":0,\"x\":737.7665328979492,\"y\":193.118896484375,\"\
-strokeColor\":\"#2f9e44\",\"backgroundColor\":\"transparent\",\"width\":88.25\
-990295410156,\"height\":50,\"seed\":794749936,\"groupIds\":[],\"frameId\":nul\
-l,\"roundness\":null,\"boundElements\":[],\"updated\":1756106753111,\"link\":\
-null,\"locked\":false,\"fontSize\":20,\"fontFamily\":1,\"text\":\"WLJS\\nNote\
-book\",\"textAlign\":\"center\",\"verticalAlign\":\"middle\",\"containerId\":\
-\"9qyHERwy3znsIHWR3yOjQ\",\"originalText\":\"WLJS\\nNotebook\",\"lineHeight\"\
-:1.25,\"baseline\":43},{\"type\":\"arrow\",\"version\":178,\"versionNonce\":5\
-03843824,\"isDeleted\":false,\"id\":\"8Gy9beQMLdxNua3oV1IJJ\",\"fillStyle\":\
-\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roughness\":1,\"opa\
-city\":100,\"angle\":0,\"x\":481.57421875,\"y\":267.43776763218415,\"strokeCo\
-lor\":\"#e03131\",\"backgroundColor\":\"transparent\",\"width\":195.5625,\"he\
-ight\":1.2909202827254944,\"seed\":1803921680,\"groupIds\":[],\"frameId\":nul\
-l,\"roundness\":null,\"boundElements\":[],\"updated\":1756106753111,\"link\":\
-null,\"locked\":false,\"startBinding\":{\"elementId\":\"m2ml0uCwHUS0v4drKtjRW\
-\",\"focus\":0.1790005860016582,\"gap\":10.953125},\"endBinding\":{\"elementI\
-d\":\"9JPYgosQm87sCjrL1ZklR\",\"focus\":-0.15583751799481485,\"gap\":10.44335\
-9375},\"lastCommittedPoint\":null,\"startArrowhead\":null,\"endArrowhead\":\"\
-triangle\",\"points\":[[0,0],[195.5625,-1.2909202827254944]]},{\"type\":\"arr\
-ow\",\"version\":531,\"versionNonce\":1156349424,\"isDeleted\":false,\"id\":\
-\"22sXVjobv2Qs6rO1QBzv_\",\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strok\
-eStyle\":\"solid\",\"roughness\":1,\"opacity\":100,\"angle\":0,\"x\":663.2871\
-09375,\"y\":248.265627609966,\"strokeColor\":\"#e03131\",\"backgroundColor\":\
-\"transparent\",\"width\":173.34566160641805,\"height\":1.5544969756731746,\"\
-seed\":1241814000,\"groupIds\":[],\"frameId\":null,\"roundness\":null,\"bound\
-Elements\":[],\"updated\":1756106763034,\"link\":null,\"locked\":false,\"star\
-tBinding\":{\"elementId\":\"9JPYgosQm87sCjrL1ZklR\",\"focus\":0.0837235782840\
-4496,\"gap\":24.29296875},\"endBinding\":{\"elementId\":\"m2ml0uCwHUS0v4drKtj\
-RW\",\"focus\":-0.04811965641858985,\"gap\":19.320354018581952},\"lastCommitt\
-edPoint\":null,\"startArrowhead\":null,\"endArrowhead\":\"triangle\",\"points\
-\":[[0,0],[-173.34566160641805,1.5544969756731746]]},{\"type\":\"text\",\"ver\
-sion\":168,\"versionNonce\":1437225456,\"isDeleted\":false,\"id\":\"u6cgoV7Rl\
-gUSqimT-2JeH\",\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"\
-solid\",\"roughness\":1,\"opacity\":100,\"angle\":0,\"x\":772.3046875,\"y\":2\
-96.6572265625,\"strokeColor\":\"#1e1e1e\",\"backgroundColor\":\"transparent\"\
-,\"width\":26.0999755859375,\"height\":25,\"seed\":947629840,\"groupIds\":[],\
-\"frameId\":null,\"roundness\":null,\"boundElements\":[],\"updated\":17561067\
-53111,\"link\":null,\"locked\":false,\"fontSize\":20,\"fontFamily\":1,\"text\
-\":\"PC\",\"textAlign\":\"left\",\"verticalAlign\":\"top\",\"containerId\":nu\
-ll,\"originalText\":\"PC\",\"lineHeight\":1.25,\"baseline\":18},{\"type\":\"t\
-ext\",\"version\":163,\"versionNonce\":1387812336,\"isDeleted\":false,\"id\":\
-\"IGvWMcwexSze2CIGfLO0d\",\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strok\
-eStyle\":\"solid\",\"roughness\":1,\"opacity\":100,\"angle\":0,\"x\":538.5692\
-672729492,\"y\":198.3525390625,\"strokeColor\":\"#1e1e1e\",\"backgroundColor\
-\":\"transparent\",\"width\":73.64796447753906,\"height\":40,\"seed\":3647884\
-96,\"groupIds\":[],\"frameId\":null,\"roundness\":null,\"boundElements\":[{\"\
-id\":\"22sXVjobv2Qs6rO1QBzv_\",\"type\":\"arrow\"}],\"updated\":1756106758995\
-,\"link\":null,\"locked\":false,\"fontSize\":16,\"fontFamily\":1,\"text\":\"U\
-ART\\nover \
-USB\",\"textAlign\":\"center\",\"verticalAlign\":\"top\",\"containerId\":null\
-,\"originalText\":\"UART\\nover \
-USB\",\"lineHeight\":1.25,\"baseline\":34},{\"type\":\"line\",\"version\":57,\
-\"versionNonce\":165097968,\"isDeleted\":true,\"id\":\"JEf4gi4h_31uf2Ninx7Gb\
-\",\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"ro\
-ughness\":1,\"opacity\":100,\"angle\":0,\"x\":279.265625,\"y\":223.8876953125\
-,\"strokeColor\":\"#1971c2\",\"backgroundColor\":\"transparent\",\"width\":61\
-.15625,\"height\":0.07421875,\"seed\":511768336,\"groupIds\":[],\"frameId\":n\
-ull,\"roundness\":null,\"boundElements\":[],\"updated\":1756106783131,\"link\
-\":null,\"locked\":false,\"startBinding\":null,\"endBinding\":null,\"lastComm\
-ittedPoint\":null,\"startArrowhead\":null,\"endArrowhead\":null,\"points\":[[\
-0,0],[-61.15625,-0.07421875]]},{\"type\":\"arrow\",\"version\":55,\"versionNo\
-nce\":153395696,\"isDeleted\":false,\"id\":\"JG4p3wwRoW6HWAJxsKhAg\",\"fillSt\
-yle\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"roughness\":1\
-,\"opacity\":100,\"angle\":0,\"x\":279.46484375,\"y\":226.6455078125,\"stroke\
-Color\":\"#1971c2\",\"backgroundColor\":\"transparent\",\"width\":58.18359375\
-,\"height\":0.24609375,\"seed\":1039889392,\"groupIds\":[],\"frameId\":null,\
-\"roundness\":null,\"boundElements\":[],\"updated\":1756106790516,\"link\":nu\
-ll,\"locked\":false,\"startBinding\":{\"elementId\":\"SLbK_fGITp3BUuETbeV_t\"\
-,\"focus\":-0.07050748396002894,\"gap\":1},\"endBinding\":null,\"lastCommitte\
-dPoint\":null,\"startArrowhead\":null,\"endArrowhead\":\"dot\",\"points\":[[0\
-,0],[-58.18359375,-0.24609375]]},{\"type\":\"rectangle\",\"version\":129,\"ve\
-rsionNonce\":1815947760,\"isDeleted\":false,\"id\":\"X0gvXCNRCNU0VusGuSzlU\",\
-\"fillStyle\":\"hachure\",\"strokeWidth\":2,\"strokeStyle\":\"solid\",\"rough\
-ness\":1,\"opacity\":100,\"angle\":0,\"x\":97.640625,\"y\":131.1014404296875,\
-\"strokeColor\":\"transparent\",\"backgroundColor\":\"transparent\",\"width\"\
-:941.51953125,\"height\":234.34375,\"seed\":1200368112,\"groupIds\":[],\"fram\
-eId\":null,\"roundness\":null,\"boundElements\":[],\"updated\":1756106813296,\
-\"link\":null,\"locked\":false}]\n\nIt is important to note that the default \
-UART interface used on Arduino boards ==does not guarantee the delivery of \
-data== and has a certain error rate. This means that if you send structured \
-data, it might easily be corrupted when you continuously stream it.\n\nJust \
-relying on\n\n<pre class=\"mt-2\">\nuint16_t v = \
-analogRead(A0);\nSerial.write(v & 0xFF);\nSerial.write((v >> 8) & \
-0xFF);\n</pre>\n\nis a huge mistake \:26a0\:fe0f\n\n<br/><br/>\n\n### Basic \
-Frame Protocol\n\nHere we draft a very simple protocol, which uses control \
-bits to mark the start/end of a message and a payload:\n\n<p></p>\n\n| Marker \
-        | Description      |\n|----------------|------------------|\n| \
-`11000000`     | Start marker     |\n| `0100XXXX`     | Payload (4-bit)  |\n| \
-`........`     |                  |\n| `00000000`     | End marker       \
-|\n\nAnother consideration is to avoid endless streaming at all. The reading \
-procedure from the host can be:\n\n- Request 64/128/... values or ADC\n- Wait \
-for the reply frame and check for errors", "Display" -> "codemirror", 
-    "Hash" -> "a194dc42-6fc2-48a0-9505-eb3a0c69b7bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "## Notes on Serial Connection\n\n\n<div class=\"text-center \
-w-full\"><svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" \
-viewBox=\"0 0 961.51953125 254.34375\">\n  <!-- svg-source:excalidraw -->\n  \
-\n  <defs>\n    <style class=\"style-fonts\">\n      @font-face {\n        \
-font-family: \"Virgil\";\n        src: \
-url(\"https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-asse\
-ts/Virgil.woff2\");\n      }\n      @font-face {\n        font-family: \
-\"Cascadia\";\n        src: \
-url(\"https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-asse\
-ts/Cascadia.woff2\");\n      }\n      @font-face {\n        font-family: \
-\"Assistant\";\n        src: \
-url(\"https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-asse\
-ts/Assistant-Regular.woff2\");\n      }\n    </style>\n    \n  </defs>\n  <g \
-stroke-linecap=\"round\" transform=\"translate(192.8984375 57.9219970703125) \
-rotate(0 95.041015625 75.49609375)\"><path d=\"M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, \
-0 0, 0 0 M0.13 12.04 C1.74 9.24, 6.3 3.82, 10.63 -0.03 M0.13 12.04 C3.83 \
-8.31, 8.03 4.22, 10.63 -0.03 M0.27 24.08 C6.66 19.41, 11.91 11.13, 21.26 \
--0.07 M0.27 24.08 C7 15.2, 14.28 8.26, 21.26 -0.07 M-0.26 36.88 C10.57 24.34, \
-20.4 11.82, 31.89 -0.1 M-0.26 36.88 C6.86 27.87, 13.03 20.43, 31.89 -0.1 \
-M-0.12 48.92 C18.26 30.94, 32.37 12.7, 42.52 -0.14 M-0.12 48.92 C15.25 29.72, \
-31.89 10.64, 42.52 -0.14 M0.01 60.96 C20.53 38.91, 43.22 12.86, 53.15 -0.17 \
-M0.01 60.96 C14.3 43.73, 29.7 28.62, 53.15 -0.17 M0.14 73 C15.06 55.82, 31.18 \
-39.87, 63.78 -0.21 M0.14 73 C21.32 49.56, 41.43 25.79, 63.78 -0.21 M0.28 \
-85.04 C14.73 67.42, 31.53 46.1, 74.41 -0.24 M0.28 85.04 C16.87 64.27, 34.56 \
-44.96, 74.41 -0.24 M-0.25 97.84 C27.98 66.85, 52.59 35.94, 85.04 -0.28 M-0.25 \
-97.84 C20.94 72.49, 43.31 46.28, 85.04 -0.28 M-0.11 109.88 C34.1 68.48, 68.54 \
-26.38, 95.67 -0.31 M-0.11 109.88 C21.61 84.36, 41.79 60.24, 95.67 -0.31 M0.02 \
-121.92 C39.52 78.01, 81.9 30.39, 106.3 -0.34 M0.02 121.92 C37.23 76.16, 75.04 \
-33.08, 106.3 -0.34 M0.15 133.96 C35.94 88.31, 74.16 47.22, 116.27 0.38 M0.15 \
-133.96 C46.76 82.02, 91.9 29.39, 116.27 0.38 M0.29 146 C35.29 102.9, 70.05 \
-61.94, 126.91 0.34 M0.29 146 C46.37 91.62, 93.62 37.48, 126.91 0.34 M6.32 \
-151.25 C55.47 95.05, 102.17 42.35, 137.54 0.31 M6.32 151.25 C48.25 102.67, \
-90.1 53.77, 137.54 0.31 M16.3 151.97 C56.08 106.67, 97.02 60.61, 148.17 0.27 \
-M16.3 151.97 C55.94 107.99, 95.08 63.66, 148.17 0.27 M26.93 151.93 C71.73 \
-97.83, 119.99 47.45, 158.8 0.24 M26.93 151.93 C54.85 118.59, 81.38 86.79, \
-158.8 0.24 M37.56 151.9 C74.27 111.04, 109.73 68.41, 169.43 0.2 M37.56 151.9 \
-C82.23 101.18, 126.85 49.82, 169.43 0.2 M48.19 151.86 C87.58 107.44, 125.63 \
-62.36, 180.06 0.17 M48.19 151.86 C86.45 106.84, 125.94 61.7, 180.06 0.17 \
-M58.82 151.83 C86.02 117.47, 116.61 81.3, 190.69 0.13 M58.82 151.83 C105.38 \
-98.31, 151.04 45.76, 190.69 0.13 M69.45 151.8 C98.81 119.66, 125.55 90.55, \
-190.82 12.17 M69.45 151.8 C97.1 120.61, 125.76 89.3, 190.82 12.17 M80.08 \
-151.76 C117.01 109.25, 155.66 67.86, 190.3 24.97 M80.08 151.76 C122.78 \
-101.77, 166.41 52.53, 190.3 24.97 M90.71 151.73 C120.15 117.81, 149.97 85.61, \
-190.43 37.01 M90.71 151.73 C118.23 120.14, 145.97 86.67, 190.43 37.01 M101.34 \
-151.69 C133.97 111.68, 169.84 73.13, 190.56 49.05 M101.34 151.69 C132.88 \
-115.31, 162.45 79.46, 190.56 49.05 M111.97 151.66 C132.56 127.89, 152.01 \
-105.06, 190.7 61.09 M111.97 151.66 C139.88 120.26, 167.77 87.34, 190.7 61.09 \
-M122.6 151.62 C141.35 128.15, 161.56 106.4, 190.17 73.89 M122.6 151.62 \
-C145.65 123.83, 170.6 96.13, 190.17 73.89 M133.23 151.59 C149.72 136.55, \
-164.4 118.52, 190.31 85.93 M133.23 151.59 C156.03 125.29, 178.01 99.67, \
-190.31 85.93 M143.86 151.55 C161.11 133.13, 178.05 109.31, 190.44 97.97 \
-M143.86 151.55 C159.5 134.61, 175.66 116.12, 190.44 97.97 M154.49 151.52 \
-C168.47 136.85, 183.96 118.74, 190.57 110.01 M154.49 151.52 C166.85 137.92, \
-177.65 123.35, 190.57 110.01 M165.12 151.49 C173.77 141.7, 181.87 129.89, \
-190.7 122.05 M165.12 151.49 C172.89 144.26, 179.44 136.7, 190.7 122.05 \
-M175.75 151.45 C179.29 147.87, 185.37 138.64, 190.18 134.85 M175.75 151.45 \
-C181.76 146.15, 187.13 140.13, 190.18 134.85 M186.38 151.42 C187.22 150.26, \
-187.76 149.24, 190.32 146.89 M186.38 151.42 C187.49 149.81, 188.79 148.54, \
-190.32 146.89\" stroke=\"#a5d8ff\" stroke-width=\"1\" \
-fill=\"none\"></path><path d=\"M0 0 C44.4 -1.83, 90.06 1.57, 190.08 0 M0 0 \
-C60.34 -0.04, 123.32 0.68, 190.08 0 M190.08 0 C192.09 52.93, 190.7 104.31, \
-190.08 150.99 M190.08 0 C189.39 51.93, 191.25 102.39, 190.08 150.99 M190.08 \
-150.99 C136.38 149.74, 82.81 150.43, 0 150.99 M190.08 150.99 C120.98 151.69, \
-52.33 153.11, 0 150.99 M0 150.99 C-0.56 117.86, 0.89 85.5, 0 0 M0 150.99 \
-C-1.4 117.15, -2.06 82.25, 0 0\" stroke=\"#1971c2\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g stroke-linecap=\"round\" \
-transform=\"translate(191.96484375 86.9471435546875) rotate(0 34.685546875 \
-17.5)\"><path d=\"M1.82 -0.54 L67.38 0.19 L68.55 34.66 L1.27 35.06\" \
-stroke=\"none\" stroke-width=\"0\" fill=\"#ffffff\"></path><path d=\"M0 0 \
-C24.06 -1.88, 47.81 0.6, 69.37 0 M0 0 C27.3 -1.44, 53.67 -0.56, 69.37 0 \
-M69.37 0 C70.41 9.91, 69.79 17.5, 69.37 35 M69.37 0 C69.95 11.25, 68.77 \
-21.09, 69.37 35 M69.37 35 C54.47 34.66, 38.76 34.66, 0 35 M69.37 35 C49.05 \
-35.09, 29.15 35.87, 0 35 M0 35 C-2.14 25.07, 0.68 11.06, 0 0 M0 35 C-0.46 \
-26.01, 1.12 15.87, 0 0\" stroke=\"#1971c2\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g transform=\"translate(205.85040283203125 \
-91.9471435546875) rotate(0 20.79998779296875 12.5)\"><text \
-x=\"20.79998779296875\" y=\"0\" font-family=\"Virgil, Segoe UI Emoji\" \
-font-size=\"20px\" fill=\"#1971c2\" text-anchor=\"middle\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">ADC</text></g><g \
-transform=\"translate(254.33984375 179.0018310546875) rotate(0 \
-34.629966735839844 12.5)\"><text x=\"0\" y=\"0\" font-family=\"Virgil, Segoe \
-UI Emoji\" font-size=\"20px\" fill=\"#1e1e1e\" text-anchor=\"start\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">Arduino</text></g><g \
-stroke-linecap=\"round\" transform=\"translate(599.939453125 \
-56.9901123046875) rotate(0 95.041015625 75.49609375)\"><path d=\"M0 0 C51.45 \
--2.75, 104.8 -2.54, 190.08 0 M0 0 C65.39 -0.4, 131.7 -0.67, 190.08 0 M190.08 \
-0 C187.22 41.66, 188.71 83.4, 190.08 150.99 M190.08 0 C189.93 35.46, 189.18 \
-71.18, 190.08 150.99 M190.08 150.99 C127.81 152.52, 69.71 151.77, 0 150.99 \
-M190.08 150.99 C127.17 152.64, 63 152.65, 0 150.99 M0 150.99 C-1.26 107.18, \
-0.76 62.7, 0 0 M0 150.99 C-0.46 95.35, 1.13 39.36, 0 0\" stroke=\"#2f9e44\" \
-stroke-width=\"2\" fill=\"none\"></path></g><g stroke-linecap=\"round\" \
-transform=\"translate(645.04296875 67.0174560546875) rotate(0 49.212890625 \
-30)\"><path d=\"M0 0 C30.02 -0.48, 63.43 1.41, 98.43 0 M0 0 C36.41 1.49, \
-72.65 -0.13, 98.43 0 M98.43 0 C96.58 11.15, 97.74 22.21, 98.43 60 M98.43 0 \
-C99.38 15.83, 98.99 32.71, 98.43 60 M98.43 60 C74.97 57.66, 51.58 58.1, 0 60 \
-M98.43 60 C75.25 59.07, 53.05 59.79, 0 60 M0 60 C-2.19 40.68, 1.71 25.44, 0 0 \
-M0 60 C-0.2 40, -0.85 18.3, 0 0\" stroke=\"#2f9e44\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g transform=\"translate(650.1259078979492 \
-72.0174560546875) rotate(0 44.12995147705078 25)\"><text \
-x=\"44.12995147705078\" y=\"0\" font-family=\"Virgil, Segoe UI Emoji\" \
-font-size=\"20px\" fill=\"#2f9e44\" text-anchor=\"middle\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">WLJS</text><text \
-x=\"44.12995147705078\" y=\"25\" font-family=\"Virgil, Segoe UI Emoji\" \
-font-size=\"20px\" fill=\"#2f9e44\" text-anchor=\"middle\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">Notebook</text></g><g \
-stroke-linecap=\"round\"><g transform=\"translate(393.93359375 \
-146.33632720249665) rotate(0 97.78125 -0.6454601413627472)\"><path d=\"M0 0 \
-C56.97 -1.03, 111.31 -2.57, 195.56 -1.29 M0 0 C57.83 -1.21, 115.9 -1.04, \
-195.56 -1.29\" stroke=\"#e03131\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g transform=\"translate(393.93359375 \
-146.33632720249665) rotate(0 97.78125 -0.6454601413627472)\"><path \
-d=\"M196.68 -1.92 L182.84 3.79 L182.32 -6.31 L197.54 -0.36\" stroke=\"none\" \
-stroke-width=\"0\" fill=\"#e03131\" fill-rule=\"evenodd\"></path><path \
-d=\"M195.56 -1.29 C192.28 0.65, 187.01 1.6, 181.98 5.08 M195.56 -1.29 C191.77 \
--0.05, 188.21 2.23, 181.98 5.08 M181.98 5.08 C183.06 -0.53, 181.15 -4.92, \
-181.95 -7.6 M181.98 5.08 C181.69 1.16, 181.48 -3.16, 181.95 -7.6 M181.95 -7.6 \
-C185.18 -6.8, 189.74 -2.54, 195.56 -1.29 M181.95 -7.6 C186.65 -5.4, 190.09 \
--3.94, 195.56 -1.29 M195.56 -1.29 C195.56 -1.29, 195.56 -1.29, 195.56 -1.29 \
-M195.56 -1.29 C195.56 -1.29, 195.56 -1.29, 195.56 -1.29\" stroke=\"#e03131\" \
-stroke-width=\"2\" fill=\"none\"></path></g></g><mask></mask><g \
-stroke-linecap=\"round\"><g transform=\"translate(575.646484375 \
-127.1641871802785) rotate(0 -86.67283080320902 0.7772484878365873)\"><path \
-d=\"M0 0 C-48.03 1.13, -99.12 0.72, -173.35 1.55 M0 0 C-36 -1.1, -74.57 0.77, \
--173.35 1.55\" stroke=\"#e03131\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g transform=\"translate(575.646484375 \
-127.1641871802785) rotate(0 -86.67283080320902 0.7772484878365873)\"><path \
-d=\"M-173.72 3.01 L-159.27 -4.44 L-157.83 5.75 L-171.47 2.26\" \
-stroke=\"none\" stroke-width=\"0\" fill=\"#e03131\" \
-fill-rule=\"evenodd\"></path><path d=\"M-173.35 1.55 C-168.68 0.93, -166.36 \
--1.55, -159.83 -4.95 M-173.35 1.55 C-169.85 -0.34, -168.3 -0.56, -159.83 \
--4.95 M-159.83 -4.95 C-159.78 -1.5, -159.62 1.85, -159.68 7.73 M-159.83 -4.95 \
-C-159.3 -1.77, -159.65 2.98, -159.68 7.73 M-159.68 7.73 C-165.82 5.49, \
--171.28 3.61, -173.35 1.55 M-159.68 7.73 C-163.69 4.99, -169.24 3.07, -173.35 \
-1.55 M-173.35 1.55 C-173.35 1.55, -173.35 1.55, -173.35 1.55 M-173.35 1.55 \
-C-173.35 1.55, -173.35 1.55, -173.35 1.55\" stroke=\"#e03131\" \
-stroke-width=\"2\" fill=\"none\"></path></g></g><mask></mask><g \
-transform=\"translate(684.6640625 175.5557861328125) rotate(0 \
-13.04998779296875 12.5)\"><text x=\"0\" y=\"0\" font-family=\"Virgil, Segoe \
-UI Emoji\" font-size=\"20px\" fill=\"#1e1e1e\" text-anchor=\"start\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">PC</text></g><g \
-transform=\"translate(450.9286422729492 77.2510986328125) rotate(0 \
-36.82398223876953 20)\"><text x=\"36.82398223876953\" y=\"0\" \
-font-family=\"Virgil, Segoe UI Emoji\" font-size=\"16px\" fill=\"#1e1e1e\" \
-text-anchor=\"middle\" style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">UART</text><text \
-x=\"36.82398223876953\" y=\"20\" font-family=\"Virgil, Segoe UI Emoji\" \
-font-size=\"16px\" fill=\"#1e1e1e\" text-anchor=\"middle\" \
-style=\"white-space: pre;\" direction=\"ltr\" \
-dominant-baseline=\"text-before-edge\">over USB</text></g><g \
-stroke-linecap=\"round\"><g transform=\"translate(191.82421875 \
-105.5440673828125) rotate(0 -29.091796875 -0.123046875)\"><path d=\"M0 0 \
-C-18.81 1.87, -35.9 0.4, -58.18 -0.25 M0 0 C-19.22 -0.42, -38.93 -0.16, \
--58.18 -0.25\" stroke=\"#1971c2\" stroke-width=\"2\" \
-fill=\"none\"></path></g><g transform=\"translate(191.82421875 \
-105.5440673828125) rotate(0 -29.091796875 -0.123046875)\"><path d=\"M-58.68 \
--8.03 C-57.23 -8.1, -55.3 -7.3, -54.01 -6.38 C-52.71 -5.45, -51.67 -3.97, \
--50.9 -2.5 C-50.14 -1.03, -48.76 0.76, -49.4 2.44 C-50.04 4.11, -52.81 6.79, \
--54.75 7.55 C-56.68 8.3, -59.22 7.51, -61 6.95 C-62.77 6.39, -64.37 5.38, \
--65.41 4.19 C-66.45 3.01, -67.43 1.49, -67.23 -0.16 C-67.03 -1.81, -65.85 \
--4.4, -64.22 -5.7 C-62.58 -6.99, -58.59 -7.4, -57.42 -7.93 C-56.24 -8.46, \
--56.92 -8.88, -57.17 -8.88 M-63.2 -6.94 C-61.52 -7.69, -57.69 -8.47, -55.58 \
--8.23 C-53.47 -7.98, -51.39 -7.03, -50.54 -5.46 C-49.69 -3.88, -50.08 -0.44, \
--50.48 1.23 C-50.88 2.9, -51.87 3.59, -52.94 4.55 C-54.01 5.51, -55.05 6.46, \
--56.91 6.99 C-58.77 7.52, -62.62 8.73, -64.1 7.72 C-65.58 6.71, -65.5 2.66, \
--65.8 0.94 C-66.09 -0.78, -66.62 -0.97, -65.87 -2.6 C-65.12 -4.24, -61.67 \
--8.13, -61.3 -8.86 C-60.92 -9.6, -63.39 -7.5, -63.63 -7.01\" stroke=\"none\" \
-stroke-width=\"0\" fill=\"#1971c2\"></path></g></g><mask></mask><g \
-stroke-linecap=\"round\" transform=\"translate(10 10) rotate(0 470.759765625 \
-117.171875)\"><path d=\"M0 0 C338.58 0.45, 677.08 0.58, 941.52 0 M0 0 C355.98 \
-2.91, 711.59 2.82, 941.52 0 M941.52 0 C940.07 59.92, 939.17 121.59, 941.52 \
-234.34 M941.52 0 C943.35 59.96, 942.52 121, 941.52 234.34 M941.52 234.34 \
-C615.32 234.46, 288.34 234.63, 0 234.34 M941.52 234.34 C662.83 231.57, 384.09 \
-231.25, 0 234.34 M0 234.34 C2.01 148.61, 1.88 62.05, 0 0 M0 234.34 C-0.86 \
-148.71, -0.78 64.56, 0 0\" stroke=\"transparent\" stroke-width=\"2\" \
-fill=\"none\"></path></g></svg></div>\n\n\nIt is important to note that the \
-default UART interface used on Arduino boards ==does not guarantee the \
-delivery of data== and has a certain error rate. This means that if you send \
-structured data, it might easily be corrupted when you continuously stream \
-it.\n\nJust relying on\n\n<pre class=\"mt-2\">\nuint16_t v = \
-analogRead(A0);\nSerial.write(v & 0xFF);\nSerial.write((v >> 8) & \
-0xFF);</pre>\n\nis a huge mistake \:26a0\:fe0f<br /><br />\n\n### Basic Frame \
-Protocol\n\nHere we draft a very simple protocol, which uses control bits to \
-mark the start/end of a message and a payload:\n\n<p ></p>\n\n| Marker        \
- | Description      |\n|----------------|------------------|\n| `11000000`    \
- | Start marker     |\n| `0100XXXX`     | Payload (4-bit)  |\n| `........`    \
- |                  |\n| `00000000`     | End marker       |\n\nAnother \
-consideration is to avoid endless streaming at all. The reading procedure \
-from the host can be:\n\n- Request 64/128/... values or ADC\n- Wait for the \
-reply frame and check for errors", "Display" -> "markdown", 
-    "Hash" -> "5ef979ae-8859-4e18-8a1a-777e90adcdf1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n<br/>\n\n## Set up the board\n\nHere we use an Arduino \
-Uno/Duemilanove/Nano-compatible board.\n\n- Install the Arduino IDE.\n- Load \
-the following sketch.", "Display" -> "codemirror", 
-    "Hash" -> "84908d0d-d654-4447-9a28-3bb9378f7859", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "<br />\n\n## Set up the board\n\nHere we use an Arduino \
-Uno/Duemilanove/Nano-compatible board.\n\n- Install the Arduino IDE.\n- Load \
-the following sketch.", "Display" -> "markdown", 
-    "Hash" -> "a24c5dd8-9817-4594-8997-e56c9c88ef63", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "adc.ino\n\nint requestedSamples = -1;\n\nvoid setup() {\n  \
-Serial.begin(115200);\n  while (!Serial) {}\n}\n\nvoid loop() {\n  if \
-(requestedSamples == 0) {\n     requestedSamples = -1;\n     \
-Serial.write((uint8_t)(0x0)); // Start\n     return;\n  }\n  \n  if \
-(requestedSamples == -1 && Serial.available() >= 2) {\n    uint8_t c0 = \
-Serial.read(), c1 = Serial.read();\n    requestedSamples = (int)c0 + (int)(c1 \
-<< 8);\n    while (Serial.available() > 0) (void)Serial.read(); // clean up \
-garbage\n    Serial.write((uint8_t)(0xC0)); // End\n  }\n  \n  if \
-(requestedSamples == -1) return;\n\n  uint16_t v = analogRead(A0);\n  \n  \
-Serial.write((uint8_t)(((v >> 0) & 0xF)  | 0x40));\n  \
-Serial.write((uint8_t)(((v >> 4) & 0xF)  | 0x40));\n  \
-Serial.write((uint8_t)(((v >> 8) & 0xF)  | 0x40));\n  \
-Serial.write((uint8_t)(((v >> 12) & 0xF) | 0x40));\n  \n  \
-requestedSamples--;\n}", "Display" -> "codemirror", 
-    "Hash" -> "d4389753-ce27-4ae2-86d1-16c7cb9a35ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "bc7f92ef-0cbb-4860-96b1-3348f140bca1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n## First contact\n1. Connect the board\n2. Find a path \
-via Arduino IDE or device inspector, it is usually something like\n    - \
-__COM__ X *Windows*\n    - __/dev/cu.usbserial__... *Unix*\n4. Evaluate the \
-cell below", "Display" -> "codemirror", 
-    "Hash" -> "bfa61433-3883-4f7a-bf4c-4b943ac91cca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "## First contact\n1. Connect the board\n2. Find a path via \
-Arduino IDE or device inspector, it is usually something like\n    - __COM__ \
-X *Windows*\n    - __/dev/cu.usbserial__... *Unix*\n4. Evaluate the cell \
-below", "Display" -> "markdown", "Hash" -> 
-     "ac72daf2-0886-4fa8-8649-6abe82e4bb45", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "path = \"/dev/cu.usbserial-140\";\n\nPanel[{\n  \
-Refresh[If[DeviceOpenQ[dev]//TrueQ, Green, Red], 1],\n  Button[\"Connect\", \
-Print[\"Connecting...\"]; dev = DeviceOpen[\"Serial\", {path, \
-\"BaudRate\"->115200}]],\n  Button[\"Close\", dev = DeviceClose[dev]]\n} // \
-Row, Style[\"Control Center\", 11, FontFamily->\"system-ui\"]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7f387e32-005f-46c6-aaf3-a95a133fa4d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nNow we need a little helper function to request and \
-decode the frames of data:", "Display" -> "codemirror", 
-    "Hash" -> "050f2e21-7473-402e-8fbf-0f62668bbadc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "Now we need a little helper function to request and decode \
-the frames of data:", "Display" -> "markdown", 
-    "Hash" -> "b79993e9-e3f1-44db-9752-85d697732217", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "readDevice[dev_, packetSize_:64] := Module[{},\n  \
-If[!(DeviceOpenQ[dev]//TrueQ), Return[$Failed, Module]];\n  \n  \
-DeviceReadBuffer[dev];\n  DeviceWrite[dev, ExportByteArray[packetSize, \
-\"UnsignedInteger16\"]//Normal];\n  With[{result = \
-TimeConstrained[DeviceReadBuffer[dev, packetSize 4 + 2], 0.5, $Failed]},\n  \
-\n    If[FailureQ[result],   Return[$Failed, Module]];\n    If[result[[1]] != \
-192, Return[$Failed, Module]];\n    If[result[[-1]] != 0,  Return[$Failed, \
-Module]];\n\n    With[{payload = result[[2;;-2]]},\n      If[Sum[BitGet[b, \
-6], {b, payload}] != packetSize 4, Return[$Failed, Module]];\n    \n      \
-Map[Function[p,\n        BitClear[p[[1]], 6] + BitShiftLeft[BitClear[p[[2]], \
-6], 4] + BitShiftLeft[BitClear[p[[3]],6], 8] + \
-BitShiftLeft[BitClear[p[[4]],6], 12]\n      ], Partition[payload, 4]]\n    \
-]\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "1b5813d5-0a94-4af8-b6f8-4fc8c8b423c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nLet's read our first frame of data:\n\n:::warning\nDo \
-not use large frame buffers. For my setup anything bigger than `512` casues \
-an overflow and complete data loss.\n:::", "Display" -> "codemirror", 
-    "Hash" -> "05144ecf-78c0-4d4e-a336-e05efce67654", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "Let's read our first frame of data:\n\n:::warning\nDo not use \
-large frame buffers. For my setup anything bigger than `512` casues an \
-overflow and complete data loss.\n:::", "Display" -> "markdown", 
-    "Hash" -> "86ab51cc-4ec3-40e9-a84f-a8b5978d25b1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "readDevice[dev, 128] // ListLinePlot", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a536ae13-e856-4338-9282-d119f8b604db", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"6377d64f-10b9-4bb8-8f96-fe24a9672540\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxmbm\
-6eYmaTpGhokWeqaJCVZ6FqkWZrppqUamSRampkbmZoYAAB90BUq\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e7de8704-00b5-45a4-babe-16dd61101461", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nWhat you see is my screen's refresh rate overlayed by a \
-background electrical noise captured by a photodiode transimpedance amplifier \
-built on *LM358P*.\n\n:::note\nThe sampling rate may vary and for buffer \
-sizes 512 is `~2800 samples/sec`\n:::\n\nHere is a dynamic version:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5b0a4e03-9a08-4797-a22a-776156a1a471", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "What you see is my screen's refresh rate overlayed by a \
-background electrical noise captured by a photodiode transimpedance amplifier \
-built on *LM358P*.\n\n:::note\nThe sampling rate may vary and for buffer \
-sizes 512 is `~2800 samples/sec`\n:::\n\nHere is a dynamic version:", 
-    "Display" -> "markdown", "Hash" -> 
-     "598d6e3e-0b31-4e65-95f4-0e75fa887a9c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "Refresh[ListLinePlot[With[{d = readDevice[dev, 64]}, \
-If[!FailureQ[d],\n  d, Table[0, {64}]\n]], PlotRange->{{1,64}, {0,1025}}], \
-0.1]", "Display" -> "codemirror", "Hash" -> 
-     "dda84ebe-37b4-4bba-b7bd-f206510c57de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nWe defined plot range and return zeros in a case of a \
-failure on purpose to benifit JIT features used in `Refresh` expression. This \
-keeps the input data consistens and allows to update the graph smoothly.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1ad2e4cb-2dc2-4cd4-8db6-6fcff1968b4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "We defined plot range and return zeros in a case of a failure \
-on purpose to benifit JIT features used in `Refresh` expression. This keeps \
-the input data consistens and allows to update the graph smoothly.", 
-    "Display" -> "markdown", "Hash" -> 
-     "0f7123c5-08e5-4746-97dc-4d6c277a09dd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n## ArduinoScope\n*A toy-like oscilloscope*\n\nNothing \
-can stops us from performing a live Fourier transformation and accumulate \
-longer times \|01f642\n\nWe start from an automatic accumulating function, \
-which runs in the background:", "Display" -> "codemirror", 
-    "Hash" -> "3d8482cf-2b0a-4289-955e-7394dc5f5c62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "## ArduinoScope\n*A toy-like oscilloscope*\n\nNothing can \
-stops us from performing a live Fourier transformation and accumulate longer \
-times \|01f642\n\nWe start from an automatic accumulating function, which \
-runs in the background:", "Display" -> "markdown", 
-    "Hash" -> "547d242e-1b1b-45c4-ae1e-df7f4a625da5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "buffer = Table[0, {2048}];\naccumulate[dev_] := With[{data = \
-readDevice[dev, 128]},\n  If[!FailureQ[data],\n    buffer = \
-RotateLeft[buffer, 128];\n    buffer[[2048 - 127 ;;]] = data;\n  \
-];\n];\n\nTaskRemove[task] // Quiet;\ntask = SetInterval[\n  \
-accumulate[dev];\n  EventFire[\"scopeUpdate\", buffer];\n, Quantity[100, \
-\"Milliseconds\"]];", "Display" -> "codemirror", 
-    "Hash" -> "7f5f359e-cf3d-4aee-a3f1-0621f962938e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nTo stop the task:", "Display" -> "codemirror", 
-    "Hash" -> "deeed660-94ea-460b-a5a3-712aa50c6a2a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "To stop the task:", "Display" -> "markdown", 
-    "Hash" -> "805f1cf1-c12a-4dda-81a2-ba8284a7923a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "TaskRemove[task] // Quiet;", "Display" -> "codemirror", 
-    "Hash" -> "8eb11e6b-6f54-4fc9-8d64-48f1371203ca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nThis procedure also fires an event object *scopeUpdate* \
-to which we can subscribe", "Display" -> "codemirror", 
-    "Hash" -> "eb802787-05bd-4fee-bf76-6ff13c63875a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "This procedure also fires an event object *scopeUpdate* to \
-which we can subscribe", "Display" -> "markdown", 
-    "Hash" -> "33c35e6b-a59b-45d5-a50c-050229ccc483", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "89f2d37a-9d28-4300-8f20-94834d86ebde", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n### Graph widget\nLet's design our first widget, that \
-takes care of visualizing the data.", "Display" -> "codemirror", 
-    "Hash" -> "73947c50-2572-4fbc-917c-842ff17cc387", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "### Graph widget\nLet's design our first widget, that takes \
-care of visualizing the data.", "Display" -> "markdown", 
-    "Hash" -> "8a980b6d-5938-4acf-802c-e5a25c7a008f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "With[{\n  event = EventClone[\"scopeUpdate\"],\n  data = \
-Unique[],\n  avg = Unique[]\n},\n  data = Table[{i,0}, {i,2048}];\n  avg = \
-Table[{i,0}, {i,2048}];\n  \n  EventHandler[ResultCell[], {\"Destroy\" -> \
-Function[Null,\n    EventRemove[event];\n  ]}];\n\n  EventHandler[event, \
-Function[d,\n    data = MapIndexed[Function[{val, i}, {i[[1]], val}], d];\n   \
- avg = MapIndexed[Function[{val, i}, {i[[1]], val}], MovingAverage[d, 16]];\n \
- ]];\n\n  Legended[Graphics[{\n    (*VB[*)(RGBColor[0.368417, 0.506779, \
-0.709798])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQ\
-CHJ3cs7PyS8qKpg26anKlOv2RYbTXk7vMH9gX3S8ZYb3qm3P7AF5kRs6\"*)(*]VB*), \
-Line[data // Offload], \n    (*VB[*)(RGBColor[0.880722, 0.611041, \
-0.142051])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQ\
-CHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD\"*)(*]VB*), Line[avg \
-// Offload]\n  }, \n    Frame->True, Axes->True,\n    PlotRange->{{1,2048}, \
-{0,1024}}, AspectRatio->0.5\n  ], SwatchLegend[{(*VB[*)(RGBColor[0.368417, \
-0.506779, \
-0.709798])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQ\
-CHJ3cs7PyS8qKpg26anKlOv2RYbTXk7vMH9gX3S8ZYb3qm3P7AF5kRs6\"*)(*]VB*), \
-(*VB[*)(RGBColor[0.880722, 0.611041, \
-0.142051])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQ\
-CHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD\"*)(*]VB*)}, \
-{\"Actual\", \"Moving Avg. (16)\"}]]\n]", "Display" -> "codemirror", 
-    "Hash" -> "3d142f5e-c728-4deb-b4bf-86e2fc8829ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nWe did not use `Module` here since WL`s automatic \
-garbage collector can mistakenly purge the symbols.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dc5fa98f-f1a4-4c4b-8e69-8b6c4e853fcd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "We did not use `Module` here since WL`s automatic garbage \
-collector can mistakenly purge the symbols.", "Display" -> "markdown", 
-    "Hash" -> "e6a8b263-483f-43e5-9213-23946b1bfbaa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\n### Fourier Transform\nHere is another example with a \
-live FFT window", "Display" -> "codemirror", 
-    "Hash" -> "1cd4b155-a2d2-4b2f-8260-70bab11d35bf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> 
-     "### Fourier Transform\nHere is another example with a live FFT window", 
-    "Display" -> "markdown", "Hash" -> 
-     "022c34e5-b667-45a8-90e8-d79ff49765e6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "With[{\n  event = EventClone[\"scopeUpdate\"],\n  data = \
-Unique[]\n},\n  data = Table[{i,0}, {i,127}];\n  \n  \
-EventHandler[ResultCell[], {\"Destroy\" -> Function[Null,\n    \
-EventRemove[event];\n  ]}];\n\n  EventHandler[event, Function[d,\n    data = \
-MapIndexed[Function[{val, i}, {i[[1]], val}], \n      \
-Take[Drop[Fourier[Take[d, -256]]//Abs,1], 127]\n      (* drop DC and the \
-conjugated half *)\n    ];\n  ]];\n\n  Graphics[{\n    ColorData[97][3], \
-Line[data // Offload]\n  }, \n    Frame->True, Axes->True,\n    \
-PlotRange->{{1,127}, {0,1024}}, AspectRatio->0.5\n  ]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "208797a7-4618-4686-8eda-9b8778ef42ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> ".md\nOne can project the output cells using the right-side \
-menu to separate windows for the \
-convenience.\n\n\n![](/attachments/Screenshot%202025-08-25%20at%2013.07.10-42\
-1.png)\n", "Display" -> "codemirror", 
-    "Hash" -> "84e97f5d-caf6-489d-bb36-7c3016354402", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>, 
-   <|"Data" -> "One can project the output cells using the right-side menu to \
-separate windows for the \
-convenience.\n\n\n![](/attachments/Screenshot%202025-08-25%20at%2013.07.10-42\
-1.png)", "Display" -> "markdown", "Hash" -> 
-     "c4820021-d731-4b87-9571-82674fbd5de4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "3b2f2a37-abf2-4f46-85aa-9204417bf96b"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Arduino AnalogRead
+
+In this example, we stream ADC levels from an Arduino-compatible board using a serial interface. One can use it as an external sensor to probe something and handle data processing and visualization using the Wolfram Language library:
+
+
+![](/attachments/Screenshot%202025-08-25%20at%2011.01.50-fa1.png)
+
+
+
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Arduino AnalogRead
+
+In this example, we stream ADC levels from an Arduino-compatible board using a serial interface. One can use it as an external sensor to probe something and handle data processing and visualization using the Wolfram Language library:
+
+
+![](/attachments/Screenshot%202025-08-25%20at%2011.01.50-fa1.png)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Notes on Serial Connection
+
+!![{"type":"rectangle","version":160,"versionNonce":737174800,"isDeleted":false,"id":"m2ml0uCwHUS0v4drKtjRW","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":280.5390625,"y":179.0234375,"strokeColor":"#1971c2","backgroundColor":"#a5d8ff","width":190.08203125,"height":150.9921875,"seed":109938672,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[{"id":"8Gy9beQMLdxNua3oV1IJJ","type":"arrow"},{"id":"22sXVjobv2Qs6rO1QBzv_","type":"arrow"}],"updated":1756106703117,"link":null,"locked":false},{"type":"rectangle","version":102,"versionNonce":1272035600,"isDeleted":false,"id":"SLbK_fGITp3BUuETbeV_t","fillStyle":"solid","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":279.60546875,"y":208.048583984375,"strokeColor":"#1971c2","backgroundColor":"#ffffff","width":69.37109375,"height":35,"seed":1428590864,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[{"type":"text","id":"NWmgZMvttrBrcGDsyjYnP"},{"id":"JG4p3wwRoW6HWAJxsKhAg","type":"arrow"}],"updated":1756106787810,"link":null,"locked":false},{"type":"text","version":4,"versionNonce":1261737968,"isDeleted":false,"id":"NWmgZMvttrBrcGDsyjYnP","fillStyle":"solid","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":293.49102783203125,"y":213.048583984375,"strokeColor":"#1971c2","backgroundColor":"transparent","width":41.5999755859375,"height":25,"seed":2103757072,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106612985,"link":null,"locked":false,"fontSize":20,"fontFamily":1,"text":"ADC","textAlign":"center","verticalAlign":"middle","containerId":"SLbK_fGITp3BUuETbeV_t","originalText":"ADC","lineHeight":1.25,"baseline":18},{"type":"text","version":91,"versionNonce":146137872,"isDeleted":false,"id":"S5GXM1QRoygc3mEIyTFuN","fillStyle":"solid","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":341.98046875,"y":300.103271484375,"strokeColor":"#1e1e1e","backgroundColor":"transparent","width":69.25993347167969,"height":25,"seed":302210032,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106624507,"link":null,"locked":false,"fontSize":20,"fontFamily":1,"text":"Arduino","textAlign":"left","verticalAlign":"top","containerId":null,"originalText":"Arduino","lineHeight":1.25,"baseline":18},{"type":"rectangle","version":383,"versionNonce":1306833168,"isDeleted":false,"id":"9JPYgosQm87sCjrL1ZklR","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":687.580078125,"y":178.091552734375,"strokeColor":"#2f9e44","backgroundColor":"transparent","width":190.08203125,"height":150.9921875,"seed":1294487312,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[{"id":"8Gy9beQMLdxNua3oV1IJJ","type":"arrow"},{"id":"22sXVjobv2Qs6rO1QBzv_","type":"arrow"}],"updated":1756106799209,"link":null,"locked":false},{"type":"rectangle","version":124,"versionNonce":184618480,"isDeleted":false,"id":"9qyHERwy3znsIHWR3yOjQ","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":732.68359375,"y":188.118896484375,"strokeColor":"#2f9e44","backgroundColor":"transparent","width":98.42578125,"height":60,"seed":505545712,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[{"type":"text","id":"fsaClo9H1WHK33yVZ7Q8t"}],"updated":1756106753111,"link":null,"locked":false},{"type":"text","version":88,"versionNonce":898224112,"isDeleted":false,"id":"fsaClo9H1WHK33yVZ7Q8t","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":737.7665328979492,"y":193.118896484375,"strokeColor":"#2f9e44","backgroundColor":"transparent","width":88.25990295410156,"height":50,"seed":794749936,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106753111,"link":null,"locked":false,"fontSize":20,"fontFamily":1,"text":"WLJS\nNotebook","textAlign":"center","verticalAlign":"middle","containerId":"9qyHERwy3znsIHWR3yOjQ","originalText":"WLJS\nNotebook","lineHeight":1.25,"baseline":43},{"type":"arrow","version":178,"versionNonce":503843824,"isDeleted":false,"id":"8Gy9beQMLdxNua3oV1IJJ","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":481.57421875,"y":267.43776763218415,"strokeColor":"#e03131","backgroundColor":"transparent","width":195.5625,"height":1.2909202827254944,"seed":1803921680,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106753111,"link":null,"locked":false,"startBinding":{"elementId":"m2ml0uCwHUS0v4drKtjRW","focus":0.1790005860016582,"gap":10.953125},"endBinding":{"elementId":"9JPYgosQm87sCjrL1ZklR","focus":-0.15583751799481485,"gap":10.443359375},"lastCommittedPoint":null,"startArrowhead":null,"endArrowhead":"triangle","points":[[0,0],[195.5625,-1.2909202827254944]]},{"type":"arrow","version":531,"versionNonce":1156349424,"isDeleted":false,"id":"22sXVjobv2Qs6rO1QBzv_","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":663.287109375,"y":248.265627609966,"strokeColor":"#e03131","backgroundColor":"transparent","width":173.34566160641805,"height":1.5544969756731746,"seed":1241814000,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106763034,"link":null,"locked":false,"startBinding":{"elementId":"9JPYgosQm87sCjrL1ZklR","focus":0.08372357828404496,"gap":24.29296875},"endBinding":{"elementId":"m2ml0uCwHUS0v4drKtjRW","focus":-0.04811965641858985,"gap":19.320354018581952},"lastCommittedPoint":null,"startArrowhead":null,"endArrowhead":"triangle","points":[[0,0],[-173.34566160641805,1.5544969756731746]]},{"type":"text","version":168,"versionNonce":1437225456,"isDeleted":false,"id":"u6cgoV7RlgUSqimT-2JeH","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":772.3046875,"y":296.6572265625,"strokeColor":"#1e1e1e","backgroundColor":"transparent","width":26.0999755859375,"height":25,"seed":947629840,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106753111,"link":null,"locked":false,"fontSize":20,"fontFamily":1,"text":"PC","textAlign":"left","verticalAlign":"top","containerId":null,"originalText":"PC","lineHeight":1.25,"baseline":18},{"type":"text","version":163,"versionNonce":1387812336,"isDeleted":false,"id":"IGvWMcwexSze2CIGfLO0d","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":538.5692672729492,"y":198.3525390625,"strokeColor":"#1e1e1e","backgroundColor":"transparent","width":73.64796447753906,"height":40,"seed":364788496,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[{"id":"22sXVjobv2Qs6rO1QBzv_","type":"arrow"}],"updated":1756106758995,"link":null,"locked":false,"fontSize":16,"fontFamily":1,"text":"UART\nover USB","textAlign":"center","verticalAlign":"top","containerId":null,"originalText":"UART\nover USB","lineHeight":1.25,"baseline":34},{"type":"line","version":57,"versionNonce":165097968,"isDeleted":true,"id":"JEf4gi4h_31uf2Ninx7Gb","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":279.265625,"y":223.8876953125,"strokeColor":"#1971c2","backgroundColor":"transparent","width":61.15625,"height":0.07421875,"seed":511768336,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106783131,"link":null,"locked":false,"startBinding":null,"endBinding":null,"lastCommittedPoint":null,"startArrowhead":null,"endArrowhead":null,"points":[[0,0],[-61.15625,-0.07421875]]},{"type":"arrow","version":55,"versionNonce":153395696,"isDeleted":false,"id":"JG4p3wwRoW6HWAJxsKhAg","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":279.46484375,"y":226.6455078125,"strokeColor":"#1971c2","backgroundColor":"transparent","width":58.18359375,"height":0.24609375,"seed":1039889392,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106790516,"link":null,"locked":false,"startBinding":{"elementId":"SLbK_fGITp3BUuETbeV_t","focus":-0.07050748396002894,"gap":1},"endBinding":null,"lastCommittedPoint":null,"startArrowhead":null,"endArrowhead":"dot","points":[[0,0],[-58.18359375,-0.24609375]]},{"type":"rectangle","version":129,"versionNonce":1815947760,"isDeleted":false,"id":"X0gvXCNRCNU0VusGuSzlU","fillStyle":"hachure","strokeWidth":2,"strokeStyle":"solid","roughness":1,"opacity":100,"angle":0,"x":97.640625,"y":131.1014404296875,"strokeColor":"transparent","backgroundColor":"transparent","width":941.51953125,"height":234.34375,"seed":1200368112,"groupIds":[],"frameId":null,"roundness":null,"boundElements":[],"updated":1756106813296,"link":null,"locked":false}]
+
+It is important to note that the default UART interface used on Arduino boards ==does not guarantee the delivery of data== and has a certain error rate. This means that if you send structured data, it might easily be corrupted when you continuously stream it.
+
+Just relying on
+
+<pre class="mt-2">
+uint16_t v = analogRead(A0);
+Serial.write(v & 0xFF);
+Serial.write((v >> 8) & 0xFF);
+</pre>
+
+is a huge mistake ⚠️
+
+<br/><br/>
+
+### Basic Frame Protocol
+
+Here we draft a very simple protocol, which uses control bits to mark the start/end of a message and a payload:
+
+<p></p>
+
+| Marker         | Description      |
+|----------------|------------------|
+| `11000000`     | Start marker     |
+| `0100XXXX`     | Payload (4-bit)  |
+| `........`     |                  |
+| `00000000`     | End marker       |
+
+Another consideration is to avoid endless streaming at all. The reading procedure from the host can be:
+
+- Request 64/128/... values or ADC
+- Wait for the reply frame and check for errors
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Notes on Serial Connection
+
+
+<div class="text-center w-full"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 961.51953125 254.34375">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style class="style-fonts">
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-assets/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-assets/Cascadia.woff2");
+      }
+      @font-face {
+        font-family: "Assistant";
+        src: url("https://unpkg.com/@excalidraw/excalidraw@undefined/dist/excalidraw-assets/Assistant-Regular.woff2");
+      }
+    </style>
+    
+  </defs>
+  <g stroke-linecap="round" transform="translate(192.8984375 57.9219970703125) rotate(0 95.041015625 75.49609375)"><path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0 M0.13 12.04 C1.74 9.24, 6.3 3.82, 10.63 -0.03 M0.13 12.04 C3.83 8.31, 8.03 4.22, 10.63 -0.03 M0.27 24.08 C6.66 19.41, 11.91 11.13, 21.26 -0.07 M0.27 24.08 C7 15.2, 14.28 8.26, 21.26 -0.07 M-0.26 36.88 C10.57 24.34, 20.4 11.82, 31.89 -0.1 M-0.26 36.88 C6.86 27.87, 13.03 20.43, 31.89 -0.1 M-0.12 48.92 C18.26 30.94, 32.37 12.7, 42.52 -0.14 M-0.12 48.92 C15.25 29.72, 31.89 10.64, 42.52 -0.14 M0.01 60.96 C20.53 38.91, 43.22 12.86, 53.15 -0.17 M0.01 60.96 C14.3 43.73, 29.7 28.62, 53.15 -0.17 M0.14 73 C15.06 55.82, 31.18 39.87, 63.78 -0.21 M0.14 73 C21.32 49.56, 41.43 25.79, 63.78 -0.21 M0.28 85.04 C14.73 67.42, 31.53 46.1, 74.41 -0.24 M0.28 85.04 C16.87 64.27, 34.56 44.96, 74.41 -0.24 M-0.25 97.84 C27.98 66.85, 52.59 35.94, 85.04 -0.28 M-0.25 97.84 C20.94 72.49, 43.31 46.28, 85.04 -0.28 M-0.11 109.88 C34.1 68.48, 68.54 26.38, 95.67 -0.31 M-0.11 109.88 C21.61 84.36, 41.79 60.24, 95.67 -0.31 M0.02 121.92 C39.52 78.01, 81.9 30.39, 106.3 -0.34 M0.02 121.92 C37.23 76.16, 75.04 33.08, 106.3 -0.34 M0.15 133.96 C35.94 88.31, 74.16 47.22, 116.27 0.38 M0.15 133.96 C46.76 82.02, 91.9 29.39, 116.27 0.38 M0.29 146 C35.29 102.9, 70.05 61.94, 126.91 0.34 M0.29 146 C46.37 91.62, 93.62 37.48, 126.91 0.34 M6.32 151.25 C55.47 95.05, 102.17 42.35, 137.54 0.31 M6.32 151.25 C48.25 102.67, 90.1 53.77, 137.54 0.31 M16.3 151.97 C56.08 106.67, 97.02 60.61, 148.17 0.27 M16.3 151.97 C55.94 107.99, 95.08 63.66, 148.17 0.27 M26.93 151.93 C71.73 97.83, 119.99 47.45, 158.8 0.24 M26.93 151.93 C54.85 118.59, 81.38 86.79, 158.8 0.24 M37.56 151.9 C74.27 111.04, 109.73 68.41, 169.43 0.2 M37.56 151.9 C82.23 101.18, 126.85 49.82, 169.43 0.2 M48.19 151.86 C87.58 107.44, 125.63 62.36, 180.06 0.17 M48.19 151.86 C86.45 106.84, 125.94 61.7, 180.06 0.17 M58.82 151.83 C86.02 117.47, 116.61 81.3, 190.69 0.13 M58.82 151.83 C105.38 98.31, 151.04 45.76, 190.69 0.13 M69.45 151.8 C98.81 119.66, 125.55 90.55, 190.82 12.17 M69.45 151.8 C97.1 120.61, 125.76 89.3, 190.82 12.17 M80.08 151.76 C117.01 109.25, 155.66 67.86, 190.3 24.97 M80.08 151.76 C122.78 101.77, 166.41 52.53, 190.3 24.97 M90.71 151.73 C120.15 117.81, 149.97 85.61, 190.43 37.01 M90.71 151.73 C118.23 120.14, 145.97 86.67, 190.43 37.01 M101.34 151.69 C133.97 111.68, 169.84 73.13, 190.56 49.05 M101.34 151.69 C132.88 115.31, 162.45 79.46, 190.56 49.05 M111.97 151.66 C132.56 127.89, 152.01 105.06, 190.7 61.09 M111.97 151.66 C139.88 120.26, 167.77 87.34, 190.7 61.09 M122.6 151.62 C141.35 128.15, 161.56 106.4, 190.17 73.89 M122.6 151.62 C145.65 123.83, 170.6 96.13, 190.17 73.89 M133.23 151.59 C149.72 136.55, 164.4 118.52, 190.31 85.93 M133.23 151.59 C156.03 125.29, 178.01 99.67, 190.31 85.93 M143.86 151.55 C161.11 133.13, 178.05 109.31, 190.44 97.97 M143.86 151.55 C159.5 134.61, 175.66 116.12, 190.44 97.97 M154.49 151.52 C168.47 136.85, 183.96 118.74, 190.57 110.01 M154.49 151.52 C166.85 137.92, 177.65 123.35, 190.57 110.01 M165.12 151.49 C173.77 141.7, 181.87 129.89, 190.7 122.05 M165.12 151.49 C172.89 144.26, 179.44 136.7, 190.7 122.05 M175.75 151.45 C179.29 147.87, 185.37 138.64, 190.18 134.85 M175.75 151.45 C181.76 146.15, 187.13 140.13, 190.18 134.85 M186.38 151.42 C187.22 150.26, 187.76 149.24, 190.32 146.89 M186.38 151.42 C187.49 149.81, 188.79 148.54, 190.32 146.89" stroke="#a5d8ff" stroke-width="1" fill="none"></path><path d="M0 0 C44.4 -1.83, 90.06 1.57, 190.08 0 M0 0 C60.34 -0.04, 123.32 0.68, 190.08 0 M190.08 0 C192.09 52.93, 190.7 104.31, 190.08 150.99 M190.08 0 C189.39 51.93, 191.25 102.39, 190.08 150.99 M190.08 150.99 C136.38 149.74, 82.81 150.43, 0 150.99 M190.08 150.99 C120.98 151.69, 52.33 153.11, 0 150.99 M0 150.99 C-0.56 117.86, 0.89 85.5, 0 0 M0 150.99 C-1.4 117.15, -2.06 82.25, 0 0" stroke="#1971c2" stroke-width="2" fill="none"></path></g><g stroke-linecap="round" transform="translate(191.96484375 86.9471435546875) rotate(0 34.685546875 17.5)"><path d="M1.82 -0.54 L67.38 0.19 L68.55 34.66 L1.27 35.06" stroke="none" stroke-width="0" fill="#ffffff"></path><path d="M0 0 C24.06 -1.88, 47.81 0.6, 69.37 0 M0 0 C27.3 -1.44, 53.67 -0.56, 69.37 0 M69.37 0 C70.41 9.91, 69.79 17.5, 69.37 35 M69.37 0 C69.95 11.25, 68.77 21.09, 69.37 35 M69.37 35 C54.47 34.66, 38.76 34.66, 0 35 M69.37 35 C49.05 35.09, 29.15 35.87, 0 35 M0 35 C-2.14 25.07, 0.68 11.06, 0 0 M0 35 C-0.46 26.01, 1.12 15.87, 0 0" stroke="#1971c2" stroke-width="2" fill="none"></path></g><g transform="translate(205.85040283203125 91.9471435546875) rotate(0 20.79998779296875 12.5)"><text x="20.79998779296875" y="0" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#1971c2" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">ADC</text></g><g transform="translate(254.33984375 179.0018310546875) rotate(0 34.629966735839844 12.5)"><text x="0" y="0" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">Arduino</text></g><g stroke-linecap="round" transform="translate(599.939453125 56.9901123046875) rotate(0 95.041015625 75.49609375)"><path d="M0 0 C51.45 -2.75, 104.8 -2.54, 190.08 0 M0 0 C65.39 -0.4, 131.7 -0.67, 190.08 0 M190.08 0 C187.22 41.66, 188.71 83.4, 190.08 150.99 M190.08 0 C189.93 35.46, 189.18 71.18, 190.08 150.99 M190.08 150.99 C127.81 152.52, 69.71 151.77, 0 150.99 M190.08 150.99 C127.17 152.64, 63 152.65, 0 150.99 M0 150.99 C-1.26 107.18, 0.76 62.7, 0 0 M0 150.99 C-0.46 95.35, 1.13 39.36, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"></path></g><g stroke-linecap="round" transform="translate(645.04296875 67.0174560546875) rotate(0 49.212890625 30)"><path d="M0 0 C30.02 -0.48, 63.43 1.41, 98.43 0 M0 0 C36.41 1.49, 72.65 -0.13, 98.43 0 M98.43 0 C96.58 11.15, 97.74 22.21, 98.43 60 M98.43 0 C99.38 15.83, 98.99 32.71, 98.43 60 M98.43 60 C74.97 57.66, 51.58 58.1, 0 60 M98.43 60 C75.25 59.07, 53.05 59.79, 0 60 M0 60 C-2.19 40.68, 1.71 25.44, 0 0 M0 60 C-0.2 40, -0.85 18.3, 0 0" stroke="#2f9e44" stroke-width="2" fill="none"></path></g><g transform="translate(650.1259078979492 72.0174560546875) rotate(0 44.12995147705078 25)"><text x="44.12995147705078" y="0" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#2f9e44" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">WLJS</text><text x="44.12995147705078" y="25" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#2f9e44" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">Notebook</text></g><g stroke-linecap="round"><g transform="translate(393.93359375 146.33632720249665) rotate(0 97.78125 -0.6454601413627472)"><path d="M0 0 C56.97 -1.03, 111.31 -2.57, 195.56 -1.29 M0 0 C57.83 -1.21, 115.9 -1.04, 195.56 -1.29" stroke="#e03131" stroke-width="2" fill="none"></path></g><g transform="translate(393.93359375 146.33632720249665) rotate(0 97.78125 -0.6454601413627472)"><path d="M196.68 -1.92 L182.84 3.79 L182.32 -6.31 L197.54 -0.36" stroke="none" stroke-width="0" fill="#e03131" fill-rule="evenodd"></path><path d="M195.56 -1.29 C192.28 0.65, 187.01 1.6, 181.98 5.08 M195.56 -1.29 C191.77 -0.05, 188.21 2.23, 181.98 5.08 M181.98 5.08 C183.06 -0.53, 181.15 -4.92, 181.95 -7.6 M181.98 5.08 C181.69 1.16, 181.48 -3.16, 181.95 -7.6 M181.95 -7.6 C185.18 -6.8, 189.74 -2.54, 195.56 -1.29 M181.95 -7.6 C186.65 -5.4, 190.09 -3.94, 195.56 -1.29 M195.56 -1.29 C195.56 -1.29, 195.56 -1.29, 195.56 -1.29 M195.56 -1.29 C195.56 -1.29, 195.56 -1.29, 195.56 -1.29" stroke="#e03131" stroke-width="2" fill="none"></path></g></g><mask></mask><g stroke-linecap="round"><g transform="translate(575.646484375 127.1641871802785) rotate(0 -86.67283080320902 0.7772484878365873)"><path d="M0 0 C-48.03 1.13, -99.12 0.72, -173.35 1.55 M0 0 C-36 -1.1, -74.57 0.77, -173.35 1.55" stroke="#e03131" stroke-width="2" fill="none"></path></g><g transform="translate(575.646484375 127.1641871802785) rotate(0 -86.67283080320902 0.7772484878365873)"><path d="M-173.72 3.01 L-159.27 -4.44 L-157.83 5.75 L-171.47 2.26" stroke="none" stroke-width="0" fill="#e03131" fill-rule="evenodd"></path><path d="M-173.35 1.55 C-168.68 0.93, -166.36 -1.55, -159.83 -4.95 M-173.35 1.55 C-169.85 -0.34, -168.3 -0.56, -159.83 -4.95 M-159.83 -4.95 C-159.78 -1.5, -159.62 1.85, -159.68 7.73 M-159.83 -4.95 C-159.3 -1.77, -159.65 2.98, -159.68 7.73 M-159.68 7.73 C-165.82 5.49, -171.28 3.61, -173.35 1.55 M-159.68 7.73 C-163.69 4.99, -169.24 3.07, -173.35 1.55 M-173.35 1.55 C-173.35 1.55, -173.35 1.55, -173.35 1.55 M-173.35 1.55 C-173.35 1.55, -173.35 1.55, -173.35 1.55" stroke="#e03131" stroke-width="2" fill="none"></path></g></g><mask></mask><g transform="translate(684.6640625 175.5557861328125) rotate(0 13.04998779296875 12.5)"><text x="0" y="0" font-family="Virgil, Segoe UI Emoji" font-size="20px" fill="#1e1e1e" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">PC</text></g><g transform="translate(450.9286422729492 77.2510986328125) rotate(0 36.82398223876953 20)"><text x="36.82398223876953" y="0" font-family="Virgil, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">UART</text><text x="36.82398223876953" y="20" font-family="Virgil, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">over USB</text></g><g stroke-linecap="round"><g transform="translate(191.82421875 105.5440673828125) rotate(0 -29.091796875 -0.123046875)"><path d="M0 0 C-18.81 1.87, -35.9 0.4, -58.18 -0.25 M0 0 C-19.22 -0.42, -38.93 -0.16, -58.18 -0.25" stroke="#1971c2" stroke-width="2" fill="none"></path></g><g transform="translate(191.82421875 105.5440673828125) rotate(0 -29.091796875 -0.123046875)"><path d="M-58.68 -8.03 C-57.23 -8.1, -55.3 -7.3, -54.01 -6.38 C-52.71 -5.45, -51.67 -3.97, -50.9 -2.5 C-50.14 -1.03, -48.76 0.76, -49.4 2.44 C-50.04 4.11, -52.81 6.79, -54.75 7.55 C-56.68 8.3, -59.22 7.51, -61 6.95 C-62.77 6.39, -64.37 5.38, -65.41 4.19 C-66.45 3.01, -67.43 1.49, -67.23 -0.16 C-67.03 -1.81, -65.85 -4.4, -64.22 -5.7 C-62.58 -6.99, -58.59 -7.4, -57.42 -7.93 C-56.24 -8.46, -56.92 -8.88, -57.17 -8.88 M-63.2 -6.94 C-61.52 -7.69, -57.69 -8.47, -55.58 -8.23 C-53.47 -7.98, -51.39 -7.03, -50.54 -5.46 C-49.69 -3.88, -50.08 -0.44, -50.48 1.23 C-50.88 2.9, -51.87 3.59, -52.94 4.55 C-54.01 5.51, -55.05 6.46, -56.91 6.99 C-58.77 7.52, -62.62 8.73, -64.1 7.72 C-65.58 6.71, -65.5 2.66, -65.8 0.94 C-66.09 -0.78, -66.62 -0.97, -65.87 -2.6 C-65.12 -4.24, -61.67 -8.13, -61.3 -8.86 C-60.92 -9.6, -63.39 -7.5, -63.63 -7.01" stroke="none" stroke-width="0" fill="#1971c2"></path></g></g><mask></mask><g stroke-linecap="round" transform="translate(10 10) rotate(0 470.759765625 117.171875)"><path d="M0 0 C338.58 0.45, 677.08 0.58, 941.52 0 M0 0 C355.98 2.91, 711.59 2.82, 941.52 0 M941.52 0 C940.07 59.92, 939.17 121.59, 941.52 234.34 M941.52 0 C943.35 59.96, 942.52 121, 941.52 234.34 M941.52 234.34 C615.32 234.46, 288.34 234.63, 0 234.34 M941.52 234.34 C662.83 231.57, 384.09 231.25, 0 234.34 M0 234.34 C2.01 148.61, 1.88 62.05, 0 0 M0 234.34 C-0.86 148.71, -0.78 64.56, 0 0" stroke="transparent" stroke-width="2" fill="none"></path></g></svg></div>
+
+
+It is important to note that the default UART interface used on Arduino boards ==does not guarantee the delivery of data== and has a certain error rate. This means that if you send structured data, it might easily be corrupted when you continuously stream it.
+
+Just relying on
+
+<pre class="mt-2">
+uint16_t v = analogRead(A0);
+Serial.write(v & 0xFF);
+Serial.write((v >> 8) & 0xFF);</pre>
+
+is a huge mistake ⚠️<br /><br />
+
+### Basic Frame Protocol
+
+Here we draft a very simple protocol, which uses control bits to mark the start/end of a message and a payload:
+
+<p ></p>
+
+| Marker         | Description      |
+|----------------|------------------|
+| `11000000`     | Start marker     |
+| `0100XXXX`     | Payload (4-bit)  |
+| `........`     |                  |
+| `00000000`     | End marker       |
+
+Another consideration is to avoid endless streaming at all. The reading procedure from the host can be:
+
+- Request 64/128/... values or ADC
+- Wait for the reply frame and check for errors
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<br/>
+
+## Set up the board
+
+Here we use an Arduino Uno/Duemilanove/Nano-compatible board.
+
+- Install the Arduino IDE.
+- Load the following sketch.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<br />
+
+## Set up the board
+
+Here we use an Arduino Uno/Duemilanove/Nano-compatible board.
+
+- Install the Arduino IDE.
+- Load the following sketch.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+adc.ino
+
+int requestedSamples = -1;
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) {}
+}
+
+void loop() {
+  if (requestedSamples == 0) {
+     requestedSamples = -1;
+     Serial.write((uint8_t)(0x0)); // Start
+     return;
+  }
+  
+  if (requestedSamples == -1 && Serial.available() >= 2) {
+    uint8_t c0 = Serial.read(), c1 = Serial.read();
+    requestedSamples = (int)c0 + (int)(c1 << 8);
+    while (Serial.available() > 0) (void)Serial.read(); // clean up garbage
+    Serial.write((uint8_t)(0xC0)); // End
+  }
+  
+  if (requestedSamples == -1) return;
+
+  uint16_t v = analogRead(A0);
+  
+  Serial.write((uint8_t)(((v >> 0) & 0xF)  | 0x40));
+  Serial.write((uint8_t)(((v >> 4) & 0xF)  | 0x40));
+  Serial.write((uint8_t)(((v >> 8) & 0xF)  | 0x40));
+  Serial.write((uint8_t)(((v >> 12) & 0xF) | 0x40));
+  
+  requestedSamples--;
+}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## First contact
+1. Connect the board
+2. Find a path via Arduino IDE or device inspector, it is usually something like
+    - __COM__ X *Windows*
+    - __/dev/cu.usbserial__... *Unix*
+4. Evaluate the cell below
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## First contact
+1. Connect the board
+2. Find a path via Arduino IDE or device inspector, it is usually something like
+    - __COM__ X *Windows*
+    - __/dev/cu.usbserial__... *Unix*
+4. Evaluate the cell below
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+path = "/dev/cu.usbserial-140";
+
+Panel[{
+  Refresh[If[DeviceOpenQ[dev]//TrueQ, Green, Red], 1],
+  Button["Connect", Print["Connecting..."]; dev = DeviceOpen["Serial", {path, "BaudRate"->115200}]],
+  Button["Close", dev = DeviceClose[dev]]
+} // Row, Style["Control Center", 11, FontFamily->"system-ui"]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we need a little helper function to request and decode the frames of data:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we need a little helper function to request and decode the frames of data:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+readDevice[dev_, packetSize_:64] := Module[{},
+  If[!(DeviceOpenQ[dev]//TrueQ), Return[$Failed, Module]];
+  
+  DeviceReadBuffer[dev];
+  DeviceWrite[dev, ExportByteArray[packetSize, "UnsignedInteger16"]//Normal];
+  With[{result = TimeConstrained[DeviceReadBuffer[dev, packetSize 4 + 2], 0.5, $Failed]},
+  
+    If[FailureQ[result],   Return[$Failed, Module]];
+    If[result[[1]] != 192, Return[$Failed, Module]];
+    If[result[[-1]] != 0,  Return[$Failed, Module]];
+
+    With[{payload = result[[2;;-2]]},
+      If[Sum[BitGet[b, 6], {b, payload}] != packetSize 4, Return[$Failed, Module]];
+    
+      Map[Function[p,
+        BitClear[p[[1]], 6] + BitShiftLeft[BitClear[p[[2]], 6], 4] + BitShiftLeft[BitClear[p[[3]],6], 8] + BitShiftLeft[BitClear[p[[4]],6], 12]
+      ], Partition[payload, 4]]
+    ]
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's read our first frame of data:
+
+:::warning
+Do not use large frame buffers. For my setup anything bigger than `512` casues an overflow and complete data loss.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's read our first frame of data:
+
+:::warning
+Do not use large frame buffers. For my setup anything bigger than `512` casues an overflow and complete data loss.
+:::
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+readDevice[dev, 128] // ListLinePlot
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["6377d64f-10b9-4bb8-8f96-fe24a9672540"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmxmbm6eYmaTpGhokWeqaJCVZ6FqkWZrppqUamSRampkbmZoYAAB90BUq"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+What you see is my screen's refresh rate overlayed by a background electrical noise captured by a photodiode transimpedance amplifier built on *LM358P*.
+
+:::note
+The sampling rate may vary and for buffer sizes 512 is `~2800 samples/sec`
+:::
+
+Here is a dynamic version:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+What you see is my screen's refresh rate overlayed by a background electrical noise captured by a photodiode transimpedance amplifier built on *LM358P*.
+
+:::note
+The sampling rate may vary and for buffer sizes 512 is `~2800 samples/sec`
+:::
+
+Here is a dynamic version:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Refresh[ListLinePlot[With[{d = readDevice[dev, 64]}, If[!FailureQ[d],
+  d, Table[0, {64}]
+]], PlotRange->{{1,64}, {0,1025}}], 0.1]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We defined plot range and return zeros in a case of a failure on purpose to benifit JIT features used in `Refresh` expression. This keeps the input data consistens and allows to update the graph smoothly.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We defined plot range and return zeros in a case of a failure on purpose to benifit JIT features used in `Refresh` expression. This keeps the input data consistens and allows to update the graph smoothly.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## ArduinoScope
+*A toy-like oscilloscope*
+
+Nothing can stops us from performing a live Fourier transformation and accumulate longer times 🙂
+
+We start from an automatic accumulating function, which runs in the background:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## ArduinoScope
+*A toy-like oscilloscope*
+
+Nothing can stops us from performing a live Fourier transformation and accumulate longer times 🙂
+
+We start from an automatic accumulating function, which runs in the background:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+buffer = Table[0, {2048}];
+accumulate[dev_] := With[{data = readDevice[dev, 128]},
+  If[!FailureQ[data],
+    buffer = RotateLeft[buffer, 128];
+    buffer[[2048 - 127 ;;]] = data;
+  ];
+];
+
+TaskRemove[task] // Quiet;
+task = SetInterval[
+  accumulate[dev];
+  EventFire["scopeUpdate", buffer];
+, Quantity[100, "Milliseconds"]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To stop the task:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To stop the task:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+TaskRemove[task] // Quiet;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This procedure also fires an event object *scopeUpdate* to which we can subscribe
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This procedure also fires an event object *scopeUpdate* to which we can subscribe
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Graph widget
+Let's design our first widget, that takes care of visualizing the data.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Graph widget
+Let's design our first widget, that takes care of visualizing the data.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{
+  event = EventClone["scopeUpdate"],
+  data = Unique[],
+  avg = Unique[]
+},
+  data = Table[{i,0}, {i,2048}];
+  avg = Table[{i,0}, {i,2048}];
+  
+  EventHandler[ResultCell[], {"Destroy" -> Function[Null,
+    EventRemove[event];
+  ]}];
+
+  EventHandler[event, Function[d,
+    data = MapIndexed[Function[{val, i}, {i[[1]], val}], d];
+    avg = MapIndexed[Function[{val, i}, {i[[1]], val}], MovingAverage[d, 16]];
+  ]];
+
+  Legended[Graphics[{
+    (*VB[*)(RGBColor[0.368417, 0.506779, 0.709798])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qKpg26anKlOv2RYbTXk7vMH9gX3S8ZYb3qm3P7AF5kRs6"*)(*]VB*), Line[data // Offload], 
+    (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*), Line[avg // Offload]
+  }, 
+    Frame->True, Axes->True,
+    PlotRange->{{1,2048}, {0,1024}}, AspectRatio->0.5
+  ], SwatchLegend[{(*VB[*)(RGBColor[0.368417, 0.506779, 0.709798])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8qKpg26anKlOv2RYbTXk7vMH9gX3S8ZYb3qm3P7AF5kRs6"*)(*]VB*), (*VB[*)(RGBColor[0.880722, 0.611041, 0.142051])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q8jkS/fy+3hv7on/VH24t7X1sX7R51jr1XXqH7AGSkRxD"*)(*]VB*)}, {"Actual", "Moving Avg. (16)"}]]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We did not use `Module` here since WL`s automatic garbage collector can mistakenly purge the symbols.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We did not use `Module` here since WL`s automatic garbage collector can mistakenly purge the symbols.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Fourier Transform
+Here is another example with a live FFT window
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Fourier Transform
+Here is another example with a live FFT window
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{
+  event = EventClone["scopeUpdate"],
+  data = Unique[]
+},
+  data = Table[{i,0}, {i,127}];
+  
+  EventHandler[ResultCell[], {"Destroy" -> Function[Null,
+    EventRemove[event];
+  ]}];
+
+  EventHandler[event, Function[d,
+    data = MapIndexed[Function[{val, i}, {i[[1]], val}], 
+      Take[Drop[Fourier[Take[d, -256]]//Abs,1], 127]
+      (* drop DC and the conjugated half *)
+    ];
+  ]];
+
+  Graphics[{
+    ColorData[97][3], Line[data // Offload]
+  }, 
+    Frame->True, Axes->True,
+    PlotRange->{{1,127}, {0,1024}}, AspectRatio->0.5
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+One can project the output cells using the right-side menu to separate windows for the convenience.
+
+
+![](/attachments/Screenshot%202025-08-25%20at%2013.07.10-421.png)
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+One can project the output cells using the right-side menu to separate windows for the convenience.
+
+
+![](/attachments/Screenshot%202025-08-25%20at%2013.07.10-421.png)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 6377d64f-10b9-4bb8-8f96-fe24a9672540
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{{}, Annotation[{{{}, {}, Annotation[{Hue[0.67, 0.6, 0.6], Directive[PointSize[Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{1, 277}, {2, 274}, {3, 275}, {4, 272}, {5, 282}, {6, 285}, {7, 278}, {8, 278}, {9, 280}, {10, 281}, {11, 273}, {12, 274}, {13, 270}, {14, 267}, {15, 264}, {16, 268}, {17, 263}, {18, 265}, {19, 263}, {20, 253}, {21, 153}, {22, 153}, {22.645833333333243, 150.41666666666703}}], Line[{{23.283333333333406, 150.41666666666703}, {24, 154}, {25, 270}, {26, 272}, {27, 272}, {28, 267}, {29, 259}, {30, 261}, {31, 263}, {32, 266}, {33, 265}, {34, 260}, {35, 254}, {36, 254}, {37, 152}, {38, 160}, {39, 217}, {40, 246}, {41, 244}, {42, 237}, {43, 241}, {44, 237}, {45, 230}, {46, 235}, {47, 235}, {48, 230}, {49, 233}, {49.699858757062145, 150.41666666666703}}], Line[{{51.29572271386431, 150.41666666666703}, {52, 230}, {53, 231}, {54, 233}, {55, 236}, {56, 225}, {57, 230}, {58, 239}, {59, 240}, {60, 239}, {61, 236}, {61.80738993710691, 150.41666666666703}}], Line[{{63.33178053830228, 150.41666666666703}, {64, 258}, {65, 252}, {66, 243}, {67, 252}, {68, 258}, {69, 262}, {70, 264}, {71, 269}, {72, 270}, {73, 270}, {74, 162}, {75, 160}, {76, 275}, {77, 278}, {78, 277}, {79, 278}, {80, 273}, {81, 265}, {82, 267}, {83, 265}, {84, 266}, {85, 272}, {86, 156}, {86.69791666666663, 150.41666666666703}}], Line[{{87.02258566978193, 150.41666666666703}, {88, 255}, {89, 264}, {90, 264}, {91, 266}, {92, 247}, {93, 251}, {94, 256}, {95, 251}, {96, 255}, {97, 253}, {97.84084699453551, 150.41666666666703}}], Line[{{99.19469696969698, 150.41666666666703}, {100, 239}, {101, 241}, {102, 237}, {103, 237}, {104, 228}, {105, 238}, {106, 234}, {107, 232}, {108, 232}, {109, 232}, {110, 235}, {110.70486111111111, 150.41666666666703}}], Line[{{112.26221264367817, 150.41666666666703}, {113, 236}, {114, 233}, {115, 220}, {116, 234}, {117, 240}, {118, 242}, {119, 237}, {120, 244}, {121, 237}, {122, 242}, {122.63160919540229, 150.41666666666703}}], Line[{{123.8756830601093, 150.41666666666703}, {124, 158}, {125, 246}, {126, 253}, {127, 251}, {128, 262}}]}, "Charting`Private`Tag#1"]}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 128}, {150.41666666666703, 285}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 150.41666666666703}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[PointSize[Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> ListLinePlot, "GroupHighlight" -> False]], "DynamicHighlight"], {{}, {}}}, {DisplayFunction -> Identity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 150.41666666666703}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"AxisPadding" -> Scaled[0.02], "DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.772079, 0.431554, 0.102387], AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 0.2125], AbsoluteThickness[2]], Directive[RGBColor[0.40082222609352647, 0.5220066643438841, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 0.621644452187053, 0.07336199581899142], AbsoluteThickness[2]], Directive[RGBColor[0.736782672705901, 0.358, 0.5030266573755369], AbsoluteThickness[2]], Directive[RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> Automatic, "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotInteractivity :> Association["SystemLimits" -> 3000, "UserLimits" -> 10000, "UserInteractivity" -> True], PlotRange -> {{0, 128}, {150.41666666666703, 285}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, Ticks -> {Automatic, Automatic}, PlotInteractivity :> $PlotInteractivity}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

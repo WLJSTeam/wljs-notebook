@@ -1,338 +1,556 @@
-<|"Notebook" -> <|"Controller" -> "4620fb7b-ef6e-4c66-a706-decc2dfed847", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1115], 
-   "FocusedCellSelection" -> {85, 84}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "98ac0856-9d87-466d-bb2d-0711add30551", 
-   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
-ules/wljs-demos-archive/Demos/Component-based markup/throwaway.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Pattern matching", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1060]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "More examples", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1087]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Pattern matching\nHere we use a different \
-approach to constructing components\[LongDash]instead of converting \
-everything to `WLXForm` strings, we keep a symbolic representation of each \
-child element as a tree of expressions. This is similar to both XML and \
-pattern matching in Wolfram Language. As stated in *w3schools*:\n\n> HTML was \
-designed to display data - with focus on how data looks XML was designed to \
-carry data - with focus on what data is\n\nIn this chapter we use WLX as the \
-second one. This allows to declare data expressions such as:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c7db8453-5beb-4ad7-804e-adc7ab2b83fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "# Pattern matching\nHere we use a different approach to \
-constructing components\[LongDash]instead of converting everything to \
-`WLXForm` strings, we keep a symbolic representation of each child element as \
-a tree of expressions. This is similar to both XML and pattern matching in \
-Wolfram Language. As stated in *w3schools*:\n\n> HTML was designed to display \
-data - with focus on how data looks XML was designed to carry data - with \
-focus on what data is\n\nIn this chapter we use WLX as the second one. This \
-allows to declare data expressions such as:", "Display" -> "markdown", 
-    "Hash" -> "acc85149-b7f5-45b6-97fc-8ac3400f498b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".slide\n\n<Card>\n  <CardTitle>Pluto excitation \
-spectra</CardTitle>\n  <CardImage Link={\"https://picsum.photos/200\"}/>\n  \
-<CardCredits>Song Goo et al. <b>Nature Programming</b> 33 \
-2027</CardCredits>\n</Card>", "Display" -> "codemirror", 
-    "Hash" -> "f639cffa-2419-4f46-9757-6470823ad38a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "<dummy ><div ><img src=\"https://picsum.photos/200\" \
-width=\"400\" style=\"scale:1.2\"/><br /><h5 >Pluto excitation \
-spectra</h5><span style=\"font-size:smaller\">Song Goo et al. \n<b >Nature \
-Programming</b>\n 33 2027</span></div></dummy>", "Display" -> "slide", 
-    "Hash" -> "5faea551-3b4c-4231-a5f2-a8a28b025aaa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nThe `Card` component is responsible for displaying this \
-data.\n\nSlides and markdown cells inherit features from WLX cells. By \
-default, the WLX parser will pass all arguments as strings using `WLXForm` or \
-`ToString` if the symbol does not have this output form defined. We need to \
-preserve our data-symbols to prevent them from being converted to strings:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "976038e6-40a3-454d-8a19-59439d6da7f7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "The `Card` component is responsible for displaying this \
-data.\n\nSlides and markdown cells inherit features from WLX cells. By \
-default, the WLX parser will pass all arguments as strings using `WLXForm` or \
-`ToString` if the symbol does not have this output form defined. We need to \
-preserve our data-symbols to prevent them from being converted to strings:", 
-    "Display" -> "markdown", "Hash" -> 
-     "817a0eb5-d1d9-47c2-96ef-1a2df6b94484", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "CardTitle   /: ToString[c_CardTitle,   WLXForm] := \
-c\nCardCredits /: ToString[c_CardCredits, WLXForm] := c\nCardImage   /: \
-ToString[c_CardImage,   WLXForm] := c\nCard[__] := \"Unknown \
-pattern\";\nSetAttributes[Card, Orderless];", "Display" -> "codemirror", 
-    "Hash" -> "fefe8649-5280-480b-b0d8-cf6f2f8f38c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nNow `CardTitle`, `CardCredits`, `CardImage` in the \
-context of WLX will not be transformed before reaching the parent element. \
-This allows us to use the full power of native pattern matching with them on \
-`Card` symbol:", "Display" -> "codemirror", 
-    "Hash" -> "7ba6bf86-7e8f-46f3-b115-3af0ed58c2f2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "Now `CardTitle`, `CardCredits`, `CardImage` in the context of \
-WLX will not be transformed before reaching the parent element. This allows \
-us to use the full power of native pattern matching with them on `Card` \
-symbol:", "Display" -> "markdown", "Hash" -> 
-     "46fa5f85-16ae-4545-a8ea-891f84bdb3c0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".wlx\nCard[CardTitle[Title_], CardCredits[credits__]] := \
-With[{Text = ToStringRiffle[{credits}]},\n<div>\n  <h5><Title/></h5>\n  <span \
-style=\"font-size:smaller\"><Text/></span>\n</div>\n]\n\nCard[CardTitle[Title\
-_], CardCredits[credits__], CardImage[Rule[\"Link\", url_]]] := With[{Text = \
-ToStringRiffle[{credits}]},\n<div>\n  <img src=\"{url}\" width=\"400\" \
-style=\"scale:1.2\"/>\n  <br/>\n  <h5><Title/></h5>\n  <span \
-style=\"font-size:smaller\"><Text/></span>\n</div>\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "66a5a38c-1ddc-450c-a1ee-7c9ce747cc94", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\n## More examples\nYou can create a similar helper \
-component for textual cells as well. WLJS Notebooks are designed for creating \
-lab journals and interactive reports. You can also create a template notebook \
-with your custom components in a hidden initialization cell.\n\nImagine a Lab \
-Journal. Then we need nice-looking header with a title, some parameters and \
-possible tags. Let's start with:", "Display" -> "codemirror", 
-    "Hash" -> "ab3c3637-e927-4647-b650-1d9e6fb8a91b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "## More examples\nYou can create a similar helper component \
-for textual cells as well. WLJS Notebooks are designed for creating lab \
-journals and interactive reports. You can also create a template notebook \
-with your custom components in a hidden initialization cell.\n\nImagine a Lab \
-Journal. Then we need nice-looking header with a title, some parameters and \
-possible tags. Let's start with:", "Display" -> "markdown", 
-    "Hash" -> "5040fce2-87da-4d06-8c57-521dd1ef7963", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".wlx\n\nClearAll[LabJournal];\n\nLabJournal[Content__, opts: \
-OptionsPattern[]] := LabJournal[ToStringRiffle[{Content}], \
-opts];\n\nLabJournal[Content_, OptionsPattern[]] := With[{\n  Title = \
-OptionValue[\"Title\"],\n  Subtitle = OptionValue[\"Subtitle\"],\n  tags = \
-OptionValue[\"Tags\"]\n},\n{\nFooter = If[Length[tags] == 0, \"\",\n  \
-With[{Tags = Table[\n    <div class=\"thz-tag\"><Tag/></div>\n  , {Tag, \
-tags}]},\n    <div class=\"thz-footer\">\n      <Tags/>\n    </div>\n  \
-]\n]\n},\n\n<div class=\"thz-lab-journal\">\n<div class=\"thz-header\">\n  \
-<div class=\"thz-title\"><Title/></div>\n  <div \
-class=\"thz-subtitle\"><Subtitle/></div>\n</div>\n<div class=\"thz-grid\">\n  \
-<Content/>\n  <div class=\"thz-item\">\n    <div \
-class=\"thz-label\">Date</div>\n    <div class=\"thz-value\"><Now/></div>\n  \
-</div>\n</div>\n<Footer/>\n</div>\n];\n\nOptions[LabJournal] = \
-{\"Title\"->\"Lab Journal\", \"Subtitle\"->\"\", \"Tags\"->{}};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "545e08cd-0eae-46af-9b50-34c1352712de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".html\n<style>\n    .thz-lab-journal {\n      font-family: \
-\"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n      color: #1f2933;\n  \
-    border: 1px solid #d1d5db;\n      border-radius: 10px;\n      padding: \
-20px 24px;\n      max-width: 820px;\n      background: \
-linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);\n    }\n\n    .thz-header \
-{\n      display: flex;\n      justify-content: space-between;\n      \
-align-items: baseline;\n      border-bottom: 2px solid #e5e7eb;\n      \
-padding-bottom: 10px;\n      margin-bottom: 18px;\n    }\n\n    .thz-title \
-{\n      font-size: 1.4rem;\n      font-weight: 600;\n      letter-spacing: \
-0.02em;\n    }\n\n    .thz-subtitle {\n      font-size: 0.9rem;\n      color: \
-#6b7280;\n    }\n\n    .thz-grid {\n      display: grid;\n      \
-grid-template-columns: 1fr 1fr;\n      gap: 14px 24px;\n    }\n\n    \
-.thz-item {\n      display: flex;\n      flex-direction: column;\n    }\n\n   \
- .thz-label {\n      font-size: 0.75rem;\n      text-transform: uppercase;\n  \
-    letter-spacing: 0.08em;\n      color: #6b7280;\n      margin-bottom: \
-2px;\n    }\n\n    .thz-value {\n      font-size: 1rem;\n      font-weight: \
-500;\n    }\n\n    .thz-footer {\n      margin-top: 18px;\n      padding-top: \
-12px;\n      border-top: 1px dashed #e5e7eb;\n      display: flex;\n      \
-gap: 24px;\n      flex-wrap: wrap;\n    }\n\n    .thz-tag {\n      \
-background: #eef2ff;\n      color: #3730a3;\n      padding: 6px 12px;\n      \
-border-radius: 999px;\n      font-size: 0.85rem;\n      font-weight: 500;\n   \
- }\n</style>", "Display" -> "codemirror", 
-    "Hash" -> "2b54b7a7-a138-490e-ab89-1347cb36879d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "<style>\n    .thz-lab-journal {\n      font-family: \"Segoe \
-UI\", Roboto, Helvetica, Arial, sans-serif;\n      color: #1f2933;\n      \
-border: 1px solid #d1d5db;\n      border-radius: 10px;\n      padding: 20px \
-24px;\n      max-width: 820px;\n      background: linear-gradient(180deg, \
-#f9fafb 0%, #ffffff 100%);\n    }\n\n    .thz-header {\n      display: \
-flex;\n      justify-content: space-between;\n      align-items: baseline;\n  \
-    border-bottom: 2px solid #e5e7eb;\n      padding-bottom: 10px;\n      \
-margin-bottom: 18px;\n    }\n\n    .thz-title {\n      font-size: 1.4rem;\n   \
-   font-weight: 600;\n      letter-spacing: 0.02em;\n    }\n\n    \
-.thz-subtitle {\n      font-size: 0.9rem;\n      color: #6b7280;\n    }\n\n   \
- .thz-grid {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n   \
-   gap: 14px 24px;\n    }\n\n    .thz-item {\n      display: flex;\n      \
-flex-direction: column;\n    }\n\n    .thz-label {\n      font-size: \
-0.75rem;\n      text-transform: uppercase;\n      letter-spacing: 0.08em;\n   \
-   color: #6b7280;\n      margin-bottom: 2px;\n    }\n\n    .thz-value {\n    \
-  font-size: 1rem;\n      font-weight: 500;\n    }\n\n    .thz-footer {\n     \
- margin-top: 18px;\n      padding-top: 12px;\n      border-top: 1px dashed \
-#e5e7eb;\n      display: flex;\n      gap: 24px;\n      flex-wrap: wrap;\n    \
-}\n\n    .thz-tag {\n      background: #eef2ff;\n      color: #3730a3;\n      \
-padding: 6px 12px;\n      border-radius: 999px;\n      font-size: 0.85rem;\n  \
-    font-weight: 500;\n    }\n</style>", "Display" -> "html", 
-    "Hash" -> "71569d63-b68f-44e5-a9f9-1ca30e910aa4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nPlace it to the end of WLX cell or create a separate one \
-(HTML or WLX type). `LabJournal` itself does not use any special pattern \
-matching and is meant to just render any children in a nice grid-like \
-structure:", "Display" -> "codemirror", 
-    "Hash" -> "aa9edd51-bd69-4399-b408-778c8f9b6432", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "Place it to the end of WLX cell or create a separate one \
-(HTML or WLX type). `LabJournal` itself does not use any special pattern \
-matching and is meant to just render any children in a nice grid-like \
-structure:", "Display" -> "markdown", 
-    "Hash" -> "ae905649-eb70-434d-8208-59b0aa6d67e4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\n\n<LabJournal \n  Title={\"Lab Journal\"} \n  \
-Subtitle={\"Sample: ATR370\"}\n  Tags={{\"Optics\", \"THZ\"}}\n>\n  Here \
-there will be grid of cards\n</LabJournal>", "Display" -> "codemirror", 
-    "Hash" -> "fe22f123-b477-4877-983e-f1335c9dcf36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "<div class=\"thz-lab-journal\"><div class=\"thz-header\"><div \
-class=\"thz-title\">Lab Journal</div><div class=\"thz-subtitle\">Sample: \
-ATR370</div></div><div class=\"thz-grid\">\n  Here there will be grid of \
-cards\n<div class=\"thz-item\"><div class=\"thz-label\">Date</div><div \
-class=\"thz-value\">Sat 31 Jan 2026 21:53:30</div></div></div><div \
-class=\"thz-footer\"><div class=\"thz-tag\">Optics</div>\n<div \
-class=\"thz-tag\">THZ</div></div></div>", "Display" -> "markdown", 
-    "Hash" -> "52503042-da83-4768-b381-61dc2fc7ec3f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nFor rendering key-value structures, we define a separate \
-symbol `Card` with data-holding symbols `CardLabel` and `CardValue`. Since it \
-is not bound to `LabJournal`, we can reuse it as a separate component \
-elsewhere:", "Display" -> "codemirror", 
-    "Hash" -> "a2d39fa7-6bc8-418d-9be7-bf0f01e23c9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "For rendering key-value structures, we define a separate \
-symbol `Card` with data-holding symbols `CardLabel` and `CardValue`. Since it \
-is not bound to `LabJournal`, we can reuse it as a separate component \
-elsewhere:", "Display" -> "markdown", 
-    "Hash" -> "77256756-5a3b-435c-91b3-de768be48916", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".wlx\n\nClearAll[Card];\n\nCard[_]  := \"Undefined \
-pattern\";\nCard[__] := \"Undefined \
-patterns\";\n\nCard[CardLabel[LabelContent_], CardValue[ValueContent_]] := \
-With[{},\n  <div class=\"thz-item\">\n    <div \
-class=\"thz-label\"><LabelContent/></div>\n    <div \
-class=\"thz-value\"><ValueContent/></div>\n  \
-</div>\n];\n\nCard[CardLabel[LabelContent_], CardValue[ValueContent__]] := \
-Card[CardLabel[LabelContent], \
-CardValue[ToStringRiffle[{ValueContent}]]]\n\nCard[CardLabel[LabelContent__], \
-CardValue[ValueContent__]] := Card[CardLabel[ToStringRiffle[{LabelContent}]], \
-CardValue[ToStringRiffle[{ValueContent}]]]\n\nCard[CardLabel[LabelContent__], \
-CardValue[ValueContent_]] := Card[CardLabel[ToStringRiffle[{LabelContent}]], \
-CardValue[ValueContent]]\n\nCardLabel /: ToString[c_CardLabel,   WLXForm] := \
-c;\nCardValue /: ToString[c_CardValue, WLXForm] := c;\n\nSetAttributes[Card, \
-Orderless];", "Display" -> "codemirror", 
-    "Hash" -> "7a0c53b4-09e8-415e-9863-1e575bcf164d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nWe've also handled different patterns\[LongDash]for \
-instance, when `CardValue` has multiple arguments passed to it while \
-`CardLabel` does not. This can be done elegantly using Wolfram Language \
-pattern matching. Now, let's combine both components to create a nice header \
-for our report using Markdown cells:", "Display" -> "codemirror", 
-    "Hash" -> "bf169d78-7067-4915-8410-c59f0f2fbd8d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "We've also handled different patterns\[LongDash]for instance, \
-when `CardValue` has multiple arguments passed to it while `CardLabel` does \
-not. This can be done elegantly using Wolfram Language pattern matching. Now, \
-let's combine both components to create a nice header for our report using \
-Markdown cells:", "Display" -> "markdown", 
-    "Hash" -> "afb1c778-7520-41f3-b278-54643b91d09c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\n\n<LabJournal \n  Title={\"Lab Journal\"} \n  \
-Subtitle={\"Sample: ATR370\"}\n  Tags={{\"Optics\", \"THZ\"}}\n>\n  <Card>\n  \
-  <CardLabel>Resolution</CardLabel>\n    <CardValue>0.33 \
-cm<sup>2</sup></CardValue>\n  </Card>\n  <Card>\n    \
-<CardLabel>User</CardLabel>\n    <CardValue>Persephone</CardValue>\n  \
-</Card>\n</LabJournal>", "Display" -> "codemirror", 
-    "Hash" -> "ecd4466a-765a-4521-b73b-ade66700284d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "<div class=\"thz-lab-journal\"><div class=\"thz-header\"><div \
-class=\"thz-title\">Lab Journal</div><div class=\"thz-subtitle\">Sample: \
-ATR370</div></div><div class=\"thz-grid\"><div class=\"thz-item\"><div \
-class=\"thz-label\">Resolution</div><div class=\"thz-value\">0.33 cm\n<sup \
->2</sup></div></div>\n<div class=\"thz-item\"><div \
-class=\"thz-label\">User</div><div \
-class=\"thz-value\">Persephone</div></div><div class=\"thz-item\"><div \
-class=\"thz-label\">Date</div><div class=\"thz-value\">Sat 31 Jan 2026 \
-21:54:18</div></div></div><div class=\"thz-footer\"><div \
-class=\"thz-tag\">Optics</div>\n<div class=\"thz-tag\">THZ</div></div></div>"\
-, "Display" -> "markdown", "Hash" -> "11364d14-4ccf-4d98-9720-1fd285c11e05", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\nAs we mentioned, you can still use `Card` as a \
-standalone component:", "Display" -> "codemirror", 
-    "Hash" -> "304093e8-a59c-4edb-a967-f0033d9882b4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> 
-     "As we mentioned, you can still use `Card` as a standalone component:", 
-    "Display" -> "markdown", "Hash" -> 
-     "27a075a7-ac30-4def-98e2-fdfff21fdca4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> ".md\n\n<Card>\n  <CardLabel>Parameter</CardLabel>\n  \
-<CardValue>11.2</CardValue>\n</Card>", "Display" -> "codemirror", 
-    "Hash" -> "20eff32f-89dc-443a-83b9-9ca1d509d8c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>, 
-   <|"Data" -> "<div class=\"thz-item\"><div \
-class=\"thz-label\">Parameter</div><div class=\"thz-value\">11.2</div></div>"\
-, "Display" -> "markdown", "Hash" -> "328bf034-dc38-4bf7-8eb8-0059e5306ed9", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "b35aa2bf-25d1-456e-af36-10856c3612c5"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Pattern matching
+Here we use a different approach to constructing components—instead of converting everything to `WLXForm` strings, we keep a symbolic representation of each child element as a tree of expressions. This is similar to both XML and pattern matching in Wolfram Language. As stated in *w3schools*:
+
+> HTML was designed to display data - with focus on how data looks XML was designed to carry data - with focus on what data is
+
+In this chapter we use WLX as the second one. This allows to declare data expressions such as:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Pattern matching
+Here we use a different approach to constructing components—instead of converting everything to `WLXForm` strings, we keep a symbolic representation of each child element as a tree of expressions. This is similar to both XML and pattern matching in Wolfram Language. As stated in *w3schools*:
+
+> HTML was designed to display data - with focus on how data looks XML was designed to carry data - with focus on what data is
+
+In this chapter we use WLX as the second one. This allows to declare data expressions such as:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<Card>
+  <CardTitle>Pluto excitation spectra</CardTitle>
+  <CardImage Link={"https://picsum.photos/200"}/>
+  <CardCredits>Song Goo et al. <b>Nature Programming</b> 33 2027</CardCredits>
+</Card>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy ><div ><img src="https://picsum.photos/200" width="400" style="scale:1.2"/><br /><h5 >Pluto excitation spectra</h5><span style="font-size:smaller">Song Goo et al. 
+<b >Nature Programming</b>
+ 33 2027</span></div></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The `Card` component is responsible for displaying this data.
+
+Slides and markdown cells inherit features from WLX cells. By default, the WLX parser will pass all arguments as strings using `WLXForm` or `ToString` if the symbol does not have this output form defined. We need to preserve our data-symbols to prevent them from being converted to strings:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The `Card` component is responsible for displaying this data.
+
+Slides and markdown cells inherit features from WLX cells. By default, the WLX parser will pass all arguments as strings using `WLXForm` or `ToString` if the symbol does not have this output form defined. We need to preserve our data-symbols to prevent them from being converted to strings:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+CardTitle   /: ToString[c_CardTitle,   WLXForm] := c
+CardCredits /: ToString[c_CardCredits, WLXForm] := c
+CardImage   /: ToString[c_CardImage,   WLXForm] := c
+Card[__] := "Unknown pattern";
+SetAttributes[Card, Orderless];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now `CardTitle`, `CardCredits`, `CardImage` in the context of WLX will not be transformed before reaching the parent element. This allows us to use the full power of native pattern matching with them on `Card` symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now `CardTitle`, `CardCredits`, `CardImage` in the context of WLX will not be transformed before reaching the parent element. This allows us to use the full power of native pattern matching with them on `Card` symbol:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+Card[CardTitle[Title_], CardCredits[credits__]] := With[{Text = ToStringRiffle[{credits}]},
+<div>
+  <h5><Title/></h5>
+  <span style="font-size:smaller"><Text/></span>
+</div>
+]
+
+Card[CardTitle[Title_], CardCredits[credits__], CardImage[Rule["Link", url_]]] := With[{Text = ToStringRiffle[{credits}]},
+<div>
+  <img src="{url}" width="400" style="scale:1.2"/>
+  <br/>
+  <h5><Title/></h5>
+  <span style="font-size:smaller"><Text/></span>
+</div>
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is the result!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is the result!
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<Card>
+  <CardTitle>Pluto excitation spectra</CardTitle>
+  <CardImage Link={"https://picsum.photos/200"}/>
+  <CardCredits>Song Goo et al. <b>Nature Programming</b> 33 2027</CardCredits>
+</Card>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## More examples
+You can create a similar helper component for textual cells as well. WLJS Notebooks are designed for creating lab journals and interactive reports. You can also create a template notebook with your custom components in a hidden initialization cell.
+
+Imagine a Lab Journal. Then we need nice-looking header with a title, some parameters and possible tags. Let's start with:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## More examples
+You can create a similar helper component for textual cells as well. WLJS Notebooks are designed for creating lab journals and interactive reports. You can also create a template notebook with your custom components in a hidden initialization cell.
+
+Imagine a Lab Journal. Then we need nice-looking header with a title, some parameters and possible tags. Let's start with:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+ClearAll[LabJournal];
+
+LabJournal[Content__, opts: OptionsPattern[]] := LabJournal[ToStringRiffle[{Content}], opts];
+
+LabJournal[Content_, OptionsPattern[]] := With[{
+  Title = OptionValue["Title"],
+  Subtitle = OptionValue["Subtitle"],
+  tags = OptionValue["Tags"]
+},
+{
+Footer = If[Length[tags] == 0, "",
+  With[{Tags = Table[
+    <div class="thz-tag"><Tag/></div>
+  , {Tag, tags}]},
+    <div class="thz-footer">
+      <Tags/>
+    </div>
+  ]
+]
+},
+
+<div class="thz-lab-journal">
+<div class="thz-header">
+  <div class="thz-title"><Title/></div>
+  <div class="thz-subtitle"><Subtitle/></div>
+</div>
+<div class="thz-grid">
+  <Content/>
+  <div class="thz-item">
+    <div class="thz-label">Date</div>
+    <div class="thz-value"><Now/></div>
+  </div>
+</div>
+<Footer/>
+</div>
+];
+
+Options[LabJournal] = {"Title"->"Lab Journal", "Subtitle"->"", "Tags"->{}};
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.html
+<style>
+    .thz-lab-journal {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2933;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 20px 24px;
+      max-width: 820px;
+      background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+    }
+
+    .thz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .thz-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .thz-subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .thz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+    }
+
+    .thz-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thz-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .thz-value {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .thz-footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px dashed #e5e7eb;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .thz-tag {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+</style>
+
+%-------------------------------------------------------------------------%
+Display: html
+Type: Output
+%-------------------------------------------------------------------------%
+<style>
+    .thz-lab-journal {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2933;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 20px 24px;
+      max-width: 820px;
+      background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+    }
+
+    .thz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+
+    .thz-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .thz-subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .thz-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 24px;
+    }
+
+    .thz-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thz-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      margin-bottom: 2px;
+    }
+
+    .thz-value {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .thz-footer {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px dashed #e5e7eb;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .thz-tag {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+</style>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Place it to the end of WLX cell or create a separate one (HTML or WLX type). `LabJournal` itself does not use any special pattern matching and is meant to just render any children in a nice grid-like structure:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Place it to the end of WLX cell or create a separate one (HTML or WLX type). `LabJournal` itself does not use any special pattern matching and is meant to just render any children in a nice grid-like structure:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+<LabJournal 
+  Title={"Lab Journal"} 
+  Subtitle={"Sample: ATR370"}
+  Tags={{"Optics", "THZ"}}
+>
+  Here there will be grid of cards
+</LabJournal>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="thz-lab-journal"><div class="thz-header"><div class="thz-title">Lab Journal</div><div class="thz-subtitle">Sample: ATR370</div></div><div class="thz-grid">
+  Here there will be grid of cards
+<div class="thz-item"><div class="thz-label">Date</div><div class="thz-value">Sat 24 Oct 2026 10:09:59</div></div></div><div class="thz-footer"><div class="thz-tag">Optics</div>
+<div class="thz-tag">THZ</div></div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For rendering key-value structures, we define a separate symbol `Card` with data-holding symbols `CardLabel` and `CardValue`. Since it is not bound to `LabJournal`, we can reuse it as a separate component elsewhere:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For rendering key-value structures, we define a separate symbol `Card` with data-holding symbols `CardLabel` and `CardValue`. Since it is not bound to `LabJournal`, we can reuse it as a separate component elsewhere:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+
+ClearAll[Card];
+
+Card[_]  := "Undefined pattern";
+Card[__] := "Undefined patterns";
+
+Card[CardLabel[LabelContent_], CardValue[ValueContent_]] := With[{},
+  <div class="thz-item">
+    <div class="thz-label"><LabelContent/></div>
+    <div class="thz-value"><ValueContent/></div>
+  </div>
+];
+
+Card[CardLabel[LabelContent_], CardValue[ValueContent__]] := Card[CardLabel[LabelContent], CardValue[ToStringRiffle[{ValueContent}]]]
+
+Card[CardLabel[LabelContent__], CardValue[ValueContent__]] := Card[CardLabel[ToStringRiffle[{LabelContent}]], CardValue[ToStringRiffle[{ValueContent}]]]
+
+Card[CardLabel[LabelContent__], CardValue[ValueContent_]] := Card[CardLabel[ToStringRiffle[{LabelContent}]], CardValue[ValueContent]]
+
+CardLabel /: ToString[c_CardLabel,   WLXForm] := c;
+CardValue /: ToString[c_CardValue, WLXForm] := c;
+
+SetAttributes[Card, Orderless];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We've also handled different patterns—for instance, when `CardValue` has multiple arguments passed to it while `CardLabel` does not. This can be done elegantly using Wolfram Language pattern matching. Now, let's combine both components to create a nice header for our report using Markdown cells:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We've also handled different patterns—for instance, when `CardValue` has multiple arguments passed to it while `CardLabel` does not. This can be done elegantly using Wolfram Language pattern matching. Now, let's combine both components to create a nice header for our report using Markdown cells:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+<LabJournal 
+  Title={"Lab Journal"} 
+  Subtitle={"Sample: ATR370"}
+  Tags={{"Optics", "THZ"}}
+>
+  <Card>
+    <CardLabel>Resolution</CardLabel>
+    <CardValue>0.33 cm<sup>2</sup></CardValue>
+  </Card>
+  <Card>
+    <CardLabel>User</CardLabel>
+    <CardValue>Persephone</CardValue>
+  </Card>
+</LabJournal>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="thz-lab-journal"><div class="thz-header"><div class="thz-title">Lab Journal</div><div class="thz-subtitle">Sample: ATR370</div></div><div class="thz-grid"><div class="thz-item"><div class="thz-label">Resolution</div><div class="thz-value">0.33 cm
+<sup >2</sup></div></div>
+<div class="thz-item"><div class="thz-label">User</div><div class="thz-value">Persephone</div></div><div class="thz-item"><div class="thz-label">Date</div><div class="thz-value">Sat 24 Oct 2026 10:10:09</div></div></div><div class="thz-footer"><div class="thz-tag">Optics</div>
+<div class="thz-tag">THZ</div></div></div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+As we mentioned, you can still use `Card` as a standalone component:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+As we mentioned, you can still use `Card` as a standalone component:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+<Card>
+  <CardLabel>Parameter</CardLabel>
+  <CardValue>11.2</CardValue>
+</Card>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<div class="thz-item"><div class="thz-label">Parameter</div><div class="thz-value">11.2</div></div>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

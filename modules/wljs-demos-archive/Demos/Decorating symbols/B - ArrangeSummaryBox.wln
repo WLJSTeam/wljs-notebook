@@ -1,173 +1,209 @@
-<|"Notebook" -> <|"Controller" -> "df2e9d8a-8ba8-4ae7-93b2-5e2bd01e1924", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2543], 
-   "FocusedCellSelection" -> {66, 65}, "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "0d535344-5ddd-4d08-969c-a13cb0491358", 
-   "Objects" -> <|"749e4a01-6e34-43ec-a9e4-c76608aeedc6" -> 
-      <|"Public" -> Hold[Graphics[{RGBColor[1, Rational[1, 3], 
-            Rational[1, 3]], Disk[{0, 0}, 1], RGBColor[1, 0, 0], 
-           Disk[{0, 0}, 0.8]}, ImageSize -> {50, 50}, ImagePadding -> None, 
-          Controls -> False, PlotRange -> {{-1, 1}, {-1, 1}}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Decorating symbols/B - ArrangeSummaryBox.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "ArrangeSummaryBox", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2550]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## ArrangeSummaryBox\nThis is a default \
-display structure in Wolfram Language shared across many symbols like \
-`ColorData`, `NumericArray`, `ByteArray`, and many more, which keeps the \
-original expression hidden and instead shows some stats or details about the \
-content.\n\nFor example, we have a symbol with information inside its \
-arguments:", "Display" -> "codemirror", 
-    "Hash" -> "a500d2f2-9782-4ea3-872c-0fa61591d8ac", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "## ArrangeSummaryBox\nThis is a default display structure in \
-Wolfram Language shared across many symbols like `ColorData`, `NumericArray`, \
-`ByteArray`, and many more, which keeps the original expression hidden and \
-instead shows some stats or details about the content.\n\nFor example, we \
-have a symbol with information inside its arguments:", 
-    "Display" -> "markdown", "Hash" -> 
-     "443d4830-b1e4-4c8f-b232-8111cf6d9b64", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> 
-     "specialSymbol[<|\"Date\" -> Now, \"Color\" -> Red, \"State\" -> \
-True|>]", "Display" -> "codemirror", 
-    "Hash" -> "c0d2bc1b-c621-42d8-97bd-30128a7a84fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> ".md\nLet's decorate it:", "Display" -> "codemirror", 
-    "Hash" -> "ecee2401-8d69-4206-8826-ab01f49f8574", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "Let's decorate it:", "Display" -> "markdown", 
-    "Hash" -> "466a073b-ab65-4209-909c-6b4f114a0c04", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "specialSymbol /: MakeBoxes[obj : \
-specialSymbol[asc_Association], StandardForm] := \n    Module[{above},\n      \
-  above = { \n          {BoxForm`SummaryItem[{\"Date: \", asc[\"Date\"]}]},\n \
-         {BoxForm`SummaryItem[{\"Color: \", asc[\"Color\"]}]}, \n          \
-{BoxForm`SummaryItem[{\"State: \", asc[\"State\"]}]}\n        };\n\n        \
-BoxForm`ArrangeSummaryBox[\n           specialSymbol, (* Head *)\n           \
-obj,           (* Input expression *)\n           None,          (* Icon *)\n \
-          above,         (* Summary content *)\n           Null\n        ]\n  \
-  ];", "Display" -> "codemirror", "Hash" -> 
-     "102d05d9-3ff5-4e15-819a-2b444c9c0c23", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> ".md\nThe result looks like this:", "Display" -> "codemirror", 
-    "Hash" -> "45fe2b3c-0ef2-424d-9013-60ac0528973b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "The result looks like this:", "Display" -> "markdown", 
-    "Hash" -> "81c6a39d-6e06-4b59-ba8b-d82d5662bf54", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> 
-     "specialSymbol[<|\"Date\" -> Now, \"Color\" -> Red, \"State\" -> \
-True|>]", "Display" -> "codemirror", 
-    "Hash" -> "73f1d86c-c5c1-440e-b895-bc1fa811bf92", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "specialSymbol[(*VB[*) <|\"Date\" -> DateObject[{2026, 2, 2, \
-12, 59, 29.968165`8.229235132444929}, \"Instant\", \"Gregorian\", 1.], \
-\"Color\" -> RGBColor[1, 0, 0], \"State\" -> True|> \
-(*,*)(*\"1:eJzFU0uPmzAQTt+PS4+VemoPPvQSgXkEeuOZh0IWcIg2eyobHEQD9tY42vAf+6NqQ7\
-rdSj30JVWC8cw34/lG38jvrmm6fzQajdo3wrj0FFLWfHQYy0mJC3Rsmpx1At4/kDWvhAkZJTwgxaZ\
-i/JjXQ+KxMDNaF72zogQPPWW0rFr+vaiPHsro9T2+M8+c42ZT4Vv0VOT8nOMPb4fal8IERcUpk+kf\
-KYfohTBZuvTxjhYYvRcYgBaAzsYFhitOAG0ByJ4X15/wjkt04kIFmgB68Pyr0hi2jOyxbVqqaQBTs\
-cYQ2lAzVA3qum6LRhNflAAI56TlOeHCG+IpwyVlVU4GRB2L28DwB+5+CO9ulN6BKtAcvDit1xGNUb\
-OqtlOHGmWGtlfNjYHMm25fhxW6NNJd0Cbu9PK0WGbb4FAm1kGLFQBDF0UBX2XE7SJ/vo5mSRexTGn\
-ZPCsPThBEcXYLNF9+cqR73Ia/OesySCzlTI81Rs+lg/PigtRdj67ZEf/uAp+JnEdryv50g19GP99g\
-OnX7vgJTezkV5dvxD4WeET32ktU0T2IHJ95soe3aSdwh6/O29HzBE14lbhn5xAkcvcritPxfIiP+F\
-8/kjvgXhmufyLef1y3+CuonCmk=\"*)(*]VB*)]", "Display" -> "codemirror", 
-    "Hash" -> "d1453f10-8596-4055-a4e6-aa1f4b558eee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> ".md\n:::note\nThis is still a valid input expression unless \
-it was too large, in which case it will be indicated by a label: \"Data is on \
-Kernel\". This means that you can still evaluate it in the current session, \
-but the data is not stored in the notebook and will be lost if you restart \
-the evaluation kernel.\n:::", "Display" -> "codemirror", 
-    "Hash" -> "87256b05-a3a9-4055-ac32-d548f24c75bb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> ":::note\nThis is still a valid input expression unless it was \
-too large, in which case it will be indicated by a label: \"Data is on \
-Kernel\". This means that you can still evaluate it in the current session, \
-but the data is not stored in the notebook and will be lost if you restart \
-the evaluation kernel.\n:::", "Display" -> "markdown", 
-    "Hash" -> "a0c0d538-48f8-48e4-9549-ff47cd14c94e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> ".md\nNow add an icon based on the \"Color\" field. Note that \
-the icon can only be `Image`, `Image3D`, `Graphics`, `Graphics3D`, `None`, or \
-any __frontend symbol__:", "Display" -> "codemirror", 
-    "Hash" -> "b561fbb9-fff9-43cc-b6da-da809d6f1ff5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "Now add an icon based on the \"Color\" field. Note that the \
-icon can only be `Image`, `Image3D`, `Graphics`, `Graphics3D`, `None`, or any \
-__frontend symbol__:", "Display" -> "markdown", 
-    "Hash" -> "0ebbeb55-fb1d-4196-8a63-795fb117f50a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "specialSymbol /: MakeBoxes[obj : \
-specialSymbol[asc_Association], StandardForm] := \n    Module[{above, \
-icon},\n        above = { \n          {BoxForm`SummaryItem[{\"Date: \", \
-asc[\"Date\"]}]},\n          {BoxForm`SummaryItem[{\"Color: \", \
-asc[\"Color\"]}]}, \n          {BoxForm`SummaryItem[{\"State: \", \
-asc[\"State\"]}]}\n        };\n\n        icon = Graphics[{\n          \
-Lighter[asc[\"Color\"]], Disk[{0,0}, 1],\n          asc[\"Color\"], \
-Disk[{0,0}, 0.8]\n        }, \n          ImageSize -> {50, 50}, \n          \
-ImagePadding -> None, \n          Controls -> False,\n          PlotRange -> \
-{{-1,1},{-1,1}}\n        ];\n\n        BoxForm`ArrangeSummaryBox[\n           \
-specialSymbol,\n           obj,\n           icon,\n           above,\n        \
-   Null\n        ]\n    ];", "Display" -> "codemirror", 
-    "Hash" -> "387018cd-738e-4f59-9cfd-bc9f1aa0cab3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> 
-     "specialSymbol[<|\"Date\" -> Now, \"Color\" -> Red, \"State\" -> \
-True|>]", "Display" -> "codemirror", 
-    "Hash" -> "309c02eb-e267-4deb-b1ca-1dc2ab5229ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>, 
-   <|"Data" -> "specialSymbol[(*VB[*) <|\"Date\" -> DateObject[{2026, 2, 2, \
-13, 0, 28.890894`8.21333596238609}, \"Instant\", \"Gregorian\", 1.], \
-\"Color\" -> RGBColor[1, 0, 0], \"State\" -> True|> \
-(*,*)(*\"1:eJzFVMmOm0AQdfblEimXSDklUvqQgy3oBgy5sXmT8bDY1nhOaUMbMQZ60rQ19j/mo9\
-JtHMeHHLJJkaC66lVR9XgleL+m8eZRp9Np3grj0P2AsuqzzRiuc5Ilu6rC7CDgzQNZ80qYAaM19+t\
-sWTC+w2WbeH2R8Pck3XG8LknyQcB9zSIaVtSuQZDW1RBJu1gg3bRvGIqJCclSo2XwWJhp0fC25Tl6\
-KKM3F+xOrMacVMuC3CdPRc7DnHx619a+FMbPCk6ZTP/oNqJl1kYvhFnEU4+kNCPJR4EBaAJoLx2gO\
-+IE0BKA7Hm1viUpl2jfgQo0AHTh6VaRMIoMzJ5pKaalAfFCPagihHTLgMg0FAv0PVEBIBzXDcc1F1\
-4bDxnJKStw3SJqTzwMdK+dfKTgnokcHagCZJPJfj4PaJhUs2I1tKmeL5LVTXWnJ8bdYVMOiuRaj1O\
-/iZzh9X4yXaz8bR6ZWxQKngMnCXw+W9TOIfDG82AUwYDZ9wEbR/nWFpMHWhhHAHnykqQupuve8qRL\
-K7GUM96JDT+XDsHZVV0ejuic7cjvLvCZyLm0pOxPN/i18/MNxkPn2Fdg6lFQRfl+/EOpR7UWutFsi\
-KPQJpE7mqC06YeHxPyyyl1PCnsTOXng1bZva8UijPP/JXLC/+IzOQ/+BXLNE/lDwGVDvgF54Rea\"\
-*)(*]VB*)]", "Display" -> "codemirror", 
-    "Hash" -> "b6795a2a-9fea-4dc8-a73c-1f8db8283172", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50b88b24-f1c9-4680-8f86-349c68100d4c"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## ArrangeSummaryBox
+This is a default display structure in Wolfram Language shared across many symbols like `ColorData`, `NumericArray`, `ByteArray`, and many more, which keeps the original expression hidden and instead shows some stats or details about the content.
+
+For example, we have a symbol with information inside its arguments:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## ArrangeSummaryBox
+This is a default display structure in Wolfram Language shared across many symbols like `ColorData`, `NumericArray`, `ByteArray`, and many more, which keeps the original expression hidden and instead shows some stats or details about the content.
+
+For example, we have a symbol with information inside its arguments:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+specialSymbol[<|"Date" -> Now, "Color" -> Red, "State" -> True|>]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's decorate it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's decorate it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+specialSymbol /: MakeBoxes[obj : specialSymbol[asc_Association], StandardForm] := 
+    Module[{above},
+        above = { 
+          {BoxForm`SummaryItem[{"Date: ", asc["Date"]}]},
+          {BoxForm`SummaryItem[{"Color: ", asc["Color"]}]}, 
+          {BoxForm`SummaryItem[{"State: ", asc["State"]}]}
+        };
+
+        BoxForm`ArrangeSummaryBox[
+           specialSymbol, (* Head *)
+           obj,           (* Input expression *)
+           None,          (* Icon *)
+           above,         (* Summary content *)
+           Null
+        ]
+    ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The result looks like this:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The result looks like this:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+specialSymbol[<|"Date" -> Now, "Color" -> Red, "State" -> True|>]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+specialSymbol[(*VB[*) <|"Date" -> DateObject[{2026, 2, 2, 12, 59, 29.968165`8.229235132444929}, "Instant", "Gregorian", 1.], "Color" -> RGBColor[1, 0, 0], "State" -> True|> (*,*)(*"1:eJzFU0uPmzAQTt+PS4+VemoPPvQSgXkEeuOZh0IWcIg2eyobHEQD9tY42vAf+6NqQ7rdSj30JVWC8cw34/lG38jvrmm6fzQajdo3wrj0FFLWfHQYy0mJC3Rsmpx1At4/kDWvhAkZJTwgxaZi/JjXQ+KxMDNaF72zogQPPWW0rFr+vaiPHsro9T2+M8+c42ZT4Vv0VOT8nOMPb4fal8IERcUpk+kfKYfohTBZuvTxjhYYvRcYgBaAzsYFhitOAG0ByJ4X15/wjkt04kIFmgB68Pyr0hi2jOyxbVqqaQBTscYQ2lAzVA3qum6LRhNflAAI56TlOeHCG+IpwyVlVU4GRB2L28DwB+5+CO9ulN6BKtAcvDit1xGNUbOqtlOHGmWGtlfNjYHMm25fhxW6NNJd0Cbu9PK0WGbb4FAm1kGLFQBDF0UBX2XE7SJ/vo5mSRexTGnZPCsPThBEcXYLNF9+cqR73Ia/OesySCzlTI81Rs+lg/PigtRdj67ZEf/uAp+JnEdryv50g19GP99gOnX7vgJTezkV5dvxD4WeET32ktU0T2IHJ95soe3aSdwh6/O29HzBE14lbhn5xAkcvcritPxfIiP+F8/kjvgXhmufyLef1y3+CuonCmk="*)(*]VB*)]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+This is still a valid input expression unless it was too large, in which case it will be indicated by a label: "Data is on Kernel". This means that you can still evaluate it in the current session, but the data is not stored in the notebook and will be lost if you restart the evaluation kernel.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+This is still a valid input expression unless it was too large, in which case it will be indicated by a label: "Data is on Kernel". This means that you can still evaluate it in the current session, but the data is not stored in the notebook and will be lost if you restart the evaluation kernel.
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now add an icon based on the "Color" field. Note that the icon can only be `Image`, `Image3D`, `Graphics`, `Graphics3D`, `None`, or any __frontend symbol__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now add an icon based on the "Color" field. Note that the icon can only be `Image`, `Image3D`, `Graphics`, `Graphics3D`, `None`, or any __frontend symbol__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+specialSymbol /: MakeBoxes[obj : specialSymbol[asc_Association], StandardForm] := 
+    Module[{above, icon},
+        above = { 
+          {BoxForm`SummaryItem[{"Date: ", asc["Date"]}]},
+          {BoxForm`SummaryItem[{"Color: ", asc["Color"]}]}, 
+          {BoxForm`SummaryItem[{"State: ", asc["State"]}]}
+        };
+
+        icon = Graphics[{
+          Lighter[asc["Color"]], Disk[{0,0}, 1],
+          asc["Color"], Disk[{0,0}, 0.8]
+        }, 
+          ImageSize -> {50, 50}, 
+          ImagePadding -> None, 
+          Controls -> False,
+          PlotRange -> {{-1,1},{-1,1}}
+        ];
+
+        BoxForm`ArrangeSummaryBox[
+           specialSymbol,
+           obj,
+           icon,
+           above,
+           Null
+        ]
+    ];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+specialSymbol[<|"Date" -> Now, "Color" -> Red, "State" -> True|>]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+specialSymbol[(*VB[*) <|"Date" -> DateObject[{2026, 2, 2, 13, 0, 28.890894`8.21333596238609}, "Instant", "Gregorian", 1.], "Color" -> RGBColor[1, 0, 0], "State" -> True|> (*,*)(*"1:eJzFVMmOm0AQdfblEimXSDklUvqQgy3oBgy5sXmT8bDY1nhOaUMbMQZ60rQ19j/mo9JtHMeHHLJJkaC66lVR9XgleL+m8eZRp9Np3grj0P2AsuqzzRiuc5Ilu6rC7CDgzQNZ80qYAaM19+tsWTC+w2WbeH2R8Pck3XG8LknyQcB9zSIaVtSuQZDW1RBJu1gg3bRvGIqJCclSo2XwWJhp0fC25Tl6KKM3F+xOrMacVMuC3CdPRc7DnHx619a+FMbPCk6ZTP/oNqJl1kYvhFnEU4+kNCPJR4EBaAJoLx2gO+IE0BKA7Hm1viUpl2jfgQo0AHTh6VaRMIoMzJ5pKaalAfFCPagihHTLgMg0FAv0PVEBIBzXDcc1F14bDxnJKStw3SJqTzwMdK+dfKTgnokcHagCZJPJfj4PaJhUs2I1tKmeL5LVTXWnJ8bdYVMOiuRaj1O/iZzh9X4yXaz8bR6ZWxQKngMnCXw+W9TOIfDG82AUwYDZ9wEbR/nWFpMHWhhHAHnykqQupuve8qRLK7GUM96JDT+XDsHZVV0ejuic7cjvLvCZyLm0pOxPN/i18/MNxkPn2Fdg6lFQRfl+/EOpR7UWutFsiKPQJpE7mqC06YeHxPyyyl1PCnsTOXng1bZva8UijPP/JXLC/+IzOQ/+BXLNE/lDwGVDvgF54Rea"*)(*]VB*)]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 749e4a01-6e34-43ec-a9e4-c76608aeedc6
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{RGBColor[1, Rational[1, 3], Rational[1, 3]], Disk[{0, 0}, 1], RGBColor[1, 0, 0], Disk[{0, 0}, 0.8]}, ImageSize -> {50, 50}, ImagePadding -> None, Controls -> False, PlotRange -> {{-1, 1}, {-1, 1}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

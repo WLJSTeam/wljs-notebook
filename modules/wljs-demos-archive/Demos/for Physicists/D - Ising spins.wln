@@ -1,117 +1,204 @@
-<|"Notebook" -> <|"Controller" -> "db53e23c-c631-4543-a691-b942e4d8dc68", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2142], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "3f8ea1a6-198f-45ec-a210-8f072066b6f1", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/for Physicists/C - Ising spins.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "1D Ising model", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2131]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# 1D Ising model\n`8000` spins coupled via \
-superexchange interaction\n\nEvaluate __initialization cells first__!", 
-    "Display" -> "codemirror", "Hash" -> 
-     "264c5d5b-a090-40fd-8bca-4ad14ecdfeea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "# 1D Ising model\n`8000` spins coupled via superexchange \
-interaction\n\nEvaluate __initialization cells first__!", 
-    "Display" -> "markdown", "Hash" -> 
-     "0ea1c9e5-a466-4a9d-8d23-42addf68d206", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> ".md\nEnergy function and local updates", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7233d25d-c19c-40b5-8644-373bf70c16c7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "Energy function and local updates", "Display" -> "markdown", 
-    "Hash" -> "69190547-c47b-46dd-b08b-7a753995988b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "energy[i_, h_, e_] := {1,-1} h + e {1,-1} (\n  If[i < \
-Length[spins], spins[[i+1]], 0] + If[i > 1, spins[[i-1]], 0]\n)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6e14275b-a9e6-4036-b873-cfda3a909dd0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "localUpdate[T_, params__] := With[{i = RandomInteger[{1, \
-Length[spins]}]},\n  spins[[i]] = First@RandomChoice[Exp[-energy[i, \
-params]/T] -> {1,-1}, 1];\n] ", "Display" -> "codemirror", 
-    "Hash" -> "00f8c683-60c4-456b-a574-cb9b7ff6b4d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> ".md\nUI elements", "Display" -> "codemirror", 
-    "Hash" -> "aa97591b-9558-4d94-b231-1c39d1ea03e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "UI elements", "Display" -> "markdown", 
-    "Hash" -> "75a3a8ff-7fff-4d1e-905e-90dc6080d4a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "running = InputCheckbox[False, \"Label\"->\"Run\"];\nreset = \
-InputButton[\"Reset\"];\nparams = InputGroup[<|\n  \"T\"->InputRange[0.1, 2, \
-0.1, 0.1, \"Label\"->\"Temperature\"],\n  \"H\"->InputRange[-0.5,0.5,0.01,0, \
-\"Label\"->\"Field\"],\n  \"J\"->InputRange[-1,1,0.5,-1, \
-\"Label\"->\"J\"]\n|>];\n\nEventHandler[reset, Function[Null,\n  mag = {0};\n \
- spins = RandomChoice[{-1,1}, 20 20 20] // N;\n  exposed = Take[spins, 20 \
-20];  \n]];\n\nreset // EventFire;\n\nEventHandler[params, Function[data,\n  \
-defaults = data;\n]]; \n\nparams // EventFire;\n\nEventHandler[running, \
-Function[state,\n  If[state,\n    EventHandler[\"isingRun\", Function[Null,\n \
-     Do[localUpdate@@defaults, {i, 10000}];\n      exposed = Take[spins, 20 \
-20];\n      mag = Append[mag, Mean[spins]];  \n    ]];\n    \
-EventFire[\"isingRun\", Null];\n  ,\n    EventRemove[\"isingRun\"];\n  \
-]\n]];\n", "Display" -> "codemirror", 
-    "Hash" -> "355f9b7e-a349-49ef-9817-a1ec5f4e1c52", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> ".md\nOutput panel. __Evaluate this cell very last__", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c506ed05-4c0f-4853-93f6-4f526d05591b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "Output panel. __Evaluate this cell very last__", 
-    "Display" -> "markdown", "Hash" -> 
-     "78452be4-cac1-448a-bbdc-3f72237387be", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "{Graphics[{(*VB[*)(RGBColor[0.922526, 0.385626, \
-0.209179])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeGJAIcndyzs/JLwouTyxJzghJzS3I\
-SSxJTWMGyXMgyRdd2frNLrT1rX3RHf35ayTW3bAv0nBnXJRw7JQ9AKbfHmU=\"*)(*]VB*),\n  \
-Table[With[{index = i + 20 (j-1)},\n    Disk[{i,j}, Offload[0.2 + 0.1 \
-exposed[[index]] ] ]\n  ], {i, 20}, {j, 20}],\n  \n  \
-AnimationFrameListener[exposed // Offload, \"Event\"->\"isingRun\"] \n}], \
-ListLinePlotly[mag // Offload] } // Row ", "Display" -> "codemirror", 
-    "Hash" -> "61918736-ab0e-41dc-bc21-e29449e9d65f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> ".md\nControl panel", "Display" -> "codemirror", 
-    "Hash" -> "cfd118a3-f3d5-4118-8491-0a7419411b38", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "Control panel", "Display" -> "markdown", 
-    "Hash" -> "659796f2-d685-4663-9201-f9c6398a0118", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>, 
-   <|"Data" -> "running\nreset \nparams ", "Display" -> "codemirror", 
-    "Hash" -> "c30171d6-20ee-4a57-a928-ac26c7a4d640", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False, 
-      "InitGroup" -> True|>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f9d7f9a0-9637-40d3-8fc7-c30152758263"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# 1D Ising model
+`8000` spins coupled via superexchange interaction
+
+Evaluate __initialization cells first__!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# 1D Ising model
+`8000` spins coupled via superexchange interaction
+
+Evaluate __initialization cells first__!
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Energy function and local updates
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Energy function and local updates
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+energy[i_, h_, e_] := {1,-1} h + e {1,-1} (
+  If[i < Length[spins], spins[[i+1]], 0] + If[i > 1, spins[[i-1]], 0]
+)
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+localUpdate[T_, params__] := With[{i = RandomInteger[{1, Length[spins]}]},
+  spins[[i]] = First@RandomChoice[Exp[-energy[i, params]/T] -> {1,-1}, 1];
+] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+UI elements
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+UI elements
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+running = InputCheckbox[False, "Label"->"Run"];
+reset = InputButton["Reset"];
+params = InputGroup[<|
+  "T"->InputRange[0.1, 2, 0.1, 0.1, "Label"->"Temperature"],
+  "H"->InputRange[-0.5,0.5,0.01,0, "Label"->"Field"],
+  "J"->InputRange[-1,1,0.5,-1, "Label"->"J"]
+|>];
+
+EventHandler[reset, Function[Null,
+  mag = {0};
+  spins = RandomChoice[{-1,1}, 20 20 20] // N;
+  exposed = Take[spins, 20 20];  
+]];
+
+reset // EventFire;
+
+EventHandler[params, Function[data,
+  defaults = data;
+]]; 
+
+params // EventFire;
+
+EventHandler[running, Function[state,
+  If[state,
+    EventHandler["isingRun", Function[Null,
+      Do[localUpdate@@defaults, {i, 10000}];
+      exposed = Take[spins, 20 20];
+      mag = Append[mag, Mean[spins]];  
+    ]];
+    EventFire["isingRun", Null];
+  ,
+    EventRemove["isingRun"];
+  ]
+]];
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Output panel. __Evaluate this cell very last__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Output panel. __Evaluate this cell very last__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{Graphics[{(*VB[*)(RGBColor[0.922526, 0.385626, 0.209179])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeGJAIcndyzs/JLwouTyxJzghJzS3ISSxJTWMGyXMgyRdd2frNLrT1rX3RHf35ayTW3bAv0nBnXJRw7JQ9AKbfHmU="*)(*]VB*),
+  Table[With[{index = i + 20 (j-1)},
+    Disk[{i,j}, Offload[0.2 + 0.1 exposed[[index]] ] ]
+  ], {i, 20}, {j, 20}],
+  
+  AnimationFrameListener[exposed // Offload, "Event"->"isingRun"] 
+}], ListLinePlotly[mag // Offload] } // Row 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Control panel
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Control panel
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+running
+reset 
+params 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

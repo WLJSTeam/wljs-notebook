@@ -490,74 +490,9 @@ Type: Output
 
 
 %--------------------------------%Objects%--------------------------------%
-Key: 874f0eef-496c-4c85-b07a-36a970e76671
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[Sound[{SoundNote["C5", {0, 0.4}, "Piano"], SoundNote["D5", {0.5, 0.9}, "Guitar"], SoundNote["E5", {1, 1.4}, "Violin"], SoundNote["F5", {1.5, 1.9}, "Flute"], SoundNote["G5", {2, 2.4}, "Trumpet"], SoundNote["A5", {2.5, 2.9}, "Organ"], SoundNote["B5", {3, 3.4}, "Marimba"], SoundNote["C6", {3.5, 3.9}, "Vibraphone"], SoundNote["C2", {4, 4.4}, "Drums"], SoundNote["C5", {4.5, 4.9}, "AMSynth"], SoundNote["D5", {5, 5.4}, "FMSynth"], SoundNote["E5", {5.5, 5.9}, "DuoSynth"], SoundNote["F4", {6, 6.4}, "MembraneSynth"], SoundNote["G5", {6.5, 6.9}, "MetalSynth"]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: c6e66bd4-10e6-4b9c-ad38-8bd62d23182f
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[Sound[{SoundNote["C6", {0, 0.035}, "MetalSynth"], SoundNote["C6", {Rational[3, 14], 0.24928571428571428}, "MetalSynth"], SoundNote["C6", {Rational[3, 7], 0.4635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[9, 14], 0.6778571428571429}, "MetalSynth"], SoundNote["C6", {Rational[6, 7], 0.8921428571428571}, "MetalSynth"], SoundNote["C6", {Rational[15, 14], 1.1064285714285713}, "MetalSynth"], SoundNote["C6", {Rational[9, 7], 1.3207142857142857}, "MetalSynth"], SoundNote["C6", {Rational[3, 2], 1.535}, "MetalSynth"], SoundNote["C6", {Rational[12, 7], 1.749285714285714}, "MetalSynth"], SoundNote["C6", {Rational[27, 14], 1.9635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[15, 7], 2.177857142857143}, "MetalSynth"], SoundNote["C6", {Rational[33, 14], 2.3921428571428573}, "MetalSynth"], SoundNote["C6", {Rational[18, 7], 2.6064285714285718}, "MetalSynth"], SoundNote["C6", {Rational[39, 14], 2.8207142857142857}, "MetalSynth"], SoundNote["C6", {3, 3.035}, "MetalSynth"], SoundNote["C6", {Rational[45, 14], 3.2492857142857146}, "MetalSynth"], SoundNote["C1", {0, 0.18}, "Drums"], SoundNote["C1", {Rational[9, 14], 0.822857142857143}, "Drums"], SoundNote["C1", {Rational[9, 7], 1.4657142857142857}, "Drums"], SoundNote["C1", {Rational[33, 14], 2.5371428571428574}, "Drums"], SoundNote["C1", {3, 3.18}, "Drums"], SoundNote["C2", {Rational[6, 7], 0.9771428571428571}, "Drums"], SoundNote["C2", {Rational[18, 7], 2.6914285714285717}, "Drums"], SoundNote["C2", {0, Rational[9, 14]}, "FMSynth"], SoundNote["G1", {Rational[9, 14], Rational[6, 7]}, "FMSynth"], SoundNote["Bb1", {Rational[9, 7], Rational[12, 7]}, "FMSynth"], SoundNote["C2", {Rational[12, 7], Rational[33, 14]}, "FMSynth"], SoundNote["Eb2", {Rational[18, 7], Rational[24, 7]}, "FMSynth"]}]]|>
-
-%-------------------------------------------------------------------------%
 Key: 074d84fa-302e-4a85-86ae-f4c97a662039
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "B"]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: cb812bdc-e83b-4478-857c-c464895ff8c2
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[ViewDecorator["RawText", StringJoin["C", 4]]]|>
-
-%-------------------------------------------------------------------------%
-Key: d8695157-12fe-492a-b4e6-1c279851cb56
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: cdbc4a8e-bab1-4d24-bf7b-9b95f209cff4
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[Sound[{SoundNote[0, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[0, {0.5, 0.9989583333333333}, "Piano", "SoundVolume" -> 1], SoundNote[4, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {1.25, 1.7489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[11, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[2, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[6, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[13, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[5, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[12, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[-12, {0, 0.9989583333333333}, "FMSynth", "SoundVolume" -> 1], SoundNote[-10, {1, 1.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-5, {1.5, 1.7489583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-3, {1.75, 1.9989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[2, {2.25, 2.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {2.5, 3.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {3.5, 3.9989583333333334}, "FMSynth", "SoundVolume" -> 1]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: 5714202d-8951-4caf-a12e-d04b0fc0ba77
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}, True]]|>
-
-%-------------------------------------------------------------------------%
-Key: f19e9c25-cb51-4392-9201-abb4b3dd64b0
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: 3fe3d6aa-11ae-4418-ac0f-2e07979721f9
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: 3a388c18-2a8a-47ce-84b8-2f2f4af3a48f
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 74]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: 649aa158-ce91-44a8-8c11-c51fdd3d39ae
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "E", "MIDINumber" -> 76]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: 572c90bd-88cd-4175-ba26-b25edb2060f9
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Key" -> "D", "Accidental" -> 0]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
-
-%-------------------------------------------------------------------------%
-Key: 39ce4115-07f4-47e8-8f32-e3f81611b94a
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]]}]]|>
-
-%-------------------------------------------------------------------------%
-Key: d67de79a-1d9f-4fb1-958f-64c56f1439c2
-%-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "E"]]}]]|>
 
 %-------------------------------------------------------------------------%
 Key: 11a9ca2e-9de3-48c5-9775-c84f903d2a7d
@@ -565,19 +500,19 @@ Key: 11a9ca2e-9de3-48c5-9775-c84f903d2a7d
 <|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "E"]]}]]|>
 
 %-------------------------------------------------------------------------%
-Key: 8e283008-f6c1-4430-971b-21ec2d351a39
+Key: 39ce4115-07f4-47e8-8f32-e3f81611b94a
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]]}]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]]}]]|>
 
 %-------------------------------------------------------------------------%
-Key: 5b4d4d60-600d-4674-90c8-3f5d12b9d307
+Key: 3a388c18-2a8a-47ce-84b8-2f2f4af3a48f
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]]}]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 74]]}]]|>
 
 %-------------------------------------------------------------------------%
-Key: cdc83c81-3654-433a-8155-8fca28c67d79
+Key: 3fe3d6aa-11ae-4418-ac0f-2e07979721f9
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]]}]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}]]|>
 
 %-------------------------------------------------------------------------%
 Key: 41c44ea0-8d96-4f22-bace-e610420ed84a
@@ -590,9 +525,74 @@ Key: 493b9f4e-a22b-47fc-8b6e-203b7089e7fb
 <|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57]]}]]|>
 
 %-------------------------------------------------------------------------%
+Key: 5714202d-8951-4caf-a12e-d04b0fc0ba77
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]]}, True]]|>
+
+%-------------------------------------------------------------------------%
+Key: 572c90bd-88cd-4175-ba26-b25edb2060f9
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Key" -> "D", "Accidental" -> 0]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: 5b4d4d60-600d-4674-90c8-3f5d12b9d307
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 649aa158-ce91-44a8-8c11-c51fdd3d39ae
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "F"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Key" -> "E", "MIDINumber" -> 76]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 874f0eef-496c-4c85-b07a-36a970e76671
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote["C5", {0, 0.4}, "Piano"], SoundNote["D5", {0.5, 0.9}, "Guitar"], SoundNote["E5", {1, 1.4}, "Violin"], SoundNote["F5", {1.5, 1.9}, "Flute"], SoundNote["G5", {2, 2.4}, "Trumpet"], SoundNote["A5", {2.5, 2.9}, "Organ"], SoundNote["B5", {3, 3.4}, "Marimba"], SoundNote["C6", {3.5, 3.9}, "Vibraphone"], SoundNote["C2", {4, 4.4}, "Drums"], SoundNote["C5", {4.5, 4.9}, "AMSynth"], SoundNote["D5", {5, 5.4}, "FMSynth"], SoundNote["E5", {5.5, 5.9}, "DuoSynth"], SoundNote["F4", {6, 6.4}, "MembraneSynth"], SoundNote["G5", {6.5, 6.9}, "MetalSynth"]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8e283008-f6c1-4430-971b-21ec2d351a39
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]]}]]|>
+
+%-------------------------------------------------------------------------%
 Key: b365d628-7dd7-4b26-9f1b-cfd3d3fdd17b
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: c3240386-9bb7-4aa2-b7b8-8fbb82dc17b8
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 55]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
+
+%-------------------------------------------------------------------------%
+Key: c6e66bd4-10e6-4b9c-ad38-8bd62d23182f
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote["C6", {0, 0.035}, "MetalSynth"], SoundNote["C6", {Rational[3, 14], 0.24928571428571428}, "MetalSynth"], SoundNote["C6", {Rational[3, 7], 0.4635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[9, 14], 0.6778571428571429}, "MetalSynth"], SoundNote["C6", {Rational[6, 7], 0.8921428571428571}, "MetalSynth"], SoundNote["C6", {Rational[15, 14], 1.1064285714285713}, "MetalSynth"], SoundNote["C6", {Rational[9, 7], 1.3207142857142857}, "MetalSynth"], SoundNote["C6", {Rational[3, 2], 1.535}, "MetalSynth"], SoundNote["C6", {Rational[12, 7], 1.749285714285714}, "MetalSynth"], SoundNote["C6", {Rational[27, 14], 1.9635714285714285}, "MetalSynth"], SoundNote["C6", {Rational[15, 7], 2.177857142857143}, "MetalSynth"], SoundNote["C6", {Rational[33, 14], 2.3921428571428573}, "MetalSynth"], SoundNote["C6", {Rational[18, 7], 2.6064285714285718}, "MetalSynth"], SoundNote["C6", {Rational[39, 14], 2.8207142857142857}, "MetalSynth"], SoundNote["C6", {3, 3.035}, "MetalSynth"], SoundNote["C6", {Rational[45, 14], 3.2492857142857146}, "MetalSynth"], SoundNote["C1", {0, 0.18}, "Drums"], SoundNote["C1", {Rational[9, 14], 0.822857142857143}, "Drums"], SoundNote["C1", {Rational[9, 7], 1.4657142857142857}, "Drums"], SoundNote["C1", {Rational[33, 14], 2.5371428571428574}, "Drums"], SoundNote["C1", {3, 3.18}, "Drums"], SoundNote["C2", {Rational[6, 7], 0.9771428571428571}, "Drums"], SoundNote["C2", {Rational[18, 7], 2.6914285714285717}, "Drums"], SoundNote["C2", {0, Rational[9, 14]}, "FMSynth"], SoundNote["G1", {Rational[9, 14], Rational[6, 7]}, "FMSynth"], SoundNote["Bb1", {Rational[9, 7], Rational[12, 7]}, "FMSynth"], SoundNote["C2", {Rational[12, 7], Rational[33, 14]}, "FMSynth"], SoundNote["Eb2", {Rational[18, 7], Rational[24, 7]}, "FMSynth"]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cb812bdc-e83b-4478-857c-c464895ff8c2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[ViewDecorator["RawText", StringJoin["C", 4]]]|>
+
+%-------------------------------------------------------------------------%
+Key: cdbc4a8e-bab1-4d24-bf7b-9b95f209cff4
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote[0, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[0, {0.5, 0.9989583333333333}, "Piano", "SoundVolume" -> 1], SoundNote[4, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[7, {1.25, 1.7489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[11, {0, 0.49895833333333334}, "Piano", "SoundVolume" -> 1], SoundNote[2, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[6, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1, 1.2489583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[9, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[13, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {1.75, 1.9989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[16, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[5, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[12, {2.5, 3.4989583333333334}, "Piano", "SoundVolume" -> 1], SoundNote[-12, {0, 0.9989583333333333}, "FMSynth", "SoundVolume" -> 1], SoundNote[-10, {1, 1.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-5, {1.5, 1.7489583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-3, {1.75, 1.9989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[2, {2.25, 2.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {2.5, 3.4989583333333334}, "FMSynth", "SoundVolume" -> 1], SoundNote[-22, {3.5, 3.9989583333333334}, "FMSynth", "SoundVolume" -> 1]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: cdc83c81-3654-433a-8155-8fca28c67d79
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: d67de79a-1d9f-4fb1-958f-64c56f1439c2
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "A"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 5, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 5, "Key" -> "E"]]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: d8695157-12fe-492a-b4e6-1c279851cb56
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]]}]]|>
 
 %-------------------------------------------------------------------------%
 Key: e39fa298-ee89-41be-973f-a0e7526d5be2
@@ -600,9 +600,9 @@ Key: e39fa298-ee89-41be-973f-a0e7526d5be2
 <|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]]}]]|>
 
 %-------------------------------------------------------------------------%
-Key: c3240386-9bb7-4aa2-b7b8-8fbb82dc17b8
+Key: f19e9c25-cb51-4392-9201-abb4b3dd64b0
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[MusicScore[Association["VoiceList" -> {MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 67]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicChord[Association["Name" -> "Major Seventh", "Root" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "F"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]], MusicVoice[Association["MeasureList" -> {MusicMeasure[Association["NoteList" -> {MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "C", "MIDINumber" -> 48]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 50]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "G", "MIDINumber" -> 55]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "A", "MIDINumber" -> 57]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]], MusicMeasure[Association["NoteList" -> {MusicRest[Association["Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "D", "Name" -> "D"]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 8], "BeatDuration" -> Rational[1, 4], "Beats" -> Rational[1, 2]]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 2], "BeatDuration" -> Rational[1, 4], "Beats" -> 2]]]], MusicNote[Association["Pitch" -> MusicPitch[Association["Accidental" -> 0, "Key" -> "D", "MIDINumber" -> 38]], "Duration" -> MusicDuration[Association["Duration" -> Rational[1, 4], "BeatDuration" -> Rational[1, 4], "Beats" -> 1]]]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]], "Instrument" -> "Organ"]]}, "TimeSignature" -> MusicTimeSignature[Association["Numerator" -> 4, "Denominator" -> 4, "BeatLength" -> 1]]]]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`Sound`Internal`PianoViewBox[{MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "C"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "E"]], MusicPitch[Association["Accidental" -> 1, "Octave" -> 4, "Key" -> "G"]], MusicPitch[Association["Accidental" -> 0, "Octave" -> 4, "Key" -> "B"]]}]]|>
 
 %-----------------------------%EndOfObjects%------------------------------%
 

@@ -1,487 +1,261 @@
-<|"Notebook" -> <|"Controller" -> "df0914b2-fcaa-488f-967b-b1da16d2cae9", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2297], 
-   "FocusedCellSelection" -> {305, 304}, "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "5f636e14-7481-4f5a-a0a6-66aa95dbe89e", 
-   "Objects" -> <|"257a24f7-dd30-4df3-a6e4-f0b1592c6aaf" -> 
-      <|"Public" -> Hold[Graphics[{Annotation[
-            {{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[
-                   2], RGBColor[1, 0, 0]], Line[{{2.040816326530612*^-8, 
-                    2.040816326530612*^-8}, {0.00030671792055962676, 
-                    0.00030671792055962676}, {0.0006134154329559882, 
-                    0.0006134154329559882}, {0.0012268104577487112, 
-                    0.0012268104577487112}, {0.002453600507334157, 
-                    0.002453600507334157}, {0.004907180606505049, 
-                    0.004907180606505049}, {0.009814340804846833, 
-                    0.009814340804846833}, {0.0196286612015304, 
-                    0.0196286612015304}, {0.040908357085458646, 
-                    0.040908357085458646}, {0.06077788357015209, 
-                    0.06077788357015209}, {0.08025764881887605, 
-                    0.08025764881887605}, {0.10138846915816112, 
-                    0.10138846915816112}, {0.12110912009821138, 
-                    0.12110912009821138}, {0.1424808261288228, 
-                    0.1424808261288228}, {0.16346277092346467, 
-                    0.16346277092346467}, {0.18303454631887175, 
-                    0.18303454631887175}, {0.20425737680483996, 
-                    0.20425737680483996}, {0.22407003789157337, 
-                    0.22407003789157337}, {0.24349293774233727, 
-                    0.24349293774233727}, {0.26456689268366235, 
-                    0.26456689268366235}, {0.2842306782257526, 
-                    0.2842306782257526}, {0.305545518858404, 
-                    0.305545518858404}, {0.32647059825508584, 
-                    0.32647059825508584}, {0.34598550825253294, 
-                    0.34598550825253294}, {0.3671514733405411, 
-                    0.3671514733405411}, {0.3869072690293145, 
-                    0.3869072690293145}, {0.408314119808649, 
-                    0.408314119808649}, {0.429331209352014, 
-                    0.429331209352014}, {0.44893812949614426, 
-                    0.44893812949614426}, {0.47019610473083556, 
-                    0.47019610473083556}, {0.4900439105662921, 
-                    0.4900439105662921}, {0.5095019551657791, 
-                    0.5095019551657791}, {0.5306110548558273, 
-                    0.5306110548558273}, {0.5503099851466406, 
-                    0.5503099851466406}, {0.5716599705280151, 
-                    0.5716599705280151}, {0.5926201946734201, 
-                    0.5926201946734201}, {0.6121702494195903, 
-                    0.6121702494195903}, {0.6333713592563216, 
-                    0.6333713592563216}, {0.6531622996938181, 
-                    0.6531622996938181}, {0.6725634788953451, 
-                    0.6725634788953451}, {0.6936157131874332, 
-                    0.6936157131874332}, {0.7132577780802865, 
-                    0.7132577780802865}, {0.7345508980637009, 
-                    0.7345508980637009}, {0.7544338486478805, 
-                    0.7544338486478805}, {0.7739270379960906, 
-                    0.7739270379960906}, {0.7950712824348619, 
-                    0.7950712824348619}, {0.8148053574743983, 
-                    0.8148053574743983}, {0.8361904876044959, 
-                    0.8361904876044959}, {0.857185856498624, 
-                    0.857185856498624}, {0.8767710559935172, 
-                    0.8767710559935172}, {0.8980073105789717, 
-                    0.8980073105789717}, {0.9178333957651912, 
-                    0.9178333957651912}, {0.9372697197154413, 
-                    0.9372697197154413}, {0.9583570987562524, 
-                    0.9583570987562524}, {0.9780343083978288, 
-                    0.9780343083978288}, {0.9783775220102351, 
-                    0.9783775220102351}, {0.9787207356226415, 
-                    0.9787207356226415}, {0.9794071628474543, 
-                    0.9794071628474543}, {0.9807800172970798, 
-                    0.9807800172970798}, {0.9835257261963308, 
-                    0.9835257261963308}, {0.9890171439948328, 
-                    0.9890171439948328}, {0.9893603576072392, 
-                    0.9893603576072392}, {0.9897035712196455, 
-                    0.9897035712196455}, {0.9903899984444582, 
-                    0.9903899984444582}, {0.9917628528940837, 
-                    0.9917628528940837}, {0.9945085617933347, 
-                    0.9945085617933347}, {0.9948517754057411, 
-                    0.9948517754057411}, {0.9951949890181475, 
-                    0.9951949890181475}, {0.9958814162429602, 
-                    0.9958814162429602}, {0.9972542706925858, 
-                    0.9972542706925858}, {0.9975974843049922, 
-                    0.9975974843049922}, {0.9979406979173985, 
-                    0.9979406979173985}, {0.9986271251422112, 
-                    0.9986271251422112}, {0.9989703387546176, 
-                    0.9989703387546176}, {0.999313552367024, 
-                    0.999313552367024}, {0.9996567659794304, 
-                    0.9996567659794304}, {0.9999999795918367, 
-                    0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, 
-            Association["HighlightElements" -> Association["Label" -> 
-                {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], 
-             "LayoutOptions" -> Association["PanelPlotLayout" -> 
-                Association[], "PlotRange" -> {{0, 1}, {0, 
-                  0.9999999795918367}}, "Frame" -> {{False, False}, 
-                 {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> 
-                {360, 360/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], 
-                  RGBColor[1, 0, 0]]}, "HighlightLabelingFunctions" -> 
-                Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[
-                     #1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), 
-                 "ScalingFunctions" -> {{Identity, Identity}, {Identity, 
-                    Identity}}], "Primitives" -> {}, "GCFlag" -> False], 
-             "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, 
-               "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> 
-                False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999795918367}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>, "1dbd49aa-3a6d-465b-8ded-7fe1857e36cc" -> 
-      <|"Public" -> Hold[Graphics[{Annotation[
-            {{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[
-                   2], RGBColor[0, 0, 1]], Line[{{2.040816326530612*^-8, 
-                    2.040816326530612*^-8}, {0.00030671792055962676, 
-                    0.00030671792055962676}, {0.0006134154329559882, 
-                    0.0006134154329559882}, {0.0012268104577487112, 
-                    0.0012268104577487112}, {0.002453600507334157, 
-                    0.002453600507334157}, {0.004907180606505049, 
-                    0.004907180606505049}, {0.009814340804846833, 
-                    0.009814340804846833}, {0.0196286612015304, 
-                    0.0196286612015304}, {0.040908357085458646, 
-                    0.040908357085458646}, {0.06077788357015209, 
-                    0.06077788357015209}, {0.08025764881887605, 
-                    0.08025764881887605}, {0.10138846915816112, 
-                    0.10138846915816112}, {0.12110912009821138, 
-                    0.12110912009821138}, {0.1424808261288228, 
-                    0.1424808261288228}, {0.16346277092346467, 
-                    0.16346277092346467}, {0.18303454631887175, 
-                    0.18303454631887175}, {0.20425737680483996, 
-                    0.20425737680483996}, {0.22407003789157337, 
-                    0.22407003789157337}, {0.24349293774233727, 
-                    0.24349293774233727}, {0.26456689268366235, 
-                    0.26456689268366235}, {0.2842306782257526, 
-                    0.2842306782257526}, {0.305545518858404, 
-                    0.305545518858404}, {0.32647059825508584, 
-                    0.32647059825508584}, {0.34598550825253294, 
-                    0.34598550825253294}, {0.3671514733405411, 
-                    0.3671514733405411}, {0.3869072690293145, 
-                    0.3869072690293145}, {0.408314119808649, 
-                    0.408314119808649}, {0.429331209352014, 
-                    0.429331209352014}, {0.44893812949614426, 
-                    0.44893812949614426}, {0.47019610473083556, 
-                    0.47019610473083556}, {0.4900439105662921, 
-                    0.4900439105662921}, {0.5095019551657791, 
-                    0.5095019551657791}, {0.5306110548558273, 
-                    0.5306110548558273}, {0.5503099851466406, 
-                    0.5503099851466406}, {0.5716599705280151, 
-                    0.5716599705280151}, {0.5926201946734201, 
-                    0.5926201946734201}, {0.6121702494195903, 
-                    0.6121702494195903}, {0.6333713592563216, 
-                    0.6333713592563216}, {0.6531622996938181, 
-                    0.6531622996938181}, {0.6725634788953451, 
-                    0.6725634788953451}, {0.6936157131874332, 
-                    0.6936157131874332}, {0.7132577780802865, 
-                    0.7132577780802865}, {0.7345508980637009, 
-                    0.7345508980637009}, {0.7544338486478805, 
-                    0.7544338486478805}, {0.7739270379960906, 
-                    0.7739270379960906}, {0.7950712824348619, 
-                    0.7950712824348619}, {0.8148053574743983, 
-                    0.8148053574743983}, {0.8361904876044959, 
-                    0.8361904876044959}, {0.857185856498624, 
-                    0.857185856498624}, {0.8767710559935172, 
-                    0.8767710559935172}, {0.8980073105789717, 
-                    0.8980073105789717}, {0.9178333957651912, 
-                    0.9178333957651912}, {0.9372697197154413, 
-                    0.9372697197154413}, {0.9583570987562524, 
-                    0.9583570987562524}, {0.9780343083978288, 
-                    0.9780343083978288}, {0.9783775220102351, 
-                    0.9783775220102351}, {0.9787207356226415, 
-                    0.9787207356226415}, {0.9794071628474543, 
-                    0.9794071628474543}, {0.9807800172970798, 
-                    0.9807800172970798}, {0.9835257261963308, 
-                    0.9835257261963308}, {0.9890171439948328, 
-                    0.9890171439948328}, {0.9893603576072392, 
-                    0.9893603576072392}, {0.9897035712196455, 
-                    0.9897035712196455}, {0.9903899984444582, 
-                    0.9903899984444582}, {0.9917628528940837, 
-                    0.9917628528940837}, {0.9945085617933347, 
-                    0.9945085617933347}, {0.9948517754057411, 
-                    0.9948517754057411}, {0.9951949890181475, 
-                    0.9951949890181475}, {0.9958814162429602, 
-                    0.9958814162429602}, {0.9972542706925858, 
-                    0.9972542706925858}, {0.9975974843049922, 
-                    0.9975974843049922}, {0.9979406979173985, 
-                    0.9979406979173985}, {0.9986271251422112, 
-                    0.9986271251422112}, {0.9989703387546176, 
-                    0.9989703387546176}, {0.999313552367024, 
-                    0.999313552367024}, {0.9996567659794304, 
-                    0.9996567659794304}, {0.9999999795918367, 
-                    0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, 
-            Association["HighlightElements" -> Association["Label" -> 
-                {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], 
-             "LayoutOptions" -> Association["PanelPlotLayout" -> 
-                Association[], "PlotRange" -> {{0, 1}, {0, 
-                  0.9999999795918367}}, "Frame" -> {{False, False}, 
-                 {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> 
-                {360, 360/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], 
-                  RGBColor[0, 0, 1]]}, "HighlightLabelingFunctions" -> 
-                Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[
-                     #1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), 
-                 "ScalingFunctions" -> {{Identity, Identity}, {Identity, 
-                    Identity}}], "Primitives" -> {}, "GCFlag" -> False], 
-             "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, 
-               "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> 
-                False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, 
-           AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, 
-             {Automatic, Automatic}}, GridLines -> {None, None}, 
-           PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> 
-            {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Frame -> {{False, False}, {False, False}}, FrameLabel -> 
-            {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], Method -> 
-            {"DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "ScalingFunctions" -> None, "CoordinatesToolOptions" -> 
-              {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], 
-                  (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotRange -> {{0, 1}, 
-             {0, 0.9999999795918367}}, PlotRangeClipping -> True, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, 
-             Automatic}}]]|>|>, "Path" -> "/Users/kirill/Github/wolfram-js-fr\
-ontend/modules/wljs-demos-archive/Demos/Decorating symbols/A - Basics.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Decorating symbols", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2296]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Decorating symbols\nSymbol decorations or \
-syntax sugar are one of the main selling points of Wolfram Mathematica and \
-WLJS Notebook. Basic math helpers such as fractions, square roots, and \
-integrals significantly increase the readability of input and output \
-expressions:", "Display" -> "codemirror", 
-    "Hash" -> "2aeb2343-686b-4d93-8083-e06654d80897", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "# Decorating symbols\nSymbol decorations or syntax sugar are \
-one of the main selling points of Wolfram Mathematica and WLJS Notebook. \
-Basic math helpers such as fractions, square roots, and integrals \
-significantly increase the readability of input and output expressions:", 
-    "Display" -> "markdown", "Hash" -> 
-     "a8b77802-1caf-4d05-a316-e32eacffd8ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "(*TB[*)Integrate[(*|*)(*FB[*)((Sin[x])(*,*)/(*,*)((*SqB[*)Sqr\
-t[2](*]SqB*)))(*]FB*)(*|*), \
-(*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMR\
-pIgVSLgl5hSnAgCQTg44*)(*]TB*)", "Display" -> "codemirror", 
-    "Hash" -> "0c8f716e-3de9-4835-a5b8-28941bf34442", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nand this is how it actually looks like under-the-hood:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "07824ea9-f33b-4f27-b3b8-e56410405e18", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "and this is how it actually looks like under-the-hood:", 
-    "Display" -> "markdown", "Hash" -> 
-     "907bb4e5-4c78-4a1a-9f28-bf8cb22ca424", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Integrate[Sin[x]/Sqrt[2], x]", "Display" -> "codemirror", 
-    "Hash" -> "3c1b8304-b6e4-48c0-9375-dc6dea1d5c09", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nMoreover, any `Plot` or `Image` is in fact just a fancy \
-output form of corresponding `Graphics` and `Image` expressions and is fully \
-editable! That's why the difference between input and output Wolfram Language \
-cells in WLJS is rather vague.", "Display" -> "codemirror", 
-    "Hash" -> "54a992dc-2c98-49fe-91b1-909f933da85d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Moreover, any `Plot` or `Image` is in fact just a fancy \
-output form of corresponding `Graphics` and `Image` expressions and is fully \
-editable! That's why the difference between input and output Wolfram Language \
-cells in WLJS is rather vague.", "Display" -> "markdown", 
-    "Hash" -> "72317741-5863-4862-95ca-7002c531085b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"257a24f7-dd30-4df3-a6e4-f0b1592c6aaf\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5maJ\
-xqZpJnrpqQYG+iapKQZ6yaapZrophkkGZpaGiWbJSamAQCEhxX7\"*)(*]VB*) /. \
-{Red->Blue}", "Display" -> "codemirror", 
-    "Hash" -> "81876c5b-d289-410a-9c63-0f4806b0c907", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"1dbd49aa-3a6d-465b-8ded-7fe1857e36cc\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6Ykp\
-ZhYJibqGieapeiamJkm6VqkpKbomqelGlqYmqcamyUnAwCUIBZs\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "16287d65-ba13-42e1-b78e-2c04b1198861", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nEvery symbol has its `InputForm` - this is how the \
-expression can be typed by a user or serialized to a file, for example:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "03c5a5ba-d0ec-4e18-9017-0d0ed661dad1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Every symbol has its `InputForm` - this is how the expression \
-can be typed by a user or serialized to a file, for example:", 
-    "Display" -> "markdown", "Hash" -> 
-     "c2d78c68-265b-4dd1-8a4c-131d4ecfaf3b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "ListPlot[{0,1,2}] // Short ", "Display" -> "codemirror", 
-    "Hash" -> "ee6169f7-40cb-4f05-acb3-44e0cd5b32ef", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Graphics[{{},Annotation[{{{Directive[PointSize[0.012833333333\
-333334`],(*VB[*)(RGBColor[0.24, 0.6, \
-0.8])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3c\
-s7PyS8q2iHX+jpwxzn7ImMweGxfNGsmCLy0BwBgKxmG\"*)(*]VB*),AbsoluteThickness[2]],\
-Point[{{1.`,0.`},{2.`,1.`},{3.`,2.`}}]}}},<<1>>],<<0>>},<<0>>]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "78a48032-b21b-4ed9-9a89-5f28b852c2cd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nThen every symbol has its output form - how it is \
-displayed in the cell or within other expressions. In WLJS we generally have \
-2 output forms:\n\n- `StandardForm`\n- `WLXForm`", "Display" -> "codemirror", 
-    "Hash" -> "0edfaf87-058e-4353-93c3-0f02d38723aa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Then every symbol has its output form - how it is displayed \
-in the cell or within other expressions. In WLJS we generally have 2 output \
-forms:\n\n- `StandardForm`\n- `WLXForm`", "Display" -> "markdown", 
-    "Hash" -> "1ae43713-d9ca-44ad-8afd-b85bd77d5cef", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nIf the output form is not defined, `InputForm` will be \
-used. That's why all user-defined symbols look as they are in the output \
-cells.\n\nOn output, expressions are processed with `MakeBoxes` - an internal \
-symbol which is applied to any output. To define a form of expression, use \
-the `TagSet` pattern:", "Display" -> "codemirror", 
-    "Hash" -> "48bf86b9-f1bb-49bc-816a-78b2c78e1f7a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "If the output form is not defined, `InputForm` will be used. \
-That's why all user-defined symbols look as they are in the output \
-cells.\n\nOn output, expressions are processed with `MakeBoxes` - an internal \
-symbol which is applied to any output. To define a form of expression, use \
-the `TagSet` pattern:", "Display" -> "markdown", 
-    "Hash" -> "f7ff6a46-857e-4564-b624-2477e7f79f27", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "MySymbol /: MakeBoxes[MySymbol, StandardForm] := \
-\"6\"\nMySymbol /: MakeBoxes[MySymbol, WLXForm]      := \"9\"", 
-    "Display" -> "codemirror", "Hash" -> 
-     "23fe4555-109c-4432-bf13-5f80e4213aa7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nDepending on where this MySymbol is placed, it will look \
-and work differently:", "Display" -> "codemirror", 
-    "Hash" -> "55604cd2-dea5-4c93-b347-bf8d1632d2bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "Depending on where this MySymbol is placed, it will look and \
-work differently:", "Display" -> "markdown", 
-    "Hash" -> "b1b51dc9-d11a-4409-a3af-660301c95f4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".slide\n\n## Have a look at\n\n<MySymbol/>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8b74b88f-c763-459a-8d08-445e71c2ddb8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "<dummy >\n## Have a look at\n\n9</dummy>", 
-    "Display" -> "slide", "Hash" -> "faa02246-8c9f-4ade-b6b3-292bea4782bb", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nor", "Display" -> "codemirror", 
-    "Hash" -> "d6e0f191-f47f-4633-8c59-61e378ab7630", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "or", "Display" -> "markdown", 
-    "Hash" -> "dbab0fde-113a-4dbb-b998-84c7d900f409", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "MySymbol", "Display" -> "codemirror", 
-    "Hash" -> "ba8f7995-6206-4f29-9a5d-424e4c54a134", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "6", "Display" -> "codemirror", 
-    "Hash" -> "00519dd8-00f2-4dca-9c28-8e5e35a3c0ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> ".md\nThe given example for `StandardForm` alters not only the \
-appearance but also the output content: `MySymbol` is gone. This is rather \
-discouraged in Wolfram Language, when you cannot retrieve the original \
-expression from the output. To address this issue, we shall delve deeper into \
-how to alter the displayed expression without changing the underlying one.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8ddcc872-e5b8-49f2-91ba-7fc00199a677", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>, 
-   <|"Data" -> "The given example for `StandardForm` alters not only the \
-appearance but also the output content: `MySymbol` is gone. This is rather \
-discouraged in Wolfram Language, when you cannot retrieve the original \
-expression from the output. To address this issue, we shall delve deeper into \
-how to alter the displayed expression without changing the underlying one.", 
-    "Display" -> "markdown", "Hash" -> 
-     "5e396251-0d26-4864-84b3-7a3574b58e36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e25ca4-16a6-49ff-8298-04147a5d4650"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Decorating symbols
+Symbol decorations or syntax sugar are one of the main selling points of Wolfram Mathematica and WLJS Notebook. Basic math helpers such as fractions, square roots, and integrals significantly increase the readability of input and output expressions:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Decorating symbols
+Symbol decorations or syntax sugar are one of the main selling points of Wolfram Mathematica and WLJS Notebook. Basic math helpers such as fractions, square roots, and integrals significantly increase the readability of input and output expressions:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*TB[*)Integrate[(*|*)(*FB[*)((Sin[x])(*,*)/(*,*)((*SqB[*)Sqrt[2](*]SqB*)))(*]FB*)(*|*), (*|*)x(*|*)](*|*)(*1:eJxTTMoPSmNmYGAo5gUSYZmp5S6pyflFiSX5RcGcQBHPvJLUdCA3NZMRpIgVSLgl5hSnAgCQTg44*)(*]TB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+and this is how it actually looks like under-the-hood:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+and this is how it actually looks like under-the-hood:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Integrate[Sin[x]/Sqrt[2], x]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Moreover, any `Plot` or `Image` is in fact just a fancy output form of corresponding `Graphics` and `Image` expressions and is fully editable! That's why the difference between input and output Wolfram Language cells in WLJS is rather vague.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Moreover, any `Plot` or `Image` is in fact just a fancy output form of corresponding `Graphics` and `Image` expressions and is fully editable! That's why the difference between input and output Wolfram Language cells in WLJS is rather vague.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["257a24f7-dd30-4df3-a6e4-f0b1592c6aaf"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5maJxqZpJnrpqQYG+iapKQZ6yaapZrophkkGZpaGiWbJSamAQCEhxX7"*)(*]VB*) /. {Red->Blue}
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["1dbd49aa-3a6d-465b-8ded-7fe1857e36cc"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG6YkpZhYJibqGieapeiamJkm6VqkpKbomqelGlqYmqcamyUnAwCUIBZs"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Every symbol has its `InputForm` - this is how the expression can be typed by a user or serialized to a file, for example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Every symbol has its `InputForm` - this is how the expression can be typed by a user or serialized to a file, for example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ListPlot[{0,1,2}] // Short 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+Graphics[{{},Annotation[{{{Directive[PointSize[0.012833333333333334`],(*VB[*)(RGBColor[0.24, 0.6, 0.8])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBHn4PCQNGaQPAeQCHJ3cs7PyS8q2iHX+jpwxzn7ImMweGxfNGsmCLy0BwBgKxmG"*)(*]VB*),AbsoluteThickness[2]],Point[{{1.`,0.`},{2.`,1.`},{3.`,2.`}}]}}},<<2>>],<<1>>},<<1>>]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Then every symbol has its output form - how it is displayed in the cell or within other expressions. In WLJS we generally have 2 output forms:
+
+- `StandardForm`
+- `WLXForm`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Then every symbol has its output form - how it is displayed in the cell or within other expressions. In WLJS we generally have 2 output forms:
+
+- `StandardForm`
+- `WLXForm`
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+If the output form is not defined, `InputForm` will be used. That's why all user-defined symbols look as they are in the output cells.
+
+On output, expressions are processed with `MakeBoxes` - an internal symbol which is applied to any output. To define a form of expression, use the `TagSet` pattern:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+If the output form is not defined, `InputForm` will be used. That's why all user-defined symbols look as they are in the output cells.
+
+On output, expressions are processed with `MakeBoxes` - an internal symbol which is applied to any output. To define a form of expression, use the `TagSet` pattern:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MySymbol /: MakeBoxes[MySymbol, StandardForm] := "6"
+MySymbol /: MakeBoxes[MySymbol, WLXForm]      := "9"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Depending on where this MySymbol is placed, it will look and work differently:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Depending on where this MySymbol is placed, it will look and work differently:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+## Have a look at
+
+<MySymbol/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+## Have a look at
+
+9</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+or
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+or
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MySymbol
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+6
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The given example for `StandardForm` alters not only the appearance but also the output content: `MySymbol` is gone. This is rather discouraged in Wolfram Language, when you cannot retrieve the original expression from the output. To address this issue, we shall delve deeper into how to alter the displayed expression without changing the underlying one.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The given example for `StandardForm` alters not only the appearance but also the output content: `MySymbol` is gone. This is rather discouraged in Wolfram Language, when you cannot retrieve the original expression from the output. To address this issue, we shall delve deeper into how to alter the displayed expression without changing the underlying one.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 1dbd49aa-3a6d-465b-8ded-7fe1857e36cc
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[2], RGBColor[0, 0, 1]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], RGBColor[0, 0, 1]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 257a24f7-dd30-4df3-a6e4-f0b1592c6aaf
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{Annotation[{{{{}, {}, Annotation[{Directive[Opacity[1], AbsoluteThickness[2], RGBColor[1, 0, 0]], Line[{{2.040816326530612*^-8, 2.040816326530612*^-8}, {0.00030671792055962676, 0.00030671792055962676}, {0.0006134154329559882, 0.0006134154329559882}, {0.0012268104577487112, 0.0012268104577487112}, {0.002453600507334157, 0.002453600507334157}, {0.004907180606505049, 0.004907180606505049}, {0.009814340804846833, 0.009814340804846833}, {0.0196286612015304, 0.0196286612015304}, {0.040908357085458646, 0.040908357085458646}, {0.06077788357015209, 0.06077788357015209}, {0.08025764881887605, 0.08025764881887605}, {0.10138846915816112, 0.10138846915816112}, {0.12110912009821138, 0.12110912009821138}, {0.1424808261288228, 0.1424808261288228}, {0.16346277092346467, 0.16346277092346467}, {0.18303454631887175, 0.18303454631887175}, {0.20425737680483996, 0.20425737680483996}, {0.22407003789157337, 0.22407003789157337}, {0.24349293774233727, 0.24349293774233727}, {0.26456689268366235, 0.26456689268366235}, {0.2842306782257526, 0.2842306782257526}, {0.305545518858404, 0.305545518858404}, {0.32647059825508584, 0.32647059825508584}, {0.34598550825253294, 0.34598550825253294}, {0.3671514733405411, 0.3671514733405411}, {0.3869072690293145, 0.3869072690293145}, {0.408314119808649, 0.408314119808649}, {0.429331209352014, 0.429331209352014}, {0.44893812949614426, 0.44893812949614426}, {0.47019610473083556, 0.47019610473083556}, {0.4900439105662921, 0.4900439105662921}, {0.5095019551657791, 0.5095019551657791}, {0.5306110548558273, 0.5306110548558273}, {0.5503099851466406, 0.5503099851466406}, {0.5716599705280151, 0.5716599705280151}, {0.5926201946734201, 0.5926201946734201}, {0.6121702494195903, 0.6121702494195903}, {0.6333713592563216, 0.6333713592563216}, {0.6531622996938181, 0.6531622996938181}, {0.6725634788953451, 0.6725634788953451}, {0.6936157131874332, 0.6936157131874332}, {0.7132577780802865, 0.7132577780802865}, {0.7345508980637009, 0.7345508980637009}, {0.7544338486478805, 0.7544338486478805}, {0.7739270379960906, 0.7739270379960906}, {0.7950712824348619, 0.7950712824348619}, {0.8148053574743983, 0.8148053574743983}, {0.8361904876044959, 0.8361904876044959}, {0.857185856498624, 0.857185856498624}, {0.8767710559935172, 0.8767710559935172}, {0.8980073105789717, 0.8980073105789717}, {0.9178333957651912, 0.9178333957651912}, {0.9372697197154413, 0.9372697197154413}, {0.9583570987562524, 0.9583570987562524}, {0.9780343083978288, 0.9780343083978288}, {0.9783775220102351, 0.9783775220102351}, {0.9787207356226415, 0.9787207356226415}, {0.9794071628474543, 0.9794071628474543}, {0.9807800172970798, 0.9807800172970798}, {0.9835257261963308, 0.9835257261963308}, {0.9890171439948328, 0.9890171439948328}, {0.9893603576072392, 0.9893603576072392}, {0.9897035712196455, 0.9897035712196455}, {0.9903899984444582, 0.9903899984444582}, {0.9917628528940837, 0.9917628528940837}, {0.9945085617933347, 0.9945085617933347}, {0.9948517754057411, 0.9948517754057411}, {0.9951949890181475, 0.9951949890181475}, {0.9958814162429602, 0.9958814162429602}, {0.9972542706925858, 0.9972542706925858}, {0.9975974843049922, 0.9975974843049922}, {0.9979406979173985, 0.9979406979173985}, {0.9986271251422112, 0.9986271251422112}, {0.9989703387546176, 0.9989703387546176}, {0.999313552367024, 0.999313552367024}, {0.9996567659794304, 0.9996567659794304}, {0.9999999795918367, 0.9999999795918367}}]}, "Charting`Private`Tag#1"]}}, {}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 1}, {0, 0.9999999795918367}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {360, 360/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[Opacity[1], AbsoluteThickness[2], RGBColor[1, 0, 0]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> Plot, "GroupHighlight" -> False]], "DynamicHighlight"]}, {DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.05], Scaled[0.05]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "ScalingFunctions" -> None, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotRange -> {{0, 1}, {0, 0.9999999795918367}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

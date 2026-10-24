@@ -1,131 +1,234 @@
-<|"Notebook" -> <|"Controller" -> "1c018508-4aae-4a53-843e-6ba0a24a9928", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$6207], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "afa85330-e76e-447b-8a65-ecc4a34d4445", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/OpenCL/B - Shader Art Coding.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Shader Art Coding Demo", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$6203]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Shader Art Coding Demo\nThis is an \
-adaptation of [@kishimisu](https://www.shadertoy.com/view/mtyGWy) at \
-ShaderToy. A generative art using compute shaders. Please run initialization \
-cells and the last one in the notebook to see it in action", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e223a7ec-60f8-40ac-ae26-a7eee6fb2316", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "# Shader Art Coding Demo\nThis is an adaptation of \
-[@kishimisu](https://www.shadertoy.com/view/mtyGWy) at ShaderToy. A \
-generative art using compute shaders. Please run initialization cells and the \
-last one in the notebook to see it in action", "Display" -> "markdown", 
-    "Hash" -> "f0b5ee4c-1604-4442-b411-876e12c5574e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Needs[\"OpenCLLink`\"]", "Display" -> "codemirror", 
-    "Hash" -> "4289d32e-afe1-46e5-9a7f-35418f4c00bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> ".md\nShader code", "Display" -> "codemirror", 
-    "Hash" -> "6a8c9e2b-7a0c-4ac8-8139-9b7c89520ddd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Shader code", "Display" -> "markdown", 
-    "Hash" -> "04ff2c1e-aacc-471e-a789-36dfdd1d5ed7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "art.cl\n\nfloat3 palette( float t ) {\n    float3 a = \
-(float3)(0.5, 0.5, 0.5);\n    float3 b = (float3)(0.5, 0.5, 0.5);\n    float3 \
-c = (float3)(1.0, 1.0, 1.0);\n    float3 d = (float3)(0.263,0.416,0.557);\n\n \
-   return a + b*cos( 6.28318*(c*t+d) );\n}\n\ninline float2 fract(float2 x) \
-{\n  return x - floor(x);\n}\n\n//originally written \
-by\n//https://www.shadertoy.com/view/mtyGWy\n\n__kernel void render(\n  \
-__global uchar4* output, \n  const int width, \n  const int height,\n  float \
-time\n) {\n    unsigned int work_item_id = get_global_id(0);\n    \n    \
-unsigned int x_coord = work_item_id % width;\n    unsigned int y_coord = \
-work_item_id / width;\n\n    float2 uv = (float2)(2.0f*(float)x_coord / \
-(float)width - 1.0f, 2.0f*(float)y_coord / (float)height - 1.0f);  \n    \
-float2 uv0 = uv;\n    \n    float3 finalcolor = (float3)(0.0f, 0.0f, \
-0.0f);\n\n    for (float i = 0.0; i < 4.0; i++) {\n        uv = fract(uv * \
-1.5) - 0.5;\n\n        float d = length(uv) * exp(-length(uv0));\n\n        \
-float3 col = palette(length(uv0) + i*.4 + time*.4);\n\n        d = sin(d*8. + \
-time)/8.;\n        d = fabs(d);\n\n        d = pow(0.01 / d, 1.2);\n\n        \
-finalcolor += col * d;\n    }\n\n    //clamp to 8bits for each channel\n    \
-\n    uchar4 rgba;\n    rgba.x=(uchar)(finalcolor.x*255.0);\n    \
-rgba.y=(uchar)(finalcolor.y*255.0);\n    \
-rgba.z=(uchar)(finalcolor.z*255.0);\n    rgba.w=255;\n\n    \
-output[work_item_id] = rgba;\n}", "Display" -> "codemirror", 
-    "Hash" -> "6908b122-2810-431a-bce0-1431660c026d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> ".md\nAllocate memory", "Display" -> "codemirror", 
-    "Hash" -> "8d6dc2ea-46c7-497b-9fff-7f3d312e8fe1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Allocate memory", "Display" -> "markdown", 
-    "Hash" -> "777d2efd-49ce-432e-8797-439eb7c5cd89", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "image = OpenCLMemoryLoad[Table[{0, 0, 0, 0}, {i, 512}, {j, \
-512}], \"UnsignedByte[4]\"];", "Display" -> "codemirror", 
-    "Hash" -> "5c0ec3ac-eb9d-4939-8922-976f1d4a2c9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> ".md\nCompile", "Display" -> "codemirror", 
-    "Hash" -> "b8caec2e-6578-47f8-9f18-72833e62b504", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Compile", "Display" -> "markdown", 
-    "Hash" -> "9c1acb87-1b47-4abf-a43a-4f93d4484254", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "render = OpenCLFunctionLoad[File[\"art.cl\"], \n  \"render\", \
-{{\"UnsignedByte[4]\", _, \"Output\"}, _Integer, _Integer, \"Float\"}, 256, \
-\"ShellOutputFunction\"->Print];", "Display" -> "codemirror", 
-    "Hash" -> "dc785c87-ecb9-4822-9ae8-b5e6d396e631", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "OpenCLLink`Private`cGetProgramBuildLog[157893879,\"art.cl\",\
-\"-DUSING_OPENCL_FUNCTION=1 -DOPENCLLINK_USING_GENERIC -Dmint=int \
--DReal_t=double -DUSING_DOUBLE_PRECISIONQ=1\"]", "Display" -> "print", 
-    "Hash" -> "3e804e9a-46b5-4799-a05d-0d2d2eb3c5ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> ".md\nAnimation cycle\n\n__Run this one at the very last__", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1d3e34c0-1c84-4c2e-8e00-46124acb0bb4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Animation cycle\n\n__Run this one at the very last__", 
-    "Display" -> "markdown", "Hash" -> 
-     "d654a17b-3c21-441e-8127-1f3124d0238c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>, 
-   <|"Data" -> "Module[{buffer, t=0.0, handler},\n  handler = \
-Function[Null,\n    render[image, 512, 512, t, 512 512];\n    buffer = \
-NumericArray[image // OpenCLMemoryGet, \"UnsignedInteger8\"];\n    t += \
-0.1;\n  ];\n\n  handler[];\n\n  Image[buffer // Offload, \"Byte\", \
-Epilog->{\n    EventHandler[AnimationFrameListener[buffer // Offload], \
-handler]\n  }]\n]", "Display" -> "codemirror", 
-    "Hash" -> "df52605e-76ba-4a34-b1c1-45f041183702", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "82f183b4-70c1-4fff-96e9-917fd840548a"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Shader Art Coding Demo
+This is an adaptation of [@kishimisu](https://www.shadertoy.com/view/mtyGWy) at ShaderToy. A generative art using compute shaders. Please run initialization cells and the last one in the notebook to see it in action
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Shader Art Coding Demo
+This is an adaptation of [@kishimisu](https://www.shadertoy.com/view/mtyGWy) at ShaderToy. A generative art using compute shaders. Please run initialization cells and the last one in the notebook to see it in action
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+Needs["OpenCLLink`"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Shader code
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Shader code
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+art.cl
+
+float3 palette( float t ) {
+    float3 a = (float3)(0.5, 0.5, 0.5);
+    float3 b = (float3)(0.5, 0.5, 0.5);
+    float3 c = (float3)(1.0, 1.0, 1.0);
+    float3 d = (float3)(0.263,0.416,0.557);
+
+    return a + b*cos( 6.28318*(c*t+d) );
+}
+
+inline float2 fract(float2 x) {
+  return x - floor(x);
+}
+
+//originally written by
+//https://www.shadertoy.com/view/mtyGWy
+
+__kernel void render(
+  __global uchar4* output, 
+  const int width, 
+  const int height,
+  float time
+) {
+    unsigned int work_item_id = get_global_id(0);
+    
+    unsigned int x_coord = work_item_id % width;
+    unsigned int y_coord = work_item_id / width;
+
+    float2 uv = (float2)(2.0f*(float)x_coord / (float)width - 1.0f, 2.0f*(float)y_coord / (float)height - 1.0f);  
+    float2 uv0 = uv;
+    
+    float3 finalcolor = (float3)(0.0f, 0.0f, 0.0f);
+
+    for (float i = 0.0; i < 4.0; i++) {
+        uv = fract(uv * 1.5) - 0.5;
+
+        float d = length(uv) * exp(-length(uv0));
+
+        float3 col = palette(length(uv0) + i*.4 + time*.4);
+
+        d = sin(d*8. + time)/8.;
+        d = fabs(d);
+
+        d = pow(0.01 / d, 1.2);
+
+        finalcolor += col * d;
+    }
+
+    //clamp to 8bits for each channel
+    
+    uchar4 rgba;
+    rgba.x=(uchar)(finalcolor.x*255.0);
+    rgba.y=(uchar)(finalcolor.y*255.0);
+    rgba.z=(uchar)(finalcolor.z*255.0);
+    rgba.w=255;
+
+    output[work_item_id] = rgba;
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Allocate memory
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Allocate memory
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+image = OpenCLMemoryLoad[Table[{0, 0, 0, 0}, {i, 512}, {j, 512}], "UnsignedByte[4]"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Compile
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Compile
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+render = OpenCLFunctionLoad[File["art.cl"], 
+  "render", {{"UnsignedByte[4]", _, "Output"}, _Integer, _Integer, "Float"}, 256, "ShellOutputFunction"->Print];
+
+%-------------------------------------------------------------------------%
+Display: print
+Type: Output
+%-------------------------------------------------------------------------%
+OpenCLLink`Private`cGetProgramBuildLog[157893879,"art.cl","-DUSING_OPENCL_FUNCTION=1 -DOPENCLLINK_USING_GENERIC -Dmint=int -DReal_t=double -DUSING_DOUBLE_PRECISIONQ=1"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animation cycle
+
+__Run this one at the very last__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animation cycle
+
+__Run this one at the very last__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{buffer, t=0.0, handler},
+  handler = Function[Null,
+    render[image, 512, 512, t, 512 512];
+    buffer = NumericArray[image // OpenCLMemoryGet, "UnsignedInteger8"];
+    t += 0.1;
+  ];
+
+  handler[];
+
+  Image[buffer // Offload, "Byte", Epilog->{
+    EventHandler[AnimationFrameListener[buffer // Offload], handler]
+  }]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

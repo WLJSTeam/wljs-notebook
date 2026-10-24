@@ -734,6 +734,9 @@ Type: Input
 We added automatic File Explorer context-menu integration with a `New WLJS Notebook` entry. In addition, Quick Look is now available on macOS: press <kbd>Space</kbd> while a notebook file is selected.
 
 
+![](/attachments/Screenshot-2026-10-23-at-5.54.34%E2%80%AFPM-aae.png)
+
+
 ![](/attachments/image-265.png)
 
 %-------------------------------------------------------------------------%
@@ -742,6 +745,9 @@ Type: Output
 %-------------------------------------------------------------------------%
 ## Native Windows and macOS extensions
 We added automatic File Explorer context-menu integration with a `New WLJS Notebook` entry. In addition, Quick Look is now available on macOS: press <kbd >Space</kbd> while a notebook file is selected.
+
+
+![](/attachments/Screenshot-2026-10-23-at-5.54.34%E2%80%AFPM-aae.png)
 
 
 ![](/attachments/image-265.png)

@@ -90,7 +90,7 @@ function disconnectGraph() {
 function onAudioProcess() {
   const data = new Uint8Array(analyser.frequencyBinCount);
   analyser.getByteTimeDomainData(data);   
-  server.kernel.io.fire("audio", Array.from(data));
+  server.kernel.io.fire("audio", data);
 }
 
 async function requestMicrophoneAccess() {
@@ -241,32 +241,23 @@ Type: Input
 .md
 Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
 
+```
+const data = new Uint8Array(analyser.frequencyBinCount);
+analyser.getByteTimeDomainData(data);   
+server.kernel.io.fire("audio", data);
+```
+
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
 Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
 
-%-------------------------------------------------------------------------%
-Type: Input
-%-------------------------------------------------------------------------%
+```
 const data = new Uint8Array(analyser.frequencyBinCount);
 analyser.getByteTimeDomainData(data);   
-server.kernel.io.fire("audio", Array.from(data));
-
-%-------------------------------------------------------------------------%
-Props:
-  Hidden: true
-Type: Input
-%-------------------------------------------------------------------------%
-.md
-as a list of bytes in integer representation. Unfortunately, the JS->WL binary format is not yet available.
-
-%-------------------------------------------------------------------------%
-Display: markdown
-Type: Output
-%-------------------------------------------------------------------------%
-as a list of bytes in integer representation. Unfortunately, the JS->WL binary format is not yet available.
+server.kernel.io.fire("audio", data);
+```
 
 %-------------------------------------------------------------------------%
 Props:
@@ -306,7 +297,7 @@ Type: Input
 %-------------------------------------------------------------------------%
 Module[{line = {}},
   EventHandler["audio", Function[data,
-      line = Transpose[{Range[data//Length], data}];
+      line = Transpose[{Range[data//Length], data//Normal}];
   ]];
 
   Graphics[
@@ -335,10 +326,10 @@ Let's add fourier transform as well:
 Type: Input
 %-------------------------------------------------------------------------%
 Module[{line = {}, fft={}},
-    EventHandler["audio", Function[data,
-      line = Transpose[{Range[data//Length], data}];
-      fft = Drop[Transpose[{Range[128]//N, Log@Take[Fourier[data], 128]//Abs}],1];
-    ]];
+    EventHandler["audio", Function[data, With[{ndata = Normal@data},
+      line = Transpose[{Range[data//Length], ndata}];
+      fft = Drop[Transpose[{Range[128]//N, Log@Take[Fourier[ndata], 128]//Abs}],1];
+    ]]];
   
     {Graphics[
       {Blue, Line[line // Offload]},

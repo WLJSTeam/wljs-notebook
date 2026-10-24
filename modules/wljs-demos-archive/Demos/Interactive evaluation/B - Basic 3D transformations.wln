@@ -1,52 +1,95 @@
-<|"Notebook" -> <|"Controller" -> "890f15c2-20fa-44e6-9dd3-a9260af3eb2e", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1630], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "4fbf4256-758d-45c7-900a-aaecfefcb4af", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Basic 3D transformations.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Basic 3D transformations", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2116]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Basic 3D transformations\nHere is an \
-example of dynamic rotation matrix applied on 3D primitive and updated by an \
-external slider:", "Display" -> "codemirror", 
-    "Hash" -> "c72556b6-1328-4f13-9abd-1cbb0f223666", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>, 
-   <|"Data" -> "## Basic 3D transformations\nHere is an example of dynamic \
-rotation matrix applied on 3D primitive and updated by an external slider:", 
-    "Display" -> "markdown", "Hash" -> 
-     "1a7d13a0-0c39-4a85-b01f-6b76d8af18ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>, 
-   <|"Data" -> "rot = RotationMatrix[45 Degree, {0, 0, 1.0}];\nstair = \
-GeometricTransformation[Cuboid[{0, 0, 0}, {1.5, 1.5, .2}], \n  \
-Table[{RotationMatrix[a, {0, 0, 1}], {Cos[a], Sin[a], a}}, {a, 0, \n    4 Pi, \
-.2}]];\n\n    \nGraphics3D[GeometricTransformation[stair, rot // Offload]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b7c837af-614a-4bce-9de7-a6819852d6f4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>, 
-   <|"Data" -> ".md\nManipulator", "Display" -> "codemirror", 
-    "Hash" -> "b9cf1874-4cba-4dd8-84c6-4f55cf4a81ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>, 
-   <|"Data" -> "Manipulator", "Display" -> "markdown", 
-    "Hash" -> "7432b5ad-1b3c-47a0-b396-a1939db49027", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>, 
-   <|"Data" -> "EventHandler[InputRange[0, 180.0 Degree, 1.0 Degree], \n  \
-Function[angle, rot = RotationMatrix[angle, {0, 0, 1.0}]]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "41a1cf23-22c8-420b-83bc-cb860529d680", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "658ed22c-46af-4af2-8b31-9cc1eb921aa8"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Basic 3D transformations
+Here is an example of dynamic rotation matrix applied on 3D primitive and updated by an external slider:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Basic 3D transformations
+Here is an example of dynamic rotation matrix applied on 3D primitive and updated by an external slider:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+rot = RotationMatrix[45 Degree, {0, 0, 1.0}];
+stair = GeometricTransformation[Cuboid[{0, 0, 0}, {1.5, 1.5, .2}], 
+  Table[{RotationMatrix[a, {0, 0, 1}], {Cos[a], Sin[a], a}}, {a, 0, 
+    4 Pi, .2}]];
+
+    
+Graphics3D[GeometricTransformation[stair, rot // Offload]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Manipulator
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Manipulator
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[InputRange[0, 180.0 Degree, 1.0 Degree], 
+  Function[angle, rot = RotationMatrix[angle, {0, 0, 1.0}]]]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -1,372 +1,229 @@
-<|"Notebook" -> <|"Controller" -> "f79aa512-c66c-4932-99e1-294e51675634", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$439], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "36e3d046-43c1-46f3-a62f-9a4815a8dd41", 
-   "Objects" -> <|"ad1a8914-bc32-4529-b601-9edc89756513" -> 
-      <|"Public" -> Hold[Graphics[{GraphicsComplex[{{0.4, -0.4}, 
-             {-0.9, -0.4}, {0.4, 0.4}, {-1, -1}, {-1, 1}, {-0.9, -0.9}, 
-             {0.4, -0.9}, {0.9, -0.9}, {1, -1}, {1, 1}, {0.9, -0.4}, 
-             {0.9, 0.4}, {-0.25, -0.4}, {-0.25, 0}, {0.4, 0}, {-1, 0}, 
-             {-0.95, 0.3}, {-0.9, -0.65}, {-0.95, -0.95}, {0.65, -0.9}, 
-             {0.95, -0.95}, {0, -1}, {-0.25, -0.9}, {1, 0}, {0.9, -0.65}, 
-             {0.95, 0.3}, {0.95, 0.7}, {0.9, 0}, {0.7, 0.7}, {0.65, 0.4}, 
-             {0, 1}, {-0.95, -0.325}, {0.07999999999999996, 
-              -0.9400000000000001}, {0.95, -0.325}, {-0.125, 0.5}, 
-             {0.07500000000000001, -0.4}, {-0.575, -0.2}, {0.4, 0.2}, 
-             {-1, -0.5}, {-0.975, 0.65}, {-0.9, -0.525}, {-0.925, -0.925}, 
-             {0.525, -0.9}, {0.925, -0.925}, {0.5, -1}, {-0.575, -0.9}, 
-             {1, 0.5}, {0.9, -0.775}, {0.925, -0.05000000000000002}, 
-             {0.925, 0.55}, {0.9, -0.2}, {0.55, 0.55}, {0.775, 0.4}, 
-             {-0.5, 1}, {-0.575, -0.4}, {0.07500000000000001, 0.2}, 
-             {0.4, -0.2}, {-1, 0.5}, {-0.925, -0.05000000000000002}, 
-             {-0.9, -0.775}, {-0.975, -0.975}, {0.775, -0.9}, 
-             {0.975, -0.975}, {-0.5, -1}, {0.07500000000000001, -0.9}, 
-             {1, -0.5}, {0.9, -0.525}, {0.975, 0.65}, {0.975, 0.85}, 
-             {0.9, 0.2}, {0.85, 0.85}, {0.525, 0.4}, {0.5, 1}, {-0.25, -0.2}, 
-             {0.07500000000000001, 0}, {0.07500000000000001, -0.2}, 
-             {-0.95, -0.012500000000000011}, {-0.975, -0.1625}, 
-             {-0.925, -0.48750000000000004}, {-0.95, -0.6375}, 
-             {0.5149999999999999, -0.9450000000000001}, {0.365, -0.92}, 
-             {0.03999999999999998, -0.97}, {-0.435, -0.9450000000000001}, 
-             {-0.08500000000000002, -0.92}, {0.95, -0.6375}, 
-             {0.975, -0.1625}, {0.925, -0.48750000000000004}, 
-             {0.95, -0.012500000000000011}, {0.95, 0.5}, {0.925, 0.15}, 
-             {0.925, 0.35}, {0.825, 0.7}, {0.8, 0.55}, {0.675, 0.55}, 
-             {-0.1875, 0.25}, {0.2875, 0.6}, {-0.5375, 0.4}, {-0.0625, 0.75}, 
-             {-0.9750000000000001, -0.56875}, {0.22, -0.91}, 
-             {0.9750000000000001, 0.24375000000000002}, {0.39375, 0.8}, 
-             {-0.975, 0.24375}, {-0.9249999999999999, -0.26875000000000004}, 
-             {-0.9249999999999999, -0.7062499999999999}, {0.6449999999999999, 
-              -0.9225}, {0.5075, -0.9724999999999999}, {-0.4675, -0.9725}, 
-             {-0.505, -0.9225}, {0.975, -0.56875}, {0.9249999999999999, 
-              -0.70625}, {0.9249999999999999, -0.26875000000000004}, 
-             {0.18125, 0.4}, {-0.55625, 0.1}, {-0.51875, 0.7}}, 
-            {{{EdgeForm[], Directive[RGBColor[0.24, 0.6, 0.8], 
-                AbsoluteThickness[2], Opacity[0.3]], GraphicsGroup[
-                {Polygon[{{55, 74, 13}, {36, 76, 57}, {36, 57, 1}, 
-                   {50, 92, 70}, {49, 91, 26}, {93, 95, 29}, {72, 95, 30}, 
-                   {90, 92, 27}, {92, 50, 27}, {69, 71, 10}, {93, 69, 27}, 
-                   {68, 90, 69}, {90, 68, 26}, {68, 69, 10}, {51, 49, 11}, 
-                   {91, 51, 28}, {50, 94, 27}, {50, 70, 12}, {51, 91, 49}, 
-                   {70, 92, 28}, {69, 90, 27}, {71, 93, 29}, {37, 74, 55}, 
-                   {38, 56, 3}, {91, 92, 90}, {91, 90, 26}, {75, 76, 74}, 
-                   {75, 38, 15}, {92, 91, 28}, {76, 75, 15}, {69, 93, 71}, 
-                   {94, 93, 27}, {74, 37, 14}, {56, 75, 14}, {57, 76, 15}, 
-                   {74, 76, 13}, {75, 74, 14}, {94, 95, 93}, {38, 75, 56}, 
-                   {37, 55, 2}, {95, 94, 30}, {53, 50, 12}, {76, 36, 13}, 
-                   {95, 52, 29}, {52, 72, 3}, {53, 94, 50}, {52, 95, 72}, 
-                   {94, 53, 30}}], Polygon[{{108, 45, 22, 83}, {66, 111, 87, 
-                    24}, {97, 103, 71, 29}, {45, 108, 63, 9}, {111, 63, 21, 
-                    86}, {103, 97, 35, 99}, {114, 56, 14, 96}, {63, 108, 81, 
-                    21}, {40, 104, 58, 5}, {104, 40, 17, 77}, {44, 112, 86, 
-                    21}, {98, 116, 99, 35}, {59, 105, 77, 17}, {71, 103, 73, 
-                    10}, {73, 103, 99, 31}, {48, 112, 44, 8}, {54, 116, 40, 
-                    5}, {110, 46, 23, 85}, {102, 87, 34, 89}, {82, 101, 43, 
-                    20}, {42, 110, 84, 19}, {101, 82, 33, 85}, {87, 102, 47, 
-                    24}, {43, 101, 65, 7}, {100, 78, 32, 80}, {78, 100, 39, 
-                    16}, {64, 109, 83, 22}, {46, 110, 42, 6}, {39, 100, 61, 
-                    4}, {61, 109, 64, 4}, {109, 61, 19, 84}, {63, 111, 66, 
-                    9}, {77, 105, 79, 32}, {41, 105, 59, 2}, {79, 106, 80, 
-                    32}, {47, 102, 68, 10}, {67, 113, 88, 25}, {58, 104, 78, 
-                    16}, {86, 112, 88, 34}, {88, 113, 89, 34}, {113, 49, 26, 
-                    89}, {49, 113, 67, 11}, {52, 114, 97, 29}, {59, 115, 37, 
-                    2}, {115, 59, 17, 98}, {40, 116, 98, 17}, {37, 115, 96, 
-                    14}, {56, 114, 52, 3}, {65, 101, 85, 23}, {68, 102, 89, 
-                    26}, {84, 110, 85, 33}, {62, 107, 82, 20}, {82, 107, 81, 
-                    33}, {78, 104, 77, 32}, {60, 106, 79, 18}, {105, 41, 18, 
-                    79}, {97, 114, 96, 35}, {87, 111, 86, 34}, {96, 115, 98, 
-                    35}, {61, 100, 80, 19}, {83, 109, 84, 33}, {106, 42, 19, 
-                    80}, {44, 107, 62, 8}, {112, 48, 25, 88}, {107, 44, 21, 
-                    81}, {42, 106, 60, 6}, {81, 108, 83, 33}, {116, 54, 31, 
-                    99}}]}]}, {}, {}, {}, {}}, {{Directive[RGBColor[0.24, 
-                 0.6, 0.8], AbsoluteThickness[2]], Line[{36, 1, 57, 15, 38, 
-                 3, 72, 30, 53, 12, 70, 28, 51, 11, 67, 25, 48, 8, 62, 20, 
-                 43, 7, 65, 23, 46, 6, 60, 18, 41, 2, 55, 13, 36}], Line[
-                {39, 4, 64, 22, 45, 9, 66, 24, 47, 10, 73, 31, 54, 5, 58, 16, 
-                 39}]}}}], {}}, {DisplayFunction -> Identity, 
-           Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, 
-           FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, DisplayFunction -> Identity, 
-           PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, 
-             {Scaled[0.02], Scaled[0.02]}}, PlotRangeClipping -> True, 
-           ImagePadding -> All, AspectRatio -> 1, Axes -> {False, False}, 
-           AxesLabel -> {None, None}, AxesOrigin -> {Automatic, Automatic}, 
-           DisplayFunction :> Identity, Epilog -> {RGBColor[1, 0, 0], 
-             Translate[EventListener[Rectangle[{-0.2, -0.2}, {0.2, 0.2}], {
-                "dragsignal" -> "bba375e5-8bf5-410a-a1a3-b2dd42d1d8c7"}], 
-              Offload[rect]]}, Frame -> {{True, True}, {True, True}}, 
-           FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> 
-            {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], 
-           Method -> {"DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "ScalingFunctions" -> None, "TransparentPolygonMesh" -> True, 
-             "AxesInFront" -> True}, PlotRange -> {{-1, 1}, {-1, 1}}, 
-           PlotRangeClipping -> True, PlotRangePadding -> {Scaled[0.02], 
-             Scaled[0.02]}, Ticks -> {Automatic, Automatic}}]]|>, 
-     "fdbaf5fa-3891-4056-a01e-a8136e5f4130" -> 
-      <|"Public" -> Hold[Graphics[{GraphicsComplex[{{0.4, -0.4}, 
-             {-0.9, -0.4}, {0.4, 0.4}, {-1, -1}, {-1, 1}, {-0.9, -0.9}, 
-             {0.4, -0.9}, {0.9, -0.9}, {1, -1}, {1, 1}, {0.9, -0.4}, 
-             {0.9, 0.4}, {-0.25, -0.4}, {-0.25, 0}, {0.4, 0}, {-1, 0}, 
-             {-0.95, 0.3}, {-0.9, -0.65}, {-0.95, -0.95}, {0.65, -0.9}, 
-             {0.95, -0.95}, {0, -1}, {-0.25, -0.9}, {1, 0}, {0.9, -0.65}, 
-             {0.95, 0.3}, {0.95, 0.7}, {0.9, 0}, {0.7, 0.7}, {0.65, 0.4}, 
-             {0, 1}, {-0.95, -0.325}, {0.07999999999999996, 
-              -0.9400000000000001}, {0.95, -0.325}, {-0.125, 0.5}, 
-             {0.07500000000000001, -0.4}, {-0.575, -0.2}, {0.4, 0.2}, 
-             {-1, -0.5}, {-0.975, 0.65}, {-0.9, -0.525}, {-0.925, -0.925}, 
-             {0.525, -0.9}, {0.925, -0.925}, {0.5, -1}, {-0.575, -0.9}, 
-             {1, 0.5}, {0.9, -0.775}, {0.925, -0.05000000000000002}, 
-             {0.925, 0.55}, {0.9, -0.2}, {0.55, 0.55}, {0.775, 0.4}, 
-             {-0.5, 1}, {-0.575, -0.4}, {0.07500000000000001, 0.2}, 
-             {0.4, -0.2}, {-1, 0.5}, {-0.925, -0.05000000000000002}, 
-             {-0.9, -0.775}, {-0.975, -0.975}, {0.775, -0.9}, 
-             {0.975, -0.975}, {-0.5, -1}, {0.07500000000000001, -0.9}, 
-             {1, -0.5}, {0.9, -0.525}, {0.975, 0.65}, {0.975, 0.85}, 
-             {0.9, 0.2}, {0.85, 0.85}, {0.525, 0.4}, {0.5, 1}, {-0.25, -0.2}, 
-             {0.07500000000000001, 0}, {0.07500000000000001, -0.2}, 
-             {-0.95, -0.012500000000000011}, {-0.975, -0.1625}, 
-             {-0.925, -0.48750000000000004}, {-0.95, -0.6375}, 
-             {0.5149999999999999, -0.9450000000000001}, {0.365, -0.92}, 
-             {0.03999999999999998, -0.97}, {-0.435, -0.9450000000000001}, 
-             {-0.08500000000000002, -0.92}, {0.95, -0.6375}, 
-             {0.975, -0.1625}, {0.925, -0.48750000000000004}, 
-             {0.95, -0.012500000000000011}, {0.95, 0.5}, {0.925, 0.15}, 
-             {0.925, 0.35}, {0.825, 0.7}, {0.8, 0.55}, {0.675, 0.55}, 
-             {-0.1875, 0.25}, {0.2875, 0.6}, {-0.5375, 0.4}, {-0.0625, 0.75}, 
-             {-0.9750000000000001, -0.56875}, {0.22, -0.91}, 
-             {0.9750000000000001, 0.24375000000000002}, {0.39375, 0.8}, 
-             {-0.975, 0.24375}, {-0.9249999999999999, -0.26875000000000004}, 
-             {-0.9249999999999999, -0.7062499999999999}, {0.6449999999999999, 
-              -0.9225}, {0.5075, -0.9724999999999999}, {-0.4675, -0.9725}, 
-             {-0.505, -0.9225}, {0.975, -0.56875}, {0.9249999999999999, 
-              -0.70625}, {0.9249999999999999, -0.26875000000000004}, 
-             {0.18125, 0.4}, {-0.55625, 0.1}, {-0.51875, 0.7}}, 
-            {{{EdgeForm[], Directive[RGBColor[0.24, 0.6, 0.8], 
-                AbsoluteThickness[2], Opacity[0.3]], GraphicsGroup[
-                {Polygon[{{55, 74, 13}, {36, 76, 57}, {36, 57, 1}, 
-                   {50, 92, 70}, {49, 91, 26}, {93, 95, 29}, {72, 95, 30}, 
-                   {90, 92, 27}, {92, 50, 27}, {69, 71, 10}, {93, 69, 27}, 
-                   {68, 90, 69}, {90, 68, 26}, {68, 69, 10}, {51, 49, 11}, 
-                   {91, 51, 28}, {50, 94, 27}, {50, 70, 12}, {51, 91, 49}, 
-                   {70, 92, 28}, {69, 90, 27}, {71, 93, 29}, {37, 74, 55}, 
-                   {38, 56, 3}, {91, 92, 90}, {91, 90, 26}, {75, 76, 74}, 
-                   {75, 38, 15}, {92, 91, 28}, {76, 75, 15}, {69, 93, 71}, 
-                   {94, 93, 27}, {74, 37, 14}, {56, 75, 14}, {57, 76, 15}, 
-                   {74, 76, 13}, {75, 74, 14}, {94, 95, 93}, {38, 75, 56}, 
-                   {37, 55, 2}, {95, 94, 30}, {53, 50, 12}, {76, 36, 13}, 
-                   {95, 52, 29}, {52, 72, 3}, {53, 94, 50}, {52, 95, 72}, 
-                   {94, 53, 30}}], Polygon[{{108, 45, 22, 83}, {66, 111, 87, 
-                    24}, {97, 103, 71, 29}, {45, 108, 63, 9}, {111, 63, 21, 
-                    86}, {103, 97, 35, 99}, {114, 56, 14, 96}, {63, 108, 81, 
-                    21}, {40, 104, 58, 5}, {104, 40, 17, 77}, {44, 112, 86, 
-                    21}, {98, 116, 99, 35}, {59, 105, 77, 17}, {71, 103, 73, 
-                    10}, {73, 103, 99, 31}, {48, 112, 44, 8}, {54, 116, 40, 
-                    5}, {110, 46, 23, 85}, {102, 87, 34, 89}, {82, 101, 43, 
-                    20}, {42, 110, 84, 19}, {101, 82, 33, 85}, {87, 102, 47, 
-                    24}, {43, 101, 65, 7}, {100, 78, 32, 80}, {78, 100, 39, 
-                    16}, {64, 109, 83, 22}, {46, 110, 42, 6}, {39, 100, 61, 
-                    4}, {61, 109, 64, 4}, {109, 61, 19, 84}, {63, 111, 66, 
-                    9}, {77, 105, 79, 32}, {41, 105, 59, 2}, {79, 106, 80, 
-                    32}, {47, 102, 68, 10}, {67, 113, 88, 25}, {58, 104, 78, 
-                    16}, {86, 112, 88, 34}, {88, 113, 89, 34}, {113, 49, 26, 
-                    89}, {49, 113, 67, 11}, {52, 114, 97, 29}, {59, 115, 37, 
-                    2}, {115, 59, 17, 98}, {40, 116, 98, 17}, {37, 115, 96, 
-                    14}, {56, 114, 52, 3}, {65, 101, 85, 23}, {68, 102, 89, 
-                    26}, {84, 110, 85, 33}, {62, 107, 82, 20}, {82, 107, 81, 
-                    33}, {78, 104, 77, 32}, {60, 106, 79, 18}, {105, 41, 18, 
-                    79}, {97, 114, 96, 35}, {87, 111, 86, 34}, {96, 115, 98, 
-                    35}, {61, 100, 80, 19}, {83, 109, 84, 33}, {106, 42, 19, 
-                    80}, {44, 107, 62, 8}, {112, 48, 25, 88}, {107, 44, 21, 
-                    81}, {42, 106, 60, 6}, {81, 108, 83, 33}, {116, 54, 31, 
-                    99}}]}]}, {}, {}, {}, {}}, {{Directive[RGBColor[0.24, 
-                 0.6, 0.8], AbsoluteThickness[2]], Line[{36, 1, 57, 15, 38, 
-                 3, 72, 30, 53, 12, 70, 28, 51, 11, 67, 25, 48, 8, 62, 20, 
-                 43, 7, 65, 23, 46, 6, 60, 18, 41, 2, 55, 13, 36}], Line[
-                {39, 4, 64, 22, 45, 9, 66, 24, 47, 10, 73, 31, 54, 5, 58, 16, 
-                 39}]}}}], {}}, {DisplayFunction -> Identity, 
-           Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, 
-           FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> 
-            {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, 
-           PlotRangeClipping -> True, ImagePadding -> All, 
-           PlotInteractivity :> $PlotInteractivity, DisplayFunction -> 
-            Identity, PlotInteractivity :> $PlotInteractivity, 
-           DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, 
-           AspectRatio -> 1, Axes -> {False, False}, AxesLabel -> 
-            {None, None}, AxesOrigin -> {Automatic, Automatic}, 
-           DisplayFunction :> Identity, Frame -> {{True, True}, 
-             {True, True}}, FrameLabel -> {{None, None}, {None, None}}, 
-           FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], 
-           Method -> {"DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "ScalingFunctions" -> None, "TransparentPolygonMesh" -> True, 
-             "AxesInFront" -> True}, PlotRange -> {{-1, 1}, {-1, 1}}, 
-           PlotRangeClipping -> True, PlotRangePadding -> {Scaled[0.02], 
-             Scaled[0.02]}, Ticks -> {Automatic, Automatic}}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/User interactions/B - Constrained dragging.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, 
-   "Symbols" -> 
-    <|"rect" -> CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON[
-       "JTVCMC42ODk3Nzc3Nzc3Nzc3Nzc4JTJDLTAuNTQ4OTQ0NDQ0NDQ0NDQ0NSU1RA=="]|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Dragging object inside a custom region", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$431]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Region cutout", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$431]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Dynamic Scene", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$435]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Dragging object inside a custom region\n\nIn \
-this example, we construct a solid region with a $\\Gamma$-shaped cutout, \
-where a small rectangle is going to be dragged by a user's mouse.\n\nThen we \
-utilize a very powerful standard function of a Wolfram library, \
-`RegionDistance`, allowing estimation of the minimal distance between regions \
-in a single line.\n\n:::note\nRegion computations are supported not only for \
-`Region`, `Mesh`-like objects, but also basic geometrical primitives such as \
-`Rectangle` are absolutely valid for the input.\n:::\n\n## Region cutout\nWe \
-start from cutting a hole inside a big rectangle using boolean operations:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "340316a3-9ace-43e6-93d1-b44da20c8353", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "# Dragging object inside a custom region\n\nIn this example, \
-we construct a solid region with a $\\Gamma$-shaped cutout, where a small \
-rectangle is going to be dragged by a user's mouse.\n\nThen we utilize a very \
-powerful standard function of a Wolfram library, `RegionDistance`, allowing \
-estimation of the minimal distance between regions in a single \
-line.\n\n:::note\nRegion computations are supported not only for `Region`, \
-`Mesh`-like objects, but also basic geometrical primitives such as \
-`Rectangle` are absolutely valid for the input.\n:::\n\n## Region cutout\nWe \
-start from cutting a hole inside a big rectangle using boolean operations:", 
-    "Display" -> "markdown", "Hash" -> 
-     "db193ce0-4bf6-446a-8579-e8d8ad9c5275", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "outer = RegionDifference[\n  Rectangle[{-1,-1}, {1,1}],\n  \
-RegionUnion[\n    Rectangle[{-0.9,-0.9}, {0.9,-0.4}]  ,\n    \
-Rectangle[{0.4,-0.9}, {0.9,0.4}]  \n  ]\n];\n\nouter = Rationalize[outer, \
-0];\nRegionPlot[outer]", "Display" -> "codemirror", 
-    "Hash" -> "2eac6e6c-a55a-4f87-a505-6a5a2b61bbc7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False, 
-      "InitGroup" -> True|>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"fdbaf5fa-3891-4056-a01e-a8136e5f4130\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKp6UkJ\
-aaZpiXqGltYGuqaGJia6SYaGKbqJloYGpulmqaZGBobAACQQBWY\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "887d7a76-7afb-42df-b316-483c7148291f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> ".md\n:::warning\n[There is a \
-bug](https://mathematica.stackexchange.com/questions/314230/understanding-2d-\
-regions-boolean-manipulation-graphics-vs-region) in the standard library of \
-WL14. You need to apply `Rationalize` on the final primitive; otherwise, it \
-won't work correctly.\n:::\n\n## Dynamic Scene\nHere we assemble a dynamic \
-scene, where we add a draggable red rectangle and update its position if the \
-minimal distance between it and the outer region is greater than 0:\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8dcce55d-b050-48e7-a5e0-97321acab3eb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> ":::warning\n[There is a \
-bug](https://mathematica.stackexchange.com/questions/314230/understanding-2d-\
-regions-boolean-manipulation-graphics-vs-region) in the standard library of \
-WL14. You need to apply `Rationalize` on the final primitive; otherwise, it \
-won't work correctly.\n:::\n\n## Dynamic Scene\nHere we assemble a dynamic \
-scene, where we add a draggable red rectangle and update its position if the \
-minimal distance between it and the outer region is greater than 0:\n", 
-    "Display" -> "markdown", "Hash" -> 
-     "209c0772-0c73-4037-8e8a-011e368f6e5d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "distanceOp = RegionDistance[outer, \
-Translate[Rectangle[-{0.2,0.2}, {0.2,0.2}], #]]&;\n\nrect = {0.65, \
-0.15};\n\nRegionPlot[outer, Epilog->{\n  Red, \n  Translate[EventHandler[\n   \
- Rectangle[-{0.2,0.2}, {0.2,0.2}], \n    {\"dragsignal\" -> \
-Function[target,\n      If[distanceOp[target] > 0, rect = target]\n    ]}\n  \
-], Offload[rect]]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "fba50b0c-804e-4776-8338-9f39d3f6bc36", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> ".md\nWe use the `dragsignal` event instead of `drag` on the \
-`Rectangle` to prevent the primitive from being actually dragged by the \
-mouse, and instead update its position manually.\n\n> You may notice that the \
-dragging behavior is a bit off our expectations. An object abruptly stops \
-once the mouse enters the \"forbidden\" land.\n\nOne easy approach to fix \
-this (but not quite efficient) is to iteratively approach the target \
-separately by the x- and y-axis:\n", "Display" -> "codemirror", 
-    "Hash" -> "c29f4560-c484-4897-a371-b46b2e01b612", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "We use the `dragsignal` event instead of `drag` on the \
-`Rectangle` to prevent the primitive from being actually dragged by the \
-mouse, and instead update its position manually.\n\n> You may notice that the \
-dragging behavior is a bit off our expectations. An object abruptly stops \
-once the mouse enters the \"forbidden\" land.\n\nOne easy approach to fix \
-this (but not quite efficient) is to iteratively approach the target \
-separately by the x- and y-axis:\n", "Display" -> "markdown", 
-    "Hash" -> "cb2dc227-3488-4d26-86a0-d4c38d0060da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "distanceOp = RegionDistance[outer, \
-Translate[Rectangle[-{0.2,0.2}, {0.2,0.2}], #]]&;\n\nrect = {0.65, \
-0.15};\n\nRegionPlot[outer, Epilog->{\n  Red, \n  Translate[EventHandler[\n   \
- Rectangle[-{0.2,0.2}, {0.2,0.2}], \n    {\"dragsignal\" -> \
-Function[target,\n      rect = {\n        If[distanceOp[{target[[1]], \
-rect[[2]]}] > 0.01,\n          target[[1]]\n        ,\n          \
-FixedPoint[If[distanceOp[{#, rect[[2]]}] > 0.01,\n             # + 0.01 \
-(target[[1]] - #)   \n          ,\n             #\n          ]&, rect[[1]]] - \
-0.01 (target[[1]] - rect[[1]]) \n        ],\n        \
-If[distanceOp[{rect[[1]], target[[2]]}] > 0.01,\n          target[[2]]\n      \
-  ,\n          FixedPoint[If[distanceOp[{rect[[1]], #}] > 0.01,\n             \
-# + 0.01 (target[[2]] - #)   \n          ,\n             #\n          ]&, \
-rect[[2]]] - 0.01 (target[[2]] - rect[[2]])  \n        ]\n      }\n    ]}\n  \
-], Offload[rect]]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "99307937-732e-46e3-914a-7d77f4ee31b8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"ad1a8914-bc32-4529-b601-9edc89756513\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6YYJ\
-lpYGproJiUbG+mamBpZ6iaZGRjqWqamJFtYmpuamRoaAwCA/xUY\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "046fd7e7-4e17-4c55-b11a-dc3fc022f43b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> ".md\nNow it should feel *more natural*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cae0a686-135a-42fc-9d50-4d384ac1d6b1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>, 
-   <|"Data" -> "Now it should feel *more natural*", "Display" -> "markdown", 
-    "Hash" -> "a04b863e-19eb-4c53-adee-40946964d013", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "536aac98-d29e-49f4-a97d-7dd4c3a6e114"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Dragging object inside a custom region
+
+In this example, we construct a solid region with a $\Gamma$-shaped cutout, where a small rectangle is going to be dragged by a user's mouse.
+
+Then we utilize a very powerful standard function of a Wolfram library, `RegionDistance`, allowing estimation of the minimal distance between regions in a single line.
+
+:::note
+Region computations are supported not only for `Region`, `Mesh`-like objects, but also basic geometrical primitives such as `Rectangle` are absolutely valid for the input.
+:::
+
+## Region cutout
+We start from cutting a hole inside a big rectangle using boolean operations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Dragging object inside a custom region
+
+In this example, we construct a solid region with a $\Gamma$-shaped cutout, where a small rectangle is going to be dragged by a user's mouse.
+
+Then we utilize a very powerful standard function of a Wolfram library, `RegionDistance`, allowing estimation of the minimal distance between regions in a single line.
+
+:::note
+Region computations are supported not only for `Region`, `Mesh`-like objects, but also basic geometrical primitives such as `Rectangle` are absolutely valid for the input.
+:::
+
+## Region cutout
+We start from cutting a hole inside a big rectangle using boolean operations:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+outer = RegionDifference[
+  Rectangle[{-1,-1}, {1,1}],
+  RegionUnion[
+    Rectangle[{-0.9,-0.9}, {0.9,-0.4}]  ,
+    Rectangle[{0.4,-0.9}, {0.9,0.4}]  
+  ]
+];
+
+outer = Rationalize[outer, 0];
+RegionPlot[outer]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["F464e471b-487d-41bc-b6bf-e1953a1058c1"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJm5iZpJqYGybpmliYp+iaGCYl6yaZJaXpphpamhonGhqYWiQbAgCWFRW2"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::warning
+[There is a bug](https://mathematica.stackexchange.com/questions/314230/understanding-2d-regions-boolean-manipulation-graphics-vs-region) in the standard library of WL14. You need to apply `Rationalize` on the final primitive; otherwise, it won't work correctly.
+:::
+
+## Dynamic Scene
+Here we assemble a dynamic scene, where we add a draggable red rectangle and update its position if the minimal distance between it and the outer region is greater than 0:
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::warning
+[There is a bug](https://mathematica.stackexchange.com/questions/314230/understanding-2d-regions-boolean-manipulation-graphics-vs-region) in the standard library of WL14. You need to apply `Rationalize` on the final primitive; otherwise, it won't work correctly.
+:::
+
+## Dynamic Scene
+Here we assemble a dynamic scene, where we add a draggable red rectangle and update its position if the minimal distance between it and the outer region is greater than 0:
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+distanceOp = RegionDistance[outer, Translate[Rectangle[-{0.2,0.2}, {0.2,0.2}], #]]&;
+
+rect = {0.65, 0.15};
+
+RegionPlot[outer, Epilog->{
+  Red, 
+  Translate[EventHandler[
+    Rectangle[-{0.2,0.2}, {0.2,0.2}], 
+    {"dragsignal" -> Function[target,
+      If[distanceOp[target] > 0, rect = target]
+    ]}
+  ], Offload[rect]]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We use the `dragsignal` event instead of `drag` on the `Rectangle` to prevent the primitive from being actually dragged by the mouse, and instead update its position manually.
+
+> You may notice that the dragging behavior is a bit off our expectations. An object abruptly stops once the mouse enters the "forbidden" land.
+
+One easy approach to fix this (but not quite efficient) is to iteratively approach the target separately by the x- and y-axis:
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We use the `dragsignal` event instead of `drag` on the `Rectangle` to prevent the primitive from being actually dragged by the mouse, and instead update its position manually.
+
+> You may notice that the dragging behavior is a bit off our expectations. An object abruptly stops once the mouse enters the "forbidden" land.
+
+One easy approach to fix this (but not quite efficient) is to iteratively approach the target separately by the x- and y-axis:
+
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+distanceOp = RegionDistance[outer, Translate[Rectangle[-{0.2,0.2}, {0.2,0.2}], #]]&;
+
+rect = {0.65, 0.15};
+
+RegionPlot[outer, Epilog->{
+  Red, 
+  Translate[EventHandler[
+    Rectangle[-{0.2,0.2}, {0.2,0.2}], 
+    {"dragsignal" -> Function[target,
+      rect = {
+        If[distanceOp[{target[[1]], rect[[2]]}] > 0.01,
+          target[[1]]
+        ,
+          FixedPoint[If[distanceOp[{#, rect[[2]]}] > 0.01,
+             # + 0.01 (target[[1]] - #)   
+          ,
+             #
+          ]&, rect[[1]]] - 0.01 (target[[1]] - rect[[1]]) 
+        ],
+        If[distanceOp[{rect[[1]], target[[2]]}] > 0.01,
+          target[[2]]
+        ,
+          FixedPoint[If[distanceOp[{rect[[1]], #}] > 0.01,
+             # + 0.01 (target[[2]] - #)   
+          ,
+             #
+          ]&, rect[[2]]] - 0.01 (target[[2]] - rect[[2]])  
+        ]
+      }
+    ]}
+  ], Offload[rect]]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now it should feel *more natural*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now it should feel *more natural*
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: F464e471b-487d-41bc-b6bf-e1953a1058c1
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{GraphicsComplex[{{0.4, -0.4}, {-0.9, -0.4}, {0.4, 0.4}, {-1., -1.}, {-1., 1.}, {-0.9, -0.9}, {0.4, -0.9}, {0.9, -0.9}, {1., -1.}, {1., 1.}, {0.9, -0.4}, {0.9, 0.4}, {-0.25, -0.4}, {-0.25, 0.}, {0.4, 0.}, {-1., 0.}, {-0.95, 0.3}, {-0.9, -0.65}, {-0.95, -0.95}, {0.65, -0.9}, {0.95, -0.95}, {0., -1.}, {-0.25, -0.9}, {1., 0.}, {0.9, -0.65}, {0.95, 0.3}, {0.95, 0.7}, {0.9, 0.}, {0.7, 0.7}, {0.65, 0.4}, {0., 1.}, {-0.95, -0.325}, {0.07999999999999996, -0.9400000000000001}, {0.95, -0.325}, {-0.125, 0.5}, {0.07500000000000001, -0.4}, {-0.575, -0.2}, {0.4, 0.2}, {-1., -0.5}, {-0.975, 0.65}, {-0.9, -0.525}, {-0.925, -0.925}, {0.525, -0.9}, {0.925, -0.925}, {0.5, -1.}, {-0.575, -0.9}, {1., 0.5}, {0.9, -0.775}, {0.925, -0.05000000000000002}, {0.925, 0.55}, {0.9, -0.2}, {0.55, 0.55}, {0.775, 0.4}, {-0.5, 1.}, {-0.575, -0.4}, {0.07500000000000001, 0.2}, {0.4, -0.2}, {-1., 0.5}, {-0.925, -0.05000000000000002}, {-0.9, -0.775}, {-0.975, -0.975}, {0.775, -0.9}, {0.975, -0.975}, {-0.5, -1.}, {0.07500000000000001, -0.9}, {1., -0.5}, {0.9, -0.525}, {0.975, 0.65}, {0.975, 0.85}, {0.9, 0.2}, {0.85, 0.85}, {0.525, 0.4}, {0.5, 1.}, {-0.25, -0.2}, {0.07500000000000001, 0.}, {0.07500000000000001, -0.2}, {-0.95, -0.012500000000000011}, {-0.975, -0.1625}, {-0.925, -0.48750000000000004}, {-0.95, -0.6375}, {0.5149999999999999, -0.9450000000000001}, {0.365, -0.92}, {0.03999999999999998, -0.97}, {-0.435, -0.9450000000000001}, {-0.08500000000000002, -0.92}, {0.95, -0.6375}, {0.975, -0.1625}, {0.925, -0.48750000000000004}, {0.95, -0.012500000000000011}, {0.95, 0.5}, {0.925, 0.15}, {0.925, 0.35}, {0.825, 0.7}, {0.8, 0.55}, {0.675, 0.55}, {-0.1875, 0.25}, {0.2875, 0.6}, {-0.5375, 0.4}, {-0.0625, 0.75}, {-0.9750000000000001, -0.56875}, {0.22, -0.91}, {0.9750000000000001, 0.24375000000000002}, {0.39375, 0.8}, {-0.975, 0.24375}, {-0.9249999999999999, -0.26875000000000004}, {-0.9249999999999999, -0.7062499999999999}, {0.6449999999999999, -0.9225}, {0.5075, -0.9724999999999999}, {-0.4675, -0.9725}, {-0.505, -0.9225}, {0.975, -0.56875}, {0.9249999999999999, -0.70625}, {0.9249999999999999, -0.26875000000000004}, {0.18125, 0.4}, {-0.55625, 0.1}, {-0.51875, 0.7}}, {{{EdgeForm[], Directive[RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2.], Opacity[0.3]], GraphicsGroup[{Polygon[{{55, 74, 13}, {36, 76, 57}, {36, 57, 1}, {50, 92, 70}, {49, 91, 26}, {93, 95, 29}, {72, 95, 30}, {90, 92, 27}, {92, 50, 27}, {69, 71, 10}, {93, 69, 27}, {68, 90, 69}, {90, 68, 26}, {68, 69, 10}, {51, 49, 11}, {91, 51, 28}, {50, 94, 27}, {50, 70, 12}, {51, 91, 49}, {70, 92, 28}, {69, 90, 27}, {71, 93, 29}, {37, 74, 55}, {38, 56, 3}, {91, 92, 90}, {91, 90, 26}, {75, 76, 74}, {75, 38, 15}, {92, 91, 28}, {76, 75, 15}, {69, 93, 71}, {94, 93, 27}, {74, 37, 14}, {56, 75, 14}, {57, 76, 15}, {74, 76, 13}, {75, 74, 14}, {94, 95, 93}, {38, 75, 56}, {37, 55, 2}, {95, 94, 30}, {53, 50, 12}, {76, 36, 13}, {95, 52, 29}, {52, 72, 3}, {53, 94, 50}, {52, 95, 72}, {94, 53, 30}}], Polygon[{{108, 45, 22, 83}, {66, 111, 87, 24}, {97, 103, 71, 29}, {45, 108, 63, 9}, {111, 63, 21, 86}, {103, 97, 35, 99}, {114, 56, 14, 96}, {63, 108, 81, 21}, {40, 104, 58, 5}, {104, 40, 17, 77}, {44, 112, 86, 21}, {98, 116, 99, 35}, {59, 105, 77, 17}, {71, 103, 73, 10}, {73, 103, 99, 31}, {48, 112, 44, 8}, {54, 116, 40, 5}, {110, 46, 23, 85}, {102, 87, 34, 89}, {82, 101, 43, 20}, {42, 110, 84, 19}, {101, 82, 33, 85}, {87, 102, 47, 24}, {43, 101, 65, 7}, {100, 78, 32, 80}, {78, 100, 39, 16}, {64, 109, 83, 22}, {46, 110, 42, 6}, {39, 100, 61, 4}, {61, 109, 64, 4}, {109, 61, 19, 84}, {63, 111, 66, 9}, {77, 105, 79, 32}, {41, 105, 59, 2}, {79, 106, 80, 32}, {47, 102, 68, 10}, {67, 113, 88, 25}, {58, 104, 78, 16}, {86, 112, 88, 34}, {88, 113, 89, 34}, {113, 49, 26, 89}, {49, 113, 67, 11}, {52, 114, 97, 29}, {59, 115, 37, 2}, {115, 59, 17, 98}, {40, 116, 98, 17}, {37, 115, 96, 14}, {56, 114, 52, 3}, {65, 101, 85, 23}, {68, 102, 89, 26}, {84, 110, 85, 33}, {62, 107, 82, 20}, {82, 107, 81, 33}, {78, 104, 77, 32}, {60, 106, 79, 18}, {105, 41, 18, 79}, {97, 114, 96, 35}, {87, 111, 86, 34}, {96, 115, 98, 35}, {61, 100, 80, 19}, {83, 109, 84, 33}, {106, 42, 19, 80}, {44, 107, 62, 8}, {112, 48, 25, 88}, {107, 44, 21, 81}, {42, 106, 60, 6}, {81, 108, 83, 33}, {116, 54, 31, 99}}]}]}, {}, {}, {}, {}}, {{Directive[RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2.]], Line[{36, 1, 57, 15, 38, 3, 72, 30, 53, 12, 70, 28, 51, 11, 67, 25, 48, 8, 62, 20, 43, 7, 65, 23, 46, 6, 60, 18, 41, 2, 55, 13, 36}], Line[{39, 4, 64, 22, 45, 9, 66, 24, 47, 10, 73, 31, 54, 5, 58, 16, 39}]}}}], {}}, {DisplayFunction -> Identity, Ticks -> {Automatic, Automatic}, AxesOrigin -> {0, 0}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, DisplayFunction -> Identity, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.02]}}, PlotRangeClipping -> True, ImagePadding -> All, PlotInteractivity :> $PlotInteractivity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> 1, Axes -> {False, False}, AxesLabel -> {None, None}, AxesOrigin -> {Automatic, Automatic}, DisplayFunction :> Identity, Frame -> {{True, True}, {True, True}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], Method -> {"DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "ScalingFunctions" -> None, "TransparentPolygonMesh" -> True, "AxesInFront" -> True}, PlotRange -> {{-1., 1.}, {-1., 1.}}, PlotRangeClipping -> True, PlotRangePadding -> {Scaled[0.02], Scaled[0.02]}, Ticks -> {Automatic, Automatic}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
