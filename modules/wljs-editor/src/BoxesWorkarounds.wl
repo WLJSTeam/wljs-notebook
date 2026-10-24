@@ -1090,11 +1090,11 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
 Unprotect[BarLegend];
 FormatValues[BarLegend] = {};
 
-BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_ColorDataFunction | cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
   MakeBoxes[o, form]
 ]
 
-BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_ColorDataFunction | cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
  With[{out = MakeBoxes[o, StandardForm]},
   ViewBox[out, o]
  ]
@@ -1147,6 +1147,7 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
     legend =   With[{options = Association[List[opts] ]}, 
     Module[{colorConvert, label = None, frameLabel = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
       horizontal = Lookup[options, LegendLayout, Automatic] === "Row",
+      colorFunctionScaling = Lookup[options, ColorFunctionScaling, True],
       imageSize = 
         If[KeyExistsQ[options, ImageSize], options[ImageSize], 1.2 370 / 1.6180339  ],
       labelStyle = Lookup[options, LabelStyle, Automatic]},
@@ -1167,7 +1168,10 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
 
       (* Color conversion function based on range *)
       colorConvert[value_] := 
-        cf @ ((value - range[[1]]) / (range[[2]] - range[[1]]));
+        cf @ If[TrueQ[colorFunctionScaling],
+          (value - range[[1]]) / (range[[2]] - range[[1]]),
+          value
+        ];
 
       colorToRGB[color_] := N[Take[List @@ ColorConvert[color, "RGB"], 3]];
 
@@ -1469,6 +1473,29 @@ FormatValues[Region] = {}
 
 
 Region /: MakeBoxes[u_Region, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+  If[ByteCount[u] > 3250,
+    LeakyModule[{temporal},
+      With[
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
+      ]
+    ]
+    
+  ,
+    ViewBox[b, r]
+  ]
+  
+]
+
+(* :: BooleanRegion :: *)
+
+Unprotect[BooleanRegion];
+FormatValues[BooleanRegion] = {};
+
+BooleanRegion /: MakeBoxes[u_BooleanRegion, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
   If[ByteCount[u] > 3250,
     LeakyModule[{temporal},
       With[

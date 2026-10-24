@@ -150,6 +150,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
   updateFunction = OptionValue["UpdateFunction"],
   caction = OptionValue[ContinuousAction],
   diffTable = Unique["diffTable"],
+  init = OptionValue[Initialization],
   copyButton = EventObject[],
   initialValues = OptionValue["InitialValues"],
   widgetInstance = wapi`Tools`WidgetLike["Interpolation"->False, "Notebook"->First[EvaluationNotebook[] ], "Meta"-><|"Description" -> "Manipulate expression widget"|> ],
@@ -1126,7 +1127,7 @@ multipleTraces[tracer_, anonymous_, traces_, t_, tmin_, tmax_, plotPoints_, styl
 SetAttributes[singleTrace, HoldAll]
 SetAttributes[multipleTraces, HoldAll]
 
-Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True}
+Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True, Initialization:>None}
 
 Options[manipulatePlot] = Normal[ Join[Association[Options[Graphics] ], <|Appearance->"Default", "TrackedExpression"->Null, "ControlsLayout"->"Vertical", "UpdateFunction"->(True&), PlotRange -> Automatic, "SamplingPoints" -> 200.0, ImageSize -> {400, 300}, PlotStyle->ColorData[97, "ColorList"], TransitionType->"Linear", TransitionDuration->50, Epilog->{}, Prolog->{}, AxesLabel->{}|>] ]
 Options[ManipulatePlot] = Options[manipulatePlot]

@@ -6,7 +6,25 @@
     if (arr[0][0][0].length === undefined)  return 3;
   } 
 
+  const getAutoscaledBBox = (c) => {
+    const ignored = Array.from(
+      c.node().querySelectorAll('[data-autoscale-ignore="true"]')
+    );
   
+    const previousDisplay = ignored.map(node => node.style.display);
+  
+    ignored.forEach(node => {
+      node.style.display = 'none';
+    });
+  
+    try {
+      return c.node().getBBox();
+    } finally {
+      ignored.forEach((node, index) => {
+        node.style.display = previousDisplay[index];
+      });
+    }
+  };
   
   core.PlotInteractivity = () => 'PlotInteractivity'
 
@@ -2190,7 +2208,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         const xsize = ImageSize[0] - (margin.left + margin.right);
         const ysize = ImageSize[1] - (margin.top + margin.bottom);
 
-        let box = env.svg.node().getBBox();
+        let box = getAutoscaledBBox(env.svg);
 
         console.log([xsize, ysize]);
         console.log(box);
@@ -4416,7 +4434,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
 
-    env.local.foreignObject = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight);
+    env.local.foreignObject = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight).attr('data-autoscale-ignore', 'true');
     const canvas = env.local.foreignObject.append('xhtml:canvas');
     canvas.attr('width', Math.round(env.clipWidth*dpi)).attr('height', Math.round(env.clipHeight*dpi));
     const gl = canvas.node().getContext('webgl', {
