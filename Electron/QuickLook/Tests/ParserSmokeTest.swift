@@ -50,6 +50,21 @@ struct ParserSmokeTest {
             "Truncated output is not smaller than its source"
         )
 
+        let mixedMarkup = WLNPreviewParser.renderMarkdown(
+            "## Fe<sup>2</sup>Mo<sub >3</sub>O<sub>8</sub> <mark class=\"phase\">phase</mark> <img src=\"data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==\" onerror=\"alert('unsafe')\"> <script>alert('unsafe')</script>"
+        )
+        try expect(
+            mixedMarkup.contains("<h2>Fe<sup>2</sup>Mo<sub >3</sub>O<sub>8</sub>"),
+            "Inline subscript and superscript HTML was not rendered inside Markdown"
+        )
+        try expect(
+            mixedMarkup.contains("<mark class=\"phase\">phase</mark>"),
+            "General inline HTML was not preserved inside Markdown"
+        )
+        try expect(!mixedMarkup.contains("<script"), "A script tag was rendered")
+        try expect(!mixedMarkup.contains("alert("), "Executable inline HTML was preserved")
+        try expect(!mixedMarkup.contains("onerror="), "An event-handler attribute was preserved")
+
         let html = try WLNPreviewParser.makeHTML(fileURL: fileURL)
         try expect(html.contains("Data Visualization"), "Rendered HTML is missing notebook content")
         try expect(!html.contains("%Objects%"), "Rendered HTML contains the Objects section")

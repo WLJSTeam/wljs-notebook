@@ -40,6 +40,36 @@ struct WLNPreviewParser {
         pattern: #"\(\*(?:[A-Za-z]+\[|\][A-Za-z]+)\*\)"#
     )
 
+    private static let scriptBlock = try! NSRegularExpression(
+        pattern: #"<script\b[^>]*>.*?</script\s*>"#,
+        options: [.caseInsensitive, .dotMatchesLineSeparators]
+    )
+
+    private static let scriptTag = try! NSRegularExpression(
+        pattern: #"</?script\b[^>]*>"#,
+        options: [.caseInsensitive, .dotMatchesLineSeparators]
+    )
+
+    private static let inlineHTMLTag = try! NSRegularExpression(
+        pattern: #"<\s*/?\s*[A-Za-z][^>]*>"#,
+        options: .dotMatchesLineSeparators
+    )
+
+    private static let eventHandlerAttribute = try! NSRegularExpression(
+        pattern: #"\s+on[A-Za-z][A-Za-z0-9_-]*\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s>]+)"#,
+        options: .caseInsensitive
+    )
+
+    private static let javascriptURLAttribute = try! NSRegularExpression(
+        pattern: #"\s+(?:href|src|xlink:href|action|formaction)\s*=\s*(?:\"\s*javascript:[^\"]*\"|'\s*javascript:[^']*'|javascript:[^\s>]+)"#,
+        options: .caseInsensitive
+    )
+
+    private static let embeddedHTMLAttribute = try! NSRegularExpression(
+        pattern: #"\s+srcdoc\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s>]+)"#,
+        options: .caseInsensitive
+    )
+
     static func parse(fileURL: URL) throws -> [WLNPreviewCell] {
         let section = try readCellsSection(fileURL: fileURL)
         return parse(cellsSection: section)
@@ -90,6 +120,7 @@ struct WLNPreviewParser {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
           <style>
             :root { color-scheme: light dark; }
             * { box-sizing: border-box; }
@@ -234,26 +265,26 @@ struct WLNPreviewParser {
         """
     }
 
-    private static func renderMarkdown(_ markdown: String) -> String {
+    static func renderMarkdown(_ markdown: String) -> String {
         var rendered: [String] = []
         var paragraph: [String] = []
 
         func flushParagraph() {
             guard !paragraph.isEmpty else { return }
-            rendered.append("<p>\(paragraph.map(escapeHTML).joined(separator: "<br>"))</p>")
+            rendered.append("<p>\(paragraph.map(renderMarkdownInline).joined(separator: "<br>"))</p>")
             paragraph.removeAll(keepingCapacity: true)
         }
 
         for line in markdown.split(separator: "\n", omittingEmptySubsequences: false).map(String.init) {
             if line.hasPrefix("### ") {
                 flushParagraph()
-                rendered.append("<h3>\(escapeHTML(String(line.dropFirst(4))))</h3>")
+                rendered.append("<h3>\(renderMarkdownInline(String(line.dropFirst(4))))</h3>")
             } else if line.hasPrefix("## ") {
                 flushParagraph()
-                rendered.append("<h2>\(escapeHTML(String(line.dropFirst(3))))</h2>")
+                rendered.append("<h2>\(renderMarkdownInline(String(line.dropFirst(3))))</h2>")
             } else if line.hasPrefix("# ") {
                 flushParagraph()
-                rendered.append("<h2>\(escapeHTML(String(line.dropFirst(2))))</h2>")
+                rendered.append("<h2>\(renderMarkdownInline(String(line.dropFirst(2))))</h2>")
             } else if line.trimmingCharacters(in: .whitespaces).isEmpty {
                 flushParagraph()
             } else {
@@ -263,6 +294,42 @@ struct WLNPreviewParser {
 
         flushParagraph()
         return rendered.joined(separator: "\n")
+    }
+
+    private static func renderMarkdownInline(_ text: String) -> String {
+        var sanitized = replacingMatches(of: scriptBlock, in: text, with: "")
+        sanitized = replacingMatches(of: scriptTag, in: sanitized, with: "")
+
+        let range = NSRange(sanitized.startIndex..., in: sanitized)
+        let matches = inlineHTMLTag.matches(in: sanitized, range: range)
+        var rendered = ""
+        var cursor = sanitized.startIndex
+
+        for match in matches {
+            guard let tagRange = Range(match.range, in: sanitized) else { continue }
+            rendered += escapeHTML(String(sanitized[cursor..<tagRange.lowerBound]))
+            rendered += sanitizeHTMLTag(String(sanitized[tagRange]))
+            cursor = tagRange.upperBound
+        }
+
+        rendered += escapeHTML(String(sanitized[cursor...]))
+        return rendered
+    }
+
+    private static func sanitizeHTMLTag(_ tag: String) -> String {
+        var sanitized = replacingMatches(of: eventHandlerAttribute, in: tag, with: "")
+        sanitized = replacingMatches(of: javascriptURLAttribute, in: sanitized, with: "")
+        sanitized = replacingMatches(of: embeddedHTMLAttribute, in: sanitized, with: "")
+        return sanitized
+    }
+
+    private static func replacingMatches(
+        of expression: NSRegularExpression,
+        in text: String,
+        with template: String
+    ) -> String {
+        let range = NSRange(text.startIndex..., in: text)
+        return expression.stringByReplacingMatches(in: text, range: range, withTemplate: template)
     }
 
     private static func escapeHTML(_ text: String) -> String {
