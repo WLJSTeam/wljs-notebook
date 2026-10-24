@@ -115,7 +115,6 @@ struct WLNPreviewParser {
               font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
             }
             .input { background: #f5f5f7; }
-            .label { margin: 0 0 5px; opacity: .55; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
             p { margin: .7em 0; }
             a { color: #06c; }
             @media (prefers-color-scheme: dark) {
@@ -230,7 +229,6 @@ struct WLNPreviewParser {
         let cssClass = cell.type.lowercased() == "input" ? "input" : "output"
         return """
         <section class="cell">
-          <div class="label">\(escapeHTML(cell.type))</div>
           <pre class="\(cssClass)">\(escapeHTML(cell.source))</pre>
         </section>
         """

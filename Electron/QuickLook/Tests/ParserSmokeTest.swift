@@ -54,6 +54,7 @@ struct ParserSmokeTest {
         try expect(html.contains("Data Visualization"), "Rendered HTML is missing notebook content")
         try expect(!html.contains("%Objects%"), "Rendered HTML contains the Objects section")
         try expect(!html.contains("border-left"), "Rendered output still contains the left-border decoration")
+        try expect(!html.contains("class=\"label\""), "Rendered cells still contain type labels")
 
         print("Parsed \(cells.count) cells and rendered \(html.utf8.count) bytes of HTML")
 
