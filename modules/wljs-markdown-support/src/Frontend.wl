@@ -14,7 +14,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`Evaluator`" -> "StandardEvaluator`"];
 
 
-MarkdownQ[t_Transaction] := (Echo[t["Data"]]; Echo[StringMatchQ[t["Data"], ".md\n"~~___]]; StringMatchQ[t["Data"], ".md"~~___] )
+MarkdownQ[t_Transaction] := (Echo[t["Data"], "[wljs-markdown-support/Frontend] Transaction data: "]; Echo[StringMatchQ[t["Data"], ".md\n"~~___], "[wljs-markdown-support/Frontend] Multiline Markdown signature matched: "]; StringMatchQ[t["Data"], ".md"~~___] )
     
 rootFolder = $InputFileName // DirectoryName;
 

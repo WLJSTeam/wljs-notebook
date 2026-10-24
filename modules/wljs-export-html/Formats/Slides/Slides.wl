@@ -74,7 +74,7 @@ captureSlide[count_, log_, win_, delay_, p_] := With[{},
         EventFire[log, Notifications`NotificationMessage["Renderer"], StringTemplate["Captured slide ``"][count]];
         count++;
         Then[WebUIFetch[GetNextSlide[delay], win], Function[result, 
-            Echo["Result:"]; Echo[result];
+            Echo["[wljs-export-html/Slides] Operation result:"]; Echo[result, "[wljs-export-html/Slides] operation result: "];
             If[!TrueQ[result], 
                 EventFire[p, Resolve, True];
             ,
@@ -127,11 +127,11 @@ With[{
                 count = 1;
 
                 If[!StringQ[filename] || TrueQ[filenameRaw["canceled"] ] || StringLength[filename] === 0, 
-                    Echo["Cancelled saving"]; Echo[filenameRaw];
+                    Echo["[wljs-export-html/Slides] Save operation was cancelled."]; Echo[filenameRaw, "[wljs-export-html/Slides] selected filename: "];
                     ClearAll[payload, filename, spinner, win, winObject, count]; 
                 ,
 
-                    Echo[filename];
+                    Echo[filename, "[wljs-export-html/Slides] filename: "];
                     spinner = Notifications`Spinner["Topic"->"Exporting", "Body"->"Please, wait"];
 
                     If[!StringMatchQ[filename, __~~".pdf"],  filename = filename <> ".pdf"];
@@ -147,16 +147,16 @@ With[{
                             Delete /@ Select[notebookOnLine["Cells"], Function[cell, cell["Display"]==="slide" ] ];
                             EventFire[messager, spinner, True];
 
-                            Echo["Projecting cell to the outer window"];
+                            Echo["[wljs-export-html/Slides] Projecting cell to the outer window"];
                             EventFire[messager, "Info", "Setting up the projector"];       
                             winObject = SelectFirst[EventFire[controls, "NotebookCellProjectTemporalOpts", <|"Cell"->slides, "Offscreen"->True|>] // Flatten, PromiseQ];
-                            Echo[winObject];
+                            Echo[winObject, "[wljs-export-html/Slides] window object: "];
                             winObject = winObject // Await;
-                            Echo[winObject];
+                            Echo[winObject, "[wljs-export-html/Slides] window object: "];
                             PauseAsync[2] // Await;
-                            Echo["Window  is ready"];
+                            Echo["[wljs-export-html/Slides] Window  is ready"];
                             win = winObject["Socket"];
-                            Echo[win];
+                            Echo[win, "[wljs-export-html/Slides] window: "];
                             
                             
                             EventFire[messager, "Message", "Going though slides"];  
@@ -173,8 +173,8 @@ With[{
                             EventFire[messager, "Info", "Done"];  
 
                             payload = pdfEndpoint["FlushAndMerge", "Window"->win] // Await;   
-                            Echo[payload // Head];
-                            Echo[payload // Length];
+                            Echo[payload // Head, "[wljs-export-html/Slides] payload type: "];
+                            Echo[payload // Length, "[wljs-export-html/Slides] payload item count: "];
 
                             WebUIClose[win];
                             

@@ -21,7 +21,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 init[o_] := With[{uid = CreateUUID[]},
     If[!ListQ[eList], eList = {}];
     eList = SortBy[Append[eList, o], #["Priority"]&];
-    Echo["Evaluator >> Added new"];
+    Echo["[Kernel/Evaluator] Registered a new evaluator."];
     o
 ];
 
@@ -54,7 +54,7 @@ InitializedContainer[k_(*Kernel*)][t_Transaction, context_Association] := Module
 InitializedContainer[k_(*Kernel*)][$Aborted] := Module[{diposableToken},
     Print["Termination Eval"];
     diposableToken = Function[Null,
-        Echo["Aborting Kernel"];
+        Echo["[Kernel/Evaluator] Aborting Kernel"];
         If[k["State"] === "Initialized", GenericKernel`AbortEvaluation[k] ];
         diposableToken = Null;
     ];
@@ -65,8 +65,8 @@ InitializedContainer[k_(*Kernel*)][$Aborted] := Module[{diposableToken},
 
 StandardEvaluator /: ReadyQ[StandardEvaluator[o_(*Kernel*)] ] := True
 
-StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_] := Echo[evaluator["Name"] <> " >> " <> ToString[msg] ]
-StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_, args__] := Echo[evaluator["Name"] <> " >> " <> StringTemplate[msg // ToString][args] ]
+StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_] := Echo[StringJoin["[Kernel/Evaluator] ", evaluator["Name"], " >> ", ToString[msg]]]
+StandardEvaluator /: Print[evaluator_StandardEvaluator, msg_, args__] := Echo[StringJoin["[Kernel/Evaluator] ", evaluator["Name"], " >> ", StringTemplate[msg // ToString][args]]]
 
 
 End[]

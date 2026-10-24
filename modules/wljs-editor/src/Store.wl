@@ -15,8 +15,8 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 EventHandler[NotebookEditorChannel // EventClone,
     {
         "NotebookStoreGetKeys" -> Function[data,
-           Echo["NotebookStore :: Get keys"];
-           Echo[data];
+           Echo["[wljs-editor/Store] NotebookStore :: Get keys"];
+           Echo[data, "[wljs-editor/Store] event data: "];
            With[{promise = data["Promise"], notebook = nb`HashMap[ data["Ref"] ], kernel = GenericKernel`HashMap[ data["Kernel"] ]},
                 If[!MemberQ[notebook["Properties"], "Storage"],
                     notebook["Storage"] = <||>;

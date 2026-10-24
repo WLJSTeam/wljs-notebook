@@ -142,7 +142,7 @@ Module[{libraryResources, lib},
 
 PreUCompile[{directory_String, name_String}, path_] := 
 Module[{libraryResources, lib}, 
-	Echo["\033[1;44mPre compilation was initiated. Please wait...\033[1;0m"];
+	Echo["[Packages/Internal] \033[1;44mPre compilation was initiated. Please wait...\033[1;0m"];
 	libraryResources = getLibraryResourcesDirectory[directory]; 
 	lib = FileNameJoin[{libraryResources, name <> "." <> Internal`DynamicLibraryExtension[]}]; 
 	If[

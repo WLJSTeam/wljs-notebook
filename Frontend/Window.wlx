@@ -106,7 +106,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["Window >> Destroy"];
+          Echo["[Frontend/Window] Destroying the frontend window."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];

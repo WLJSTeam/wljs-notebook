@@ -42,7 +42,7 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
 
         If[! TrueQ[check],
             EventFire[logs, "Warning", check];
-            Echo["Syntax Error!"];
+            Echo["[wljs-editor/ContextMenu] Syntax error detected."];
             EventFire[p, Reject, $Failed];
             Return[p];
         ];
@@ -72,7 +72,7 @@ evaluationInPlace[text_String, notebook_nb`NotebookObj, controls_, logs_, cli_, 
 ] ]
 
 processSelected[text_, notebook_, controls_, logs_, cli_, head_:""] := With[{},
-    Echo["Evaluate in PLACE!!!!"];
+    Echo["[wljs-editor/ContextMenu] Evaluating the selected cell in place."];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
@@ -82,7 +82,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, head_:""] := With[{},
                 ]
             ,
                 Function[result,
-                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                 ]
             ];
         ]
@@ -103,7 +103,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Iconize"] := With[{},
                     ]
                 ,
                     Function[result,
-                        Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                        Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                     ]
                 ];
             ]
@@ -112,7 +112,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Iconize"] := With[{},
 ]
 
 processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
-    Echo["Evaluate in PLACE!!!!"];
+    Echo["[wljs-editor/ContextMenu] Evaluating the selected cell in place."];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[ReadSelectionInDoc[], cli],
         Function[text,
@@ -122,7 +122,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
                 ]
             ,
                 Function[result,
-                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                 ]
             ];
         ]
@@ -131,7 +131,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Speak"] := With[{},
 
 
 processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{},
-    Echo["Evaluate in PLACE!!!!"];
+    Echo["[wljs-editor/ContextMenu] Evaluating the selected cell in place."];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
@@ -145,7 +145,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{
                 ]
             ,
                 Function[result,
-                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                 ]
             ];
         ]
@@ -153,7 +153,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsTeX"] := With[{
 ]
 
 processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With[{},
-    Echo["Evaluate in PLACE!!!!"];
+    Echo["[wljs-editor/ContextMenu] Evaluating the selected cell in place."];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
@@ -169,7 +169,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With
                 ]
             ,
                 Function[result,
-                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                 ]
             ];
         ]
@@ -177,7 +177,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "CopyAsInput"] := With
 ]
 
 processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid = (Internal`NoWR`RandomWord[])<>"-"<>StringTake[CreateUUID[], 3]},
-    Echo["Evaluate in PLACE!!!!"];
+    Echo["[wljs-editor/ContextMenu] Evaluating the selected cell in place."];
     If[!checkLink[notebook, logs], Return[] ];
     Then[WebUIFetch[FrontEditorSelected["Get"], cli],
         Function[text,
@@ -187,7 +187,7 @@ processSelected[text_, notebook_, controls_, logs_, cli_, "Store"] := With[{uid 
                 ]
             ,
                 Function[result,
-                    Echo["Contextmenu >> evaluate in place >> Rejected!"];
+                    Echo["[wljs-editor/ContextMenu] Context-menu in-place evaluation was rejected."];
                 ]
             ];
         ]
@@ -265,7 +265,7 @@ sniffer[ OptionsPattern[] ] := With[{logs = OptionValue["Messager"], notebook = 
       
                 EventHandler[cloned, {
                     "Closed" -> Function[Null,
-                        Echo["Context menu listener was destroyed"];
+                        Echo["[wljs-editor/ContextMenu] Context menu listener was destroyed"];
                         EventRemove[controls];
                         EventRemove[event];
                         EventRemove[cloned];

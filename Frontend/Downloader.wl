@@ -27,9 +27,9 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     ]
 
     handler[m_][k_] := (
-        Echo["Unsupported method!"];
-        Echo[m];
-        Echo[k];
+        Echo["[Frontend/Downloader] The requested download method is not supported."];
+        Echo[m, "[Frontend/Downloader] Unsupported request method: "];
+        Echo[k, "[Frontend/Downloader] Request lookup key: "];
     )
 
     (* add modules / extensions to PATH *)
@@ -42,10 +42,10 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
         path = rawPath
     },
         path = SelectFirst[If[# === Null, rawPath, FileNameJoin[{#, rawPath}] ] &/@ {wljsPackages, AppExtensions`ExtensionsDir, Directory[], Null}, FileExistsQ ];
-        Echo["Downloader >> Get request"];
+        Echo["[Frontend/Downloader] Handling a GET download request."];
 
         If[MissingQ[path],
-            Echo["File: "<>path<>" does not exist"];
+            Echo[StringJoin["[Frontend/Downloader] ", "File: ", path, " does not exist"]];
                     <|
                         "Code" -> 404, 
                         "Headers" -> <|
@@ -75,15 +75,15 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
             ranges = parseBytesRange[rangesString // StringTrim],
             size = Round[QuantityMagnitude[FileSize[path], "Bytes"] ]
         },
-            Echo["Downloader >> Ranges: "<>ToString[ranges] ];
+            Echo[ranges, "[Frontend/Downloader] Requested byte ranges: "];
             
 
             With[{file = OpenRead[path, BinaryFormat->True]},
                 ReadByteArray[file, ranges[[1]]];
                 With[{body = ReadByteArray[file, Min[ranges[[2]], size-1]+1 ]},
                     Close[file];
-                    Echo["Downloader >> Content-Length: "<>ToString[Length[body] ] ];
-                    Echo["Downloader >> Content-Range: "<>(StringTemplate["bytes ``-``/``"][ranges[[1]], Min[ranges[[2]], size-1], size]) ];
+                    Echo[Length[body], "[Frontend/Downloader] Response content length: "];
+                    Echo[StringTemplate["bytes ``-``/``"][ranges[[1]], Min[ranges[[2]], size-1], size], "[Frontend/Downloader] Response content range: "];
                    
                     <|
                         "Body" -> body,
@@ -109,7 +109,7 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     }, Module[{
         path
     },
-        Echo["Downloader >> Head request"];
+        Echo["[Frontend/Downloader] Handling a HEAD download request."];
         path = SelectFirst[If[# === Null, rawPath, FileNameJoin[{#, rawPath}] ] &/@ {wljsPackages, AppExtensions`ExtensionsDir, Directory[], Null}, FileExistsQ ];
 
         If[!MissingQ[path],
@@ -138,7 +138,7 @@ BeginPackage["CoffeeLiqueur`Notebook`HTTPDownLoader`", {
     ] ]
 
     module[OptionsPattern[] ] := With[{http = OptionValue["HTTPUHandler"]},
-        Echo["Downloads module was attached"];
+        Echo["[Frontend/Downloader] Downloads module was attached"];
         http["MessageHandler", "Downloader"] = AssocUMatchQ[<|"Path" -> "/downloadFile/"|>] -> (handler[ #["Method"] ][#]&);
     ]
 

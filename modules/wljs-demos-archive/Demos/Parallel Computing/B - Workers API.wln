@@ -62,7 +62,7 @@ The worker above sends every message it receives back to the main kernel. Subscr
 Type: Input
 %-------------------------------------------------------------------------%
 EventHandler[w, Function[msg,
-  Echo[msg, "worker replied"]
+  Echo[msg, "[Workers API demo] Worker reply: "]
 ]];
 EventFire[w, "Hey!"];
 
@@ -91,7 +91,7 @@ commandWorker = WorkerLaunch[Module[{},
 ]];
 
 EventHandler[commandWorker, Function[result,
-  Echo[result, "result"]
+  Echo[result, "[Workers API demo] Parallel computation result: "]
 ]];
 
 EventFire[commandWorker, "square", 12];

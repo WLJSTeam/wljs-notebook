@@ -44,7 +44,7 @@ App[request_] := Module[{client, channel, target}, With[{
 
                 With[{socket = EventClone[cli]},
                     EventHandler[socket, {"Closed" -> Function[Null,
-                        Echo["Docs window was destroyed!"];
+                        Echo["[wljs-editor/Docs] Destroyed the documentation window."];
                         EventRemove[socket];
                         EventRemove[secret];
                         DeleteObject[doc];

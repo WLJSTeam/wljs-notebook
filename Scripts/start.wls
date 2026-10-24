@@ -21,15 +21,13 @@ This product bundles third-party FOSS. Full license texts are included in <AppDi
 "This project is not affiliated with, endorsed by, or sponsored by Wolfram Research, Inc. Wolfram and Wolfram Language are trademarks of Wolfram Research, Inc." // Print;
 
 If[($VersionNumber < 14.1 || !NumberQ[$VersionNumber]) && Internal`WolframQ,
-    Echo["Wolfram Engine versions older than 14.1 are not supported"];
-    Echo["due to missing I/O features"];
-    Echo["Please, update"];
+    Echo["[Startup] Wolfram Engine 14.1 or newer is required because older versions lack the necessary I/O features. Please update the engine."];
     Exit[0];
 ];
 
 If[$VersionNumber > 15.0 && Internal`WolframQ,
-  Do[Echo["Warning: your Wolfram Kernel version is higher, that was tested with WLJS Notebook - 14.1-15.0. We do not guarantee it will work correctly"], {5}];
-  Echo["Proceeding anyway..."];
+  Do[Echo["[Startup] Warning: this Wolfram Kernel is newer than the tested 14.1-15.0 range; compatibility is not guaranteed."], {5}];
+  Echo["[Startup] Continuing with the untested Wolfram Kernel version."];
   Pause[1];
 ];
 
@@ -142,15 +140,14 @@ $Env = Join[<|
 (* FWD parameters from the command line *)
 If[$ScriptCommandLine =!= {},
   With[{argv = Rest @ $ScriptCommandLine},
-    Echo["Command line: "];
-    Echo[argv];
+    Echo[argv, "[Startup] Command-line arguments: "];
     MapIndexed[Function[{key, pos},
       With[{},
         If[MemberQ[Keys[$Env], key] || True,
           With[{
             value = argv[[2;;;;2]][[ pos[[1]] ]]
           },
-            Echo[key -> value];
+            Echo[key -> value, "[Startup] Applying command-line option: "];
   
             $Env = Join[$Env, <|key -> If[NumericQ[ $Env[key] ],
               ToExpression[value],
@@ -202,18 +199,17 @@ If[KeyExistsQ[$Env, "store_config_in_docs"],
 ];
 
 (* ~~Debug info~~ *)
-Echo["Checking version of WLJS Notebook ..."];
-Echo[AppExtensions`FrontendEnv["AppJSON"]["version"] ];
+Echo[AppExtensions`FrontendEnv["AppJSON"]["version"], "[Startup] WLJS Notebook version: "];
 
-Echo["Default paths:"];
-Echo[">> QuickNotesDir: "<> AppExtensions`QuickNotesDir];
-Echo[">> BackupsDir: "<> AppExtensions`BackupsDir];
-Echo[">> DefaultDocumentsDir: "<> AppExtensions`DefaultDocumentsDir];
-Echo[">> DemosDir: "<> AppExtensions`DemosDir];
-Echo[">> ExtensionsDir: "<> AppExtensions`ExtensionsDir];
-Echo[">> AppDataDir: "<> AppExtensions`AppDataDir];
-Echo[">> AppConfig: "<> AppExtensions`AppConfig];
-Echo[">> Root: "<> Directory[] ];
+Echo["[Startup] Resolved application paths:"];
+Echo[StringJoin["[Startup] Quick-notes directory: ", AppExtensions`QuickNotesDir]];
+Echo[StringJoin["[Startup] Backup directory: ", AppExtensions`BackupsDir]];
+Echo[StringJoin["[Startup] Default documents directory: ", AppExtensions`DefaultDocumentsDir]];
+Echo[StringJoin["[Startup] Demo directory: ", AppExtensions`DemosDir]];
+Echo[StringJoin["[Startup] Extensions directory: ", AppExtensions`ExtensionsDir]];
+Echo[StringJoin["[Startup] Application-data directory: ", AppExtensions`AppDataDir]];
+Echo[StringJoin["[Startup] Application configuration file: ", AppExtensions`AppConfig]];
+Echo[StringJoin["[Startup] Application root directory: ", Directory[]]];
 
 (* Load core and user's extensions *)
 WLJSPackages`Load[ AppExtensions`ExtensionsDir ];
@@ -222,10 +218,10 @@ WLJSPackages`Load[ AppExtensions`ExtensionsDir ];
 Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
 
 
-Echo["\n\nWe are looking for funding ❤️  https://wljs.io/frontend/Support\n\n"];
+Echo["[Startup] Support WLJS Notebook development: https://wljs.io/frontend/Support"];
 
 FilePrint[FileNameJoin[{Directory[], "ACKNOWLEDGMENTS.md"}]];
-Echo["\n\n"];
+Echo["[Startup] Finished printing third-party acknowledgments."];
 
 (* WR services patches *)
 Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ]
@@ -257,28 +253,28 @@ AppExtensions`HTTPUHandler = http;
 
 With[{now = Now},
   Function[file,
-    If[now - FileDate[file] > Quantity[14, "Days"], DeleteFile[file]; Echo[StringTemplate["Removed old note ``"][file] ] ]
+    If[now - FileDate[file] > Quantity[14, "Days"], DeleteFile[file]; Echo[StringJoin["[Startup] Removed expired quick note: ", ToString[file]]] ]
   ] /@ FileNames["*.wln", AppExtensions`QuickNotesDir]
 ];
 
 With[{now = Now},
   Function[file,
-    If[now - FileDate[file] > Quantity[30, "Days"], DeleteFile[file]; Echo[StringTemplate["Removed old note ``"][file] ] ]
+    If[now - FileDate[file] > Quantity[30, "Days"], DeleteFile[file]; Echo[StringJoin["[Startup] Removed expired backup note: ", ToString[file]]] ]
   ] /@ FileNames["*.wln", AppExtensions`BackupsDir]
 ];
 
 
 (* Load frontend / master kernel extensions *)
-Echo["Loading core packages..."];
+Echo["[Startup] Loading core frontend packages."];
 
 If[FailureQ[
-    Echo[StringJoin["Loading to Master Kernel... ", #] ];
+    Echo[StringJoin["[Startup] Loading package into the master kernel: ", #] ];
     Get[
       UniversalPathConverter[#],
       Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}
     ] 
   ],
-  Echo["Failed to load some of the packages (see logs)"];
+  Echo["[Startup] One or more core packages failed to load; inspect the preceding logs for details."];
   Pause[2];
   Exit[0]
 ] &/@ WLJSPackages`Includes["frontend"]; 
@@ -320,7 +316,7 @@ EventHandler[AppExtensions`AppEvents // EventClone, {
   (*$ExposedDirectories = ReplacePart[$ExposedDirectories, FirstPosition[$ExposedDirectories, notebook["Path"] // DirectoryName ] -> Nothing];*)
  ],
  "Loader:NewNotebook" -> Function[notebook,
-  Echo["A new notebook was added to PATH"];
+  Echo["[Startup] Added the new notebook directory to the exposed path list."];
 
   If[MemberQ[notebook["Properties"], "WorkingDirectory"],
     $ExposedDirectories = Append[$ExposedDirectories, notebook["WorkingDirectory"] ]  // DeleteDuplicates;
@@ -329,30 +325,30 @@ EventHandler[AppExtensions`AppEvents // EventClone, {
   ];
  ],
  "Loader:LoadNotebook" -> Function[notebook,
-  Echo["A notebook was added to PATH"];
+  Echo["[Startup] Added the loaded notebook directory to the exposed path list."];
 
   If[MemberQ[notebook["Properties"], "WorkingDirectory"],
-    Echo[notebook["WorkingDirectory"] ];
+    Echo[notebook["WorkingDirectory"], "[Startup] Notebook working directory: "];
     $ExposedDirectories = Append[$ExposedDirectories, notebook["WorkingDirectory"] ] // DeleteDuplicates;
   ,
-    Echo[notebook["Path"] // DirectoryName];
+    Echo[notebook["Path"] // DirectoryName, "[Startup] Notebook file directory: "];
     $ExposedDirectories = Append[$ExposedDirectories, notebook["Path"] // DirectoryName ]  // DeleteDuplicates;
   ];
   
  ],
 
  "App:ExtendPath" -> Function[path,
-  Echo["Extend PATH"];
+  Echo[path, "[Startup] Adding exposed directory: "];
   $ExposedDirectories = Append[$ExposedDirectories, path] // DeleteDuplicates;
  ],
 
  "App:ExtendRoute" -> Function[route,
-  Echo["Extend route"];
+  Echo[route, "[Startup] Adding exposed route: "];
   $ExposedRoutes = Join[$ExposedRoutes, route];
  ], 
 
  "App:RemovePath" -> Function[paths, Module[{p = $ExposedDirectories},
-   Echo["Shrink PATH"];
+   Echo[paths, "[Startup] Removing exposed directories: "];
    $ExposedDirectories = p /. {paths -> Nothing};
   ] ]
 }];
@@ -391,7 +387,7 @@ SocketListen[USocketOpen[$Env["host"], $Env["ws"] ], wcp@#&, "SocketEventsHandle
 (* Start all extra webservers loaded from extensions *)
 Map[Function[key, 
   With[{server = AppExtensions`WebServers[key]},
-    Echo[StringTemplate["Starting App extension server `` on ``:``"][key, server["Host"], server["Port"]]];
+    Echo[StringJoin["[Startup] Starting application extension server ", ToString[key], " on ", ToString[server["Host"]], ":", ToString[server["Port"]]]];
     SocketListen[USocketOpen[server["Host"], server["Port"]], server["Handler"]];
   ]
 ], Keys[AppExtensions`WebServers]];

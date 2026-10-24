@@ -82,7 +82,7 @@ App[request_] := Module[{client, channel, target}, With[{
             With[{socket = EventClone[client]},
                 EventHandler[socket, {"Closed" -> Function[Null,
 
-                    Echo["Xterm was destroyed!"];
+                    Echo["[wljs-xterm/xterm] Destroyed the terminal instance."];
                     (*KillProcess[shell];
                     shell = Null;*)
                     ClearAll[client];

@@ -62,7 +62,7 @@ GetDefaults := With[{},
 UIAutocompleteConnect; (* private frontend symbol *)
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-editor/Autocomplete] Attaching extension event listeners to the notebook."];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[

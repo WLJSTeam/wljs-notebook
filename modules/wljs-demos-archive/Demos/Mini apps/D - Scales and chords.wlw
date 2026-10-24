@@ -437,7 +437,7 @@ EventHandler[TuningField, {
 
   "Entered" -> Function[input,
     currentTune = input;
-    Echo[input];
+    Echo[input, "[Scales and chords demo] Selected musical input: "];
     With[{semitones = convertToSemitones @ StringSplit[input, " "]},
       If[!TrueQ[AllTrue[semitones, NumberQ]], 
         Notify["Tuning must be like E5 D5 ... form", "Type"->"Warning"];

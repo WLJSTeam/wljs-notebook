@@ -126,7 +126,7 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
           Then[p, Function[result, 
               Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"]] },
                   If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                    Echo["Cancelled saving"]; Echo[result];
+                    Echo["[Frontend/IframeApp] Save operation was cancelled."]; Echo[result, "[Frontend/IframeApp] operation result: "];
                     Return[];
                   ];
 
@@ -147,7 +147,7 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
                     ]
                   ];                  
               ];
-          ], Function[result, Echo["!!!R!!"]; Echo[result] ] ];
+          ], Function[result, Echo["[Frontend/IframeApp] Export completed successfully."]; Echo[result, "[Frontend/IframeApp] operation result: "] ] ];
 
       ]
     ,
@@ -214,7 +214,7 @@ App[request_] := With[{
   ] 
 },
 
-  Echo["Loading by path : "]; Print[Path];
+  Echo["[Frontend/IframeApp] Loading by path : "]; Print[Path];
 
   If[KeyExistsQ[query, "root"],
     Print["## Extening HTTP path using provided root directory"];
@@ -258,7 +258,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["IFrame >> Destroy"];
+          Echo["[Frontend/IframeApp] Destroying the iframe notebook application."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];

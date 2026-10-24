@@ -30,7 +30,7 @@ Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`" -> "dynamicAnalyzer`", FileNameJoin[{parent, "DynamicAnalyzer.wl"}] ];
 
-Echo["BlackBox :: WidgetStateMachine"];
+Echo["[wljs-export-html/WidgetStateMachine] BlackBox :: WidgetStateMachine"];
 
 CreateUType[stateMachine, blackBox`BlackBox];
 
@@ -44,7 +44,7 @@ stateMachine /: blackBox`construct[stateMachine, w_, kernel_] := With[{},
     With[{machine = stateMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/WidgetStateMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Widget"] = w;
@@ -65,7 +65,7 @@ SubmitState;
 
 
 prepareFeedbackSignal[kernel_] := With[{},
-    Echo["Prepare feedback loop handlers"];
+    Echo["[wljs-export-html/WidgetStateMachine] Prepare feedback loop handlers"];
     GenericKernel`Send[kernel,  (  
         Internal`Kernel`LoopBackTrueMessage = True;
     ), "Once"->True];
@@ -160,7 +160,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
 
     Block[{$CurrentWebSocket = client},
-      Echo["Total states: "<>ToString[total] ];
+      Echo[StringJoin["[wljs-export-html/WidgetStateMachine] ", "Total states: ", ToString[total]]];
       EventFire[messager, notification, True];
       If[reducedQ,
         EventFire[channel, "Progress", <|"Bar"->0, "Max"->1.0, "Info"->StringJoin[ToString[total], " to be sampled. Precision decreased because many states had to be sampled."]|>];
@@ -176,7 +176,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
         "Abort" -> Function[Null,
             EventFire[channel, "Progress", <|"Info"->"Aborting..."|>];
             machine["Aborted"] = True;
-            Echo["Aborting..."];
+            Echo["[wljs-export-html/WidgetStateMachine] Aborting the current operation."];
             KernelSniffer[machine["Kernel"], "Eject"];
             WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
             WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];            
@@ -209,7 +209,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
         EventRemove[socket];
         KernelSniffer[machine["Kernel"], "Eject"];
         GenericKernel`Send[machine["Kernel"],  wapi`Tools`ResetFlag["PreserveSymbols"] ]; 
-        Echo["Unexpected abortion >> !!!"];       
+        Echo["[wljs-export-html/WidgetStateMachine] Operation aborted unexpectedly."];
       ]}];
     ];
 
@@ -219,11 +219,11 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
     machine["HashTable"] = CreateDataStructure["HashTable"];
 
-    Echo["Injecting sniffers"];
+    Echo["[wljs-export-html/WidgetStateMachine] Injecting sniffers"];
 
     Then[KernelSniffer[machine["Kernel"], "Inject"], Function[Null,
             
-      Echo["Injecting sniffers on frontend"];
+      Echo["[wljs-export-html/WidgetStateMachine] Injecting sniffers on frontend"];
 
 
       (* Retrack first so the injected sniffer observes the current frontend graph. *)
@@ -232,21 +232,21 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
         dynamicAnalyzer`Sniffer["Inject"]
       }, client], Function[Null,
 
-      Echo["Reset pool"];
+      Echo["[wljs-export-html/WidgetStateMachine] Resetting the black-box instance pool."];
       KernelSniffer[machine["Kernel"], "Reset"];
 
-      Echo["Reset widget state"];
+      Echo["[wljs-export-html/WidgetStateMachine] Resetting widget state."];
       With[{reset = widget["ResetStateFunction"]},
 
        
         Then[KernelSniffer[machine["Kernel"], Hold[reset[] ], "EvaluateHeld"], Function[Null,
-          Echo["Done!"];
+          Echo["[wljs-export-html/WidgetStateMachine] Processing completed."];
           Then[KernelSniffer[machine["Kernel"], "ListSymbols"], Function[report,
-            Echo["Report:"]; Echo[report];
+            Echo["[wljs-export-html/WidgetStateMachine] State-machine analysis report:"]; Echo[report, "[wljs-export-html/WidgetStateMachine] analysis report: "];
             With[{symbols = report},
               machine["Symbols"] = symbols;
-              Echo["Symbols:"];
-              Echo[symbols];
+              Echo["[wljs-export-html/WidgetStateMachine] Referenced symbols:"];
+              Echo[symbols, "[wljs-export-html/WidgetStateMachine] symbols: "];
 
               KernelSniffer[machine["Kernel"], "Reset"];
               KernelSniffer[machine["Kernel"], "Eject"];
@@ -256,7 +256,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
 
               machine["InitialValues"] = Table[r["Range"][[ r["Initial"] ]], {r, ranges}];
-              Echo["Initial values: "]; Echo[machine["InitialValues"] ];
+              Echo[machine["InitialValues"], "[wljs-export-html/WidgetStateMachine] Initial state values: "];
 
 
               With[{
@@ -282,20 +282,20 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
                               EventFire[p, Resolve, True];
                           ], Function[Null,
-                            Echo["Rejected!"];
+                            Echo["[wljs-export-html/WidgetStateMachine] Operation was rejected."];
                             EventFire[p, Reject, True];
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE"];
+                            Echo["[wljs-export-html/WidgetStateMachine] Processing completed."];
                             EventFire[channel, "Progress", <|"Bar"->1, "Max"->1, "Info"->"Finished!", "Size"->(ByteCount[machine["HashTable"]["Values"] ]/1024.0//N)|>];
                             EventFire[channel, "Done", True];
 
-                            Echo["Machine is ready!!!"];
+                            Echo["[wljs-export-html/WidgetStateMachine] State machine is ready."];
 
                           ], Function[Null,
 
-                            Echo["Aborted machine"];
+                            Echo["[wljs-export-html/WidgetStateMachine] State machine was aborted."];
 
                           ] ];
                         ]  

@@ -29,13 +29,13 @@ $rootDir =  ParentDirectory[ DirectoryName[$InputFileName] ];
 
 getNotebook[assoc_Association] := With[{result = EventFire[assoc["Controls"], "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n}},
     Print[result];
-    Echo["Getting notebook"];
+    Echo["[wljs-snippets/Github] Getting notebook"];
     If[MatchQ[result, _nb`NotebookObj],
-            Echo["Got"];
-            Echo[result];
+            Echo["[wljs-snippets/Github] Received the requested value."];
+            Echo[result, "[wljs-snippets/Github] operation result: "];
             result
     ,
-            Echo["rejected"];
+            Echo["[wljs-snippets/Github] Operation was rejected."];
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             $Failed
     ]
@@ -52,7 +52,7 @@ printCell[assoc_, content_String] := With[{
 handle[data_Association] := Module[{spinner, promise}, With[{
     
 },
-    Echo["Install package"];
+    Echo["[wljs-snippets/Github] Install package"];
   
     With[{assoc = Join[data, <|"Notebook" -> getNotebook[data]|> ]},
         If[FailureQ[assoc["Notebook"] ], Return[Null, Module] ];
@@ -79,14 +79,14 @@ handle[data_Association] := Module[{spinner, promise}, With[{
                                 "Github" -> url -> "master"
                             ]
                         }, "Directory"->dir, "PreserveConfiguration"->True, "Deffered"->True] ]},
-                                Echo["Done!!!"];
+                                Echo["[wljs-snippets/Github] Processing completed."];
                                 EventFire[promise, Resolve, e];
                         ];
                     ];               
                 ];
 
                 Then[promise, Function[result, Module[{},
-                    Echo["Installer Resolved!"];
+                    Echo["[wljs-snippets/Github] Snippet installation completed successfully."];
 
                     If[FailureQ[result["Result"] ],
                         Block[{$CurrentWebSocket = client}, EventFire[spinner["Promise"], Resolve, Null] ];
@@ -108,8 +108,8 @@ handle[data_Association] := Module[{spinner, promise}, With[{
                                     Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Info", "Installation was succesfull" ] ];
                                     printCell[assoc, StringTemplate["PacletDirectoryLoad[FileNameJoin[{\"wl_packages\", \"``\"}]];\n\n``"][
                                         FileNameSplit[dir][[-1]],
-                                        Echo["New paclet: "];
-                                        Echo[paclet];
+                                        Echo["[wljs-snippets/Github] New paclet: "];
+                                        Echo[paclet, "[wljs-snippets/Github] paclet metadata: "];
                                         If[KeyExistsQ[paclet[[1]], "PrimaryContext"], "<<"<>newPaclets[[1]][[1]]["PrimaryContext"], ""]
                                     ] ]
                                 ,

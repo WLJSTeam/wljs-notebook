@@ -40,7 +40,7 @@ initializeKernel[parameters_][kernel_] := With[{
   With[{files = With[{
     filename = #
   },
-    Echo[StringJoin["Loading to Evaluation Kernel... ", #] ];
+    Echo[StringJoin["[Frontend/KernelUtils] Loading expression into the evaluation kernel: ", #]];
     filename
   ] &/@ WLJSPackages`Includes["kernel"]},
     GenericKernel`Send[kernel, Get[#, Path->paths]&/@files // Quiet;];
@@ -48,7 +48,7 @@ initializeKernel[parameters_][kernel_] := With[{
 
   (* GenericKernel`SendAsync[kernel, 1]; *)
 
-  Echo["Starting WS link"];
+  Echo["[Frontend/KernelUtils] Starting WS link"];
   wsStartListerning[kernel,  wsPort, parameters["env", "host"] ];
 
   kernel["WebSocket"] = wsPort;
@@ -65,7 +65,7 @@ initializeKernel[parameters_][kernel_] := With[{
 ]
 
 deinitializeKernel[kernel_] := With[{},
-  Echo["Cleaning up..."];
+  Echo["[Frontend/KernelUtils] Cleaning up."];
 
   kernel["ContainerReadyQ"] = False;
   kernel["WebSocket"] = .;

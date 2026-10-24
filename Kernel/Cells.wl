@@ -191,7 +191,7 @@ ToTransaction[o_, OptionsPattern[] ] := With[{rm = OptionValue[AutoRemove], nb =
     ],
         "Finished" -> Function[Null,
             o["State"] = "Idle";
-            Echo["Finished!"];
+            Echo["[Kernel/Cells] Processing completed."];
             EventFire[o, "State", "Idle"];
             If[rm, Delete[transaction] ];
         ],
@@ -199,7 +199,7 @@ ToTransaction[o_, OptionsPattern[] ] := With[{rm = OptionValue[AutoRemove], nb =
         "Error" -> Function[error,
             o["State"] = "Idle";
             EventFire[o, "State", "Idle"];
-            Echo["Error in evalaution... check syntax"];
+            Echo["[Kernel/Cells] Cell evaluation failed; check the expression syntax."];
             If[!NullQ[ nb ], 
                 EventFire[nb, "CellError", {o, error}];
             ];

@@ -1512,7 +1512,7 @@ renderAnimation[widget_AnimationHelper, opts: OptionsPattern[] ] := Module[{
     task = SetInterval[
         attemps++;
         If[attemps > 100,
-        Echo["Widget instace is still offline. Aborting"];
+        Echo["[wljs-manipulate/Kernel] Widget instance is still offline; aborting synchronization."];
         exitAndCleanUp; TaskRemove[task]; TaskAbort[task]; 
         EventFire[promise, Resolve, $Failed];
         Return[];

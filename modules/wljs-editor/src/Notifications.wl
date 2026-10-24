@@ -80,8 +80,8 @@ EventHandler[NotebookEditorChannel // EventClone,
                         
                     },
 
-                        Echo["Creating modal: "<>modal<>" for channel "<>notebook["ModalsChannel"] ];
-                        Echo["Socket: "<>ToString[notebook["Socket"] ] ];
+                        Echo[StringJoin["[wljs-editor/Notifications] ", "Creating modal: ", modal, " for channel ", notebook["ModalsChannel"]]];
+                        Echo[StringJoin["[wljs-editor/Notifications] ", "Socket: ", ToString[notebook["Socket"] ]]];
 
                         EventFire[notebook["ModalsChannel"], modal, Join[data["Data"], <|
                             "Promise"->promise,

@@ -87,24 +87,24 @@ renameFile[notebook_nb`NotebookObj, name_String, client_] := Module[{filename = 
 ]
 
 createNotebook[props_Association, assoc_Association, GlobalMessanger_, ModalController_, client_, currentpath_] := With[{path = assoc["BaseDirectory"]},
-  Echo[StringJoin["Creating notebook using path : ", path]];
+  Echo[StringJoin["[Frontend/App] Creating notebook in directory: ", path]];
   Then[saveNotebook[path, "Props"->props, "Events"->AppEvent, "Modals"->ModalController, "Client"->client], Function[result,
 
     EventFire[AppEvent, "Notebook:OnCreate", result];
     EventFire[GlobalMessanger, "Log", "Created! Please wait"];
-    Echo["Redirect to ", result["Path"]];
+    Echo[StringJoin["[Frontend/App] Redirecting to notebook path: ", result["Path"]]];
       
     WebUILocation[ StringJoin["/", URLEncode[ result["Path"] ]], client, "Target"->_, "Features"->"left=100,top=100"];
       
   ], Function[error,
-    Echo[error];
+    Echo[error, "[Frontend/App] error details: "];
     EventFire[GlobalMessanger, "Error", "Failed to create a new notebook! Check if the working directory is writable"];
   ]]
 ]
 
 dumpHashCheckUpdate[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
   If[!TrueQ[FileExistsQ[notebook["Path"]] || !NumberQ[notebook["FileHash"]]], 
-    Echo["File or notebook hash does not exists. Skipping"];
+    Echo["[Frontend/App] File or notebook hash does not exist; skipping the request."];
     Return[];
   ];
 
@@ -120,7 +120,7 @@ dumpHashCheckUpdate[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Modul
 
 dumpReloadNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
   Then[reloadNotebook[notebook, "Events"->AppEvent], Function[Null,
-    Echo["Reloaded"];
+    Echo["[Frontend/App] Reloaded the notebook application."];
   ]];
 ];
 
@@ -129,9 +129,9 @@ backupNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := With[{},
     EventFire[GlobalMessanger, "Notebook:Saving:Started", True];
     Then[saveNotebook[notebook, "Events"->AppEvent, "Temporal"->True], Function[result,
         EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
-        Echo[result];
+        Echo[result, "[Frontend/App] operation result: "];
       ], Function[error, 
-        Echo[error];
+        Echo[error, "[Frontend/App] error details: "];
         EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
         EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"]
       ]
@@ -157,7 +157,7 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
           Then[p, Function[result, 
               Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"]]},
                   If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                    Echo["Cancelled saving"]; Echo[result];
+                    Echo["[Frontend/App] Save operation was cancelled."]; Echo[result, "[Frontend/App] operation result: "];
                     EventFire[GlobalMessanger, "Notebook:Saving:Finished", True]; 
                     Return[];
                   ];
@@ -179,7 +179,7 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
                       WebUILocation[ StringJoin["/", URLEncode[ notebook["Path"] ]], client, "Target"->"self" ];
                     ], 
                     Function[error,
-                      Echo[error];
+                      Echo[error, "[Frontend/App] error details: "];
                       EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
                       EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
                     ]
@@ -194,11 +194,11 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
       Then[saveNotebook[notebook, "Events"->AppEvent, "Modals"->ModalController, "Client"->client], 
         Function[result,
           EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
-          Echo[result];
+          Echo[result, "[Frontend/App] operation result: "];
           EventFire[promise, Resolve, True];
         ], 
         Function[error,
-          Echo[error];
+          Echo[error, "[Frontend/App] error details: "];
           EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
           EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
         ]
@@ -344,7 +344,7 @@ App[request_] := With[{
     URLDecode @ StringDrop[request["Path"],1 ]]
 },
 
-  Echo[">> Loading by path : "]; Echo[Path];
+  Echo[Path, "[Frontend/App] Loading notebook by path: "];
   
   With[{
         cachedClient = Unique["cachedClient"],
@@ -426,7 +426,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["App >> Destroy"];
+          Echo["[Frontend/App] Destroying the notebook application."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];

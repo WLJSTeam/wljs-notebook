@@ -12,7 +12,7 @@ detector = EventClone[Client];
 EventHandler[detector, {"Closed" -> Function[Null, destoryWidget]}];
 
 destoryWidget := With[{},
-   Echo["Kernel >> Item.wlx >> destroyed!"];
+   Echo["[Components/Item] Destroyed the kernel list item."];
    EventRemove[detector];
    EventRemove[assignedEvent1];
    EventRemove[assignedEvent2];
@@ -48,7 +48,7 @@ EventHandler[assignedEvent2, {
 }];
 
 EventHandler[assignedEvent3, {
-   any_ :> Function[data, Echo[StringJoin["Kernel output >> ", ToString[any], ": ", ToString[data] ] ] ]
+   any_ :> Function[data, Echo[StringJoin["[Components/Item] Kernel output for ", ToString[any], ": ", ToString[data] ] ] ]
 }];
 
 With[{kernel = kernel},

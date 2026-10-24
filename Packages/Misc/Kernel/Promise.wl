@@ -26,7 +26,7 @@ Promise /: WaitAll[ Promise[uid_], Timeout_:15 ] := Module[{timeout = 500 Timeou
     If[timeout > 0,
         resolved[uid]["Data"]
     ,
-        Echo["Promise >> Timeout!"];
+        Echo["[Packages/Promise] Promise timed out before it was resolved or rejected."];
         $Failed
     ]
 ] 

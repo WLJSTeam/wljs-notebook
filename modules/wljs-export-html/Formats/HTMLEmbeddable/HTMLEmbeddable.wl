@@ -318,7 +318,7 @@ export[outputPath_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_
 
                             If[FileExistsQ[FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ], 
                                 (
-                                    Echo["Copying from "<>#<>" >>  to "<>FileNameJoin[{newDir, "attachments", FileNameTake[#]}] ];
+                                    Echo[StringJoin["[wljs-export-html/HTMLEmbeddable] Copying attachment from ", #, " to ", FileNameJoin[{newDir, "attachments", FileNameTake[#]}], "."]];
                                     CopyFile[#, FileNameJoin[{newDir, "attachments", FileNameTake[#]}], OverwriteTarget->True];
 
                                 ) &/@ FileNames["*.*", FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ];
@@ -352,7 +352,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
        Then[p, Function[result, 
            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                 Echo["Cancelled saving"]; Echo[result];
+                 Echo["[wljs-export-html/HTMLEmbeddable] Save operation was cancelled."]; Echo[result, "[wljs-export-html/HTMLEmbeddable] operation result: "];
                  Return[];
                ];
 
@@ -368,7 +368,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
                             If[FileExistsQ[FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ], 
                                 (
-                                    Echo["Copying from "<>#<>" >>  to "<>FileNameJoin[{newDir, "attachments", FileNameTake[#]}] ];
+                                    Echo[StringJoin["[wljs-export-html/HTMLEmbeddable] Copying attachment from ", #, " to ", FileNameJoin[{newDir, "attachments", FileNameTake[#]}], "."]];
                                     CopyFile[#, FileNameJoin[{newDir, "attachments", FileNameTake[#]}], OverwriteTarget->True];
 
                                 ) &/@ FileNames["*.*", FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ];
@@ -386,7 +386,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
                     
                     
                 ];
-            ], Function[result, Echo["Exported"]; Echo[result] ] ];
+            ], Function[result, Echo["[wljs-export-html/HTMLEmbeddable] Export completed successfully."]; Echo[result, "[wljs-export-html/HTMLEmbeddable] operation result: "] ] ];
             
         ]
     ]
@@ -410,7 +410,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`", FileName
 
 
 (* Process black boxes serially to avoid overlapping sniffer lifecycles. *)
-ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
+ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["[wljs-export-html/HTMLEmbeddable] Continuing with the next asynchronous step."]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
 ApplySync[f_, w_, {}, final_, reject_] := final[];
 
 export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := Module[{}, With[{
@@ -418,8 +418,8 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 },
     If[!TrueQ[notebookOnLine["Evaluator"]["Kernel"]["ContainerReadyQ"] ], 
         Block[{$CurrentWebSocket = client}, (* [FIXME] *)
-            Echo[messager];
-            Echo[client];
+            Echo[messager, "[wljs-export-html/HTMLEmbeddable] messenger: "];
+            Echo[client, "[wljs-export-html/HTMLEmbeddable] client: "];
             EventFire[messager, "Warning", "Kernel is not attached or intialized"];
         ];
         Return[];
@@ -430,7 +430,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
     },
         EventFire[modals, "SelectBox", <|"Promise"->mode, "title"->"Mode", "message"->"Select the preset", "list"->{"Automatic","Manual sampling"}|>];
         Then[mode, Function[choise,
-            Echo[choise];
+            Echo[choise, "[wljs-export-html/HTMLEmbeddable] selected choice: "];
 
             Switch[choise,
                 1,
@@ -458,7 +458,7 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
         wapi`Tools`Flush[];
         wapi`Tools`Deserialize[values];
 
-        Echo[">> Synced wapi`"];
+        Echo["[wljs-export-html/HTMLEmbeddable] Synchronized the Wolfram API context."];
         With[{widgets = Select[Select[Values[wapi`Tools`HashMap], MatchQ[#, _wapi`Tools`WidgetLike]& ], Function[item, item["Notebook"] === notebookHash && item["Online"] ] ]},
             If[Length[widgets] == 0,
                 Block[{$CurrentWebSocket = client}, (* [FIXME] *)
@@ -471,15 +471,15 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
             With[{socket = EventClone[client]},
                 EventHandler[socket, {"Closed" ->Function[Null,
                     EventRemove[socket];
-                    Echo["HTMLDyn >> Removed!"];
+                    Echo["[wljs-export-html/HTMLEmbeddable] Removed the temporary dynamic HTML notebook."];
                 ]}]
             ];  
 
             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", False], client ];
 
             With[{box = blackBox`findBest[#]},
-                            Echo["Found best black box type: "];
-                            Echo[box];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Selected black-box type:"];
+                            Echo[box, "[wljs-export-html/HTMLEmbeddable] black-box instance: "];
 
 
                             If[Head[box] =!= Missing, AppendTo[que,
@@ -487,13 +487,13 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
                             ] ];
             ]& /@ widgets;
 
-            Echo["Que:"];
+            Echo["[wljs-export-html/HTMLEmbeddable] Queued black-box instances:"];
             que = Flatten[que];
-            Echo[que];
+            Echo[que, "[wljs-export-html/HTMLEmbeddable] black-box queue: "];
 
  
 
-            Echo["Done processing of que of boxes"];
+            Echo["[wljs-export-html/HTMLEmbeddable] Finished processing the black-box queue."];
 
                         With[{p = Promise[]},
                           ApplySync[Then, blackBox`process, {
@@ -507,11 +507,11 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE!"];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Processing completed."];
                             export[{"Final", que}, controls, modals, messager, client, notebookOnLine, path, name, ext, settings, proto];
                           ], Function[Null,
                             
-                            Echo["The whole process was aborted!"];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Export analysis was aborted."];
                             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
 
                             blackBox`delete /@ que;
@@ -538,8 +538,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 
         EventHandler[sniffer, {
             "Continue" -> Function[Null,
-                Echo[Hold[task] ];
-                CancelInterval[task] // Echo;
+                Echo[Hold[task], "[wljs-export-html/HTMLEmbeddable] task: "];
+                Echo[CancelInterval[task], "[wljs-export-html/HTMLEmbeddable] Sampling timer cancellation result: "];
                 Delete[notification];
                 ClearAll[hash];
                 EventRemove[sniffer];
@@ -550,7 +550,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 
 
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
-                    Echo[data[[All, "Summary"]] ];
+                    Echo[data[[All, "Summary"]], "[wljs-export-html/HTMLEmbeddable] Dynamic-analysis summaries: "];
 
                     (* Fully stop discovery before a black box installs its sniffer. *)
                     Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
@@ -561,8 +561,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 
                     Map[Function[group,
                         With[{box = blackBox`findBest[group]},
-                            Echo["Found best black box type: "];
-                            Echo[box];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Selected black-box type:"];
+                            Echo[box, "[wljs-export-html/HTMLEmbeddable] black-box instance: "];
 
 
                             If[Head[box] =!= Missing, AppendTo[que,
@@ -571,8 +571,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                         ]
                     ], data];
 
-                    Echo["A list of black boxes instances"];
-                    Echo[que // Flatten];
+                    Echo["[wljs-export-html/HTMLEmbeddable] Black-box instances selected for processing:"];
+                    Echo[que // Flatten, "[wljs-export-html/HTMLEmbeddable] black-box queue: "];
 
                     With[{list = que // Flatten},
                         With[{p = Promise[]},
@@ -587,11 +587,11 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE!"];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Processing completed."];
                             export[{"Final", list}, controls, modals, messager, client, notebookOnLine, path, name, ext, settings, proto];
                           ], Function[Null,
                             
-                            Echo["The whole process was aborted!"];
+                            Echo["[wljs-export-html/HTMLEmbeddable] Export analysis was aborted."];
                             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
 
                             blackBox`delete /@ list;
@@ -601,13 +601,13 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                         ] 
                     ];
                       ], Function[err,
-                        Echo["Failed to eject the frontend sniffer"];
-                        Echo[err];
+                        Echo["[wljs-export-html/HTMLEmbeddable] Failed to eject the frontend sniffer"];
+                        Echo[err, "[wljs-export-html/HTMLEmbeddable] error details: "];
                         EventFire[messager, "Warning", "Failed to stop manual sampling"];
                       ] ];
                     ], Function[err,
-                      Echo["Failed to eject the kernel sniffer"];
-                      Echo[err];
+                      Echo["[wljs-export-html/HTMLEmbeddable] Failed to eject the kernel sniffer"];
+                      Echo[err, "[wljs-export-html/HTMLEmbeddable] error details: "];
                       EventFire[messager, "Warning", "Failed to stop manual sampling"];
                     ] ];
                 ] ];
@@ -629,7 +629,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
         With[{socket = EventClone[client]},
             EventHandler[socket, {"Closed" ->Function[Null,
                 EventRemove[socket];
-                Echo["HTMLDyn >> Removed!"];
+                Echo["[wljs-export-html/HTMLEmbeddable] Removed the temporary dynamic HTML notebook."];
 
                 CancelInterval[task];
                 Delete[notification];
@@ -649,14 +649,14 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
             WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
 
             task = SetInterval[With[{analyzed = dynamicAnalyzer`showAllConnections[notebookOnLine["Evaluator"]["Kernel"] ]},
-                Echo["Promise from analyzer: "];
-                Echo[analyzed];
+                Echo["[wljs-export-html/HTMLEmbeddable] Analyzer result:"];
+                Echo[analyzed, "[wljs-export-html/HTMLEmbeddable] analysis result: "];
                 Then[analyzed, Function[data,
                     With[{newHash = Hash[data]},
                         If[newHash =!= hash,
                             If[Length[data["Symbols"] ] > 8,
-                                Echo["ERROR!"];
-                                Echo[err];
+                                Echo["[wljs-export-html/HTMLEmbeddable] Operation failed."];
+                                Echo[err, "[wljs-export-html/HTMLEmbeddable] error details: "];
                                 ClearAll[hash];
                                 CancelInterval[task];
                                 Delete[notification];
@@ -675,8 +675,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                         ];
                     ];
                 ] , Function[err,
-                    Echo["ERROR!"];
-                    Echo[err];
+                    Echo["[wljs-export-html/HTMLEmbeddable] Operation failed."];
+                    Echo[err, "[wljs-export-html/HTMLEmbeddable] error details: "];
                     ClearAll[hash];
                     CancelInterval[task];
                 ] ]
@@ -708,7 +708,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
        Then[p, Function[result, 
            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                 Echo["Cancelled saving"]; Echo[result];
+                 Echo["[wljs-export-html/HTMLEmbeddable] Save operation was cancelled."]; Echo[result, "[wljs-export-html/HTMLEmbeddable] operation result: "];
                  Return[];
                ];
                     If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
@@ -725,7 +725,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
 
                                 If[FileExistsQ[FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ], 
                                     (
-                                        Echo["Copying from "<>#<>" >>  to "<>FileNameJoin[{newDir, "attachments", FileNameTake[#]}] ];
+                                        Echo[StringJoin["[wljs-export-html/HTMLEmbeddable] Copying attachment from ", #, " to ", FileNameJoin[{newDir, "attachments", FileNameTake[#]}], "."]];
                                         CopyFile[#, FileNameJoin[{newDir, "attachments", FileNameTake[#]}], OverwriteTarget->True];
 
                                     ) &/@ FileNames["*.*", FileNameJoin[{DirectoryName[notebookOnLine["Path"] ], "attachments"}] ];
@@ -746,7 +746,7 @@ export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnL
                         
                     ] ];
            ];
-       ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
+       ], Function[result, Echo["[wljs-export-html/HTMLEmbeddable] Exported to HTML"]; Echo[result, "[wljs-export-html/HTMLEmbeddable] operation result: "] ] ];
        
    ]
 ]

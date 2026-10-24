@@ -62,7 +62,7 @@ applyToNotebook[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebo
 ] ]
 
 MergeDirectories[source_String, target_String] := (
-  Echo[StringTemplate["Copy directory `` to ``"][source, target]];
+  Echo[StringJoin["[wljs-export-html/SFX] ", StringTemplate["Copy directory `` to ``"][source, target]]];
   If[!DirectoryQ[target], CreateDirectory[target]; ];
   
   With[{names = FileNames[All, source]},
@@ -76,7 +76,7 @@ MergeDirectories[source_String, target_String] := (
 
       Map[Function[file,
         CopyFile[file, FileNameJoin[{target, FileNameTake[file, -1]}], OverwriteTarget->True];
-        Echo[StringTemplate["Copied `` to ``"][file, FileNameJoin[{target, FileNameTake[file, -1]}]]];
+        Echo[StringJoin["[wljs-export-html/SFX] ", StringTemplate["Copied `` to ``"][file, FileNameJoin[{target, FileNameTake[file, -1]}]]]];
       ], files];
     ]
   ];
@@ -108,16 +108,16 @@ embedArchive[n_nb`NotebookObj, files_List] := With[{
         intermediate = CreateDirectory[FileNameJoin @ {$TemporaryDirectory, "__selected_"<>(Internal`NoWR`RandomWord[])}]
     },
         If[FailureQ[intermediate],
-            Echo["Failed to copy project files!!!"];
+            Echo["[wljs-export-html/SFX] Failed to copy project files!"];
             Return[$Failed];
         ];
 
         Map[If[DirectoryQ[#],
             CopyDirectory[#, FileNameJoin[{intermediate, FileNameTake[#] }] ];
-            Echo["Copying dir"<>#<>" >> "<>FileNameJoin[{intermediate, FileNameTake[#] }] ];
+            Echo[StringJoin["[wljs-export-html/SFX] Copying directory ", #, " to ", FileNameJoin[{intermediate, FileNameTake[#]}], "."]];
         ,
             CopyFile[#, FileNameJoin[{intermediate, FileNameTake[#] }] ];
-            Echo["Copying file"<>#<>" >> "<>FileNameJoin[{intermediate, FileNameTake[#] }] ];
+            Echo[StringJoin["[wljs-export-html/SFX] Copying file ", #, " to ", FileNameJoin[{intermediate, FileNameTake[#]}], "."]];
         ]&, files];
 
         With[{p = CreateArchive[intermediate, $TemporaryDirectory, "OverwriteTarget"->True]},

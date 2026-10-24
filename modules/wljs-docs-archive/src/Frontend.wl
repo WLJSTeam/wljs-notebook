@@ -8,7 +8,7 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 Begin["`Internal`"]
 
-Echo["Note: wljs-docs-archive only redirects to a web page since 2.8.1"];
+Echo["[wljs-docs-archive/Frontend] Note: wljs-docs-archive only redirects to a web page since 2.8.1"];
 
 root = DirectoryName[$InputFileName] // ParentDirectory;
 

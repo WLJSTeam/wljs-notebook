@@ -15,7 +15,7 @@ events = CreateUUID[];
 loadConfiguration  := If[FileExistsQ[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Get[CoffeeLiqueur`Notebook`AppExtensions`AppConfig ], Missing[] ];
 
 storeConfiguration[c_Association] := With[{},
-    Echo["Storing to a file..."];
+    Echo["[Frontend/Settings] Storing to a file."];
     Put[c, CoffeeLiqueur`Notebook`AppExtensions`AppConfig ]
 ];
 

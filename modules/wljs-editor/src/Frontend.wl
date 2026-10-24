@@ -81,7 +81,7 @@ evaluator  = StandardEvaluator`StandardEvaluator["Name" -> "Wolfram Evaluator", 
 
      If[StringLength[StringTrim[t["Data"] ] ] === 0,
         EventFire[t, "Error", "No input"];
-        Echo["Syntax Error!"];
+        Echo["[wljs-editor/Frontend] Syntax error detected."];
         Return[$Failed];
      ];
 
@@ -90,12 +90,12 @@ evaluator  = StandardEvaluator`StandardEvaluator["Name" -> "Wolfram Evaluator", 
      With[{check = CheckSyntax[t["Data"] ]},
         If[! TrueQ[check],
             EventFire[t, "Error", check];
-            Echo["Syntax Error!"];
+            Echo["[wljs-editor/Frontend] Syntax error detected."];
             Return[$Failed];
         ];
 
         If[! TrueQ[k["ReadyQ"] ],
-            Echo[k["ReadyQ"] ];
+            Echo[k["ReadyQ"], "[wljs-editor/Frontend] Kernel readiness state: "];
             EventFire[t, "Error", "Kernel is not ready"];
             Return[$Failed];
         ];
@@ -317,20 +317,20 @@ StandardEvaluator`EvaluateTransaction[sh, k_, t_] := Module[{list, task},
                 With[{path = If[DirectoryQ[#], #, DirectoryName[#] ] &@ refCell["Notebook"]["Path"]},
                     With[{process = SystemShellRun[t["Data"], ProcessDirectory->path, ProcessEnvironment->processEnv]},
                          {checkProcess := With[{errors = ReadString[process["StandardError"], EndOfBuffer]},
-                                    Echo["Checking the process..."];
+                                    Echo["[wljs-editor/Frontend] Checking external process status."];
 
                                     With[{r = ReadString[process, EndOfBuffer]}, If[TrueQ[StringLength[r] > 0],
-                                        Echo["ReadString"];
+                                        Echo["[wljs-editor/Frontend] Reading string content from the selected file."];
                                         EventFire[t, "Result", <|"Data" -> (limitString[r, 10000]), "Meta" -> Sequence["Display"->"shell"] |> ];
                                     ] ];                                    
                                     
                                     If[errors =!= EndOfBuffer,
-                                        Echo["Error detected?"]; If[TrueQ[StringLength[errors] > 0],
+                                        Echo["[wljs-editor/Frontend] Checking whether evaluation returned an error."]; If[TrueQ[StringLength[errors] > 0],
                                         EventFire[t, "Result", <|"Data" -> (limitString[errors, 10000]), "Meta" -> Sequence["Display"->"shell"] |> ];
                                     ] ];
                                     
                                     If[ProcessStatus[process]==="Finished", 
-                                        Echo["Process finished"];
+                                        Echo["[wljs-editor/Frontend] External process exited normally."];
                                         If[MatchQ[task, _TaskObject], TaskRemove[task] ];
                                         ClearAll[task];
                                         EventFire[t, "Finished", True];
@@ -347,7 +347,7 @@ StandardEvaluator`EvaluateTransaction[sh, k_, t_] := Module[{list, task},
                                 task = SetInterval[checkProcess, 600];
                                 processes = Append[processes, Function[Null,
                                     If[MatchQ[task, _TaskObject], TaskRemove[task] ];
-                                    Echo["Process killed"];
+                                    Echo["[wljs-editor/Frontend] External process was terminated."];
                                     If[ProcessStatus[process] =!= "Finished", KillProcess[process] ];
                                     EventFire[t, "Finished", True];
                                     ClearAll[task];

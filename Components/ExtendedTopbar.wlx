@@ -39,7 +39,7 @@ timedSaveButton[client_, localController_, controls_, parameters_] := With[{clon
     reset := With[{},
       If[MatchQ[task, _TaskObject], TaskRemove[task]];
       task = SetTimeout[(
-        Echo["Boom!"];
+        Echo["[Components/ExtendedTopbar] Save action failed."];
         EventFire[localController, "Color", <|"Client"->client |> ];
         EventFire[controls, "Backup", <|"Client"->client|>];
         If[alive, reset];
@@ -59,7 +59,7 @@ timedSaveButton[client_, localController_, controls_, parameters_] := With[{clon
 
     (*/* destructor */*)
     EventHandler[socket, {"Closed" -> Function[Null,
-      Echo["Destroy save button..."];
+      Echo["[Components/ExtendedTopbar] Destroying the save button."];
       alive = False;
       EventRemove[clonedControls];
       EventRemove[localController];

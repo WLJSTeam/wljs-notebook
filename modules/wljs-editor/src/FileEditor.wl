@@ -28,8 +28,8 @@ editorView = ImportComponent[ FileNameJoin[{root, "templates", "FileEditor.wlx"}
 WLFileQ[path_] := With[{w = FileExtension[path]}, w === "wl" || w === "m" || w === "wlt" || w === "wls"] 
 
 CoffeeLiqueur`Notebook`Views`Router[any_?WLFileQ, appevents_String, _] := With[{},
-    Echo["WL File"];
-    Echo[any];
+    Echo["[wljs-editor/FileEditor] WL File"];
+    Echo[any, "[wljs-editor/FileEditor] WL file routed to the editor: "];
 
     {editorView[any, ##], ""}
 ]&

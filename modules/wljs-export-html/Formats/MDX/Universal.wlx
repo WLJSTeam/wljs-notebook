@@ -25,7 +25,7 @@ fixMarkdownBug[str_] := If[StringTake[str,1] == ">", StringDrop[str,1], str]
 escapeHTML[str_String] := Module[{
     tokens, depth, assembled = "", open, close, singular, higherLevel, isType
 },
-    Echo["Start escaping"];
+    Echo["[wljs-export-html/MDX] Start escaping"];
     isType[t_String][token_token] := token[[2]] == t;
     isType[_][_] := False;
 

@@ -50,7 +50,7 @@ In the case of context loss, provide `"Window"` object as an option, i.e.
 Type: Input
 %-------------------------------------------------------------------------%
 win = CurrentWindow[];
-SetTimeout[CopyToClipboard[RandomWord[], "Window"->win]; Echo["Copied"], 1000];
+SetTimeout[CopyToClipboard[RandomWord[], "Window"->win]; Echo["[Clipboard demo] Copied a random word to the clipboard."], 1000];
 
 %-------------------------------------------------------------------------%
 Props:

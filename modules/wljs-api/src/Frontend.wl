@@ -65,7 +65,7 @@ getLLMFile := SelectFirst[Flatten[{ EventFire[AppExtensions`AppEvents, "Autocomp
 
 makeResponce[raw_] := If[MatchQ[raw, _failure],
         With[{},
-            Echo["API Error >>"]; Echo[raw // First];
+            Echo["[wljs-api/Frontend] HTTP API request failed:"]; Echo[raw // First, "[wljs-api/Frontend] API error details: "];
             <|
                 "Body" -> ExportByteArray[raw // First, "JSON"], 
                 "Code" -> 409, 
@@ -93,8 +93,8 @@ makeResponce[raw_] := If[MatchQ[raw, _failure],
       ];
 
 HTTPAPICall[request_] := With[{type = request["Path"]},
-    Echo["HTTP API Request >> "<>type];
-    Echo["HTTP API Request Body >> "<>(request["Body"] // ByteArrayToString)];
+    Echo[type, "[wljs-api/Frontend] HTTP API request type: "];
+    Echo[request["Body"] // ByteArrayToString, "[wljs-api/Frontend] HTTP API request body: "];
 
     With[{raw = apiCall[Join[request, <|"Body"->ImportByteArray[request["Body"], "RawJSON", CharacterEncoding -> "UTF-8"] |> ] ]},
       If[PromiseQ[raw], With[{id = raw[[1]]},
@@ -297,7 +297,7 @@ apiCall[request_, "/api/notebook/new/"] := With[{body = request["Body"], nb = nb
     ];
 
     nb["Path"] = FileNameJoin[{ AppExtensions`QuickNotesDir, "llm-"<>StringTake[CreateUUID[], 3]<>".wln"}];
-    Then[saveNotebook[nb], Echo];
+    Then[saveNotebook[nb], Function[result, Echo[result, "[wljs-api/Frontend] New notebook save result: "]]];
     <|"Id"->toAlias[nb["Hash"]], "PathEncoded"->URLEncode[nb["Path"] ]|>
 ]
 
@@ -912,13 +912,13 @@ clonedChannels = <||>;
 
 (* can be used for not only kernels *)
 getMessagesEventChannel[kernel_, prop_] := If[clonedChannels[kernel[prop]]["Origin"] =!= kernel[prop],
-  Echo["Clonning event channel used for messaging"];
+  Echo["[wljs-api/Frontend] Cloning the event channel used for messaging."];
   With[{cloned = EventClone[kernel[prop]], hash = kernel[prop]},
     clonedChannels[hash] = <|"Origin"->kernel[prop], "Target"->cloned|>;
     cloned
   ]
 ,
-  Echo["Using cached cloned event channel"];
+  Echo["[wljs-api/Frontend] Using cached cloned event channel"];
   clonedChannels[kernel[prop]]["Target"]  
 ]
 
@@ -982,15 +982,16 @@ apiCall[request_, "/api/notebook/cells/evaluate/"] := Module[{body = request["Bo
                         EventFire[promise, Resolve, "$TimedOut" ]; 
                         EventRemove[events, "Warning"];
                         ClearAll[accumulatedMessages];
-                        Echo["Aborting..."];
-                        GenericKernel`AbortEvaluation[notebook["Evaluator"]["Kernel"]] // Echo;
+                        Echo["[wljs-api/Frontend] Aborting the current operation."];
+                        Echo[GenericKernel`AbortEvaluation[notebook["Evaluator"]["Kernel"]], "[wljs-api/Frontend] Kernel abort result: "];
                     , 1000 timeout]
                 },
 
                     accumulatedMessages = {};
                     EventHandler[events, {
                         "Warning" -> Function[dt,
-                            Echo["------"]; AppendTo[accumulatedMessages, "⚠ " <>ToString[dt]]; Echo["------"]
+                            Echo[dt, "[wljs-api/Frontend] Evaluation warning: "];
+                            AppendTo[accumulatedMessages, StringJoin["⚠ ", ToString[dt]]]
                         ]
                     }];
                     

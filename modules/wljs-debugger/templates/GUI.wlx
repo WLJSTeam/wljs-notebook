@@ -127,7 +127,7 @@ destroy[state_, ___] := With[{
         state["SymbolsContainer"]
     }
 },
-    Echo["Debugger >> Destroy"];
+    Echo["[wljs-debugger/GUI] Destroying the debugger window."];
 
     utilsRemoveBreak[kernel, "Assert"];
     utilsRemoveBreak[kernel, {"Symbol", #}] &/@ (Keys @ state["Symbols"]);
@@ -182,19 +182,19 @@ setThingsUp[state_] := With[{
     ];
 
     EventHandler[state["ClonedOrigin"], {"Closed"->Function[Null,
-        Echo["Debugger >> Origin was closed!"];
+        Echo["[wljs-debugger/GUI] Closing the debugger because its origin window was closed."];
         destroy[state];
     ]}];
 
     EventHandler[state["ClonedClient"], {"Closed"->Function[Null,
-        Echo["Debugger >> Client window was closed!"];
+        Echo["[wljs-debugger/GUI] The debugger client window was closed."];
         destroy[state];
     ]}];    
 
     (*/* monitor WSLink */*)
     EventHandler[state["ClonedMessanger"], {        
         "WebSocket:Kernel:Lost" -> Function[Null,
-            Echo["Debugger >> WSLink lost"];
+            Echo["[wljs-debugger/GUI] Lost the debugger WebSocket link."];
             destroy[state];
         ],
         

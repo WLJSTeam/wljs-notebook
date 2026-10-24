@@ -11,12 +11,12 @@ $libFile = FileNameJoin[{
 If[FailureQ[
     socketOpen = LibraryFunctionLoad[$libFile, "socketOpen", {String, String}, Integer] 
 ],
-    Echo["CSockets >> Windows >> Loading process failed. "];
+    Echo["[Packages/Fallback] Failed to load the Windows fallback socket library."];
     Exit[-1];
 ];
 
 
-Echo["CSockets >> Windows >> Succesfully loaded!"];
+Echo["[Packages/Fallback] Loaded the Windows fallback socket library."];
 
 
 (* ::Section:: *)

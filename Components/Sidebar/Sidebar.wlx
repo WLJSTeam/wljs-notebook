@@ -145,7 +145,7 @@ With[{
         With[{files = FileNames["*", dir, 2]},
           If[!orderlessSameQ[files, cached],
             cached = files;
-            Echo["Refresh sidebar!"];
+            Echo["[Components/Sidebar] Refreshing the sidebar."];
             EventFire[SidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>]; 
             EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
           ]

@@ -2,10 +2,10 @@ If[DownValues[Notifications`Spinner(*`*)] === {}, CreateUType[Notifications`Spin
 
 (*/* Might be an issue since this component it imported multiple times (just dont do that!!!), could rewrite definitions */*)
 
-Echo["Notifications >> Created spinner notifications type"];
+Echo["[Components/Spinner] Registered the spinner notification type."];
 
 init[n_] := With[{dom = CreateUUID[]},
-    Echo["Created! Spinner"];
+    Echo["[Components/Spinner] Created spinner notification."];
     n["DOM"] = dom;
     n["Promise"] = Promise[];
     Then[n["Promise"], Function[Null,

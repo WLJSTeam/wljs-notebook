@@ -49,20 +49,20 @@ $libFile := FileNameJoin[{
 }]; 
 
 
-Echo["CSockets >> Windows >> " <> $SystemID];
+Echo[$SystemID, "[Packages/Windows] Initializing sockets for system: "];
 
 uvLib = FileNameJoin[{$directory, "UV", $SystemID, "uv."<>Internal`DynamicLibraryExtension[]}];
 If[FileExistsQ[uvLib],
-    Echo["CSockets >> Windows >> Loading UV library..."];
+    Echo["[Packages/Windows] Loading the Windows UV socket library."];
     LibraryLoad[uvLib];
 ];
 
-Echo["CSockets >> Windows >> Loading library... LLink "<>ToString[getLibraryLinkVersion[] ] ];
+Echo[getLibraryLinkVersion[], "[Packages/Windows] Loading the socket library with LibraryLink version: "];
 
 If[FailureQ[
     runLoop = LibraryFunctionLoad[$libFile, "run_uvloop", {Integer}, Integer]
 ],
-    Echo["CSockets >> Windows >> Loading UV library failed! Fallback to WinSock..." ];
+    Echo["[Packages/Windows] Failed to load the UV library; falling back to WinSock."];
     {
         createAsynchronousTask,
         socketOpen,
@@ -78,7 +78,7 @@ If[FailureQ[
     } = Get[FileNameJoin[{$directory, "Fallback", "Fallback.wl"}] ];
 ,
 
-    Echo["CSockets >> Windows >> Succesfully loaded! LLink "];
+    Echo["[Packages/Windows] Loaded the native socket library through LibraryLink."];
 
 
     socketsInfo = <||>;
@@ -119,7 +119,7 @@ If[FailureQ[
     buffers;
 
     socketConnect[host_String, port_String] := Module[{state = False}, With[{sid = socketConnectInternal[socketOpen[host, port] ]},
-        Echo["sid >> "<>ToString[sid] ];
+        Echo[sid, "[Packages/Windows] Socket identifier: "];
 
         buffers[sid] = {};
 

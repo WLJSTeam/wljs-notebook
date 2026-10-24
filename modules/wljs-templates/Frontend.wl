@@ -39,10 +39,10 @@ With[{
             cli = $CurrentWebSocket
         }, 
             EventFire[Modals, "SelectBox", <|"Promise"->promise, "title"->"Template", "message"->"Choose one below", "list"->Keys[database]|>];
-            Echo["Promise SelectBox:"]; Echo[promise];
+            Echo["[wljs-templates/Frontend] Promise SelectBox:"]; Echo[promise, "[wljs-templates/Frontend] promise: "];
 
             Then[promise, Function[choise, Module[{},
-                Echo["Choise:"]; Echo[choise];
+                Echo["[wljs-templates/Frontend] Selected choice:"]; Echo[choise, "[wljs-templates/Frontend] selected choice: "];
                 With[{
                     p = Promise[]
                 },
@@ -62,7 +62,7 @@ With[{
                     Then[p, Function[result, 
                      Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                        If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                         Echo["Cancelled saving"]; Echo[result];
+                         Echo["[wljs-templates/Frontend] Save operation was cancelled."]; Echo[result, "[wljs-templates/Frontend] operation result: "];
                          Return[];
                        ]; 
                                     If[!StringMatchQ[filename, __~~".wln"], filename = filename<>".wln"];
@@ -88,7 +88,7 @@ With[{
                                         ];
                                     ]
                                 ];
-                            ], Function[result, Echo["!!!R!!"]; Echo[result] ] ];
+                            ], Function[result, Echo["[wljs-templates/Frontend] Export completed successfully."]; Echo[result, "[wljs-templates/Frontend] operation result: "] ] ];
 
                 ]
 

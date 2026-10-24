@@ -103,7 +103,7 @@ socketReadyQ[socketId];
 USocketObject /: Close[USocketObject[socketId_Integer]] := 
 socketClose[socketId]; 
 
-StandardSocketEventsHandler = Echo[StringTemplate["`` was ``"][#2, #1] ]&;
+StandardSocketEventsHandler = Echo[StringJoin["[Packages/CSockets] ", StringTemplate["`` was ``"][#2, #1]]]&;
 
 Options[usocketListen] = {"BufferSize" -> $bufferSize, "SocketEventsHandler" -> StandardSocketEventsHandler};
 

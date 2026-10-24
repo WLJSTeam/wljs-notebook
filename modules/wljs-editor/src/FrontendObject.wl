@@ -60,8 +60,8 @@ CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
         ]
     },
         If[!AssociationQ[Objects], 
-            Echo["Frontend Objects >> FATAL Error >> Objects are no longer an association"];
-            Echo["Rebuilding..."];
+            Echo["[wljs-editor/FrontendObject] Frontend object storage is corrupted: the object collection is no longer an association."];
+            Echo["[wljs-editor/FrontendObject] Rebuilding."];
             Objects = <||>;
         ];
 

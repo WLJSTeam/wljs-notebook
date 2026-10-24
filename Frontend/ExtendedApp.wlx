@@ -101,7 +101,7 @@ createNotebook[assoc_Association, GlobalMessanger_, ModalController_, client_, c
       WebUILocation[ StringJoin["/folder/", URLEncode[ result["Path"] ] ], client, "Target"->If[NotebookQ[currentpath], _, "Same"], "Features"->If[NotebookQ[currentpath], "left=100,top=100", ""] ];
     
   ], Function[error,
-    Echo[error];
+    Echo[error, "[Frontend/ExtendedApp] error details: "];
     EventFire[GlobalMessanger, "Error", "Failed to create a new notebook! Check if the working directory is writable"];
   ]]
 ]
@@ -130,7 +130,7 @@ createNotebook[props_Association, assoc_Association, GlobalMessanger_, ModalCont
 
 dumpHashCheckUpdate[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
   If[!TrueQ[FileExistsQ[notebook["Path"]] || !NumberQ[notebook["FileHash"]]], 
-    Echo["File or notebook hash does not exists. Skipping"];
+    Echo["[Frontend/ExtendedApp] File or notebook hash does not exist; skipping the request."];
     Return[];
   ];
 
@@ -146,7 +146,7 @@ dumpHashCheckUpdate[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Modul
 
 dumpReloadNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := Module[{},
   Then[reloadNotebook[notebook, "Events"->AppEvent], Function[Null,
-    Echo["Reloaded"];
+    Echo["[Frontend/ExtendedApp] Reloaded the extended notebook application."];
   ]];
 ];
 
@@ -157,7 +157,7 @@ backupNotebook[notebook_nb`NotebookObj, GlobalMessanger_, client_] := With[{},
         EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
         Print[result];
       ], Function[error, 
-          Echo[error];
+          Echo[error, "[Frontend/ExtendedApp] error details: "];
           EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
           EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"]
       ]
@@ -177,7 +177,7 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
         Print[result]
       ], 
       Function[error,
-        Echo[error];
+        Echo[error, "[Frontend/ExtendedApp] error details: "];
         EventFire[GlobalMessanger, "Notebook:Saving:Finished", True];
         EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
       ]
@@ -205,7 +205,7 @@ If[TrueQ[notebook["ReadOnly?"]],
       EventFire[promise, Resolve, True];
       WebUILocation[ StringJoin["/", URLEncode[ path ] ], client ];
     ], Function[error,
-       Echo[error];
+       Echo[error, "[Frontend/ExtendedApp] error details: "];
        EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
     ]
   ]
@@ -326,7 +326,7 @@ App[request_] := With[{
   ] ]
 },
 
-  Echo["# Loading by path : "]; Echo[Path];
+  Echo[Path, "[Frontend/ExtendedApp] Loading notebook by path: "];
   
   EventHandler[Secret, {
     "SaveSidebarState" -> Function[state, sidebarState = state],
@@ -432,7 +432,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["ExtendedApp >> Destroy"];
+          Echo["[Frontend/ExtendedApp] Destroying the extended notebook application."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];
@@ -462,7 +462,7 @@ App[request_] := With[{
       "RenameFile" -> ((renameFile @@ #)&),
       "NewNotebook" -> (createNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
       "_NewNotebook" -> (createNotebook[<|"BaseDirectory"->If[DirectoryQ[Path], Path, DirectoryName[Path]]|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
-      "_NewQuickNotebook" -> (Echo["SHORT!"]; createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
+      "_NewQuickNotebook" -> (Echo["[Frontend/ExtendedApp] Creating a quick notebook."]; createNotebook[<|"Quick"->True, "HaveToSaveAs"->True|>, <|"BaseDirectory"->AppExtensions`QuickNotesDir|>, GlobalMessanger, ModalController, $CurrentWebSocket, Path]&),
       "DumpSave" -> (dumpNotebook[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
       "DumpSaveAs" -> (dumpNotebookAs[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),
       "ReopenAsQuick" -> (reopenNotebookAsQuick[#, GlobalMessanger, ModalController, $CurrentWebSocket]&),

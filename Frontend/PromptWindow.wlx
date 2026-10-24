@@ -71,10 +71,10 @@ dumpNotebook[notebook_nb`NotebookObj, GlobalMessanger_, ModalController_, client
   ,
   Then[saveNotebook[notebook, "Events"->AppEvent, "Modals"->ModalController, "Client"->client], 
   Function[result,
-    Echo[result]
+    Echo[result, "[Frontend/PromptWindow] operation result: "]
   ], 
   Function[error,
-    Echo[error];
+    Echo[error, "[Frontend/PromptWindow] error details: "];
     EventFire[GlobalMessanger, "Error", "Failed to save a notebook!"];
   ]
    ]
@@ -164,7 +164,7 @@ recreateNotebook[modals_] := With[{n = nb`NotebookObj[]},
                   _,
                       EventRemove[cloned];
                       EventRemove[request];
-                      Echo["Cannecled"];
+                      Echo["[Frontend/PromptWindow] Prompt was cancelled."];
                       n["AskedToExtend"] = True;
                       n["ShowToolbox"] = True;
                 ];
@@ -248,7 +248,7 @@ App[request_] := Module[{localExtensions}, With[{
       recreateNotebook[ModalController];
     ];
 
-    Echo[n["Path"]];
+    Echo[n["Path"], "[Frontend/PromptWindow] Recreated notebook path: "];
 
     EventHandler[OnLoad, Function[Null,
       (* After UI has been loaded *)
@@ -258,7 +258,7 @@ App[request_] := Module[{localExtensions}, With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["PromptWindow >> Destroy"];
+          Echo["[Frontend/PromptWindow] Destroying the prompt window."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];

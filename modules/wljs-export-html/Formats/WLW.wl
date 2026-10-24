@@ -43,7 +43,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
             Then[p, Function[result, 
                 Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                     If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                      Echo["Cancelled saving"]; Echo[result];
+                      Echo["[wljs-export-html/WLW] Save operation was cancelled."]; Echo[result, "[wljs-export-html/WLW] operation result: "];
                       Return[];
                     ];
 
@@ -55,7 +55,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
                     EventFire[messager, "Saved", "Exported to "<>filename];
                 ];
-            ], Function[result, Echo["!!!R!!"]; Echo[result] ] ];
+            ], Function[result, Echo["[wljs-export-html/WLW] Export completed successfully."]; Echo[result, "[wljs-export-html/WLW] operation result: "] ] ];
             
         ]    
 ]
@@ -68,12 +68,12 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 (* Window execution waits for both the container and evaluator to be ready. *)
 checkKernel[getkernel_, cbk_] := With[{
     kernel = getkernel[]
-}, Echo["Checking kernel..."]; 
+}, Echo["[wljs-export-html/WLW] Checking kernel."];
     If[TrueQ[kernel["ContainerReadyQ"] ] && TrueQ[kernel["ReadyQ"] ],
-        Echo["Kernel is ready!"];
+        Echo["[wljs-export-html/WLW] Kernel is ready!"];
         cbk[kernel, kernel];
     ,
-        Echo["Not yet..."];
+        Echo["[wljs-export-html/WLW] Kernel is not ready yet."];
         SetTimeout[checkKernel[getkernel, cbk], 500];
     ]
 ]
@@ -141,7 +141,7 @@ With[{
     With[{},
         checkKernel[Function[Null, options["Kernels"] //ReleaseHold //First], Function[{data, kernel},
 
-            Echo["Starting evaluation", "WLE Decoder"];
+            Echo["[wljs-export-html/WLW] Starting notebook evaluation with the WLE decoder."];
             With[{
                 initCells = Unique[],
                 last = Unique[],
@@ -152,7 +152,7 @@ With[{
                 
                 notebook["ModalsChannel"] = Null; (* indicate that the window of notebook is not shown. all modals should go somewhere *)
                 
-                Echo["Switching the context to "<>generated];
+                Echo[StringJoin["[wljs-export-html/WLW] ", "Switching the context to ", generated]];
 
                 GenericKernel`Send[kernel,
                     $ContextPath = $ContextPath /. "Global`" -> Nothing;
@@ -162,11 +162,11 @@ With[{
                     $ContextPath = Append[$ContextPath, generated];
                 ];
 
-                Echo["Evaluating initialization cells"];
+                Echo["[wljs-export-html/WLW] Evaluating initialization cells"];
 
                 If[!wlxCellQ[last["Data"]],
-                    Echo["Warning: output cell will not be WLX type"];
-                    Echo["Automatic convertion using StandardForm will be used"];
+                    Echo["[wljs-export-html/WLW] Warning: output cell will not be WLX type"];
+                    Echo["[wljs-export-html/WLW] Automatic conversion using StandardForm will be used"];
                     
                     initCells = Append[initCells, last];
                     
@@ -181,7 +181,7 @@ With[{
 
 
                 With[{t = metadataCell[notebook["Cells"]]},
-                    If[MissingQ[t], Echo["WLW >> Title is missing!"]; ,
+                    If[MissingQ[t], Echo["[wljs-export-html/WLW] Cannot add the exported notebook to the index because its title is missing."]; ,
                         With[{title = parseWindowTitle[t["Data"]], size = parseWindowSize[t["Data"]]},
                             If[StringQ[title], windowTitle = title; ];
                             If[MatchQ[size, {_?NumberQ, _?NumberQ}], windowSize = size ];
@@ -190,7 +190,7 @@ With[{
                 ] // Quiet;
 
                 With[{hash = kernel["Hash"]},
-                    Echo["Evaluating the last cell"];
+                    Echo["[wljs-export-html/WLW] Evaluating the last cell"];
                     
                     With[{
                         win = win`WindowObj["Title"->windowTitle, WindowSize->windowSize, ImageSize->windowSize, "WebSocketPort"->kernel["WebSocket"], "RetryWebSocket"->True, "Notebook"->notebook]
@@ -202,7 +202,7 @@ With[{
 
                         EventHandler[EventClone @ transaction, {
                             "Result" -> Function[output,
-                                Echo["Get the result... Submitting to a window"];
+                                Echo["[wljs-export-html/WLW] Get the result... Submitting to a window"];
                                 If[KeyExistsQ[output, "Meta"],
                                     win["Data"] = output["Data"];
                                     win["Display"] = Lookup[<|output["Meta"]|>, "Display", "codemirror"];
@@ -224,7 +224,7 @@ With[{
                                 EventFire[spinner["Promise"], Resolve, True];
                                 EventFire[readyPromise, Resolve, True];
 
-                                Echo["Restoring context"];
+                                Echo["[wljs-export-html/WLW] Restoring context"];
                                 (* This must be here. If you put it in Finished, then it outputs local variables
                                    in Graphics-like objects without their context, assuming it is $Context, and
                                    it can't fetch them once the context is switched back to Global.
@@ -258,14 +258,14 @@ With[{
                             "Error" -> Function[Null,
                                 Delete[transaction];
                                 win["Data"] = "$Failed";
-                                Echo["Get the result... ERROR!"];
+                                Echo["[wljs-export-html/WLW] Failed to retrieve the rendered cell result."];
                                 
                           
 
                                 EventFire[spinner["Promise"], Resolve, True];
                                 EventFire[readyPromise, Resolve, True]; 
 
-                                Echo["Restoring context"];
+                                Echo["[wljs-export-html/WLW] Restoring context"];
                                 GenericKernel`Send[kernel,
                                                     $ContextPath = Append[$ContextPath /. generated -> Nothing, "Global`"];
                                                     $Context = "Global`";
@@ -277,7 +277,7 @@ With[{
                         EventHandler[cloned, {
                             "AfterWebSocketConnected" -> Function[Null,
                                 EventRemove[cloned];
-                                Echo["Window was created, starting evaluation..."];
+                                Echo["[wljs-export-html/WLW] Window was created, starting evaluation."];
 
                                 (* just to populate last client, if there is no other source *)
                                 (* some WLW windows might have timers running, which has no access to evaluation context *)
@@ -296,7 +296,7 @@ With[{
                             ]  
                         }];
 
-                        Echo["Refresh the page"];
+                        Echo["[wljs-export-html/WLW] Refresh the page"];
                         EventFire[promise, Resolve, {StringJoin["/window?id=", win["Hash"] ], ""} ];
                     
                     ];                    

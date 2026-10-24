@@ -41,7 +41,7 @@ addEntity[n_nb`NotebookObj, cell_] := With[{},
     If[AbsoluteTime[] - debounce < 3, Return[] ];
 
     debounce = AbsoluteTime[];
-    Echo["TOK: added enttity"];
+    Echo["[wljs-toc/Frontend] Added table-of-contents entity."];
     buildVocabulary[n];
     EventFire[n, "UpdateTOC", vocabulary[n] ];
 ]
@@ -49,16 +49,16 @@ addEntity[n_nb`NotebookObj, cell_] := With[{},
 removeEntity[n_nb`NotebookObj, cell_] := (
     If[cell["Display"] =!= "markdown", Return[] ];
 
-    Echo["TOK: removed enttity"];
+    Echo["[wljs-toc/Frontend] Removed table-of-contents entity."];
     vocabulary[n] = vocabulary[n] /. heading[_, _, cell] -> Nothing;
     EventFire[n, "UpdateTOC", vocabulary[n] ];
 );
 
 attachListeners[notebook_nb`NotebookObj] := With[{e = notebook // EventClone},
-    Echo["Attach event listeners to notebook from EXTENSION >> TOC"];
+    Echo["[wljs-toc/Frontend] Attaching table-of-contents event listeners to the notebook."];
     EventHandler[e, {
         "OnBeforeLoad" -> Function[opts,
-            Echo["TOC: Build vocabulary..."];
+            Echo["[wljs-toc/Frontend] Building the table-of-contents vocabulary."];
             buildVocabulary[notebook];
             notebook["TOC"] := vocabulary[notebook]; (* create a reference *)
         ],

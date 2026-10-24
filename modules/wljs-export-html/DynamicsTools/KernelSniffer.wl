@@ -217,7 +217,7 @@ KernelSniffer[kernel_, "FetchSymbol", symbol_String] := With[{
     promise = Promise[]
 },
     With[{s = promise // First},
-        Echo[StringTemplate["Fetching ``"][symbol]];
+        Echo[StringJoin["[wljs-export-html/KernelSniffer] ", StringTemplate["Fetching ``"][symbol]]];
         GenericKernel`SendAsync[kernel, EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, ToExpression[symbol, InputForm] ] ];
     ];
 
@@ -239,7 +239,7 @@ KernelSniffer[kernel_, "FetchSymbols", symbols_List] := With[{
     promise = Promise[]
 },
     With[{s = promise // First},
-        Echo[StringTemplate["Fetching ``"][symbols]];
+        Echo[StringJoin["[wljs-export-html/KernelSniffer] ", StringTemplate["Fetching ``"][symbols]]];
         GenericKernel`SendAsync[kernel, EventFire[Internal`Kernel`RemoteEvent[ s ], Resolve, Table[ToExpression[symbol, InputForm], {symbol, symbols}] ] ];
     ];
 

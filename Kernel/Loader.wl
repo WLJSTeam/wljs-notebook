@@ -39,7 +39,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
         cache[new] = notebook;
         notebook["Path"] = new;
         cache[old] = .;
-        Echo["Loader >> renamed."];
+        Echo["[Kernel/Loader] Renamed the notebook file after its path changed."];
         notebook["FileHash"] = FileHash[new];
     ];
 
@@ -47,7 +47,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
         cache[path] = .;
         notebook["Path"] = new;
         cache[new] = notebook;
-        Echo["Loader >> renamed."];
+        Echo["[Kernel/Loader] Renamed the notebook file after its path changed."];
         notebook["FileHash"] = FileHash[new];
     ];    
 
@@ -87,7 +87,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
                 r = Close[stream];
 
                 If[!StringQ[r] && (r =!= Null), 
-                    Echo["Loader >> Put >> error"]; Echo[r]; EventFire[promise, Reject, r]
+                    Echo["[Kernel/Loader] Failed to write notebook data."]; Echo[r, "[Kernel/Loader] error details: "]; EventFire[promise, Reject, r]
                 ,
                     EventFire[promise, Resolve, notebook];
                 ];
@@ -104,7 +104,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
                 notebook["FileHash"] = FileHash[dir];
 
                 If[!StringQ[r] && (r =!= Null), 
-                    Echo["Loader >> Put >> error"]; Echo[r]; 
+                    Echo["[Kernel/Loader] Failed to write notebook data."]; Echo[r, "[Kernel/Loader] error details: "];
                     EventFire[promise, Reject, r]
                 ,
                     EventFire[promise, Resolve, notebook];
@@ -129,7 +129,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
     },
         If[!FileExistsQ[dir], CreateDirectory[dir] ];
         With[{target = FileNameJoin[{dir, FileNameTake[file]} ]},
-            Echo["Moving backup to "<>target ];
+            Echo[StringJoin["[Kernel/Loader] ", "Moving backup to ", target]];
             CopyFile[file, target, OverwriteTarget->True ];
         ];
 
@@ -142,13 +142,13 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
         If[ StringQ[notebook["Path"] ],
             save[notebook["Path"], notebook, opts]
         ,
-            Echo["Loader >> Provide PATH!"];
+            Echo["[Kernel/Loader] Notebook path is required."];
             $Failed["PATH is not provided"]
         ]
     ];
 
     save[path_String, opts: OptionsPattern[] ] := With[{notebook = nb`NotebookObj[]},
-        Echo["Loader >> Created new notebook"];
+        Echo["[Kernel/Loader] Created a new notebook file."];
         
 
         cell`CellObj["Notebook" -> notebook, "Data" -> ""];
@@ -171,12 +171,12 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
 
     load[path_String, opts: OptionsPattern[] ] := Module[{},
         If[!FileExistsQ[path], 
-            Echo["Loader >> file noex!!!"]; 
-            Echo[path];
+            Echo["[Kernel/Loader] Notebook file does not exist."];
+            Echo[path, "[Kernel/Loader] Missing notebook path: "];
             Return[$Failed["File does not exists"] ] 
         ];
         If[KeyExistsQ[cache, path], 
-            Echo["Loader >> cached >> restoring"];
+            Echo["[Kernel/Loader] Restoring the notebook from the in-memory cache."];
             If[TrueQ[ cache[path]["Opened"] ],
                 EventFire[OptionValue["Events"], "Loader:Error", "Notebook was already opened!"];
                 While[TrueQ[ cache[path]["Opened"] ],
@@ -192,12 +192,12 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
             Return[ cache[path] ];
         ];
 
-        Echo["Loader >> loading..."];
+        Echo["[Kernel/Loader] Loading the notebook from disk."];
 
         With[{h = checkbackups[path]}, 
             If[h =!= False, 
                 If[FileDate[h, "Modification"] > FileDate[path, 	"Modification"],
-                    Echo["Loader >> found a backup copy!"];
+                    Echo["[Kernel/Loader] Found a newer notebook backup copy."];
                     With[{requestPromise = Promise[]},
                         Then[requestPromise, Function[result,
                             If[TrueQ[result] || result["response"] === 0,
@@ -227,7 +227,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
                         ];
                     ];
                 ,
-                    Echo["Temporal copy is outdated... removing"];
+                    Echo["[Kernel/Loader] Removing an outdated temporary notebook copy."];
                     DeleteFile[h];
                 ];
             ];
@@ -244,11 +244,11 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
     Options[loadToCache] = {"Events"->"Blackhole", "Temporal"->False, "Modals"->"Null"}
 
     loadToCache[path_String, pathcache_String, pathnotebook_String, OptionsPattern[] ] := Module[{notebook},
-        Echo["Loading to cache..."];
+        Echo["[Kernel/Loader] Loading to cache."];
     
         notebook = nb`LoadFromFile[path];
         If[!MatchQ[notebook, _nb`NotebookObj],
-            Echo["Loading failed!"];
+            Echo["[Kernel/Loader] Failed to load the notebook from disk."];
             Return[$Failed];
         ];
 
@@ -259,7 +259,7 @@ BeginPackage["CoffeeLiqueur`Notebook`Loader`", {
 
         cache[pathcache] = notebook;
 
-        Echo["Loader >> Done!"];
+        Echo["[Kernel/Loader] Notebook loading completed."];
         EventFire[OptionValue["Events"], "Loader:LoadNotebook", notebook];
 
         notebook 

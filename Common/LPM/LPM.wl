@@ -28,7 +28,7 @@ inspectPackages[dir_String, cbk_] := Module[{
     If[Length[found] > 0,
       With[{conflicting = found // Last},
         If[convertVersion[conflicting] > convertVersion[#],
-          Echo[StringTemplate["LPM >> Conflicting version of ``!!! Globally installed `` vs locally loaded ``"][#["Name"], convertVersion[conflicting], convertVersion[#] ] ];
+          Echo[StringJoin["[Common/LPM] Package version conflict for ", #["Name"], ": globally installed ", ToString[convertVersion[conflicting]], ", locally loaded ", ToString[convertVersion[#]]]];
           cbk[conflicting, #];
         ]
       ]
@@ -43,7 +43,7 @@ LPMRepositories::failure = "Error: ``"
 LPMLoad[OptionsPattern[] ] := With[{default = OptionValue["DefaultName"]}, {result = Catch[Module[{projectDir},
   If[OptionValue["Directory"]//StringQ,
     projectDir = OptionValue["Directory"];
-    If[!StringQ[projectDir], Echo["LPM >> Sorry. This is a wrong folder!"]; Message[LPMRepositories::wrongfolder]; Return[$Failed] ];
+    If[!StringQ[projectDir], Echo["[Common/LPM] The selected directory is not a valid package directory."]; Message[LPMRepositories::wrongfolder]; Return[$Failed] ];
   ,
     projectDir = NotebookDirectory[] // Quiet;
     If[!StringQ[projectDir], projectDir = DirectoryName[$InputFileName] ];
@@ -87,13 +87,13 @@ PacletRepositories[list_List, OptionsPattern[]] := With[{deffered = OptionValue[
       Return[Null, Module];
     ];
 
-    Echo["LPM >> fetching packages info"];
+    Echo["[Common/LPM] Fetching package metadata from the configured repository."];
 
     If[FailureQ[ URLFetch["https://github.com"] ],
-        Echo["LPM >> ERROR! no connection to the internet"];
+        Echo["[Common/LPM] Cannot refresh package metadata because no internet connection is available."];
 
         If[!MissingQ[cache], 
-          Echo["LPM >> using stored data"];
+          Echo["[Common/LPM] Using stored package metadata."];
           If[!deffered,
             inspectPackages[FileNameJoin[{projectDir, "wl_packages"}], OptionValue["ConflictResolutionFunction"] ];
             Map[pacletDirectoryLoad] @  Map[DirectoryName] @  DeleteDuplicatesBy[FileNames["PacletInfo.wl" | "PacletInfo.m", {#}, {2}], DirectoryName]& @ FileNameJoin[{projectDir, "wl_packages"}];
@@ -110,7 +110,7 @@ PacletRepositories[list_List, OptionsPattern[]] := With[{deffered = OptionValue[
     repos = repos // DeleteMissing;
 
     (* fetching cached data (current status of all packages in the project) *)
-    Echo["LPM >> checking cached"];
+    Echo["[Common/LPM] Comparing installed packages with cached metadata."];
     cache = CacheLoad[projectDir];
 
 
@@ -127,8 +127,8 @@ PacletRepositories[list_List, OptionsPattern[]] := With[{deffered = OptionValue[
       current    =  (#->cache[#])&/@ Intersection[Keys[repos], Keys[cache]] // Association;
       new = (#->repos[#])&/@ Complement[Keys[repos], Keys[cache]] // Association;
 
-      If[!preserve, Echo[StringTemplate["LPM >> will be REMOVED: ``"][Length[removed]]] ];
-      Echo[StringTemplate["LPM >> will be INSTALLED: ``"][Length[new]]];
+      If[!preserve, Echo[Length[removed], "[Common/LPM] Packages scheduled for removal: "] ];
+      Echo[Length[new], "[Common/LPM] Packages scheduled for installation: "];
      
       (* remove unecessary (a user removed them) *)
       If[!preserve, RemovePaclet[projectDir] /@ removed,
@@ -142,14 +142,14 @@ PacletRepositories[list_List, OptionsPattern[]] := With[{deffered = OptionValue[
       If[automaticUpdates,
         updatable = Select[current, CheckUpdates];
       ,
-        Echo["LPM >> Automatic updates are suppressed by default"];
+        Echo["[Common/LPM] Automatic package updates are disabled by default."];
         updatable = <||>;
       ];
 
       (* will be updated *)
       updated   = ((#->repos[#])&/@ Keys[updatable]) // Association;
  
-      Echo[StringTemplate["LPM >> will be UPDATED: ``"][Length[updatable]]];
+      Echo[Length[updatable], "[Common/LPM] Packages scheduled for update: "];
 
       (* update our list with fresh data *)
       repos = Join[current, InstallPaclet[projectDir] /@ updated, new];
@@ -168,9 +168,9 @@ PacletRepositories[list_List, OptionsPattern[]] := With[{deffered = OptionValue[
 ]
 
 Options[PacletRepositories] = {"Deffered"->False, "PreserveConfiguration"->False, "Directory"->None, "StrictMode"->False, "Passive"->False, "ForceUpdates" -> False, "AutomaticUpdates"->True, "MaxVersionDiff" -> None, "UpdateInterval" -> Quantity[14, "Days"], "ConflictResolutionFunction" -> Function[{conflicting, true}, 
-  Echo["LPM >> resolving by uninstalling a global one"];
+  Echo["[Common/LPM] Resolving the package conflict by uninstalling the global package."];
   If[PacletUninstall[conflicting] =!= Null,
-    Echo["FAILED!"];
+    Echo["[Common/LPM] Operation failed."];
     Exit[-1];
   ];
 ]}
@@ -190,7 +190,7 @@ CheckUpdates[a_Association, _] := False
 CheckUpdates[a_Association, Rule[Github | "Github", _]] := Module[{package, new, now},
   (* fetch any *)
   package = FetchInfo[a];
-  If[!AssociationQ[package], Echo["LPM >> cannot check. Skipping..."]; Return[False, Module]];
+  If[!AssociationQ[package], Echo["[Common/LPM] Package metadata is invalid; skipping the update check."]; Return[False, Module]];
 
   (* a feature on how we can detect on what we are looking at *)
   If[KeyExistsQ[package, "tag_name"],
@@ -201,7 +201,7 @@ CheckUpdates[a_Association, Rule[Github | "Github", _]] := Module[{package, new,
     (* if there was no available releases before and now it appeared, there will be missmatch *)
     If[!NumericQ[now], now = -1];
 
-    Echo[StringTemplate["LPM >> installed `` remote ``"][now, new]];
+    Echo[StringJoin["[Common/LPM] Installed version ", ToString[now], "; repository version ", ToString[new], "."]];
     now < new  
   ,
     (* branches *)
@@ -209,7 +209,7 @@ CheckUpdates[a_Association, Rule[Github | "Github", _]] := Module[{package, new,
     now = a["Version"] //convertVersion;
     If[!NumericQ[now], now = -1];
 
-    Echo[StringTemplate["LPM >> installed `` remote ``"][now, new]];
+    Echo[StringJoin["[Common/LPM] Installed version ", ToString[now], "; repository version ", ToString[new], "."]];
     now < new  
   ]
 ]
@@ -226,7 +226,7 @@ FetchInfo[a_Association, Rule[Github | "Github", url_String]] := Module[{new, da
   (* extracting from given url *)
   new = StringCases[url, RegularExpression[".com\\/(.*).git"]->"$1"]//First // Quiet;
     If[!StringQ[new], new = StringCases[url, RegularExpression[".com\\/(.*)"]->"$1"]//First];
-    Echo["LPM >> fetching releases info for "<>new<>" on Github..."];
+    Echo[StringJoin["[Common/LPM] Fetching GitHub release metadata for ", new, "."]];
 
   (* here we FETCH GITHUB API RESPONCE and use releases metadata *)
   data = urlImport["https://api.github.com/repos/"<>new<>"releases/latest", "JSON"] // Association // Quiet;
@@ -248,7 +248,7 @@ Module[{new, data},
   (* extracting from given url *)    
     new = StringCases[url, RegularExpression[".com\\/(.*).git"]->"$1"]//First // Quiet;
     If[!StringQ[new], new = StringCases[url, RegularExpression[".com\\/(.*)"]->"$1"]//First];
-    Echo["LPM >> fetching info for "<>new<>" on Github..."];
+    Echo[StringJoin["[Common/LPM] Fetching GitHub repository metadata for ", new, "."]];
 
     (* here we FETCH PACLETINFO.WL file and use its metadata *)
     data = urlGet["https://raw.githubusercontent.com/"<>new<>"/"<>ToLowerCase[branch]<>"/PacletInfo.wl"] // Quiet;
@@ -276,7 +276,7 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", url_String]] :=
     (* check if there is no data on releases -> *)
     If[MissingQ[a["zipball_url"]], 
       (* TAKE Master branch instead *)
-      Echo["LPM >> Releases are not available. Taking a master branch"];
+      Echo["[Common/LPM] No release archive is available; falling back to the master branch."];
       Return[InstallPaclet[dir][a, Rule["Github", Rule[url, "master"]]]];
     ];
 
@@ -285,17 +285,17 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", url_String]] :=
 
     (* in a case of update, directory will probably be there.. cleaning it! *)
     If[FileExistsQ[dirName],
-        Echo["LPM >> package folder already exists!"];
-        Echo["LPM >> purging..."];
+        Echo["[Common/LPM] The package directory already exists and will be replaced."];
+        Echo["[Common/LPM] Removing the existing package directory."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ];
 
     (* download release *)
-    Echo["LPM >> fetching a release"];    
+    Echo["[Common/LPM] Downloading the package release archive."];
     urlDownload[a["zipball_url"], FileNameJoin[{dir, "___temp.zip"}]];
     
     (* extract to temporary directory and copy *)
-    Echo["LPM >> extracting"];
+    Echo["[Common/LPM] Extracting the package release archive."];
     ExtractArchive[FileNameJoin[{dir, "___temp.zip"}], FileNameJoin[{dir, "___temp"}]];
     DeleteFile[FileNameJoin[{dir, "___temp.zip"}]];
     
@@ -305,7 +305,7 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", url_String]] :=
     If[!FileExistsQ[pacletPath], Throw["Failed to fetch "<>ToString[pacletPath] ] ];
     pacletPath = DirectoryName[pacletPath];
 
-    Echo[StringTemplate["LPM >> copying from `` to ``"][pacletPath, dirName]];
+    Echo[StringJoin["[Common/LPM] Copying the package from ", pacletPath, " to ", dirName, "."]];
  
     CopyDirectory[pacletPath, dirName];
     DeleteDirectory[FileNameJoin[{dir, "___temp"}], DeleteContents -> True];
@@ -326,16 +326,16 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", Rule[url_String
     dirName = FileNameJoin[{dirName, StringReplace[Lookup[a, "Name", a[Name] ], "/"->"_"]}];
 
     If[FileExistsQ[dirName],
-        Echo["LPM >> package folder "<>dirName<>" already exists!"];
-        Echo["LPM >> purging..."];
+        Echo[StringJoin["[Common/LPM] Package directory ", dirName, " already exists and will be replaced."]];
+        Echo["[Common/LPM] Removing the existing package directory."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ];
 
     (* download branch as zip using old API *)
-    Echo["LPM >> fetching a zip archive from the master branch..."];    
+    Echo["[Common/LPM] Downloading the package archive from the master branch."];
     urlDownload["https://github.com/"<>a["git-url"]<>"/zipball/"<>ToLowerCase[branch], FileNameJoin[{dir, "___temp.zip"}]];
     
-    Echo["LPM >> extracting"];
+    Echo["[Common/LPM] Extracting the master-branch package archive."];
     ExtractArchive[FileNameJoin[{dir, "___temp.zip"}], FileNameJoin[{dir, "___temp"}]];
     DeleteFile[FileNameJoin[{dir, "___temp.zip"}]];
     
@@ -344,7 +344,7 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", Rule[url_String
     If[!FileExistsQ[pacletPath], Throw["Failed to fetch "<>ToString[pacletPath] ]; ];
     pacletPath = DirectoryName[pacletPath];
 
-    Echo[StringTemplate["LPM >> copying from `` to ``"][pacletPath, dirName]];
+    Echo[StringJoin["[Common/LPM] Copying the package from ", pacletPath, " to ", dirName, "."]];
  
     CopyDirectory[pacletPath, dirName];
     DeleteDirectory[FileNameJoin[{dir, "___temp"}], DeleteContents -> True];
@@ -376,8 +376,8 @@ InstallPaclet[dir_String][a_Association, url_String] := Module[{dirName, pacletP
     dirName = FileNameJoin[{dirName, takeName[url]}];
 
     If[FileExistsQ[dirName],
-        Echo["LPM >> package folder "<>dirName<>" already exists!"];
-        Echo["LPM >> purging..."];
+        Echo[StringJoin["[Common/LPM] Package directory ", dirName, " already exists and will be replaced."]];
+        Echo["[Common/LPM] Removing the existing package directory."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ];
 
@@ -385,13 +385,13 @@ InstallPaclet[dir_String][a_Association, url_String] := Module[{dirName, pacletP
       Throw["File "<>ToString[(url // takeFileName)]<>" is not a paclet"];
     ];
 
-    Echo["LPM >> fetching a paclet archive..."];    
+    Echo["[Common/LPM] Downloading the paclet archive."];
     pacletPath = urlDownload[url];
     If[FailureQ[pacletPath], 
       Throw["Could not download "<>ToString[(url // takeFileName)] ];
     ];
     
-    Echo["LPM >> extracting"];
+    Echo["[Common/LPM] Extracting the paclet archive."];
     pacletPath = ExtractPacletArchive[pacletPath, CreateDirectory[] ];
 
     If[FailureQ[pacletPath], 
@@ -399,7 +399,7 @@ InstallPaclet[dir_String][a_Association, url_String] := Module[{dirName, pacletP
     ];
 
     
-    Echo[StringTemplate["LPM >> copying from `` to ``"][pacletPath, dirName] ];
+    Echo[StringJoin["[Common/LPM] Copying the package from ", pacletPath, " to ", dirName, "."]];
     CopyDirectory[pacletPath, dirName];
  
     CopyDirectory[pacletPath, dirName];
@@ -416,7 +416,7 @@ RemovePaclet[dir_String][a_Association] := RemovePaclet[dir][a, a["key"]]
 RemovePaclet[dir_String][a_Association, Rule[Github | "Github", url_String]] := (
   
   If[MissingQ[a["zipball_url"]], 
-    Echo["LPM >> Releases are not available. Removing master"];
+    Echo["[Common/LPM] No release archive is available; removing the master-branch installation."];
     Return[RemovePaclet[dir][a, Rule["Github", Rule[url, "master"]]]];
   ];  
 
@@ -424,8 +424,8 @@ RemovePaclet[dir_String][a_Association, Rule[Github | "Github", url_String]] := 
   dirName = FileNameJoin[{dirName, StringReplace[a["git-url"], "/"->"_"]}];
 
   If[FileExistsQ[dirName],
-      Echo["LPM >> package folder "<>dirName<>" is about to be removed"];
-      Echo["LPM >> purging..."];
+      Echo[StringJoin["[Common/LPM] Removing package directory ", dirName, "."]];
+      Echo["[Common/LPM] Deleting package files."];
       DeleteDirectory[dirName, DeleteContents -> True];
   ,
       Throw["Folder was already removed. Desync with a lock file"];
@@ -440,8 +440,8 @@ RemovePaclet[dir_String][a_Association, Rule[Github | "Github", Rule[url_String,
     dirName = FileNameJoin[{dirName, StringReplace[a["Name"], "/"->"_"]}];
 
     If[FileExistsQ[dirName],
-        Echo["LPM >> package folder "<>dirName<>" is about to be removed"];
-        Echo["LPM >> purging..."];
+        Echo[StringJoin["[Common/LPM] Removing package directory ", dirName, "."]];
+        Echo["[Common/LPM] Deleting package files."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ,
         Throw["Folder was already removed. Desync with a lock file"];
@@ -455,8 +455,8 @@ RemovePaclet[dir_String][a_Association, url_String] := Module[{dirName, pacletPa
     dirName = FileNameJoin[{dirName, takeName[url]}];
 
     If[FileExistsQ[dirName],
-        Echo["LPM >> package folder "<>dirName<>" is about to be removed"];
-        Echo["LPM >> purging..."];
+        Echo[StringJoin["[Common/LPM] Removing package directory ", dirName, "."]];
+        Echo["[Common/LPM] Deleting package files."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ,
         Throw["Folder was already removed. Desync with a lock file"]

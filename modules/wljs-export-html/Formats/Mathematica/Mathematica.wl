@@ -207,7 +207,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
        Then[p, Function[result,
            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0,
-                 Echo["Cancelled saving"]; Echo[result];
+                 Echo["[wljs-export-html/Mathematica] Save operation was cancelled."]; Echo[result, "[wljs-export-html/Mathematica] operation result: "];
                  Return[];
                ];
 
@@ -218,7 +218,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
                     export[filename, "Root"->rootFolder, "Notebook" -> notebookOnLine, "Title"->name];
                     EventFire[messager, "Saved", "Exported to "<>filename];
                 ];
-            ], Function[result, Echo["Exported"]; Echo[result] ] ];
+            ], Function[result, Echo["[wljs-export-html/Mathematica] Export completed successfully."]; Echo[result, "[wljs-export-html/Mathematica] operation result: "] ] ];
 
         ]
     ]
@@ -828,7 +828,7 @@ With[{
     promise = Promise[],
     spinner = Notifications`Spinner["Topic"->"Converting to notebook", "Body"->"Please, wait"](*`*)
 },
-    Echo["Convering Mathematica Notebook..."];
+    Echo["[wljs-export-html/Mathematica] Converting the Mathematica notebook."];
     nb = Import[path];
 
 
@@ -854,7 +854,7 @@ With[{
               _Integer,
                 With[{data = ReleaseHold[options["Kernels"] ][[result]], currentNotebook = notebook, oldKeys = Keys[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]},
                   If[TrueQ[data["ContainerReadyQ"] ],
-                    Echo[data];
+                    Echo[data, "[wljs-export-html/Mathematica] event data: "];
 
                     currentNotebook["Evaluator"] = data["Container"];
                     EventFire[currentNotebook, "AquairedKernel", True];
@@ -868,7 +868,7 @@ With[{
                     } &/@ nb[[1]], Function[Null,
 
                       With[{obs = KeyTake[Complement[Keys[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects], oldKeys]][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]},
-                          StringTemplate["Sync created objects: ``"][Length[Keys[obs]]]//Echo;
+                          Echo[StringJoin["[wljs-export-html/Mathematica] Objects created during synchronization: ", ToString[Length[Keys[obs]]]]];
                           GenericKernel`SendAsync[notebook["Evaluator"]["Kernel"], CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, obs]];
                       ];
                       

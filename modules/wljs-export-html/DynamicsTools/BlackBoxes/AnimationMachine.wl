@@ -28,7 +28,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`" , FileNam
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
-Echo["BlackBox :: AnimationMachine"];
+Echo["[wljs-export-html/AnimationMachine] BlackBox :: AnimationMachine"];
 
 CreateUType[animationMachine, blackBox`BlackBox];
 
@@ -53,7 +53,7 @@ animationMachine /: blackBox`construct[animationMachine, group_, kernel_] := Wit
     With[{machine = animationMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/AnimationMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Event"] = group["Summary"]["Events"][[1]];

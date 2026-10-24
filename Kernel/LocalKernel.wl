@@ -171,8 +171,8 @@ generateConnectFunction[o_LocalKernelObject] := With[{
     ] // HoldRemotePacket},
 
     Then[promise, Function[pid, 
-        Echo["Local kernel link connected!"];
-        Echo["Local kernel PID: "<>ToString[pid] ];
+        Echo["[Kernel/LocalKernel] Local kernel link connected!"];
+        Echo[StringJoin["[Kernel/LocalKernel] ", "Local kernel PID: ", ToString[pid]]];
 
         
         o["PID"] = pid;
@@ -180,7 +180,7 @@ generateConnectFunction[o_LocalKernelObject] := With[{
 
         If[FailureQ[LinkActivate[o["SecondaryLink"] ] ],
             o["State"]  = "Problem";
-            Echo["LocalKernel 2nd link failed!!!"];
+            Echo["[Kernel/LocalKernel] Failed to establish the secondary local-kernel link."];
             LinkClose[k["Link"] ];
         ,
             o["ReadyQ"] = True;
@@ -220,7 +220,7 @@ restart[k_LocalKernelObject] := With[{},
 
 setProp[any_[sym_], assoc_] := (
     sym = Join[sym, assoc];
-    Echo[ sym["State"] ];
+    Echo[sym["State"], "[Kernel/LocalKernel] Updated kernel state: "];
 );
 SetAttributes[setProp, HoldFirst];
 
@@ -247,10 +247,10 @@ unlink[k_LocalKernelObject] := With[{},
 
 start[k_LocalKernelObject] := Module[{link},
     If[Length[Cases[$CommandLine, "-entitlement"] ] > 0 || Length[Cases[$CommandLine, "-tcplink"] ] > 0,
-        Echo["LocalKernel >> Entitlement mode is not supported!!!"];
+        Echo["[Kernel/LocalKernel] Local-kernel entitlement mode is not supported."];
         link = $Failed;
     ,
-        Echo["LocalKernel >> Starting using path: "<>k["wolframscript"] ];
+        Echo[StringJoin["[Kernel/LocalKernel] Starting a local kernel with wolframscript at ", k["wolframscript"], "."]];
         link = LinkLaunch[ k["wolframscript"] ];
     ];
 
@@ -331,12 +331,12 @@ start[k_LocalKernelObject] := Module[{link},
                     EchoLabel["KernelWarning"][StringTemplate["``::``"][symbol, type]];
                     If[symbol =!= "Silent", EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]];
                 )&),
-                any_ :> (Echo[any]&)
+                any_ :> (Echo[any, "[Kernel/LocalKernel] Unhandled secondary-link packet: "]&)
             }];
 
             k["PrintTask"] = MicrotaskSubmit[
                 If[LinkReadyQ[kernel["Link"] ], EventFire[kernel["StandardOutput"], LinkRead[kernel["Link"] ], kernel] ];
-                If[LinkReadyQ[kernel["SecondaryLink"] ], Echo["2nd link >> ", LinkRead[kernel["SecondaryLink"] ] ] (* just flush the buffer *) ] // Quiet;
+                If[LinkReadyQ[kernel["SecondaryLink"] ], Echo[LinkRead[kernel["SecondaryLink"] ], "[Kernel/LocalKernel] Flushed secondary-link packet: "] (* just flush the buffer *) ] // Quiet;
             , "Continuous" -> True];
         ];
     ] ];
@@ -371,13 +371,13 @@ LocalKernelObject /: GenericKernel`Send[k_LocalKernelObject, expr_, OptionsPatte
         With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
-                Echo["LocalKernel Init >> Normal"];
+                Echo["[Kernel/LocalKernel] Initializing the local kernel for regular reuse."];
                 
                 LinkWrite[k["Link"], value];
         ];    
     , 
         If[!MemberQ[k["InitList"], Hash[expr // Hold] ] ,
-            Echo["LocalKernel Init >> Once"];
+            Echo["[Kernel/LocalKernel] Initializing the local kernel for one evaluation."];
             With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
@@ -387,7 +387,7 @@ LocalKernelObject /: GenericKernel`Send[k_LocalKernelObject, expr_, OptionsPatte
 
             k["InitList"] = Append[k["InitList"], Hash[expr // Hold] ];
         ,
-            Echo["LocalKernel Init >> Already initialized..."];
+            Echo["[Kernel/LocalKernel] The local kernel is already initialized."];
         ];
     ];
 ]

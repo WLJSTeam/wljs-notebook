@@ -18,7 +18,7 @@ socketListenerTaskRemove;
 Begin["`Private`"]
 
 
-Echo["CSockets >> Symja >> Using native sockets"];
+Echo["[Packages/Symja] Using native sockets in the Symja runtime."];
 
 $nextSocketId = 0;
 

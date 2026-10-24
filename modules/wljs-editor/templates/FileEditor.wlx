@@ -22,7 +22,7 @@ cacheLoad[path_] := With[{},
 cacheUpdate[path_, content_] := cache[path] = content;
 
 save[path_String, log_String, cli_] := With[{},
-    Echo[cache[path]];
+    Echo[cache[path], "[wljs-editor/FileEditor] Cached content being saved: "];
     Export[path, cache[path], "Text"];
     signature[path] = FileDate[path, "Modification"];
 
@@ -44,7 +44,7 @@ save[{new_String, path_String}, log_String, cli_] := With[{},
 updateContentIfModified[path_, Controls_, cli_] := With[{},
     With[{sign = FileDate[path, "Modification"]},
         If[sign =!= signature[path],
-            Echo["FileEditor >> External modification!"];
+            Echo["[wljs-editor/FileEditor] Detected an external modification to the edited file."];
             signature[path] = sign;
 
             With[{content = Import[path, "Text"]},
@@ -75,7 +75,7 @@ Component[path_String, OptionsPattern[]] := With[{
                     EventRemove[EventChannel];
                     EventRemove[Controls];
                     TaskRemove[task];
-                    Echo["FileEditor >> Destroyed!"];
+                    Echo["[wljs-editor/FileEditor] Destroyed the file editor."];
                 ]}];
             ];
         ]],

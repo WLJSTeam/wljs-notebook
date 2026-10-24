@@ -143,7 +143,7 @@ processRequest[controls_, modals_, messager_, client_] := With[{
                         |>}
                     },
                     Then[collectStaticData[client, messager, notebookOnLine], Function[Null,
-                        Echo["Export >>"];
+                        Echo["[wljs-export-html/Frontend] Starting notebook export."];
                         Which[
                             choise===1,
                             askIfDynamic[modals, html`Static`export @@ args, html`Dynamic`export @@ args],
@@ -230,8 +230,8 @@ collectStaticData[client_, messager_, notebook_] := Block[{
 
 EventHandler[AppExtensions`AppProtocol, {
     "open_html" -> Function[assoc,
-        Echo[">> Handling URL protocol ! >>"];
-        Echo[assoc["url"] ];
+        Echo["[wljs-export-html/Frontend] Handling an open_html URL protocol request."];
+        Echo[assoc["url"], "[wljs-export-html/Frontend] URL received from the open_html protocol: "];
         Module[{
             path = assoc["url"],
             client = assoc["Client"],
@@ -240,20 +240,20 @@ EventHandler[AppExtensions`AppProtocol, {
             task
         },
             If[StringTake[path, 5] === "file:",
-                Echo["Local file!"];
+                Echo["[wljs-export-html/Frontend] Local file!"];
                 (* URLParse decodes the path without leaking a query or an
                    outline fragment into the local filename. *)
                 path = If[$OperatingSystem === "Windows",
                     FileNameJoin[DeleteCases[URLParse[path, "Path"], ""]],
                     FileNameJoin[URLParse[path, "Path"]]
                 ];
-                Echo["Local path decoded:"];
-                Echo[path];
+                Echo["[wljs-export-html/Frontend] Local path decoded:"];
+                Echo[path, "[wljs-export-html/Frontend] Decoded local HTML path: "];
 
                 WebUILocation[StringJoin["/", URLEncode[path]], client];
             ,
-                Echo["Web resource"];
-                Echo["Downloading..."];
+                Echo["[wljs-export-html/Frontend] Web resource"];
+                Echo["[wljs-export-html/Frontend] Downloading."];
 
                 (* Some custom-protocol handlers collapse the two slashes after
                    the HTTP scheme while forwarding the encoded payload. *)

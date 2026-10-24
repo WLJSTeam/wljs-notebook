@@ -32,7 +32,7 @@ EventHandler["autocomplete", {
             (* just to populate *)
             CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = client;
             
-            If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; EventRemove["autocomplete"]; Return[$Failed]; ];
+            If[Internal`Kernel`Type =!= "LocalKernel", Echo["[wljs-editor/AutocompleteKernel] Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; EventRemove["autocomplete"]; Return[$Failed]; ];
 
             With[{s = EchoLabel["Spinner"]["Reindexing symbols"]},
                 BuildVocabular;
@@ -67,7 +67,7 @@ contextAliases = {};
 BuildVocabular := With[{},
     BuildVocabular = Null;
  
-    If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; Return[$Failed]; ];
+    If[Internal`Kernel`Type =!= "LocalKernel", Echo["[wljs-editor/AutocompleteKernel] Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; Return[$Failed]; ];
     
     (* Echo["Buildind vocabular for autocomplete..."]; *)
     With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[$ContextPath, blacklist], 1]},

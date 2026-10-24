@@ -61,7 +61,7 @@ SyncShared[dirs_List, shared_] := With[{},
       With[{original = SelectFirst[(FileNameJoin[{#, Packages[i, "name"], StringSplit[j, "/"]} // Flatten]) &/@ dirs, FileExistsQ]},
         Map[Function[path, 
           With[{targetPath = FileNameJoin[{shared, FileNameTake[path]}]},
-            Echo["WLJS Extensions >> Sync deferred packages >> "<>FileNameTake[path] ];
+            Echo[StringJoin["[Kernel/Extensions] Synchronizing deferred package ", FileNameTake[path], "."]];
             If[DirectoryQ[path],
 
               If[FileExistsQ[targetPath], 
@@ -70,7 +70,7 @@ SyncShared[dirs_List, shared_] := With[{},
                   hash2 = Total[FileHash[#, "CRC32"] &/@ FileNames["*.*", path] ]
                 },
                   If[hash1 =!= hash2,
-                    Echo["WLJS Extensions >> Overwritting: "<>FileNameTake[path] ];
+                    Echo[StringJoin["[Kernel/Extensions] Overwriting existing package ", FileNameTake[path], "."]];
                     DeleteDirectory[targetPath, DeleteContents->True];
                     CopyDirectory[path, targetPath];
                   ]
@@ -78,18 +78,18 @@ SyncShared[dirs_List, shared_] := With[{},
                 
               
               ,
-                Echo["WLJS Extensions >> Copying: "<>FileNameTake[path] ];
+                Echo[StringJoin["[Kernel/Extensions] Copying package ", FileNameTake[path], "."]];
                 CopyDirectory[path, targetPath];
               ];
               
             ,
               If[FileExistsQ[targetPath],
                 If[FileHash[targetPath] =!=  FileHash[path],
-                  Echo["WLJS Extensions >> Overwritting: "<>FileNameTake[path] ];
+                  Echo[StringJoin["[Kernel/Extensions] Overwriting existing package ", FileNameTake[path], "."]];
                   CopyFile[path, targetPath, OverwriteTarget->True]
                 ]
               ,
-                Echo["WLJS Extensions >> Copying: "<>FileNameTake[path] ];
+                Echo[StringJoin["[Kernel/Extensions] Copying package ", FileNameTake[path], "."]];
                 CopyFile[path, targetPath]
               ]
             ]
@@ -124,7 +124,7 @@ InstallAll[list_List, OptionsPattern[] ] := Module[{projectDir = OptionValue["Di
     repos = (#-><|"key"->#|>)&/@list // Association;
 
     If[!FileExistsQ[projectDir], CreateDirectory[projectDir, CreateIntermediateDirectories->True] ];
-    Echo["WLJS Extensions >> project directory >> "<>projectDir];
+    Echo[StringJoin["[Kernel/Extensions] Extension project directory: ", projectDir]];
 
     $ExposedDirectories = Append[$ExposedDirectories, projectDir] // DeleteDuplicates;
 
@@ -173,7 +173,7 @@ GetReposMeta[dir_] := With[{files = Flatten[FileNames["package.json", dir, 2] ] 
    {}
   ,
    Association[With[{json = Import[#, "RawJSON" ]  },
-    Echo["WLJS Extensions >> Loaded >> "<>json["name"] ];
+    Echo[StringJoin["[Kernel/Extensions] Loaded extension ", json["name"], "."]];
     {json["name"] -> Join[<|"key"->json["name"], "enabled" -> True|>, json]} 
    ] &/@ files]
   ]
@@ -214,13 +214,13 @@ convertVersion[str_String] := ToExpression[StringReplace[str, "." -> ""]]
 CheckUpdates[a_Association, Rule[Github | "Github", _]] := Module[{package, new, now},
   (* fetch any *)
   package = FetchInfo[a];
-  If[!AssociationQ[package], Echo["WLJS Extensions >> cannot check github repos! skipping..."]; Return[False, Module]];
+  If[!AssociationQ[package], Echo["[Kernel/Extensions] Cannot check the GitHub repository because the extension metadata is invalid."]; Return[False, Module]];
 
   new = package["version"] // convertVersion;
   now = a["version"] //convertVersion;
   If[!NumericQ[now], now = -1];
 
-  Echo[StringTemplate["WLJS Extensions >> installed `` remote ``"][now, new]];
+  Echo[StringJoin["[Kernel/Extensions] Installed version ", ToString[now], "; repository version ", ToString[new], "."]];
   now < new  
 ]
 
@@ -243,15 +243,15 @@ Module[{new, data},
   (* extracting from given url *)    
     new = StringCases[url, RegularExpression[".com\\/(.*).git"]->"$1"]//First // Quiet;
     If[!StringQ[new], new = StringCases[url, RegularExpression[".com\\/(.*)"]->"$1"]//First];
-    Echo["WLJS Extensions >> fetching info from "<>new<>" on a Github..."];
+    Echo[StringJoin["[Kernel/Extensions] Fetching GitHub repository metadata from ", new, "."]];
 
     (* here we FETCH PACLETINFO.WL file and use its metadata *)
     data = Check[Import["https://raw.githubusercontent.com/"<>new<>"/"<>ToLowerCase[branch]<>"/package.json", "RawJSON"], $Failed];
     
     (* if failed. we just STOP *)
     If[FailureQ[data],
-      Echo["WLJS Extensions >> ERROR cannot get "<>new<>"!"];
-      Echo["WLJS Extensions >> Failed"];
+      Echo[StringJoin["[Kernel/Extensions] Failed to fetch extension metadata from ", new, "."]];
+      Echo["[Kernel/Extensions] Extension operation failed."];
       Return[a];
     ];
 
@@ -262,13 +262,13 @@ InstallByURL[url_String, cbk_:Null] := Module[{remote},
     remote = FetchInfo[<|"key" -> ("Github" -> url)|>];
 
     If[!KeyExistsQ[remote, "name"],
-        Echo["WLJS Extensions >> Can't load from the given url"];
+        Echo["[Kernel/Extensions] Cannot load an extension from the supplied URL."];
         cbk[False, "Can't load from the given url"]; 
         Return[$Failed, Module];
     ];
 
     If[ MemberQ[Values[#["name"] &/@ $packages], remote["name"] ],
-        Echo["WLJS Extensions >> Already exists!"];
+        Echo["[Kernel/Extensions] The requested extension is already installed."];
         cbk[False, "Already exists!"]; 
         Return[$Failed, Module] ;       
     ];
@@ -296,31 +296,31 @@ InstallPaclet[dir_String][a_Association, Rule[Github | "Github", Rule[url_String
     If[!FileExistsQ[dirName], CreateDirectory[dirName]];
 
     (* internal error, if there is no url provided *)
-    If[MissingQ[a["git-url"]], Echo["WLJS Extensions >> ERROR!!! not git-url was found"]; Abort[]];
+    If[MissingQ[a["git-url"]], Echo["[Kernel/Extensions] Extension metadata does not contain a git-url."]; Abort[]];
 
     (* construct name of the folder *)
     dirName = FileNameJoin[{dirName, StringReplace[a["name"], "/"->"_"]}];
 
     If[FileExistsQ[dirName],
-        Echo["WLJS Extensions >> package folder "<>dirName<>" already exists!"];
-        Echo["WLJS Extensions >> purging..."];
+        Echo[StringJoin["[Kernel/Extensions] Extension directory ", dirName, " already exists and will be replaced."]];
+        Echo["[Kernel/Extensions] Removing the existing extension directory."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ];
 
     (* download branch as zip using old API *)
-    Echo["WLJS Extensions >> fetching a zip archive from the branch..."];    
+    Echo["[Kernel/Extensions] Downloading the extension archive from its branch."];
     URLDownload["https://github.com/"<>a["git-url"]<>"/zipball/"<>ToLowerCase[branch], FileNameJoin[{dir, "___temp.zip"}]];
     
-    Echo["WLJS Extensions >> extracting..."];
+    Echo["[Kernel/Extensions] Extracting the extension archive."];
     ExtractArchive[FileNameJoin[{dir, "___temp.zip"}], FileNameJoin[{dir, "___temp"}]];
     DeleteFile[FileNameJoin[{dir, "___temp.zip"}]];
     
     pacletPath = FileNames["package.json", FileNameJoin[{dir, "___temp"}], 2] // First;
 
-    If[!FileExistsQ[pacletPath], Echo["WLJS Extensions >> FAILED!!! to fetch for "<>ToString[pacletPath]]; Abort[]];
+    If[!FileExistsQ[pacletPath], Echo[StringJoin["[Kernel/Extensions] Failed to download the extension archive to ", ToString[pacletPath], "."]]; Abort[]];
     pacletPath = DirectoryName[pacletPath];
 
-    Echo[StringTemplate["WLJS Extensions >> copying... from `` to ``"][pacletPath, dirName]];
+    Echo[StringJoin["[Kernel/Extensions] Copying the extension from ", pacletPath, " to ", dirName, "."]];
  
     CopyDirectory[pacletPath, dirName];
     DeleteDirectory[FileNameJoin[{dir, "___temp"}], DeleteContents -> True];
@@ -344,12 +344,12 @@ RemovePaclet[dir_String][a_Association, Rule[Github  | "Github", Rule[url_String
     dirName = FileNameJoin[{dirName, StringReplace[a["name"], "/"->"_"]}];
 
     If[FileExistsQ[dirName],
-        Echo["WLJS Extensions >> package folder "<>dirName<>" is about to be removed"];
-        Echo["WLJS Extensions >> purging..."];
+        Echo[StringJoin["[Kernel/Extensions] Removing extension directory ", dirName, "."]];
+        Echo["[Kernel/Extensions] Deleting extension files."];
         DeleteDirectory[dirName, DeleteContents -> True];
     ,
-        Echo["WLJS Extensions >> package folder "<>dirName<>" was removed before!"];
-        Echo["WLJS Extensions >> UNEXPECTED BEHAVIOUR!"]; Abort[];
+        Echo[StringJoin["[Kernel/Extensions] Extension directory ", dirName, " was already removed."]];
+        Echo["[Kernel/Extensions] Extension removal reached an unexpected state."]; Abort[];
     ];
 
     a

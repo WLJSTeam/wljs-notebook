@@ -68,7 +68,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["Settings >> Destroy"];
+          Echo["[Frontend/Settings] Destroying the settings view."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];

@@ -26,7 +26,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`" , FileNam
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
-Echo["BlackBox :: PavlovMachine"];
+Echo["[wljs-export-html/PavlovMachine] BlackBox :: PavlovMachine"];
 
 CreateUType[pavlovMachine, blackBox`BlackBox];
 
@@ -40,7 +40,7 @@ pavlovMachine /: blackBox`construct[pavlovMachine, group_, kernel_] := With[{sub
     With[{machine = pavlovMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/PavlovMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Events"] = (#["FullForm"]&/@(group["Summary"]["Events"]));
@@ -108,7 +108,7 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
 
     (* Hashes are calculated in the frontend where the referenced objects live. *)
     Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client], Function[hashes,
-      Echo["Got hashes:: "]; Echo[hashes];
+      Echo["[wljs-export-html/PavlovMachine] Resolved notebook hashes:"]; Echo[hashes, "[wljs-export-html/PavlovMachine] hashes: "];
 
       MapThread[Function[{hash, data},
         machine["HashTable"]["Insert", hash -> data];

@@ -101,7 +101,7 @@ ImportUFile[file_String, opts:OptionsPattern[]] := Module[{
 },
     
     With[{path = FileNameJoin[{#, file}]},
-     Echo["HTTPUHandler >> Checking "<>path<>"..."];
+     Echo[StringJoin["[Packages/Extensions] Checking HTTP handler path ", path, "."]];
      If[
          FileExistsQ[path]
      ,
@@ -117,11 +117,11 @@ ImportUFile[file_String, opts:OptionsPattern[]] := Module[{
     },
 
         If[!MissingQ[route],
-            Echo["HTTPUHandler >> Checking route "<>ToString[route]<>"..."];
+            Echo[StringJoin["[Packages/Extensions] Checking HTTP handler route ", ToString[route], "."]];
             With[{
                 resolved = FileNameJoin[{Key[route][routes], Drop[splitted, Length[route]-1]} // Flatten]
             },
-                Echo["HTTPUHandler >> Resolved to: "<>resolved];
+                Echo[StringJoin["[Packages/Extensions] Resolved HTTP handler request to ", resolved, "."]];
                 If[FileExistsQ[resolved],
                     Return[importFile[resolved, opts], Module];
                 ];
@@ -129,7 +129,7 @@ ImportUFile[file_String, opts:OptionsPattern[]] := Module[{
         ];
     ];
 
-    Echo["HTTPUHandler >> File "<>file<>" was not found ;()"];
+    Echo[StringJoin["[Packages/Extensions] HTTP handler file was not found: ", file, "."]];
 
     <|"Code" -> 404|>
 ]

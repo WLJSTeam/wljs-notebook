@@ -141,7 +141,7 @@ App[request_] := With[{
       With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["Protocol >> Destroy"];
+          Echo["[Frontend/Protocol] Destroying the protocol handler."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];
@@ -153,7 +153,7 @@ App[request_] := With[{
 
       (* Pass downstream the payload from a deep link *)
       With[{msg = ImportString[Protocol, "RawJSON"]},
-        Echo[msg];
+        Echo[msg, "[Frontend/Protocol] message: "];
         EventFire[AppProtocol, msg["type"], Join[<|"URL" -> Protocol, "Client" -> $CurrentWebSocket, "Controls" -> GlobalControls, "Messanger" -> GlobalMessanger, "Modals"->ModalController, "KernelList"->kernels|>, msg]];
       ];
       
@@ -231,10 +231,10 @@ CMDAPIHandler[request_] := With[{
   ]) 
  },
 
-      Echo["Protocol:"];
-      Echo[Protocol];
+      Echo["[Frontend/Protocol] Protocol message:"];
+      Echo[Protocol, "[Frontend/Protocol] protocol: "];
       With[{msg = ImportString[FromCharacterCode@ToCharacterCode[Protocol, "UTF-8"], "RawJSON"]},
-        Echo[msg];
+        Echo[msg, "[Frontend/Protocol] message: "];
         With[{reply = EventFire[AppProtocol, StringJoin["cmd_", msg["c"]], Join[<|"URL" -> Protocol, "KernelList"->kernels|>, msg]]},
           reply
         ]

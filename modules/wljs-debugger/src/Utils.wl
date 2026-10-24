@@ -44,7 +44,7 @@ removeBreak[kernel_, {"Symbol", name_String}, OptionsPattern[] ] := With[{},
 
 addListeners[kernel_] := With[{},
     If[!MemberQ[k["Properties"], "AsyncStreamer"],
-        Echo["Clonning events from kernel..."];
+        Echo["[wljs-debugger/Utils] Cloning event handlers from the kernel."];
 
         kernel["AsyncStreamer"] = attachStreamer[kernel["StandardOutput"] ];
 
@@ -102,7 +102,7 @@ streamer[stream_][r_RuleDelayed] := With[{pattern = r[[1]], handler = Unique[]},
         If[MatchQ[data, pattern],
             data /. r;
             streamer[stream]["Handlers"] = streamer[stream]["Handlers"] /. {handler -> Nothing};
-            Echo["streamer >> Match"];
+            Echo["[wljs-debugger/Utils] Debugger stream matched an evaluation event."];
         ];
     ];
 ]
@@ -115,7 +115,7 @@ streamer[stream_][r_RuleDelayed, uid_] := With[{pattern = r[[1]], handler = Uniq
     handler[data_] := With[{},
         If[MatchQ[data, pattern],
             data /. r;
-            Echo["Streamer >> Match!"];
+            Echo["[wljs-debugger/Utils] Debugger stream matched an evaluation event."];
         ];
     ];
 
@@ -207,9 +207,9 @@ transition[promise_, kernel_, c_, t_, opts: OptionsPattern[] ] := (
     EventFire[promise, Reject, StringTemplate["Transition from `` to `` is not possible"][c,t] ];
 )
 
-Options[transition] = {"Logger"->Echo}
-Options[addBreak] = {"Logger"->Echo, "Pause"->0.1}
-Options[removeBreak] = {"Logger"->Echo}
+Options[transition] = {"Logger" -> Function[value, Echo[value, "[wljs-debugger/Utils] Transition log: "]]}
+Options[addBreak] = {"Logger" -> Function[value, Echo[value, "[wljs-debugger/Utils] Add-breakpoint log: "]], "Pause"->0.1}
+Options[removeBreak] = {"Logger" -> Function[value, Echo[value, "[wljs-debugger/Utils] Remove-breakpoint log: "]]}
 
 End[];
 EndPackage[];

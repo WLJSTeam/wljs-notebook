@@ -7,10 +7,10 @@ If[DownValues[Notifications`Custom(*`*)] === {}, CreateUType[Notifications`Custo
 
 (*/* Might be an issue since this component it imported multiple times, could rewrite definitions */*)
 
-Echo["Notifications >> Created custom notifications type"];
+Echo["[Components/Custom] Registered the custom notification type."];
 
 init[n_] := With[{dom = CreateUUID[]},
-    Echo["Created! Spinner"];
+    Echo["[Components/Custom] Created spinner notification."];
     n["DOM"] = dom;
     n["Promise"] = Promise[];
     Then[n["Promise"], Function[Null,

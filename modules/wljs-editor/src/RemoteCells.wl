@@ -152,17 +152,17 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
     },
 
     
-        Echo["Cells to evaluate:"];
-        Echo[Length[initCells] ];
-        Echo["Context:"];
-        Echo[evalContext];
-        Echo["Mode:"];
-        Echo[mode];
+        Echo["[wljs-editor/RemoteCells] Cells to evaluate:"];
+        Echo[Length[initCells], "[wljs-editor/RemoteCells] Initialization cells to evaluate: "];
+        Echo["[wljs-editor/RemoteCells] Context:"];
+        Echo[evalContext, "[wljs-editor/RemoteCells] evaluation context: "];
+        Echo["[wljs-editor/RemoteCells] Mode:"];
+        Echo[mode, "[wljs-editor/RemoteCells] evaluation mode: "];
 
 
         
         If[sessions[session, uid] === True,
-            Echo["Was already evaluated. Init cells were skipped"];
+            Echo["[wljs-editor/RemoteCells] Was already evaluated. Init cells were skipped"];
         ];
 
         sessions[session, uid] = True;
@@ -194,11 +194,11 @@ evaluateNotebook[uid_, kernel_, originNotebook_, session_, mode_, evalContext_, 
                     Delete /@ transactions;
                 ], "Error" -> Function[err,
                     EventFire[promise, Resolve, $Failed ];
-                    Echo[">> Error during the evaluation"];
-                    Echo[err];
+                    Echo["[wljs-editor/RemoteCells] Remote initialization-cell evaluation failed."];
+                    Echo[err, "[wljs-editor/RemoteCells] error details: "];
                     Delete /@ transactions;
                 ], "State" -> Function[state,
-                    Echo["STATE UPDATE: "<>state];
+                    Echo[StringJoin["[wljs-editor/RemoteCells] ", "STATE UPDATE: ", state]];
                 ]}]; 
 
                 kernel["Container"][#, If[evalContext===Automatic,
@@ -231,7 +231,7 @@ cellClonedEvents = <||>;
 EventHandler[NotebookEditorChannel // EventClone,
     {
         "DeleteCellByHash" -> Function[uid,
-            Echo["Delete object "<>uid];
+            Echo[StringJoin["[wljs-editor/RemoteCells] ", "Delete object ", uid]];
             With[{target = Lookup[cell`HashMap, uid, win`HashMap[uid] ]},
                 If[MatchQ[target, _cell`CellObj],
                     Delete[ target ]
@@ -264,7 +264,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "EvaluateNotebook" -> Function[assoc,
            With[{promise = assoc["Promise"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ], hash = assoc["Hash"]},
-            Echo["Evaluating notebook..."];
+            Echo["[wljs-editor/RemoteCells] Evaluating notebook."];
                 With[{ref = assoc["Ref"], ContextIsolation = assoc["ContextIsolation"], session = assoc["Session"], elements = assoc["Elements"]},
 
             
@@ -284,7 +284,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "CreateNotebook" -> Function[assoc,
            With[{  uid = assoc["Hash"], kernel = GenericKernel`HashMap[assoc["Kernel"] ]},
-            Echo["Creating notebook..."];
+            Echo["[wljs-editor/RemoteCells] Creating notebook."];
                 With[{},
                     createNotebook[uid, kernel];
                     saveNotebook[Null, uid];
@@ -295,7 +295,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "CreateDocument" -> Function[assoc,
            With[{  uid = assoc["Hash"], list = assoc["List"], kernel = GenericKernel`HashMap[assoc["Kernel"] ]},
-            Echo["Creating notebook.with data .."];
+            Echo["[wljs-editor/RemoteCells] Creating notebook.with data .."];
                 With[{},
                     createNotebook[uid, kernel];
                     writeNotebook[uid, #]& /@ list;
@@ -307,7 +307,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "WriteNotebook" -> Function[assoc,
            With[{  uid = assoc["Hash"], uids = assoc["UIds"], list = assoc["List"], kernel = GenericKernel`HashMap[assoc["Kernel"] ]},
-            Echo["writting notebook.with data .."];
+            Echo["[wljs-editor/RemoteCells] writting notebook.with data .."];
                 With[{},
                     writeNotebook[uid, #[[1]], #[[2]]]& /@ Transpose[{list, uids}];
                 ]
@@ -317,7 +317,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "SaveNotebook" -> Function[assoc,
            With[{  uid = assoc["Hash"], path = assoc["Path"], kernelDir = Lookup[assoc, "KernelDirectory", Null]},
-            Echo["Saving notebook..."];
+            Echo["[wljs-editor/RemoteCells] Saving notebook."];
                 With[{},
                     saveNotebook[path, uid, kernelDir];
                 ]
@@ -327,7 +327,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "CloseNotebook" -> Function[assoc,
            With[{  uid = assoc["Hash"]},
-            Echo["Closing notebook..."];
+            Echo["[wljs-editor/RemoteCells] Closing notebook."];
                 With[{},
                     closeNotebook[uid];
                 ]
@@ -337,7 +337,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "ImportNotebook" -> Function[assoc,
            With[{ kernel = GenericKernel`HashMap[ assoc["Kernel"] ], uid = assoc["Hash"], path = assoc["Path"], fullpath = assoc["FullPath"], content = assoc["Data"]},
-            Echo["Importing notebook..."];
+            Echo["[wljs-editor/RemoteCells] Importing notebook."];
                 With[{},
                         importNotebook[content, path, fullpath, uid];
                 ]
@@ -347,7 +347,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "AskNotebookDirectory" -> Function[data,
            With[{promise = data["Promise"], kernel = GenericKernel`HashMap[ data["Kernel"] ]},
-                Echo["AskNotebookDirectory"];
+                Echo["[wljs-editor/RemoteCells] AskNotebookDirectory"];
                 
                 With[{ref = data["Notebook"]},
                         If[ !MissingQ[nb`HashMap[ref] ] ,
@@ -360,14 +360,14 @@ EventHandler[NotebookEditorChannel // EventClone,
                                 If[StringQ[dir],
                                     GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, dir] ];
                                 ,
-                                    Echo["RemoveCells >> Error. path is not a string! "];
-                                    Echo[dir];
+                                    Echo["[wljs-editor/RemoteCells] Cannot remove remote cells because the reference notebook path is not a string."];
+                                    Echo[dir, "[wljs-editor/RemoteCells] directory: "];
                                 ]
         
                                 
                             ];
                         ,
-                            Echo["RemoveCells >> Error. not found reference notebook"];
+                            Echo["[wljs-editor/RemoteCells] Cannot remove remote cells because the reference notebook was not found."];
                         ];
                 ]
  
@@ -378,19 +378,19 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[{promise = data["Promise"], o = cell`HashMap[ data["CellHash"] ], kernel = GenericKernel`HashMap[ data["Kernel"] ]},
 
                 If[MissingQ[o],
-                    Echo["RemoveCells >> cell does not exist. Using reference cell instead"];
+                    Echo["[wljs-editor/RemoteCells] Target cell does not exist; using its reference cell instead."];
                     With[{ref = data["Ref"]},
                         If[ !MissingQ[cell`HashMap[ref] ] ,
-                            Echo["RemoveCells >> "<>ToString[ref] ];
+                            Echo[ref, "[wljs-editor/RemoteCells] Removing referenced remote cell: "];
                             GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, ref] ];
                         ,
-                            Echo["RemoveCells >> Error. not found"];
+                            Echo["[wljs-editor/RemoteCells] Cannot remove the remote cell because neither it nor its reference was found."];
                         ];
                     ]
                 ,
                     With[{parent = (SequenceCases[o["Notebook"]["Cells"], {_?cell`InputCellQ, ___?cell`OutputCellQ, o} ] // First // First)["Hash"]},
-                        Echo["RemoteCells >> found parent"];
-                        Echo[parent];
+                        Echo["[wljs-editor/RemoteCells] Found the parent cell for the remote output."];
+                        Echo[parent, "[wljs-editor/RemoteCells] parent cell: "];
                         
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, parent] ];
                     ]                 
@@ -415,8 +415,8 @@ EventHandler[NotebookEditorChannel // EventClone,
         ],
 
         "PrintNewCell" -> Function[t,
-            Echo["Cell print options:"];
-            Echo[KeyDrop[t, "Data"] ];
+            Echo["[wljs-editor/RemoteCells] Cell print options:"];
+            Echo[KeyDrop[t, "Data"], "[wljs-editor/RemoteCells] New-cell print options: "];
 
             With[{
                 kernelHash = t["KernelId"],
@@ -432,9 +432,9 @@ EventHandler[NotebookEditorChannel // EventClone,
                 If[MatchQ[target, "Notebook" | Null | Automatic],
                     (* Try to print as a new cell in the notebook *)
                     If[MatchQ[reference["Notebook"], _nb`NotebookObj] || MatchQ[notebook, _nb`NotebookObj],
-                        Echo["Print a normal new cell"];
-                        Echo["Adding new cell after:"];
-                        Echo[cell`HashMap[t["Meta"]["After"][[1]]] ];
+                        Echo["[wljs-editor/RemoteCells] Print a normal new cell"];
+                        Echo["[wljs-editor/RemoteCells] Adding new cell after:"];
+                        Echo[cell`HashMap[t["Meta"]["After"][[1]]], "[wljs-editor/RemoteCells] Cell after which output will be inserted: "];
                         If[TrueQ[t["Meta"]["SkipOutputs"]] && MatchQ[cell`HashMap[t["Meta"]["After"][[1]]], _cell`CellObj],
                           (* special case if skipping outputs *)
                           cell`CellObj @@ Join[
@@ -465,10 +465,10 @@ EventHandler[NotebookEditorChannel // EventClone,
                               ReplaceAll[Normal[KeyDrop[t["Meta"], {"Notebook", "Window", "SkipOutputs"}] ],
                                   {CoffeeLiqueur`Extensions`RemoteCells`RemoteCellObj -> cell`HashMap}]
                           ]
-                        ] // Echo;
+                        ] // (Echo[#, "[wljs-editor/RemoteCells] Created projected cell: "]&);
                         Return[];
                     ,
-                        Echo["Failed to print a normal cell. Falling back to a new window..."];
+                        Echo["[wljs-editor/RemoteCells] Failed to print a normal cell. Falling back to a new window."];
                     ];
                 ];
 
@@ -486,19 +486,19 @@ EventHandler[NotebookEditorChannel // EventClone,
                         ];
 
                         If[TrueQ[reference["Notebook"]["Opened"] ],
-                            Echo["Found reference socket from the cell reference"];
+                            Echo["[wljs-editor/RemoteCells] Found reference socket from the cell reference"];
                             socketRef = reference["Notebook"]["Socket"];
                             win["CellHash"] =  reference["Hash"];
                         ];
 
                         If[socketRef === Null && TrueQ[notebook["Opened"] ],
-                            Echo["Found reference socket from the notebook reference"];
+                            Echo["[wljs-editor/RemoteCells] Found reference socket from the notebook reference"];
                             socketRef = notebook["Socket"];
                             win["NotebookHash"] =  notebook["Hash"];
                         ];
 
                         If[socketRef === Null,
-                            Echo["Trying to find any opened window (even if useTemporal)"];
+                            Echo["[wljs-editor/RemoteCells] Trying to find any opened window (even if useTemporal)"];
                             With[{
                                 ws = SortBy[Select[Values[win`HashMap], TrueQ[#["Opened"] ]&], Function[w, -w["Date"] ] ]
                             },   
@@ -509,7 +509,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                         ];
 
                         If[socketRef === Null,
-                            Echo["Trying to find any opened notebook"];
+                            Echo["[wljs-editor/RemoteCells] Trying to find any opened notebook"];
                             With[{ws = Select[Values[nb`HashMap], TrueQ[#["Opened"] ]&]  },
                                 If[Length[ws] > 0,
                                     socketRef = ws[[-1]]["Socket"];
@@ -518,7 +518,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                         ]; 
 
                         If[socketRef === Null,    
-                            Echo["This is really bad. We have to use Electron Magic. This will not work with docker/server env..."];
+                            Echo["[wljs-editor/RemoteCells] Falling back to Electron window discovery; this path is unavailable in server environments."];
 
                             Which[
                                 !NumberQ[imageSize] && !ListQ[imageSize],
@@ -532,7 +532,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     ]
                             ];                        
                         ,
-                            Echo["Creating a new window... Socket was found"];
+                            Echo["[wljs-editor/RemoteCells] Creating a new window... Socket was found"];
                             Which[
                                 TrueQ[t["Meta", "Offscreen"] ],
                                     WebUILocation[StringJoin["/window?id=", win["Hash"] ], socketRef, "Target" -> _, "Features" -> "width=1,height=1"],
@@ -577,7 +577,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
                     (* FWD events if all already happend and subscribe *)
                     If[TrueQ[win`HashMap[hash]["WebSocketQ"]],
-                        Echo["Simulate all events to already mounted window"];
+                        Echo["[wljs-editor/RemoteCells] Simulate all events to already mounted window"];
                         
                         GenericKernel`SendAsync[kernel, EventFire[callback, "Mounted", Null ] ];
                         With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["KernelWebSocket"]|>]},
@@ -607,7 +607,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                             
                         ],
                         any_String :> Function[data,
-                            Echo["Event generated on RemoteCellObject"];
+                            Echo["[wljs-editor/RemoteCells] Event generated on RemoteCellObject"];
 
                             If[any === "Ready" && KeyExistsQ[win`HashMap, hash], (* if this is a window and it is ready *)
                                 With[{winO = CoffeeLiqueur`Extensions`Communication`WindowObj[<|"Socket" -> win`HashMap[hash]["KernelWebSocket"]|>]},
@@ -629,7 +629,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             With[{hash = assoc["NotebookHash"], callback = assoc["Callback"], kernel = GenericKernel`HashMap[ assoc["Kernel"] ]},
                 EventHandler[EventClone[hash], {
                     any_String :> Function[data,
-                        Echo["Forwarded notebook event: ", any];
+                        Echo[any, "[wljs-editor/RemoteCells] Forwarded notebook event: "];
                         GenericKernel`SendAsync[kernel, EventFire[callback, any, data] ];
                     ]
                 }]
@@ -689,7 +689,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                     p = Promise[]
                 },
                     If[notebook["ModalsChannel"] === Null || !MatchQ[notebook, _nb`NotebookObj],
-                        Echo["Search for opened notebooks"];
+                        Echo["[wljs-editor/RemoteCells] Search for opened notebooks"];
                         With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
                             If[Length[nbs] > 0,
                                 EventFire[nbs[[1]]["ModalsChannel"], "HTMLWindow", <|
@@ -698,7 +698,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     "Content" -> messageDialog
                                 |>];                             
                             ,
-                                Echo["Search for opened windows associated with a notebook"];
+                                Echo["[wljs-editor/RemoteCells] Search for opened windows associated with a notebook"];
                                 With[{wins = Values[win`HashMap]},
                                     With[{filtered = Select[wins, (TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]])&]},
                                         If[Length[filtered] > 0,
@@ -711,7 +711,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                             ]
                                         ,
                                             (* General case, this needs to be a normal window, not offscreen *)
-                                            Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                            Echo["[wljs-editor/RemoteCells] No notebook windows were found; falling back to Electron window discovery, which is unavailable in server environments."];
                                             With[{win = win`WindowObj["Data"->" ", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"] ], proxi = Promise[]},
                                                 win["useTemporal"] = True;
                                                 EventHandler[win // EventClone, {"Ready" -> Function[Null,
@@ -759,7 +759,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             promise = assoc["Promise"],
             request = assoc["Request"]
         },
-            Echo["Search for opened notebooks"];
+            Echo["[wljs-editor/RemoteCells] Search for opened notebooks"];
             With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
                 If[Length[nbs] > 0,
                     Then[WebUIFetch[request, nbs[[1]]["Socket"]], Function[result,
@@ -768,7 +768,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
                     ]];
                 ,
-                    Echo["Search for opened windows"];
+                    Echo["[wljs-editor/RemoteCells] Search for opened windows"];
                     With[{wins = Values[win`HashMap]},
                         With[{filtered = Select[wins, ( TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]] )&]},
                             If[Length[filtered] > 0,
@@ -780,16 +780,16 @@ EventHandler[NotebookEditorChannel // EventClone,
                                     ]];                                                                                       
                                 ]
                             ,
-                                Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                Echo["[wljs-editor/RemoteCells] No notebook windows were found; falling back to Electron window discovery, which is unavailable in server environments."];
                                 With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"], "Offscreen"->True ]},
                                     win["useTemporal"] = True;
                                     With[{cloned = win // EventClone}, EventHandler[cloned, {"Ready" -> Function[Null,
                                         Then[WebUIFetch[request, win["Socket"]], Function[result,
                                                 GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, result] ];
-                                                Echo["Autoclose temporal window"]; WebUIClose[win["Socket"]]
+                                                Echo["[wljs-editor/RemoteCells] Autoclose temporal window"]; WebUIClose[win["Socket"]]
                                             ], Function[err,
                                                 GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, False] ];
-                                                Echo["Autoclose temporal window"]; WebUIClose[win["Socket"]]
+                                                Echo["[wljs-editor/RemoteCells] Autoclose temporal window"]; WebUIClose[win["Socket"]]
                                         ]]; 
                                         EventRemove[cloned];
                                     ]}]];
@@ -816,14 +816,14 @@ EventHandler[NotebookEditorChannel // EventClone,
                 },
 
                     If[notebook["ModalsChannel"] === Null || !MatchQ[notebook, _nb`NotebookObj],
-                        Echo["Search for opened notebooks"];
+                        Echo["[wljs-editor/RemoteCells] Search for opened notebooks"];
                         With[{nbs = Select[nb`HashMap//Values, Function[n, n["Opened"] ] ]},
                             If[Length[nbs] > 0,
                                 EventFire[nbs[[1]]["ModalsChannel"], type, Join[<|
                                     "Promise"-> p
                                 |>, payload] ]; 
                             ,
-                                Echo["Search for opened windows "];
+                                Echo["[wljs-editor/RemoteCells] Search for opened windows "];
                                 With[{wins = Values[win`HashMap]},
                                     With[{filtered = Select[wins, ( TrueQ[#["Opened"] ] && !TrueQ[#["useTemporal"]] )&]},
                                         If[Length[filtered] > 0,
@@ -833,7 +833,7 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                 |>, payload] ];                                                                                        
                                             ]
                                         ,
-                                            Echo["No windows were found! This is bad, and it won't work in docker/server. Let's use some Electron Magic"];
+                                            Echo["[wljs-editor/RemoteCells] No notebook windows were found; falling back to Electron window discovery, which is unavailable in server environments."];
                                             With[{win = win`WindowObj["Data"->"<div class=\"px-4 py-2\"><small>Please, close this window</small></div>", "Display"->"html", ImageSize->{100,100}, "WebSocketPort"->kernel["WebSocket"], "Offscreen"->True ]},
                                                 win["useTemporal"] = True;
                                                 
@@ -843,11 +843,11 @@ EventHandler[NotebookEditorChannel // EventClone,
                                                     |>, payload] ];  
                                                     EventRemove[cloned];
                                                     Then[proxi, Function[res,
-                                                        Echo["Closing temporal"];
+                                                        Echo["[wljs-editor/RemoteCells] Closing temporal"];
                                                         WebUIClose[win["Socket"]];
                                                         EventFire[p, Resolve, res];
                                                     ], Function[err, 
-                                                        Echo["Closing temporal"];
+                                                        Echo["[wljs-editor/RemoteCells] Closing temporal"];
                                                         WebUIClose[win["Socket"]];
                                                         EventFire[p, Reject, err];
                                                     ]];

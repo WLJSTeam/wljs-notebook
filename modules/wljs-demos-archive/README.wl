@@ -22,8 +22,8 @@ readmeView = ImportComponent[ FileNameJoin[{root, "README.wlx"}] ];
 ReadmeQ[path_] := FileNameTake[path] === "README.md"
 
 CoffeeLiqueur`Notebook`Views`Router[any_?ReadmeQ, appevents_String, _] := With[{},
-    Echo["README File"];
-    Echo[any];
+    Echo["[wljs-demos-archive/README] README File"];
+    Echo[any, "[wljs-demos-archive/README] README file routed to the custom view: "];
 
     {readmeView[any, ##], ""}
 ]&

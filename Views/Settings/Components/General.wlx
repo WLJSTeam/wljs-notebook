@@ -89,7 +89,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ],         
 
         "Color" -> Function[state,
-            Echo[state];
+            Echo[state, "[Views/General] state: "];
             defaultColor = state;
             If[defaultColorChoice =!= "System",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
@@ -99,7 +99,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "ColorChoice" -> Function[state,
             defaultColorChoice = state;
-            Echo[ToString[state, InputForm]];
+            Echo[ToString[state, InputForm], "[Views/General] state, input form: "];
             If[state === "User",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
             ,
@@ -187,7 +187,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 EventRemove[updateEvent];
                 EventRemove[Secret];
                 EventRemove[installEvent];
-                Echo["GeneralSettings >> destoryed"];
+                Echo["[Views/General] General settings view was destroyed."];
             ]
         }]
     ];

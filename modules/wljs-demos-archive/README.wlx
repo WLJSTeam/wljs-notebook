@@ -18,7 +18,7 @@ Component[path_String, OptionsPattern[]] := With[{
                     EventRemove[socket];
                     EventRemove[EventChannel];
                     EventRemove[Controls];
-                    Echo["FileEditor >> Destroyed!"];
+                    Echo["[wljs-demos-archive/README] Destroyed the README viewer."];
                 ]}];
             ];
         ]],
