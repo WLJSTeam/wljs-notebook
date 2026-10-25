@@ -26,6 +26,9 @@ import {
 
 import { StreamLanguage, Language, ParseContext, LanguageState } from "@codemirror/language";
 
+// Keep the marker out of source text so legacy Windows code pages cannot corrupt it.
+const ESCAPE_MARKER = String.fromCodePoint(0x28ff);
+const ESCAPE_COMPLETION_PATTERN = new RegExp(`[${ESCAPE_MARKER}\\w]*`);
 
 function newESC() {
   return ({ state, dispatch }) => {
@@ -35,7 +38,7 @@ function newESC() {
       //if (atEof) from = to = (to <= line.to ? line : state.doc.lineAt(to)).to
       
       return {
-        changes: { from, to, insert: "⣿" },
+        changes: { from, to, insert: ESCAPE_MARKER },
         range: EditorSelection.cursor(from + 1)
       };
     });
@@ -48,7 +51,7 @@ function newESC() {
 }
 
 function Completions(context, defaultFunctions) {
-  let word = context.matchBefore(/[⣿\w]*/);
+  let word = context.matchBefore(ESCAPE_COMPLETION_PATTERN);
   if (word.from === word.to && !context.explicit) return null;
   //console.log(defaultFunctions);
   return {

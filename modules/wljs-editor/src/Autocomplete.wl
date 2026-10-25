@@ -24,7 +24,10 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
-defaults = Get[FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}] ];
+defaults = Get[
+    FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}],
+    CharacterEncoding -> "UTF-8"
+];
 
 testEndpoint[path_] := TimeConstrained[With[{test = Import[path, "Text"]},
   TrueQ[StringContainsQ[test, "# Map"]]
