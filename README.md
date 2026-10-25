@@ -151,7 +151,7 @@ WLJS does not transfer information to networked systems unless requested by the 
 ## AI usage disclosure
 We used LLM to refactor these sources:
 
-- modules/wljs-export-html/Formats/Mathematica/Mathematica.wl (Refactored NB format converter to WLN)
+- modules/wljs-export-html/Formats/Mathematica/Mathematica.wl (Completely rewritten NB format converter to WLN)
 - Electron/main.js (Refactored desktop wrapper)
 - Electron/QuickLook (Fully generated QuickLook extension for MacOS)
 
