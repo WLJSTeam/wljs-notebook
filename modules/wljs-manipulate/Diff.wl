@@ -152,7 +152,6 @@ processDiffsStateless[table_, originalExpr_, expr2_, diffs_List, forceUpdate_, r
 
 diff[exp_, exp_, _, _] := {}
 diff[_Texture, _Texture, _, _] := (failureMessage["Textures are not supported", {None, None}]; $Failed)
-diff[_Image3D, _Image3D, _, _] := (failureMessage["Image3D are not supported", {None, None}]; $Failed)
 
 
 diff[Rule[PlotRange, x_], Rule[PlotRange, y_], level_, attributes_] := {}
@@ -315,6 +314,29 @@ diff[i1_Image, i2_Image, level_, attributes_] := With[{
     ,   
         failureMessage["Images has different dimensions", Null];
         $Failed
+    ]
+]
+
+diff[i1_Image3D, i2_Image3D, level_, attributes_] := With[{
+    dims1 = ImageDimensions[i1],
+    dims2 = ImageDimensions[i2],
+    channels1 = ImageChannels[i1],
+    channels2 = ImageChannels[i2],
+    options1 = Options[i1],
+    options2 = Options[i2]
+},
+    Which[
+        dims1 =!= dims2,
+            failureMessage["Image3D objects have different dimensions", {dims1, dims2}];
+            $Failed,
+        channels1 =!= channels2,
+            failureMessage["Image3D objects have different channel counts", {channels1, channels2}];
+            $Failed,
+        options1 =!= options2,
+            failureMessage["Image3D objects have different options", {options1, options2}];
+            $Failed,
+        True,
+            diffObject[i1, i2, Hash[i1], Hash[i2] ]
     ]
 ]
 
@@ -721,6 +743,24 @@ transpile[i1_Image, i2_Image, hash1_, hash2_] := With[{
   
   <|
     "Priority"->1, "Rule" -> (i2 -> Image[Offload[symbol], "Byte"]),
+    "Reset" -> Function[Null, symbol = NumericArray[ImageData[i2, "Byte"], "UnsignedInteger8"] ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = NumericArray[ImageData[e2, "Byte"], "UnsignedInteger8"];
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
+
+transpile[i1_Image3D, i2_Image3D, hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"],
+  options = Options[i2]
+},
+  symbol = NumericArray[ImageData[i2, "Byte"], "UnsignedInteger8"];
+
+  <|
+    "Priority"->1, "Rule" -> (i2 -> Image3D[Offload[symbol], "Byte", Sequence @@ options]),
     "Reset" -> Function[Null, symbol = NumericArray[ImageData[i2, "Byte"], "UnsignedInteger8"] ],
     "Update" -> Function[{e1, e2, h1, h2},
       symbol = NumericArray[ImageData[e2, "Byte"], "UnsignedInteger8"];

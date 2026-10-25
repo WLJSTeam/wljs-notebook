@@ -7806,7 +7806,7 @@ g3d['CoffeeLiqueur`Extensions`Graphics3D`Private`SampledColorFunction'] = async 
   return { colors, type };
 };
 
-core.Image3D = async (args, env) => {
+const initializeImage3D = async (args, env) => {
   await interpretate.shared.THREE.load();
 
   if (!THREE) {
@@ -8169,9 +8169,35 @@ core.Image3D = async (args, env) => {
   animationLoop();
 };
 
+core.Image3D = (args, env) => {
+  env.local.initialized = false;
+  env.local.destroyed = false;
+  delete env.local.initError;
+
+  const initialization = initializeImage3D(args, env);
+
+  env.local.initComplete = initialization.then(
+    (result) => {
+      env.local.initialized = true;
+      return result;
+    },
+    (error) => {
+      env.local.initError = error;
+    }
+  );
+
+  return initialization;
+};
+
 core.Image3D.virtual = true;
 
 core.Image3D.update = async (args, env) => {
+  if (env.local.initComplete) {
+    await env.local.initComplete;
+  }
+
+  if (env.local.destroyed || env.local.initError || env.local.initialized === false) return;
+
   let data = await interpretate(args[0], env);
 
   if (Array.isArray(data)) {
@@ -8184,11 +8210,12 @@ core.Image3D.update = async (args, env) => {
   const converted = imageTypes[env.local.typeName].convert(data);
   env.local.volumeTexture.image.data.set(converted.data);
   env.local.volumeTexture.needsUpdate = true;
-  env.local?.wakeFunction();
+  env.local.wakeFunction?.();
 };
 
 core.Image3D.destroy = (args, env) => {
   console.warn('Dispose');
+  env.local.destroyed = true;
   env.element.classList.remove('wljs-canvas');
 
   if (env.local.animation) {
