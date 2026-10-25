@@ -51,7 +51,10 @@ heartBeat[k_] := Module[{ok = True, orig}, With[{secret = CreateUUID[]},
             ];
         ];
         ok = False;
-        LinkWrite[k["Link"], EvaluatePacket[ Internal`Kernel`Ping[secret] ] ]
+        If[FailureQ[LinkWrite[k["Link"], EvaluatePacket[ Internal`Kernel`Ping[secret] ] ] ] && TrueQ[k["ReadyQ"]],
+            EventFire[k, "Error", "Evaluation kernel "<>k["Name"]<>" crashed. Please, restart it from the evaluation menu"];
+            TaskRemove[k["HeartBeat"]];
+        ];
     , 8000]
 ] ]
 
