@@ -150,7 +150,7 @@ App[request_] := With[{
           
           <div id="frame" class="h-full overflow-hidden">
             <div class="h-full flex flex-col">
-              <div style="z-index: 100;" class="sticky top-0 z-40 flex h-10 shrink-0 items-center gap-x-4 border-b border-gray-300 px-2 pl-20 md:pl-2 dark:border-gray-500 bg-239 dark:bg-gray-700 hidden osx:flex linux:flex win:flex owin:flex linux:h-titlebar win:h-titlebar owin:h-titlebar">
+              <div style="z-index: 100;" class="sticky top-0 z-40 flex h-10 shrink-0 items-center gap-x-4 border-b border-gray-300 px-2 osx:pl-20 md:pl-2 dark:border-gray-500 bg-239 dark:bg-gray-700 hidden osx:flex linux:flex win:flex owin:flex linux:h-titlebar win:h-titlebar owin:h-titlebar">
                 <div class="grow h-full" style="-webkit-app-region: drag"></div>       
               </div>              
               <Notifications CachedClient={cachedClient} ElectronQ={isElectron} MessagePort={GlobalMessanger}/>
