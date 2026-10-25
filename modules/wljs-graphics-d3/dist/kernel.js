@@ -1148,6 +1148,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     // else
       svg = d3.select(container).append("svg");
       svg.node().classList.add('focus:outline-none');
+      env.containerSVG = svg.node();
 
     if ('Background' in options) {
       
