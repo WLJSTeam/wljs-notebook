@@ -56,7 +56,7 @@ AsyncFunction[Null, Module[{dialog, count},
 
   If[dialog === Null, ClearAll[dialog, count]; Return[Null]];
 
-  count = InputAsync["How many?", 1] // Await;
+  count = InputAsync["How many?", 1, "Notebook"->nb] // Await;
 
   If[!TrueQ[count > 0 && count < 99999], ClearAll[dialog, count]; Return[Null]];
 
