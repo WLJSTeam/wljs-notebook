@@ -1,3 +1,37 @@
+const ERROR_BOX_DEDUPLICATION_WINDOW_MS = 3000;
+
+function createShowErrorBoxHandler(dialog, {
+    now = Date.now,
+    setTimer = setTimeout,
+    deduplicationWindowMs = ERROR_BOX_DEDUPLICATION_WINDOW_MS
+} = {}) {
+    const recentErrorBoxes = new Map();
+
+    return async (event, p) => {
+        const content = p?.content;
+        const previous = recentErrorBoxes.get(content);
+
+        if (previous && (previous.pending || now() < previous.expiresAt)) return;
+
+        const state = { pending: true, expiresAt: 0 };
+        recentErrorBoxes.set(content, state);
+
+        try {
+            console.log(p);
+            return await dialog.showErrorBox(p.title, content);
+        } finally {
+            // The native dialog blocks the main process, so suppress requests queued while it was open.
+            state.pending = false;
+            state.expiresAt = now() + deduplicationWindowMs;
+
+            const timer = setTimer(() => {
+                if (recentErrorBoxes.get(content) === state) recentErrorBoxes.delete(content);
+            }, deduplicationWindowMs);
+            timer?.unref?.();
+        }
+    };
+}
+
 function registerIpcHandlers({
     BrowserWindow,
     Deferred,
@@ -363,11 +397,7 @@ function registerIpcHandlers({
         return result;
     });
 
-    ipcMain.handle('showErrorBox', async (event, p) => {
-        console.log(p);
-        const result = await dialog.showErrorBox(p.title, p.content);
-        return result;
-    });
+    ipcMain.handle('showErrorBox', createShowErrorBoxHandler(dialog));
 
     ipcMain.on('system-window-expand', (e, p) => {
         windows.focused.win.setBounds({ width: 800 , animate: true});
@@ -460,4 +490,4 @@ function registerIpcHandlers({
 
 }
 
-module.exports = { registerIpcHandlers };
+module.exports = { createShowErrorBoxHandler, registerIpcHandlers };

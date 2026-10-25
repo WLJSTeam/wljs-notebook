@@ -115,10 +115,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   showErrorBox: (params, cbk) => {
-    ipcRenderer.invoke('showErrorBox', params).then((result) => {
-      cbk(result);
-    });
-  }, 
+    const result = ipcRenderer.invoke('showErrorBox', params);
+    if (typeof cbk === 'function') result.then(cbk);
+    return result;
+  },
 
   requestScreenshot: (params, cbk) => {
     ipcRenderer.invoke('capture', params).then((result) => {

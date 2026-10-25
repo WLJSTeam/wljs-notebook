@@ -6,6 +6,7 @@ const test = require('node:test');
 const { EventEmitter } = require('node:events');
 
 const { createExtensionManager } = require('./main/extension-manager');
+const { createShowErrorBoxHandler } = require('./main/ipc-handlers');
 const { createMenuManager } = require('./main/menu-manager');
 const { createWolframRuntime } = require('./main/wolfram-runtime');
 const {
@@ -13,6 +14,56 @@ const {
     createProcessLogWindow,
     installProcessLogCapture
 } = require('./main/process-log-buffer');
+
+test('error boxes with the same content are deduplicated across senders', async () => {
+    let currentTime = 0;
+    const pendingDialogs = [];
+    const shownDialogs = [];
+    const timers = [];
+    const dialog = {
+        showErrorBox(title, content) {
+            shownDialogs.push({ title, content });
+            return new Promise(resolve => pendingDialogs.push(resolve));
+        }
+    };
+    const handler = createShowErrorBoxHandler(dialog, {
+        now: () => currentTime,
+        setTimer(callback, delay) {
+            timers.push({ callback, delay });
+            return { unref() {} };
+        }
+    });
+
+    const first = handler({ sender: 'first-window' }, { title: 'First', content: 'same error' });
+    const suppressedWhileOpen = await handler(
+        { sender: 'second-window' },
+        { title: 'Second', content: 'same error' }
+    );
+
+    assert.equal(suppressedWhileOpen, undefined);
+    assert.deepEqual(shownDialogs, [{ title: 'First', content: 'same error' }]);
+
+    pendingDialogs.shift()(undefined);
+    await first;
+
+    const suppressedDuringCooldown = await handler(
+        { sender: 'second-window' },
+        { title: 'Second', content: 'same error' }
+    );
+    assert.equal(suppressedDuringCooldown, undefined);
+    assert.equal(shownDialogs.length, 1);
+
+    currentTime = 3000;
+    const afterCooldown = handler(
+        { sender: 'second-window' },
+        { title: 'Second', content: 'same error' }
+    );
+    assert.equal(shownDialogs.length, 2);
+
+    pendingDialogs.shift()(undefined);
+    await afterCooldown;
+    assert.equal(timers.length, 2);
+});
 
 test('extension lifecycle loads a module once and preserves phase order', async (t) => {
     const fixtureRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'wljs-electron-extension-'));
