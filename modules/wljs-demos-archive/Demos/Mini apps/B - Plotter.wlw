@@ -42,7 +42,7 @@ selected["2"] = True;
 
 EventHandler[selectionEvent, {
   idx_ :> Function[state,
-    Echo[{state, idx}];
+    Echo[{state, idx}, "[Plotter demo] Updated plot state and selected index: "];
     selected[idx] = state;
 ]}];
 

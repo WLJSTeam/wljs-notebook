@@ -138,15 +138,10 @@
       obj = new ObjectStorage(hash); 
     }
       
-    let storage;
-
-    try {
-      storage = await obj.get();
-    } catch(e) {
+    const storage = await obj.getOrCreate(async () => {
       const res = await server.kernel.io.fetch('BoxForm`LegendMakeLabel', [hash, JSON.stringify(label)]);
       console.log('We got the result: ', res);
-      storage = await obj.get();
-    }
+    });
 
     const instance = new ExecutableObject('legend-stored-'+uuidv4(), env, storage, true);
     instance.assignScope(env);
@@ -205,16 +200,10 @@
       obj = new ObjectStorage(hash); 
     }
       
-    let storage;
-
-    try {
-      storage = await obj.get();
-    } catch(e) {
-      
+    const storage = await obj.getOrCreate(async () => {
       const res = await server.kernel.io.fetch('BoxForm`makeBarLegend', [hash, JSON.stringify(['List', ...args])]);
       console.log('We got the result: ', res);
-      storage = await obj.get();
-    }
+    });
 
     const instance = new ExecutableObject('bar-stored-'+uuidv4(), env, storage, true);
     instance.assignScope(env);
@@ -727,7 +716,7 @@
       const ev = opts.Event;
       env.element.addEventListener('click', () => {
         console.log('clicked!');
-        server.kernel.emitt(ev, 'True', 'Click')
+        server.kernel.io.fire(ev, true, 'Click')
       })
     }    
   }
@@ -1918,7 +1907,7 @@
     env.element.appendChild(editor); 
     if (options.Event) {
       env.element.addEventListener('click', () => {
-        server.kernel.emitt(options.Event, 'True', 'Click')
+        server.kernel.io.fire(options.Event, true, 'Click')
       })
     }    
   }
@@ -2187,7 +2176,7 @@
       const ev = await interpretate(opts.Event, env);
       env.element.addEventListener('click', () => {
         console.log('clicked!');
-        server.kernel.emitt(ev, 'True', 'Click')
+        server.kernel.io.fire(ev, true, 'Click')
       })
     }
   }
@@ -3033,7 +3022,7 @@
       env.element.appendChild(editor); 
       if (options.Event) {
         env.element.addEventListener('click', () => {
-          server.kernel.emitt(options.Event, 'True', 'Click')
+          server.kernel.io.fire(options.Event, true, 'Click')
         })
       }
     }

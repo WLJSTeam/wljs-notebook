@@ -1,22 +1,45 @@
 BeginPackage["CoffeeLiqueur`Notebook`LocalKernel`", {"CoffeeLiqueur`Misc`Async`", "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`UObjects`", "CoffeeLiqueur`UInternal`",  "CoffeeLiqueur`TCPUServer`", "CoffeeLiqueur`CUSockets`"}]
 
+(*
+	Implementation of generic kernel
+	as a local Wolfram Kernel
+
+	This sets the communication links, loads packages and controls evaluation
+*)
+
 LocalKernel;
 
-
 Begin["`Private`"]
+
+$loadedPackages = {
+  "<<CoffeeLiqueur`CUSockets`",
+  "<<CoffeeLiqueur`UObjects`",
+  "<<CoffeeLiqueur`UInternal`",
+  "<<CoffeeLiqueur`TCPUServer`",
+  "<<CoffeeLiqueur`Misc`Events`",
+  "<<CoffeeLiqueur`Misc`Async`",
+  "<<CoffeeLiqueur`Misc`Language`",
+  "<<CoffeeLiqueur`Misc`Events`Promise`",
+  "<<CoffeeLiqueur`Misc`Parallel`",
+  "<<CoffeeLiqueur`Misc`Workers`",
+  "<<CoffeeLiqueur`WebUSocketHandler`",
+  "<<CoffeeLiqueur`WLJS`Tools`",
+  "<<CoffeeLiqueur`WLJS`Transport`",
+  "<<CoffeeLiqueur`CUSockets`EventsExtension`",
+  "<<LetWL`"
+};
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`ExtensionManager`" -> "af`"];
 
 CreateUType[LocalKernelObject, GenericKernel`Kernel, {"RootDirectory"->Directory[], "CreatedQ"->False, "StandardOutput"->Null, "InitList"-> {}, "Host"->"127.0.0.1",  "ReadyQ"->False, "State"->"Undefined", "wolframscript" -> ("\""<>First[$CommandLine]<>"\" -wstp")}]
 
-
+(* just a legacy alias, harmless *)
 LocalKernel[opts___] := LocalKernelObject[opts]
 
 heartBeat[k_] := Module[{ok = True, orig}, With[{secret = CreateUUID[]},
     EventHandler[secret, {_ -> Function[Null, ok = True]}];
-
-    (* SetInterval[MicrotaskSubmit[ Print@"Hey there! Microtasks are running!" ];, 3000]; *)
+    (* just ping-pong every 8 seconds to check if the link is alive *)
 
     SetInterval[
         If[!ok,
@@ -28,8 +51,10 @@ heartBeat[k_] := Module[{ok = True, orig}, With[{secret = CreateUUID[]},
             ];
         ];
         ok = False;
-        LinkWrite[k["Link"], EvaluatePacket[ Internal`Kernel`Ping[secret] ] ]
-        
+        If[FailureQ[LinkWrite[k["Link"], EvaluatePacket[ Internal`Kernel`Ping[secret] ] ] ] && TrueQ[k["ReadyQ"]],
+            EventFire[k, "Error", "Evaluation kernel "<>k["Name"]<>" crashed. Please, restart it from the evaluation menu"];
+            TaskRemove[k["HeartBeat"]];
+        ];
     , 8000]
 ] ]
 
@@ -37,6 +62,7 @@ HeldRemotePacket /: LinkWrite[lnk_, HeldRemotePacket[p_String] ] := With[{pp = p
     LinkWrite[lnk, Unevaluated[ pp // Uncompress // ReleaseHold ] ]
 ]
 
+(* a tricky way of preserving contexts of symbols passed *)
 HoldRemotePacket[any_] := any // Hold // Compress // HeldRemotePacket
 SetAttributes[HoldRemotePacket, HoldFirst]
 
@@ -51,12 +77,14 @@ generateConnectFunction[o_LocalKernelObject] := With[{
     expression = With[{},  
         Print["Link to the host was established. Setting up async link..."];
 
+        (* start backlink *)
         With[{Internal`Kernel`AsyncLink = LinkCreate[asyncLinkId]},
             SetInterval[If[ LinkReadyQ[Internal`Kernel`AsyncLink],
                 LinkRead[ Internal`Kernel`AsyncLink ];
             ];, 150];
         ];
 
+        (* helper constants *)
         Internal`Kernel`Host = host;
 
         Internal`WoxiQ = woxiQ;
@@ -66,12 +94,11 @@ generateConnectFunction[o_LocalKernelObject] := With[{
         Internal`Kernel`SymjaQ = symjaQ;
         Internal`Kernel`WolframQ = Internal`WolframQ;
         
-        (* Internal`Kernel`RemoteEvent = USocketConnect[addr] // LTPTransport; *)
-
+        (* event forwarder Evaluation Kernel -> Master *)
         Internal`Kernel`RemoteEvent /: EventFire[Internal`Kernel`RemoteEvent[ev_], topic_, payload_] := LinkWrite[$ParentLink, Internal`Kernel`EvaluationPacketAsync[ Hold[ EventFire[ev, topic, payload] ] ] ];
         Internal`Kernel`RemoteEvent /: EventFire[Internal`Kernel`RemoteEvent[ev_], payload_] := LinkWrite[$ParentLink, Internal`Kernel`EvaluationPacketAsync[ Hold[ EventFire[ev, payload] ] ] ];
         
-
+        (* helper symbols *)
         Internal`Kernel`Apply[e_, t_] := e[t];
         Internal`Kernel`Type = "LocalKernel";
         Internal`Kernel`Hash = uid;
@@ -84,6 +111,16 @@ generateConnectFunction[o_LocalKernelObject] := With[{
 
         AppendTo[$Path, shared]; (* add shared directory *)
 
+        (* this whole WatchDog thingy is only for preventing WL from reloading system defenitions *)
+        (* it loads and reloads them at random moments *)
+        (* no matter if we protect them or redefine *)
+        (* however, this mostly happens for Graphics output forms, TemplateBox, Dataset, NeuralNets and Audio objects *)
+        (* therefore we have to contineously test if our FormatValues are still ours, and if not - then reload some of the system packages on-fly *)
+        (* i guess this is a price of closed systems *)
+        (* in practice it happens 1-2 times per long evaluation sessions and it is cured immediately *)
+         
+        (*$NewSymbol = If[#==="expr", Print[$InputFileName]; Pause[2]; Exit[-1]]&;*)
+
         Internal`Kernel`Watchdog;
         Internal`Kernel`Watchdog`store = <||>;
         Internal`Kernel`Watchdog`state = <||>;
@@ -94,7 +131,7 @@ generateConnectFunction[o_LocalKernelObject] := With[{
             Internal`Kernel`Watchdog["Test"];
             EventFire[Internal`Kernel`RemoteEvent[secret], "Pong", True];
         );
-
+        
         Internal`Kernel`Watchdog["Assertion", name_String, test_, action_] := With[{uid = CreateUUID[]},
             Internal`Kernel`Watchdog["Assertion", name, test, action, uid ];
         ];
@@ -112,12 +149,16 @@ generateConnectFunction[o_LocalKernelObject] := With[{
         Internal`Kernel`Watchdog["Test"] := Module[{firedTags},
             KeyValueMap[Function[{key, value},
                 If[Internal`Kernel`Watchdog`state[key] =!= ReleaseHold[value[[1]]],
+
                     Internal`Kernel`Watchdog`$Journal = Append[Internal`Kernel`Watchdog`$Journal, {StringTemplate[Internal`Kernel`Watchdog::assert][key], Now} ];
                     
                     If[!TrueQ[firedTags[value[[3]] ] ], value[[2]] // ReleaseHold];
                     With[{v = value[[3]]}, firedTags[v] = True];
                     
                     Internal`Kernel`Watchdog`state[key] = ReleaseHold[value[[1]]];
+                    With[{msg = StringTemplate[Internal`Kernel`Watchdog::assert][key]},
+                        LinkWrite[$ParentLink, MessagePacket["Silent", msg]];
+                    ];
                 ];
             ], Internal`Kernel`Watchdog`store ];
             
@@ -133,8 +174,8 @@ generateConnectFunction[o_LocalKernelObject] := With[{
     ] // HoldRemotePacket},
 
     Then[promise, Function[pid, 
-        Echo["Local kernel link connected!"];
-        Echo["Local kernel PID: "<>ToString[pid] ];
+        Echo["[Kernel/LocalKernel] Local kernel link connected!"];
+        Echo[StringJoin["[Kernel/LocalKernel] ", "Local kernel PID: ", ToString[pid]]];
 
         
         o["PID"] = pid;
@@ -142,7 +183,7 @@ generateConnectFunction[o_LocalKernelObject] := With[{
 
         If[FailureQ[LinkActivate[o["SecondaryLink"] ] ],
             o["State"]  = "Problem";
-            Echo["LocalKernel 2nd link failed!!!"];
+            Echo["[Kernel/LocalKernel] Failed to establish the secondary local-kernel link."];
             LinkClose[k["Link"] ];
         ,
             o["ReadyQ"] = True;
@@ -182,7 +223,7 @@ restart[k_LocalKernelObject] := With[{},
 
 setProp[any_[sym_], assoc_] := (
     sym = Join[sym, assoc];
-    Echo[ sym["State"] ];
+    Echo[sym["State"], "[Kernel/LocalKernel] Updated kernel state: "];
 );
 SetAttributes[setProp, HoldFirst];
 
@@ -208,33 +249,11 @@ unlink[k_LocalKernelObject] := With[{},
 ]
 
 start[k_LocalKernelObject] := Module[{link},
-    If[Length[Cases[$CommandLine, "-entitlement"] ] > 0 || Length[Cases[$CommandLine, "-tcplink"] ] > 0, Module[{addr = "36831"},
-        Echo["LocalKernel >> WARNING: WSTP Link is TCPIP / Entitlement mode detected"];
-        Echo["LocalKernel >> WARNING: WSTP Link is TCPIP / Entitlement mode detected"];
-        Echo["LocalKernel >> WARNING: WSTP Link is TCPIP / Entitlement mode detected"];
-        Echo["LocalKernel >> WARNING: Evaluation might be slow"];
-        Echo["LocalKernel >> WARNING: Print outputs might not work"];
-
-        With[{tcplink = Position[$CommandLine, "-tcplink"]},
-            If[Length[tcplink] > 0,
-                link = LinkCreate[$CommandLine[[tcplink[[1]] + 1]], LinkProtocol -> "TCPIP"];
-            ,
-                link = LinkCreate[addr, LinkProtocol -> "TCPIP"];
-                Echo["LocalKernel >> starting secondary wolframscript process"];
-
-                With[{e = $CommandLine[[Flatten[{Position[$CommandLine, "-entitlement"]}][[1]] + 1]]},
-                    StartProcess[{"wolframscript", "-tcplink", addr,  "-entitlement", e, "-f", FileNameJoin[{"Scripts", "link.wls"}] } ] // Echo ;
-                ];
-            ]
-        ];
-
-        
-
-        Print["LocalKernel >> Waiting the client to respond."];
-        LinkActivate[link];
-        Print["LocalKernel >> Got IT!"];
-    ],
-        Echo["LocalKernel >> Starting using path: "<>k["wolframscript"] ];
+    If[Length[Cases[$CommandLine, "-entitlement"] ] > 0 || Length[Cases[$CommandLine, "-tcplink"] ] > 0,
+        Echo["[Kernel/LocalKernel] Local-kernel entitlement mode is not supported."];
+        link = $Failed;
+    ,
+        Echo[StringJoin["[Kernel/LocalKernel] Starting a local kernel with wolframscript at ", k["wolframscript"], "."]];
         link = LinkLaunch[ k["wolframscript"] ];
     ];
 
@@ -269,36 +288,28 @@ start[k_LocalKernelObject] := Module[{link},
     LinkWrite[link, Unevaluated[$HistoryLength = 0] ];
     (* LinkWrite[link, Unevaluated[$AllowDataUpdates = False] ]; *)
     With[{path = k["RootDirectory"]},
+    
+        (* set directories *)
         LinkWrite[link, Unevaluated[ PacletDirectoryUnload /@ PacletDirectoryLoad[]; ] ];
         LinkWrite[link, Unevaluated[ SetDirectory[path] ] ] ;
         LinkWrite[link, Unevaluated[ Set[Internal`Kernel`RootDirectory, path] ] ];
         LinkWrite[link, Unevaluated[ PacletDirectoryLoad[Directory[] ] ] ];
         LinkWrite[link, Unevaluated[ PacletDirectoryLoad[FileNameJoin[{Directory[], "Packages"}] ] ] ];
 
+        (* services patches *)
         LinkWrite[link, Unevaluated[ Get[FileNameJoin[{Directory[], "Common", "Patches", "NoWR.wl"}] ] ] ];
 
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CUSockets`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`UObjects`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`UInternal`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`TCPUServer`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Events`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Async`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Language`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Events`Promise`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Parallel`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`Workers`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`WebUSocketHandler`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`Misc`WLJS`Transport`"] ];
-        LinkWrite[link, EnterTextPacket["<<CoffeeLiqueur`CUSockets`EventsExtension`"] ];
-        LinkWrite[link, EnterTextPacket["<<LetWL`"] ];
+        (* core and optional packages *)
+        LinkWrite[link, EnterTextPacket[#] ] &/@ $loadedPackages;
+
+        (* various workarounds *)
         LinkWrite[link, EnterTextPacket["Off[Most::argx]; Off[FrontEndObject::notavail];"] ];
         LinkWrite[link, EnterTextPacket["$Inspector = Dialog[]&;"] ];
         
-        
-
         (* unknown WL bug, doesn't work in initialization ... *)
         LinkWrite[link, EnterTextPacket["Unprotect[Interpretation, InterpretationBox]"] ];
 
+        (* standard LPM package *)
         LinkWrite[link, Unevaluated[ Get[FileNameJoin[{Directory[], "Common", "LPM", "LPM.wl"}] ] ] ];
     ];
 
@@ -321,14 +332,14 @@ start[k_LocalKernelObject] := Module[{link},
                 )&),
                 MessagePacket[symbol_, type_] :> ((
                     EchoLabel["KernelWarning"][StringTemplate["``::``"][symbol, type]];
-                    EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]
+                    If[symbol =!= "Silent", EventFire[kernel, "Warning", StringTemplate["``::``"][symbol, type] ]];
                 )&),
-                any_ :> (Echo[any]&)
+                any_ :> (Echo[any, "[Kernel/LocalKernel] Unhandled secondary-link packet: "]&)
             }];
 
             k["PrintTask"] = MicrotaskSubmit[
                 If[LinkReadyQ[kernel["Link"] ], EventFire[kernel["StandardOutput"], LinkRead[kernel["Link"] ], kernel] ];
-                If[LinkReadyQ[kernel["SecondaryLink"] ], Echo["2nd link >> ", LinkRead[kernel["SecondaryLink"] ] ] (* just flush the buffer *) ] // Quiet;
+                If[LinkReadyQ[kernel["SecondaryLink"] ], Echo[LinkRead[kernel["SecondaryLink"] ], "[Kernel/LocalKernel] Flushed secondary-link packet: "] (* just flush the buffer *) ] // Quiet;
             , "Continuous" -> True];
         ];
     ] ];
@@ -363,13 +374,13 @@ LocalKernelObject /: GenericKernel`Send[k_LocalKernelObject, expr_, OptionsPatte
         With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
-                Echo["LocalKernel Init >> Normal"];
+                Echo["[Kernel/LocalKernel] Initializing the local kernel for regular reuse."];
                 
                 LinkWrite[k["Link"], value];
         ];    
     , 
         If[!MemberQ[k["InitList"], Hash[expr // Hold] ] ,
-            Echo["LocalKernel Init >> Once"];
+            Echo["[Kernel/LocalKernel] Initializing the local kernel for one evaluation."];
             With[{
                 value = expr // Hold // Compress // HeldRemotePacket
             },
@@ -379,7 +390,7 @@ LocalKernelObject /: GenericKernel`Send[k_LocalKernelObject, expr_, OptionsPatte
 
             k["InitList"] = Append[k["InitList"], Hash[expr // Hold] ];
         ,
-            Echo["LocalKernel Init >> Already initialized..."];
+            Echo["[Kernel/LocalKernel] The local kernel is already initialized."];
         ];
     ];
 ]

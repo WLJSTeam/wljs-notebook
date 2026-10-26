@@ -1,902 +1,626 @@
-<|"Notebook" -> <|"Controller" -> "82e4c740-1879-486b-9b0f-1fcbe5baa94a", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1731], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "22605dc2-f40e-46a1-988e-cf1ccce3f5c2", 
-   "Objects" -> <|"159960d2-454d-45c9-a227-6b2958ecc9ce" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            781764113315543900], {GrayLevel[1], EdgeForm[GrayLevel[0.5]], 
-            {Annotation[Rectangle[{1.5, 0}, {2.5, 1}], 0, 1], 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{2.5, 0}, {3.5, 1}], 0, 3]}, 
-             Annotation[Rectangle[{3.5, 0}, {4.5, 1}], 0, 5], 
-             Annotation[Rectangle[{4.5, 0}, {5.5, 1}], 0, 6], 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{5.5, 0}, {6.5, 1}], 0, 8]}, 
-             Annotation[Rectangle[{6.5, 0}, {7.5, 1}], 0, 10], 
-             Annotation[Rectangle[{7.5, 0}, {8.5, 1}], 0, 12], 
-             Annotation[Rectangle[{8.5, 0}, {9.5, 1}], 0, 13], 
-             Annotation[Rectangle[{9.5, 0}, {10.5, 1}], 0, 15], 
-             {RGBColor[1, 0.6862745098039216, 0.47843137254901963], 
-              Annotation[Rectangle[{10.5, 0}, {11.5, 1}], 0, 17]}, 
-             Annotation[Rectangle[{11.5, 0}, {12.5, 1}], 0, 18], 
-             Annotation[Rectangle[{12.5, 0}, {13.5, 1}], 0, 20], 
-             Annotation[Rectangle[{13.5, 0}, {14.5, 1}], 0, 22], 
-             Annotation[Rectangle[{14.5, 0}, {15.5, 1}], 0, 24], 
-             Annotation[Rectangle[{15.5, 0}, {16.5, 1}], 0, 25]}, 
-            RGBColor[0.3333333333333333, 0.3333333333333333, 
-             0.3333333333333333], {Annotation[Rectangle[{2.2, 0.5}, {2.8, 
-                1}], 1, 2], Annotation[Rectangle[{3.2, 0.5}, {3.8, 1}], 1, 
-              4], Annotation[Rectangle[{5.2, 0.5}, {5.8, 1}], 1, 7], 
-             Annotation[Rectangle[{6.2, 0.5}, {6.8, 1}], 1, 9], 
-             Annotation[Rectangle[{7.2, 0.5}, {7.8, 1}], 1, 11], 
-             Annotation[Rectangle[{9.2, 0.5}, {9.8, 1}], 1, 14], 
-             Annotation[Rectangle[{10.2, 0.5}, {10.8, 1}], 1, 16], 
-             Annotation[Rectangle[{12.2, 0.5}, {12.8, 1}], 1, 19], 
-             Annotation[Rectangle[{13.2, 0.5}, {13.8, 1}], 1, 21], 
-             Annotation[Rectangle[{14.2, 0.5}, {14.8, 1}], 1, 23]}}, 
-           {RGBColor[1, 1, 0], Opacity[0.3]}, {GrayLevel[0], 
-            {Text["D", {3, 0.4}, {0, 0}], Text["E", {11, 0.4}, {0, 0}], 
-             Text["G", {6, 0.4}, {0, 0}]}}, EventListener[Graphics`Canvas[], 
-            {"click" -> "5a9bf959-4130-4bab-8ece-e0ffa2087f3a"}]}, 
-          ImageSize -> {500, 200}, "Controls" -> False]]|>, 
-     "7692caba-70e0-4406-833f-3697781f9650" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            2183720347472832800], EventListener[Graphics`Canvas[], 
-            {"click" -> "01170490-10e9-4502-962a-9717eeac7402"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 
-               4, "E"]}}, {RGBColor[1, 0.7215686274509804, 
-              0.2196078431372549], {Annotation[Disk[{0, 4}, {0.15, 0.42}], 
-               19, "G"], {Annotation[Disk[{5, 3}, {0.15, 0.42}], 19, "G"], 
-               GrayLevel[1], Text["G", {5, 2.84}, {0, 0}]}, {Annotation[
-                Disk[{10, 2}, {0.15, 0.42}], 19, "G"], GrayLevel[1], Text[
-                "G", {10, 1.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 
-              0.8627450980392157, 0.43529411764705883], 
-             {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[
-                1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, 
-                 {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, 
-                {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 
-              0.9372549019607843], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 
-                16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, 
-              {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[
-                1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, 
-                 {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, 
-                {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 
-              0.7529411764705882], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 
-               23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], 
-               GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[
-                Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", 
-                {9, 2.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, 
-          "Controls" -> False, ImagePadding -> None, PlotRange -> 
-           {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "8b30a46a-009e-4ed9-b4a3-f87e9574e93d" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            125522456893570510], EventListener[Graphics`Canvas[], 
-            {"click" -> "2c5ef89a-d96f-4309-9ac0-232da994c6ba"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 
-               4, "E"]}}, {RGBColor[1, 0.7215686274509804, 
-              0.2196078431372549], {{Annotation[Disk[{4, 1}, {0.15, 0.42}], 
-                8, "Ab"], GrayLevel[1], Text["Ab", {4, 0.84}, {0, 0}]}}}, 
-            {RGBColor[0.9490196078431372, 0.8627450980392157, 
-              0.43529411764705883], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 
-                11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, 
-              {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[
-                1], Text["B", {7, 0.84}, {0, 0}]}}}, 
-            {RGBColor[0.6705882352941176, 0.8784313725490196, 
-              0.9372549019607843], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 
-                16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, 
-              {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[
-                1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, 
-                 {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, 
-                {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 
-              0.7529411764705882], {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 
-                20, "Ab"], GrayLevel[1], Text["Ab", {1, 3.84}, {0, 0}]}, 
-              {Annotation[Disk[{6, 3}, {0.15, 0.42}], 20, "Ab"], GrayLevel[
-                1], Text["Ab", {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, 
-                 {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", 
-                {11, 1.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 
-              0.5176470588235295, 0.6313725490196078], 
-             {Annotation[Disk[{0, 5}, {0.15, 0.42}], 23, "B"], 
-              {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], GrayLevel[
-                1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[Disk[{9, 3}, 
-                 {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {9, 2.84}, 
-                {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, 
-          ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "270ca4fa-9d5d-4130-8042-10b932c42081" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            4019880078216607000], EventListener[Graphics`Canvas[], 
-            {"click" -> "ef6a8e03-ce45-4268-a6df-6962f84c1678"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {{Annotation[Disk[{2, 1}, {0.15, 0.42}], 
-                6, "F#"], GrayLevel[1], Text["F#", {2, 0.84}, {0, 0}]}}}, 
-            {RGBColor[1, 0.7215686274509804, 0.2196078431372549], 
-             {Annotation[Disk[{0, 2}, {0.15, 0.42}], 9, "A"], 
-              {Annotation[Disk[{5, 1}, {0.15, 0.42}], 9, "A"], GrayLevel[1], 
-               Text["A", {5, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 
-              0.8627450980392157, 0.43529411764705883], 
-             {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 13, "C#"], GrayLevel[
-                1], Text["C#", {4, 1.84}, {0, 0}]}, {Annotation[Disk[{9, 1}, 
-                 {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", 
-                {9, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 
-              0.8784313725490196, 0.9372549019607843], 
-             {{Annotation[Disk[{4, 3}, {0.15, 0.42}], 18, "F#"], GrayLevel[
-                1], Text["F#", {4, 2.84}, {0, 0}]}, {Annotation[Disk[{9, 2}, 
-                 {0.15, 0.42}], 18, "F#"], GrayLevel[1], Text["F#", 
-                {9, 1.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 
-              0.6549019607843137, 0.7529411764705882], 
-             {{Annotation[Disk[{2, 4}, {0.15, 0.42}], 21, "A"], GrayLevel[
-                1], Text["A", {2, 3.84}, {0, 0}]}, {Annotation[Disk[{7, 3}, 
-                 {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {7, 2.84}, 
-                {0, 0}]}, {Annotation[Disk[{12, 2}, {0.15, 0.42}], 21, "A"], 
-               GrayLevel[1], Text["A", {12, 1.84}, {0, 0}]}}}, 
-            {RGBColor[0.12941176470588237, 0.5176470588235295, 
-              0.6313725490196078], {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 
-                25, "C#"], GrayLevel[1], Text["C#", {2, 4.84}, {0, 0}]}, 
-              {Annotation[Disk[{6, 4}, {0.15, 0.42}], 25, "C#"], GrayLevel[
-                1], Text["C#", {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, 
-                 {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", 
-                {11, 2.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, 
-          "Controls" -> False, ImagePadding -> None, PlotRange -> 
-           {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "fdf77bdb-a9df-40c8-90f1-ef7bb0b2345a" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            133682440007851970], EventListener[Graphics`Canvas[], 
-            {"click" -> "d893347b-f2ac-4184-8c42-cc0af6e89ee8"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {{Annotation[Disk[{4, 1}, {0.15, 0.42}], 
-                8, "Ab"], GrayLevel[1], Text["Ab", {4, 0.84}, {0, 0}]}}}, 
-            {RGBColor[1, 0.7215686274509804, 0.2196078431372549], 
-             {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[
-                1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, 
-                 {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, 
-                {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 
-              0.43529411764705883], {{Annotation[Disk[{1, 3}, {0.15, 0.42}], 
-                15, "Eb"], GrayLevel[1], Text["Eb", {1, 2.84}, {0, 0}]}, 
-              {Annotation[Disk[{6, 2}, {0.15, 0.42}], 15, "Eb"], GrayLevel[
-                1], Text["Eb", {6, 1.84}, {0, 0}]}, {Annotation[Disk[{11, 1}, 
-                 {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", 
-                {11, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 
-              0.8784313725490196, 0.9372549019607843], 
-             {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 20, "Ab"], GrayLevel[
-                1], Text["Ab", {1, 3.84}, {0, 0}]}, {Annotation[Disk[{6, 3}, 
-                 {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", 
-                {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, {0.15, 0.42}], 
-                20, "Ab"], GrayLevel[1], Text["Ab", {11, 1.84}, {0, 0}]}}}, 
-            {RGBColor[0.3176470588235294, 0.6549019607843137, 
-              0.7529411764705882], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 
-               23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], 
-               GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[
-                Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", 
-                {9, 2.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 
-              0.5176470588235295, 0.6313725490196078], 
-             {{Annotation[Disk[{4, 5}, {0.15, 0.42}], 27, "Eb"], GrayLevel[
-                1], Text["Eb", {4, 4.84}, {0, 0}]}, {Annotation[Disk[{8, 4}, 
-                 {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", 
-                {8, 3.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, 
-          "Controls" -> False, ImagePadding -> None, PlotRange -> 
-           {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "b7a43dde-dda7-4056-ba48-87d3914619b1" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            3281152179681790000], EventListener[Graphics`Canvas[], 
-            {"click" -> "d9b3ef6b-0bae-4738-9679-871b1f724bf8"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {Annotation[Disk[{0, 2}, {0.15, 0.42}], 
-               9, "A"], {Annotation[Disk[{5, 1}, {0.15, 0.42}], 9, "A"], 
-               GrayLevel[1], Text["A", {5, 0.84}, {0, 0}]}}}, 
-            {RGBColor[1, 0.7215686274509804, 0.2196078431372549], 
-             {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 13, "C#"], GrayLevel[
-                1], Text["C#", {4, 1.84}, {0, 0}]}, {Annotation[Disk[{9, 1}, 
-                 {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", 
-                {9, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 
-              0.8627450980392157, 0.43529411764705883], 
-             {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[
-                1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, 
-                 {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, 
-                {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], 
-               GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, 
-            {RGBColor[0.6705882352941176, 0.8784313725490196, 
-              0.9372549019607843], {{Annotation[Disk[{2, 4}, {0.15, 0.42}], 
-                21, "A"], GrayLevel[1], Text["A", {2, 3.84}, {0, 0}]}, 
-              {Annotation[Disk[{7, 3}, {0.15, 0.42}], 21, "A"], GrayLevel[
-                1], Text["A", {7, 2.84}, {0, 0}]}, {Annotation[Disk[{12, 2}, 
-                 {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {12, 1.84}, 
-                {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 
-              0.7529411764705882], {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 
-                25, "C#"], GrayLevel[1], Text["C#", {2, 4.84}, {0, 0}]}, 
-              {Annotation[Disk[{6, 4}, {0.15, 0.42}], 25, "C#"], GrayLevel[
-                1], Text["C#", {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, 
-                 {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", 
-                {11, 2.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 
-              0.5176470588235295, 0.6313725490196078], 
-             {Annotation[Disk[{0, 6}, {0.15, 0.42}], 28, "E"], 
-              {Annotation[Disk[{5, 5}, {0.15, 0.42}], 28, "E"], GrayLevel[
-                1], Text["E", {5, 4.84}, {0, 0}]}, {Annotation[Disk[{9, 4}, 
-                 {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", {9, 3.84}, 
-                {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, 
-          ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "64314d4e-1126-49a2-b5e9-83ef05ab00bb" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            2942884746836427000], EventListener[Graphics`Canvas[], 
-            {"click" -> "ef8d67e8-b292-4084-a320-6209abf8286a"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 
-                11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, 
-              {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[
-                1], Text["B", {7, 0.84}, {0, 0}]}}}, 
-            {RGBColor[1, 0.7215686274509804, 0.2196078431372549], 
-             {{Annotation[Disk[{1, 3}, {0.15, 0.42}], 15, "Eb"], GrayLevel[
-                1], Text["Eb", {1, 2.84}, {0, 0}]}, {Annotation[Disk[{6, 2}, 
-                 {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", 
-                {6, 1.84}, {0, 0}]}, {Annotation[Disk[{11, 1}, {0.15, 0.42}], 
-                15, "Eb"], GrayLevel[1], Text["Eb", {11, 0.84}, {0, 0}]}}}, 
-            {RGBColor[0.9490196078431372, 0.8627450980392157, 
-              0.43529411764705883], {{Annotation[Disk[{4, 3}, {0.15, 0.42}], 
-                18, "F#"], GrayLevel[1], Text["F#", {4, 2.84}, {0, 0}]}, 
-              {Annotation[Disk[{9, 2}, {0.15, 0.42}], 18, "F#"], GrayLevel[
-                1], Text["F#", {9, 1.84}, {0, 0}]}}}, 
-            {RGBColor[0.6705882352941176, 0.8784313725490196, 
-              0.9372549019607843], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 
-               23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], 
-               GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[
-                Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", 
-                {9, 2.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 
-              0.6549019607843137, 0.7529411764705882], 
-             {{Annotation[Disk[{4, 5}, {0.15, 0.42}], 27, "Eb"], GrayLevel[
-                1], Text["Eb", {4, 4.84}, {0, 0}]}, {Annotation[Disk[{8, 4}, 
-                 {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", 
-                {8, 3.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 
-              0.5176470588235295, 0.6313725490196078], 
-             {{Annotation[Disk[{2, 6}, {0.15, 0.42}], 30, "F#"], GrayLevel[
-                1], Text["F#", {2, 5.84}, {0, 0}]}, {Annotation[Disk[{7, 5}, 
-                 {0.15, 0.42}], 30, "F#"], GrayLevel[1], Text["F#", 
-                {7, 4.84}, {0, 0}]}, {Annotation[Disk[{11, 4}, {0.15, 0.42}], 
-                30, "F#"], GrayLevel[1], Text["F#", {11, 3.84}, {0, 0}]}}}}}, 
-          ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, 
-          PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "f864ce3b-cbd3-4558-b425-6f2e55e75361" -> 
-      <|"Public" -> Hold[Graphics[{FrontInstanceReference[
-            9090639561779979000], EventListener[Graphics`Canvas[], 
-            {"click" -> "6558b5a4-8cd6-4d82-8f97-8733c21510d7"}], 
-           {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], 
-            Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], 
-            Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, 
-           {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], 
-            Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], 
-            Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], 
-            Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], 
-            Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], 
-            Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, 
-              {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], 
-            Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, 
-             {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], 
-            Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, 
-             {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], 
-            GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], 
-             Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], 
-             Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, 
-             {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, 
-           {{RGBColor[0.9215686274509803, 0.49411764705882355, 
-              0.43137254901960786], {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 
-                13, "C#"], GrayLevel[1], Text["C#", {4, 1.84}, {0, 0}]}, 
-              {Annotation[Disk[{9, 1}, {0.15, 0.42}], 13, "C#"], GrayLevel[
-                1], Text["C#", {9, 0.84}, {0, 0}]}}}, 
-            {RGBColor[1, 0.7215686274509804, 0.2196078431372549], 
-             {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[
-                1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, 
-                 {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, 
-                {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], 
-               GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, 
-            {RGBColor[0.9490196078431372, 0.8627450980392157, 
-              0.43529411764705883], {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 
-                20, "Ab"], GrayLevel[1], Text["Ab", {1, 3.84}, {0, 0}]}, 
-              {Annotation[Disk[{6, 3}, {0.15, 0.42}], 20, "Ab"], GrayLevel[
-                1], Text["Ab", {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, 
-                 {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", 
-                {11, 1.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 
-              0.8784313725490196, 0.9372549019607843], 
-             {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 25, "C#"], GrayLevel[
-                1], Text["C#", {2, 4.84}, {0, 0}]}, {Annotation[Disk[{6, 4}, 
-                 {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", 
-                {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, {0.15, 0.42}], 
-                25, "C#"], GrayLevel[1], Text["C#", {11, 2.84}, {0, 0}]}}}, 
-            {RGBColor[0.3176470588235294, 0.6549019607843137, 
-              0.7529411764705882], {Annotation[Disk[{0, 6}, {0.15, 0.42}], 
-               28, "E"], {Annotation[Disk[{5, 5}, {0.15, 0.42}], 28, "E"], 
-               GrayLevel[1], Text["E", {5, 4.84}, {0, 0}]}, {Annotation[
-                Disk[{9, 4}, {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", 
-                {9, 3.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 
-              0.5176470588235295, 0.6313725490196078], 
-             {{Annotation[Disk[{4, 6}, {0.15, 0.42}], 32, "Ab"], GrayLevel[
-                1], Text["Ab", {4, 5.84}, {0, 0}]}, {Annotation[Disk[{9, 5}, 
-                 {0.15, 0.42}], 32, "Ab"], GrayLevel[1], Text["Ab", 
-                {9, 4.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, 
-          "Controls" -> False, ImagePadding -> None, PlotRange -> 
-           {{-0.5, 12.5}, {0, 6.5}}]]|>, 
-     "467ab9f3-38b4-4357-940e-78b7d925e3b6" -> 
-      <|"Public" -> Hold[Sound[{SoundNote[{4, 8, 11, 16, 20, 23}], 
-           SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 
-             23}], SoundNote[{4, 8, 11, 16, 20, 23}], 
-           SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 
-             27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], 
-           SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{13, 16, 20, 25, 
-             28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], 
-           SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 
-             28, 32}], SoundNote[{9, 13, 16, 21, 25, 28}], 
-           SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 
-             28}], SoundNote[{9, 13, 16, 21, 25, 28}], 
-           SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 
-             23}], SoundNote[{4, 8, 11, 16, 20, 23}], 
-           SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 
-             23}], SoundNote[{4, 8, 11, 16, 20, 23}], 
-           SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 
-             23}], SoundNote[{11, 15, 18, 23, 27, 30}], 
-           SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 
-             27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], 
-           SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 
-             28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], 
-           SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{9, 13, 16, 21, 25, 
-             28}], SoundNote[{9, 13, 16, 21, 25, 28}], 
-           SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 
-             28}], SoundNote[{4, 8, 11, 16, 20, 23}], 
-           SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 
-             23}], SoundNote[{4, 8, 11, 16, 20, 23}]}]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/D - Keys and Fingerboard.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Keys and Fingerboard", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1724]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Helper function to work with notes and scales", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1724]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Piano view", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1727]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Testing", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1736]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Guitar Fingerboard", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1740]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Testing", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1746]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Explore chords", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1750]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Keys and Fingerboard\nA notebook \
-demonstrating a custom `View` functions with a working toy-like piano and \
-guitar fingerboard. This covers basic graphics manipulation, sound emission \
-and working with dynamic graphics groups.\n\n<br/>\n\n## Helper function to \
-work with notes and scales\nDefine semintone converters ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "864820e3-23d3-441c-8440-c9f67fcab54c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "# Keys and Fingerboard\nA notebook demonstrating a custom \
-`View` functions with a working toy-like piano and guitar fingerboard. This \
-covers basic graphics manipulation, sound emission and working with dynamic \
-graphics groups.\n\n<br />\n\n## Helper function to work with notes and \
-scales\nDefine semintone converters ", "Display" -> "markdown", 
-    "Hash" -> "14e71169-2596-4d3e-aaf4-43a0b5a5c1af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "semitone[\"C\"] = 0;\nsemitone[\"C#\"] = 1;\nsemitone[\"D\"] \
-= 2;\nsemitone[\"D#\"] = 3;\nsemitone[\"Eb\"] = 3;\nsemitone[\"E\"] = \
-4;\nsemitone[\"F\"] = 5;\nsemitone[\"F#\"] = 6;\nsemitone[\"Gb\"] = \
-6;\nsemitone[\"G\"] = 7;\nsemitone[\"Ab\"] = 8;\nsemitone[\"G#\"] = \
-8;\nsemitone[\"A\"] = 9;\nsemitone[\"Bb\"] = 10;\nsemitone[\"B\"] = \
-11;\n\nconvertToSemitones[s_String] := With[{c = StringCases[s, \
-{a__~~b:DigitCharacter :> {a,ToExpression[b]}, a__ :> {a,4}}]//First},\n  \
-semitone[c[[1]]] + (c[[2]] - 4) 12\n]\nconvertToSemitones[s_] := \
-s;\nconvertToSemitones[l_List] := convertToSemitones /@ l", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cd4a6e51-d82a-4ac4-9ebe-5c530bf032e6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\n## Piano view\nA view-function to visualize and play \
-`SoundNote` on a keyboard.\n\nHelper functions to generate keys", 
-    "Display" -> "codemirror", "Hash" -> 
-     "aef41954-09df-4d1b-834a-945dd4bd68f2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "## Piano view\nA view-function to visualize and play \
-`SoundNote` on a keyboard.\n\nHelper functions to generate keys", 
-    "Display" -> "markdown", "Hash" -> 
-     "8000f53d-22aa-4b86-a6f3-2b1a844f4440", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "keyLevels = {0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, \
-0};\n\ngenerateKeys[keyCount_] := Module[\n  {index = 1, position = 1, \
-keyWidth, keyOffset},\n  Table[\n    With[\n      {\n        cycleIndex = \
-Mod[index - 1, 12] + 1,\n        level = keyLevels[[Mod[index - 1, 12] + \
-1]]\n      },\n      keyWidth = 0.5 - 0.2 level;\n      keyOffset = 0.5 \
-level;\n      position += 1 - level;\n      index++;\n      Rectangle[\n      \
-  {position - keyWidth + keyOffset, keyOffset},\n        {position + keyWidth \
-+ keyOffset, 1}\n      ]\n    ],\n    {keyCount}\n  \
-]\n];\n\nannotateKeys[keys_] := MapIndexed[\n  Annotation[#, \
-keyLevels[[Mod[#2[[1]] - 1, 12] + 1]], #2[[1]]] &,\n  \
-keys\n];\n\nhighlightNotes[skeys_, indexes_] := Map[Function[key,\n  \
-If[MemberQ[indexes, key[[3]]], \n    {(*VB[*)(RGBColor[1., \
-0.6862745098039216, \
-0.47843137254901963])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeGJAIcndyzs/JLwouT\
-yxJzghJzS3ISSxJTWMGyXMgyRcxgMEH+6JvX0HgqX3R/HkgcM8eAIGmHxI=\"*)(*]VB*), \
-key}\n  ,\n    key\n  ]\n], skeys]\n\nseparateKeys[keys_] := Module[\n  \
-{annotatedKeys = annotateKeys[keys]},\n  {\n    Cases[annotatedKeys, \
-Annotation[_, 0, _]],\n    Cases[annotatedKeys, Annotation[_, 1, _]]\n  \
-}\n];", "Display" -> "codemirror", "Hash" -> 
-     "efd3b394-2435-4116-90cf-b13798639d38", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\nA main function to construct a __piano view__", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6c2a4eb2-f4eb-41c3-bea4-abcd5b1b5b3e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "A main function to construct a __piano view__", 
-    "Display" -> "markdown", "Hash" -> 
-     "3517f20b-1f43-43b5-b7ad-29459484572c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "PianoView[] := \
-PianoView[SoundNote[{}]]\nPianoView[SoundNote[rawNotes_List], \
-OptionsPattern[]] := Module[{\n  keys, separated, scene,\n  highlighted, \
-names = {\"C\", \"C#\", \"D\", \"Eb\", \"E\", \"F\", \"F#\", \"G\", \"Ab\", \
-\"A\", \"Bb\", \"B\", \"C\"}, annotations,\n  notes = convertToSemitones @ \
-rawNotes\n},\n  keys = generateKeys[OptionValue[\"Size\"]];\n\n  separated = \
-separateKeys[keys];\n\n  scene = FrontInstanceReference[];\n\n  highlighted = \
-Mod[#, Length[keys]] + 1 &/@ notes;\n  annotations = Text[names[[Mod[#, \
-12]+1]], Mean @ (\n    List @@ keys[[Mod[#, Length[keys]] + 1]]\n  ) + \
-{0.,-0.1}, {0,0}] &/@ notes;\n\n  notes = Switch[OptionValue[\"Mode\"],\n    \
-\"Play\",\n      notes,\n\n    \"Show\",\n      {},\n\n    _,\n      notes\n  \
-];\n\n  Graphics[{scene,\n    {White, EdgeForm[Gray], \
-highlightNotes[separated[[1]], highlighted], Black//Lighter, \
-highlightNotes[separated[[2]],highlighted]},\n    {Yellow, Opacity[0.3]}, \
-{Black, annotations},\n  EventHandler[Null, {\"click\" -> clicker[scene, \
-separated, keys, notes, names]}]\n  }, ImageSize->OptionValue[ImageSize], \
-\"Controls\"->False]\n]\n\nOptions[PianoView] = {ImageSize->{500,200}, \
-\"Size\"->25, \"Mode\"->\"Play\"};", "Display" -> "codemirror", 
-    "Hash" -> "c45f56b3-8071-46c1-8ceb-6d8d0f740d39", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> 
-     ".md\nDefine a handler for emitting sound and highlighting keys", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5fd9ee2a-6f5c-4dfe-b166-1646d3376241", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "Define a handler for emitting sound and highlighting keys", 
-    "Display" -> "markdown", "Hash" -> 
-     "836857ad-47e8-46b7-925e-94c2abd0db41", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "ClearAll[clicker]\nclicker[scene_, separated_, keys_, \
-additional_:{}, notes_][xy_] := With[{\n  whiteMatch = \
-SelectFirst[separated[[1]], RegionMember[#[[1]], xy]  &],\n  blackMatch = \
-SelectFirst[separated[[2]], RegionMember[#[[1]], xy]  &],\n  group = \
-FrontInstanceGroup[]\n},\n\n  With[{\n    key = If[!MissingQ[blackMatch], \
-blackMatch[[3]], whiteMatch[[3]]]\n  },\n  \n    \
-FrontSubmit[SoundNote[Join[additional, {key-1}]//DeleteDuplicates] // \
-Sound];\n    \n    FrontSubmit[{\n      Red, Text[notes[[Mod[# - 1, 12] + \
-1]], \n      Mean[List @@ (keys[[#]])] - {0,0.2}, {0,0}] &/@ Join[(Mod[#, \
-Length[keys]-1] &/@ additional)+1, {key}], \n      Opacity[0.3], \
-keys[[Join[((Mod[#, Length[keys]-1]) &/@ additional)+1, {key}]]]\n    } // \
-group, scene];\n  \n    SetTimeout[Delete[group], 200];\n  ]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ca5c270d-7827-468f-ab97-c595ba23d238", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\n### Testing\nTime to play some chords", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5ecd4824-7159-43f4-baae-72d51a5cb85f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "### Testing\nTime to play some chords", 
-    "Display" -> "markdown", "Hash" -> 
-     "3d5c6795-acd0-4856-aeb2-ae1f2312e1d7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "SoundNote[{\"D4\", \"E5\", 7}] // PianoView ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "96cdb2e6-2e35-4287-8bd3-85598d84dfc6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"159960d2-454d-45c9-a227-6b2958ecc9ce\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5paW\
-poZpBjpmpiapACJZEvdRCMjc12zJCNLU4vU5GTL5FQActkVVQ==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fbcfa3b4-f727-4d96-a9a3-e07a3895b23e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\n## Guitar Fingerboard\nA view function to do the same, \
-but on the fingerboard of a guitar with an arbitary tuning", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f4dcd647-661e-4b35-a427-199322011c6d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "## Guitar Fingerboard\nA view function to do the same, but on \
-the fingerboard of a guitar with an arbitary tuning", 
-    "Display" -> "markdown", "Hash" -> 
-     "e46698b9-c774-433e-bf65-f65d92b26bab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "GuitarView[SoundNote[rawNotes_List], OptionsPattern[]] := \
-Module[{\n  tuning = OptionValue[\"Tuning\"],\n  scene = \
-FrontInstanceReference[],\n names = {\"C\", \"C#\", \"D\", \"Eb\", \"E\", \
-\"F\", \"F#\", \"G\", \"Ab\", \"A\", \"Bb\", \"B\", \"C\"}, annotations,\n  \
-notes = convertToSemitones @ rawNotes,\n  board, highlighted,\n  \
-semitoneTuning = Reverse[convertToSemitones @ \
-OptionValue[\"Tuning\"]]\n},\n\nnotes = Switch[OptionValue[\"Mode\"],\n    \
-\"Play\",\n      notes,\n\n    \"Show\",\n      {},\n\n    _,\n      notes\n  \
-];\n\nnotes = With[{c = Mod[#, convertToSemitones @ (semitoneTuning[[-1]] + \
-12)]},\n  If[c < semitoneTuning[[1]],\n    c + 12\n  ,\n    c\n  ]\n] &/@ \
-notes;\n\nboard = GroupBy[Flatten[\n  Table[With[{note = semitoneTuning[[y]] \
-+ x},\n    Annotation[Disk[{x,y}, {0.15, 0.15 2.8 }], note, names[[Mod[note, \
-12]+1]]]\n  ], {x, 0, 12}, {y, Length[tuning]}]\n], #[[2]] \
-&];\n\nhighlighted[notes_] := {\n  ColorDataFunction[(*VB[*) 24, \"Indexed\", \
-{1, 10, 1}, {RGBColor[0.9215686274509803, 0.49411764705882355, \
-0.43137254901960786], RGBColor[1., 0.7215686274509804, 0.2196078431372549], \
-RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], \
-RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], \
-RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], \
-RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], \
-RGBColor[0.09019607843137255, 0.33725490196078434, 0.49411764705882355], \
-RGBColor[0.7058823529411765, 0.49411764705882355, 0.5450980392156862], \
-RGBColor[0.5333333333333333, 0.23529411764705882, 0.3058823529411765], \
-RGBColor[0.8941176470588236, 0.7098039215686275, \
-0.7490196078431373]}[[Mod[Floor[#1], 10, 1]]] &  \
-(*,*)(*\"1:eJylk82TmjAYxrdf04/pTI+d6al74OiMBti6vRFERdRVglg9NTUBWRKCAXb1b+s/16\
-Bra6edqdO9PLz83jd5HiBcfhN+9Ozi4qL4oASKbVdI/tWSEmcxJajiHMudwtGTeuadkq4UWelkJEx\
-kWWF2aDxX0heM7IuxyGj09IiHSVH+7e79id+Dj1tSHib0Hr1UPTcjdPv542H4jRKHJKWQdf/gWQ/d\
-RBETmBzAayUzf9ihK0EoqtcB45ezXzGKXtUFxeQmY7s9DWRF/52nXmYLJmTxyECt5vmBzn9dtc8EM\
-1qW9BH5viumgbYGLAg1E6qrBq73oGbhb+x4CHwa7TEgxicSAaI3AKVGwzBAs4GBQRqGjnVwTdq03T\
-bVmGZ2jpuqnewTD1WAlqZbdLANgpGYID5OFz1LLGMH9e9S0/Nt6gzgvdeWE0/vj5HeK5HTrIYzNtq\
-l6TiMHS83k0V+NV3m/q3sbeacVwnmMF5e2QvMcSD4Os5663KZsySds2RhxXYv2YagDnaaxOyEPx/1\
-/8LO2ciFRj+14mqz2g7IanMXu4llumNv1fKG1QyiTcDzHZoP0MyqPLMjWb4OMnfDby1STFmXx180A\
-OmyZUI8ZbY77UC2Lr0/o8KHqOccrOKtKlCOM/X9+JBGZfGi/qMxK+gPONoNHg==\"*)(*]VB*)] \
-/@ Range[notes // Length],\n  Map[Function[place, \n    If[place[[1,1,1]] > \
-0.5,\n      {place, White, Text[place[[3]] , place[[1,1]]- {0,0.16}, \
-{0,0}]}\n    ,\n      place\n    ]\n  ], board[#]] &/@ \
-notes\n}//Transpose;\n\nGraphics[{\n  scene, EventHandler[Null, \
-{\"click\"->plucker[scene, board, highlighted, notes]}],\n  Table[Line[{{0, \
-string}, {12, string}}], {string, Length[tuning]}],\n  Table[Line[{{i - 0.5, \
-1 - 0.2 }, {i - 0.5, Length[tuning] + 0.2}}], {i, 12}],\n  \
-Table[Text[tuning[[Length[tuning] + 1 - string]], {-0.5, string - 0.2}, \
-{-1,0}], {string, Length[tuning]}],\n  {\n    AbsoluteThickness[4], \
-Line[{{0.5, 1}, {0.5, Length[tuning]}}], \n    Gray, Table[Disk[{0.5 + 2.5 + \
-k, 0.3}, {0.15, 0.15 2.8 }/2], {k, 0, 6, 2}],\n    Disk[{0.5 + 2.5 + 8.9, \
-0.3}, {0.15, 0.15 2.8 }/2], Disk[{0.5 + 2.5 + 9.1, 0.3}, {0.15, 0.15 2.8 \
-}/2]\n  },\n  \n  highlighted[notes]\n  \n}, ImageSize->(1.2 {500,100}), \
-\"Controls\"->False, ImagePadding->None, PlotRange->{{0 - 0.5, 12 + 0.5}, {0, \
-Length[tuning] + .5}}]\n]\n\nOptions[GuitarView] = {\"Tuning\"->({\"E4\", \
-\"A4\", \"D5\", \"G5\", \"B5\", \"E6\"}//Reverse), \"Mode\"->\"Play\"};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "63de77de-5d61-40bd-a2b4-5612c980c4a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\nA handler function to emit sound", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6c185f04-317e-4c86-87e0-f8a907ba971d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "A handler function to emit sound", "Display" -> "markdown", 
-    "Hash" -> "52bd21ee-f05c-4a8b-8e48-d973fe5d181e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "plucker[scene_, board_, highlighted_, additional_][xy_] := \
-With[{\n  group = FrontInstanceGroup[],\n  match = \
-SelectFirst[board//Values//Flatten, With[{reg = Disk[#[[1,1]], #[[1,2]] * 2] \
-},\n    RegionMember[reg, xy]\n  ]&]\n},\n  If[MissingQ[match], Return[]];\n  \
-With[{\n    notes = Join[additional, {match[[2]]}]//DeleteDuplicates\n  },\n  \
-\n    FrontSubmit[SoundNote[notes] // Sound];\n    FrontSubmit[{\n      \
-Opacity[0.7], highlighted[notes]\n    } // group, scene];\n  \n    \
-SetTimeout[Delete[group], 200];\n  ]  \n]", "Display" -> "codemirror", 
-    "Hash" -> "65509456-af6c-48a8-9188-b61e9330b740", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\n### Testing\nLet's play some guitar chords", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e8d258dc-7c8d-49df-b1ad-415bcac87432", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "### Testing\nLet's play some guitar chords", 
-    "Display" -> "markdown", "Hash" -> 
-     "c64f87c0-0f38-459d-a431-16ef35208a74", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> 
-     "SoundNote[{\"E4\", \"G5\", \"B4\", \"E5\", \"B5\"}] // GuitarView", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a8a5e4a7-f797-4848-970f-2ddf44dd3087", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"7692caba-70e0-4406-833f-3697781f9650\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5tZG\
-iUnJiXqmhukGuiamBiY6VoYG6fpGptZmptbGKZZmpkaAAB6yhTD\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9764846f-4513-4c34-ac6c-2cbfaceffa1f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\n## Explore chords\nLet's build chords in E Major. \
-Firstly we need to define scales", "Display" -> "codemirror", 
-    "Hash" -> "e00f4a78-d471-4127-a40f-3465f336625a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "## Explore chords\nLet's build chords in E Major. Firstly we \
-need to define scales", "Display" -> "markdown", 
-    "Hash" -> "d45b335d-5f1a-4080-9cf7-3ba7032ef555", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "scale[\"Major\"] = {2,2,1,2,2,2,1};\nscale[\"Dorian\"] = \
-{2,1,2,2,2,1,2};\nscale[\"Lydian\"] = \
-{2,2,2,1,2,2,1};\n\nmakeScale[root_Integer, scale_List] := With[{base = \
-Accumulate[Join[{root}, scale]]},\n  (base[[Mod[#-1, Length[base]-1] + 1]] + \
-12 Floor[# / Length[base]]) &\n]\n\nmakeScale[root_String, scale_List] := \
-makeScale[convertToSemitones[root], scale]", "Display" -> "codemirror", 
-    "Hash" -> "67697c9b-4d30-4bc9-b6a2-fd6df9c47b1f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\nStructures for building chords", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6b2c7637-e248-46b5-84b6-27c18a5e5d41", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "Structures for building chords", "Display" -> "markdown", 
-    "Hash" -> "6ee095e0-1573-47dc-9d30-44680aff6546", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "makeChord[root_, scalename_String, ext_Integer:3] := With[{s \
-= makeScale[root, scale[scalename]]},\n  chordObject[s, \
-ext]\n]\n\nNoteTranspose[SoundNote[l_List], i_Integer] := With[{c = \
-convertToSemitones[l]}, \n  SoundNote[Map[(# + i)&, \
-c]]\n]\n\nNoteMerge[s:(SoundNote[_List]..)] := \
-SoundNote[DeleteDuplicates[convertToSemitones[Join @@ \
-({s}[[All,1]])]]]\n\n\nmakeChord[root_, scalename_String, \
-ext_String];\nmakeChord[root_, scalename_String, ext_Integer, \
-mod_Rule];\nmakeChord[root_, scalename_String, ext_Integer, \
-mod:{__Rule}];\n\nchordObject[s_, ext_][offset_String] := chordObject[s, \
-ext][FromRomanNumeral[offset]-1]\n\nchordObject[s_, ext_][offset_Integer] := \
-SoundNote @ Table[  s[i + offset], {i, 1, 2 ext, 2}] ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b407f648-d170-498c-9c0f-d0afb1a9696d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> ".md\nUse GuitarView to show all chords", 
-    "Display" -> "codemirror", "Hash" -> 
-     "39868779-e40f-46f0-b40a-1fba45b44c42", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "Use GuitarView to show all chords", "Display" -> "markdown", 
-    "Hash" -> "1688e71b-d3c0-4817-b5ef-04f24decf89a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "With[{m = makeChord[\"E4\", \"Major\", 3]},\n  Table[{\n    \
-GuitarView[NoteMerge[m[r], NoteTranspose[m[r], 12]]], \n    Spacer[40], \
-Style[r, FontSize->20]\n  }, {r, {\"I\", \"II\", \"III\", \"IV\", \"V\", \
-\"VI\"}}] \n] // TableForm ", "Display" -> "codemirror", 
-    "Hash" -> "45b473b1-21cf-49ff-a44b-96db4f09a767", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "(*GB[*){{(*VB[*)(FrontEndRef[\"8b30a46a-009e-4ed9-b4a3-f87e95\
-74e93d\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkN\
-VgEKWyQZGySamCXqGhhYpuqapKZY6iaZJBrrplmYp1qampukWhqnAACEGhWy\"*)(*]VB*)(*|*),\
-(*|*)(*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq\
-/I1ADyALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[*)(\"I\")(*,*)(*\"1:eJxTTMoPSmNiYGAo\
-5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJ\
-DizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEnd\
-Ref[\"270ca4fa-9d5d-4130-8042-10b932c42081\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgES\
-Hvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5kbJCeapCXqWqaYpuiaGBob6FoYmBjpGhokW\
-RobJZsYGVgYAgB9cBTK\"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTM\
-oPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[\
-*)(\"II\")(*,*)(*\"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLh\
-cQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(\
-*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef[\"fdf77bdb-a9df-40c8-90f1-ef7bb0b234\
-5a\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEK\
-p6WkmZsnpSTpJlqmpOmaGCRb6FoapBnqpqaZJyUZJBkZm5gmAgCeiBaT\"*)(*]VB*)(*|*),(*|*\
-)(*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1A\
-DyALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[*)(\"III\")(*,*)(*\"1:eJxTTMoPSmNiYGAo5g\
-cSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDi\
-zKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRe\
-f[\"b7a43dde-dda7-4056-ba48-87d3914619b1\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHv\
-k5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5knmhinpKTqpqQkmuuaGJia6SYlmljoWpinGFs\
-ampgZWiYZAgCQPhWm\"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTMoP\
-SmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[*)\
-(\"IV\")(*,*)(*\"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQ\
-KJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(*]\
-BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef[\"64314d4e-1126-49a2-b5e9-83ef05ab00bb\
-\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5\
-kYG5qkmKTqGhoamemaWCYa6SaZplrqWhinphmYJiYZGCQlAQB17xVj\"*)(*]VB*)(*|*),(*|*)(\
-*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADy\
-ALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[*)(\"V\")(*,*)(*\"1:eJxTTMoPSmNiYGAo5gcSAU\
-X5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjV\
-TBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef[\"\
-f864ce3b-cbd3-4558-b425-6f2e55e75361\"])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KR\
-CeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKp1mYmSSnGifpJielGOuamJpa6CaZGJnqmqUZpZqappq\
-bGpsZAgCK4BV/\"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*\"1:eJxTTMoPSmNk\
-YGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU=\"*)(*]VB*)(*|*),(*|*)(*BB[*)(\"V\
-I\")(*,*)(*\"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4J\
-KizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8=\"*)(*]BB*)\
-}}(*]GB*)", "Display" -> "codemirror", 
-    "Hash" -> "73bc9d4e-6e70-4afa-8687-db5e2c65afb4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> 
-     ".md\nA common *pop* progression could be like $I-V-VI-IV-I-...$ repeat"\
-, "Display" -> "codemirror", "Hash" -> 
-     "67d52db9-c878-43fe-98c0-efeaa51c31e8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> 
-     "A common *pop* progression could be like $I-V-VI-IV-I-...$ repeat", 
-    "Display" -> "markdown", "Hash" -> 
-     "8ca1ae14-c027-4e45-b439-6632529e7fcb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "With[{m = makeChord[\"E4\", \"Major\", 3]},\n  Table[{\n    \
-NoteMerge[m[r], NoteTranspose[m[r], 12]],\n    NoteMerge[m[r], \
-NoteTranspose[m[r], 12]],\n    NoteMerge[m[r], NoteTranspose[m[r], 12]],\n    \
-NoteMerge[m[r], NoteTranspose[m[r], 12]]\n  }, {r, {\"I\", \"V\", \"VI\", \
-\"IV\", \"I\", \"V\", \"VI\", \"IV\", \"I\"}}] \n] // Flatten // Sound ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f6ba6561-5f01-4c7b-9b64-a4d00cb55714", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"467ab9f3-38b4-4357-940e-78b7d925e3b6\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5iZJ\
-yZZphnrGlskmeiaGJua61qaGKTqmlskmadYGpmmGieZAQB6mxUr\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f8f3fb8b-cb12-417c-abb5-00b798dfaf18", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "30683125-5f31-472e-855e-e78c187e6917"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Keys and Fingerboard
+A notebook demonstrating a custom `View` functions with a working toy-like piano and guitar fingerboard. This covers basic graphics manipulation, sound emission and working with dynamic graphics groups.
+
+<br/>
+
+## Helper function to work with notes and scales
+Define semintone converters 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Keys and Fingerboard
+A notebook demonstrating a custom `View` functions with a working toy-like piano and guitar fingerboard. This covers basic graphics manipulation, sound emission and working with dynamic graphics groups.
+
+<br />
+
+## Helper function to work with notes and scales
+Define semintone converters 
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+semitone["C"] = 0;
+semitone["C#"] = 1;
+semitone["D"] = 2;
+semitone["D#"] = 3;
+semitone["Eb"] = 3;
+semitone["E"] = 4;
+semitone["F"] = 5;
+semitone["F#"] = 6;
+semitone["Gb"] = 6;
+semitone["G"] = 7;
+semitone["Ab"] = 8;
+semitone["G#"] = 8;
+semitone["A"] = 9;
+semitone["Bb"] = 10;
+semitone["B"] = 11;
+
+convertToSemitones[s_String] := With[{c = StringCases[s, {a__~~b:DigitCharacter :> {a,ToExpression[b]}, a__ :> {a,4}}]//First},
+  semitone[c[[1]]] + (c[[2]] - 4) 12
+]
+convertToSemitones[s_] := s;
+convertToSemitones[l_List] := convertToSemitones /@ l
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Piano view
+A view-function to visualize and play `SoundNote` on a keyboard.
+
+Helper functions to generate keys
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Piano view
+A view-function to visualize and play `SoundNote` on a keyboard.
+
+Helper functions to generate keys
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+keyLevels = {0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0};
+
+generateKeys[keyCount_] := Module[
+  {index = 1, position = 1, keyWidth, keyOffset},
+  Table[
+    With[
+      {
+        cycleIndex = Mod[index - 1, 12] + 1,
+        level = keyLevels[[Mod[index - 1, 12] + 1]]
+      },
+      keyWidth = 0.5 - 0.2 level;
+      keyOffset = 0.5 level;
+      position += 1 - level;
+      index++;
+      Rectangle[
+        {position - keyWidth + keyOffset, keyOffset},
+        {position + keyWidth + keyOffset, 1}
+      ]
+    ],
+    {keyCount}
+  ]
+];
+
+annotateKeys[keys_] := MapIndexed[
+  Annotation[#, keyLevels[[Mod[#2[[1]] - 1, 12] + 1]], #2[[1]]] &,
+  keys
+];
+
+highlightNotes[skeys_, indexes_] := Map[Function[key,
+  If[MemberQ[indexes, key[[3]]], 
+    {(*VB[*)(RGBColor[1., 0.6862745098039216, 0.47843137254901963])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeGJAIcndyzs/JLwouTyxJzghJzS3ISSxJTWMGyXMgyRcxgMEH+6JvX0HgqX3R/HkgcM8eAIGmHxI="*)(*]VB*), key}
+  ,
+    key
+  ]
+], skeys]
+
+separateKeys[keys_] := Module[
+  {annotatedKeys = annotateKeys[keys]},
+  {
+    Cases[annotatedKeys, Annotation[_, 0, _]],
+    Cases[annotatedKeys, Annotation[_, 1, _]]
+  }
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+A main function to construct a __piano view__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+A main function to construct a __piano view__
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+PianoView[] := PianoView[SoundNote[{}]]
+PianoView[SoundNote[rawNotes_List], OptionsPattern[]] := Module[{
+  keys, separated, scene,
+  highlighted, names = {"C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"}, annotations,
+  notes = convertToSemitones @ rawNotes
+},
+  keys = generateKeys[OptionValue["Size"]];
+
+  separated = separateKeys[keys];
+
+  scene = FrontInstanceReference[];
+
+  highlighted = Mod[#, Length[keys]] + 1 &/@ notes;
+  annotations = Text[names[[Mod[#, 12]+1]], Mean @ (
+    List @@ keys[[Mod[#, Length[keys]] + 1]]
+  ) + {0.,-0.1}, {0,0}] &/@ notes;
+
+  notes = Switch[OptionValue["Mode"],
+    "Play",
+      notes,
+
+    "Show",
+      {},
+
+    _,
+      notes
+  ];
+
+  Graphics[{scene,
+    {White, EdgeForm[Gray], highlightNotes[separated[[1]], highlighted], Black//Lighter, highlightNotes[separated[[2]],highlighted]},
+    {Yellow, Opacity[0.3]}, {Black, annotations},
+  EventHandler[Null, {"click" -> clicker[scene, separated, keys, notes, names]}]
+  }, ImageSize->OptionValue[ImageSize], "Controls"->False]
+]
+
+Options[PianoView] = {ImageSize->{500,200}, "Size"->25, "Mode"->"Play"};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Define a handler for emitting sound and highlighting keys
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Define a handler for emitting sound and highlighting keys
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[clicker]
+clicker[scene_, separated_, keys_, additional_:{}, notes_][xy_] := With[{
+  whiteMatch = SelectFirst[separated[[1]], RegionMember[#[[1]], xy]  &],
+  blackMatch = SelectFirst[separated[[2]], RegionMember[#[[1]], xy]  &],
+  group = FrontInstanceGroup[]
+},
+
+  With[{
+    key = If[!MissingQ[blackMatch], blackMatch[[3]], whiteMatch[[3]]]
+  },
+  
+    FrontSubmit[SoundNote[Join[additional, {key-1}]//DeleteDuplicates] // Sound];
+    
+    FrontSubmit[{
+      Red, Text[notes[[Mod[# - 1, 12] + 1]], 
+      Mean[List @@ (keys[[#]])] - {0,0.2}, {0,0}] &/@ Join[(Mod[#, Length[keys]-1] &/@ additional)+1, {key}], 
+      Opacity[0.3], keys[[Join[((Mod[#, Length[keys]-1]) &/@ additional)+1, {key}]]]
+    } // group, scene];
+  
+    SetTimeout[Delete[group], 200];
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Testing
+Time to play some chords
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Testing
+Time to play some chords
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SoundNote[{"D4", "E5", 7}] // PianoView 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["159960d2-454d-45c9-a227-6b2958ecc9ce"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5paWpoZpBjpmpiapACJZEvdRCMjc12zJCNLU4vU5GTL5FQActkVVQ=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Guitar Fingerboard
+A view function to do the same, but on the fingerboard of a guitar with an arbitary tuning
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Guitar Fingerboard
+A view function to do the same, but on the fingerboard of a guitar with an arbitary tuning
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+GuitarView[SoundNote[rawNotes_List], OptionsPattern[]] := Module[{
+  tuning = OptionValue["Tuning"],
+  scene = FrontInstanceReference[],
+ names = {"C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"}, annotations,
+  notes = convertToSemitones @ rawNotes,
+  board, highlighted,
+  semitoneTuning = Reverse[convertToSemitones @ OptionValue["Tuning"]]
+},
+
+notes = Switch[OptionValue["Mode"],
+    "Play",
+      notes,
+
+    "Show",
+      {},
+
+    _,
+      notes
+  ];
+
+notes = With[{c = Mod[#, convertToSemitones @ (semitoneTuning[[-1]] + 12)]},
+  If[c < semitoneTuning[[1]],
+    c + 12
+  ,
+    c
+  ]
+] &/@ notes;
+
+board = GroupBy[Flatten[
+  Table[With[{note = semitoneTuning[[y]] + x},
+    Annotation[Disk[{x,y}, {0.15, 0.15 2.8 }], note, names[[Mod[note, 12]+1]]]
+  ], {x, 0, 12}, {y, Length[tuning]}]
+], #[[2]] &];
+
+highlighted[notes_] := {
+  ColorDataFunction[(*VB[*) 24, "Indexed", {1, 10, 1}, {RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], RGBColor[1., 0.7215686274509804, 0.2196078431372549], RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], RGBColor[0.09019607843137255, 0.33725490196078434, 0.49411764705882355], RGBColor[0.7058823529411765, 0.49411764705882355, 0.5450980392156862], RGBColor[0.5333333333333333, 0.23529411764705882, 0.3058823529411765], RGBColor[0.8941176470588236, 0.7098039215686275, 0.7490196078431373]}[[Mod[Floor[#1], 10, 1]]] &  (*,*)(*"1:eJylk82TmjAYxrdf04/pTI+d6al74OiMBti6vRFERdRVglg9NTUBWRKCAXb1b+s/16Bra6edqdO9PLz83jd5HiBcfhN+9Ozi4qL4oASKbVdI/tWSEmcxJajiHMudwtGTeuadkq4UWelkJExkWWF2aDxX0heM7IuxyGj09IiHSVH+7e79id+Dj1tSHib0Hr1UPTcjdPv542H4jRKHJKWQdf/gWQ/dRBETmBzAayUzf9ihK0EoqtcB45ezXzGKXtUFxeQmY7s9DWRF/52nXmYLJmTxyECt5vmBzn9dtc8EM1qW9BH5viumgbYGLAg1E6qrBq73oGbhb+x4CHwa7TEgxicSAaI3AKVGwzBAs4GBQRqGjnVwTdq03TbVmGZ2jpuqnewTD1WAlqZbdLANgpGYID5OFz1LLGMH9e9S0/Nt6gzgvdeWE0/vj5HeK5HTrIYzNtql6TiMHS83k0V+NV3m/q3sbeacVwnmMF5e2QvMcSD4Os5663KZsySds2RhxXYv2YagDnaaxOyEPx/1/8LO2ciFRj+14mqz2g7IanMXu4llumNv1fKG1QyiTcDzHZoP0MyqPLMjWb4OMnfDby1STFmXx180AOmyZUI8ZbY77UC2Lr0/o8KHqOccrOKtKlCOM/X9+JBGZfGi/qMxK+gPONoNHg=="*)(*]VB*)] /@ Range[notes // Length],
+  Map[Function[place, 
+    If[place[[1,1,1]] > 0.5,
+      {place, White, Text[place[[3]] , place[[1,1]]- {0,0.16}, {0,0}]}
+    ,
+      place
+    ]
+  ], board[#]] &/@ notes
+}//Transpose;
+
+Graphics[{
+  scene, EventHandler[Null, {"click"->plucker[scene, board, highlighted, notes]}],
+  Table[Line[{{0, string}, {12, string}}], {string, Length[tuning]}],
+  Table[Line[{{i - 0.5, 1 - 0.2 }, {i - 0.5, Length[tuning] + 0.2}}], {i, 12}],
+  Table[Text[tuning[[Length[tuning] + 1 - string]], {-0.5, string - 0.2}, {-1,0}], {string, Length[tuning]}],
+  {
+    AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, Length[tuning]}}], 
+    Gray, Table[Disk[{0.5 + 2.5 + k, 0.3}, {0.15, 0.15 2.8 }/2], {k, 0, 6, 2}],
+    Disk[{0.5 + 2.5 + 8.9, 0.3}, {0.15, 0.15 2.8 }/2], Disk[{0.5 + 2.5 + 9.1, 0.3}, {0.15, 0.15 2.8 }/2]
+  },
+  
+  highlighted[notes]
+  
+}, ImageSize->(1.2 {500,100}), "Controls"->False, ImagePadding->None, PlotRange->{{0 - 0.5, 12 + 0.5}, {0, Length[tuning] + .5}}]
+]
+
+Options[GuitarView] = {"Tuning"->({"E4", "A4", "D5", "G5", "B5", "E6"}//Reverse), "Mode"->"Play"};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+A handler function to emit sound
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+A handler function to emit sound
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+plucker[scene_, board_, highlighted_, additional_][xy_] := With[{
+  group = FrontInstanceGroup[],
+  match = SelectFirst[board//Values//Flatten, With[{reg = Disk[#[[1,1]], #[[1,2]] * 2] },
+    RegionMember[reg, xy]
+  ]&]
+},
+  If[MissingQ[match], Return[]];
+  With[{
+    notes = Join[additional, {match[[2]]}]//DeleteDuplicates
+  },
+  
+    FrontSubmit[SoundNote[notes] // Sound];
+    FrontSubmit[{
+      Opacity[0.7], highlighted[notes]
+    } // group, scene];
+  
+    SetTimeout[Delete[group], 200];
+  ]  
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Testing
+Let's play some guitar chords
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Testing
+Let's play some guitar chords
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SoundNote[{"E4", "G5", "B4", "E5", "B5"}] // GuitarView
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["7692caba-70e0-4406-833f-3697781f9650"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5tZGiUnJiXqmhukGuiamBiY6VoYG6fpGptZmptbGKZZmpkaAAB6yhTD"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Explore chords
+Let's build chords in E Major. Firstly we need to define scales
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Explore chords
+Let's build chords in E Major. Firstly we need to define scales
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+scale["Major"] = {2,2,1,2,2,2,1};
+scale["Dorian"] = {2,1,2,2,2,1,2};
+scale["Lydian"] = {2,2,2,1,2,2,1};
+
+makeScale[root_Integer, scale_List] := With[{base = Accumulate[Join[{root}, scale]]},
+  (base[[Mod[#-1, Length[base]-1] + 1]] + 12 Floor[# / Length[base]]) &
+]
+
+makeScale[root_String, scale_List] := makeScale[convertToSemitones[root], scale]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Structures for building chords
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Structures for building chords
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+makeChord[root_, scalename_String, ext_Integer:3] := With[{s = makeScale[root, scale[scalename]]},
+  chordObject[s, ext]
+]
+
+NoteTranspose[SoundNote[l_List], i_Integer] := With[{c = convertToSemitones[l]}, 
+  SoundNote[Map[(# + i)&, c]]
+]
+
+NoteMerge[s:(SoundNote[_List]..)] := SoundNote[DeleteDuplicates[convertToSemitones[Join @@ ({s}[[All,1]])]]]
+
+
+makeChord[root_, scalename_String, ext_String];
+makeChord[root_, scalename_String, ext_Integer, mod_Rule];
+makeChord[root_, scalename_String, ext_Integer, mod:{__Rule}];
+
+chordObject[s_, ext_][offset_String] := chordObject[s, ext][FromRomanNumeral[offset]-1]
+
+chordObject[s_, ext_][offset_Integer] := SoundNote @ Table[  s[i + offset], {i, 1, 2 ext, 2}] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use GuitarView to show all chords
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use GuitarView to show all chords
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{m = makeChord["E4", "Major", 3]},
+  Table[{
+    GuitarView[NoteMerge[m[r], NoteTranspose[m[r], 12]]], 
+    Spacer[40], Style[r, FontSize->20]
+  }, {r, {"I", "II", "III", "IV", "V", "VI"}}] 
+] // TableForm 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{(*VB[*)(FrontEndRef["8b30a46a-009e-4ed9-b4a3-f87e9574e93d"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKWyQZGySamCXqGhhYpuqapKZY6iaZJBrrplmYp1qampukWhqnAACEGhWy"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("I")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef["270ca4fa-9d5d-4130-8042-10b932c42081"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKG5kbJCeapCXqWqaYpuiaGBob6FoYmBjpGhokWRobJZsYGVgYAgB9cBTK"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("II")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef["fdf77bdb-a9df-40c8-90f1-ef7bb0b2345a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKp6WkmZsnpSTpJlqmpOmaGCRb6FoapBnqpqaZJyUZJBkZm5gmAgCeiBaT"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("III")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef["b7a43dde-dda7-4056-ba48-87d3914619b1"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ5knmhinpKTqpqQkmuuaGJia6SYlmljoWpinGFsampgZWiYZAgCQPhWm"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("IV")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef["64314d4e-1126-49a2-b5e9-83ef05ab00bb"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5kYG5qkmKTqGhoamemaWCYa6SaZplrqWhinphmYJiYZGCQlAQB17xVj"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("V")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}(*||*),(*||*){(*VB[*)(FrontEndRef["f864ce3b-cbd3-4558-b425-6f2e55e75361"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKp1mYmSSnGifpJielGOuamJpa6CaZGJnqmqUZpZqappqbGpsZAgCK4BV/"*)(*]VB*)(*|*),(*|*)(*VB[*)(Spacer[40])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeJ5AILkhMTi1yyq/I1ADyALJsCKU="*)(*]VB*)(*|*),(*|*)(*BB[*)("VI")(*,*)(*"1:eJxTTMoPSmNiYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCRYg4ZGfkwLhcQKJ4JKizLx0p/wKiE6QgqDSnNRiDiDDLT+vJDizKjVTBMhBlQ9mg+sFi4UUlaYCAHYQHT8="*)(*]BB*)}}(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+A common *pop* progression could be like $I-V-VI-IV-I-...$ repeat
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+A common *pop* progression could be like $I-V-VI-IV-I-...$ repeat
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{m = makeChord["E4", "Major", 3]},
+  Table[{
+    NoteMerge[m[r], NoteTranspose[m[r], 12]],
+    NoteMerge[m[r], NoteTranspose[m[r], 12]],
+    NoteMerge[m[r], NoteTranspose[m[r], 12]],
+    NoteMerge[m[r], NoteTranspose[m[r], 12]]
+  }, {r, {"I", "V", "VI", "IV", "I", "V", "VI", "IV", "I"}}] 
+] // Flatten // Sound 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["467ab9f3-38b4-4357-940e-78b7d925e3b6"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKm5iZJyZZphnrGlskmeiaGJua61qaGKTqmlskmadYGpmmGieZAQB6mxUr"*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 159960d2-454d-45c9-a227-6b2958ecc9ce
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[781764113315543900], {GrayLevel[1], EdgeForm[GrayLevel[0.5]], {Annotation[Rectangle[{1.5, 0}, {2.5, 1}], 0, 1], {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{2.5, 0}, {3.5, 1}], 0, 3]}, Annotation[Rectangle[{3.5, 0}, {4.5, 1}], 0, 5], Annotation[Rectangle[{4.5, 0}, {5.5, 1}], 0, 6], {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{5.5, 0}, {6.5, 1}], 0, 8]}, Annotation[Rectangle[{6.5, 0}, {7.5, 1}], 0, 10], Annotation[Rectangle[{7.5, 0}, {8.5, 1}], 0, 12], Annotation[Rectangle[{8.5, 0}, {9.5, 1}], 0, 13], Annotation[Rectangle[{9.5, 0}, {10.5, 1}], 0, 15], {RGBColor[1, 0.6862745098039216, 0.47843137254901963], Annotation[Rectangle[{10.5, 0}, {11.5, 1}], 0, 17]}, Annotation[Rectangle[{11.5, 0}, {12.5, 1}], 0, 18], Annotation[Rectangle[{12.5, 0}, {13.5, 1}], 0, 20], Annotation[Rectangle[{13.5, 0}, {14.5, 1}], 0, 22], Annotation[Rectangle[{14.5, 0}, {15.5, 1}], 0, 24], Annotation[Rectangle[{15.5, 0}, {16.5, 1}], 0, 25]}, RGBColor[0.3333333333333333, 0.3333333333333333, 0.3333333333333333], {Annotation[Rectangle[{2.2, 0.5}, {2.8, 1}], 1, 2], Annotation[Rectangle[{3.2, 0.5}, {3.8, 1}], 1, 4], Annotation[Rectangle[{5.2, 0.5}, {5.8, 1}], 1, 7], Annotation[Rectangle[{6.2, 0.5}, {6.8, 1}], 1, 9], Annotation[Rectangle[{7.2, 0.5}, {7.8, 1}], 1, 11], Annotation[Rectangle[{9.2, 0.5}, {9.8, 1}], 1, 14], Annotation[Rectangle[{10.2, 0.5}, {10.8, 1}], 1, 16], Annotation[Rectangle[{12.2, 0.5}, {12.8, 1}], 1, 19], Annotation[Rectangle[{13.2, 0.5}, {13.8, 1}], 1, 21], Annotation[Rectangle[{14.2, 0.5}, {14.8, 1}], 1, 23]}}, {RGBColor[1, 1, 0], Opacity[0.3]}, {GrayLevel[0], {Text["D", {3, 0.4}, {0, 0}], Text["E", {11, 0.4}, {0, 0}], Text["G", {6, 0.4}, {0, 0}]}}, EventListener[Graphics`Canvas[], {"click" -> "5a9bf959-4130-4bab-8ece-e0ffa2087f3a"}]}, ImageSize -> {500, 200}, "Controls" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 270ca4fa-9d5d-4130-8042-10b932c42081
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[4019880078216607000], EventListener[Graphics`Canvas[], {"click" -> "ef6a8e03-ce45-4268-a6df-6962f84c1678"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {{Annotation[Disk[{2, 1}, {0.15, 0.42}], 6, "F#"], GrayLevel[1], Text["F#", {2, 0.84}, {0, 0}]}}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {Annotation[Disk[{0, 2}, {0.15, 0.42}], 9, "A"], {Annotation[Disk[{5, 1}, {0.15, 0.42}], 9, "A"], GrayLevel[1], Text["A", {5, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {4, 1.84}, {0, 0}]}, {Annotation[Disk[{9, 1}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {9, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{4, 3}, {0.15, 0.42}], 18, "F#"], GrayLevel[1], Text["F#", {4, 2.84}, {0, 0}]}, {Annotation[Disk[{9, 2}, {0.15, 0.42}], 18, "F#"], GrayLevel[1], Text["F#", {9, 1.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {{Annotation[Disk[{2, 4}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {2, 3.84}, {0, 0}]}, {Annotation[Disk[{7, 3}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {7, 2.84}, {0, 0}]}, {Annotation[Disk[{12, 2}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {12, 1.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {2, 4.84}, {0, 0}]}, {Annotation[Disk[{6, 4}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {11, 2.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 467ab9f3-38b4-4357-940e-78b7d925e3b6
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Sound[{SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{11, 15, 18, 23, 27, 30}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{13, 16, 20, 25, 28, 32}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{9, 13, 16, 21, 25, 28}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}], SoundNote[{4, 8, 11, 16, 20, 23}]}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 64314d4e-1126-49a2-b5e9-83ef05ab00bb
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[2942884746836427000], EventListener[Graphics`Canvas[], {"click" -> "ef8d67e8-b292-4084-a320-6209abf8286a"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, {0, 0}]}}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {{Annotation[Disk[{1, 3}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {1, 2.84}, {0, 0}]}, {Annotation[Disk[{6, 2}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {6, 1.84}, {0, 0}]}, {Annotation[Disk[{11, 1}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {11, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{4, 3}, {0.15, 0.42}], 18, "F#"], GrayLevel[1], Text["F#", {4, 2.84}, {0, 0}]}, {Annotation[Disk[{9, 2}, {0.15, 0.42}], 18, "F#"], GrayLevel[1], Text["F#", {9, 1.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {9, 2.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {{Annotation[Disk[{4, 5}, {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", {4, 4.84}, {0, 0}]}, {Annotation[Disk[{8, 4}, {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", {8, 3.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {{Annotation[Disk[{2, 6}, {0.15, 0.42}], 30, "F#"], GrayLevel[1], Text["F#", {2, 5.84}, {0, 0}]}, {Annotation[Disk[{7, 5}, {0.15, 0.42}], 30, "F#"], GrayLevel[1], Text["F#", {7, 4.84}, {0, 0}]}, {Annotation[Disk[{11, 4}, {0.15, 0.42}], 30, "F#"], GrayLevel[1], Text["F#", {11, 3.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 7692caba-70e0-4406-833f-3697781f9650
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[2183720347472832800], EventListener[Graphics`Canvas[], {"click" -> "01170490-10e9-4502-962a-9717eeac7402"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 4, "E"]}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {Annotation[Disk[{0, 4}, {0.15, 0.42}], 19, "G"], {Annotation[Disk[{5, 3}, {0.15, 0.42}], 19, "G"], GrayLevel[1], Text["G", {5, 2.84}, {0, 0}]}, {Annotation[Disk[{10, 2}, {0.15, 0.42}], 19, "G"], GrayLevel[1], Text["G", {10, 1.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {9, 2.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: 8b30a46a-009e-4ed9-b4a3-f87e9574e93d
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[125522456893570510], EventListener[Graphics`Canvas[], {"click" -> "2c5ef89a-d96f-4309-9ac0-232da994c6ba"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {Annotation[Disk[{0, 1}, {0.15, 0.42}], 4, "E"]}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {{Annotation[Disk[{4, 1}, {0.15, 0.42}], 8, "Ab"], GrayLevel[1], Text["Ab", {4, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {1, 3.84}, {0, 0}]}, {Annotation[Disk[{6, 3}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {11, 1.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {9, 2.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: b7a43dde-dda7-4056-ba48-87d3914619b1
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[3281152179681790000], EventListener[Graphics`Canvas[], {"click" -> "d9b3ef6b-0bae-4738-9679-871b1f724bf8"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {Annotation[Disk[{0, 2}, {0.15, 0.42}], 9, "A"], {Annotation[Disk[{5, 1}, {0.15, 0.42}], 9, "A"], GrayLevel[1], Text["A", {5, 0.84}, {0, 0}]}}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {4, 1.84}, {0, 0}]}, {Annotation[Disk[{9, 1}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {9, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{2, 4}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {2, 3.84}, {0, 0}]}, {Annotation[Disk[{7, 3}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {7, 2.84}, {0, 0}]}, {Annotation[Disk[{12, 2}, {0.15, 0.42}], 21, "A"], GrayLevel[1], Text["A", {12, 1.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {2, 4.84}, {0, 0}]}, {Annotation[Disk[{6, 4}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {11, 2.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {Annotation[Disk[{0, 6}, {0.15, 0.42}], 28, "E"], {Annotation[Disk[{5, 5}, {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", {5, 4.84}, {0, 0}]}, {Annotation[Disk[{9, 4}, {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", {9, 3.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: f864ce3b-cbd3-4558-b425-6f2e55e75361
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[9090639561779979000], EventListener[Graphics`Canvas[], {"click" -> "6558b5a4-8cd6-4d82-8f97-8733c21510d7"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {{Annotation[Disk[{4, 2}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {4, 1.84}, {0, 0}]}, {Annotation[Disk[{9, 1}, {0.15, 0.42}], 13, "C#"], GrayLevel[1], Text["C#", {9, 0.84}, {0, 0}]}}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {{Annotation[Disk[{2, 3}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {2, 2.84}, {0, 0}]}, {Annotation[Disk[{7, 2}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {7, 1.84}, {0, 0}]}, {Annotation[Disk[{12, 1}, {0.15, 0.42}], 16, "E"], GrayLevel[1], Text["E", {12, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {1, 3.84}, {0, 0}]}, {Annotation[Disk[{6, 3}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {11, 1.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{2, 5}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {2, 4.84}, {0, 0}]}, {Annotation[Disk[{6, 4}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {6, 3.84}, {0, 0}]}, {Annotation[Disk[{11, 3}, {0.15, 0.42}], 25, "C#"], GrayLevel[1], Text["C#", {11, 2.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {Annotation[Disk[{0, 6}, {0.15, 0.42}], 28, "E"], {Annotation[Disk[{5, 5}, {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", {5, 4.84}, {0, 0}]}, {Annotation[Disk[{9, 4}, {0.15, 0.42}], 28, "E"], GrayLevel[1], Text["E", {9, 3.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {{Annotation[Disk[{4, 6}, {0.15, 0.42}], 32, "Ab"], GrayLevel[1], Text["Ab", {4, 5.84}, {0, 0}]}, {Annotation[Disk[{9, 5}, {0.15, 0.42}], 32, "Ab"], GrayLevel[1], Text["Ab", {9, 4.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-------------------------------------------------------------------------%
+Key: fdf77bdb-a9df-40c8-90f1-ef7bb0b2345a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{FrontInstanceReference[133682440007851970], EventListener[Graphics`Canvas[], {"click" -> "d893347b-f2ac-4184-8c42-cc0af6e89ee8"}], {Line[{{0, 1}, {12, 1}}], Line[{{0, 2}, {12, 2}}], Line[{{0, 3}, {12, 3}}], Line[{{0, 4}, {12, 4}}], Line[{{0, 5}, {12, 5}}], Line[{{0, 6}, {12, 6}}]}, {Line[{{0.5, 0.8}, {0.5, 6.2}}], Line[{{1.5, 0.8}, {1.5, 6.2}}], Line[{{2.5, 0.8}, {2.5, 6.2}}], Line[{{3.5, 0.8}, {3.5, 6.2}}], Line[{{4.5, 0.8}, {4.5, 6.2}}], Line[{{5.5, 0.8}, {5.5, 6.2}}], Line[{{6.5, 0.8}, {6.5, 6.2}}], Line[{{7.5, 0.8}, {7.5, 6.2}}], Line[{{8.5, 0.8}, {8.5, 6.2}}], Line[{{9.5, 0.8}, {9.5, 6.2}}], Line[{{10.5, 0.8}, {10.5, 6.2}}], Line[{{11.5, 0.8}, {11.5, 6.2}}]}, {Text["E4", {-0.5, 0.8}, {-1, 0}], Text["A4", {-0.5, 1.8}, {-1, 0}], Text["D5", {-0.5, 2.8}, {-1, 0}], Text["G5", {-0.5, 3.8}, {-1, 0}], Text["B5", {-0.5, 4.8}, {-1, 0}], Text["E6", {-0.5, 5.8}, {-1, 0}]}, {AbsoluteThickness[4], Line[{{0.5, 1}, {0.5, 6}}], GrayLevel[0.5], {Disk[{3, 0.3}, {0.075, 0.21}], Disk[{5, 0.3}, {0.075, 0.21}], Disk[{7, 0.3}, {0.075, 0.21}], Disk[{9, 0.3}, {0.075, 0.21}]}, Disk[{11.9, 0.3}, {0.075, 0.21}], Disk[{12.1, 0.3}, {0.075, 0.21}]}, {{RGBColor[0.9215686274509803, 0.49411764705882355, 0.43137254901960786], {{Annotation[Disk[{4, 1}, {0.15, 0.42}], 8, "Ab"], GrayLevel[1], Text["Ab", {4, 0.84}, {0, 0}]}}}, {RGBColor[1, 0.7215686274509804, 0.2196078431372549], {{Annotation[Disk[{2, 2}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {2, 1.84}, {0, 0}]}, {Annotation[Disk[{7, 1}, {0.15, 0.42}], 11, "B"], GrayLevel[1], Text["B", {7, 0.84}, {0, 0}]}}}, {RGBColor[0.9490196078431372, 0.8627450980392157, 0.43529411764705883], {{Annotation[Disk[{1, 3}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {1, 2.84}, {0, 0}]}, {Annotation[Disk[{6, 2}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {6, 1.84}, {0, 0}]}, {Annotation[Disk[{11, 1}, {0.15, 0.42}], 15, "Eb"], GrayLevel[1], Text["Eb", {11, 0.84}, {0, 0}]}}}, {RGBColor[0.6705882352941176, 0.8784313725490196, 0.9372549019607843], {{Annotation[Disk[{1, 4}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {1, 3.84}, {0, 0}]}, {Annotation[Disk[{6, 3}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {6, 2.84}, {0, 0}]}, {Annotation[Disk[{11, 2}, {0.15, 0.42}], 20, "Ab"], GrayLevel[1], Text["Ab", {11, 1.84}, {0, 0}]}}}, {RGBColor[0.3176470588235294, 0.6549019607843137, 0.7529411764705882], {Annotation[Disk[{0, 5}, {0.15, 0.42}], 23, "B"], {Annotation[Disk[{4, 4}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {4, 3.84}, {0, 0}]}, {Annotation[Disk[{9, 3}, {0.15, 0.42}], 23, "B"], GrayLevel[1], Text["B", {9, 2.84}, {0, 0}]}}}, {RGBColor[0.12941176470588237, 0.5176470588235295, 0.6313725490196078], {{Annotation[Disk[{4, 5}, {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", {4, 4.84}, {0, 0}]}, {Annotation[Disk[{8, 4}, {0.15, 0.42}], 27, "Eb"], GrayLevel[1], Text["Eb", {8, 3.84}, {0, 0}]}}}}}, ImageSize -> {600, 120}, "Controls" -> False, ImagePadding -> None, PlotRange -> {{-0.5, 12.5}, {0, 6.5}}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

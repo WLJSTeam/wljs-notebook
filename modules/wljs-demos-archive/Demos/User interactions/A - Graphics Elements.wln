@@ -1,294 +1,456 @@
-<|"Notebook" -> <|"Controller" -> "0d8ada7f-ea27-4963-b3cf-d499d6c93725", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1299], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "af9546c0-d802-4f1b-993c-f9ebb9d15802", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/User interactions/A - Graphics Elements.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Event listeners", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1327]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "2D Graphics", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1327]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Graphics as an Event Generator", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1327]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Primitives", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1358]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Image", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1391]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "3D graphics", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1401]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Primitives", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1401]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Event listeners\n## 2D Graphics\nSome \
-primitives, as well as the entire canvas, support the EventHandler method. \
-Let's start with the Graphics expression itself.\n\n<br/>\n\n### Graphics as \
-an Event Generator\nYou can attach event handlers to a Graphics expression, \
-which represents the SVG container of your 2D graph:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9efa17f6-435e-4824-abb0-abf73726bde4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "# Event listeners\n## 2D Graphics\nSome primitives, as well \
-as the entire canvas, support the EventHandler method. Let's start with the \
-Graphics expression itself.\n\n<br />\n\n### Graphics as an Event \
-Generator\nYou can attach event handlers to a Graphics expression, which \
-represents the SVG container of your 2D graph:", "Display" -> "markdown", 
-    "Hash" -> "9e1343f0-a0ec-46ff-8861-3a82de64613e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\nMousemove event", "Display" -> "codemirror", 
-    "Hash" -> "bffa92d8-64ae-4881-ae64-67c37ec892e6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "Mousemove event", "Display" -> "markdown", 
-    "Hash" -> "90f1504b-134f-42e2-991b-23e24477fabd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "pt = {};\nEventHandler[\n  Graphics[{\n    PointSize[0.05], \
-Blue, Opacity[0.5],\n    Point[pt // Offload]\n  }, PlotRange -> {{-1, 1}, \
-{-1, 1}}],\n  {\"mousemove\" -> Function[xy, pt = Append[pt, xy]]}\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "00d89b03-d854-491b-891e-ba24b1dd938c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\n\nThe following patterns are available:\n\n<div \
-class=\"text-sm mt-2\">\n\n- `\"keydown\"`: Captures keyboard input after the \
-canvas is clicked\n- `\"capturekeydown\"`: Same as above but also prevents \
-page scrolling\n- `\"mousemove\"`: Captures mouse movement\n- `\"mouseup\"`: \
-Captures mouse up\n- `\"mousedown\"`: Captures mouse down\n- `\"click\"`: \
-Captures clicks (without the Alt key)\n- `\"altclick\"`: Captures clicks with \
-the Alt key held\n- `\"onload\"`: Fired once the canvas has loaded\n- and \
-etc., please, check the documentation\n\n</div>", "Display" -> "codemirror", 
-    "Hash" -> "175651d1-343e-47dc-87ea-490f6acc7abd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "\nThe following patterns are available:\n\n<div \
-class=\"text-sm mt-2\">\n\n- `\"keydown\"`: Captures keyboard input after the \
-canvas is clicked\n- `\"capturekeydown\"`: Same as above but also prevents \
-page scrolling\n- `\"mousemove\"`: Captures mouse movement\n- `\"mouseup\"`: \
-Captures mouse up\n- `\"mousedown\"`: Captures mouse down\n- `\"click\"`: \
-Captures clicks (without the Alt key)\n- `\"altclick\"`: Captures clicks with \
-the Alt key held\n- `\"onload\"`: Fired once the canvas has loaded\n- and \
-etc., please, check the documentation\n\n</div>", "Display" -> "markdown", 
-    "Hash" -> "e9e09ed4-53ba-4a0b-ba96-0bdf693220ad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\nYou can do the same with Plot and many others, since \
-they produce a Graphics symbol:", "Display" -> "codemirror", 
-    "Hash" -> "72ea95a4-89f5-4a63-b22b-a5bb32c6ac45", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "You can do the same with Plot and many others, since they \
-produce a Graphics symbol:", "Display" -> "markdown", 
-    "Hash" -> "c6bae3b5-068b-4469-be00-447b4e2eff94", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "pt = {};\nEventHandler[Plot[x, {x,-1,1}, Epilog->{\n  \
-PointSize[0.05], Blue, Opacity[0.5],\n  Point[pt // Offload]\n}], \
-{\"mousemove\" -> Function[xy, pt = Append[pt, xy]]}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "410602f4-8fbd-4227-b429-62577a9234ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\n### Primitives\nCertain graphic primitives also support \
-EventHandler. Some supported primitives include: `Point`, `Disk`, \
-`Rectangle`", "Display" -> "codemirror", 
-    "Hash" -> "e3e102e4-c0ea-4a83-8bb2-3a25e7b01acf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "### Primitives\nCertain graphic primitives also support \
-EventHandler. Some supported primitives include: `Point`, `Disk`, \
-`Rectangle`", "Display" -> "markdown", 
-    "Hash" -> "d8cf1bbd-0398-421c-8c2f-36b291303956", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\nThey support these patterns:\n\n<div class=\"text-sm \
-mt-2\">\n\n- `\"drag\"`: Makes the primitive draggable and returns \
-coordinates\n- `\"dragsignal\"`: Captures dragging without moving the \
-primitive itself; returns coordinates\n- `\"dragall\"`: Like `\"drag\"`, but \
-also fires events at drag start and end\n- `\"click\"`: Captures clicks \
-without the Alt key\n- `\"altclick\"`: Captures clicks with the Alt key\n- \
-`\"mousedown\"`: Fires on mouse press\n- `\"mouseup\"`: Fires on mouse \
-release\n- `\"mousemove\"`: Captures movement\n- `\"mouseover\"`: Captures \
-entry into element area\n- `\"zoom\"`: Captures mouse wheel input\n\n  \
-\n</div>\n\nFor example, combining \"zoom\" and \"drag\", you can create a \
-widget for manually fitting Gaussian curves:", "Display" -> "codemirror", 
-    "Hash" -> "2de6013e-e178-4ab0-9665-4306b5f59c9c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "They support these patterns:\n\n<div class=\"text-sm \
-mt-2\">\n\n- `\"drag\"`: Makes the primitive draggable and returns \
-coordinates\n- `\"dragsignal\"`: Captures dragging without moving the \
-primitive itself; returns coordinates\n- `\"dragall\"`: Like `\"drag\"`, but \
-also fires events at drag start and end\n- `\"click\"`: Captures clicks \
-without the Alt key\n- `\"altclick\"`: Captures clicks with the Alt key\n- \
-`\"mousedown\"`: Fires on mouse press\n- `\"mouseup\"`: Fires on mouse \
-release\n- `\"mousemove\"`: Captures movement\n- `\"mouseover\"`: Captures \
-entry into element area\n- `\"zoom\"`: Captures mouse wheel input\n\n  \
-\n</div>\n\nFor example, combining \"zoom\" and \"drag\", you can create a \
-widget for manually fitting Gaussian curves:", "Display" -> "markdown", 
-    "Hash" -> "170d0d8f-17f9-45c9-bd7f-94533d4d3679", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "getGauss[x0_, A_, width_] := Quiet[Table[{x, A \
-Exp[-(*FB[*)(((*SpB[*)Power[(x-x0)(*|*),(*|*)2](*]SpB*))(*,*)/(*,*)(2 \
-((*SpB[*)Power[width(*|*),(*|*)2](*]SpB*))))(*]FB*)]}, {x, -1, 1, \
-0.01`}]];\n\ngetGauss[{x0_, A_}, width_] := getGauss[x0, A, \
-width];\n\ngetGauss[{x0_, A_, width_}] := getGauss[x0, A, width];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "97f02fc2-4ba5-4433-9ae7-b81b645b11f4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "Module[{line, initial},\n  initial = {-0.2, 0.8, 0.1};\n  \
-line = getGauss[initial];\n\n  Graphics[{\n    Red, PointSize[0.1],\n    \
-EventHandler[\n      Point[initial[[1 ;; 2]]],\n      {\n        \"drag\" -> \
-Function[c, initial[[1 ;; 2]] = c; line = getGauss[initial]],\n        \
-\"zoom\" -> Function[k, initial[[3]] = k/10.0; line = getGauss[initial]]\n    \
-  }\n    ],\n    Cyan, Line[line // Offload]\n  }, PlotRange -> {{-1, 1}, {0, \
-1}}, Axes -> {True, False}]\n]", "Display" -> "codemirror", 
-    "Hash" -> "f97a876d-9255-4e06-9675-58387c08e643", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> 
-     ".md\n*Try moving your mouse wheel on the red dot and then drag it.*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "249fd247-3f0e-428f-8cde-8bd1d597b50a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> 
-     "*Try moving your mouse wheel on the red dot and then drag it.*", 
-    "Display" -> "markdown", "Hash" -> 
-     "3515562b-f286-4c45-837f-a47ea3c1cce7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\nYou can also create a basic mouse follower using a white \
-rectangle with a \"mousemove\" pattern:", "Display" -> "codemirror", 
-    "Hash" -> "5baceaf4-4032-464a-b8f1-6956d7d361ac", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "You can also create a basic mouse follower using a white \
-rectangle with a \"mousemove\" pattern:", "Display" -> "markdown", 
-    "Hash" -> "b7fb325e-7310-4068-ae4c-7e3b2dc25e2c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "spt = {0, 0};\nGraphics[{\n  White,\n  EventHandler[\n    \
-Rectangle[{-2, -2}, {2, 2}],\n    {\"mousemove\" -> Function[xy, spt = xy]}\n \
- ],\n  PointSize[0.05], Cyan,\n  Point[spt // Offload]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "37068980-f85e-48f0-bc37-94d765dc51bb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\n## Image\nYou can attach event handlers to an Image \
-expression, similar to Graphics.\n\nThe following event patterns are \
-supported:\n\n<div class=\"text-sm mt-2\">\n\n- `\"mousemove\"`: Captures \
-mouse movement\n- `\"mouseup\"`: Captures mouse up\n- `\"mousedown\"`: \
-Captures mouse down\n- `\"click\"`: Captures clicks (without the Alt key)\n- \
-`\"altclick\"`: Captures clicks with the Alt key held\n\n  \n</div>\n\nFor \
-example:", "Display" -> "codemirror", 
-    "Hash" -> "759c919b-c3b6-4e1c-9cc4-805de0160ecd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "## Image\nYou can attach event handlers to an Image \
-expression, similar to Graphics.\n\nThe following event patterns are \
-supported:\n\n<div class=\"text-sm mt-2\">\n\n- `\"mousemove\"`: Captures \
-mouse movement\n- `\"mouseup\"`: Captures mouse up\n- `\"mousedown\"`: \
-Captures mouse down\n- `\"click\"`: Captures clicks (without the Alt key)\n- \
-`\"altclick\"`: Captures clicks with the Alt key held\n\n  \n</div>\n\nFor \
-example:", "Display" -> "markdown", 
-    "Hash" -> "e6fab2b7-fe63-48e7-b63b-110b35b31833", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "lena = ExampleData[{\"TestImage\", \"Lena\"}];\npoint = \
-{0,0};\nmove = Function[xy, point = xy];\n\nEventHandler[Image[lena], \
-{\"mousemove\"->move}]\nTextView[point // Offload]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7666c910-8673-4b26-a829-11274225b64b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\n## 3D graphics\nCurrently, event listeners in Graphics3D \
-are limited.\n\n### Primitives\n\nThe following 3D primitives support \
-EventHandler methods:\n\n- Sphere\n  \nThe following patterns are \
-supported:\n\n<div class=\"text-sm mt-2\">\n\n- `\"drag\"`: Makes the object \
-draggable, adds guide lines, and sends the coordinates\n  \n</div>\n\nThis is \
-especially useful for dynamic lighting. For example:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "724cab6b-b50d-4ced-92ff-442a4e953da0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "## 3D graphics\nCurrently, event listeners in Graphics3D are \
-limited.\n\n### Primitives\n\nThe following 3D primitives support \
-EventHandler methods:\n\n- Sphere\n  \nThe following patterns are \
-supported:\n\n<div class=\"text-sm mt-2\">\n\n- `\"drag\"`: Makes the object \
-draggable, adds guide lines, and sends the coordinates\n  \n</div>\n\nThis is \
-especially useful for dynamic lighting. For example:", 
-    "Display" -> "markdown", "Hash" -> 
-     "08e65dad-8248-443f-b5ce-e80fc196a4c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "point = {1, 1, 1};\n\nGraphics3D[{\n  \
-Directive[\"Shadows\"->True],\n  Polygon[{{-5, 5, -1}, {5, 5, -1}, {5, -5, \
--1}, {-5, -5, -1}}],\n  White,\n  Cuboid[{-1, -1, -1}, {1, 1, 1}],\n  \
-Directive[\"Shadows\"->False],\n  PointLight[Red, {1.5075, 4.1557, 2.6129}, \
-\"Intensity\"->100],\n  Directive[\"Shadows\"->True],\n  SpotLight[Cyan, \
-point // Offload],\n\n  EventHandler[Sphere[point, 0.1], {\n    \"drag\" -> \
-Function[pos, point = pos]\n  }]\n}, Lighting -> None]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "489ea780-3674-4343-9b63-cf50d4102968", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> ".md\nThis can also be applied to Plot3D, since it returns a \
-Graphics3D expression:", "Display" -> "codemirror", 
-    "Hash" -> "731258be-f8c6-4c3f-823a-b25ae7c9c932", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "This can also be applied to Plot3D, since it returns a \
-Graphics3D expression:", "Display" -> "markdown", 
-    "Hash" -> "5c60d8c2-d06e-4be4-b900-b0ab2d29b09d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>, 
-   <|"Data" -> "Plot3D[Sin[x] Cos[y], {x,-10,10}, {y,-10,10}, Epilog->{\n  \
-Directive[\"Shadows\"->True],\n  SpotLight[Cyan, point // Offload],\n\n  \
-EventHandler[Sphere[point, 0.1], {\n    \"drag\" -> Function[pos, point = \
-pos]\n  }]\n}, Lighting -> None]", "Display" -> "codemirror", 
-    "Hash" -> "bba8901a-b791-4c6b-abe0-578fce056a89", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "66ce46f0-24cc-4540-9ae8-3d0c6b775ab2"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Event listeners
+## 2D Graphics
+Some primitives, as well as the entire canvas, support the EventHandler method. Let's start with the Graphics expression itself.
+
+<br/>
+
+### Graphics as an Event Generator
+You can attach event handlers to a Graphics expression, which represents the SVG container of your 2D graph:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Event listeners
+## 2D Graphics
+Some primitives, as well as the entire canvas, support the EventHandler method. Let's start with the Graphics expression itself.
+
+<br />
+
+### Graphics as an Event Generator
+You can attach event handlers to a Graphics expression, which represents the SVG container of your 2D graph:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Mousemove event
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Mousemove event
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pt = {};
+EventHandler[
+  Graphics[{
+    PointSize[0.05], Blue, Opacity[0.5],
+    Point[pt // Offload]
+  }, PlotRange -> {{-1, 1}, {-1, 1}}],
+  {"mousemove" -> Function[xy, pt = Append[pt, xy]]}
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+The following patterns are available:
+
+<div class="text-sm mt-2">
+
+- `"keydown"`: Captures keyboard input after the canvas is clicked
+- `"capturekeydown"`: Same as above but also prevents page scrolling
+- `"mousemove"`: Captures mouse movement
+- `"mouseup"`: Captures mouse up
+- `"mousedown"`: Captures mouse down
+- `"click"`: Captures clicks (without the Alt key)
+- `"altclick"`: Captures clicks with the Alt key held
+- `"onload"`: Fired once the canvas has loaded
+- and etc., please, check the documentation
+
+</div>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+The following patterns are available:
+
+<div class="text-sm mt-2">
+
+- `"keydown"`: Captures keyboard input after the canvas is clicked
+- `"capturekeydown"`: Same as above but also prevents page scrolling
+- `"mousemove"`: Captures mouse movement
+- `"mouseup"`: Captures mouse up
+- `"mousedown"`: Captures mouse down
+- `"click"`: Captures clicks (without the Alt key)
+- `"altclick"`: Captures clicks with the Alt key held
+- `"onload"`: Fired once the canvas has loaded
+- and etc., please, check the documentation
+
+</div>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can do the same with Plot and many others, since they produce a Graphics symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can do the same with Plot and many others, since they produce a Graphics symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pt = {};
+EventHandler[Plot[x, {x,-1,1}, Epilog->{
+  PointSize[0.05], Blue, Opacity[0.5],
+  Point[pt // Offload]
+}], {"mousemove" -> Function[xy, pt = Append[pt, xy]]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Primitives
+Certain graphic primitives also support EventHandler. Some supported primitives include: `Point`, `Disk`, `Rectangle`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Primitives
+Certain graphic primitives also support EventHandler. Some supported primitives include: `Point`, `Disk`, `Rectangle`
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+They support these patterns:
+
+<div class="text-sm mt-2">
+
+- `"drag"`: Makes the primitive draggable and returns coordinates
+- `"dragsignal"`: Captures dragging without moving the primitive itself; returns coordinates
+- `"dragall"`: Like `"drag"`, but also fires events at drag start and end
+- `"click"`: Captures clicks without the Alt key
+- `"altclick"`: Captures clicks with the Alt key
+- `"mousedown"`: Fires on mouse press
+- `"mouseup"`: Fires on mouse release
+- `"mousemove"`: Captures movement
+- `"mouseover"`: Captures entry into element area
+- `"zoom"`: Captures mouse wheel input
+
+  
+</div>
+
+For example, combining "zoom" and "drag", you can create a widget for manually fitting Gaussian curves:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+They support these patterns:
+
+<div class="text-sm mt-2">
+
+- `"drag"`: Makes the primitive draggable and returns coordinates
+- `"dragsignal"`: Captures dragging without moving the primitive itself; returns coordinates
+- `"dragall"`: Like `"drag"`, but also fires events at drag start and end
+- `"click"`: Captures clicks without the Alt key
+- `"altclick"`: Captures clicks with the Alt key
+- `"mousedown"`: Fires on mouse press
+- `"mouseup"`: Fires on mouse release
+- `"mousemove"`: Captures movement
+- `"mouseover"`: Captures entry into element area
+- `"zoom"`: Captures mouse wheel input
+
+  
+</div>
+
+For example, combining "zoom" and "drag", you can create a widget for manually fitting Gaussian curves:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+getGauss[x0_, A_, width_] := Quiet[Table[{x, A Exp[-(*FB[*)(((*SpB[*)Power[(x-x0)(*|*),(*|*)2](*]SpB*))(*,*)/(*,*)(2 ((*SpB[*)Power[width(*|*),(*|*)2](*]SpB*))))(*]FB*)]}, {x, -1, 1, 0.01`}]];
+
+getGauss[{x0_, A_}, width_] := getGauss[x0, A, width];
+
+getGauss[{x0_, A_, width_}] := getGauss[x0, A, width];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{line, initial},
+  initial = {-0.2, 0.8, 0.1};
+  line = getGauss[initial];
+
+  Graphics[{
+    Red, PointSize[0.1],
+    EventHandler[
+      Point[initial[[1 ;; 2]]],
+      {
+        "drag" -> Function[c, initial[[1 ;; 2]] = c; line = getGauss[initial]],
+        "zoom" -> Function[k, initial[[3]] = k/10.0; line = getGauss[initial]]
+      }
+    ],
+    Cyan, Line[line // Offload]
+  }, PlotRange -> {{-1, 1}, {0, 1}}, Axes -> {True, False}]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*Try moving your mouse wheel on the red dot and then drag it.*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*Try moving your mouse wheel on the red dot and then drag it.*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also create a basic mouse follower using a white rectangle with a "mousemove" pattern:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also create a basic mouse follower using a white rectangle with a "mousemove" pattern:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+spt = {0, 0};
+Graphics[{
+  White,
+  EventHandler[
+    Rectangle[{-2, -2}, {2, 2}],
+    {"mousemove" -> Function[xy, spt = xy]}
+  ],
+  PointSize[0.05], Cyan,
+  Point[spt // Offload]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Image
+You can attach event handlers to an Image expression, similar to Graphics.
+
+The following event patterns are supported:
+
+<div class="text-sm mt-2">
+
+- `"mousemove"`: Captures mouse movement
+- `"mouseup"`: Captures mouse up
+- `"mousedown"`: Captures mouse down
+- `"click"`: Captures clicks (without the Alt key)
+- `"altclick"`: Captures clicks with the Alt key held
+
+  
+</div>
+
+For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Image
+You can attach event handlers to an Image expression, similar to Graphics.
+
+The following event patterns are supported:
+
+<div class="text-sm mt-2">
+
+- `"mousemove"`: Captures mouse movement
+- `"mouseup"`: Captures mouse up
+- `"mousedown"`: Captures mouse down
+- `"click"`: Captures clicks (without the Alt key)
+- `"altclick"`: Captures clicks with the Alt key held
+
+  
+</div>
+
+For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+lena = ExampleData[{"TestImage", "Lena"}];
+point = {0,0};
+move = Function[xy, point = xy];
+
+EventHandler[Image[lena], {"mousemove"->move}]
+TextView[point // Offload]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## 3D graphics
+Currently, event listeners in Graphics3D are limited.
+
+### Primitives
+
+The following 3D primitives support EventHandler methods:
+
+- Sphere
+  
+The following patterns are supported:
+
+<div class="text-sm mt-2">
+
+- `"drag"`: Makes the object draggable, adds guide lines, and sends the coordinates
+  
+</div>
+
+This is especially useful for dynamic lighting. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## 3D graphics
+Currently, event listeners in Graphics3D are limited.
+
+### Primitives
+
+The following 3D primitives support EventHandler methods:
+
+- Sphere
+  
+The following patterns are supported:
+
+<div class="text-sm mt-2">
+
+- `"drag"`: Makes the object draggable, adds guide lines, and sends the coordinates
+  
+</div>
+
+This is especially useful for dynamic lighting. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+point = {1, 1, 1};
+
+Graphics3D[{
+  Directive["Shadows"->True],
+  Polygon[{{-5, 5, -1}, {5, 5, -1}, {5, -5, -1}, {-5, -5, -1}}],
+  White,
+  Cuboid[{-1, -1, -1}, {1, 1, 1}],
+  Directive["Shadows"->False],
+  PointLight[Red, {1.5075, 4.1557, 2.6129}, "Intensity"->100],
+  Directive["Shadows"->True],
+  SpotLight[Cyan, point // Offload],
+
+  EventHandler[Sphere[point, 0.1], {
+    "drag" -> Function[pos, point = pos]
+  }]
+}, Lighting -> None]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This can also be applied to Plot3D, since it returns a Graphics3D expression:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This can also be applied to Plot3D, since it returns a Graphics3D expression:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot3D[Sin[x] Cos[y], {x,-10,10}, {y,-10,10}, Epilog->{
+  Directive["Shadows"->True],
+  SpotLight[Cyan, point // Offload],
+
+  EventHandler[Sphere[point, 0.1], {
+    "drag" -> Function[pos, point = pos]
+  }]
+}, Lighting -> None]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

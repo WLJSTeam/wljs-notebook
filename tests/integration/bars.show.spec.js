@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import {url, delay, evaluate, clearCell} from './common'
+import {url, delay, evaluate, clearCell, loadPage} from './common'
 
 test.describe.configure({ mode: 'default' });
 
@@ -13,10 +13,9 @@ test.describe('Bar and Charts', () => {
       page = await context.newPage();
       page.route('**', route => route.continue());
       
-      await page.goto(url);
+      await loadPage(page, url);
       await delay(6000);
 
-      page.on('console', msg => console.log(msg.text()));
 
   });
 
@@ -98,7 +97,7 @@ test.describe('Bar and Charts', () => {
   test('Radial Wind Diagram', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'SeedRandom[13]; g[{{t0_, t1_}, {r0_, r1_}}, ___] := Polygon[{r0 {Cos[t0], Sin[t0]}, r1 {Cos[t0], Sin[t0]}, r1 {Cos[t1], Sin[t1]}, r0 {Cos[t1], Sin[t1]}}]; SectorChart[RandomReal[1, {10, 2}],ChartBaseStyle -> Thick, PolarAxes -> Automatic, PolarGridLines -> Automatic, ChartStyle ->EdgeForm[Gray], ChartElementFunction -> g]', 15000, 500);
+    const outputCell = await evaluate(page, 'SeedRandom[13]; Clear[g]; g[{{t0_, t1_}, {r0_, r1_}}, ___] := Polygon[{r0 {Cos[t0], Sin[t0]}, r1 {Cos[t0], Sin[t0]}, r1 {Cos[t1], Sin[t1]}, r0 {Cos[t1], Sin[t1]}}]; SectorChart[RandomReal[1, {10, 2}],ChartBaseStyle -> Thick, PolarAxes -> Automatic, PolarGridLines -> Automatic, ChartStyle ->EdgeForm[Gray], ChartElementFunction -> g]', 15000, 500);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'windRadial.png']);
   });   
 

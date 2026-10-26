@@ -1,0 +1,10 @@
+Notebook[{
+  Cell["Imported math widgets", "Title"],
+  Cell[BoxData[RowBox[{SubscriptBox["x", "i"], "+",
+    FractionBox[SqrtBox[RowBox[{"1", "+", SuperscriptBox["x", "2"]}]], "2"]}]], "Input"],
+  Cell[BoxData[RowBox[{SubscriptBox["x", "i"], "+",
+    FractionBox[SqrtBox[RowBox[{"1", "+", SuperscriptBox["x", "2"]}]], "2"]}]], "Output"],
+  Cell["InterpretationBox fallback", "Section"],
+  Cell[BoxData[InterpretationBox["math", Subscript[x, i] + Sqrt[1 + x^2]/2]], "Input"],
+  Cell[BoxData[InterpretationBox["math", Subscript[x, i] + Sqrt[1 + x^2]/2]], "Output"]
+}]

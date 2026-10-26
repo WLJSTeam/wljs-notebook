@@ -2,7 +2,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Graphics3D`", {
   "CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Extensions`Communication`",
   "CoffeeLiqueur`Extensions`FrontendObject`", 
   "CoffeeLiqueur`Extensions`Boxes`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`"
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 Metalness::usage = "depricated. Use Directive"

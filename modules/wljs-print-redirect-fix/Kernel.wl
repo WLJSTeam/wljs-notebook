@@ -117,7 +117,7 @@ DefineOutputStreamMethod["MasterEchoWarning",
 
 OverrideListener := With[{},
     If[Internal`Kernel`Type =!= "LocalKernel",
-        Echo["Error. PrintRedirect package can only for on LocalKernel. MasterKernel is not allowed!"];
+        Echo["[wljs-print-redirect-fix/Kernel] Error. PrintRedirect package can only for on LocalKernel. MasterKernel is not allowed!"];
     ,
         $Messages = {OpenWrite[Method -> "MasterEchoWarning"]};
         $Output = {OpenWrite[Method -> "MasterEchoPrint"]};      

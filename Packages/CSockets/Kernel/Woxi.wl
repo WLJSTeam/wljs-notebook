@@ -18,7 +18,7 @@ socketListenerTaskRemove;
 Begin["`Private`"]
 
 
-Echo["CSockets >> Woxi >> Using native sockets"];
+Echo["[Packages/Woxi] Using native sockets in the Woxi runtime."];
 
 $nextSocketId = 0;
 

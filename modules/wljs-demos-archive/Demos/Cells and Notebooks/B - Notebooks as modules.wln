@@ -1,55 +1,157 @@
-<|"Notebook" -> <|"Controller" -> "c94f7517-31a3-4b2f-8b99-26e5b8f1178c", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$815], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "fac7d480-dd5f-4069-b716-9908e94e510a", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/B - Notebooks as modules.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      2, "Notebooks as Modules", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$774]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Notebooks as Modules\nUse \
-`NotebookEvaluateAsModule` to import notebooks as reusable modules. The \
-following rules apply:\n\n<div class=\"ring ring-1 py-1 px-2 rounded \
-mt-2\">\n\n- Initialization cells are evaluated once per notebook object\n- \
-The last Wolfram input cell is evaluated on every call and its result is \
-exported\n- All other cells are ignored\n- Context of all global symbols will \
-be completely isolated\n\n</div>", "Display" -> "codemirror", 
-    "Hash" -> "57f7caf0-1090-4f98-99d0-f78ce6c33ef5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>, 
-   <|"Data" -> "## Notebooks as Modules\nUse `NotebookEvaluateAsModule` to \
-import notebooks as reusable modules. The following rules apply:\n\n<div \
-class=\"ring ring-1 py-1 px-2 rounded mt-2\">\n\n- Initialization cells are \
-evaluated once per notebook object\n- The last Wolfram input cell is \
-evaluated on every call and its result is exported\n- All other cells are \
-ignored\n- Context of all global symbols will be completely \
-isolated\n\n</div>", "Display" -> "markdown", 
-    "Hash" -> "515dce32-43cd-478a-814d-35ece4f1e6ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>, 
-   <|"Data" -> "nb = NotebookOpen[FileNameJoin[{\n  \"attachments\",\n  \
-\"module.wln\"\n}], Visible->False];\n\n{exportedSymbol} = \
-NotebookEvaluateAsModule[nb];", "Display" -> "codemirror", 
-    "Hash" -> "edc5cd4f-b299-4528-b2dd-0b7d7908c9d1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>, 
-   <|"Data" -> ".md\nNow we can use it", "Display" -> "codemirror", 
-    "Hash" -> "9bbcdb2c-9137-419c-b866-284129d38097", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>, 
-   <|"Data" -> "Now we can use it", "Display" -> "markdown", 
-    "Hash" -> "12fc3acb-811e-436a-b0d9-2bed0f01a08d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>, 
-   <|"Data" -> "exportedSymbol[]", "Display" -> "codemirror", 
-    "Hash" -> "2d8c8b18-476e-426c-b19a-84a5fe67c929", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "1e54d2f9-d07c-4750-8520-5160e7ded8bc"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Notebooks as Modules
+Use `NotebookEvaluateAsModule` to import notebooks as reusable modules. The following rules apply:
+
+<div class="ring ring-1 py-1 px-2 rounded mt-2">
+
+- Initialization cells are evaluated once per notebook object
+- The last Wolfram input cell is evaluated on every call and its result is exported
+- All other cells are ignored
+- Context of all global symbols will be completely isolated
+
+</div>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Notebooks as Modules
+Use `NotebookEvaluateAsModule` to import notebooks as reusable modules. The following rules apply:
+
+<div class="ring ring-1 py-1 px-2 rounded mt-2">
+
+- Initialization cells are evaluated once per notebook object
+- The last Wolfram input cell is evaluated on every call and its result is exported
+- All other cells are ignored
+- Context of all global symbols will be completely isolated
+
+</div>
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+nb = NotebookOpen[FileNameJoin[{
+  "attachments",
+  "module.wln"
+}], Visible->False];
+
+{exportedSymbol} = NotebookEvaluateAsModule[nb];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or directly
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or directly
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{exportedSymbol} = NotebookEvaluateAsModule[FileNameJoin[{
+  "attachments",
+  "module.wln"
+}]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__We recommend to use async version__, since it breaks the evaluation order anyway
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__We recommend to use async version__, since it breaks the evaluation order anyway
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookEvaluateAsModuleAsync[FileNameJoin[{
+  "attachments",
+  "module.wln"
+}]]~Then~Function[result, 
+  {exportedSymbol} = result
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can use it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can use it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+exportedSymbol[]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

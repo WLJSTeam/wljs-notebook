@@ -1,3 +1,5 @@
+(* Manual-sampling UI for reviewing discovered symbols, commands, and events. *)
+
 makeTable[data_Association] := With[{
     
 },
@@ -39,6 +41,7 @@ Component[OptionsPattern[]] := With[{
     cli = OptionValue["Client"]
 },
 
+(* Clone the channel so closing this view does not remove the sampling handler. *)
 EventHandler[EventClone[sniffer], {
 
     "Message" -> Function[body,

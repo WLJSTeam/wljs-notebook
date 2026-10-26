@@ -1,350 +1,434 @@
-<|"Notebook" -> <|"Controller" -> "9492f192-10bc-44d1-a211-2ecef208fbfa", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1017], 
-   "FocusedCellSelection" -> {48, 47}, "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "867aa15f-758e-49ef-ac4a-bf1cde672148", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Frontend symbols/B - Custom input elements.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Custom input elements", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$934]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Creating a Basic Custom Component", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$934]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Defining the Display Rules", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$940]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Example", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$952]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Integrating with Standard Inputs", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$960]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Example", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$970]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Using WLX", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$981]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Combining WLX with EventObject", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1007]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Example", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1013]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Custom input elements\nThis guide \
-demonstrates how to create custom input components using pure JavaScript and \
-WLX, providing interactive elements that integrate seamlessly with the \
-Wolfram Language expressions.\n\n## Creating a Basic Custom Component\nYou \
-can define custom components using JavaScript cells and defining a frontend \
-symbol. Here's a simple button component that fires events when clicked:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "85594acb-f4b1-4291-a6ad-2299034c460d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "# Custom input elements\nThis guide demonstrates how to \
-create custom input components using pure JavaScript and WLX, providing \
-interactive elements that integrate seamlessly with the Wolfram Language \
-expressions.\n\n## Creating a Basic Custom Component\nYou can define custom \
-components using JavaScript cells and defining a frontend symbol. Here's a \
-simple button component that fires events when clicked:", 
-    "Display" -> "markdown", "Hash" -> 
-     "ba4c9ebf-fd94-465b-ae0f-458df32157da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".js\ncore.MyCustomComponent = async (args, env) => {\n  const \
-label = await interpretate(args[0], env);\n  const ev = await \
-interpretate(args[1], env);\n  \n  const button = \
-document.createElement('button');\n  button.innerText = label;\n  \
-button.style.backgroundColor = \"lightblue\";\n\n  \
-button.addEventListener('click', () => {\n    server.kernel.io.fire(ev, \
-true);\n  });\n\n  env.element.appendChild(button);\n}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2730fded-3e2a-49a3-a3c8-e56f271eb17f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "core.MyCustomComponent = async (args, env) => {\n  const \
-label = await interpretate(args[0], env);\n  const ev = await \
-interpretate(args[1], env);\n  \n  const button = \
-document.createElement('button');\n  button.innerText = label;\n  \
-button.style.backgroundColor = \"lightblue\";\n\n  \
-button.addEventListener('click', () => {\n    server.kernel.io.fire(ev, \
-true);\n  });\n\n  env.element.appendChild(button);\n}", "Display" -> "js", 
-    "Hash" -> "18fd82c9-ca66-4440-ac57-eeea301d1dd8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\n### Defining the Display Rules\nTo make the component \
-work with Wolfram Language's display system, you need to define the output \
-form, that will use our frontend symbol as a display function:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4cc846c4-99b7-4101-b3bd-99fb30603e9a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "### Defining the Display Rules\nTo make the component work \
-with Wolfram Language's display system, you need to define the output form, \
-that will use our frontend symbol as a display function:", 
-    "Display" -> "markdown", "Hash" -> 
-     "9a0fd100-7a3e-4405-a7bb-79ccb9585489", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "MyCustomComponent /: MakeBoxes[m_MyCustomComponent, \
-StandardForm] := With[{},\n  ViewBox[m, m]\n]", "Display" -> "codemirror", 
-    "Hash" -> "5c3c5b04-6ff7-403f-a0b4-f47142caeb1e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nand for slides, markdown cells use need to define \
-`WLXForm` as well. This form does not have its own `ViewBox` and uses \
-frontend objects instead:", "Display" -> "codemirror", 
-    "Hash" -> "372a2094-d330-4d69-98b5-8590da57b59e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "and for slides, markdown cells use need to define `WLXForm` \
-as well. This form does not have its own `ViewBox` and uses frontend objects \
-instead:", "Display" -> "markdown", 
-    "Hash" -> "fc6095a5-1057-4f5a-80d2-60f0f1579c4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "MyCustomComponent /: MakeBoxes[m_MyCustomComponent, WLXForm] \
-:= With[{\n  o = CreateFrontEndObject[m]\n},\n  MakeBoxes[o, WLXForm]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "72381ae5-d04e-45b5-97be-dc126e82730f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> 
-     ".md\n### Example\nNow you can use the custom component in your \
-notebook:", "Display" -> "codemirror", 
-    "Hash" -> "0059b7b9-ad44-4eb2-901d-ec5d8a3baf40", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> 
-     "### Example\nNow you can use the custom component in your notebook:", 
-    "Display" -> "markdown", "Hash" -> 
-     "32ba97fc-d4af-4c50-a9d5-8e49a414bce4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "MyCustomComponent[\"Click me pls\", \
-\"event1\"]\nEventHandler[\"event1\", Print];", "Display" -> "codemirror", 
-    "Hash" -> "f23c4932-fecb-4e5b-b4ad-185f0d4a33f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\n<br/>\n\n## Integrating with Standard Inputs\nFor better \
-integration with the standard input system, you can wrap your component in an \
-`EventObject`. This approach makes your component behave like built-in input \
-elements such as `InputRange` or `InputButton`:", "Display" -> "codemirror", 
-    "Hash" -> "b7199387-8c8a-4cb4-9e57-0980c4a51e38", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "<br />\n\n## Integrating with Standard Inputs\nFor better \
-integration with the standard input system, you can wrap your component in an \
-`EventObject`. This approach makes your component behave like built-in input \
-elements such as `InputRange` or `InputButton`:", "Display" -> "markdown", 
-    "Hash" -> "0390affc-da20-4ae0-a6d8-865d77bd7149", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "ClearAll[MyCustomComponent]\n\nMyCustomInput[label_String] := \
-With[{uid = CreateUUID[]},\n  EventObject[<|\"Id\"->uid, \
-\"View\"->MyCustomComponent[label, uid]|>]\n]", "Display" -> "codemirror", 
-    "Hash" -> "3de669c5-29cb-46a6-8599-290cf0aef84b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\n\nThis pattern automatically generates a unique event ID \
-and wraps your component in an `EventObject`, making it compatible with \
-`EventHandler`.\n\n:::info\nYou do not need to define the output form, if the \
-symbol is a View field of `EventObject`\n:::\n\n### Example\nEasy and \
-natural", "Display" -> "codemirror", 
-    "Hash" -> "d8348434-ce42-43bb-abf8-f703d9d82bc8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "\nThis pattern automatically generates a unique event ID and \
-wraps your component in an `EventObject`, making it compatible with \
-`EventHandler`.\n\n:::info\nYou do not need to define the output form, if the \
-symbol is a View field of `EventObject`\n:::\n\n### Example\nEasy and \
-natural", "Display" -> "markdown", "Hash" -> 
-     "d770382c-35f1-4ed7-9e6a-45b63211065d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "EventHandler[MyCustomInput[\"Click me\"], Print]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fc6ad412-2488-4cd4-8c94-d612e44476f6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nWhen clicked, the button will trigger the event handler \
-and print to the output.", "Display" -> "codemirror", 
-    "Hash" -> "96d4da0e-0e9e-4d33-8cbb-1c9b6714fcec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "When clicked, the button will trigger the event handler and \
-print to the output.", "Display" -> "markdown", 
-    "Hash" -> "268fd583-cf8e-4b53-ab43-f22742a95a74", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\n## Using WLX\nWLX provides a more intuitive way to write \
-markup compared to pure JavaScript:", "Display" -> "codemirror", 
-    "Hash" -> "c9f03bf6-f86b-4646-be39-cfa5ec387d05", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "## Using WLX\nWLX provides a more intuitive way to write \
-markup compared to pure JavaScript:", "Display" -> "markdown", 
-    "Hash" -> "638b4b7a-b3eb-4fb5-9b97-b34b3237f212", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".wlx\nMyCustomComponent2[OptionsPattern[]] := With[{\n  Event \
-= OptionValue[\"Event\"],\n  Label = OptionValue[\"Label\"],\n  Uid = \
-CreateUUID[]\n},\n<div>\n  <button id=\"{Uid}\" style=\"background: \
-lightblue\" class=\"p-1\">\n    <Label/>\n  </button>\n  <script \
-type=\"module\">\n    \
-document.getElementById('<Uid/>').addEventListener('click', () => {\n        \
-server.kernel.io.fire('<Event/>', true);\n    })\n  \
-</script>\n</div>\n]\n\nOptions[MyCustomComponent2] = {\"Event\" -> \"\", \
-\"Label\" -> \"Click me\"};", "Display" -> "codemirror", 
-    "Hash" -> "bdac8eeb-6d86-4cb2-ad21-611d287d2d47", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nIn order to use it the output cells of Wolfram Language, \
-you need to wrap it with `HTMLView` with WLX processor:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c18e9ad6-fa9d-4dc7-89cf-e9bbdaba27dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "In order to use it the output cells of Wolfram Language, you \
-need to wrap it with `HTMLView` with WLX processor:", 
-    "Display" -> "markdown", "Hash" -> 
-     "b4893e2e-f647-4ccb-87f3-14bd72a38d7d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "HTMLView[MyCustomComponent2[\"Event\"->\"test\", \
-\"Label\"->\"Hello World!\"], \
-Prolog->HTMLView`WLXProcessor[]]\nEventHandler[\"test\", Print];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4150d8a5-6eb6-4e9f-bc39-3ec24981ecd5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nHowever, there is a caveat - `UId` for DOM element is \
-generated per `MyCustomComponent2` constructor call. This means, you can't \
-simply have multiple copies of the same input element in the notebook (if \
-created by accident). To account this problem, we can generate DOM Id \
-dynamically using string templates. Let's fix it:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3ba61021-4fc0-4f0d-90b5-a0484b1eeb80", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "However, there is a caveat - `UId` for DOM element is \
-generated per `MyCustomComponent2` constructor call. This means, you can't \
-simply have multiple copies of the same input element in the notebook (if \
-created by accident). To account this problem, we can generate DOM Id \
-dynamically using string templates. Let's fix it:", "Display" -> "markdown", 
-    "Hash" -> "1bccff41-83e7-4c62-832f-80bdcb8c8ed5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".wlx\nMyCustomComponent2[OptionsPattern[]] := With[{\n  Event \
-= OptionValue[\"Event\"],\n  Label = OptionValue[\"Label\"]\n},\n  <div>\n    \
-<button id=\"#uid\" style=\"background: lightblue\" class=\"p-1\">\n      \
-<Label/>\n    </button>\n    <script type=\"module\">\n      \
-document.getElementById('#uid').addEventListener('click', () => {\n          \
-server.kernel.io.fire('<Event/>', true);\n      })\n    </script>\n  \
-</div>\n]\n\nOptions[MyCustomComponent2] = {\"Event\" -> \"\", \"Label\" -> \
-\"Click me\"};", "Display" -> "codemirror", 
-    "Hash" -> "cededf25-ed85-4cae-9a46-438c2803ef63", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nAnd provide a post-processor to `HTMLView`, that will \
-generate unique ids:", "Display" -> "codemirror", 
-    "Hash" -> "fca6adcd-f421-4060-a4b1-9863d5c0a53b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "And provide a post-processor to `HTMLView`, that will \
-generate unique ids:", "Display" -> "markdown", 
-    "Hash" -> "b6d083b9-354a-4f23-a55c-506098b5ca8d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "HTMLView[MyCustomComponent2[\"Event\"->\"test\", \
-\"Label\"->\"Hello World!\"], Prolog->{\n    \
-HTMLView`TemplateProcessor[<|\"uid\" -> CreateUUID[]|>],\n    \
-HTMLView`WLXProcessor[]\n}]\n\nEventHandler[\"test\", Print];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b64e5895-d3e3-4be6-9ae2-6b4b6e88b63d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\n### Combining WLX with EventObject\nYou can combine the \
-WLX approach with the `EventObject` pattern from earlier:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fa27e112-5ae1-42a8-858f-ea9c3e56c9b2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "### Combining WLX with EventObject\nYou can combine the WLX \
-approach with the `EventObject` pattern from earlier:", 
-    "Display" -> "markdown", "Hash" -> 
-     "54c01653-5076-4145-bc7c-5d82f06fd341", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "MyCustomInput2[label_String] := With[{id = \
-CreateUUID[]},\nEventObject[<|\"Id\"->id, \"View\"-> \
-HTMLView[MyCustomComponent2[\"Event\"->id, \"Label\"->label], Prolog->{\n  \
-HTMLView`TemplateProcessor[<|\"uid\" -> CreateUUID[]|>],\n  \
-HTMLView`WLXProcessor[]\n}]|>]\n]", "Display" -> "codemirror", 
-    "Hash" -> "311ebef0-92de-486f-8438-a72126fb9c9f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> ".md\nThis creates a reusable input component that:\n\n- Uses \
-WLX for cleaner markup\n- Integrates with the `EventObject` system\n- Works \
-seamlessly with `EventHandler`\n\n### Example\nYou can now use it as a \
-standard input element:", "Display" -> "codemirror", 
-    "Hash" -> "58658ded-640e-4eb1-827d-f2ec2fe21a06", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "This creates a reusable input component that:\n\n- Uses WLX \
-for cleaner markup\n- Integrates with the `EventObject` system\n- Works \
-seamlessly with `EventHandler`\n\n### Example\nYou can now use it as a \
-standard input element:", "Display" -> "markdown", 
-    "Hash" -> "3e09265c-26b6-4b48-ab6b-7bc367563fa0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>, 
-   <|"Data" -> "EventHandler[MyCustomInput2[\"Click me\"], Print]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "e1b506d0-8196-4e6e-b1f6-a2e7913ca25f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "83a74178-21fd-4943-b4e5-89e13853830f"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Custom input elements
+This guide demonstrates how to create custom input components using pure JavaScript and WLX, providing interactive elements that integrate seamlessly with the Wolfram Language expressions.
+
+## Creating a Basic Custom Component
+You can define custom components using JavaScript cells and defining a frontend symbol. Here's a simple button component that fires events when clicked:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Custom input elements
+This guide demonstrates how to create custom input components using pure JavaScript and WLX, providing interactive elements that integrate seamlessly with the Wolfram Language expressions.
+
+## Creating a Basic Custom Component
+You can define custom components using JavaScript cells and defining a frontend symbol. Here's a simple button component that fires events when clicked:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.MyCustomComponent = async (args, env) => {
+  const label = await interpretate(args[0], env);
+  const ev = await interpretate(args[1], env);
+  
+  const button = document.createElement('button');
+  button.innerText = label;
+  button.style.backgroundColor = "lightblue";
+
+  button.addEventListener('click', () => {
+    server.kernel.io.fire(ev, true);
+  });
+
+  env.element.appendChild(button);
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.MyCustomComponent = async (args, env) => {
+  const label = await interpretate(args[0], env);
+  const ev = await interpretate(args[1], env);
+  
+  const button = document.createElement('button');
+  button.innerText = label;
+  button.style.backgroundColor = "lightblue";
+
+  button.addEventListener('click', () => {
+    server.kernel.io.fire(ev, true);
+  });
+
+  env.element.appendChild(button);
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Defining the Display Rules
+To make the component work with Wolfram Language's display system, you need to define the output form, that will use our frontend symbol as a display function:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Defining the Display Rules
+To make the component work with Wolfram Language's display system, you need to define the output form, that will use our frontend symbol as a display function:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MyCustomComponent /: MakeBoxes[m_MyCustomComponent, StandardForm] := With[{},
+  ViewBox[m, m]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+and for slides, markdown cells use need to define `WLXForm` as well. This form does not have its own `ViewBox` and uses frontend objects instead:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+and for slides, markdown cells use need to define `WLXForm` as well. This form does not have its own `ViewBox` and uses frontend objects instead:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MyCustomComponent /: MakeBoxes[m_MyCustomComponent, WLXForm] := With[{
+  o = CreateFrontEndObject[m]
+},
+  MakeBoxes[o, WLXForm]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Example
+Now you can use the custom component in your notebook:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Example
+Now you can use the custom component in your notebook:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MyCustomComponent["Click me pls", "event1"]
+EventHandler["event1", Print];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<br/>
+
+## Integrating with Standard Inputs
+For better integration with the standard input system, you can wrap your component in an `EventObject`. This approach makes your component behave like built-in input elements such as `InputRange` or `InputButton`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<br />
+
+## Integrating with Standard Inputs
+For better integration with the standard input system, you can wrap your component in an `EventObject`. This approach makes your component behave like built-in input elements such as `InputRange` or `InputButton`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[MyCustomComponent]
+
+MyCustomInput[label_String] := With[{uid = CreateUUID[]},
+  EventObject[<|"Id"->uid, "View"->MyCustomComponent[label, uid]|>]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+This pattern automatically generates a unique event ID and wraps your component in an `EventObject`, making it compatible with `EventHandler`.
+
+:::info
+You do not need to define the output form, if the symbol is a View field of `EventObject`
+:::
+
+### Example
+Easy and natural
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+This pattern automatically generates a unique event ID and wraps your component in an `EventObject`, making it compatible with `EventHandler`.
+
+:::info
+You do not need to define the output form, if the symbol is a View field of `EventObject`
+:::
+
+### Example
+Easy and natural
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[MyCustomInput["Click me"], Print]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+When clicked, the button will trigger the event handler and print to the output.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+When clicked, the button will trigger the event handler and print to the output.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Using WLX
+WLX provides a more intuitive way to write markup compared to pure JavaScript:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Using WLX
+WLX provides a more intuitive way to write markup compared to pure JavaScript:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+MyCustomComponent2[OptionsPattern[]] := With[{
+  Event = OptionValue["Event"],
+  Label = OptionValue["Label"],
+  Uid = CreateUUID[]
+},
+<div>
+  <button id="{Uid}" style="background: lightblue" class="p-1">
+    <Label/>
+  </button>
+  <script type="module">
+    document.getElementById('<Uid/>').addEventListener('click', () => {
+        server.kernel.io.fire('<Event/>', true);
+    })
+  </script>
+</div>
+]
+
+Options[MyCustomComponent2] = {"Event" -> "", "Label" -> "Click me"};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In order to use it the output cells of Wolfram Language, you need to wrap it with `HTMLView` with WLX processor:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In order to use it the output cells of Wolfram Language, you need to wrap it with `HTMLView` with WLX processor:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+HTMLView[MyCustomComponent2["Event"->"test", "Label"->"Hello World!"], Prolog->HTMLView`WLXProcessor[]]
+EventHandler["test", Print];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+However, there is a caveat - `UId` for DOM element is generated per `MyCustomComponent2` constructor call. This means, you can't simply have multiple copies of the same input element in the notebook (if created by accident). To account this problem, we can generate DOM Id dynamically using string templates. Let's fix it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+However, there is a caveat - `UId` for DOM element is generated per `MyCustomComponent2` constructor call. This means, you can't simply have multiple copies of the same input element in the notebook (if created by accident). To account this problem, we can generate DOM Id dynamically using string templates. Let's fix it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.wlx
+MyCustomComponent2[OptionsPattern[]] := With[{
+  Event = OptionValue["Event"],
+  Label = OptionValue["Label"]
+},
+  <div>
+    <button id="#uid" style="background: lightblue" class="p-1">
+      <Label/>
+    </button>
+    <script type="module">
+      document.getElementById('#uid').addEventListener('click', () => {
+          server.kernel.io.fire('<Event/>', true);
+      })
+    </script>
+  </div>
+]
+
+Options[MyCustomComponent2] = {"Event" -> "", "Label" -> "Click me"};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+And provide a post-processor to `HTMLView`, that will generate unique ids:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+And provide a post-processor to `HTMLView`, that will generate unique ids:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+HTMLView[MyCustomComponent2["Event"->"test", "Label"->"Hello World!"], Prolog->{
+    HTMLView`TemplateProcessor[<|"uid" -> CreateUUID[]|>],
+    HTMLView`WLXProcessor[]
+}]
+
+EventHandler["test", Print];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Combining WLX with EventObject
+You can combine the WLX approach with the `EventObject` pattern from earlier:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Combining WLX with EventObject
+You can combine the WLX approach with the `EventObject` pattern from earlier:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MyCustomInput2[label_String] := With[{id = CreateUUID[]},
+EventObject[<|"Id"->id, "View"-> HTMLView[MyCustomComponent2["Event"->id, "Label"->label], Prolog->{
+  HTMLView`TemplateProcessor[<|"uid" -> CreateUUID[]|>],
+  HTMLView`WLXProcessor[]
+}]|>]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This creates a reusable input component that:
+
+- Uses WLX for cleaner markup
+- Integrates with the `EventObject` system
+- Works seamlessly with `EventHandler`
+
+### Example
+You can now use it as a standard input element:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This creates a reusable input component that:
+
+- Uses WLX for cleaner markup
+- Integrates with the `EventObject` system
+- Works seamlessly with `EventHandler`
+
+### Example
+You can now use it as a standard input element:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventHandler[MyCustomInput2["Click me"], Print]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

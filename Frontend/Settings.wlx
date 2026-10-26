@@ -1,6 +1,17 @@
+(*
+    Settings app component
+    no actual view component
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 AppEvent                  =  $Options["AppEvent"];
 ExtensionTemplates        =  $Options["ExtensionTemplates"];
+
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -9,9 +20,14 @@ Notifications  = ImportComponent["Components/Notifications/Notifications.wlx"];
 Alert           = ImportComponent["Components/Alert.wlx"];
 Modals           = ImportComponent["Components/Modals/Modals.wlx"];
 
+(* Settings I/O helpers *)
+
 {Settings, SettingsScript, Initialization}           = ImportComponent["Views/Settings/Settings.wlx"];
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+(* Extensions scripts and styles *)
+
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS = Join[{}, extensionsJS];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
@@ -23,9 +39,13 @@ settings = <||>;
 
 loadSettings[settings];
 
+(* Reload settings if needed *)
+
 EventHandler[settings`events//EventClone, {"Reload" -> Function[newData,
     settings = newData;
 ]}];
+
+(* App entry point *)
 
 App[request_] := With[{
         Secret = CreateUUID[], 
@@ -41,13 +61,14 @@ App[request_] := With[{
     },
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      (* After UI has been loaded *)
+      cachedClient = $CurrentWebSocket;
       EventRemove[OnLoad];
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["Settings >> Destroy"];
+          Echo["[Frontend/Settings] Destroying the settings view."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];
@@ -58,11 +79,13 @@ App[request_] := With[{
     ]];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalMessanger], {
       any_ :> (EventFire[AppEvent, Messanger[any], #]&)
     }];
 
     (* /* redirect to extensions  */ *)
+    
     EventHandler[EventClone[GlobalControls], {
       any_ :> (EventFire[AppEvent, any, #]&)
     }]; 
@@ -70,7 +93,8 @@ App[request_] := With[{
     <html class="h-full" os="{NavigatorOS}"> 
         <Head AccentColor={accentColor} Title={"Settings"} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WLJSInterpreterScript/>
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -94,6 +118,7 @@ App[request_] := With[{
     </html>
 ];
 
+(* Assign a route *)
 
 http["MessageHandler", "Settings"] = AssocUMatchQ[<|"Path" -> "/settings"|>] -> App;
 Print["Settings Loaded!"];

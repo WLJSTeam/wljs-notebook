@@ -153,12 +153,12 @@ OptionsHelper`Component[name_, o_List,  promise_] := Module[{array = {}, garbage
     const submit = document.getElementById('<ButtonSubmit/>');
     const cancel = document.getElementById('<ButtonCancel/>');
     submit.addEventListener('click', () => {
-      server.kernel.emitt('<ListUID/>', '{'+selected.map((e)=>{
-        if (e) return 'True'; else return 'False';
-      }).join(',')+'}', 'Submit');
+      server.kernel.io.fire('<ListUID/>', selected.map((e)=>{
+        if (e) return true; else return false;
+      }), 'Submit');
     });
     cancel.addEventListener('click', () => {
-      server.kernel.emitt('<ListUID/>', 'False', 'Cancel');
+      server.kernel.io.fire('<ListUID/>', false, 'Cancel');
     });
   </script>
  </div>

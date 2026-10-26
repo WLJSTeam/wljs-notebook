@@ -338,15 +338,61 @@ jobs:
             exit 1
           }
 
-      # Publish the FOUND file (exact path) to a release
-      - name: Publish signed artifact to GitHub Release
+      - name: Generate updater metadata for signed installer
+        id: updater_metadata
+        shell: pwsh
+        env:
+          APP_VERSION: ${{ steps.appver.outputs.version }}
+          SIGNED_INSTALLER: ${{ steps.find_signed.outputs.file }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installer = Get-Item -LiteralPath $env:SIGNED_INSTALLER
+
+          $stream = [System.IO.File]::OpenRead($installer.FullName)
+          $hasher = [System.Security.Cryptography.SHA512]::Create()
+          try {
+            $sha512 = [System.Convert]::ToBase64String($hasher.ComputeHash($stream))
+          } finally {
+            $hasher.Dispose()
+            $stream.Dispose()
+          }
+
+          $releaseDate = [System.DateTime]::UtcNow.ToString(
+            "yyyy-MM-dd'T'HH:mm:ss.fff'Z'",
+            [System.Globalization.CultureInfo]::InvariantCulture
+          )
+          $metadataPath = Join-Path $env:GITHUB_WORKSPACE "dist\latest-x64.yml"
+          $metadata = @"
+          version: $env:APP_VERSION
+          files:
+            - url: $($installer.Name)
+              sha512: $sha512
+              size: $($installer.Length)
+          path: $($installer.Name)
+          sha512: $sha512
+          releaseDate: '$releaseDate'
+          "@
+
+          [System.IO.File]::WriteAllText(
+            $metadataPath,
+            $metadata,
+            [System.Text.UTF8Encoding]::new($false)
+          )
+
+          Write-Host "Generated updater metadata from signed installer:"
+          Get-Content -LiteralPath $metadataPath
+          "file=$metadataPath" >> $env:GITHUB_OUTPUT
+
+      - name: Publish signed artifact and updater metadata to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.appver.outputs.version }}
           name: v${{ steps.appver.outputs.version }}
           draft: true
           prerelease: false
-          files: ${{ steps.find_signed.outputs.file }}
+          files: |
+            ${{ steps.find_signed.outputs.file }}
+            ${{ steps.updater_metadata.outputs.file }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 

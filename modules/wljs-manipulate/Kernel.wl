@@ -4,7 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Manipulate`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Misc`Language`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Boxes`",
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Extensions`RemoteCells`",
@@ -150,6 +150,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
   updateFunction = OptionValue["UpdateFunction"],
   caction = OptionValue[ContinuousAction],
   diffTable = Unique["diffTable"],
+  init = OptionValue[Initialization],
   copyButton = EventObject[],
   initialValues = OptionValue["InitialValues"],
   widgetInstance = wapi`Tools`WidgetLike["Interpolation"->False, "Notebook"->First[EvaluationNotebook[] ], "Meta"-><|"Description" -> "Manipulate expression widget"|> ],
@@ -513,7 +514,8 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
   LeakyModule[{
     currentExpression = evaluated,
     str = ToString[evaluated, StandardForm],
-    trigger = 0
+    trigger = 0,
+    slowDownFlag = 0
   },
 
   df`Private`resetFailureMessage;
@@ -529,13 +531,20 @@ Refresh /: MakeBoxes[Refresh[expr_, updateInterval_Quantity | updateInterval_?Nu
             diffList = Flatten[{df`Private`diff[currentExpression, newExpr, 1, <||>]}]
           },
 
+          slowDownFlag = 0; (* attempts to throttle the update rate *)
+          
           df`Private`processDiffs[diffTable, currentExpression, newExpr, diffList, Function[editorExpr,
+            If[!FreeQ[editorExpr, _Graphics | _Graphics3D | _Image | _Image3D | _Audio | _Sound], 
+                slowDownFlag = 2; (* red flag 2 *)
+            ];
             str = ToString[editorExpr, StandardForm];
+            If[StringLength[str] >  1200 && slowDownFlag == 0, slowDownFlag = 1]; (* red flag 1 *)
+            
             False
           ] ];  
 
           currentExpression = newExpr;
-          trigger = 0;      
+          trigger = slowDownFlag;      
         ];
     ] ];
 
@@ -1118,7 +1127,7 @@ multipleTraces[tracer_, anonymous_, traces_, t_, tmin_, tmax_, plotPoints_, styl
 SetAttributes[singleTrace, HoldAll]
 SetAttributes[multipleTraces, HoldAll]
 
-Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True}
+Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True, Initialization:>None}
 
 Options[manipulatePlot] = Normal[ Join[Association[Options[Graphics] ], <|Appearance->"Default", "TrackedExpression"->Null, "ControlsLayout"->"Vertical", "UpdateFunction"->(True&), PlotRange -> Automatic, "SamplingPoints" -> 200.0, ImageSize -> {400, 300}, PlotStyle->ColorData[97, "ColorList"], TransitionType->"Linear", TransitionDuration->50, Epilog->{}, Prolog->{}, AxesLabel->{}|>] ]
 Options[ManipulatePlot] = Options[manipulatePlot]
@@ -1503,7 +1512,7 @@ renderAnimation[widget_AnimationHelper, opts: OptionsPattern[] ] := Module[{
     task = SetInterval[
         attemps++;
         If[attemps > 100,
-        Echo["Widget instace is still offline. Aborting"];
+        Echo["[wljs-manipulate/Kernel] Widget instance is still offline; aborting synchronization."];
         exitAndCleanUp; TaskRemove[task]; TaskAbort[task]; 
         EventFire[promise, Resolve, $Failed];
         Return[];
@@ -1640,6 +1649,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
   updateFunction = OptionValue["UpdateFunction"],
   animationRepetitions = OptionValue[AnimationRepetitions],
   table = Unique["diffTable"],
+  slowDownFlag = Unique["slowDownFlag"],
   widgetInstance = wapi`Tools`WidgetLike["Interpolation"->False, "Notebook"->First[EvaluationNotebook[] ], "Meta"-><|"Description" -> "Animate expression widget"|> ]
 },
 
@@ -1660,7 +1670,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
   ]
 },
 
-  If[Length[List[parameters] ] > 1, Return[Message[Animate::usesingle]; $Failed ] ];
+  If[Length[List[parameters] ] > 1, Return[Once[Message[Animate::usesingle]]; $Failed ] ];
     df`Private`resetFailureMessage;
     
     EventHandler[widgetInstance["Hash"], {
@@ -1685,7 +1695,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
         wapi`Tools`ChangeState[widgetInstance, "Offline"];
         EventRemove[widgetInstance["Hash"] ];
         Delete[ widgetInstance ];
-        ClearAll[syncSymbol];
+        ClearAll[syncSymbol, slowDownFlag];
     ]}];
  
     If[!AllTrue[vars, !FailureQ[#] &] || vars === $Failed,
@@ -1694,7 +1704,8 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
 
 
 
-
+    slowDownFlag = False;
+    
     With[{
     (* wrap f into a pure function *)
     anonymous = With[{s = Extract[#, "Symbol", Hold] &/@ vars},
@@ -1787,6 +1798,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
       (* update expression when any slider is dragged *)
       With[{o = code}, EventHandler[eventId, Function[data, 
         (* FrontSubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GarbageCollector", False] ]; *)
+        slowDownFlag = False;
 
         With[{result = updateFunction @ data},
           Switch[result,
@@ -1799,9 +1811,14 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
         
 
                   df`Private`processDiffsStateless[table, originalExpression, expr, diffList, Function[editorExpr,
+                    If[!FreeQ[editorExpr, _Graphics | _Graphics3D | _Image | _Image3D | _Audio | _Sound], 
+                        slowDownFlag = True; (* red flag 2 *)
+                    ];
                     code = ToString[editorExpr, StandardForm];
+                    If[StringLength[code] > 1200, slowDownFlag = True]; (* red flag 1 *)
                     False
                   ], Function[Null,
+                    If[StringLength[o] >  1200, slowDownFlag = True];
                     code = o;
                   ] ];
                 ];            
@@ -1816,7 +1833,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
             
           ];
         ];
-        syncSymbol = syncSymbol + 1;
+        syncSymbol = syncSymbol + If[slowDownFlag, 11, 1];
       ] ] ];
 
       If[jitFailedQQ, Message[Animate::frclip] ];
@@ -1831,7 +1848,7 @@ Animate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol,
     ]
 ] ]
 
-Animate::frclip = "JIT failed. RefreshRate will be limited to 5 FPS";
+Animate::frclip = "RefreshRate will be limited to 5 FPS or less";
 
 AnimationHelper;
 AnimationHelperRun;

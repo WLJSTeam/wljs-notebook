@@ -66510,30 +66510,6 @@ AbortableTable[
 ```
 
 
-# Let
-
-
-
-> Written by [Leonid Shifrin](https://github.com/lshifr)
-
-```wolfram
-Let[{vars__}, expr_]
-```
-
-A `With`-like construction that allows recursive assignments, like `Let*` in scheme.
-
-For example:
-
-```wolfram
-Let[{
-	a = 1,
-	b = a + 1
-},
-	b
-]
-```
-
-
 # Parallel
 
 
@@ -133054,12 +133030,12 @@ Component[OptionsPattern[]] := With[{
 
     EventHandler[listener, {
         "Button" -> Function[Null,
-            processRequest[globalControls, modals, messager, Global`$Client (*`*)]
+            processRequest[globalControls, modals, messager, $CurrentWebSocket (*`*)]
         ]
     }];
 
     EventHandler[EventClone[globalControls], {
-        "example-eval-all" -> Function[Null, processRequest[globalControls, modals, messager, Global`$Client (*`*)]]
+        "example-eval-all" -> Function[Null, processRequest[globalControls, modals, messager, $CurrentWebSocket (*`*)]]
     }];
 
     {

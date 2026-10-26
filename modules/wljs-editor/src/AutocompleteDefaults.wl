@@ -12,6 +12,8 @@
   <|"label" -> "CurrentNotebookImage", "type"->"keyword", "info"->"CurrentNotebookImage[] rasterizes current notebook content into an image"|>,
   <|"label" -> "Tooltip", "type" -> "keyword", "info" -> "Tooltip[expr, label] display label when the mouse is moved over expr"|>,
   <|"label" -> "PrintTemporary", "type" -> "keyword", "info"->"PrintTemporary[expr] prints expr and removes it after the evaluation is finished"|>,
+  <|"label" -> "PageBreakAbove", "type" -> "keyword", "info" -> "PageBreakAbove inserts a page break above when printing in the context of WLX, Markdown cnad slide cells"|>,
+  <|"label" -> "PageBreakBelow", "type" -> "keyword", "info" -> "PageBreakBelow inserts a page break below when printing in the context of WLX, Markdown cnad slide cells"|>,
   <|"label" -> "Monitor", "type"->"keyword", "info" -> "Monitor[expr,mon] generates a temporary monitor cell in which the continually updated current value of mon is displayed during the course of evaluation of expr"|>,
   <|"label" -> "ListConvolve", "type"->"keyword", "info" -> "ListConvolve[list, ker] forms the convolution of the kernel ker with list."|>,
   <|"label" -> "ProgressIndicator", "type"->"keyword", "info" -> "ProgressIndicator[val] represents a comple progress bar indicator.\nProgressIndicator[val, {min,max}] represent a progress bar, that rescales val from min to max"|>,
@@ -1638,11 +1640,7 @@ in <i>video</i>."|>, <|"label" -> "AudioPartition", "type" -> "keyword",
 object into non-overlapping segments of duration \
 <i>dur</i>.\n\nAudioPartition[<i>audio</i>,<i>dur</i>,<i>offset</i>] \
 generates segments with specified <i>offset</i>."|>, 
- <|"label" -> "AudioPause", "type" -> "keyword", 
-  "info" -> "AudioPause[] pauses the playback of all AudioStream \
-objects.\n\nAudioPause[<i>astream</i>] pauses the playback of the AudioStream \
-object <i>astream</i>.\n\nAudioPause[<i>audio</i>] pauses the playback for \
-all streams originated by <i>audio</i>."|>, <|"label" -> "AudioPitchShift", 
+ <|"label" -> "AudioPitchShift", 
   "type" -> "keyword", "info" -> "AudioPitchShift[<i>audio</i>,<i>r</i>] \
 applies pitch shifting to <i>audio</i> by the ratio <i>r</i>, shifting every \
 frequency f to r f.\n\nAudioPitchShift[<i>video</i>,<i>r</i>] applies pitch \
@@ -6493,91 +6491,17 @@ arrays.\n\nDotLayer[{<i>spec</i><sub>1</sub>,<i>spec</i><sub>2</sub>,\
 and should no longer be used. "|>, <|"label" -> "Dotted", 
   "type" -> "keyword", "info" -> "Dotted is a graphics directive specifying \
 that lines that follow should be drawn dotted."|>, 
- <|"label" -> "DoubleBracketingBar", "type" -> "keyword", 
-  "info" -> "DoubleBracketingBar[<i>x</i>,<i>y</i>,...] displays as \
-\[LeftDoubleBracketingBar]<i>x</i>,<i>y</i>,...\
-\[RightDoubleBracketingBar]."|>, <|"label" -> "DoubleDownArrow", 
-  "type" -> "keyword", "info" -> "DoubleDownArrow[<i>x</i>,<i>y</i>,\
-...] displays as <i>x</i>\[DoubleDownArrow]<i>\[UnknownGlyph]</i>."|>\
-, <|"label" -> "DoubleLeftArrow", "type" -> "keyword", 
-  "info" -> "DoubleLeftArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLeftArrow]<i>y</i>\[DoubleLeftArrow]...."|>, 
- <|"label" -> "DoubleLeftRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLeftRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLeftRightArrow]<i>y</i>\[DoubleLeftRightArrow]...."|>\
-, <|"label" -> "DoubleLeftTee", "type" -> "keyword", 
-  "info" -> "DoubleLeftTee[<i>x</i>,<i>y</i>] displays as \
-x\[DoubleLeftTee]y."|>, <|"label" -> "DoubleLongLeftArrow", 
-  "type" -> "keyword", "info" -> "DoubleLongLeftArrow[<i>x</i>,<i>y</i>,\
-...] displays as \
-<i>x</i>\[DoubleLongLeftArrow]<i>y</i>\[DoubleLongLeftArrow]...."|>, 
- <|"label" -> "DoubleLongLeftRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLongLeftRightArrow[<i>x</i>,<i>y</i>,...] displays \
-as \
-<i>x</i>\[DoubleLongLeftRightArrow]<i>y</i>\[DoubleLongLeftRightArrow]\
-...."|>, <|"label" -> "DoubleLongRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleLongRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleLongRightArrow]<i>y</i>\[DoubleLongRightArrow]...."|>\
-, <|"label" -> "DoubleRightArrow", "type" -> "keyword", 
-  "info" -> "DoubleRightArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleRightArrow]<i>y</i>\[DoubleRightArrow]...."|>, 
- <|"label" -> "DoubleRightTee", "type" -> "keyword", 
-  "info" -> 
-   "DoubleRightTee[<i>x</i>,<i>y</i>] displays as x\[DoubleRightTee]y."|>, 
- <|"label" -> "DoubleUpArrow", "type" -> "keyword", 
-  "info" -> "DoubleUpArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleUpArrow]<i>y</i>\[DoubleUpArrow]...."|>, 
- <|"label" -> "DoubleUpDownArrow", "type" -> "keyword", 
-  "info" -> "DoubleUpDownArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleUpDownArrow]<i>y</i>\[DoubleUpDownArrow]...."|>, 
- <|"label" -> "DoubleVerticalBar", "type" -> "keyword", 
-  "info" -> "DoubleVerticalBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DoubleVerticalBar]<i>y</i>\[DoubleVerticalBar]...."|>, 
  <|"label" -> "DoublyInfinite", "type" -> "keyword", 
   "info" -> "DoublyInfinite is an option for LerchPhi. With DoublyInfinite -> \
 True, the summation is taken from -Infinity to Infinity. With DoublyInfinite \
 -> False, the summation is taken from zero to Infinity."|>, 
- <|"label" -> "DownArrow", "type" -> "keyword", 
-  "info" -> "DownArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrow]<i>y</i>\[DownArrow]...."|>, 
- <|"label" -> "DownArrowBar", "type" -> "keyword", 
-  "info" -> "DownArrowBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrowBar]<i>y</i>\[DownArrowBar]...."|>, 
- <|"label" -> "DownArrowUpArrow", "type" -> "keyword", 
-  "info" -> "DownArrowUpArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownArrowUpArrow]<i>y</i>\[DownArrowUpArrow]...."|>, 
- <|"label" -> "DownLeftRightVector", "type" -> "keyword", 
-  "info" -> "DownLeftRightVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftRightVector]<i>y</i>\[DownLeftRightVector]...."|>, 
- <|"label" -> "DownLeftTeeVector", "type" -> "keyword", 
-  "info" -> "DownLeftTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftTeeVector]<i>y</i>\[DownLeftTeeVector]...."|>, 
- <|"label" -> "DownLeftVector", "type" -> "keyword", 
-  "info" -> "DownLeftVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftVector]<i>y</i>\[DownLeftVector]...."|>, 
- <|"label" -> "DownLeftVectorBar", "type" -> "keyword", 
-  "info" -> "DownLeftVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownLeftVectorBar]<i>y</i>\[DownLeftVectorBar]...."|>, 
- <|"label" -> "DownRightTeeVector", "type" -> "keyword", 
-  "info" -> "DownRightTeeVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightTeeVector]<i>y</i>\[DownRightTeeVector]...."|>, 
- <|"label" -> "DownRightVector", "type" -> "keyword", 
-  "info" -> "DownRightVector[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightVector]<i>y</i>\[DownRightVector]...."|>, 
- <|"label" -> "DownRightVectorBar", "type" -> "keyword", 
-  "info" -> "DownRightVectorBar[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownRightVectorBar]<i>y</i>\[DownRightVectorBar]...."|>, 
  <|"label" -> "Downsample", "type" -> "keyword", 
   "info" -> "Downsample[<i>array</i>,<i>n</i>] returns a downsampled version \
 of the array by sampling every <i>n</i><sup>th</sup> \
 element.\n\nDownsample[<i>array</i>,<i>n</i>,<i>offset</i>] starts sampling \
 from the element at position \
 <i>offset</i>.\n\nDownsample[<i>image</i>,...] downsamples an image."\
-|>, <|"label" -> "DownTee", "type" -> "keyword", 
-  "info" -> "DownTee[<i>x</i>,<i>y</i>] displays as x\[DownTee]y."|>, 
- <|"label" -> "DownTeeArrow", "type" -> "keyword", 
-  "info" -> "DownTeeArrow[<i>x</i>,<i>y</i>,...] displays as \
-<i>x</i>\[DownTeeArrow]<i>y</i>\[DownTeeArrow]...."|>, 
+|>, 
  <|"label" -> "DownValues", "type" -> "keyword", 
   "info" -> "DownValues[<i>f</i>] gives a list of transformation rules \
 corresponding to all downvalues (values for <i>f</i>[<i>...</i>]) \
@@ -21986,12 +21910,7 @@ components of \
 computes the property \"<i>prop</i>\" and selects the first <i>n</i> in \
 sorted \
 order.\n\nSelectComponents[...,\"<i>prop</i>\",<i>n</i>,<i>p</i>] \
-sorts computed properties using the ordering function <i>p</i>."|>, 
- <|"label" -> "SelectedCells", "type" -> "keyword", 
-  "info" -> "SelectedCells[<i>notebook</i>] returns a list of CellObject \
-expressions corresponding to the currently selected cells in \
-<i>notebook</i>.\n\nSelectedCells[] returns the currently selected cells in \
-the notebook in which this function is being evaluated."|>, 
+sorts computed properties using the ordering function <i>p</i>."|>,  
  <|"label" -> "SelectFirst", "type" -> "keyword", 
   "info" -> "SelectFirst[<i>data</i>,<i>crit</i>] gives the first \
 <i>e</i><sub><i>i</i></sub> of <i>data</i> for which \
@@ -26844,13 +26763,6 @@ applies <i>f</i> to partitions with offset \
 <i>d</i>.\n\nVideoMapTimeSeries[<i>f</i>,{<i>video</i><sub>1</sub>,<i>video</\
 i><sub>2</sub>,...},...] applies <i>f</i> to a list of inputs \
 extracted from each <i>video</i><sub><i>i</i></sub>."|>, 
- <|"label" -> "VideoPause", "type" -> "keyword", 
-  "info" -> "VideoPause[] pauses the playback of all VideoStream \
-objects.\n\nVideoPause[<i>vstream</i>] pauses the playback of the VideoStream \
-object <i>vstream</i>."|>, <|"label" -> "VideoPlay", "type" -> "keyword", 
-  "info" -> "VideoPlay[<i>video</i>] returns a new VideoStream object from \
-<i>video</i> and starts the playback.\n\nVideoPlay[<i>vstream</i>] starts \
-playing a VideoStream object <i>vstream</i>."|>, 
  <|"label" -> "VideoQ", "type" -> "keyword", "info" -> "VideoQ[<i>video</i>] \
 yields True if <i>video</i> has the form of a valid Video object, and False \
 otherwise."|>, <|"label" -> "VideoReplace", "type" -> "keyword",
@@ -28905,6 +28817,20 @@ lays out the video frames according to the provided <i>layout</i>."|>,
  <|"label" -> "VideoTranscribe", "type" -> "keyword", 
   "info" -> "VideoTranscribe[<i>video</i>] recognizes speech in an audio \
 track and adds it to <i>video</i> as a subtitle track."|>, 
+ <|"label" -> "BinormalDistribution", "type" -> "keyword",
+  "info" -> "BinormalDistribution[{<i>\[Mu]</i><sub>1</sub>,<i>\[Mu]</i><sub>2</sub>},{<i>\[Sigma]</i><sub>1</sub>,<i>\[Sigma]</i><sub>2</sub>},<i>\[Rho]</i>] represents a bivariate normal distribution with the specified means, standard deviations and correlation.\n\nBinormalDistribution[{<i>\[Sigma]</i><sub>1</sub>,<i>\[Sigma]</i><sub>2</sub>},<i>\[Rho]</i>] represents a bivariate normal distribution with zero mean.\n\nBinormalDistribution[<i>\[Rho]</i>] represents a standard bivariate normal distribution with correlation <i>\[Rho]</i>."|>,
+ <|"label" -> "CDF", "type" -> "keyword",
+  "info" -> "CDF[<i>dist</i>,<i>x</i>] gives the cumulative distribution function for the distribution <i>dist</i>, evaluated at <i>x</i>.\n\nCDF[<i>dist</i>,{<i>x</i><sub>1</sub>,<i>x</i><sub>2</sub>,...}] gives the cumulative distribution function for a multivariate distribution.\n\nCDF[<i>dist</i>] represents the cumulative distribution function as a pure function."|>,
+ <|"label" -> "Correlation", "type" -> "keyword",
+  "info" -> "Correlation[<i>v</i>,<i>w</i>] gives the correlation between the vectors <i>v</i> and <i>w</i>.\n\nCorrelation[<i>dist</i>] gives the correlation matrix for the multivariate symbolic distribution <i>dist</i>.\n\nCorrelation[<i>dist</i>,<i>i</i>,<i>j</i>] gives the (<i>i</i>,<i>j</i>) correlation for <i>dist</i>."|>,
+ <|"label" -> "Covariance", "type" -> "keyword",
+  "info" -> "Covariance[<i>v</i>,<i>w</i>] gives the covariance between the vectors <i>v</i> and <i>w</i>.\n\nCovariance[<i>dist</i>] gives the covariance matrix for the multivariate symbolic distribution <i>dist</i>.\n\nCovariance[<i>dist</i>,<i>i</i>,<i>j</i>] gives the (<i>i</i>,<i>j</i>) covariance for <i>dist</i>."|>,
+ <|"label" -> "MeanShiftFilter", "type" -> "keyword",
+  "info" -> "MeanShiftFilter[<i>data</i>,<i>r</i>,<i>d</i>] filters <i>data</i> by replacing every value by the mean of values in a range-<i>r</i> neighborhood whose value is within distance <i>d</i>.\n\nMeanShiftFilter[<i>data</i>,{<i>r</i><sub>1</sub>,<i>r</i><sub>2</sub>,...},<i>d</i>] uses <i>r</i><sub>i</sub> for filtering dimension <i>i</i> in <i>data</i>."|>,
+ <|"label" -> "UndirectedEdge", "type" -> "keyword",
+  "info" -> "UndirectedEdge[<i>u</i>,<i>v</i>] represents an undirected edge between <i>u</i> and <i>v</i>.\n\nUndirectedEdge[<i>u</i>,<i>v</i>,<i>t</i>] represents an undirected edge between <i>u</i> and <i>v</i> with tag <i>t</i>."|>,
+ <|"label" -> "WLXForm", "type" -> "keyword",
+  "info" -> "WLXForm is an output form used for expressions embedded in slides, WLX cells and Markdown cells.\n\nDefine MakeBoxes[<i>expr</i>,WLXForm] to customize output in these cells, similarly to MakeBoxes[<i>expr</i>,StandardForm]."|>,
  <|"label" -> "BoxMatrix", "type" -> "keyword", 
   "info" -> "BoxMatrix[<i>r</i>] gives a (2 <i>r</i>+1)\[Times](2 <i>r</i>+1) matrix of 1s.\n\nBoxMatrix[<i>r</i>,<i>w</i>] gives a <i>w</i>\[Times]<i>w</i> matrix containing a box of 1s with radius <i>r</i>."|>, 
  <|"label" -> "CrossMatrix", "type" -> "keyword", 

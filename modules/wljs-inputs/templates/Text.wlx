@@ -4,7 +4,7 @@ makeScript[_, Event_String, Topic_String, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('input', () => {
-            server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<Topic/>')
+            server.kernel.io.fire('<Event/>', String(el.value), '<Topic/>')
         })
     </script>
 )
@@ -13,7 +13,7 @@ makeScript[_, Event_String, {TopicChange_String, _}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('input', () => {
-            server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<TopicChange/>')
+            server.kernel.io.fire('<Event/>', String(el.value), '<TopicChange/>')
         })
     </script>    
 )
@@ -22,7 +22,7 @@ makeScript[_, Event_String, {_, TopicBlur_String}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('blur', () => {
-            server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<TopicBlur/>')
+            server.kernel.io.fire('<Event/>', String(el.value), '<TopicBlur/>')
         })
     </script>    
 )
@@ -31,10 +31,10 @@ makeScript[_, Event_String, {TopicChange_String, TopicBlur_String}, True] := (
     <script type="module">
         const el = document.getElementById('#instanceId');
         el.addEventListener('blur', () => {
-            server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<TopicBlur/>')
+            server.kernel.io.fire('<Event/>', String(el.value), '<TopicBlur/>')
         })        
         el.addEventListener('blur', () => {
-            server.kernel.emitt('<Event/>', 'URLDecode["'+encodeURIComponent(el.value)+'"]', '<TopicBlur/>')
+            server.kernel.io.fire('<Event/>', String(el.value), '<TopicBlur/>')
         })
     </script>    
 )

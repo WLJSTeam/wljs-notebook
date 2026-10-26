@@ -1,15 +1,17 @@
 BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
     "CoffeeLiqueur`WebUSocketHandler`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Extensions`Notifications`"
 }];
 
-UIAutocompleteExtend;
 
-Begin["`Private`"]
+
+Begin["`Private`"];
+
+UIAutocompleteExtend;
 
 definitions = {};
 clients = {};
@@ -17,12 +19,12 @@ clients = {};
 shareDefinitions[cli_, set_List] := With[{
     data = set
 },
-    If[FailureQ @ WebSocketUSend[cli, ExportByteArray[UIAutocompleteExtend[data], "ExpressionJSON"] ], clients = clients /. {cli -> Nothing}];
+    If[FailureQ @ WLJSTransportSend[UIAutocompleteExtend[data], cli ], clients = clients /. {cli -> Nothing}];
 ]
 
 EventHandler["autocomplete", {
     "Connect" -> Function[Null,
-        With[{client = Global`$Client},
+        With[{client = $CurrentWebSocket},
   
 
             clients = Append[clients, client];
@@ -30,7 +32,7 @@ EventHandler["autocomplete", {
             (* just to populate *)
             CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = client;
             
-            If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; EventRemove["autocomplete"]; Return[$Failed]; ];
+            If[Internal`Kernel`Type =!= "LocalKernel", Echo["[wljs-editor/AutocompleteKernel] Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; EventRemove["autocomplete"]; Return[$Failed]; ];
 
             With[{s = EchoLabel["Spinner"]["Reindexing symbols"]},
                 BuildVocabular;
@@ -50,7 +52,7 @@ extend[set_] := shareDefinitions[#, set] &/@ clients;
 (* a bug with a first defined symbol $InterfaceEnvironment that causes shutdown (BUT THIS IS A STRING!!!). No idea why *)
 skip = -1;
 
-blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`","CoffeeLiqueur`CUSockets`EventsExtension`","CoffeeLiqueur`Misc`WLJS`Transport`","CoffeeLiqueur`WebUSocketHandler`","CoffeeLiqueur`TCPUServer`","CoffeeLiqueur`UInternal`","CoffeeLiqueur`CUSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
+blacklist = {"CodeParser`", "CoffeeLiqueur`Extensions`Autocomplete`","CoffeeLiqueur`CUSockets`EventsExtension`","CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`","CoffeeLiqueur`WebUSocketHandler`","CoffeeLiqueur`TCPUServer`","CoffeeLiqueur`UInternal`","CoffeeLiqueur`CUSockets`","HighlightingCompatibility`","System`","Global`", "Parallel`Developer`", "CUDACompileTools`", "Wolfram`Chatbook`"};
 
 BuildVocabularAsync := With[{},
     BuildVocabularAsync = Null;
@@ -58,13 +60,14 @@ BuildVocabularAsync := With[{},
 ]
 
 currentContextPath = $ContextPath;
+getNames[pattern_] := Select[Names[pattern], FreeQ[Attributes[#], Temporary]&]
 
 contextAliases = {};
 
 BuildVocabular := With[{},
     BuildVocabular = Null;
  
-    If[Internal`Kernel`Type =!= "LocalKernel", Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; Return[$Failed]; ];
+    If[Internal`Kernel`Type =!= "LocalKernel", Echo["[wljs-editor/AutocompleteKernel] Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"]; Return[$Failed]; ];
     
     (* Echo["Buildind vocabular for autocomplete..."]; *)
     With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[$ContextPath, blacklist], 1]},
@@ -107,7 +110,7 @@ reBuildVocabulary := With[{},
                     If[Length[aliases] > 0,
                      Module[{old = definitions, spinner = EchoLabel["Spinner"][  "Rebuilding aliases"]},
 
-                            With[{r = Flatten[Function[f, {f, ToString@Information[f, "Usage"]}] /@ StringReplace[Names[#<>"*"], $ContextAliases[#]->#] &/@ Take[$ContextAliases//Keys ,-1], 1]},
+                            With[{r = Flatten[Function[f, {f, ToString@Information[f, "Usage"]}] /@ StringReplace[getNames[#<>"*"], $ContextAliases[#]->#] &/@ Take[$ContextAliases//Keys ,-1], 1]},
                             definitions = Join[definitions, r] // DeleteDuplicates;
                         ];
 
@@ -122,7 +125,7 @@ reBuildVocabulary := With[{},
                     If[Length[contexts] > 0, 
                         Module[{old = definitions, spinner = EchoLabel["Spinner"]["Rebuilding vocabulary"]},
 
-                            With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ Names[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
+                            With[{r = Flatten[( ((*Echo[#]; *){#, ToString@Information[#, "Usage"]}) &/@ getNames[#<>"*"] ) &/@ Complement[contexts, blacklist], 1]},
                                 definitions = Join[definitions, r] // DeleteDuplicates;
                             ];
 
@@ -144,33 +147,32 @@ reBuildVocabulary := With[{},
     ]
 ]
 
+globalNames;
+scanGlobalNames;
+
+(* Never use $NewSymbol, it switches the context and slows down the evaluation!!! *)
+
 StartTracking := (
     StartTracking = Null;
-    If[Internal`Kernel`Type =!= "LocalKernel",
-        Echo["Error. Autocomplete package can only for on LocalKernel. MasterKernel is not allowed!"];
-    ,
-        If[$VersionNumber >= 14.3,
-            $NewSymbol = If[#2 === "Global`", (
-                If[skip > 0,
-                    skip--;
-                ,
-                    definitions = Append[definitions, {#1, "User's defined symbol"} ]; 
-                    extend[{{#1, "User's defined symbol"}}];
-                ];
-            )]&;        
-        ,
-            SetTimeout[
-                $NewSymbol = If[#2 === "Global`", (
-                    If[skip > 0,
-                        skip--;
-                    ,
-                        definitions = Append[definitions, {#1, "User's defined symbol"} ]; 
-                        extend[{{#1, "User's defined symbol"}}];
-                    ];
-                )]&;
-            , 3000];
+    globalNames = getNames["Global`*"];
+    
+    scanGlobalNames[] := Module[{current, added},
+        If[Length[clients] == 0, Return[]];
+        current = getNames["Global`*"];
+        added = Complement[current, globalNames];
+        globalNames = current;
+    
+        If[added =!= {},
+            With[{
+                new = {#, "User's defined symbol"} & /@ added
+            },
+                definitions = DeleteDuplicates@Join[definitions, new];
+                extend[new];
+            ];
         ];
     ];
+    
+    SetInterval[scanGlobalNames[], 4000];
 )
 
 End[]

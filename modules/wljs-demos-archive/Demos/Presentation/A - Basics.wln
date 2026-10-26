@@ -1,792 +1,905 @@
-<|"Notebook" -> <|"Controller" -> "affffef8-87f4-488a-9d9d-7d60c3b5e09c", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$602], "FocusedCellSelection" -> 
-    {41, 40}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "66949f0d-0224-49eb-a7e0-c7213396a062", 
-   "Objects" -> <|"628c4fbe-76ea-464d-9065-fd1ef0f62cc7" -> 
-      <|"Public" -> Hold[Graphics[{{}, Annotation[
-            {{{}, {}, Annotation[{Hue[0.67, 0.6, 0.6], Directive[PointSize[
-                  Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], 
-                 AbsoluteThickness[2]], Line[{{6.520919876942366, 
-                   4.2208686208632145}, {6.555484225742942, 
-                   3.9085100340468837}, {6.53257941039147, 
-                   3.3236046440444134}, {7.025990080817879, 
-                   3.2077711077187243}, {7.326205941984016, 
-                   3.187888396023224}, {7.720344536160944, 
-                   3.4761617197908223}, {8.742629638839698, 
-                   3.575799468400298}, {9.903884729125707, 
-                   4.558563896460706}, {9.190819773235898, 
-                   4.811911903792274}, {9.243498760509837, 
-                   5.219699997809268}, {9.687687935416045, 
-                   5.270085580634117}, {9.13948115308678, 6.065234132577748}, 
-                  {8.600295497908538, 5.472016515361739}, {7.207608288971277, 
-                   4.866755187027048}, {7.305134443956696, 
-                   5.390371681488428}, {7.390967788726899, 
-                   5.776425153250663}, {7.12484409878731, 6.08352405915598}, 
-                  {7.210103231023146, 6.916215542705859}, {8.396120596134773, 
-                   6.824559899666891}, {8.241913798803207, 
-                   7.206495200164785}, {8.283525290214941, 
-                   7.268218814421433}, {8.474522578409028, 
-                   7.4806636865944665}, {9.186130868016797, 
-                   8.37557046754619}, {9.393541319056627, 8.410738627259033}, 
-                  {9.754227175615501, 8.132855935141599}, {9.853713934922517, 
-                   8.841987415451108}, {9.611493023763696, 9.55981194715254}, 
-                  {9.396267233822343, 9.925962953349428}, {8.027562792585508, 
-                   9.58578472902098}, {7.279493494040872, 8.735246673043253}, 
-                  {7.20310430784761, 8.752649698614213}, {7.2986908055365, 
-                   8.066300464853132}, {6.673636976322703, 
-                   8.616911133593856}, {6.652919202107041, 
-                   8.277756588472673}, {6.165653073358682, 
-                   8.208676147858064}, {5.945412583226637, 
-                   7.346610531207207}, {5.715416400809636, 
-                   7.248619288341144}, {4.946379393197333, 
-                   8.166257695175505}, {5.206595894358596, 
-                   8.852486714710244}, {5.05460265784393, 9.982440764393512}, 
-                  {3.7930039249752445, 9.450732641420958}, 
-                  {1.9462461874251535, 9.817613182419828}, 
-                  {1.101496928518535, 8.875929239113304}, 
-                  {1.1309163235772757, 8.656364289729206}, 
-                  {1.687291862493192, 8.023316069933461}, 
-                  {1.2767003285304157, 7.4071478250017435}, 
-                  {1.4209348237893193, 7.07322548353048}, 
-                  {1.0085571363250367, 6.794577367389598}, 
-                  {0.8968850180959786, 6.413558325351028}, 
-                  {0.3785329192532805, 6.476165471837412}, 
-                  {0.7624058906797848, 6.185168902075735}, 
-                  {0.7753037967360155, 5.135573640600457}, 
-                  {0.6770347701573742, 4.368817227962271}, 
-                  {0.524430927941506, 4.092990153778406}, 
-                  {0.5425170894523079, 3.18604953815836}, 
-                  {0.4416537313775071, 1.9851359429430149}, 
-                  {0.19898840597816436, 1.7322713227474829}, 
-                  {0.5812385182863955, 1.7507183453946573}, 
-                  {0.7597806462843693, 2.087813887256993}, 
-                  {1.1255143062731965, 2.03729076908594}, 
-                  {1.2361645211670869, 2.1761322663674187}, 
-                  {1.4142626722412088, 3.5755164950762586}, 
-                  {1.5277314186056046, 3.8474842626991412}, 
-                  {1.624541411578364, 4.013835021746182}, {2.473416157881705, 
-                   4.3816092165774005}, {2.6820953955673965, 
-                   2.8654515189032526}, {2.369515269429001, 
-                   1.9902008332095078}, {2.265027162743849, 
-                   1.786478216848164}, {2.3009513478370613, 
-                   0.8842447974589018}, {2.6944217832678685, 
-                   0.2257859758173275}, {3.3042126061709687, 
-                   1.3583188626076126}, {4.052816475924281, 
-                   0.7460687788066656}, {4.668996571087627, 
-                   0.2831270385342566}, {4.8094407691809815, 
-                   0.051671225669704945}, {5.655661876839037, 
-                   0.7353188934400734}, {6.027553777609869, 
-                   0.9012409084628215}, {6.475552645554055, 
-                   0.14812375876677608}, {7.464767061688706, 
-                   0.6701847343502254}, {8.202202238250678, 
-                   0.32324515785161045}, {9.628531380764425, 
-                   1.2586176499825075}, {9.373548743664484, 
-                   2.4558007386761083}, {8.067853421417393, 
-                   2.177730874581374}, {6.636990287828457, 
-                   1.7492848171692499}, {6.029595040653635, 
-                   2.377016333700932}, {4.959238018425431, 
-                   1.4472214079514578}, {4.6778852448133605, 
-                   1.7978267805188342}, {4.538049638089805, 
-                   2.1463620468807587}, {4.293323626263743, 
-                   2.65876775759053}, {4.528177178042807, 
-                   3.0082440707666924}, {4.501780734292808, 
-                   3.536233791449428}, {4.388721573928908, 
-                   3.5620765203452387}, {3.9618010181968644, 
-                   4.830473262132631}, {3.3609141584020152, 
-                   4.883325918527355}, {2.2330430146868707, 
-                   6.236207985579982}, {3.03341267562357, 7.366271746182937}, 
-                  {4.093836597440408, 6.32546052811557}, {4.012298037504756, 
-                   5.991412138872012}, {4.764086836171362, 
-                   5.640588063089775}, {4.8991374039683855, 
-                   4.879901064237073}, {6.1882683994297665, 
-                   5.2364518004408955}, {6.520919876942366, 
-                   4.2208686208632145}}]}, "Charting`Private`Tag#1"]}}, 
-            Association["HighlightElements" -> Association["Label" -> 
-                {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], 
-             "LayoutOptions" -> Association["PanelPlotLayout" -> 
-                Association[], "PlotRange" -> {{0, 9.903884729125707}, 
-                 {0, 9.982440764393512}}, "Frame" -> {{False, False}, 
-                 {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> 
-                {500, 500/GoldenRatio}, "Axes" -> {True, True}, 
-               "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), 
-               "DefaultStyle" -> {Directive[PointSize[Rational[1, 72]], 
-                  RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, 
-               "HighlightLabelingFunctions" -> Association[
-                 "CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], 
-                    (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> 
-                  {{Identity, Identity}, {Identity, Identity}}], 
-               "Primitives" -> {}, "GCFlag" -> False], "Meta" -> 
-              Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> 
-                {}, "Function" -> ListLinePlot, "GroupHighlight" -> False]], 
-            "DynamicHighlight"], {{}, {}}}, {DisplayFunction -> Identity, 
-           DisplayFunction -> Identity, PlotInteractivity :> 
-            $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", 
-             "Graphics"}, AspectRatio -> GoldenRatio^(-1), 
-           Axes -> {True, True}, AxesLabel -> {None, None}, 
-           AxesOrigin -> {0, 0}, DisplayFunction :> Identity, 
-           Epilog -> {Point[{{6.520919876942366, 4.2208686208632145}, {
-                8.600295497908538, 5.472016515361739}, {9.903884729125707, 
-                4.558563896460706}, {7.12484409878731, 6.08352405915598}, {
-                4.946379393197333, 8.166257695175505}, {7.279493494040872, 
-                8.735246673043253}, {2.2330430146868707, 6.236207985579982}, {
-                7.2986908055365, 8.066300464853132}, {6.029595040653635, 
-                2.377016333700932}, {5.945412583226637, 7.346610531207207}, {
-                0.524430927941506, 4.092990153778406}, {7.326205941984016, 
-                3.187888396023224}, {2.369515269429001, 1.9902008332095078}, {
-                0.5425170894523079, 3.18604953815836}, {4.012298037504756, 
-                5.991412138872012}, {9.186130868016797, 8.37557046754619}, {
-                5.655661876839037, 0.7353188934400734}, {7.207608288971277, 
-                4.866755187027048}, {9.373548743664484, 2.4558007386761083}, {
-                8.396120596134773, 6.824559899666891}, {9.611493023763696, 
-                9.55981194715254}, {1.1255143062731965, 2.03729076908594}, {
-                1.2767003285304157, 7.4071478250017435}, {6.165653073358682, 
-                8.208676147858064}, {4.501780734292808, 3.536233791449428}, {
-                3.3042126061709687, 1.3583188626076126}, {9.687687935416045, 
-                5.270085580634117}, {9.396267233822343, 9.925962953349428}, {
-                6.673636976322703, 8.616911133593856}, {8.742629638839698, 
-                3.575799468400298}, {0.19898840597816436, 
-                1.7322713227474829}, {8.241913798803207, 7.206495200164785}, {
-                4.293323626263743, 2.65876775759053}, {1.624541411578364, 
-                4.013835021746182}, {3.03341267562357, 7.366271746182937}, {
-                4.528177178042807, 3.0082440707666924}, {7.390967788726899, 
-                5.776425153250663}, {7.210103231023146, 6.916215542705859}, {
-                0.3785329192532805, 6.476165471837412}, {4.764086836171362, 
-                5.640588063089775}, {1.101496928518535, 8.875929239113304}, {
-                8.027562792585508, 9.58578472902098}, {7.720344536160944, 
-                3.4761617197908223}, {0.7597806462843693, 2.087813887256993}, 
-               {9.754227175615501, 8.132855935141599}, {1.4142626722412088, 
-                3.5755164950762586}, {2.473416157881705, 4.3816092165774005}, 
-               {1.2361645211670869, 2.1761322663674187}, {4.8991374039683855, 
-                4.879901064237073}, {4.6778852448133605, 1.7978267805188342}, 
-               {2.6944217832678685, 0.2257859758173275}, {9.190819773235898, 
-                4.811911903792274}, {5.715416400809636, 7.248619288341144}, {
-                8.202202238250678, 0.32324515785161045}, {4.8094407691809815, 
-                0.051671225669704945}, {4.388721573928908, 
-                3.5620765203452387}, {8.067853421417393, 2.177730874581374}, {
-                7.20310430784761, 8.752649698614213}, {9.243498760509837, 
-                5.219699997809268}, {5.206595894358596, 8.852486714710244}, {
-                1.4209348237893193, 7.07322548353048}, {2.3009513478370613, 
-                0.8842447974589018}, {3.3609141584020152, 4.883325918527355}, 
-               {0.6770347701573742, 4.368817227962271}, {4.093836597440408, 
-                6.32546052811557}, {1.687291862493192, 8.023316069933461}, {
-                9.628531380764425, 1.2586176499825075}, {4.052816475924281, 
-                0.7460687788066656}, {7.305134443956696, 5.390371681488428}, {
-                2.265027162743849, 1.786478216848164}, {0.7624058906797848, 
-                6.185168902075735}, {0.4416537313775071, 1.9851359429430149}, 
-               {7.025990080817879, 3.2077711077187243}, {4.959238018425431, 
-                1.4472214079514578}, {1.5277314186056046, 
-                3.8474842626991412}, {9.393541319056627, 8.410738627259033}, {
-                8.474522578409028, 7.4806636865944665}, {5.05460265784393, 
-                9.982440764393512}, {4.668996571087627, 0.2831270385342566}, {
-                1.1309163235772757, 8.656364289729206}, {3.9618010181968644, 
-                4.830473262132631}, {1.0085571363250367, 6.794577367389598}, {
-                6.555484225742942, 3.9085100340468837}, {0.8968850180959786, 
-                6.413558325351028}, {2.6820953955673965, 2.8654515189032526}, 
-               {6.475552645554055, 0.14812375876677608}, {6.652919202107041, 
-                8.277756588472673}, {0.7753037967360155, 5.135573640600457}, {
-                6.1882683994297665, 5.2364518004408955}, {7.464767061688706, 
-                0.6701847343502254}, {6.53257941039147, 3.3236046440444134}, {
-                9.13948115308678, 6.065234132577748}, {0.5812385182863955, 
-                1.7507183453946573}, {6.636990287828457, 1.7492848171692499}, 
-               {6.027553777609869, 0.9012409084628215}, {1.9462461874251535, 
-                9.817613182419828}, {8.283525290214941, 7.268218814421433}, {
-                4.538049638089805, 2.1463620468807587}, {3.7930039249752445, 
-                9.450732641420958}, {9.853713934922517, 
-                8.841987415451108}}]}, Frame -> {{False, False}, 
-             {False, False}}, FrameLabel -> {{None, None}, {None, None}}, 
-           FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, 
-           GridLines -> {None, None}, GridLinesStyle -> 
-            Directive[GrayLevel[0.5, 0.4]], ImageSize -> 500, 
-           Method -> {"AxisPadding" -> Scaled[0.02], 
-             "DefaultBoundaryStyle" -> Automatic, 
-             "DefaultGraphicsInteraction" -> {"Version" -> 1.2, 
-               "TrackMousePosition" -> {True, False}, "Effects" -> 
-                {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> 
-                  {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> 
-                    True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, 
-             "DefaultMeshStyle" -> AbsolutePointSize[6], 
-             "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 
-                 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 
-                 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], 
-               Directive[RGBColor[0.772079, 0.431554, 0.102387], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], 
-                AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 
-                 0.2125], AbsoluteThickness[2]], Directive[RGBColor[
-                 0.40082222609352647, 0.5220066643438841, 0.85], 
-                AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 
-                 0.621644452187053, 0.07336199581899142], AbsoluteThickness[
-                 2]], Directive[RGBColor[0.736782672705901, 0.358, 
-                 0.5030266573755369], AbsoluteThickness[2]], Directive[
-                RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], 
-                AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], 
-             "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> Automatic, "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> 
-              Automatic, "OptimizePlotMarkers" -> True, 
-             "CoordinatesToolOptions" -> {"DisplayFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & ), "CopiedValueFunction" -> 
-                ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[
-                   #1[[2]]]} & )}}, PlotInteractivity :> Association[
-             "SystemLimits" -> 3000, "UserLimits" -> 10000, 
-             "UserInteractivity" -> True], PlotRange -> 
-            {{0, 9.903884729125707}, {0, 9.982440764393512}}, 
-           PlotRangeClipping -> True, PlotRangePadding -> 
-            {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, 
-           Ticks -> {Automatic, Automatic}, PlotInteractivity :> 
-            $PlotInteractivity}]]|>|>, "Path" -> "/Users/kirill/Github/wolfra\
-m-js-frontend/modules/wljs-demos-archive/Demos/Presentation/A - Basics.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Making slides", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$482]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Basics", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$497]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Creating Individual Slides", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$497]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Separating Slides Within a Cell", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$504]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Merging All Slides", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$508]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Layout", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$515]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Rows", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$525]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Fragments", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$531]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Fragment Animations", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$535]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Backgrounds", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$541]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Background Colors", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$541]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Transitions", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$547]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Slide Transitions", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$547]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Plain HTML Support", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$556]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "WLX Integration", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$561]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "LaTeX Support", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$583]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Animated equations", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$589]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Misc", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$597]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "The Marquee element", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$597]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Mark", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$601]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Making slides\nType `.slide` in the first \
-line of an input cell and start writing Markdown slide on a new line:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "04c22113-99a2-4b84-9fe6-1c29606a8293", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "# Making slides\nType `.slide` in the first line of an input \
-cell and start writing Markdown slide on a new line:", 
-    "Display" -> "markdown", "Hash" -> 
-     "54205a18-6d80-4ac4-a619-e82bbd9ec97c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Presentation Title\n\nYou can also create \
-presentations using the WLJS Notebook.", "Display" -> "codemirror", 
-    "Hash" -> "5d0c0283-831d-4495-92d2-1d90e36020ba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy ># Presentation Title\n\nYou can also create \
-presentations using the WLJS Notebook.</dummy>", "Display" -> "slide", 
-    "Hash" -> "766ebbd6-4a95-4cf4-b1c4-567dc5a8d122", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n\nSlide cells provide all features of Markdown cells, \
-WLX cells and HTML, event listeners for slide events, fragment animations, \
-and the option to export all slides as PDF.\n\n:::info\nTo enter fullscreen \
-mode, press the <kbd>f</kbd> key after focusing (click) on a \
-slide.\n:::\n\n:::info\nTo enable virtual pointer, press the <kbd>q</kbd> key \
-after focusing (click) on a slide.\n:::\n\n:::warning\nUse the __project \
-feature__ <kbd>Ctrl-Shift-Enter</kbd> or <kbd>\[CloverLeaf]-Shift-Enter</kbd> \
-of cell properties to show slides in a separate window. Note that the slide \
-cell will also be evaluated within the context of a new window\n:::", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5a3ffeee-9856-48f7-baef-33516fe42ca0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "\nSlide cells provide all features of Markdown cells, WLX \
-cells and HTML, event listeners for slide events, fragment animations, and \
-the option to export all slides as PDF.\n\n:::info\nTo enter fullscreen mode, \
-press the <kbd >f</kbd> key after focusing (click) on a \
-slide.\n:::\n\n:::info\nTo enable virtual pointer, press the <kbd >q</kbd> \
-key after focusing (click) on a slide.\n:::\n\n:::warning\nUse the __project \
-feature__ <kbd >Ctrl-Shift-Enter</kbd> or <kbd \
->\[CloverLeaf]-Shift-Enter</kbd> of cell properties to show slides in a \
-separate window. Note that the slide cell will also be evaluated within the \
-context of a new window\n:::", "Display" -> "markdown", 
-    "Hash" -> "7ef9af4d-c7b9-42ad-a97a-1c0f66319583", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Basics\n### Creating Individual Slides\n\nEach \
-`.slide` cell creates a single presentation slide. You can write multiple \
-slides across different cells in your notebook:", "Display" -> "codemirror", 
-    "Hash" -> "4f9ead1f-4f4e-4080-931c-2030882e4891", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Basics\n### Creating Individual Slides\n\nEach `.slide` \
-cell creates a single presentation slide. You can write multiple slides \
-across different cells in your notebook:", "Display" -> "markdown", 
-    "Hash" -> "93f14c48-0dde-4dfb-be9d-64eeaf326f22", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# First Slide\nContent for the first slide", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fc39467c-bd1c-42e8-89c5-a5b5b7f647ce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Second Slide\nContent for the second slide", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2caa4024-51b4-4f78-b264-4154759ac5d5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n### Separating Slides Within a Cell\nWithin a single \
-`.slide` cell, you can create multiple slides by separating them with 3 \
-dashes:", "Display" -> "codemirror", 
-    "Hash" -> "1b13efdc-594d-4648-a77d-b7865a402ac1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "### Separating Slides Within a Cell\nWithin a single `.slide` \
-cell, you can create multiple slides by separating them with 3 dashes:", 
-    "Display" -> "markdown", "Hash" -> 
-     "f4abc300-e93f-40aa-a3fd-526e736831ac", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# First Slide\nThis is the first slide\n\n---\n\n# \
-Second Slide\nThis is the second slide\n\n---\n\n# Third Slide\nThis is the \
-third slide", "Display" -> "codemirror", 
-    "Hash" -> "2569c0fc-fa0a-40b5-b413-80dd4c98df1c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n### Merging All Slides\nTo combine all slides from \
-different cells across your notebook into a single presentation, use the \
-plural form:", "Display" -> "codemirror", 
-    "Hash" -> "ae36bf88-0355-444a-9211-76771abb719f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "### Merging All Slides\nTo combine all slides from different \
-cells across your notebook into a single presentation, use the plural form:", 
-    "Display" -> "markdown", "Hash" -> 
-     "dd5f76e7-3fc5-4e83-ac3c-403b9fd1116e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slides\n\nThank you for the attention", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3a64c06c-4309-4fc2-9aec-080f3f4bae6e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\nThis will merge and render all slide cells in the \
-notebook as one continuous presentation, allowing you to navigate through all \
-slides sequentially.", "Display" -> "codemirror", 
-    "Hash" -> "9e64b158-5646-49bc-bde4-6f9a040dafb1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "This will merge and render all slide cells in the notebook as \
-one continuous presentation, allowing you to navigate through all slides \
-sequentially.", "Display" -> "markdown", 
-    "Hash" -> "5a37bf90-1695-4fb2-9d24-df065d590b17", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> 
-     ".md\n## Layout\nStandard text to the left, full-height layout:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "131b22dc-51f6-49d8-9af8-6f9ae56b95ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Layout\nStandard text to the left, full-height layout:", 
-    "Display" -> "markdown", "Hash" -> 
-     "5cdec3b2-b75e-4e73-b9d3-74cb9d4733d1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n<!-- .slide: class=\"slide-standard\" -->\n\n# \
-Title\n\nContent", "Display" -> "codemirror", 
-    "Hash" -> "ffebdd9d-68f6-42a2-898a-3378bfd0e020", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy >\n<!-- .slide: class=\"slide-standard\" -->\n\n# \
-Title\n\nContent</dummy>", "Display" -> "slide", 
-    "Hash" -> "94477d70-27ef-4f30-848d-8173912ef981", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\nScrollable slide", "Display" -> "codemirror", 
-    "Hash" -> "46eb322b-d1f7-4466-84da-6c5bf98cb72f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "Scrollable slide", "Display" -> "markdown", 
-    "Hash" -> "405f1a47-5b0e-4c04-9578-bb582e289ecd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n<!-- .slide: class=\"slide-standard-scroll\" \
--->\n\n## Title\n\n<br/><br/><br/>\n...large content \
-goes\n<br/><br/><br/>\n...large content goes\n<br/><br/><br/>\n...large \
-content goes\n<br/><br/><br/>\n\n<br/><br/><br/>\n...large content \
-goes\n\n<br/><br/><br/>\n...large content goes\n<br/><br/><br/>\n...large \
-content goes\n<br/><br/><br/>", "Display" -> "codemirror", 
-    "Hash" -> "93e2a1c5-4f48-4fa8-a8ae-33bad1e1758b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Rows\nUse plain HTML and plain CSS (or our predefined \
-classes) to create rows and columns:", "Display" -> "codemirror", 
-    "Hash" -> "b33fcb7e-e0b2-4b70-b985-6d695a20170a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Rows\nUse plain HTML and plain CSS (or our predefined \
-classes) to create rows and columns:", "Display" -> "markdown", 
-    "Hash" -> "371ccf33-4f15-4c20-b83d-e3bb1127f3b9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n# Example\n\n<div class=\"flex \
-justify-between\">\n<div>\n\n## Subtitle 1\n\nContent \
-goes...\n\n</div>\n<div>\n\n## Subtitle 2\n\nContent \
-goes...\n\n</div>\n</div>", "Display" -> "codemirror", 
-    "Hash" -> "90d341fe-7c3f-4db8-a32a-6d8cfac1c53e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy >\n# Example\n\n<div class=\"flex \
-justify-between\"><div >\n\n## Subtitle 1\n\nContent goes...\n\n</div><div \
->\n\n## Subtitle 2\n\nContent goes...\n\n</div></div></dummy>", 
-    "Display" -> "slide", "Hash" -> "87cd1ecd-8428-4db1-b997-7bc6b3fc0f01", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Fragments\nFragments allow you to reveal content \
-incrementally on a slide. Use the `<!-- .element: class=\"fragment\" -->` \
-comment syntax to make elements appear one at a time when you advance the \
-presentation:", "Display" -> "codemirror", 
-    "Hash" -> "cd9c0331-2c68-4ce7-aaae-628b59b066fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Fragments\nFragments allow you to reveal content \
-incrementally on a slide. Use the `<!-- .element: class=\"fragment\" -->` \
-comment syntax to make elements appear one at a time when you advance the \
-presentation:", "Display" -> "markdown", 
-    "Hash" -> "4b1ddf07-6422-47e9-86d0-cd7b1458fcb0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Incremental Content\n\nThis appears first\n<!-- \
-.element: class=\"fragment\" -->\n\nThis appears second\n<!-- .element: \
-class=\"fragment\" -->\n\nThis appears third\n<!-- .element: \
-class=\"fragment\" -->", "Display" -> "codemirror", 
-    "Hash" -> "b4e48e45-f258-4021-a3fc-db342383fb8d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n### Fragment Animations\nYou can customize how fragments \
-appear using different animation classes:", "Display" -> "codemirror", 
-    "Hash" -> "afeb6dad-a897-41b7-9f58-895247b3eff3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "### Fragment Animations\nYou can customize how fragments \
-appear using different animation classes:", "Display" -> "markdown", 
-    "Hash" -> "ae7a4983-7db6-4403-903b-5e1eebf66ba6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Fragment Animations\n\nFade in\n<!-- .element: \
-class=\"fragment fade-in\" -->\n\nFade out\n<!-- .element: class=\"fragment \
-fade-out\" -->\n\nSlide up while fading in\n<!-- .element: class=\"fragment \
-fade-up\" -->\n\nSlide down while fading in\n<!-- .element: class=\"fragment \
-fade-down\" -->\n\nSlide left while fading in\n<!-- .element: \
-class=\"fragment fade-left\" -->\n\nSlide right while fading in\n<!-- \
-.element: class=\"fragment fade-right\" -->\n\nFades in, then out on next \
-step\n<!-- .element: class=\"fragment fade-in-then-out\" -->\n\nFades in, \
-then semi-out\n<!-- .element: class=\"fragment fade-in-then-semi-out\" \
--->\n\nHighlight red\n<!-- .element: class=\"fragment highlight-red\" \
--->\n\nHighlight green\n<!-- .element: class=\"fragment highlight-green\" \
--->\n\nHighlight blue\n<!-- .element: class=\"fragment highlight-blue\" \
--->\n\nGrow\n<!-- .element: class=\"fragment grow\" -->\n\nShrink\n<!-- \
-.element: class=\"fragment shrink\" -->", "Display" -> "codemirror", 
-    "Hash" -> "d2564b05-38ad-4d2b-bb67-4f3d649c8284", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy ># Fragment Animations\n\nFade in\n<!-- .element: \
-class=\"fragment fade-in\" -->\n\nFade out\n<!-- .element: class=\"fragment \
-fade-out\" -->\n\nSlide up while fading in\n<!-- .element: class=\"fragment \
-fade-up\" -->\n\nSlide down while fading in\n<!-- .element: class=\"fragment \
-fade-down\" -->\n\nSlide left while fading in\n<!-- .element: \
-class=\"fragment fade-left\" -->\n\nSlide right while fading in\n<!-- \
-.element: class=\"fragment fade-right\" -->\n\nFades in, then out on next \
-step\n<!-- .element: class=\"fragment fade-in-then-out\" -->\n\nFades in, \
-then semi-out\n<!-- .element: class=\"fragment fade-in-then-semi-out\" \
--->\n\nHighlight red\n<!-- .element: class=\"fragment highlight-red\" \
--->\n\nHighlight green\n<!-- .element: class=\"fragment highlight-green\" \
--->\n\nHighlight blue\n<!-- .element: class=\"fragment highlight-blue\" \
--->\n\nGrow\n<!-- .element: class=\"fragment grow\" -->\n\nShrink\n<!-- \
-.element: class=\"fragment shrink\" --></dummy>", "Display" -> "slide", 
-    "Hash" -> "ef2fcd97-5f38-4411-96c0-a26246730005", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Backgrounds\n### Background Colors\nAdd background \
-colors to individual slides using HTML attributes:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3590e062-9f38-4b85-9515-e20374c3e975", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Backgrounds\n### Background Colors\nAdd background colors \
-to individual slides using HTML attributes:", "Display" -> "markdown", 
-    "Hash" -> "7667bb60-cb48-4f48-aac6-2f6d0e7da07e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n<!-- .slide: data-background-color=\"#ff0000\" \
--->\n\n# Red Background\n\nThis slide has a red background", 
-    "Display" -> "codemirror", "Hash" -> 
-     "55b1c7c8-2fe8-467b-b931-b21c93f5f08d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy >\n<!-- .slide: data-background-color=\"#ff0000\" \
--->\n\n# Red Background\n\nThis slide has a red background</dummy>", 
-    "Display" -> "slide", "Hash" -> "5054087d-7eaf-4d6b-81ee-7af566fbb237", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Transitions\n### Slide Transitions\nControl how \
-slides transition using the `data-transition` attribute:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4efc20c0-abf5-49d7-82d7-a52b0077cc4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Transitions\n### Slide Transitions\nControl how slides \
-transition using the `data-transition` attribute:", "Display" -> "markdown", 
-    "Hash" -> "b752ddb8-7c03-4322-b131-bbe7b5376e27", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n<!-- .slide: data-transition=\"zoom\" -->\n\n# Zoom \
-Transition\n\nAvailable transitions: `none`, `fade`, `slide`, `convex`, \
-`concave`, `zoom`\n\n---\n\nNext", "Display" -> "codemirror", 
-    "Hash" -> "c2ec9ed0-69b7-4a35-a9fe-38d529013e97", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Plain HTML Support\nSlide cells support plain HTML \
-mixed with Markdown syntax and WLX. This allows you to embed rich content \
-like websites, videos. For example:", "Display" -> "codemirror", 
-    "Hash" -> "1d22dfa8-160e-454d-8db9-cf537ce14554", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Plain HTML Support\nSlide cells support plain HTML mixed \
-with Markdown syntax and WLX. This allows you to embed rich content like \
-websites, videos. For example:", "Display" -> "markdown", 
-    "Hash" -> "d2198f50-b4bd-4579-8f5d-e81876f2b21e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n<iframe\nstyle=\"margin-left:auto; \
-margin-right:auto; border-radius: \
-10px\"\nwidth=\"600\"\nheight=\"500\"\nsrc=\"https://wljs.io/\">\n</iframe>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "86f4a47f-5b08-4ed7-a666-53f4738a5846", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## WLX Integration\nSlide cells inherit features from \
-the WLX cell type, similar to Markdown cells. This feature enables dynamic, \
-interactive content within your presentations:", "Display" -> "codemirror", 
-    "Hash" -> "b4102f34-bb06-4559-838d-03a1380cae15", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## WLX Integration\nSlide cells inherit features from the WLX \
-cell type, similar to Markdown cells. This feature enables dynamic, \
-interactive content within your presentations:", "Display" -> "markdown", 
-    "Hash" -> "9a086b7f-bebf-4bac-8a63-c2c211582a8a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\nToday is <Now/>", "Display" -> "codemirror", 
-    "Hash" -> "69bf31c6-2580-4beb-9dee-91ccf63a6d1e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\nor embed an entire interactive plot", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8f6daf99-9f2f-411a-b095-a047437d91e3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "or embed an entire interactive plot", 
-    "Display" -> "markdown", "Hash" -> 
-     "9715104b-b9c6-494b-953e-c1cf3ac2e5e5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "pts = RandomReal[10, {100, 2}];\nMyFigure = \
-ListLinePlot[pts[[Last@FindShortestTour[pts]]], Epilog->{Point[pts]}, \
-ImageSize->500];", "Display" -> "codemirror", 
-    "Hash" -> "00b9ea69-a966-4e81-835f-9fddb39217d4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\nCompute and plot the shortest tour through 100 \
-random points:\n\n<MyFigure/>", "Display" -> "codemirror", 
-    "Hash" -> "a87f93e5-9d5f-459d-9a72-7c2dfca7ccc3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "<dummy >\nCompute and plot the shortest tour through 100 \
-random \
-points:\n\nFrontEndExecutable[628c4fbe-76ea-464d-9065-fd1ef0f62cc7]</dummy>", 
-    "Display" -> "slide", "Hash" -> "bbc89852-153f-418f-ba98-027dc214e50a", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## LaTeX Support\nSlides use KaTeX as the rendering \
-engine for mathematical equations. Wrap inline equations in single `$` \
-symbols, or use `$$` for block equations:", "Display" -> "codemirror", 
-    "Hash" -> "e338df84-83ef-49a8-822f-897657345015", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## LaTeX Support\nSlides use KaTeX as the rendering engine \
-for mathematical equations. Wrap inline equations in single `$` symbols, or \
-use `$$` for block equations:", "Display" -> "markdown", 
-    "Hash" -> "d24f6dbf-195c-4e1c-9c3d-1e8ad9cb4869", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Mathematical Equations\n\nInline equation: $E = \
-mc^2$\n\nBlock equation:\n$$\nE = \\\\hbar \\\\omega\n$$", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dd1665f7-efef-4114-803d-517f137defff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Animated equations\nYou can create Manim-like \
-animated equations:", "Display" -> "codemirror", 
-    "Hash" -> "51b7df7f-a6f6-4f10-8ffe-37bef38cdab0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> 
-     "## Animated equations\nYou can create Manim-like animated equations:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d59c03b4-0fc0-4cf5-afab-d5757af72c2b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n## Animated \
-LaTeX\n\n$$\n\\\\begin{align*}\n\\\\mathbf{E}(t,x) &= \\\\sum_{\\\\omega} \
-\\\\mathbf{E}_0^{\\\\omega} ~ exp\\\\Big( i\\\\omega t - \
-\\\\frac{i\\\\hat{n}(\\\\omega) \\\\omega x}{c}\\\\Big) \\\\\\\\ &= \
-\\\\sum\\\\mathbf{E}_0^{\\\\omega} \
-\\\\colorbox{white}{$exp(-\\\\frac{\\\\alpha x}{2})$} ~exp\\\\Big(i\\\\omega \
-t - \\\\frac{i n \\\\omega x}{c}\\\\Big)\n\\\\end{align*}\n$$ <!-- .element: \
-data-eq-speed=\"0.1\" -->", "Display" -> "codemirror", 
-    "Hash" -> "fddd4494-dba6-492d-a8c3-8d3da7e2728a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n## Misc\n### The Marquee element\n\nThis element is used \
-to insert a scrolling area of text. You can control what happens when the \
-text reaches the edges of its content area using its attributes:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "96b0fd1a-2576-41b2-85d1-a711a18333a1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "## Misc\n### The Marquee element\n\nThis element is used to \
-insert a scrolling area of text. You can control what happens when the text \
-reaches the edges of its content area using its attributes:", 
-    "Display" -> "markdown", "Hash" -> 
-     "47ccdd62-cc1f-473d-8274-7a388be8b2eb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n# Title\n\n<marquee>Hello World</marquee>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "616ccb36-42e4-4874-820f-7dd96438de45", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".md\n### Mark\nThis HTML element represents text which is \
-marked or highlighted", "Display" -> "codemirror", 
-    "Hash" -> "893e322a-e169-4bdb-885c-216496ff6964", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> "### Mark\nThis HTML element represents text which is marked \
-or highlighted", "Display" -> "markdown", 
-    "Hash" -> "debb2af6-0963-4dcb-92aa-c9c6123de794", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>, 
-   <|"Data" -> ".slide\n\n# Title\n\n<mark>salamander</mark>", 
-    "Display" -> "codemirror", "Hash" -> 
-     "859f8329-499c-4786-8d5d-a5e9073ad1ea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e07a862d-8959-4aa9-b5dc-cbc2bb772d7a"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Making slides
+Type `.slide` in the first line of an input cell and start writing Markdown slide on a new line:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Making slides
+Type `.slide` in the first line of an input cell and start writing Markdown slide on a new line:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Presentation Title
+
+You can also create presentations using the WLJS Notebook.
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy ># Presentation Title
+
+You can also create presentations using the WLJS Notebook.</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+Slide cells provide all features of Markdown cells, WLX cells and HTML, event listeners for slide events, fragment animations, and the option to export all slides as PDF.
+
+:::info
+To enter fullscreen mode, press the <kbd>f</kbd> key after focusing (click) on a slide.
+:::
+
+:::info
+To enable virtual pointer, press the <kbd>q</kbd> key after focusing (click) on a slide.
+:::
+
+:::warning
+Use the __project feature__ <kbd>Ctrl-Shift-Enter</kbd> or <kbd>⌘-Shift-Enter</kbd> of cell properties to show slides in a separate window. Note that the slide cell will also be evaluated within the context of a new window
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+Slide cells provide all features of Markdown cells, WLX cells and HTML, event listeners for slide events, fragment animations, and the option to export all slides as PDF.
+
+:::info
+To enter fullscreen mode, press the <kbd >f</kbd> key after focusing (click) on a slide.
+:::
+
+:::info
+To enable virtual pointer, press the <kbd >q</kbd> key after focusing (click) on a slide.
+:::
+
+:::warning
+Use the __project feature__ <kbd >Ctrl-Shift-Enter</kbd> or <kbd >⌘-Shift-Enter</kbd> of cell properties to show slides in a separate window. Note that the slide cell will also be evaluated within the context of a new window
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Basics
+### Creating Individual Slides
+
+Each `.slide` cell creates a single presentation slide. You can write multiple slides across different cells in your notebook:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Basics
+### Creating Individual Slides
+
+Each `.slide` cell creates a single presentation slide. You can write multiple slides across different cells in your notebook:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# First Slide
+Content for the first slide
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Second Slide
+Content for the second slide
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Separating Slides Within a Cell
+Within a single `.slide` cell, you can create multiple slides by separating them with 3 dashes:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Separating Slides Within a Cell
+Within a single `.slide` cell, you can create multiple slides by separating them with 3 dashes:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# First Slide
+This is the first slide
+
+---
+
+# Second Slide
+This is the second slide
+
+---
+
+# Third Slide
+This is the third slide
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Merging All Slides
+To combine all slides from different cells across your notebook into a single presentation, use the plural form:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Merging All Slides
+To combine all slides from different cells across your notebook into a single presentation, use the plural form:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slides
+
+Thank you for the attention
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This will merge and render all slide cells in the notebook as one continuous presentation, allowing you to navigate through all slides sequentially.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This will merge and render all slide cells in the notebook as one continuous presentation, allowing you to navigate through all slides sequentially.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Layout
+Standard text to the left, full-height layout:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Layout
+Standard text to the left, full-height layout:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<!-- .slide: class="slide-standard" -->
+
+# Title
+
+Content
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+<!-- .slide: class="slide-standard" -->
+
+# Title
+
+Content</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Scrollable slide
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Scrollable slide
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<!-- .slide: class="slide-standard-scroll" -->
+
+## Title
+
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+
+<br/><br/><br/>
+...large content goes
+
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+...large content goes
+<br/><br/><br/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+<!-- .slide: class="slide-standard-scroll" -->
+
+## Title
+
+<br /><br /><br />
+...large content goes
+<br /><br /><br />
+...large content goes
+<br /><br /><br />
+...large content goes
+<br /><br /><br /><br /><br /><br />
+...large content goes
+
+<br /><br /><br />
+...large content goes
+<br /><br /><br />
+...large content goes
+<br /><br /><br /><br /><br /><br />
+...large content goes
+<br /><br /><br />
+...large content goes
+<br /><br /><br /></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Rows
+Use plain HTML and plain CSS (or our predefined classes) to create rows and columns:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Rows
+Use plain HTML and plain CSS (or our predefined classes) to create rows and columns:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Example
+
+<div class="flex justify-between">
+<div class="text-left">
+
+## Subtitle 1
+
+Content goes...
+
+Content goes... Content goes...
+
+</div>
+<div class="text-left">
+
+## Subtitle 2
+
+Content goes...
+
+</div>
+</div>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+# Example
+
+<div class="flex justify-between"><div class="text-left">
+
+## Subtitle 1
+
+Content goes...
+
+Content goes... Content goes...
+
+</div><div class="text-left">
+
+## Subtitle 2
+
+Content goes...
+
+</div></div></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Alternatively you can use `Row` from the standard library of WL here too:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Alternatively you can use `Row` from the standard library of WL here too:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Example
+
+<Row Alignment={{{Left, Right}, Center}} ImageSize={{Full, Automatic}}>
+
+<div class="text-left">
+
+## Subtitle 1
+
+Content goes...
+
+Content goes... Content goes...
+
+</div>
+<div class="text-left">
+
+## Subtitle 2
+
+Content goes...
+
+</div>
+</Row>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+# Example
+
+<div class="flex flex-row" style="align-items:center;width:100%;"><div style="flex:1;display:flex;justify-content:flex-start;"><div class="text-left">
+
+## Subtitle 1
+
+Content goes...
+
+Content goes... Content goes...
+
+</div></div>
+<div style="flex:1;display:flex;justify-content:flex-end;"><div class="text-left">
+
+## Subtitle 2
+
+Content goes...
+
+</div></div></div></dummy>
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Fragments
+Fragments allow you to reveal content incrementally on a slide. Use the `<!-- .element: class="fragment" -->` comment syntax to make elements appear one at a time when you advance the presentation:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Fragments
+Fragments allow you to reveal content incrementally on a slide. Use the `<!-- .element: class="fragment" -->` comment syntax to make elements appear one at a time when you advance the presentation:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Incremental Content
+
+This appears first
+<!-- .element: class="fragment" -->
+
+This appears second
+<!-- .element: class="fragment" -->
+
+This appears third
+<!-- .element: class="fragment" -->
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Fragment Animations
+You can customize how fragments appear using different animation classes:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Fragment Animations
+You can customize how fragments appear using different animation classes:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Fragment Animations
+
+Fade in
+<!-- .element: class="fragment fade-in" -->
+
+Fade out
+<!-- .element: class="fragment fade-out" -->
+
+Slide up while fading in
+<!-- .element: class="fragment fade-up" -->
+
+Slide down while fading in
+<!-- .element: class="fragment fade-down" -->
+
+Slide left while fading in
+<!-- .element: class="fragment fade-left" -->
+
+Slide right while fading in
+<!-- .element: class="fragment fade-right" -->
+
+Fades in, then out on next step
+<!-- .element: class="fragment fade-in-then-out" -->
+
+Fades in, then semi-out
+<!-- .element: class="fragment fade-in-then-semi-out" -->
+
+Highlight red
+<!-- .element: class="fragment highlight-red" -->
+
+Highlight green
+<!-- .element: class="fragment highlight-green" -->
+
+Highlight blue
+<!-- .element: class="fragment highlight-blue" -->
+
+Grow
+<!-- .element: class="fragment grow" -->
+
+Shrink
+<!-- .element: class="fragment shrink" -->
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy ># Fragment Animations
+
+Fade in
+<!-- .element: class="fragment fade-in" -->
+
+Fade out
+<!-- .element: class="fragment fade-out" -->
+
+Slide up while fading in
+<!-- .element: class="fragment fade-up" -->
+
+Slide down while fading in
+<!-- .element: class="fragment fade-down" -->
+
+Slide left while fading in
+<!-- .element: class="fragment fade-left" -->
+
+Slide right while fading in
+<!-- .element: class="fragment fade-right" -->
+
+Fades in, then out on next step
+<!-- .element: class="fragment fade-in-then-out" -->
+
+Fades in, then semi-out
+<!-- .element: class="fragment fade-in-then-semi-out" -->
+
+Highlight red
+<!-- .element: class="fragment highlight-red" -->
+
+Highlight green
+<!-- .element: class="fragment highlight-green" -->
+
+Highlight blue
+<!-- .element: class="fragment highlight-blue" -->
+
+Grow
+<!-- .element: class="fragment grow" -->
+
+Shrink
+<!-- .element: class="fragment shrink" --></dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Backgrounds
+### Background Colors
+Add background colors to individual slides using HTML attributes:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Backgrounds
+### Background Colors
+Add background colors to individual slides using HTML attributes:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<!-- .slide: data-background-color="#ff0000" -->
+
+# Red Background
+
+This slide has a red background
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+<!-- .slide: data-background-color="#ff0000" -->
+
+# Red Background
+
+This slide has a red background</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Transitions
+### Slide Transitions
+Control how slides transition using the `data-transition` attribute:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Transitions
+### Slide Transitions
+Control how slides transition using the `data-transition` attribute:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<!-- .slide: data-transition="zoom" -->
+
+# Zoom Transition
+
+Available transitions: `none`, `fade`, `slide`, `convex`, `concave`, `zoom`
+
+---
+
+Next
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Plain HTML Support
+Slide cells support plain HTML mixed with Markdown syntax and WLX. This allows you to embed rich content like websites, videos. For example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Plain HTML Support
+Slide cells support plain HTML mixed with Markdown syntax and WLX. This allows you to embed rich content like websites, videos. For example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+<iframe
+style="margin-left:auto; margin-right:auto; border-radius: 10px"
+width="600"
+height="500"
+src="https://wljs.io/">
+</iframe>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## WLX Integration
+Slide cells inherit features from the WLX cell type, similar to Markdown cells. This feature enables dynamic, interactive content within your presentations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## WLX Integration
+Slide cells inherit features from the WLX cell type, similar to Markdown cells. This feature enables dynamic, interactive content within your presentations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+Today is <Now/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+Today is Sat 24 Oct 2026 09:56:02</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+or embed an entire interactive plot
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+or embed an entire interactive plot
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+pts = RandomReal[10, {100, 2}];
+MyFigure = ListLinePlot[pts[[Last@FindShortestTour[pts]]], Epilog->{Point[pts]}, ImageSize->500];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+Compute and plot the shortest tour through 100 random points:
+
+<MyFigure/>
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy >
+Compute and plot the shortest tour through 100 random points:
+
+FrontEndExecutable[628c4fbe-76ea-464d-9065-fd1ef0f62cc7]</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## LaTeX Support
+Slides use KaTeX as the rendering engine for mathematical equations. Wrap inline equations in single `$` symbols, or use `$$` for block equations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## LaTeX Support
+Slides use KaTeX as the rendering engine for mathematical equations. Wrap inline equations in single `$` symbols, or use `$$` for block equations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Mathematical Equations
+
+Inline equation: $E = mc^2$
+
+Block equation:
+$$
+E = \\hbar \\omega
+$$
+
+%-------------------------------------------------------------------------%
+Display: slide
+Type: Output
+%-------------------------------------------------------------------------%
+<dummy ># Mathematical Equations
+
+Inline equation: $E = mc^2$
+
+Block equation:
+$$
+E = \\hbar \\omega
+$$</dummy>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Animated equations
+You can create Manim-like animated equations:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Animated equations
+You can create Manim-like animated equations:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+## Animated LaTeX
+
+$$
+\\begin{align*}
+\\mathbf{E}(t,x) &= \\sum_{\\omega} \\mathbf{E}_0^{\\omega} ~ exp\\Big( i\\omega t - \\frac{i\\hat{n}(\\omega) \\omega x}{c}\\Big) \\\\ &= \\sum\\mathbf{E}_0^{\\omega} \\colorbox{white}{$exp(-\\frac{\\alpha x}{2})$} ~exp\\Big(i\\omega t - \\frac{i n \\omega x}{c}\\Big)
+\\end{align*}
+$$ <!-- .element: data-eq-speed="0.1" -->
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Misc
+### The Marquee element
+
+This element is used to insert a scrolling area of text. You can control what happens when the text reaches the edges of its content area using its attributes:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Misc
+### The Marquee element
+
+This element is used to insert a scrolling area of text. You can control what happens when the text reaches the edges of its content area using its attributes:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+# Title
+
+<marquee>Hello World</marquee>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Mark
+This HTML element represents text which is marked or highlighted
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Mark
+This HTML element represents text which is marked or highlighted
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.slide
+
+# Title
+
+<mark>salamander</mark>
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: 628c4fbe-76ea-464d-9065-fd1ef0f62cc7
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{{}, Annotation[{{{}, {}, Annotation[{Hue[0.67, 0.6, 0.6], Directive[PointSize[Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Line[{{6.520919876942366, 4.2208686208632145}, {6.555484225742942, 3.9085100340468837}, {6.53257941039147, 3.3236046440444134}, {7.025990080817879, 3.2077711077187243}, {7.326205941984016, 3.187888396023224}, {7.720344536160944, 3.4761617197908223}, {8.742629638839698, 3.575799468400298}, {9.903884729125707, 4.558563896460706}, {9.190819773235898, 4.811911903792274}, {9.243498760509837, 5.219699997809268}, {9.687687935416045, 5.270085580634117}, {9.13948115308678, 6.065234132577748}, {8.600295497908538, 5.472016515361739}, {7.207608288971277, 4.866755187027048}, {7.305134443956696, 5.390371681488428}, {7.390967788726899, 5.776425153250663}, {7.12484409878731, 6.08352405915598}, {7.210103231023146, 6.916215542705859}, {8.396120596134773, 6.824559899666891}, {8.241913798803207, 7.206495200164785}, {8.283525290214941, 7.268218814421433}, {8.474522578409028, 7.4806636865944665}, {9.186130868016797, 8.37557046754619}, {9.393541319056627, 8.410738627259033}, {9.754227175615501, 8.132855935141599}, {9.853713934922517, 8.841987415451108}, {9.611493023763696, 9.55981194715254}, {9.396267233822343, 9.925962953349428}, {8.027562792585508, 9.58578472902098}, {7.279493494040872, 8.735246673043253}, {7.20310430784761, 8.752649698614213}, {7.2986908055365, 8.066300464853132}, {6.673636976322703, 8.616911133593856}, {6.652919202107041, 8.277756588472673}, {6.165653073358682, 8.208676147858064}, {5.945412583226637, 7.346610531207207}, {5.715416400809636, 7.248619288341144}, {4.946379393197333, 8.166257695175505}, {5.206595894358596, 8.852486714710244}, {5.05460265784393, 9.982440764393512}, {3.7930039249752445, 9.450732641420958}, {1.9462461874251535, 9.817613182419828}, {1.101496928518535, 8.875929239113304}, {1.1309163235772757, 8.656364289729206}, {1.687291862493192, 8.023316069933461}, {1.2767003285304157, 7.4071478250017435}, {1.4209348237893193, 7.07322548353048}, {1.0085571363250367, 6.794577367389598}, {0.8968850180959786, 6.413558325351028}, {0.3785329192532805, 6.476165471837412}, {0.7624058906797848, 6.185168902075735}, {0.7753037967360155, 5.135573640600457}, {0.6770347701573742, 4.368817227962271}, {0.524430927941506, 4.092990153778406}, {0.5425170894523079, 3.18604953815836}, {0.4416537313775071, 1.9851359429430149}, {0.19898840597816436, 1.7322713227474829}, {0.5812385182863955, 1.7507183453946573}, {0.7597806462843693, 2.087813887256993}, {1.1255143062731965, 2.03729076908594}, {1.2361645211670869, 2.1761322663674187}, {1.4142626722412088, 3.5755164950762586}, {1.5277314186056046, 3.8474842626991412}, {1.624541411578364, 4.013835021746182}, {2.473416157881705, 4.3816092165774005}, {2.6820953955673965, 2.8654515189032526}, {2.369515269429001, 1.9902008332095078}, {2.265027162743849, 1.786478216848164}, {2.3009513478370613, 0.8842447974589018}, {2.6944217832678685, 0.2257859758173275}, {3.3042126061709687, 1.3583188626076126}, {4.052816475924281, 0.7460687788066656}, {4.668996571087627, 0.2831270385342566}, {4.8094407691809815, 0.051671225669704945}, {5.655661876839037, 0.7353188934400734}, {6.027553777609869, 0.9012409084628215}, {6.475552645554055, 0.14812375876677608}, {7.464767061688706, 0.6701847343502254}, {8.202202238250678, 0.32324515785161045}, {9.628531380764425, 1.2586176499825075}, {9.373548743664484, 2.4558007386761083}, {8.067853421417393, 2.177730874581374}, {6.636990287828457, 1.7492848171692499}, {6.029595040653635, 2.377016333700932}, {4.959238018425431, 1.4472214079514578}, {4.6778852448133605, 1.7978267805188342}, {4.538049638089805, 2.1463620468807587}, {4.293323626263743, 2.65876775759053}, {4.528177178042807, 3.0082440707666924}, {4.501780734292808, 3.536233791449428}, {4.388721573928908, 3.5620765203452387}, {3.9618010181968644, 4.830473262132631}, {3.3609141584020152, 4.883325918527355}, {2.2330430146868707, 6.236207985579982}, {3.03341267562357, 7.366271746182937}, {4.093836597440408, 6.32546052811557}, {4.012298037504756, 5.991412138872012}, {4.764086836171362, 5.640588063089775}, {4.8991374039683855, 4.879901064237073}, {6.1882683994297665, 5.2364518004408955}, {6.520919876942366, 4.2208686208632145}}]}, "Charting`Private`Tag#1"]}}, Association["HighlightElements" -> Association["Label" -> {"XYLabel"}, "Ball" -> {"InterpolatedBall"}], "LayoutOptions" -> Association["PanelPlotLayout" -> Association[], "PlotRange" -> {{0, 9.903884729125707}, {0, 9.982440764393512}}, "Frame" -> {{False, False}, {False, False}}, "AxesOrigin" -> {0, 0}, "ImageSize" -> {500, 500/GoldenRatio}, "Axes" -> {True, True}, "LabelStyle" -> {}, "AspectRatio" -> GoldenRatio^(-1), "DefaultStyle" -> {Directive[PointSize[Rational[1, 72]], RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]]}, "HighlightLabelingFunctions" -> Association["CoordinatesToolOptions" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "ScalingFunctions" -> {{Identity, Identity}, {Identity, Identity}}], "Primitives" -> {}, "GCFlag" -> False], "Meta" -> Association["DefaultHighlight" -> {"Dynamic", None}, "Index" -> {}, "Function" -> ListLinePlot, "GroupHighlight" -> False]], "DynamicHighlight"], {{}, {}}}, {DisplayFunction -> Identity, DisplayFunction -> Identity, PlotInteractivity :> $PlotInteractivity, DefaultBaseStyle -> {"PlotGraphics", "Graphics"}, AspectRatio -> GoldenRatio^(-1), Axes -> {True, True}, AxesLabel -> {None, None}, AxesOrigin -> {0, 0}, DisplayFunction :> Identity, Epilog -> {Point[{{6.520919876942366, 4.2208686208632145}, {8.600295497908538, 5.472016515361739}, {9.903884729125707, 4.558563896460706}, {7.12484409878731, 6.08352405915598}, {4.946379393197333, 8.166257695175505}, {7.279493494040872, 8.735246673043253}, {2.2330430146868707, 6.236207985579982}, {7.2986908055365, 8.066300464853132}, {6.029595040653635, 2.377016333700932}, {5.945412583226637, 7.346610531207207}, {0.524430927941506, 4.092990153778406}, {7.326205941984016, 3.187888396023224}, {2.369515269429001, 1.9902008332095078}, {0.5425170894523079, 3.18604953815836}, {4.012298037504756, 5.991412138872012}, {9.186130868016797, 8.37557046754619}, {5.655661876839037, 0.7353188934400734}, {7.207608288971277, 4.866755187027048}, {9.373548743664484, 2.4558007386761083}, {8.396120596134773, 6.824559899666891}, {9.611493023763696, 9.55981194715254}, {1.1255143062731965, 2.03729076908594}, {1.2767003285304157, 7.4071478250017435}, {6.165653073358682, 8.208676147858064}, {4.501780734292808, 3.536233791449428}, {3.3042126061709687, 1.3583188626076126}, {9.687687935416045, 5.270085580634117}, {9.396267233822343, 9.925962953349428}, {6.673636976322703, 8.616911133593856}, {8.742629638839698, 3.575799468400298}, {0.19898840597816436, 1.7322713227474829}, {8.241913798803207, 7.206495200164785}, {4.293323626263743, 2.65876775759053}, {1.624541411578364, 4.013835021746182}, {3.03341267562357, 7.366271746182937}, {4.528177178042807, 3.0082440707666924}, {7.390967788726899, 5.776425153250663}, {7.210103231023146, 6.916215542705859}, {0.3785329192532805, 6.476165471837412}, {4.764086836171362, 5.640588063089775}, {1.101496928518535, 8.875929239113304}, {8.027562792585508, 9.58578472902098}, {7.720344536160944, 3.4761617197908223}, {0.7597806462843693, 2.087813887256993}, {9.754227175615501, 8.132855935141599}, {1.4142626722412088, 3.5755164950762586}, {2.473416157881705, 4.3816092165774005}, {1.2361645211670869, 2.1761322663674187}, {4.8991374039683855, 4.879901064237073}, {4.6778852448133605, 1.7978267805188342}, {2.6944217832678685, 0.2257859758173275}, {9.190819773235898, 4.811911903792274}, {5.715416400809636, 7.248619288341144}, {8.202202238250678, 0.32324515785161045}, {4.8094407691809815, 0.051671225669704945}, {4.388721573928908, 3.5620765203452387}, {8.067853421417393, 2.177730874581374}, {7.20310430784761, 8.752649698614213}, {9.243498760509837, 5.219699997809268}, {5.206595894358596, 8.852486714710244}, {1.4209348237893193, 7.07322548353048}, {2.3009513478370613, 0.8842447974589018}, {3.3609141584020152, 4.883325918527355}, {0.6770347701573742, 4.368817227962271}, {4.093836597440408, 6.32546052811557}, {1.687291862493192, 8.023316069933461}, {9.628531380764425, 1.2586176499825075}, {4.052816475924281, 0.7460687788066656}, {7.305134443956696, 5.390371681488428}, {2.265027162743849, 1.786478216848164}, {0.7624058906797848, 6.185168902075735}, {0.4416537313775071, 1.9851359429430149}, {7.025990080817879, 3.2077711077187243}, {4.959238018425431, 1.4472214079514578}, {1.5277314186056046, 3.8474842626991412}, {9.393541319056627, 8.410738627259033}, {8.474522578409028, 7.4806636865944665}, {5.05460265784393, 9.982440764393512}, {4.668996571087627, 0.2831270385342566}, {1.1309163235772757, 8.656364289729206}, {3.9618010181968644, 4.830473262132631}, {1.0085571363250367, 6.794577367389598}, {6.555484225742942, 3.9085100340468837}, {0.8968850180959786, 6.413558325351028}, {2.6820953955673965, 2.8654515189032526}, {6.475552645554055, 0.14812375876677608}, {6.652919202107041, 8.277756588472673}, {0.7753037967360155, 5.135573640600457}, {6.1882683994297665, 5.2364518004408955}, {7.464767061688706, 0.6701847343502254}, {6.53257941039147, 3.3236046440444134}, {9.13948115308678, 6.065234132577748}, {0.5812385182863955, 1.7507183453946573}, {6.636990287828457, 1.7492848171692499}, {6.027553777609869, 0.9012409084628215}, {1.9462461874251535, 9.817613182419828}, {8.283525290214941, 7.268218814421433}, {4.538049638089805, 2.1463620468807587}, {3.7930039249752445, 9.450732641420958}, {9.853713934922517, 8.841987415451108}}]}, Frame -> {{False, False}, {False, False}}, FrameLabel -> {{None, None}, {None, None}}, FrameTicks -> {{Automatic, Automatic}, {Automatic, Automatic}}, GridLines -> {None, None}, GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]], ImageSize -> 500, Method -> {"AxisPadding" -> Scaled[0.02], "DefaultBoundaryStyle" -> Automatic, "DefaultGraphicsInteraction" -> {"Version" -> 1.2, "TrackMousePosition" -> {True, False}, "Effects" -> {"Highlight" -> {"ratio" -> 2}, "HighlightPoint" -> {"ratio" -> 2}, "Droplines" -> {"freeformCursorMode" -> True, "placement" -> {"x" -> "All", "y" -> "None"}}}}, "DefaultMeshStyle" -> AbsolutePointSize[6], "DefaultPlotStyle" -> {Directive[RGBColor[0.24, 0.6, 0.8], AbsoluteThickness[2]], Directive[RGBColor[0.95, 0.627, 0.1425], AbsoluteThickness[2]], Directive[RGBColor[0.455, 0.7, 0.21], AbsoluteThickness[2]], Directive[RGBColor[0.922526, 0.385626, 0.209179], AbsoluteThickness[2]], Directive[RGBColor[0.578, 0.51, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.772079, 0.431554, 0.102387], AbsoluteThickness[2]], Directive[RGBColor[0.4, 0.64, 1], AbsoluteThickness[2]], Directive[RGBColor[1, 0.75, 0], AbsoluteThickness[2]], Directive[RGBColor[0.8, 0.4, 0.76], AbsoluteThickness[2]], Directive[RGBColor[0.637, 0.65, 0], AbsoluteThickness[2]], Directive[RGBColor[0.915, 0.3325, 0.2125], AbsoluteThickness[2]], Directive[RGBColor[0.40082222609352647, 0.5220066643438841, 0.85], AbsoluteThickness[2]], Directive[RGBColor[0.9728288904374106, 0.621644452187053, 0.07336199581899142], AbsoluteThickness[2]], Directive[RGBColor[0.736782672705901, 0.358, 0.5030266573755369], AbsoluteThickness[2]], Directive[RGBColor[0.28026441037696703, 0.715, 0.4292089322474965], AbsoluteThickness[2]]}, "DomainPadding" -> Scaled[0.02], "RangePadding" -> Scaled[0.05], "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> Automatic, "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "IncludeHighlighting" -> "CurrentSet", "HighlightStyle" -> Automatic, "OptimizePlotMarkers" -> True, "CoordinatesToolOptions" -> {"DisplayFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & ), "CopiedValueFunction" -> ({(Identity[#1] & )[#1[[1]]], (Identity[#1] & )[#1[[2]]]} & )}}, PlotInteractivity :> Association["SystemLimits" -> 3000, "UserLimits" -> 10000, "UserInteractivity" -> True], PlotRange -> {{0, 9.903884729125707}, {0, 9.982440764393512}}, PlotRangeClipping -> True, PlotRangePadding -> {{Scaled[0.02], Scaled[0.02]}, {Scaled[0.02], Scaled[0.05]}}, Ticks -> {Automatic, Automatic}, PlotInteractivity :> $PlotInteractivity}]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -194,11 +194,30 @@ server.resetIO = () => {
         }
     };
 
-    server.io = {};
+    const requestObject = (uid) => {
+      const p = new Deferred();
+      promises ??= {};
+
+      if (Array.isArray(promises[uid])) {
+        promises[uid].push(p);
+      } else {
+        promises[uid] = [p];
+      }
+
+      return p.promise;
+    }
+
+    server.io = {
+      fetch(command, args = []) {
+        if (command !== 'CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject') {
+          return Promise.reject(new Error(`Unsupported static server request: ${command}`));
+        }
+
+        return requestObject(String(args[0]));
+      }
+    };
 
     server.ask = (what) => {
-        const p = new Deferred();
-        
         if (what.length < 42) {
           console.error('Unknown command');
           console.error(what);
@@ -206,13 +225,7 @@ server.resetIO = () => {
         }
         //throw what;
         const offset = 'CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject["'.length;
-        if (Array.isArray(promises[what.slice(offset,-2)])) {
-          promises[what.slice(offset,-2)].push(p);
-        } else {
-          promises[what.slice(offset,-2)] = [p];
-        }
-        
-        return p.promise;
+        return requestObject(what.slice(offset,-2));
       }
 
       server.getSymbol = (name) => {

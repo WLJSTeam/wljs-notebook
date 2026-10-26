@@ -186,10 +186,10 @@ AutocompleteComponent[OptionsPattern[]] := With[{
       inputField.blur();
       if (typeof data == 'string') {
         if (data.trim() == '') return;
-        server.kernel.emitt('<Event/>', '"'+data+'"', "Entered");
+        server.kernel.io.fire('<Event/>', String(data), "Entered");
       } else {
         if (!clearOnSubmit) inputField.value = renderedArray.find((el) => el.index === data).name;
-        server.kernel.emitt('<Event/>', '"'+renderedArray[data].name+'"', "Selected");
+        server.kernel.io.fire('<Event/>', String(renderedArray[data].name), "Selected");
       }
     } 
 
@@ -203,7 +203,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
                 document.addEventListener("keydown", keyHandler);
                 window.addEventListener('click', outOfFocus);
             }
-            server.kernel.ask('<HandlerSymbol/>["'+encodeURIComponent(trimmed)+'"]', 'callback').then(async (result) => {
+            server.kernel.io.fetch('<HandlerSymbol/>', [trimmed]).then(async (result) => {
                 const assoc = await interpretate(result, {});
                 if (!assoc) return;
                 if (!assoc.length) return;

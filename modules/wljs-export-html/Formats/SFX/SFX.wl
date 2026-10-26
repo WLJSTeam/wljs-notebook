@@ -1,3 +1,5 @@
+(* Embeds project files into notebooks and restores them beside the notebook. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`SFX`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -60,7 +62,7 @@ applyToNotebook[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebo
 ] ]
 
 MergeDirectories[source_String, target_String] := (
-  Echo[StringTemplate["Copy directory `` to ``"][source, target]];
+  Echo[StringJoin["[wljs-export-html/SFX] ", StringTemplate["Copy directory `` to ``"][source, target]]];
   If[!DirectoryQ[target], CreateDirectory[target]; ];
   
   With[{names = FileNames[All, source]},
@@ -74,12 +76,13 @@ MergeDirectories[source_String, target_String] := (
 
       Map[Function[file,
         CopyFile[file, FileNameJoin[{target, FileNameTake[file, -1]}], OverwriteTarget->True];
-        Echo[StringTemplate["Copied `` to ``"][file, FileNameJoin[{target, FileNameTake[file, -1]}]]];
+        Echo[StringJoin["[wljs-export-html/SFX] ", StringTemplate["Copied `` to ``"][file, FileNameJoin[{target, FileNameTake[file, -1]}]]]];
       ], files];
     ]
   ];
 );
 
+(* Clear the field before extraction so restored archives are not re-saved. *)
 extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"] && Length[ n["ZIPArchive"] ] > 0, With[{blob = n["ZIPArchive"]["Main"], dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]},
     n["ZIPArchive"] = <||>;
     With[{arvx = FileNameJoin[{dir, "_wljs_arxv.zip"}]},
@@ -97,6 +100,7 @@ extract[n_nb`NotebookObj] := If[MemberQ[n["Properties"], "ZIPArchive"] && Length
     
 ] ]
 
+(* Stage only selected files, then store the archive as base64 notebook data. *)
 embedArchive[n_nb`NotebookObj, files_List] := With[{
     dir = If[DirectoryQ[#], #, DirectoryName[#] ]& @ n["Path"]
 },
@@ -104,16 +108,16 @@ embedArchive[n_nb`NotebookObj, files_List] := With[{
         intermediate = CreateDirectory[FileNameJoin @ {$TemporaryDirectory, "__selected_"<>(Internal`NoWR`RandomWord[])}]
     },
         If[FailureQ[intermediate],
-            Echo["Failed to copy project files!!!"];
+            Echo["[wljs-export-html/SFX] Failed to copy project files!"];
             Return[$Failed];
         ];
 
         Map[If[DirectoryQ[#],
             CopyDirectory[#, FileNameJoin[{intermediate, FileNameTake[#] }] ];
-            Echo["Copying dir"<>#<>" >> "<>FileNameJoin[{intermediate, FileNameTake[#] }] ];
+            Echo[StringJoin["[wljs-export-html/SFX] Copying directory ", #, " to ", FileNameJoin[{intermediate, FileNameTake[#]}], "."]];
         ,
             CopyFile[#, FileNameJoin[{intermediate, FileNameTake[#] }] ];
-            Echo["Copying file"<>#<>" >> "<>FileNameJoin[{intermediate, FileNameTake[#] }] ];
+            Echo[StringJoin["[wljs-export-html/SFX] Copying file ", #, " to ", FileNameJoin[{intermediate, FileNameTake[#]}], "."]];
         ]&, files];
 
         With[{p = CreateArchive[intermediate, $TemporaryDirectory, "OverwriteTarget"->True]},

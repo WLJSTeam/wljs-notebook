@@ -1,328 +1,477 @@
-<|"Notebook" -> <|"Controller" -> "af3e8c09-8e9f-4bf7-b6c4-7b77127a75bf", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$857], "FocusedCellSelection" -> 
-    {142, 141}, "HaveToSaveAs" -> True, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "0ad8fe86-7c3a-4f2a-b898-4e06fd826adc", 
-   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
-ules/wljs-demos-archive/Demos/Frontend symbols/B - Deeper Look.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Frontend symbols", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$780]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Deeper Look", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$780]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Frontend symbols\n\n## Deeper Look\nWhen a \
-symbol is evaluated, the runtime does not create or store its \
-state\[LongDash]following the call (evaluate) and forget \
-principle\[LongDash]except for the side effects made by evaluating this \
-symbol. Here are a few rules for them:\n\n<div class=\"text-sm mt-2\">\n\n- A \
-frontend symbol is an asynchronous JavaScript function with 2 arguments\n- A \
-frontend symbol should return either nothing or a normal JavaScript \
-expression: string, number, array, or object. It can also return a function \
-only if the result is used by the parent frontend symbol, but not by the \
-Wolfram Kernel via `FrontFetch`\n- Passed arguments must be evaluated using \
-the `window.interpretate` function\n- The starting frontend context is always \
-`core`; you can then diverge the evaluation to any other context\n\n  \
-\n</div>\n\n\n:::tip\nPlease read our documentation on the properties and \
-fundamental principles of frontend symbols\n:::\n\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bac9d68a-7992-479f-9e19-d7b75fc22beb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "# Frontend symbols\n\n## Deeper Look\nWhen a symbol is \
-evaluated, the runtime does not create or store its state\[LongDash]following \
-the call (evaluate) and forget principle\[LongDash]except for the side \
-effects made by evaluating this symbol. Here are a few rules for \
-them:\n\n<div class=\"text-sm mt-2\">\n\n- A frontend symbol is an \
-asynchronous JavaScript function with 2 arguments\n- A frontend symbol should \
-return either nothing or a normal JavaScript expression: string, number, \
-array, or object. It can also return a function only if the result is used by \
-the parent frontend symbol, but not by the Wolfram Kernel via `FrontFetch`\n- \
-Passed arguments must be evaluated using the `window.interpretate` \
-function\n- The starting frontend context is always `core`; you can then \
-diverge the evaluation to any other context\n\n  \n</div>\n\n\n:::tip\nPlease \
-read our documentation on the properties and fundamental principles of \
-frontend symbols\n:::", "Display" -> "markdown", 
-    "Hash" -> "f2e9d0da-8dcc-4e10-a3d9-007cab9fcb30", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nFrontend symbols can be two types:\n\n- Basic (you have \
-seen it in A-section)\n- Instanced and prototype-based\n\nThe last one is the \
-most interesting, since it behaves like a class and all created instanced \
-have local states.\n\nLet's look at a simple example that demonstrates local \
-state:", "Display" -> "codemirror", 
-    "Hash" -> "b305526e-8c64-449d-9931-94f19880042d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "Frontend symbols can be two types:\n\n- Basic (you have seen \
-it in A-section)\n- Instanced and prototype-based\n\nThe last one is the most \
-interesting, since it behaves like a class and all created instanced have \
-local states.\n\nLet's look at a simple example that demonstrates local \
-state:", "Display" -> "markdown", "Hash" -> 
-     "d6ef3bdf-464c-4c47-afa5-c66a6ebfca19", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".js\ncore.PlaceholderClock = async (args, env) => {\n  \
-env.local.start = new Date();\n  env.local.clock = setInterval(() => {\n    \
-const d = new Date() - env.local.start;\n    env.element.innerHTML = d;\n  }, \
-10);\n};\n\ncore.PlaceholderClock.destroy = async (args, env) => {\n  \
-clearInterval(env.local.clock);\n  const passed = new Date() - \
-env.local.start;\n  alert(passed+'ms \
-passed');\n};\n\ncore.PlaceholderClock.virtual = true;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5cec3917-cf69-4d9d-aeeb-93821d396604", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "core.PlaceholderClock = async (args, env) => {\n  \
-env.local.start = new Date();\n  env.local.clock = setInterval(() => {\n    \
-const d = new Date() - env.local.start;\n    env.element.innerHTML = d;\n  }, \
-10);\n};\n\ncore.PlaceholderClock.destroy = async (args, env) => {\n  \
-clearInterval(env.local.clock);\n  const passed = new Date() - \
-env.local.start;\n  alert(passed+'ms \
-passed');\n};\n\ncore.PlaceholderClock.virtual = true;", "Display" -> "js", 
-    "Hash" -> "111935a1-7dc2-4ec1-a735-881f7f4726ff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nThis `PlaceholderClock` symbol represents a ticking \
-timer that is displayed live on a provided DOM element and pops up a window \
-with the elapsed time when removed. To provide a DOM element, we can define \
-an output form for this symbol on the Wolfram Kernel with our display \
-function defined in JavaScript:", "Display" -> "codemirror", 
-    "Hash" -> "daaeec47-375f-465d-9a3f-1304ca1cd026", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "This `PlaceholderClock` symbol represents a ticking timer \
-that is displayed live on a provided DOM element and pops up a window with \
-the elapsed time when removed. To provide a DOM element, we can define an \
-output form for this symbol on the Wolfram Kernel with our display function \
-defined in JavaScript:", "Display" -> "markdown", 
-    "Hash" -> "fc9874c1-2ae5-42bc-9d4d-f07d2dc3053a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "PlaceholderClock /: MakeBoxes[p_PlaceholderClock, \
-StandardForm] := ViewBox[p, p];", "Display" -> "codemirror", 
-    "Hash" -> "b3785e7c-3b18-4d6b-9e84-57872eac8d58", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nThe first argument of `ViewBox` is the actual underlying \
-expression, while the second one will be evaluated on the frontend. In this \
-case, the `PlaceholderClock` symbol is defined on both ends: kernel and \
-frontend. On the kernel it does nothing, whereas as a frontend symbol it \
-shows a ticking timer:", "Display" -> "codemirror", 
-    "Hash" -> "b10f89de-4672-4208-80fb-655c289321ac", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "The first argument of `ViewBox` is the actual underlying \
-expression, while the second one will be evaluated on the frontend. In this \
-case, the `PlaceholderClock` symbol is defined on both ends: kernel and \
-frontend. On the kernel it does nothing, whereas as a frontend symbol it \
-shows a ticking timer:", "Display" -> "markdown", 
-    "Hash" -> "8989e031-be29-4404-82da-9e47ff34488a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "PlaceholderClock[]\nPlaceholderClock[]\nPlaceholderClock[]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bc1bc6ad-8aab-45ad-be23-aec92cbde17c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "(*VB[*)(PlaceholderClock[])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk\
-5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dfd1cc03-df43-486e-969c-0cb23ba6157f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "(*VB[*)(PlaceholderClock[])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk\
-5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3804338a-5661-4581-9188-f0ca91b309a4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "(*VB[*)(PlaceholderClock[])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk\
-5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ddd611b1-5a30-4fd4-9cf5-eb2f2f8522bd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nTry to copy/paste/delete it across cells.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dc650173-e906-4144-b250-ed3183cb515b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "Try to copy/paste/delete it across cells.", 
-    "Display" -> "markdown", "Hash" -> 
-     "d0fa3456-c96d-44de-a0f8-12988fed83ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nWe can take advantage of having a different method for \
-update events to avoid costly reevaluation of the entire expression tree. For \
-example, instead of redrawing everything on a graph when the data changes, we \
-update only the changed points rather than disposing of and recreating the \
-graph from scratch.\n\nLet's enhance our previous animation from section A \
-and turn it into a functional and easily reusable block:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "03f2a881-e079-4b5f-a2f6-f0db65295dc1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "We can take advantage of having a different method for update \
-events to avoid costly reevaluation of the entire expression tree. For \
-example, instead of redrawing everything on a graph when the data changes, we \
-update only the changed points rather than disposing of and recreating the \
-graph from scratch.\n\nLet's enhance our previous animation from section A \
-and turn it into a functional and easily reusable block:", 
-    "Display" -> "markdown", "Hash" -> 
-     "bfd8c907-4a2f-4542-a355-0fe4cbebfd86", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".js\nfunction fillScreen(context, data) {\n  for (let i = 0; \
-i < 40; ++i) {\n    for (let j = 0; j < 40; ++j) {\n      if (data[i][j] > 0) \
-{\n        context.fillStyle = \"rgba(255,0,0,0.4)\";\n        \
-context.fillRect(i * 10 + 1, j * 10 + 1, 8, 8);\n      } else {\n        \
-context.fillStyle = \"rgba(255,255,255,0.4)\";\n        context.fillRect(i * \
-10 + 1, j * 10 + 1, 8, 8);\n      }\n    }\n  }\n}\n\ncore.drawArray = async \
-(args, env) => {\n  let data = await interpretate(args[0], env);\n  if (data \
-instanceof NumericArrayObject) {\n    data = data.normal();\n  }\n\n  const \
-canvas = document.createElement(\"canvas\");\n  canvas.width = 400;\n  \
-canvas.height = 400;\n\n  let context = canvas.getContext(\"2d\");\n  \
-context.fillStyle = \"lightgray\";\n  context.fillRect(0, 0, 500, 500);\n\n  \
-fillScreen(context, data);\n\n  env.element.appendChild(canvas);\n  \
-env.local.ctx = context;\n};\n\ncore.drawArray.update = async (args, env) => \
-{\n  let data = await interpretate(args[0], env);\n  if (data instanceof \
-NumericArrayObject) {\n    data = data.normal();\n  }\n  //now we are using \
-new data\n  const context = env.local.ctx;\n  fillScreen(context, \
-data);\n};\n\ncore.drawArray.destroy = (args, env) => delete \
-env.local.ctx;\ncore.drawArray.virtual = true;", "Display" -> "codemirror", 
-    "Hash" -> "9a4b38ba-8af5-43e0-8482-c769cc4fbb62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "\nfunction fillScreen(context, data) {\n  for (let i = 0; i < \
-40; ++i) {\n    for (let j = 0; j < 40; ++j) {\n      if (data[i][j] > 0) {\n \
-       context.fillStyle = \"rgba(255,0,0,0.4)\";\n        context.fillRect(i \
-* 10 + 1, j * 10 + 1, 8, 8);\n      } else {\n        context.fillStyle = \
-\"rgba(255,255,255,0.4)\";\n        context.fillRect(i * 10 + 1, j * 10 + 1, \
-8, 8);\n      }\n    }\n  }\n}\n\ncore.drawArray = async (args, env) => {\n  \
-let data = await interpretate(args[0], env);\n  if (data instanceof \
-NumericArrayObject) {\n    data = data.normal();\n  }\n\n  const canvas = \
-document.createElement(\"canvas\");\n  canvas.width = 400;\n  canvas.height = \
-400;\n\n  let context = canvas.getContext(\"2d\");\n  context.fillStyle = \
-\"lightgray\";\n  context.fillRect(0, 0, 500, 500);\n\n  fillScreen(context, \
-data);\n\n  env.element.appendChild(canvas);\n  env.local.ctx = \
-context;\n};\n\ncore.drawArray.update = async (args, env) => {\n  let data = \
-await interpretate(args[0], env);\n  if (data instanceof NumericArrayObject) \
-{\n    data = data.normal();\n  }\n  //now we are using new data\n  const \
-context = env.local.ctx;\n  fillScreen(context, \
-data);\n};\n\ncore.drawArray.destroy = (args, env) => delete \
-env.local.ctx;\ncore.drawArray.virtual = true;", "Display" -> "js", 
-    "Hash" -> "3af0b759-8bb5-4e54-975b-0c370e98dde6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nLet's try to use it with defined output forms:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "70c67a7b-1099-40a9-9534-7406e28e4da2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "Let's try to use it with defined output forms:", 
-    "Display" -> "markdown", "Hash" -> 
-     "c08dd96f-bdc8-4ce6-9a8c-84b30a8b2dff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "board = RandomInteger[1, {40, 40}];\ndrawArray /: \
-MakeBoxes[a_drawArray, StandardForm] := ViewBox[a,a]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "649412e1-5441-4cd5-8eb0-c94388240f62", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nand then create our first instance using the output form \
-of the `drawArray` symbol:", "Display" -> "codemirror", 
-    "Hash" -> "1ef69087-cef7-4530-b5af-ce5d5bccb972", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "and then create our first instance using the output form of \
-the `drawArray` symbol:", "Display" -> "markdown", 
-    "Hash" -> "7cbd8b68-70ab-46ab-a93b-8a044ec2b59a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "drawArray[board // Offload]", "Display" -> "codemirror", 
-    "Hash" -> "d9c3d85b-47b5-4194-aa14-a00ecfa18b5e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\n\n:::info\nIf you want to display this board on a slide \
-or markdown cell, convert it to a frontend object, \
-i.e\n\n```wolfram\ndrawArray /: MakeBoxes[a_drawArray, WLXForm] := With[{f = \
-CreateFrontEndObject[a]}, MakeBoxes[f, WLXForm]]\n```\n\n`ViewBox` only works \
-in `StandardForm` output.\n:::", "Display" -> "codemirror", 
-    "Hash" -> "c3d22da0-13a7-4bc6-bf56-1f4ae64baf1b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "\n:::info\nIf you want to display this board on a slide or \
-markdown cell, convert it to a frontend object, i.e\n\n```wolfram\ndrawArray \
-/: MakeBoxes[a_drawArray, WLXForm] := With[{f = CreateFrontEndObject[a]}, \
-MakeBoxes[f, WLXForm]]\n```\n\n`ViewBox` only works in `StandardForm` \
-output.\n:::", "Display" -> "markdown", 
-    "Hash" -> "c8849304-7451-4566-b782-86d6c781171a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nNow let's perform an update cycle of the board symbol, \
-which should be immediately reflected in our array renderer above.", 
-    "Display" -> "codemirror", "Hash" -> 
-     "16ed6ab7-6e05-4a57-b594-fde881338545", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "Now let's perform an update cycle of the board symbol, which \
-should be immediately reflected in our array renderer above.", 
-    "Display" -> "markdown", "Hash" -> 
-     "7ffc2721-5686-44bf-bfe6-9dd08e673c0d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "Do[\n  board = CellularAutomaton[\"GameOfLife\", board];\n  \
-Pause[0.1];\n, {i, 1, 100}]", "Display" -> "codemirror", 
-    "Hash" -> "aa0267f1-a135-438f-ab23-c3c1bda9ae5f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> ".md\nAll instances update live! Even if you copy and paste \
-the same expression, its display will be unique and will still be properly \
-updated.", "Display" -> "codemirror", 
-    "Hash" -> "0134d77f-a77a-433d-b769-428b3fcda105", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>, 
-   <|"Data" -> "All instances update live! Even if you copy and paste the \
-same expression, its display will be unique and will still be properly \
-updated.", "Display" -> "markdown", 
-    "Hash" -> "435381ab-5715-4a1d-87df-fa24dd8b4422", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "88c0b3b9-e768-4574-9ab4-1ab0161a7a11"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Frontend symbols
+
+## Deeper Look
+When a symbol is evaluated, the runtime does not create or store its state—following the call (evaluate) and forget principle—except for the side effects made by evaluating this symbol. Here are a few rules for them:
+
+<div class="text-sm mt-2">
+
+- A frontend symbol is an asynchronous JavaScript function with 2 arguments
+- A frontend symbol should return either nothing or a normal JavaScript expression: string, number, array, or object. It can also return a function only if the result is used by the parent frontend symbol, but not by the Wolfram Kernel via `FrontFetch`
+- Passed arguments must be evaluated using the `window.interpretate` function
+- The starting frontend context is always `core`; you can then diverge the evaluation to any other context
+
+  
+</div>
+
+
+:::tip
+Please read our documentation on the properties and fundamental principles of frontend symbols
+:::
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Frontend symbols
+
+## Deeper Look
+When a symbol is evaluated, the runtime does not create or store its state—following the call (evaluate) and forget principle—except for the side effects made by evaluating this symbol. Here are a few rules for them:
+
+<div class="text-sm mt-2">
+
+- A frontend symbol is an asynchronous JavaScript function with 2 arguments
+- A frontend symbol should return either nothing or a normal JavaScript expression: string, number, array, or object. It can also return a function only if the result is used by the parent frontend symbol, but not by the Wolfram Kernel via `FrontFetch`
+- Passed arguments must be evaluated using the `window.interpretate` function
+- The starting frontend context is always `core`; you can then diverge the evaluation to any other context
+
+  
+</div>
+
+
+:::tip
+Please read our documentation on the properties and fundamental principles of frontend symbols
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Frontend symbols can be two types:
+
+- Basic (you have seen it in A-section)
+- Instanced and prototype-based
+
+The last one is the most interesting, since it behaves like a class and all created instanced have local states.
+
+Let's look at a simple example that demonstrates local state:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Frontend symbols can be two types:
+
+- Basic (you have seen it in A-section)
+- Instanced and prototype-based
+
+The last one is the most interesting, since it behaves like a class and all created instanced have local states.
+
+Let's look at a simple example that demonstrates local state:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.PlaceholderClock = async (args, env) => {
+  env.local.start = new Date();
+  env.local.clock = setInterval(() => {
+    const d = new Date() - env.local.start;
+    env.element.innerHTML = d;
+  }, 10);
+};
+
+core.PlaceholderClock.destroy = async (args, env) => {
+  clearInterval(env.local.clock);
+  const passed = new Date() - env.local.start;
+  alert(passed+'ms passed');
+};
+
+core.PlaceholderClock.virtual = true;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.PlaceholderClock = async (args, env) => {
+  env.local.start = new Date();
+  env.local.clock = setInterval(() => {
+    const d = new Date() - env.local.start;
+    env.element.innerHTML = d;
+  }, 10);
+};
+
+core.PlaceholderClock.destroy = async (args, env) => {
+  clearInterval(env.local.clock);
+  const passed = new Date() - env.local.start;
+  alert(passed+'ms passed');
+};
+
+core.PlaceholderClock.virtual = true;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This `PlaceholderClock` symbol represents a ticking timer that is displayed live on a provided DOM element and pops up a window with the elapsed time when removed. To provide a DOM element, we can define an output form for this symbol on the Wolfram Kernel with our display function defined in JavaScript:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This `PlaceholderClock` symbol represents a ticking timer that is displayed live on a provided DOM element and pops up a window with the elapsed time when removed. To provide a DOM element, we can define an output form for this symbol on the Wolfram Kernel with our display function defined in JavaScript:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+PlaceholderClock /: MakeBoxes[p_PlaceholderClock, StandardForm] := ViewBox[p, p];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The first argument of `ViewBox` is the actual underlying expression, while the second one will be evaluated on the frontend. In this case, the `PlaceholderClock` symbol is defined on both ends: kernel and frontend. On the kernel it does nothing, whereas as a frontend symbol it shows a ticking timer:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The first argument of `ViewBox` is the actual underlying expression, while the second one will be evaluated on the frontend. In this case, the `PlaceholderClock` symbol is defined on both ends: kernel and frontend. On the kernel it does nothing, whereas as a frontend symbol it shows a ticking timer:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+PlaceholderClock[]
+PlaceholderClock[]
+PlaceholderClock[]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlaceholderClock[])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlaceholderClock[])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(PlaceholderClock[])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkMIJ4AkAjISUxOzQAKpRY55+QnZwMAy3MK4g=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Try to copy/paste/delete it across cells.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Try to copy/paste/delete it across cells.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+We can take advantage of having a different method for update events to avoid costly reevaluation of the entire expression tree. For example, instead of redrawing everything on a graph when the data changes, we update only the changed points rather than disposing of and recreating the graph from scratch.
+
+Let's enhance our previous animation from section A and turn it into a functional and easily reusable block:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+We can take advantage of having a different method for update events to avoid costly reevaluation of the entire expression tree. For example, instead of redrawing everything on a graph when the data changes, we update only the changed points rather than disposing of and recreating the graph from scratch.
+
+Let's enhance our previous animation from section A and turn it into a functional and easily reusable block:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+function fillScreen(context, data) {
+  for (let i = 0; i < 40; ++i) {
+    for (let j = 0; j < 40; ++j) {
+      if (data[i][j] > 0) {
+        context.fillStyle = "rgba(255,0,0,0.4)";
+        context.fillRect(i * 10 + 1, j * 10 + 1, 8, 8);
+      } else {
+        context.fillStyle = "rgba(255,255,255,0.4)";
+        context.fillRect(i * 10 + 1, j * 10 + 1, 8, 8);
+      }
+    }
+  }
+}
+
+core.drawArray = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  if (data instanceof NumericArrayObject) {
+    data = data.normal();
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 400;
+
+  let context = canvas.getContext("2d");
+  context.fillStyle = "lightgray";
+  context.fillRect(0, 0, 500, 500);
+
+  fillScreen(context, data);
+
+  env.element.appendChild(canvas);
+  env.local.ctx = context;
+};
+
+core.drawArray.update = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  if (data instanceof NumericArrayObject) {
+    data = data.normal();
+  }
+  //now we are using new data
+  const context = env.local.ctx;
+  fillScreen(context, data);
+};
+
+core.drawArray.destroy = (args, env) => delete env.local.ctx;
+core.drawArray.virtual = true;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+function fillScreen(context, data) {
+  for (let i = 0; i < 40; ++i) {
+    for (let j = 0; j < 40; ++j) {
+      if (data[i][j] > 0) {
+        context.fillStyle = "rgba(255,0,0,0.4)";
+        context.fillRect(i * 10 + 1, j * 10 + 1, 8, 8);
+      } else {
+        context.fillStyle = "rgba(255,255,255,0.4)";
+        context.fillRect(i * 10 + 1, j * 10 + 1, 8, 8);
+      }
+    }
+  }
+}
+
+core.drawArray = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  if (data instanceof NumericArrayObject) {
+    data = data.normal();
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 400;
+  canvas.height = 400;
+
+  let context = canvas.getContext("2d");
+  context.fillStyle = "lightgray";
+  context.fillRect(0, 0, 500, 500);
+
+  fillScreen(context, data);
+
+  env.element.appendChild(canvas);
+  env.local.ctx = context;
+};
+
+core.drawArray.update = async (args, env) => {
+  let data = await interpretate(args[0], env);
+  if (data instanceof NumericArrayObject) {
+    data = data.normal();
+  }
+  //now we are using new data
+  const context = env.local.ctx;
+  fillScreen(context, data);
+};
+
+core.drawArray.destroy = (args, env) => delete env.local.ctx;
+core.drawArray.virtual = true;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's try to use it with defined output forms:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's try to use it with defined output forms:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+board = RandomInteger[1, {40, 40}];
+drawArray /: MakeBoxes[a_drawArray, StandardForm] := ViewBox[a,a]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+and then create our first instance using the output form of the `drawArray` symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+and then create our first instance using the output form of the `drawArray` symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+drawArray[board // Offload]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+:::info
+If you want to display this board on a slide or markdown cell, convert it to a frontend object, i.e
+
+```wolfram
+drawArray /: MakeBoxes[a_drawArray, WLXForm] := With[{
+  f = CreateFrontEndObject[a]
+},
+  MakeBoxes[f, WLXForm]
+]
+```
+
+`ViewBox` only works in `StandardForm` output.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+:::info
+If you want to display this board on a slide or markdown cell, convert it to a frontend object, i.e
+
+```wolfram
+drawArray /: MakeBoxes[a_drawArray, WLXForm] := With[{
+  f = CreateFrontEndObject[a]
+},
+  MakeBoxes[f, WLXForm]
+]
+```
+
+`ViewBox` only works in `StandardForm` output.
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now let's perform an update cycle of the board symbol, which should be immediately reflected in our array renderer above.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now let's perform an update cycle of the board symbol, which should be immediately reflected in our array renderer above.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Do[
+  board = CellularAutomaton["GameOfLife", board];
+  Pause[0.1];
+, {i, 1, 100}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+All instances update live! Even if you copy and paste the same expression, its display will be unique and will still be properly updated.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+All instances update live! Even if you copy and paste the same expression, its display will be unique and will still be properly updated.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

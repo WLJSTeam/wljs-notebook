@@ -13,8 +13,7 @@
     "minjs": "dist/kernel.min.js",
     "kernel": "src/Kernel.wl",
     "category": "Plotting & Graphics",
-    "cellExportRequired": true,
-    "figureExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",
@@ -31,7 +30,7 @@
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "15.0.1",
     "@rollup/plugin-terser": "^0.4.4",
-    "plotly.js-dist-min": "^2.18.2",
+    "plotly.js-dist-min": "^4.1.0",
     "rollup": "^3.20.6",
     "rollup-plugin-combine": "^2.1.1"
   }

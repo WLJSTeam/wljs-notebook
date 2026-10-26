@@ -1,33 +1,85 @@
-<|"Notebook" -> <|"Controller" -> "fcb0f88e-bb54-4f8f-9d7a-c24efe186a63", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1519], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "443a6a57-5e36-42f9-b8cf-5df5d7e144e2", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - LinearGradient Image.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Linear Gradient Image", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1518]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Linear Gradient Image\nHere is a simple \
-example with `Image` and mouse tracking:", "Display" -> "codemirror", 
-    "Hash" -> "0ec19b88-37ae-4c85-8633-cdbb2cfb0621", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e28f0c10-55c2-4846-aeb9-e1d75f94ce6b"|>, 
-   <|"Data" -> "# Linear Gradient Image\nHere is a simple example with \
-`Image` and mouse tracking:", "Display" -> "markdown", 
-    "Hash" -> "c2276afb-b00c-4e95-9e17-f6263201fe30", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e28f0c10-55c2-4846-aeb9-e1d75f94ce6b"|>, 
-   <|"Data" -> "With[{\n  buf = Unique[],\n  get = ImageData[\n    \
-LinearGradientImage[{{150,150}, #}->{Blue,Green}, {300,300}],\n    \"Byte\"\n \
- ]&\n},\n  buf = get[{300,300}];\n\n  EventHandler[Image[buf // Offload, \
-\"Byte\"], {\n    \"mousemove\" -> Function[xy,\n      buf = get[{0,300} - \
-{-1,1} xy];\n    ]\n  }]\n]", "Display" -> "codemirror", 
-    "Hash" -> "f8f35a3c-63fa-4aac-b8b5-00f904b0ad10", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e28f0c10-55c2-4846-aeb9-e1d75f94ce6b"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Linear Gradient Image
+Here is a simple example with `Image` and mouse tracking:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Linear Gradient Image
+Here is a simple example with `Image` and mouse tracking:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+With[{
+  buf = Unique[],
+  get = ImageData[
+    LinearGradientImage[{{150,150}, #}->{Blue,Green}, {300,300}],
+    "Byte"
+  ]&
+},
+  buf = get[{300,300}];
+
+  EventHandler[Image[buf // Offload, "Byte"], {
+    "mousemove" -> Function[xy,
+      buf = get[{0,300} - {-1,1} xy];
+    ]
+  }]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

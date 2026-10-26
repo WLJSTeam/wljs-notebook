@@ -6,8 +6,7 @@ BeginPackage["CoffeeLiqueur`Extensions`CommandPalette`Github`", {
     "CoffeeLiqueur`Misc`Language`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`WLX`",
-    "CoffeeLiqueur`WLX`WLJS`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`",     
     "CoffeeLiqueur`Extensions`CommandPalette`",
@@ -30,13 +29,13 @@ $rootDir =  ParentDirectory[ DirectoryName[$InputFileName] ];
 
 getNotebook[assoc_Association] := With[{result = EventFire[assoc["Controls"], "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n}},
     Print[result];
-    Echo["Getting notebook"];
+    Echo["[wljs-snippets/Github] Getting notebook"];
     If[MatchQ[result, _nb`NotebookObj],
-            Echo["Got"];
-            Echo[result];
+            Echo["[wljs-snippets/Github] Received the requested value."];
+            Echo[result, "[wljs-snippets/Github] operation result: "];
             result
     ,
-            Echo["rejected"];
+            Echo["[wljs-snippets/Github] Operation was rejected."];
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             $Failed
     ]
@@ -53,7 +52,7 @@ printCell[assoc_, content_String] := With[{
 handle[data_Association] := Module[{spinner, promise}, With[{
     
 },
-    Echo["Install package"];
+    Echo["[wljs-snippets/Github] Install package"];
   
     With[{assoc = Join[data, <|"Notebook" -> getNotebook[data]|> ]},
         If[FailureQ[assoc["Notebook"] ], Return[Null, Module] ];
@@ -80,41 +79,41 @@ handle[data_Association] := Module[{spinner, promise}, With[{
                                 "Github" -> url -> "master"
                             ]
                         }, "Directory"->dir, "PreserveConfiguration"->True, "Deffered"->True] ]},
-                                Echo["Done!!!"];
+                                Echo["[wljs-snippets/Github] Processing completed."];
                                 EventFire[promise, Resolve, e];
                         ];
                     ];               
                 ];
 
                 Then[promise, Function[result, Module[{},
-                    Echo["Installer Resolved!"];
+                    Echo["[wljs-snippets/Github] Snippet installation completed successfully."];
 
                     If[FailureQ[result["Result"] ],
-                        Block[{Global`$Client = client}, EventFire[spinner["Promise"], Resolve, Null] ];
-                        Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Error", StringRiffle[result["MessagesText"] ] ] ];
+                        Block[{$CurrentWebSocket = client}, EventFire[spinner["Promise"], Resolve, Null] ];
+                        Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Error", StringRiffle[result["MessagesText"] ] ] ];
                         Return[Null, Module];
                     ];
 
                     With[{newPaclets = Complement[<|"Paclet"->Import[#, "WL"], "Dir"->DirectoryName[#]|> &/@ (DeleteDuplicatesBy[FileNames["PacletInfo.wl" | "PacletInfo.m", {#}, {2}], DirectoryName]& @ FileNameJoin[{dir, "wl_packages"}]), oldPaclets]},
-                            Block[{Global`$Client = client}, EventFire[spinner["Promise"], Resolve, Null] ];
+                            Block[{$CurrentWebSocket = client}, EventFire[spinner["Promise"], Resolve, Null] ];
 
                             If[Length[newPaclets] == 0, 
-                                Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Warning", "Already installed" ] ];
+                                Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Warning", "Already installed" ] ];
                                 Return[Null, Module];
                             ];
 
                             Module[{paclet = newPaclets[[1]]["Paclet"], dir = newPaclets[[1]]["Dir"]},
 
                                 If[MatchQ[paclet, _PacletObject],
-                                    Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Info", "Installation was succesfull" ] ];
+                                    Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Info", "Installation was succesfull" ] ];
                                     printCell[assoc, StringTemplate["PacletDirectoryLoad[FileNameJoin[{\"wl_packages\", \"``\"}]];\n\n``"][
                                         FileNameSplit[dir][[-1]],
-                                        Echo["New paclet: "];
-                                        Echo[paclet];
+                                        Echo["[wljs-snippets/Github] New paclet: "];
+                                        Echo[paclet, "[wljs-snippets/Github] paclet metadata: "];
                                         If[KeyExistsQ[paclet[[1]], "PrimaryContext"], "<<"<>newPaclets[[1]][[1]]["PrimaryContext"], ""]
                                     ] ]
                                 ,
-                                    Block[{Global`$Client = client}, EventFire[assoc["Messanger"], "Error", "Installation was not succesfull" ] ];
+                                    Block[{$CurrentWebSocket = client}, EventFire[assoc["Messanger"], "Error", "Installation was not succesfull" ] ];
                                 ]
                             ]
                         ]

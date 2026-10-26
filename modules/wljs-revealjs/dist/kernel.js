@@ -1084,7 +1084,7 @@ const pasteFile = {
     console.log(view.dom.ocellref);
     if (view.dom.ocellref) {
       const channel = view.dom.ocellref.origin.channel;
-      server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"md"|>`, 'Forwarded["CM:PasteEvent"]');
+      server.io.fire(channel, {Channel: String(id), Length: length, CellType: "md"}, "CM:PasteEvent");
     }
   },
 
@@ -1094,10 +1094,10 @@ const pasteFile = {
       if (result.length > 5 * 1024 * 1024) {
         const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
         chunks.forEach((chunk, index) => {
-          server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+          server.io.fire(id, {Data: String(chunk), Name: name, Chunk: index+1, Chunks: chunks.length}, "Chunk");
         });
       } else {
-        server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+        server.io.fire(id, {Data: result, Name: name}, "File");
       }
     }
   }
@@ -1108,7 +1108,7 @@ const pasteDrop = {
     console.log(view.dom.ocellref);
     if (view.dom.ocellref) {
       const channel = view.dom.ocellref.origin.channel;
-      server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"md"|>`, 'Forwarded["CM:DropEvent"]');
+      server.io.fire(channel, {Channel: String(id), Length: length, CellType: "md"}, "CM:DropEvent");
     }
   },
 
@@ -1118,10 +1118,10 @@ const pasteDrop = {
       if (result.length > 5 * 1024 * 1024) {
         const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
         chunks.forEach((chunk, index) => {
-          server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+          server.io.fire(id, {Data: String(chunk), Name: name, Chunk: index+1, Chunks: chunks.length}, "Chunk");
         });
       } else {
-        server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+        server.io.fire(id, {Data: result, Name: name}, "File");
       }
     }
   }

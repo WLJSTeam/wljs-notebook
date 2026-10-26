@@ -1,68 +1,126 @@
-<|"Notebook" -> <|"Controller" -> "85e74dad-0ed0-4309-96c3-31f916641b5d", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1017], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "7a0785a3-1a8a-4ed5-bc02-7867344a4363", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Animation/B - Falling balls.wln", "PublicFields" -> 
-    {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "Falling balls", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1026]]}|>, 
- "Cells" -> 
-  {<|"Data" -> ".md\n# Falling balls\nA basic 3D animation of 300 `Sphere`", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cddb196c-cda7-4324-945c-de0895c17f44", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "# Falling balls\nA basic 3D animation of 300 `Sphere`", 
-    "Display" -> "markdown", "Hash" -> 
-     "1d39c578-77d9-4e21-b97c-686585404f01", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "balls = RandomReal[{-1,1}, {300,3}];\nvels  = \
-RandomReal[{-1,1}, {300,3}];\n\nGraphics3D[{\n  Table[With[{i = i},\n    {\n  \
-    RGBColor[RandomReal[{0,1}, 3]],\n      Sphere[balls[[i]] // Offload, \
-0.03]\n    }\n  ], {i, Length[balls]}], \n  \
-EventHandler[AnimationFrameListener[balls // Offload], updateFunction]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1f15d968-fdf5-4051-b5d7-1a5c7b31a2ad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> ".md\nUpdate function", "Display" -> "codemirror", 
-    "Hash" -> "eba8ec56-fedb-4e14-9d75-6eaeff528d16", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "Update function", "Display" -> "markdown", 
-    "Hash" -> "9375d4e2-228d-4ac4-ae94-e75c2938df0a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "updateFunction = Function[Null,\n  vels = Table[\n    \
-If[Norm[balls[[i]]] < 0.01, -1, 1] vels[[i]] - 0.08 balls[[i]]\n  , {i, \
-Length[balls]}];\n  \n  balls = Table[balls[[i]] + 0.08 vels[[i]], {i, \
-Length[balls]}];\n];", "Display" -> "codemirror", 
-    "Hash" -> "0b424344-2de2-4485-95fa-e7b5b00ce86b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> ".md\nKickstart of needed:", "Display" -> "codemirror", 
-    "Hash" -> "edeee9c5-fec4-40c1-ad7f-928ffdb5e393", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "Kickstart of needed:", "Display" -> "markdown", 
-    "Hash" -> "86c13042-6916-43fb-b7d0-fc2cf26f437e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>, 
-   <|"Data" -> "updateFunction[];", "Display" -> "codemirror", 
-    "Hash" -> "cacb0342-6703-4d57-9bee-abc9f0bb40cb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e88bb0cd-08d3-4275-a5b4-a92ac5060f6d"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Falling balls
+A basic 3D animation of 300 `Sphere`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Falling balls
+A basic 3D animation of 300 `Sphere`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+balls = RandomReal[{-1,1}, {300,3}];
+vels  = RandomReal[{-1,1}, {300,3}];
+
+Graphics3D[{
+  Table[With[{i = i},
+    {
+      RGBColor[RandomReal[{0,1}, 3]],
+      Sphere[balls[[i]] // Offload, 0.03]
+    }
+  ], {i, Length[balls]}], 
+  EventHandler[AnimationFrameListener[balls // Offload], updateFunction]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Update function
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Update function
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+updateFunction = Function[Null,
+  vels = Table[
+    If[Norm[balls[[i]]] < 0.01, -1, 1] vels[[i]] - 0.08 balls[[i]]
+  , {i, Length[balls]}];
+  
+  balls = Table[balls[[i]] + 0.08 vels[[i]], {i, Length[balls]}];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Kickstart of needed:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Kickstart of needed:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+updateFunction[];
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

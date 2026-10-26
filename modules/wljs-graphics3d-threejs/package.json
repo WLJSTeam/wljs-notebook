@@ -8,8 +8,7 @@
     "kernel": "src/Kernel.wl",
     "styles": "src/styles.css",
     "category": "Plotting & Graphics",
-    "figureExportRequired": true,
-    "cellExportRequired": true
+    "exportable": true
   },
   "defaultPackage": true,
   "repository": {

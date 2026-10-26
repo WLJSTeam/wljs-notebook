@@ -5,8 +5,6 @@ BeginPackage["CoffeeLiqueur`Extensions`NotebookDirectory`", {
 }]
 
 
-SetKernelDirectory::usage="";
-
 Begin["`Private`"]
 
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
@@ -15,6 +13,7 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
+SetKernelDirectory; (* Private frontend symbol *)
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
@@ -24,11 +23,11 @@ EventHandler[AppExtensions`AppEvents// EventClone, {
 }];
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-editor/SetDirectory] Attaching extension event listeners to the notebook."];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             With[{dir = notebook["Path"] // DirectoryName},
-                Echo[">> set directory (forced)"];
+                Echo["[wljs-editor/SetDirectory] Forced the notebook working-directory update."];
                 GenericKernel`Send[notebook["Evaluator"]["Kernel"], CoffeeLiqueur`Extensions`NotebookDirectory`Private`NotebookDirectorySet[dir]; ];
             ];
             (*With[{dir = FileNameSplit[ notebook["Path"] // DirectoryName ]},
@@ -42,7 +41,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
         ],
         "OnBeforeLoad" -> Function[payload,
             If[MemberQ[notebook["Properties"], "AutorunScript"],
-                Echo["Autorun >> executing script"];
+                Echo["[wljs-editor/SetDirectory] Executing the notebook autorun script."];
                 ToExpression[notebook["AutorunScript"], InputForm];
             ];
 

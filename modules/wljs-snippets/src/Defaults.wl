@@ -44,7 +44,7 @@ EventHandler[SnippetsEvents, {
         If[MatchQ[notebook, _nb`NotebookObj] ,
             EventFire[assoc["Controls"], "PrintPDF", True];
         ,
-            Echo["rejected"];
+            Echo["[wljs-snippets/Defaults] Operation was rejected."];
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             
         ];
@@ -55,7 +55,7 @@ EventHandler[SnippetsEvents, {
         If[MatchQ[notebook, _nb`NotebookObj] ,
             rename[notebook, assoc["Client"], assoc["Path"], assoc["Modals"], assoc["Controls"], assoc["Messanger"] ]
         ,
-            Echo["rejected"];
+            Echo["[wljs-snippets/Defaults] Operation was rejected."];
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             
         ];

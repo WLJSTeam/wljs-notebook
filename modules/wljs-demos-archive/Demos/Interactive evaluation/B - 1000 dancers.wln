@@ -1,110 +1,183 @@
-<|"Notebook" -> <|"Controller" -> "32d8dd16-ecc9-4c0c-83ac-2b8723b3b2a6", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$941], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "3b473616-33b0-4998-b212-a29e5a951650", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Animation/B - 1000dancers.wln", "PublicFields" -> {"Properties"}, 
-   "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Dancing with friends and enemies: boids' swarm intelligence", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$929]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Dancing with friends and enemies: boids' \
-swarm intelligence\nAdapted from [Wolfram \
-Community](https://community.wolfram.com/groups/-/m/t/122095). Written by \
-*Simon Woods*", "Display" -> "codemirror", 
-    "Hash" -> "e29b3e36-c10d-421c-986e-dac5abae74cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "# Dancing with friends and enemies: boids' swarm \
-intelligence\nAdapted from [Wolfram \
-Community](https://community.wolfram.com/groups/-/m/t/122095). Written by \
-*Simon Woods*", "Display" -> "markdown", 
-    "Hash" -> "2e7bdd7f-cab2-4bb8-84a7-98bb29e3c9cb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> ".md\n- 1000 dancers assume random positions on the \
-dance-floor.\n- Each randomly chooses one \"friend\" and one \"enemy\".\n- At \
-each step every dancer\n  - moves 0.5% closer to the centre of the floor\n  - \
-then takes a large step towards their friend and a small step away from their \
-enemy.\n- At random intervals one dancer re-chooses their friend and \
-enemy\n\nRandomness is deliberately injected. Here is the dance...", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f00539df-6d6e-40da-89c8-2925e85f72f3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "- 1000 dancers assume random positions on the dance-floor.\n- \
-Each randomly chooses one \"friend\" and one \"enemy\".\n- At each step every \
-dancer\n  - moves 0.5% closer to the centre of the floor\n  - then takes a \
-large step towards their friend and a small step away from their enemy.\n- At \
-random intervals one dancer re-chooses their friend and enemy\n\nRandomness \
-is deliberately injected. Here is the dance...", "Display" -> "markdown", 
-    "Hash" -> "b244e60a-8f8f-451b-bf49-fed8c279eec9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> ".md\n<span style=\"color:red\">Evaluate initialization cells \
-first</span> or go one by one", "Display" -> "codemirror", 
-    "Hash" -> "ee2aacb9-eae0-4b38-be54-a8e8a73fee0c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "<span style=\"color:red\">Evaluate initialization cells \
-first</span> or go one by one", "Display" -> "markdown", 
-    "Hash" -> "6f426064-7582-462f-9333-599d176827b2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "ClearAll[handler, n, r, f, s, x, p , q]\n\nn = 1000;\nr := \
-RandomInteger[{1, n}];\nf := (#/(.01 + Sqrt[#.#])) & /@ (x[[#]] - x) &;\ns := \
-With[{r1 = r}, p[[r1]] = r; q[[r1]] = r];\nx = RandomReal[{-1, 1}, {n, \
-2}];\n{p, q} = RandomInteger[{1, n}, {2, n}];", "Display" -> "codemirror", 
-    "Hash" -> "e1439b7f-64b1-416e-b140-532a6795a91e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> ".md\n__Main render function__", "Display" -> "codemirror", 
-    "Hash" -> "66d72b21-332c-493c-9ad9-a7579c482ac2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "__Main render function__", "Display" -> "markdown", 
-    "Hash" -> "ba159d4a-68d6-4ed2-8e32-440f86592cf0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "fps = 0;\nfpsLabel = \"0\";\ntime = \
-AbsoluteTime[];\n\nhandler = Function[Null,\n  x = 0.995 x + 0.02 f[p] - 0.01 \
-f[q];\n  If[r < 100, s];\n\n  (* FPS counter *)\n  fps += 1;\n  With[{diff = \
-AbsoluteTime[] - time},\n    If[diff >= 1.0,\n      fpsLabel = ToString[fps / \
-(diff)];\n      fps = 0;\n      time = AbsoluteTime[];\n    ];\n  ];\n];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d9d54020-a2bc-4988-b79c-22bc65857824", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> ".md\n__Drawing function__\nEvaluate *this cell very last*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "577ba541-ec7c-44b6-ab75-695f7e360aee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "__Drawing function__\nEvaluate *this cell very last*", 
-    "Display" -> "markdown", "Hash" -> 
-     "dbd8f974-915b-4475-88e2-aa33e94214d7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>, 
-   <|"Data" -> "Graphics[{\n  PointSize[0.007], Point[x // Offload],\n  \
-EventHandler[AnimationFrameListener[x // Offload], handler],\n  Text[fpsLabel \
-// Offload, {-1.8,1.8}]\n}, PlotRange -> {{-2,2}, {-2,2}}, \
-TransitionType->None]  ", "Display" -> "codemirror", 
-    "Hash" -> "f0a4fb9a-557e-4129-b33d-04b072909162", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "a0a7014c-b892-4d7b-9ed9-d421740c0996"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Dancing with friends and enemies: boids' swarm intelligence
+Adapted from [Wolfram Community](https://community.wolfram.com/groups/-/m/t/122095). Written by *Simon Woods*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Dancing with friends and enemies: boids' swarm intelligence
+Adapted from [Wolfram Community](https://community.wolfram.com/groups/-/m/t/122095). Written by *Simon Woods*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+- 1000 dancers assume random positions on the dance-floor.
+- Each randomly chooses one "friend" and one "enemy".
+- At each step every dancer
+  - moves 0.5% closer to the centre of the floor
+  - then takes a large step towards their friend and a small step away from their enemy.
+- At random intervals one dancer re-chooses their friend and enemy
+
+Randomness is deliberately injected. Here is the dance...
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+- 1000 dancers assume random positions on the dance-floor.
+- Each randomly chooses one "friend" and one "enemy".
+- At each step every dancer
+  - moves 0.5% closer to the centre of the floor
+  - then takes a large step towards their friend and a small step away from their enemy.
+- At random intervals one dancer re-chooses their friend and enemy
+
+Randomness is deliberately injected. Here is the dance...
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+<span style="color:red">Evaluate initialization cells first</span> or go one by one
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+<span style="color:red">Evaluate initialization cells first</span> or go one by one
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[handler, n, r, f, s, x, p , q]
+
+n = 1000;
+r := RandomInteger[{1, n}];
+f := (#/(.01 + Sqrt[#.#])) & /@ (x[[#]] - x) &;
+s := With[{r1 = r}, p[[r1]] = r; q[[r1]] = r];
+x = RandomReal[{-1, 1}, {n, 2}];
+{p, q} = RandomInteger[{1, n}, {2, n}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Main render function__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Main render function__
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+fps = 0;
+fpsLabel = "0";
+time = AbsoluteTime[];
+
+handler = Function[Null,
+  x = 0.995 x + 0.02 f[p] - 0.01 f[q];
+  If[r < 100, s];
+
+  (* FPS counter *)
+  fps += 1;
+  With[{diff = AbsoluteTime[] - time},
+    If[diff >= 1.0,
+      fpsLabel = ToString[fps / (diff)];
+      fps = 0;
+      time = AbsoluteTime[];
+    ];
+  ];
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Drawing function__
+Evaluate *this cell very last*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Drawing function__
+Evaluate *this cell very last*
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{
+  PointSize[0.007], Point[x // Offload],
+  EventHandler[AnimationFrameListener[x // Offload], handler],
+  Text[fpsLabel // Offload, {-1.8,1.8}]
+}, PlotRange -> {{-2,2}, {-2,2}}, TransitionType->None]  
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

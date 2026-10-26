@@ -4,8 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Autocomplete`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`WLX`WLJS`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",    
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",    
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
@@ -25,7 +24,10 @@ Needs["CoffeeLiqueur`Notebook`AppExtensions`" -> "AppExtensions`"];
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
-defaults = Get[FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}] ];
+defaults = Get[
+    FileNameJoin[{rootDir, "src", "AutocompleteDefaults.wl"}],
+    CharacterEncoding -> "UTF-8"
+];
 
 testEndpoint[path_] := TimeConstrained[With[{test = Import[path, "Text"]},
   TrueQ[StringContainsQ[test, "# Map"]]
@@ -60,18 +62,19 @@ GetDefaults := With[{},
     <|"hash" -> Hash[defaults], "data" -> defaults|>
 ]
 
+UIAutocompleteConnect; (* private frontend symbol *)
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-editor/Autocomplete] Attaching extension event listeners to the notebook."];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[
-                CoffeeLiqueur`Extensions`Autocomplete`Private`BuildVocabularAsync;
                 CoffeeLiqueur`Extensions`Autocomplete`Private`StartTracking;
+                CoffeeLiqueur`Extensions`Autocomplete`Private`BuildVocabularAsync;
             ], "Once"->True];
          
 
-            WebUISubmit[ Global`UIAutocompleteConnect[Hash[defaults] ], payload["Client"] ];
+            WebUISubmit[UIAutocompleteConnect[Hash[defaults] ], payload["Client"] ];
         ]
     }]; 
 ]
@@ -97,7 +100,7 @@ DocWindow /: DeleteObject[d_DocWindow] := With[{uid = d["UId"]},
 
 findDocWindow[cli_] := SelectFirst[Values[DocWindowHashMap], Function[d, d["AssociatedSocket"] === cli] ];
 
-EventHandler["autocompleteFindDoc", Function[label, With[{cli = Global`$Client}, {w = findDocWindow[cli]},
+EventHandler["autocompleteFindDoc", Function[label, With[{cli = $CurrentWebSocket}, {w = findDocWindow[cli]},
     If[MissingQ[w],
         With[{doc = DocWindow["Label"->label, "URL"->makeURL[label], "AssociatedSocket"->cli]},
             WebUILocation["/docFind/"<>doc["UId"], cli, "Target"->_];

@@ -58,7 +58,6 @@ function createExtensionManager(app) {
 
     async function invoke(extensionPath, phase, args = []) {
         try {
-            console.error(`Loading ${phase} electron extension: ${extensionPath}`);
             const extension = requireExtension(extensionPath);
             const handler = phase === 'prolog'
                 ? extension?.prolog

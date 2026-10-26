@@ -1,94 +1,168 @@
-import path from 'path';
+import path from 'node:path';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-export const delay = (ms) => {
-  const promise = new Promise((resolve) => {
-    setTimeout(resolve, ms)
+const notebookPath = path.resolve(__dirname, 'notebook.wln');
+const mcpUrl = new URL(process.env.WL_MCP_URL ?? 'http://127.0.0.1:20564/');
+const sessions = new WeakMap();
+let sharedClientPromise;
+const slowDataRender = /\b(?:Dataset|Tabular)\b|\bResourceData\s*\[/;
+const slowDataRenderDelay = 5000;
+
+export const url = 'http://127.0.0.1:20560/iframe/' + encodeURIComponent(notebookPath);
+
+console.warn(`Using url:${url}`);
+
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const loadPage = async (page, target, options) => {
+  const response = await page.goto(target, options);
+  await delay(500);
+  return response;
+};
+
+const resultText = (result) => result.content
+  ?.filter((item) => item.type === 'text')
+  .map((item) => item.text)
+  .join('\n');
+
+const unwrapResult = (tool, result) => {
+  if (result.isError) {
+    throw new Error(`WLJS MCP ${tool} failed: ${resultText(result) ?? 'Unknown error'}`);
+  }
+
+  if (result.structuredContent && 'result' in result.structuredContent) {
+    return result.structuredContent.result;
+  }
+
+  const text = resultText(result);
+  if (!text) return undefined;
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+};
+
+const callTool = async (session, name, args, timeout = 60_000) => {
+  const result = await session.client.callTool(
+    { name, arguments: args },
+    undefined,
+    { timeout },
+  );
+
+  return unwrapResult(name, result);
+};
+
+const findNotebook = async (session, timeout = 10_000) => {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeout) {
+    const notebooks = await callTool(session, 'list_notebooks', {});
+    const notebook = notebooks.find((candidate) =>
+      candidate.Path && path.resolve(candidate.Path) === notebookPath,
+    );
+
+    if (notebook) return notebook;
+    await delay(200);
+  }
+
+  throw new Error(`WLJS MCP did not report the open test notebook at ${notebookPath}`);
+};
+
+const findInputCell = async (session) => {
+  const cells = await callTool(session, 'list_cells', {
+    Notebook: session.notebook.Id,
   });
+  const cell = cells.find((candidate) => candidate.Type === 'Input');
 
-  return promise;
-}
-
-const checkIfKernelAttached = async (page) => {
-  if (!page.kernelQ) {
-    
+  if (!cell) {
+    throw new Error(`WLJS MCP found no input cell in notebook ${session.notebook.Id}`);
   }
-  await delay(2000);
-  let kernelSelection = page.locator('button').filter({ hasText: 'Auto' });
-  if (page.kernelQ) return;
-  if (await kernelSelection.isVisible({timeout: 2000})) {
-    kernelSelection.click();
-    console.log('Attaching kernel');
-    await delay(8000);
-    page.kernelQ = true;
-  } 
-}
 
-const os = process.platform;
-const selectAllShortcut = os === 'darwin' ? 'Meta+A' : 'Control+A'; // macOS uses Meta (Cmd)
-export const url = 'http://127.0.0.1:20560/iframe/'+encodeURIComponent(path.resolve(__dirname, 'notebook.wln'));
+  return cell;
+};
 
-console.warn('Using url:'+url);
+const getClient = () => {
+  if (!sharedClientPromise) {
+    sharedClientPromise = (async () => {
+      const client = new Client({
+        name: 'wljs-playwright-tests',
+        version: '1.0.0',
+      });
 
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject)=> {
-      this.reject = reject
-      this.resolve = resolve
-    })
-  }
-}
-
-export const evaluate = async (page, input="1+1", timeout=5000, extra=500) => {
-  if (!page.confirmDismissQ) {
-    page.confirmDismissQ = true;
-    page.on('dialog', async (dialog) => {
-      dialog.accept();
-      console.log('accepting kernel...');
-      const d = new Deferred();
-      page.kernelQ = d.promise;
-      await delay(10000);
-      d.resolve();
-      console.log('done!');
-      page.kernelQ = 9;
+      await client.connect(new StreamableHTTPClientTransport(mcpUrl));
+      return client;
+    })().catch((error) => {
+      sharedClientPromise = undefined;
+      throw error;
     });
   }
-  const editor = page.locator('.cm-editor').first();
-  // Click to focus
-  await delay(200);
-  await editor.click();
-  await delay(200);
-  // Type text into the editor
-  await page.keyboard.type(input);
-  await delay(400);
-  await page.keyboard.type(' ');
-  await delay(200);
-  const play = page.locator('.button-cplay').first();
-  play.click();
 
-  if (page.kernelQ != 9) {
-    await page.kernelQ;
+  return sharedClientPromise;
+};
+
+const clearGlobalSymbols = async (session) => {
+ 
+};
+
+const getSession = async (page) => {
+  let session = sessions.get(page);
+  if (session) return session;
+
+  const client = await getClient();
+  session = { client };
+  session.notebook = await findNotebook(session);
+
+  sessions.set(page, session);
+  page.once('close', () => {
+    sessions.delete(page);
+  });
+
+  return session;
+};
+
+const replaceInputCell = async (page, content) => {
+  const session = await getSession(page);
+  const cell = await findInputCell(session);
+  const lastLine = Math.max(cell.Lines ?? 1, 1);
+
+
+  await callTool(session, 'set_cell_lines', {
+    Cell: cell.Id,
+    From: 1,
+    To: lastLine,
+    Content: content,
+  });
+
+  return { session, cell };
+};
+
+export const evaluate = async (page, input = '1+1', timeout = 5000, extra = 500) => {
+
+  let finput;
+  if (input.charAt(0) != '.' && input.length > 3 && false) {
+    finput = 'Clear["Global`*"]; '+input;
+  } else {
+    finput = input;
   }
-  
-  await page.waitForSelector('.cout', {timeout:timeout});
-  await delay(3.0*extra);
-  const outputCell = page.locator('.cout').first();
-  return outputCell;
-}
 
+  const { session, cell } = await replaceInputCell(page, finput);
 
-export const clearCell = async (page, timeout=1000) => {
-  let inputcell = page.locator('.cin').first();
-  await inputcell.waitFor({ state: 'visible' });
-  const id = await inputcell.getAttribute('id');
+  await callTool(session, 'evaluate_cell', {
+    Cell: cell.Id,
+    TimeLimit: Math.max(timeout / 1000, 1),
+  }, timeout + 30_000);
 
-  const menu = page.locator('.button-cmore').first();
-  menu.click();
-  
-  await page.locator('[id="dropdown-float"]').waitFor({ state: 'visible' });
-  const clearOutputsButton = page.locator('button[data-name="RemoveCell"]').first();
-  await clearOutputsButton.waitFor({ state: 'visible' }); // Ensures it appears
-  await clearOutputsButton.click();
+  // MCP resolves when evaluation is complete. Keep only the existing render
+  // allowance for asynchronous frontend graphics before taking the screenshot.
+  const dataRenderDelay = slowDataRender.test(input) ? slowDataRenderDelay : 0;
+  await delay(3 * extra + 1000 + dataRenderDelay);
 
-  inputcell = page.locator(`[id="${id}"]`);
-  await inputcell.waitFor({ state: "detached" })
-}
+  return page;
+};
+
+export const clearCell = async (page) => {
+  await replaceInputCell(page, '');
+};

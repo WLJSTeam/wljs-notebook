@@ -6,7 +6,25 @@
     if (arr[0][0][0].length === undefined)  return 3;
   } 
 
+  const getAutoscaledBBox = (c) => {
+    const ignored = Array.from(
+      c.node().querySelectorAll('[data-autoscale-ignore="true"]')
+    );
   
+    const previousDisplay = ignored.map(node => node.style.display);
+  
+    ignored.forEach(node => {
+      node.style.display = 'none';
+    });
+  
+    try {
+      return c.node().getBBox();
+    } finally {
+      ignored.forEach((node, index) => {
+        node.style.display = previousDisplay[index];
+      });
+    }
+  };
   
   core.PlotInteractivity = () => 'PlotInteractivity'
 
@@ -382,31 +400,18 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     //check by hash if there such object, if not. Ask server to create one with EditorView and store.
     //const legacyHash = String(interpretate.hash(data));
     let hash = String(interpretate.hashv2(data))+'2lbl';
-    let obj;
-    let storage;
 
     if (!(hash in ObjectHashMap)) {
       //try legacy hash
       const legacyHash = String(interpretate.hash(data));
       if (legacyHash in ObjectHashMap) hash = legacyHash;
     }
-    
-    if (!(hash in ObjectHashMap)) {
-      obj = new ObjectStorage(hash);
 
-      try {
-        storage = await obj.get();
-      } catch(err) {
-        console.warn('Creating FE object by id '+hash);
-        await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
-        storage = await obj.get();
-      }
-      
-    } else {
-      obj = ObjectHashMap[hash];
-    }
-
-    if (!storage) storage = await obj.get();
+    const obj = ObjectHashMap[hash] || new ObjectStorage(hash);
+    const storage = await obj.getOrCreate(async () => {
+      console.warn('Creating FE object by id '+hash);
+      await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
+    });
 
     console.log("g2d: creating an object");
     console.log('frontend executable');
@@ -1127,6 +1132,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     // else
       svg = d3.select(container).append("svg");
       svg.node().classList.add('focus:outline-none');
+      env.containerSVG = svg.node();
 
     if ('Background' in options) {
       
@@ -2203,7 +2209,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
         const xsize = ImageSize[0] - (margin.left + margin.right);
         const ysize = ImageSize[1] - (margin.top + margin.bottom);
 
-        let box = env.svg.node().getBBox();
+        let box = getAutoscaledBBox(env.svg);
 
         console.log([xsize, ysize]);
         console.log(box);
@@ -4429,7 +4435,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     
 
 
-    env.local.foreignObject = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight);
+    env.local.foreignObject = env.svg.append('foreignObject').attr('width', env.clipWidth).attr('height', env.clipHeight).attr('data-autoscale-ignore', 'true');
     const canvas = env.local.foreignObject.append('xhtml:canvas');
     canvas.attr('width', Math.round(env.clipWidth*dpi)).attr('height', Math.round(env.clipHeight*dpi));
     const gl = canvas.node().getContext('webgl', {
@@ -7385,7 +7391,7 @@ return object;
   g2d.EventListener.onload = (uid, object, env) => {
 
     console.log('onload event generator');
-    server.kernel.emitt(uid, `True`, 'onload');
+    server.kernel.io.fire(uid, true, 'onload');
   };  
 
   g2d.MiddlewareListener = async (args, env) => {
@@ -7409,7 +7415,7 @@ return object;
   g2d.MiddlewareListener.end = (uid, params, env) => {
     const threshold = params.Threshold || 1.0;
     
-    server.kernel.emitt(uid, `True`, 'end');
+    server.kernel.io.fire(uid, true, 'end');
     console.log("pre Fire");
 
     return (object) => {
@@ -7419,7 +7425,7 @@ return object;
       return object.then((r) => r.tween(uid, function (d) {
         return function (t) {
           if (t >= threshold && !state) {
-            server.kernel.emitt(uid, `True`, 'end');
+            server.kernel.io.fire(uid, true, 'end');
             state = true;
           }
         }
@@ -7760,7 +7766,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
     el.node().addEventListener('keydown', (e) => {
       //console.log(e);
-      server.kernel.emitt(uid, '"'+e.code+'"', 'capturekeydown');
+      server.kernel.io.fire(uid, String(e.code), 'capturekeydown');
       e.preventDefault();
     });
   };  
@@ -7798,7 +7804,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
     el.addEventListener('keydown', (e) => {
       //console.log(e);
-      server.kernel.emitt(uid, '"'+e.code+'"', 'keydown');
+      server.kernel.io.fire(uid, String(e.code), 'keydown');
       //e.preventDefault();
     });
   };  

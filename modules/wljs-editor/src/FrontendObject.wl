@@ -1,21 +1,16 @@
 BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`"]
 
-(* we have to expose them to System, otherwise Boxes won't work from Mathematica's packages *)
+(* we expose them to System *)
 
 System`CreateFrontEndObject;
 System`FrontEndRef;
 System`FrontEndExecutable;
-System`FrontEndVirtual;
 
-CreateFrontEndObject::usage = "CreateFrontEndObject[expr_, uid_, opts] to force an expression to be evaluated on the frontend inside the container. There are two copies (on Kernel, on Frontend) can be specified using \"Store\"->\"Kernel\", \"Frontend\" or All (by default)"
-FrontEndRef::usage = "A readable representation of a stored expression on the kernel"
-FrontEndExecutable::usage = "A representation of a stored expression on the frontend"
-
-FrontEndVirtual::usage = ""
+CreateFrontEndObject::usage = "CreateFrontEndObject[expr_, uid_] compresses and expression to a frontend object. \nThe output is only evaluatable on the frontend. To get the original expression apply FrontEndRef on the generated uid"
+FrontEndRef::usage = "A readable by kernel representation of a frontend object"
+FrontEndExecutable::usage = "A readable by frontend representation of a frontend object"
 
 Begin["`Internal`"]
-
-
 
 $MissingHandler[_, _] := $Failed
 
@@ -32,44 +27,41 @@ Compressed[string_String, {"ExpressionJSON", "ZLIB"}] := ImportByteArray[ByteArr
 
 compression;
 
-(* [NOTE] This is a deferred compression method, i.e. it is only applied when the object is requested via net / link *)
-(*        Otherwise ExpressionJSON uncontrollably lifts the context from symbols depending where forntend object was created, *)
-(*        this leads to some symbols to be falsly assumed to be in Global`, which will throw errors on the frontend *)
-(*        The only way to avoid this is to deffer compression and ExpressionJSON convertion.                        *)
-(* [FIXME] for the future: switch to Compress and WXF formats instead of JSON !!! *)
+exportWithContext[cwc$`expr_] :=
+ Block[
+   {
+     $Context = "cwc$`",
+     $ContextPath = {"cwc$`", "System`", "Global`"}
+   },
+   ExportByteArray[cwc$`expr, "ExpressionJSON"]
+ ];
 
 (* apply only on large objects*)
-compression[expr_, {"ExpressionJSON", "ZLIB", "Defer"}] := Hold[expr] /; (ByteCount[expr] < 0.1 * 1024 * 1024);
 
-SetAttributes[releaseCompression, HoldAll]
+compression[expr_, {"ExpressionJSON", "ZLIB"}] := Hold[expr];
 
-releaseCompression[compression[expr_, {"ExpressionJSON", "ZLIB", "Defer"}]] := With[{arr = Normal[ExportByteArray[expr, "ExpressionJSON"] ]},
-        With[{data = BaseEncode[ByteArray[Developer`RawCompress[arr] ] ]},
-            Compressed[data, {"ExpressionJSON", "ZLIB"}] // Hold
-        ]
-] 
-
-releaseCompression[expr_] := expr
-
-
-
+compression[expr_, {"ExpressionJSON", "ZLIB"}] := With[{arr = Normal[exportWithContext[expr] ]},
+    With[{data = BaseEncode[ByteArray[Developer`RawCompress[arr] ] ]},
+        Compressed[data, {"ExpressionJSON", "ZLIB"}] // Hold
+    ]
+] /; (ByteCount[expr] > 0.07 * 1024 * 1024)
 
 CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
     With[{
         data = Switch[OptionValue["Store"]
             , "Kernel"
-            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}]|>
+            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB"}]|>
 
             , "Frontend"
-            , <|"Public"  -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}]|>
+            , <|"Public"  -> compression[expr, {"ExpressionJSON", "ZLIB"}]|>
 
             ,_
-            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB", "Defer"}], "Public" :> Objects[uid, "Private"]|>
+            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB"}], "Public" :> Objects[uid, "Private"]|>
         ]
     },
         If[!AssociationQ[Objects], 
-            Echo["Frontend Objects >> FATAL Error >> Objects are no longer an association"];
-            Echo["Rebuilding..."];
+            Echo["[wljs-editor/FrontendObject] Frontend object storage is corrupted: the object collection is no longer an association."];
+            Echo["[wljs-editor/FrontendObject] Rebuilding."];
             Objects = <||>;
         ];
 
@@ -91,7 +83,7 @@ Options[CreateFrontEndObject] = {"Store" -> All}
 
 FrontEndRef[uid_String] := If[KeyExistsQ[Objects, uid], 
     With[{o = Objects[uid, "Private"]},
-        releaseCompression[o] (*Ehhhh Okay... we need to release it anyway *)
+        o
     ] // ReleaseHold
 ,
     $MissingHandler[uid, "Private"] // ReleaseHold
@@ -100,10 +92,9 @@ FrontEndRef[uid_String] := If[KeyExistsQ[Objects, uid],
 FrontEndExecutable /: MakeBoxes[FrontEndExecutable[uid_String], StandardForm] := RowBox[{"FrontEndRef[\"", uid, "\"]"}]
 
 GetObject[uid_String] := With[{},
-    (*Echo["Getting object >> "<>uid];*)
     If[KeyExistsQ[Objects, uid],
         With[{ c = Objects[uid, "Public"] },
-            releaseCompression[c]
+            c
         ]
     ,
         $Failed

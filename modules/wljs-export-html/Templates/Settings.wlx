@@ -63,11 +63,13 @@ Component[OptionsPattern[]] := Module[{tempBuffer}, With[{
     tempBuffer = initialValues["ExportHTMLExclude"];
     EventHandler[toggleSwitch, {
         name_String :> Function[state,
+            Echo[ToString[{state, name}, InputForm], "[wljs-export-html/Settings] Exclusion toggle state and export item: "];
             If[state,
                 tempBuffer = Append[tempBuffer, name];
             ,
                 tempBuffer = tempBuffer /. {name -> Nothing};
             ];
+            Echo["[wljs-export-html/Settings] Updated checkbox state:"]; Echo[ToString[tempBuffer, InputForm], "[wljs-export-html/Settings] temp buffer, input form: "];
             onsave[<|"ExportHTMLExclude" -> tempBuffer|>, False];
         ]
     }];

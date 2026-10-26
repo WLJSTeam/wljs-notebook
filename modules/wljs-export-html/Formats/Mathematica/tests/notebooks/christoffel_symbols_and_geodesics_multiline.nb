@@ -1,0 +1,624 @@
+(***********************************************************************
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used on any computer system with Mathematica 4.0,
+MathReader 4.0, or any compatible application. The data for the notebook 
+starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do one of 
+the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing the 
+word CacheID, otherwise Mathematica-compatible applications may try to 
+use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+***********************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     13811,        472]*)
+(*NotebookOutlinePosition[     14792,        503]*)
+(*  CellTagsIndexPosition[     14748,        499]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Christoffel Symbols and Geodesic  Equation", "Subtitle"],
+
+Cell[TextData[{
+  "This is a ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " program to compute the Christoffel  and the geodesic equations, starting \
+from a given metric  ",
+  Cell[BoxData[
+      FormBox[
+        SubscriptBox[
+          StyleBox["g",
+            FontSlant->"Italic"], "\[Alpha]\[Beta]"], TraditionalForm]]],
+  ". The Christoffel symbols are calculated from the formula"
+}], "Text"],
+
+Cell[TextData[{
+  Cell[BoxData[
+      \(TraditionalForm\`\(\[CapitalGamma]\^\[Lambda]\)\_\[Mu]\[Nu] = \
+\(1\/2\) \(\(g\^\[Lambda]\[Sigma]\)(\[PartialD]\_\[Mu]\ 
+                g\_\[Sigma]\[Nu] + \[PartialD]\_\[Nu]\ 
+                g\_\[Sigma]\[Mu] - \[PartialD]\_\[Sigma]\ 
+                g\_\[Mu]\[Nu])\)\)]],
+  "\n\nwhere ",
+  Cell[BoxData[
+      \(TraditionalForm\`g\^\[Lambda]\[Sigma]\)]],
+  " is the matrix inverse of ",
+  Cell[BoxData[
+      \(TraditionalForm\`g\_\(\(\[Lambda]\[Sigma]\)\(\ \)\)\)]],
+  "called the inverse metric. This is the  solution of the relation (8.19) \
+and the notation for the inverse metric is standard [cf (20.17)]. The \
+components of the geodesic equation are \n\n",
+  StyleBox["d",
+    FontSlant->"Italic"],
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Alpha]\)]],
+  "/",
+  StyleBox["d\[Tau]",
+    FontSlant->"Italic"],
+  " = - ",
+  Cell[BoxData[
+      \(TraditionalForm\`\(\[CapitalGamma]\^\[Alpha]\)\_\[Beta]\[Gamma]\)]],
+  " ",
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Beta]\)]],
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Gamma]\)]],
+  " ."
+}], "Text"],
+
+Cell[TextData[{
+  "You must input the covariant components of the metric tensor ",
+  Cell[BoxData[
+      \(TraditionalForm\`g\_\[Mu]\[Nu]\)]],
+  " by editing the relevant input line in this ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " notebook. You may also wish to change the names of the coordinates. The \
+nonzero components of the above quantities are displayed as the output. "
+}], "Text"],
+
+Cell[CellGroupData[{
+
+Cell["Clearing the values of symbols:", "Subsubsection"],
+
+Cell["\<\
+First clear any values that may already have been assigned to the \
+names of the various objects to be calculated. The names of the coordinates \
+that you will use are also cleared.\
+\>", "Text"],
+
+Cell[BoxData[
+    \(Clear[coord, \ metric, inversemetric, \ 
+      affine, \ \ r, \ \[Theta], \ \[Phi], \ t]\)], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Setting The Dimension ", "Subsubsection"],
+
+Cell[TextData[{
+  "The dimension ",
+  StyleBox["n",
+    FontWeight->"Bold"],
+  " of the spacetime (or space) must be set:"
+}], "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(n = 4\)], "Input"],
+
+Cell[BoxData[
+    \(4\)], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Defining a list of coordinates:", "Subsubsection"],
+
+Cell[TextData[{
+  "The example given here is the wormhole metric (7.40). Note that for \
+convenience ",
+  StyleBox["t ",
+    FontSlant->"Italic"],
+  StyleBox["is denoted by ",
+    FontVariations->{"CompatibilityType"->0}],
+  Cell[BoxData[
+      FormBox[
+        StyleBox[\(x\^4\),
+          FontVariations->{"CompatibilityType"->0}], TraditionalForm]]],
+  " rather than ",
+  Cell[BoxData[
+      \(TraditionalForm\`x\^0\)]],
+  " and summations run from 1 to 4 rather than 0 to 3. "
+}], "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    StyleBox[\(coord\  = \ {r, \[Theta], \[Phi], t}\),
+      FontWeight->"Bold"]], "Input"],
+
+Cell[BoxData[
+    \({r, \[Theta], \[Phi], t}\)], "Output"]
+}, Open  ]],
+
+Cell[TextData[{
+  "You can change the names of the coordinates by simply editing the \
+definition of ",
+  StyleBox["coord",
+    FontWeight->"Bold"],
+  ", for example, to ",
+  StyleBox["coord = {x, y, z, t}",
+    FontWeight->"Bold"],
+  ", when another set of coordinate names is more appropriate",
+  "."
+}], "Text"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Defining the metric:", "Subsubsection"],
+
+Cell["\<\
+Input the metric as a list of lists, i.e., as a matrix. You can \
+input the components of any metric here, but you must specify them as \
+explicit functions of the coordinates.\
+\>", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(metric = {{1, 0, 0, 0}, {0, r^2 + b^2, 0, 0}, {0, 
+          0, \((r^2 + b^2)\) Sin[\[Theta]]^2, 0}, {0, 0, 
+          0, \(-1\)}}\)], "Input"],
+
+Cell[BoxData[
+    \({{1, 0, 0, 0}, {0, b\^2 + r\^2, 0, 0}, {0, 
+        0, \((b\^2 + r\^2)\)\ Sin[\[Theta]]\^2, 0}, {0, 0, 
+        0, \(-1\)}}\)], "Output"]
+}, Open  ]],
+
+Cell["You can also display this in matrix form:", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(metric // MatrixForm\)], "Input"],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {"1", "0", "0", "0"},
+            {"0", \(b\^2 + r\^2\), "0", "0"},
+            {"0", "0", \(\((b\^2 + r\^2)\)\ Sin[\[Theta]]\^2\), "0"},
+            {"0", "0", "0", \(-1\)}
+            }], "\[NoBreak]", ")"}],
+      (MatrixForm[ #]&)]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Note:", "Subsubsection"],
+
+Cell[TextData[{
+  "It is important not to use the symbols, ",
+  StyleBox["i",
+    FontWeight->"Bold"],
+  ", ",
+  StyleBox["j",
+    FontWeight->"Bold"],
+  ", ",
+  StyleBox["k",
+    FontWeight->"Bold"],
+  ", ",
+  StyleBox["l",
+    FontWeight->"Bold"],
+  ", ",
+  StyleBox["n,",
+    FontWeight->"Bold",
+    FontVariations->{"CompatibilityType"->0}],
+  " or ",
+  StyleBox["s  ",
+    FontWeight->"Bold"],
+  "as constants or coordinates in the metric that you specify above. The \
+reason is that  the first four of those symbols are used as summation or \
+table indices in the calculations done below. The last is the dimension of \
+the space. "
+}], "Text"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculating the inverse metric:", "Subsubsection"],
+
+Cell["The inverse metric is obtained through matrix inversion.", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(inversemetric = Simplify[Inverse[metric]]\)], "Input"],
+
+Cell[BoxData[
+    \({{1, 0, 0, 0}, {0, 1\/\(b\^2 + r\^2\), 0, 0}, {0, 0, 
+        Csc[\[Theta]]\^2\/\(b\^2 + r\^2\), 0}, {0, 0, 0, \(-1\)}}\)], "Output"]
+}, Open  ]],
+
+Cell["The inverse metric can also be displayed in matrix form:", "Text"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(inversemetric // MatrixForm\)], "Input"],
+
+Cell[BoxData[
+    TagBox[
+      RowBox[{"(", "\[NoBreak]", GridBox[{
+            {"1", "0", "0", "0"},
+            {"0", \(1\/\(b\^2 + r\^2\)\), "0", "0"},
+            {"0", "0", \(Csc[\[Theta]]\^2\/\(b\^2 + r\^2\)\), "0"},
+            {"0", "0", "0", \(-1\)}
+            }], "\[NoBreak]", ")"}],
+      (MatrixForm[ #]&)]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculating the affine connection:", "Subsubsection"],
+
+Cell[TextData[{
+  "The calculation of the components of the affine connection is done by \
+transcribing the definition given earlier into the notation of ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " and using the ",
+  StyleBox["Mathematica",
+    FontSlant->"Italic"],
+  " functions ",
+  StyleBox["D",
+    FontWeight->"Bold"],
+  " for taking partial derivatives, ",
+  StyleBox["Sum",
+    FontWeight->"Bold"],
+  " for summing over repeated indices, ",
+  StyleBox["Table",
+    FontWeight->"Bold"],
+  " for forming a list of components, and ",
+  StyleBox["Simplify",
+    FontWeight->"Bold"],
+  " for simplifying the result."
+}], "Text"],
+
+Cell[BoxData[
+    \(affine := \(affine = 
+        Simplify[
+          Table[\((1/2)\)*
+              Sum[\((inversemetric[\([i, s]\)])\)*\[IndentingNewLine]\((D[
+                        metric[\([s, j]\)], 
+                        coord[\([k]\)]\ ] + \[IndentingNewLine]D[
+                        metric[\([s, k]\)], coord[\([j]\)]\ ] - 
+                      D[metric[\([j, k]\)], coord[\([s]\)]\ ])\), {s, 1, 
+                  n}], \[IndentingNewLine]{i, 1, n}, {j, 1, n}, {k, 1, 
+              n}]\ ]\)\)], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Displaying the affine connection:", "Subsubsection"],
+
+Cell["\<\
+The nonzero components of the affine connections are displayed \
+below. You need not follow the details of constructing the functions that we \
+use for that purpose. Because the affine connection is symmetric under \
+interchange of the last two indices, only the independent components are \
+displayed.\
+\>", "Text"],
+
+Cell[BoxData[
+    \(listaffine := 
+      Table[If[UnsameQ[affine[\([i, j, k]\)], 
+            0], {ToString[\[CapitalGamma][i, j, k]], 
+            affine[\([i, j, k]\)]}]\ , {i, 1, n}, {j, 1, n}, {k, 1, 
+          j}]\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TableForm[Partition[DeleteCases[Flatten[listaffine], Null], 2], 
+      TableSpacing \[Rule] {2, 2}]\)], "Input"],
+
+Cell[BoxData[
+    TagBox[GridBox[{
+          {"\<\"\[CapitalGamma][1, 2, 2]\"\>", \(-r\)},
+          {"\<\"\[CapitalGamma][1, 3, 3]\"\>", \(\(-r\)\ Sin[\[Theta]]\^2\)},
+          {"\<\"\[CapitalGamma][2, 2, 1]\"\>", \(r\/\(b\^2 + r\^2\)\)},
+          {"\<\"\[CapitalGamma][2, 3, 3]\"\>", \(\(-Cos[\[Theta]]\)\ Sin[\
+\[Theta]]\)},
+          {"\<\"\[CapitalGamma][3, 3, 1]\"\>", \(r\/\(b\^2 + r\^2\)\)},
+          {"\<\"\[CapitalGamma][3, 3, 2]\"\>", \(Cot[\[Theta]]\)}
+          },
+        RowSpacings->2,
+        ColumnSpacings->2,
+        RowAlignments->Baseline,
+        ColumnAlignments->{Left}],
+      (TableForm[ #, TableSpacing -> {2, 2}]&)]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculating the geodesic equations:", "Subsubsection"],
+
+Cell[TextData[{
+  "The geodesic equations are calculated by asking  ",
+  StyleBox["Mathematica ",
+    FontSlant->"Italic"],
+  StyleBox["to carry out the sum -",
+    FontVariations->{"CompatibilityType"->0}],
+  Cell[BoxData[
+      \(TraditionalForm\`\(\[CapitalGamma]\^\[Alpha]\)\_\[Beta]\[Gamma]\)]],
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Beta]\)]],
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Gamma]\)]],
+  ",  where ",
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Alpha]\)]],
+  " are the components of the four-velocity.  (This gives the derivitive of \
+",
+  Cell[BoxData[
+      \(TraditionalForm\`u\^\[Alpha]\)]],
+  " with respect to proper time  \[Tau].  (This is replaced by  ",
+  StyleBox["s",
+    FontSlant->"Italic"],
+  "  if the geodesics are spacelike.)"
+}], "Text"],
+
+Cell[BoxData[
+    \(geodesic := \(geodesic = 
+        Simplify[
+          Table[\(-Sum[
+                affine[\([i, j, k]\)] u[j] u[k], {j, 1, 
+                  n}, \[IndentingNewLine]{k, 1, n}]\), {i, 1, 
+              n}]]\)\)], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Displaying the geodesic equations:", "Subsubsection"],
+
+Cell[BoxData[
+    \(listgeodesic := 
+      Table[{"\<d/d\[Tau]\>" ToString[u[i]], "\<=\>", geodesic[\([i]\)]}, {i, 
+          1, n}]\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TableForm[listgeodesic, TableSpacing \[Rule] {2}]\)], "Input"],
+
+Cell[BoxData[
+    TagBox[GridBox[{
+          {\("d/d\[Tau]"\ "u[1]"\), "\<\"=\"\>", \(r\ \((u[2]\^2 + 
+                  Sin[\[Theta]]\^2\ u[3]\^2)\)\)},
+          {\("d/d\[Tau]"\ "u[2]"\), "\<\"=\"\>", \(\(-\(\(2\ r\ u[1]\ u[
+                        2]\)\/\(b\^2 + r\^2\)\)\) + 
+              Cos[\[Theta]]\ Sin[\[Theta]]\ u[3]\^2\)},
+          {\("d/d\[Tau]"\ "u[3]"\), "\<\"=\"\>", \(\(-\(\(2\ r\ u[1]\ u[
+                        3]\)\/\(b\^2 + r\^2\)\)\) - 
+              2\ Cot[\[Theta]]\ u[2]\ u[3]\)},
+          {\("d/d\[Tau]"\ "u[4]"\), "\<\"=\"\>", "0"}
+          },
+        RowSpacings->2,
+        ColumnSpacings->1,
+        RowAlignments->Baseline,
+        ColumnAlignments->{Left}],
+      (TableForm[ #, TableSpacing -> {2}]&)]], "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[" Acknowledgment", "Subsubsection"],
+
+Cell[TextData[{
+  "This program was adapted from the notebook ",
+  StyleBox["Curvature and the Einstein ",
+    FontSlant->"Italic"],
+  "equation kindly written by ",
+  StyleBox["Leonard Parker ",
+    FontSlant->"Italic"],
+  StyleBox[" especially for this text. ",
+    FontVariations->{"CompatibilityType"->0}]
+}], "Text"]
+}, Open  ]]
+}, Open  ]]
+},
+FrontEndVersion->"4.0 for X",
+ScreenRectangle->{{0, 1280}, {0, 1024}},
+WindowToolbars->"EditBar",
+WindowSize->{759, 626},
+WindowMargins->{{251, Automatic}, {Automatic, 107}},
+PrintingPageRange->{Automatic, Automatic},
+PrintingOptions->{"PaperSize"->{612, 792},
+"PaperOrientation"->"Portrait",
+"PostScriptOutputFile":>FrontEnd`FileName[{$RootDirectory, "home", "cosmic", \
+"hartle", "131book", "math"}, "wh.ps", CharacterEncoding -> "ISO8859-1"],
+"Magnification"->1},
+Magnification->1.5
+]
+
+
+(***********************************************************************
+Cached data follows.  If you edit this Notebook file directly, not using
+Mathematica, you must remove the line containing CacheID at the top of 
+the file.  The cache data will then be recreated when you save this file 
+from within Mathematica.
+***********************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1739, 51, 62, 0, 144, "Subtitle"],
+Cell[1804, 53, 411, 12, 73, "Text"],
+Cell[2218, 67, 1105, 32, 201, "Text"],
+Cell[3326, 101, 408, 9, 96, "Text"],
+
+Cell[CellGroupData[{
+Cell[3759, 114, 56, 0, 60, "Subsubsection"],
+Cell[3818, 116, 205, 4, 71, "Text"],
+Cell[4026, 122, 121, 2, 62, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4184, 129, 47, 0, 60, "Subsubsection"],
+Cell[4234, 131, 134, 5, 46, "Text"],
+
+Cell[CellGroupData[{
+Cell[4393, 140, 38, 1, 39, "Input"],
+Cell[4434, 143, 35, 1, 39, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4518, 150, 56, 0, 60, "Subsubsection"],
+Cell[4577, 152, 492, 15, 71, "Text"],
+
+Cell[CellGroupData[{
+Cell[5094, 171, 105, 2, 39, "Input"],
+Cell[5202, 175, 58, 1, 39, "Output"]
+}, Open  ]],
+Cell[5275, 179, 314, 10, 71, "Text"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5626, 194, 45, 0, 60, "Subsubsection"],
+Cell[5674, 196, 200, 4, 71, "Text"],
+
+Cell[CellGroupData[{
+Cell[5899, 204, 163, 3, 62, "Input"],
+Cell[6065, 209, 157, 3, 76, "Output"]
+}, Open  ]],
+Cell[6237, 215, 57, 0, 46, "Text"],
+
+Cell[CellGroupData[{
+Cell[6319, 219, 53, 1, 39, "Input"],
+Cell[6375, 222, 328, 8, 141, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6752, 236, 30, 0, 60, "Subsubsection"],
+Cell[6785, 238, 650, 24, 121, "Text"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7472, 267, 56, 0, 60, "Subsubsection"],
+Cell[7531, 269, 72, 0, 46, "Text"],
+
+Cell[CellGroupData[{
+Cell[7628, 273, 74, 1, 39, "Input"],
+Cell[7705, 276, 153, 2, 113, "Output"]
+}, Open  ]],
+Cell[7873, 281, 72, 0, 46, "Text"],
+
+Cell[CellGroupData[{
+Cell[7970, 285, 60, 1, 39, "Input"],
+Cell[8033, 288, 333, 8, 163, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8415, 302, 59, 0, 60, "Subsubsection"],
+Cell[8477, 304, 646, 21, 121, "Text"],
+Cell[9126, 327, 519, 10, 223, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9682, 342, 58, 0, 60, "Subsubsection"],
+Cell[9743, 344, 326, 6, 121, "Text"],
+Cell[10072, 352, 231, 5, 108, "Input"],
+
+Cell[CellGroupData[{
+Cell[10328, 361, 132, 2, 85, "Input"],
+Cell[10463, 365, 659, 14, 243, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[11171, 385, 60, 0, 60, "Subsubsection"],
+Cell[11234, 387, 787, 23, 96, "Text"],
+Cell[12024, 412, 241, 6, 131, "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12302, 423, 59, 0, 60, "Subsubsection"],
+Cell[12364, 425, 145, 3, 85, "Input"],
+
+Cell[CellGroupData[{
+Cell[12534, 432, 82, 1, 39, "Input"],
+Cell[12619, 435, 751, 16, 193, "Output"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[13419, 457, 40, 0, 60, "Subsubsection"],
+Cell[13462, 459, 321, 9, 71, "Text"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+
+
+
+(***********************************************************************
+End of Mathematica Notebook file.
+***********************************************************************)
+

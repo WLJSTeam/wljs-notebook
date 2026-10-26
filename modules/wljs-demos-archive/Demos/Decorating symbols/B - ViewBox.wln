@@ -1,323 +1,427 @@
-<|"Notebook" -> <|"Controller" -> "09c9c4f1-0d8c-46a3-b431-bd4b26d2893f", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$2526], 
-   "FocusedCellSelection" -> {47, 46}, "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "953d9d74-c858-43c8-9398-1ea9abcd1ab6", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Decorating symbols/B - ViewBox.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "ViewBox", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2451]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Gauge Example", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$2485]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# ViewBox\nAnother way is to use Javascript \
-with a custom display function. This can be done using `ViewBox`. Let's \
-firstly define our display function __as frontend symbol__:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2e6e0701-4f5c-486b-8126-0cac5b0fde7a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "# ViewBox\nAnother way is to use Javascript with a custom \
-display function. This can be done using `ViewBox`. Let's firstly define our \
-display function __as frontend symbol__:", "Display" -> "markdown", 
-    "Hash" -> "d16058ae-d952-4609-b1c5-1bf38d288cad", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".js\ncore.smileyDecorator = async (args, env) => {\n  const \
-canvas = document.createElement('canvas');\n  canvas.width = 50;\n  \
-canvas.height = 50;\n  const ctx = canvas.getContext('2d');\n  // Draw a \
-smiley face\n  ctx.beginPath();\n  ctx.arc(25, 25, 20, 0, Math.PI * 2, true); \
-// Outer circle\n  ctx.moveTo(35, 25);\n  ctx.arc(25, 25, 8, 0, Math.PI, \
-false);  // Mouth\n  ctx.moveTo(22, 20);\n  ctx.arc(20, 20, 2, 0, Math.PI * \
-2, true);  // Left eye\n  ctx.moveTo(32, 20);\n  ctx.arc(30, 20, 2, 0, \
-Math.PI * 2, true);  // Right eye\n  ctx.stroke();\n  //append to viewbox \
-container\n  env.element.appendChild(canvas);\n}", "Display" -> "codemirror", 
-    "Hash" -> "1110c621-2f34-4d98-9ae4-8d97efc38507", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "core.smileyDecorator = async (args, env) => {\n  const canvas \
-= document.createElement('canvas');\n  canvas.width = 50;\n  canvas.height = \
-50;\n  const ctx = canvas.getContext('2d');\n  // Draw a smiley face\n  \
-ctx.beginPath();\n  ctx.arc(25, 25, 20, 0, Math.PI * 2, true); // Outer \
-circle\n  ctx.moveTo(35, 25);\n  ctx.arc(25, 25, 8, 0, Math.PI, false);  // \
-Mouth\n  ctx.moveTo(22, 20);\n  ctx.arc(20, 20, 2, 0, Math.PI * 2, true);  // \
-Left eye\n  ctx.moveTo(32, 20);\n  ctx.arc(30, 20, 2, 0, Math.PI * 2, true);  \
-// Right eye\n  ctx.stroke();\n  //append to viewbox container\n  \
-env.element.appendChild(canvas);\n}", "Display" -> "js", 
-    "Hash" -> "1cca60cd-27fb-4b80-b7a8-9dc4b06426af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nNow we define a `StandardForm` for our symbol with \
-`ViewBox` container. `ViewBox` allows to pass any decorator frontend symbol \
-used to display an expression, and place any other expression underneath it \
-in its InputForm:", "Display" -> "codemirror", 
-    "Hash" -> "313fb383-bb2f-42e6-bda9-f8a7b8a57487", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "Now we define a `StandardForm` for our symbol with `ViewBox` \
-container. `ViewBox` allows to pass any decorator frontend symbol used to \
-display an expression, and place any other expression underneath it in its \
-InputForm:", "Display" -> "markdown", 
-    "Hash" -> "84bbecb0-55ac-47ae-8675-15d30de0b57e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "SmileySymbol /: MakeBoxes[s_SmileySymbol, StandardForm] := \
-With[{},\n  ViewBox[s, smileyDecorator[]]\n]\n\nSmileySymbol[]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "55a218a3-a43a-4163-beed-b5111764593e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "(*VB[*)(SmileySymbol[])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KWk\
-MIB4/iMjNzEmtdElNzi9KLMkvAgDDMArI\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "556d8fb2-8bb2-4f6f-b7d7-fdc8a0c2c8e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nIf you reevaluate the output cell, you will get the same \
-decorated symbol. You can ensure that this is still the same symbol, by \
-taking its first argument:", "Display" -> "codemirror", 
-    "Hash" -> "d1037944-964d-40be-aec7-b00109832b25", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "If you reevaluate the output cell, you will get the same \
-decorated symbol. You can ensure that this is still the same symbol, by \
-taking its first argument:", "Display" -> "markdown", 
-    "Hash" -> "58096bb2-d9d2-4782-85ad-e9e19ff0aee5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "SmileySymbol[42]", "Display" -> "codemirror", 
-    "Hash" -> "0370dc22-ec90-40ac-89bf-d69e37f6d8d5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "(*VB[*)(SmileySymbol[42])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5K\
-WkMIB4/iMjNzEmtdElNzi9KLMkvAgDDMArI\"*)(*]VB*) // First ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2058fa84-7af8-48dc-aaab-b921cd7ba68a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "42", "Display" -> "codemirror", 
-    "Hash" -> "f1daf214-a48e-413b-a8cb-061d32b07dca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nIn this sense, this syntax sugar is not temporary but \
-permanent. However, we can apply the same trick as before and use it to \
-decorate other expressions temporarily:", "Display" -> "codemirror", 
-    "Hash" -> "0f7f1dc2-4936-4ddf-bc30-60f71179fc11", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "In this sense, this syntax sugar is not temporary but \
-permanent. However, we can apply the same trick as before and use it to \
-decorate other expressions temporarily:", "Display" -> "markdown", 
-    "Hash" -> "43710c26-38b2-44e3-a33b-7075d6b44762", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "Interpretation[SmileySymbol[], 1]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ba849884-7c3a-4625-be5d-974eb92d24f3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "(*VB[*)(1)(*,*)(*\"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cHpQK6G\
-VphTtJamRnBuZk5qZXBlblJ+TnSspoaWDlBQS8nQKtWrIiTENz8gONcvO9LdMT8q3TXYoyzb1Ds82\
-9fTyUQ/0zfLr8o1tyTFNcevKtPS28c3u8wx3cXF17HIUwlkRmyYk5YmxH4WIBFUmpMazAFipCam+O\
-flVIJFQ4pKUwGOai6k\"*)(*]VB*) - 1", "Display" -> "codemirror", 
-    "Hash" -> "c7aea6bd-a2a8-4d08-919a-0b3510f4dd2a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "0", "Display" -> "codemirror", 
-    "Hash" -> "b4782017-91db-4575-885a-22a8032653d5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\n## Gauge Example\nHere is another example. Let's create \
-a gauge that can react to value changes. Define a gauge meter:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f5fb7838-7a11-4c86-8af7-42a651467fba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "## Gauge Example\nHere is another example. Let's create a \
-gauge that can react to value changes. Define a gauge meter:", 
-    "Display" -> "markdown", "Hash" -> 
-     "08b30a20-02c6-46cc-8ebb-a9a479980777", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "gauge[level_Real];\n\ngauge /: MakeBoxes[g_gauge, \
-StandardForm] := With[{},\n      ViewBox[g, g]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0b4324fc-9916-48d0-a620-68cfb1af72a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nHere we use identical display and input expressions, the \
-last one has to be defined as a __frontend symbol__ too:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d3288331-b62b-4bff-8ebd-bbe9b8a51c4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "Here we use identical display and input expressions, the last \
-one has to be defined as a __frontend symbol__ too:", 
-    "Display" -> "markdown", "Hash" -> 
-     "ed355e19-6c6b-4a7d-ab5d-1561c71de31b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".js\n\nfunction setNeedlePosition(needle, value) {\n  value = \
-Math.max(0, Math.min(1, value));\n  const angle = value * 180 - 90;\n  \
-needle.style.transform = 'rotate('+Math.round(angle)+'deg)';\n}\n\ncore.gauge \
-= async (args, env) => {\n  const gauge = document.createElement('div');\n  \
-gauge.style.width = '100px';\n  gauge.style.height = '50px';\n  \
-gauge.style.border = '1px solid #000';\n  gauge.style.borderRadius = '50px \
-50px 0 0';\n  gauge.style.position = 'relative';\n  gauge.style.background = \
-'linear-gradient(to right, red 0%, yellow 50%, green 100%)';\n  \n  const \
-needle = document.createElement('div');\n  needle.style.width = '2px';\n  \
-needle.style.height = '40px';\n  needle.style.background = '#000';\n  \
-needle.style.position = 'absolute';\n  needle.style.bottom = '0';\n  \
-needle.style.left = '50%';\n  needle.style.transformOrigin = 'bottom';\n  \n  \
-const pos = await interpretate(args[0], env);\n  setNeedlePosition(needle, \
-pos);\n  \n  gauge.appendChild(needle);\n  \
-env.element.appendChild(gauge);\n}\n\n// for \
-later\ncore.gauge.setNeedlePosition = setNeedlePosition;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6bf4bd01-ef2c-4ec8-9e40-84774d4643b3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "\nfunction setNeedlePosition(needle, value) {\n  value = \
-Math.max(0, Math.min(1, value));\n  const angle = value * 180 - 90;\n  \
-needle.style.transform = 'rotate('+Math.round(angle)+'deg)';\n}\n\ncore.gauge \
-= async (args, env) => {\n  const gauge = document.createElement('div');\n  \
-gauge.style.width = '100px';\n  gauge.style.height = '50px';\n  \
-gauge.style.border = '1px solid #000';\n  gauge.style.borderRadius = '50px \
-50px 0 0';\n  gauge.style.position = 'relative';\n  gauge.style.background = \
-'linear-gradient(to right, red 0%, yellow 50%, green 100%)';\n  \n  const \
-needle = document.createElement('div');\n  needle.style.width = '2px';\n  \
-needle.style.height = '40px';\n  needle.style.background = '#000';\n  \
-needle.style.position = 'absolute';\n  needle.style.bottom = '0';\n  \
-needle.style.left = '50%';\n  needle.style.transformOrigin = 'bottom';\n  \n  \
-const pos = await interpretate(args[0], env);\n  setNeedlePosition(needle, \
-pos);\n  \n  gauge.appendChild(needle);\n  \
-env.element.appendChild(gauge);\n}\n\n// for \
-later\ncore.gauge.setNeedlePosition = setNeedlePosition;", "Display" -> "js", 
-    "Hash" -> "30aaffef-a988-4b8a-9b37-838984a700ee", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nLet's test it:", "Display" -> "codemirror", 
-    "Hash" -> "63dbce61-4b10-4026-a710-1de2209f926a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "Let's test it:", "Display" -> "markdown", 
-    "Hash" -> "6bc6eca8-0ea6-4de2-80dc-f4b4095969fa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "gauge[0.3]", "Display" -> "codemirror", 
-    "Hash" -> "ecdfd0f5-d2be-4dc4-98c1-3d879db91435", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "(*VB[*)(gauge[0.3])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5B\
-ITyxNTy0yBoPL9gCxdwlI\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "772a07db-c51a-436e-be30-5294d343f2ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nYou can also place it with other wolfram expressions", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6f763e3c-0fdb-4df3-96b0-df9cbb441858", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "You can also place it with other wolfram expressions", 
-    "Display" -> "markdown", "Hash" -> 
-     "e9436e2b-1820-4a7a-abf2-30b69f9f0723", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "gauge[0.3] // Framed", "Display" -> "codemirror", 
-    "Hash" -> "d1d0672f-19f2-4155-9d82-54dcb9314fbf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "(*BB[*)((*VB[*)(gauge[0.3])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk\
-5KRAeK5BITyxNTy0yBoPL9gCxdwlI\"*)(*]VB*))(*,*)(*\"1:eJxTTMoPSmNiYGAo5gMSwSWVO\
-akuqcn5RYkl+UUQcRYgEVSak1rMA1ZQlFngn+eZV1BaUswKFHBLzClORVUYDBYvSsxNBQuFFJWmAg\
-AQ7xjr\"*)(*]BB*)", "Display" -> "codemirror", 
-    "Hash" -> "d53f382b-db8c-4b4c-af51-e92c8635e2dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nFor the next step, we need to __define prototypes__ for \
-our symbol to update the needle position and __enable instancing__:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "dcfb3ff6-e6ca-4e15-8570-898ca72e80bc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "For the next step, we need to __define prototypes__ for our \
-symbol to update the needle position and __enable instancing__:", 
-    "Display" -> "markdown", "Hash" -> 
-     "d2849e45-880a-41ce-ab82-f45a108937c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".js\n\ncore.gauge.update = async (args, env) => {\n  const \
-val = await interpretate(args[0], env);\n  \
-core.gauge.setNeedlePosition(env.element.firstChild.firstChild, \
-val);\n}\n\ncore.gauge.destroy = () => {}\n\ncore.gauge.virtual = true;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8cf3ab66-05c6-44d0-915e-e4a0348c7e87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "\ncore.gauge.update = async (args, env) => {\n  const val = \
-await interpretate(args[0], env);\n  \
-core.gauge.setNeedlePosition(env.element.firstChild.firstChild, \
-val);\n}\n\ncore.gauge.destroy = () => {}\n\ncore.gauge.virtual = true;", 
-    "Display" -> "js", "Hash" -> "dd1083c7-832b-42a6-9b1a-a02882a1bb9e", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> ".md\nNow let's provide a symbol to gauge and manipulate it \
-with a slider:", "Display" -> "codemirror", 
-    "Hash" -> "0f938ae5-4d30-44f2-9c95-3d8cba8f343a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> 
-     "Now let's provide a symbol to gauge and manipulate it with a slider:", 
-    "Display" -> "markdown", "Hash" -> 
-     "3606e3c6-1ffe-4784-9b65-fde1d1dcf665", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>, 
-   <|"Data" -> "meterLevel = 0.5;\ngauge[meterLevel // \
-Offload]\n\nEventHandler[InputRange[0,1,0.1], (meterLevel = #)&]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "af4501bd-06d4-4c71-bcd2-9fd282160740", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "296ba825-26df-4fb0-babc-229efed4c56d"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# ViewBox
+Another way is to use Javascript with a custom display function. This can be done using `ViewBox`. Let's firstly define our display function __as frontend symbol__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# ViewBox
+Another way is to use Javascript with a custom display function. This can be done using `ViewBox`. Let's firstly define our display function __as frontend symbol__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.smileyDecorator = async (args, env) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 50;
+  canvas.height = 50;
+  const ctx = canvas.getContext('2d');
+  // Draw a smiley face
+  ctx.beginPath();
+  ctx.arc(25, 25, 20, 0, Math.PI * 2, true); // Outer circle
+  ctx.moveTo(35, 25);
+  ctx.arc(25, 25, 8, 0, Math.PI, false);  // Mouth
+  ctx.moveTo(22, 20);
+  ctx.arc(20, 20, 2, 0, Math.PI * 2, true);  // Left eye
+  ctx.moveTo(32, 20);
+  ctx.arc(30, 20, 2, 0, Math.PI * 2, true);  // Right eye
+  ctx.stroke();
+  //append to viewbox container
+  env.element.appendChild(canvas);
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.smileyDecorator = async (args, env) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 50;
+  canvas.height = 50;
+  const ctx = canvas.getContext('2d');
+  // Draw a smiley face
+  ctx.beginPath();
+  ctx.arc(25, 25, 20, 0, Math.PI * 2, true); // Outer circle
+  ctx.moveTo(35, 25);
+  ctx.arc(25, 25, 8, 0, Math.PI, false);  // Mouth
+  ctx.moveTo(22, 20);
+  ctx.arc(20, 20, 2, 0, Math.PI * 2, true);  // Left eye
+  ctx.moveTo(32, 20);
+  ctx.arc(30, 20, 2, 0, Math.PI * 2, true);  // Right eye
+  ctx.stroke();
+  //append to viewbox container
+  env.element.appendChild(canvas);
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we define a `StandardForm` for our symbol with `ViewBox` container. `ViewBox` allows to pass any decorator frontend symbol used to display an expression, and place any other expression underneath it in its InputForm:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we define a `StandardForm` for our symbol with `ViewBox` container. `ViewBox` allows to pass any decorator frontend symbol used to display an expression, and place any other expression underneath it in its InputForm:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SmileySymbol /: MakeBoxes[s_SmileySymbol, StandardForm] := With[{},
+  ViewBox[s, smileyDecorator[]]
+]
+
+SmileySymbol[]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(SmileySymbol[])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkMIB4/iMjNzEmtdElNzi9KLMkvAgDDMArI"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+If you reevaluate the output cell, you will get the same decorated symbol. You can ensure that this is still the same symbol, by taking its first argument:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+If you reevaluate the output cell, you will get the same decorated symbol. You can ensure that this is still the same symbol, by taking its first argument:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SmileySymbol[42]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(SmileySymbol[42])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkMIB4/iMjNzEmtdElNzi9KLMkvAgDDMArI"*)(*]VB*) // First 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+42
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In this sense, this syntax sugar is not temporary but permanent. However, we can apply the same trick as before and use it to decorate other expressions temporarily:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In this sense, this syntax sugar is not temporary but permanent. However, we can apply the same trick as before and use it to decorate other expressions temporarily:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Interpretation[SmileySymbol[], 1]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(*VB[*)(1)(*,*)(*"1:eJxTTMoPSmNiYGAo5gISrimZJflFYZmp5cHpQK6GVphTtJamRnBuZk5qZXBlblJ+TnSspoaWDlBQS8nQKtWrIiTENz8gONcvO9LdMT8q3TXYoyzb1Ds829fTyUQ/0zfLr8o1tyTFNcevKtPS28c3u8wx3cXF17HIUwlkRmyYk5YmxH4WIBFUmpMazAFipCam+OflVIJFQ4pKUwGOai6k"*)(*]VB*) - 1
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+0
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Gauge Example
+Here is another example. Let's create a gauge that can react to value changes. Define a gauge meter:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Gauge Example
+Here is another example. Let's create a gauge that can react to value changes. Define a gauge meter:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+gauge[level_Real];
+
+gauge /: MakeBoxes[g_gauge, StandardForm] := With[{},
+      ViewBox[g, g]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we use identical display and input expressions, the last one has to be defined as a __frontend symbol__ too:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we use identical display and input expressions, the last one has to be defined as a __frontend symbol__ too:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+
+function setNeedlePosition(needle, value) {
+  value = Math.max(0, Math.min(1, value));
+  const angle = value * 180 - 90;
+  needle.style.transform = 'rotate('+Math.round(angle)+'deg)';
+}
+
+core.gauge = async (args, env) => {
+  const gauge = document.createElement('div');
+  gauge.style.width = '100px';
+  gauge.style.height = '50px';
+  gauge.style.border = '1px solid #000';
+  gauge.style.borderRadius = '50px 50px 0 0';
+  gauge.style.position = 'relative';
+  gauge.style.background = 'linear-gradient(to right, red 0%, yellow 50%, green 100%)';
+  
+  const needle = document.createElement('div');
+  needle.style.width = '2px';
+  needle.style.height = '40px';
+  needle.style.background = '#000';
+  needle.style.position = 'absolute';
+  needle.style.bottom = '0';
+  needle.style.left = '50%';
+  needle.style.transformOrigin = 'bottom';
+  
+  const pos = await interpretate(args[0], env);
+  setNeedlePosition(needle, pos);
+  
+  gauge.appendChild(needle);
+  env.element.appendChild(gauge);
+}
+
+// for later
+core.gauge.setNeedlePosition = setNeedlePosition;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+function setNeedlePosition(needle, value) {
+  value = Math.max(0, Math.min(1, value));
+  const angle = value * 180 - 90;
+  needle.style.transform = 'rotate('+Math.round(angle)+'deg)';
+}
+
+core.gauge = async (args, env) => {
+  const gauge = document.createElement('div');
+  gauge.style.width = '100px';
+  gauge.style.height = '50px';
+  gauge.style.border = '1px solid #000';
+  gauge.style.borderRadius = '50px 50px 0 0';
+  gauge.style.position = 'relative';
+  gauge.style.background = 'linear-gradient(to right, red 0%, yellow 50%, green 100%)';
+  
+  const needle = document.createElement('div');
+  needle.style.width = '2px';
+  needle.style.height = '40px';
+  needle.style.background = '#000';
+  needle.style.position = 'absolute';
+  needle.style.bottom = '0';
+  needle.style.left = '50%';
+  needle.style.transformOrigin = 'bottom';
+  
+  const pos = await interpretate(args[0], env);
+  setNeedlePosition(needle, pos);
+  
+  gauge.appendChild(needle);
+  env.element.appendChild(gauge);
+}
+
+// for later
+core.gauge.setNeedlePosition = setNeedlePosition;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's test it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's test it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+gauge[0.3]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(gauge[0.3])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5BITyxNTy0yBoPL9gCxdwlI"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also place it with other wolfram expressions
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also place it with other wolfram expressions
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+gauge[0.3] // Framed
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*BB[*)((*VB[*)(gauge[0.3])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeK5BITyxNTy0yBoPL9gCxdwlI"*)(*]VB*))(*,*)(*"1:eJxTTMoPSmNiYGAo5gMSwSWVOakuqcn5RYkl+UUQcRYgEVSak1rMA1ZQlFngn+eZV1BaUswKFHBLzClORVUYDBYvSsxNBQuFFJWmAgAQ7xjr"*)(*]BB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For the next step, we need to __define prototypes__ for our symbol to update the needle position and __enable instancing__:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For the next step, we need to __define prototypes__ for our symbol to update the needle position and __enable instancing__:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+
+core.gauge.update = async (args, env) => {
+  const val = await interpretate(args[0], env);
+  core.gauge.setNeedlePosition(env.element.firstChild.firstChild, val);
+}
+
+core.gauge.destroy = () => {}
+
+core.gauge.virtual = true;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+core.gauge.update = async (args, env) => {
+  const val = await interpretate(args[0], env);
+  core.gauge.setNeedlePosition(env.element.firstChild.firstChild, val);
+}
+
+core.gauge.destroy = () => {}
+
+core.gauge.virtual = true;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now let's provide a symbol to gauge and manipulate it with a slider:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now let's provide a symbol to gauge and manipulate it with a slider:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+meterLevel = 0.5;
+gauge[meterLevel // Offload]
+
+EventHandler[InputRange[0,1,0.1], (meterLevel = #)&]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

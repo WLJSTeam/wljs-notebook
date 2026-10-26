@@ -1,3 +1,5 @@
+(* Orchestrates static and replayable, self-contained HTML exports. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`HTML`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -5,7 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`HTML`", {
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Editor`"
 }];
 
@@ -18,8 +20,6 @@ Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 
 Needs["CoffeeLiqueur`Extensions`FrontendObject`" -> "fe`"];
 
-
-
 folder = $InputFileName // DirectoryName;
 rootFolder = folder // ParentDirectory // ParentDirectory;
 
@@ -29,13 +29,16 @@ Needs["CoffeeLiqueur`Notebook`Loader`" -> "loader`"];
 
 {saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
+
+generateHTML     = ImportComponent[FileNameJoin[{folder, "Universal.wlx"}] ];
+
+
+(* Direct export and import support for notebooks without sampled dynamics. *)
 Begin["`Static`"]
 
 export;
+check;
 decode;
-
-
-generateNotebook = ImportComponent[FileNameJoin[{folder, "Static.wlx"}] ];
 
 export[outputPath_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{},
     Module[{filename = outputPath},
@@ -44,12 +47,13 @@ export[outputPath_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_
         If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
         If[filename === ".html", filename = name<>filename];
         If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
-
-        Export[filename, generateNotebook["Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"]
+                    Then[generateHTML["MarkdownTransformer"->If[AssociationQ[proto] && KeyExistsQ[proto, "markdownTransformer"], proto["markdownTransformer"], Automatic], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->False, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
+                    ] ];
     ]
 ]
 
-export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{
+export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_, dynamicQ_:False, compressed_:Null] := With[{
 
 },
     With[{
@@ -59,42 +63,177 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
         With[{
             p = Promise[]
         },
-            EventFire[modals, "SaveDialog", <|
-                "Promise"->p,
-                "title"->"Export as portable HTML notebook",
-                "properties"->{"createDirectory", "dontAddToRecent"},
-                "filters"->{<|"extensions"->"html", "name"->"HTML Document"|>}
-            |>];
 
-            Then[p, Function[result, 
-                Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
-                    If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                      Echo["Cancelled saving"]; Echo[result];
-                      Return[];
-                    ];
-                    
+       EventFire[modals, "SaveDialog", <|
+           "Promise"->p,
+           "title"->"Export as portable HTML notebook",
+           "properties"->{"createDirectory", "dontAddToRecent"},
+           "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
+       |>];
+
+       Then[p, Function[result,
+           Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
+               If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0,
+                 Echo["[wljs-export-html/HTML] Save operation was cancelled."]; Echo[result, "[wljs-export-html/HTML] operation result: "];
+                 Return[];
+               ];
+
                     If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
                     If[filename === ".html", filename = name<>filename];
                     If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
 
-                    Export[filename, generateNotebook["Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
-                    EventFire[messager, "Saved", "Exported to "<>filename];
+                    Then[generateHTML["MarkdownTransformer"->proto["markdownTransformer"], "Root"->rootFolder, "Settings"->settings, "DynamicQ"->False, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
+
+                        EventFire[messager, "Saved", "Exported to "<>filename];
+                    ] ];
+
+
+
                 ];
-            ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
+            ], Function[result, Echo["[wljs-export-html/HTML] Export completed successfully."]; Echo[result, "[wljs-export-html/HTML] operation result: "] ] ];
             
         ]
     ]
 ]
 
-check[path_String] := Module[{str, result},
-    Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
+check[path_String | path_File] := Module[{str, result},
+    Echo["[wljs-export-html/HTML] Checking notebook character encoding without conversion."];
     str = OpenRead[path];
-    result = Find[str, "<meta serializer=\"hsfn-4\"/>"] =!= EndOfFile;
+    result = Find[str, "<meta serializer=\"hsfn-"] =!= EndOfFile;
+    Echo[result, "[wljs-export-html/HTML] operation result: "];
     Close[str];
+    Echo["[wljs-export-html/HTML] Finished collecting static HTML assets."];
     result
 ]
 
-decode[path_String | path_File, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, symbols, place, compressedFields},
+getVersion[path_String | path_File] := Module[{str, result},
+    Echo["[wljs-export-html/HTML] Checking notebook character encoding."];
+    str = OpenRead[path];
+    Echo["[wljs-export-html/HTML] Find the string"];
+    result = Find[str, "<meta serializer=\"hsfn-"];
+    Echo[result, "[wljs-export-html/HTML] operation result: "];
+    Close[str];
+    Echo["[wljs-export-html/HTML] Finished collecting dynamic HTML assets."];
+    If[StringContainsQ[result, "hsfn-5"], Return[5]];
+    If[StringContainsQ[result, "hsfn-4"], Return[4]];
+    result
+]
+
+decode[path_String | path_File, opts: OptionsPattern[] ] := Switch[getVersion[path],
+    5,
+        decodeHSFN5[path, opts],
+
+    4,
+        decodeHSFN4[path, opts],
+    _,
+        $Failed
+]
+
+readEmbeddedSection[text_String, start_String, end_String] := Module[{result},
+    result = StringCases[text, start ~~ Shortest[content__] ~~ end :> content, 1];
+    If[Length[result] === 1 && StringQ[First[result]], First[result], $Failed]
+]
+
+(* Modern format HSFN5 *)
+decodeHSFN5[path_String | path_File, OptionsPattern[] ] := Module[{place, objects, symbols, html, raw, rawBytes, notebook, temporalFile, stream, reject}, With[{
+    promise = Promise[],
+    dir = AppExtensions`QuickNotesDir,
+    name = FileBaseName[path],
+
+    startStore = "<script id=\"wljs-store-data\" type=\"application/json\">",
+    endStore = "</script>",
+    startCompressed = "<script id=\"wljs-notebook-compressed\" type=\"text/plain\">",
+    endCompressed = "</script>",
+
+    spinner = Notifications`Spinner["Topic"->"Converting to notebook", "Body"->"Please, wait"](*`*),
+    msg = OptionValue["Messager"]    
+},
+    place = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
+
+    EventFire[msg, spinner, True];
+
+    reject[message_] := (
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Reject, Failure["InvalidHTMLNotebook", <|"Message" -> message|>]];
+        promise
+    );
+
+    (* Read the document once and extract both payloads from the same text.
+       This avoids stream buffering and delimiter scan timeout issues. *)
+    html = Quiet @ Check[Import[path, "Text"], $Failed];
+    If[!StringQ[html], Return[reject["The HTML notebook could not be read"]]];
+
+    raw = readEmbeddedSection[html, startStore, endStore];
+    If[!StringQ[raw], Return[reject["The embedded object store was not found"]]];
+
+    raw = Quiet @ Check[ImportString[raw, "RawJSON"], $Failed];
+    If[
+        !AssociationQ[raw] ||
+        !KeyExistsQ[raw, "objects"] || !StringQ[raw["objects"]] ||
+        !KeyExistsQ[raw, "symbols"] || !StringQ[raw["symbols"]],
+        Return[reject["The embedded object store is invalid"]]
+    ];
+
+    objects = Quiet @ Check[uncompress[raw["objects"]], $Failed];
+    symbols = Quiet @ Check[uncompress[raw["symbols"]], $Failed];
+    If[!AssociationQ[objects] || !AssociationQ[symbols],
+        Return[reject["The embedded object store could not be decoded"]]
+    ];
+
+    raw = readEmbeddedSection[html, startCompressed, endCompressed];
+    If[!StringQ[raw], Return[reject["The embedded notebook payload was not found"]]];
+
+    rawBytes = Quiet @ Check[Uncompress[raw], $Failed];
+    If[Head[rawBytes] =!= ByteArray,
+        Return[reject["The embedded notebook payload could not be decoded"]]
+    ];
+
+    (* we have to write to a temporal file due to CR normalization issues... *)
+    temporalFile = CreateFile[];
+    stream = OpenWrite[temporalFile, BinaryFormat->True];
+    BinaryWrite[stream, rawBytes];
+    Close[stream];
+
+    notebook = nb`LoadFromFile[temporalFile];
+    DeleteFile[temporalFile];
+    If[!MatchQ[notebook, _nb`NotebookObj],
+        Return[reject["The embedded notebook payload is invalid"]]
+    ];
+
+    With[{n = notebook}, n["Objects"] = Map[<|"Public"->#|>&, objects]];
+    With[{n = notebook}, n["Symbols"] = symbols];
+    With[{n = notebook}, n["Path"] = .];
+
+    Echo[notebook, "[wljs-export-html/HTML] notebook: "];
+    
+    
+    Echo["[wljs-export-html/HTML] Saving exported content."];
+    Then[saveNotebook[place, notebook, "NoCache"->True], Function[result,
+        Echo[result, "[wljs-export-html/HTML] operation result: "];
+        EventFire[spinner["Promise"], Resolve, True];
+        EventFire[promise, Resolve,  place];
+        Delete /@ notebook["Cells"];
+        Delete[notebook];
+        ClearAll[place, objects, symbols, html, raw, rawBytes, notebook, temporalFile, stream, reject];
+    ] ];
+    
+    
+    promise
+]]
+
+uncompress[s_String] :=
+  ImportByteArray[
+    ByteArray[
+      Developer`RawUncompress[
+        Normal @ BaseDecode[s]
+      ]
+    ],
+    "ExpressionJSON"
+  ]
+
+(* Legacy format HSFN4 *)
+decodeHSFN4[path_String | path_File, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, symbols, place, compressedFields},
 With[{
     dir = AppExtensions`QuickNotesDir,
     name = FileBaseName[path],
@@ -112,19 +251,15 @@ With[{
 }, 
     EventFire[msg, spinner, True];
 
-    Echo["CoffeeLiqueur`Extensions`Editor`ExportHTML`Decoder` >> checking encoding"];
-    str = OpenRead[path];
-    ReadString[str, start];
-    ReadList[str, Character, StringLength[start] ];
-    objects = ImportString[ReadString[str, mid1], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid1] ];
-    cells = ImportString[ReadString[str, mid2], "ExpressionJSON"];
-    ReadList[str, Character, StringLength[mid2] ];
-    store = ImportString[ReadString[str, term], "ExpressionJSON"];
+    Echo["[wljs-export-html/HTML] Checking notebook character encoding."];
+    str = OpenRead[path, BinaryFormat->True];
+    ReadString[str, start, TimeConstraint->10];
+    objects = ImportString[ReadString[str, mid1, TimeConstraint->10], "ExpressionJSON"];
+    cells = ImportString[ReadString[str, mid2, TimeConstraint->10], "ExpressionJSON"];
+    store = ImportString[ReadString[str, term, TimeConstraint->10], "ExpressionJSON"];
 
-    ReadString[str, startExtra];
-    ReadList[str, Character, StringLength[startExtra] ];
-    symbols = ReadString[str, termExtra];
+    ReadString[str, startExtra, TimeConstraint->10];
+    symbols = ReadString[str, termExtra, TimeConstraint->10];
     If[symbols === EndOfFile, symbols = <||>,
       symbols = ImportString[symbols, "ExpressionJSON"];
     ];
@@ -161,7 +296,7 @@ With[{
     place = FileNameJoin[{dir, name<>StringTake[CreateUUID[], 3]<>".wln"}];
 
 
-    Echo["SAVING////////"];
+    Echo["[wljs-export-html/HTML] Saving exported content."];
     Then[saveNotebook[place, notebook, "NoCache"->True], Function[Null,
       EventFire[spinner["Promise"], Resolve, True];
       EventFire[promise, Resolve,  place];
@@ -174,16 +309,17 @@ With[{
 ] ]
 
 Options[decode] = {"Messager"->"", "Client"->Null}
-
+Options[decodeHSFN4] = {"Messager"->"", "Client"->Null}
+Options[decodeHSFN5] = {"Messager"->"", "Client"->Null}
 
 End[]
 
 
+(* Dynamic export discovers widgets, samples black boxes, then embeds them. *)
 Begin["`Dynamic`"]
 
 export;
 
-generateNotebook = ImportComponent[FileNameJoin[{folder, "Static.wlx"}] ];
 analyser = ImportComponent[FileNameJoin[{rootFolder, "DynamicsTools", "Analyser.wlx"}] ];
 
 Needs["CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`" -> "dynamicAnalyzer`", FileNameJoin[{rootFolder, "DynamicsTools", "DynamicAnalyzer.wl"}] ];
@@ -193,16 +329,17 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`", FileName
 
 
 
-ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
+(* Process black boxes serially to avoid overlapping sniffer lifecycles. *)
+ApplySync[f_, w_, {first_, rest___}, final_, reject_] := f[w@@first, Function[Null, Echo["[wljs-export-html/HTML] Continuing with the next asynchronous step."]; ApplySync[f,w, {rest}, final, reject] ], Function[Null, reject[] ] ]
 ApplySync[f_, w_, {}, final_, reject_] := final[];
 
 export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := Module[{}, With[{
 
 },
     If[!TrueQ[notebookOnLine["Evaluator"]["Kernel"]["ContainerReadyQ"] ], 
-        Block[{Global`$Client = client}, (* [FIXME] *)
-            Echo[messager];
-            Echo[client];
+        Block[{$CurrentWebSocket = client}, (* [FIXME] *)
+            Echo[messager, "[wljs-export-html/HTML] messenger: "];
+            Echo[client, "[wljs-export-html/HTML] client: "];
             EventFire[messager, "Warning", "Kernel is not attached or intialized"];
         ];
         Return[];
@@ -213,7 +350,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
     },
         EventFire[modals, "SelectBox", <|"Promise"->mode, "title"->"Mode", "message"->"Select the preset", "list"->{"Automatic","Manual sampling"}|>];
         Then[mode, Function[choise,
-            Echo[choise];
+            Echo[choise, "[wljs-export-html/HTML] selected choice: "];
 
             Switch[choise,
                 1,
@@ -241,10 +378,10 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
         wapi`Tools`Flush[];
         wapi`Tools`Deserialize[values];
 
-        Echo[">> Synced wapi`"];
+        Echo["[wljs-export-html/HTML] Synchronized the Wolfram API context."];
         With[{widgets = Select[Select[Values[wapi`Tools`HashMap], MatchQ[#, _wapi`Tools`WidgetLike]& ], Function[item, item["Notebook"] === notebookHash && item["Online"] ] ]},
             If[Length[widgets] == 0,
-                Block[{Global`$Client = client}, (* [FIXME] *)
+                Block[{$CurrentWebSocket = client}, (* [FIXME] *)
                     EventFire[messager, "Warning", "No active Widget-like expressions associated with opened notebook were found"];   
                 ];     
                 Return[];
@@ -254,15 +391,15 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
             With[{socket = EventClone[client]},
                 EventHandler[socket, {"Closed" ->Function[Null,
                     EventRemove[socket];
-                    Echo["HTMLDyn >> Removed!"];
+                    Echo["[wljs-export-html/HTML] Removed the temporary dynamic HTML notebook."];
                 ]}]
             ];  
 
             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", False], client ];
 
             With[{box = blackBox`findBest[#]},
-                            Echo["Found best black box type: "];
-                            Echo[box];
+                            Echo["[wljs-export-html/HTML] Selected black-box type:"];
+                            Echo[box, "[wljs-export-html/HTML] black-box instance: "];
 
 
                             If[Head[box] =!= Missing, AppendTo[que,
@@ -270,13 +407,13 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
                             ] ];
             ]& /@ widgets;
 
-            Echo["Que:"];
+            Echo["[wljs-export-html/HTML] Queued black-box instances:"];
             que = Flatten[que];
-            Echo[que];
+            Echo[que, "[wljs-export-html/HTML] black-box queue: "];
 
  
 
-            Echo["Done processing of que of boxes"];
+            Echo["[wljs-export-html/HTML] Finished processing the black-box queue."];
 
                         With[{p = Promise[]},
                           ApplySync[Then, blackBox`process, {
@@ -290,11 +427,11 @@ automaticMode[controls_, modals_, messager_, client_, notebookOnLine_nb`Notebook
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE!"];
+                            Echo["[wljs-export-html/HTML] Processing completed."];
                             export[{"Final", que}, controls, modals, messager, client, notebookOnLine, path, name, ext, settings, proto];
                           ], Function[Null,
                             
-                            Echo["The whole process was aborted!"];
+                            Echo["[wljs-export-html/HTML] Export analysis was aborted."];
                             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
 
                             blackBox`delete /@ que;
@@ -321,8 +458,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 
         EventHandler[sniffer, {
             "Continue" -> Function[Null,
-                Echo[Hold[task] ];
-                CancelInterval[task] // Echo;
+                Echo[Hold[task], "[wljs-export-html/HTML] task: "];
+                Echo[CancelInterval[task], "[wljs-export-html/HTML] Sampling timer cancellation result: "];
                 Delete[notification];
                 ClearAll[hash];
                 EventRemove[sniffer];
@@ -333,16 +470,19 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
 
 
                 Then[dynamicAnalyzer`report[notebookOnLine["Evaluator"]["Kernel"] ], Function[data, 
-                    Echo[data[[All, "Summary"]] ];
+                    Echo[data[[All, "Summary"]], "[wljs-export-html/HTML] Dynamic-analysis summaries: "];
 
-                    KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Eject"], client];
-                    WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
+                    (* Fully stop discovery before a black box installs its sniffer. *)
+                    Then[KernelSniffer[notebookOnLine["Evaluator"]["Kernel"], "Eject"], Function[Null,
+                      Then[WebUIFetch[{
+                        dynamicAnalyzer`Sniffer["Eject"],
+                        dynamicAnalyzer`Sniffer["Retrack"]
+                      }, client], Function[Null,
 
                     Map[Function[group,
                         With[{box = blackBox`findBest[group]},
-                            Echo["Found best black box type: "];
-                            Echo[box];
+                            Echo["[wljs-export-html/HTML] Selected black-box type:"];
+                            Echo[box, "[wljs-export-html/HTML] black-box instance: "];
 
 
                             If[Head[box] =!= Missing, AppendTo[que,
@@ -351,8 +491,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                         ]
                     ], data];
 
-                    Echo["A list of black boxes instances"];
-                    Echo[que // Flatten];
+                    Echo["[wljs-export-html/HTML] Black-box instances selected for processing:"];
+                    Echo[que // Flatten, "[wljs-export-html/HTML] black-box queue: "];
 
                     With[{list = que // Flatten},
                         With[{p = Promise[]},
@@ -367,11 +507,11 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE!"];
+                            Echo["[wljs-export-html/HTML] Processing completed."];
                             export[{"Final", list}, controls, modals, messager, client, notebookOnLine, path, name, ext, settings, proto];
                           ], Function[Null,
                             
-                            Echo["The whole process was aborted!"];
+                            Echo["[wljs-export-html/HTML] Export analysis was aborted."];
                             WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
 
                             blackBox`delete /@ list;
@@ -380,6 +520,16 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                           ] ];
                         ] 
                     ];
+                      ], Function[err,
+                        Echo["[wljs-export-html/HTML] Failed to eject the frontend sniffer"];
+                        Echo[err, "[wljs-export-html/HTML] error details: "];
+                        EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                      ] ];
+                    ], Function[err,
+                      Echo["[wljs-export-html/HTML] Failed to eject the kernel sniffer"];
+                      Echo[err, "[wljs-export-html/HTML] error details: "];
+                      EventFire[messager, "Warning", "Failed to stop manual sampling"];
+                    ] ];
                 ] ];
             ],
 
@@ -399,7 +549,7 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
         With[{socket = EventClone[client]},
             EventHandler[socket, {"Closed" ->Function[Null,
                 EventRemove[socket];
-                Echo["HTMLDyn >> Removed!"];
+                Echo["[wljs-export-html/HTML] Removed the temporary dynamic HTML notebook."];
 
                 CancelInterval[task];
                 Delete[notification];
@@ -419,14 +569,14 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
             WebUISubmit[dynamicAnalyzer`Sniffer["Retrack"], client];
 
             task = SetInterval[With[{analyzed = dynamicAnalyzer`showAllConnections[notebookOnLine["Evaluator"]["Kernel"] ]},
-                Echo["Promise from analyzer: "];
-                Echo[analyzed];
+                Echo["[wljs-export-html/HTML] Analyzer result:"];
+                Echo[analyzed, "[wljs-export-html/HTML] analysis result: "];
                 Then[analyzed, Function[data,
                     With[{newHash = Hash[data]},
                         If[newHash =!= hash,
-                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{Global`$Client = client}, (* [FIXME] *)
-                                Echo["ERROR!"];
-                                Echo[err];
+                            If[Length[Flatten[#["Symbols"] &/@ data] ] > 8, Block[{$CurrentWebSocket = client}, (* [FIXME] *)
+                                Echo["[wljs-export-html/HTML] Operation failed."];
+                                Echo[err, "[wljs-export-html/HTML] error details: "];
                                 ClearAll[hash];
                                 CancelInterval[task];
                                 Delete[notification];
@@ -445,8 +595,8 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
                         ];
                     ];
                 ] , Function[err,
-                    Echo["ERROR!"];
-                    Echo[err];
+                    Echo["[wljs-export-html/HTML] Operation failed."];
+                    Echo[err, "[wljs-export-html/HTML] error details: "];
                     ClearAll[hash];
                     CancelInterval[task];
                 ] ]
@@ -460,46 +610,58 @@ manualMode[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj
     ];
 ] ];
 
-export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] :=  With[{
+(* blackBox`export consumes each machine while producing embeddable data. *)
+export[{"Final", machines_}, controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, path_, name_, ext_, settings_, proto_] := With[{
     machinesData = Map[blackBox`export, machines]
-},     
-   With[{
-       p = Promise[]
-   },
-       EventFire[modals, "SaveDialog", <|
-           "Promise"->p,
-           "title"->"Export as portable HTML notebook",
-           "properties"->{"createDirectory", "dontAddToRecent"},
-           "filters"->{<|"extensions"->"html", "name"->"HTML Document"|>}
-       |>];
+},
+    With[{
+        p = Promise[]
+    },
+        EventFire[modals, "SaveDialog", <|
+            "Promise"->p,
+            "title"->"Export as portable HTML notebook",
+            "properties"->{"createDirectory", "dontAddToRecent"},
+            "filters"->{<|"extensions"->"html", "name"->"HTML"|>}
+        |>];
 
-       Then[p, Function[result, 
-           Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
-               If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                 Echo["Cancelled saving"]; Echo[result];
-                 Return[];
-               ];
-               
-               If[!StringMatchQ[filename, __~~".html"],  filename = filename <> ".html"];
-               If[filename === ".html", filename = name<>filename];
-               If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
-
-               Then[proto["collectStaticData"], Function[Null,
-                Export[filename, generateNotebook["MachineData"->machinesData, "Settings"->settings, "Root"->rootFolder, "ExtensionTemplates" -> ext, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
-                Block[{Global`$Client = client},
-                    WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
-                    EventFire[messager, "Saved", "Exported to "<>filename];
+        Then[p, Function[result,
+            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
+                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0,
+                    Echo["[wljs-export-html/HTML] Save operation was cancelled."]; Echo[result, "[wljs-export-html/HTML] operation result: "];
+                    Return[];
                 ];
-               ] ];
-               
-           ];
-       ], Function[result, Echo["Exported to HTML"]; Echo[result] ] ];
-       
-   ]
+
+                If[!StringMatchQ[filename, __~~".html"], filename = filename <> ".html"];
+                If[filename === ".html", filename = name<>filename];
+                If[DirectoryName[filename] === "", filename = FileNameJoin[{path, filename}] ];
+
+                Then[proto["collectStaticData"], Function[Null,
+                    Then[generateHTML[
+                        "MarkdownTransformer"->proto["markdownTransformer"],
+                        "Root"->rootFolder,
+                        "Settings"->settings,
+                        "DynamicQ"->True,
+                        "MachinesData"->machinesData,
+                        "ExtensionTemplates"->ext,
+                        "Notebook"->notebookOnLine,
+                        "Title"->name
+                    ], Function[generated,
+                        Export[filename, generated // ToStringRiffle, "Text"];
+
+                        Block[{$CurrentWebSocket = client},
+                            WebUISubmit[fe`Tools`UIObjects["GarbageCollector", True], client ];
+                            EventFire[messager, "Saved", "Exported to "<>filename];
+                        ];
+                    ] ];
+                ] ];
+            ];
+        ], Function[result, Echo["[wljs-export-html/HTML] Exported to HTML"]; Echo[result, "[wljs-export-html/HTML] operation result: "] ] ];
+    ]
 ]
 
 
 
 End[]
+
 
 EndPackage[]

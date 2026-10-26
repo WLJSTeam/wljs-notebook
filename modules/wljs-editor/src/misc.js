@@ -186,7 +186,7 @@ core['CoffeeLiqueur`Extensions`Rasterize`Internal`OverlayView'].Create = async (
     
 
     setTimeout(() => {
-        server.kernel.emitt(channel, 'True');
+        server.kernel.io.fire(channel, true);
     }, time);
 }
 

@@ -1,3 +1,5 @@
+(* Renders a .slides cell offscreen and captures the deck as a merged PDF. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Slides`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -5,7 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Slides`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
 
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];
@@ -32,21 +34,21 @@ pdfEndpoint["Create", feobject_, OptionsPattern[] ] := With[{p = Promise[], chan
 ]
 
 pdfEndpoint["Capture", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window], Function[payload,
       EventFire[p, Resolve,  ByteArray[payload] ];
   ] ];
   p
 ]
 
 pdfEndpoint["CaptureToMerger", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[AccumulatePDF @ GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[AccumulatePDF @ GetPDF["crop"->crop, "printBackground"->True, "preferCSSPageSize"->True, "scale"->1, "margins"-><|"right"->0, "left"->0, "top"->0, "bottom"->0|>], window], Function[payload,
       EventFire[p, Resolve,  True ];
   ] ];
   p
 ]
 
 pdfEndpoint["FlushAndMerge", OptionsPattern[] ] := With[{p = Promise[], channel = CreateUUID[], window = OptionValue["Window"], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"], landscape = OptionValue["Landscape"], crop = OptionValue["Crop"]},
-  Then[WebUIFetch[FlushPDF[], window, "Format"->"JSON"], Function[payload,
+  Then[WebUIFetch[FlushPDF[], window], Function[payload,
       EventFire[p, Resolve,  ByteArray[payload] ];
   ] ];
   p
@@ -57,21 +59,22 @@ pdfEndpoint["Destroy", OptionsPattern[] ] := With[{p = Promise[], channel = Crea
 ]
 
 
-Options[pdfEndpoint] = {"Crop"->True, "Window" :> Global`$Client, "ExposureTime" -> 2.0, "ImageUpscaling"->1, "Landscape"->True}
+Options[pdfEndpoint] = {"Crop"->True, "Window" :> $CurrentWebSocket, "ExposureTime" -> 2.0, "ImageUpscaling"->1, "Landscape"->True}
 
 
 
 folder = $InputFileName // DirectoryName;
 rootFolder = folder // ParentDirectory // ParentDirectory;
 
+(* The frontend accumulates each page; recursion advances the live slideshow. *)
 captureSlide[count_, log_, win_, delay_] := captureSlide[count, log, win, delay, Promise[] ]
 
 captureSlide[count_, log_, win_, delay_, p_] := With[{},
     Then[pdfEndpoint["CaptureToMerger", "Window"->win ], Function[Null,
         EventFire[log, Notifications`NotificationMessage["Renderer"], StringTemplate["Captured slide ``"][count]];
         count++;
-        Then[WebUIFetch[GetNextSlide[delay], win, "Format"->"JSON"], Function[result, 
-            Echo["Result:"]; Echo[result];
+        Then[WebUIFetch[GetNextSlide[delay], win], Function[result, 
+            Echo["[wljs-export-html/Slides] Operation result:"]; Echo[result, "[wljs-export-html/Slides] operation result: "];
             If[!TrueQ[result], 
                 EventFire[p, Resolve, True];
             ,
@@ -82,6 +85,7 @@ captureSlide[count_, log_, win_, delay_, p_] := With[{},
     p
 ] 
 
+(* count must be mutated across asynchronous recursive calls. *)
 SetAttributes[captureSlide, HoldFirst];
 
 slideCellQ[cell_] := If[cell["Type"] === "Input",
@@ -123,11 +127,11 @@ With[{
                 count = 1;
 
                 If[!StringQ[filename] || TrueQ[filenameRaw["canceled"] ] || StringLength[filename] === 0, 
-                    Echo["Cancelled saving"]; Echo[filenameRaw];
+                    Echo["[wljs-export-html/Slides] Save operation was cancelled."]; Echo[filenameRaw, "[wljs-export-html/Slides] selected filename: "];
                     ClearAll[payload, filename, spinner, win, winObject, count]; 
                 ,
 
-                    Echo[filename];
+                    Echo[filename, "[wljs-export-html/Slides] filename: "];
                     spinner = Notifications`Spinner["Topic"->"Exporting", "Body"->"Please, wait"];
 
                     If[!StringMatchQ[filename, __~~".pdf"],  filename = filename <> ".pdf"];
@@ -143,16 +147,16 @@ With[{
                             Delete /@ Select[notebookOnLine["Cells"], Function[cell, cell["Display"]==="slide" ] ];
                             EventFire[messager, spinner, True];
 
-                            Echo["Projecting cell to the outer window"];
+                            Echo["[wljs-export-html/Slides] Projecting cell to the outer window"];
                             EventFire[messager, "Info", "Setting up the projector"];       
                             winObject = SelectFirst[EventFire[controls, "NotebookCellProjectTemporalOpts", <|"Cell"->slides, "Offscreen"->True|>] // Flatten, PromiseQ];
-                            Echo[winObject];
+                            Echo[winObject, "[wljs-export-html/Slides] window object: "];
                             winObject = winObject // Await;
-                            Echo[winObject];
+                            Echo[winObject, "[wljs-export-html/Slides] window object: "];
                             PauseAsync[2] // Await;
-                            Echo["Window  is ready"];
+                            Echo["[wljs-export-html/Slides] Window  is ready"];
                             win = winObject["Socket"];
-                            Echo[win];
+                            Echo[win, "[wljs-export-html/Slides] window: "];
                             
                             
                             EventFire[messager, "Message", "Going though slides"];  
@@ -169,8 +173,8 @@ With[{
                             EventFire[messager, "Info", "Done"];  
 
                             payload = pdfEndpoint["FlushAndMerge", "Window"->win] // Await;   
-                            Echo[payload // Head];
-                            Echo[payload // Length];
+                            Echo[payload // Head, "[wljs-export-html/Slides] payload type: "];
+                            Echo[payload // Length, "[wljs-export-html/Slides] payload item count: "];
 
                             WebUIClose[win];
                             

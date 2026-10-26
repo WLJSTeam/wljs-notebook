@@ -20,10 +20,10 @@ Component[OptionsPattern[]] := With[{
 
         "Load" -> Function[Null,
             Print["Notebook message is about to be shown"];
-            EventFire[modals, data["Type"], Join[<|"Client"->$Client|>, data]];
+            EventFire[modals, data["Type"], Join[<|"Client"->$CurrentWebSocket|>, data]];
         ],
 
-        else_String :> (Echo[StringTemplate["Unknown notebook view event ``: ``"][else, #]]&)
+        else_String :> (Echo[StringJoin["[Views/Message] ", StringTemplate["Unknown notebook view event ``: ``"][else, #]]]&)
     }];
 
     With[{nid = notebook["Hash"]},

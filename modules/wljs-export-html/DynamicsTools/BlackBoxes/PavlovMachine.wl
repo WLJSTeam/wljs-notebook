@@ -1,3 +1,5 @@
+(* Replays captured FrontSubmit commands by frontend-state hash. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`PavlovMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -5,7 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`PavlovMachine`", {
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`UObjects`"
 }]
 
@@ -24,7 +26,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`" , FileNam
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
-Echo["BlackBox :: PavlovMachine"];
+Echo["[wljs-export-html/PavlovMachine] BlackBox :: PavlovMachine"];
 
 CreateUType[pavlovMachine, blackBox`BlackBox];
 
@@ -38,7 +40,7 @@ pavlovMachine /: blackBox`construct[pavlovMachine, group_, kernel_] := With[{sub
     With[{machine = pavlovMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/PavlovMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Events"] = (#["FullForm"]&/@(group["Summary"]["Events"]));
@@ -60,6 +62,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr, "JSON"] ]},
   ]
 ]
 
+(* Export consumes the hash table after serializing its command map. *)
 pavlovMachine /: blackBox`export[machine_pavlovMachine] := With[{},
 With[{data = <|"CompressedMap" -> compress[KeyValueMap[Function[{key, val}, {key, ExportString[val, "ExpressionJSON", "Compact"->1]}], Normal[machine["HashTable"] ] ] ],
   "Class" -> "PavlovMachine",
@@ -82,7 +85,7 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
 
     machine["Interpolation"] = Lookup[settings, "HTMLExportStatesInterpolation", True];
 
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
         EventFire[messager, notification, True];
     ];
 
@@ -103,8 +106,9 @@ pavlovMachine /: blackBox`process[machine_pavlovMachine, {controls_, modals_, me
     
 
 
-    Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client, "Format"->"RawJSON"], Function[hashes,
-      Echo["Got hashes:: "]; Echo[hashes];
+    (* Hashes are calculated in the frontend where the referenced objects live. *)
+    Then[WebUIFetch[CalculateHash[machine["Raw"][[All, 1]] ], client], Function[hashes,
+      Echo["[wljs-export-html/PavlovMachine] Resolved notebook hashes:"]; Echo[hashes, "[wljs-export-html/PavlovMachine] hashes: "];
 
       MapThread[Function[{hash, data},
         machine["HashTable"]["Insert", hash -> data];

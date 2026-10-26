@@ -83,7 +83,7 @@ Script = With[{},
 
             separator.addEventListener('click', () => {
                 if (object.clicks > 0) {
-                    server.emitt(event, '"'+cell.uid+'"', 'AddAfter');
+                    server.io.fire(event, cell.uid, 'AddAfter');
                     CellWrapper.forceFocusNew();
                     self.blur();
                 }
@@ -118,7 +118,7 @@ Script = With[{},
             separator.addEventListener('focus', () => focus(object));
             separator.addEventListener('blur', () => blur(object))
 
-            //server.emitt(event, '"'+cell.uid+'"', 'AddAfter');
+            
 
             return object;
         }

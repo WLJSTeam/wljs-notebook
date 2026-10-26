@@ -1,146 +1,205 @@
-<|"Notebook" -> <|"Controller" -> "13503971-905a-4d4c-8b49-7b873fc7cbaf", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$492], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "fbb11989-6fc9-483a-85f9-b0e72742c535", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/D - Generating points on the frontend.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, 
-   "Symbols" -> <|"pos" -> {0, 0}, "scale" -> 5|>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Generating points on the frontend", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$508]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Bezier curves", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$491]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Generating points on the frontend\n\nWe can \
-push `Offload` further and run a small program inside, which generates a set \
-of points without Wolfram Kernel. The interpreter supports a small subset of \
-Wolfram Expressions including Table and With. Let's use them inside \
-`Offload`:", "Display" -> "codemirror", 
-    "Hash" -> "47f76e04-095b-4725-b766-f3300e6b910c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "# Generating points on the frontend\n\nWe can push `Offload` \
-further and run a small program inside, which generates a set of points \
-without Wolfram Kernel. The interpreter supports a small subset of Wolfram \
-Expressions including Table and With. Let's use them inside `Offload`:", 
-    "Display" -> "markdown", "Hash" -> 
-     "483479e7-6abe-4b7a-a567-7afa5b57002c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "scale = 10.0;\npos = {0,0};\nGraphics[\n  Line[Offload[\n    \
-With[{p=pos, s=scale}, \n      Table[(Exp[-a/s]{Sin[a], Cos[a]})+p, \
-{a,0,8Pi,0.1}]\n    ]\n  ]]\n]", "Display" -> "codemirror", 
-    "Hash" -> "bc82ee01-a799-4163-8e2b-587a8d9aec1c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "(*VB[*)(Graphics[Line[Offload[With[{p = pos, s = scale}, \
-Table[Exp[-a/s]*{Sin[a], Cos[a]} + p, {a, 0, 8*Pi, \
-0.1}]]]]])(*,*)(*\"1:eJxlkE0KwjAQRqNW9BqexIWILgotVnCdtgkdiE3oVPQqehNPp5lO/6xZ\
-fPDmMZNJNqk96ZkQAgMfR2typrWPQyVdARkOPoRSMa18RFobK3M97/QF6mKgELBmWvhIVI3U6RpyF\
-v8V4pIyk0axJDzLtEMaGpsbjiRcVbseDdo/3NT9Inz8ae6Sg4ntXVW8QOMnL+inJ1C2rX1pZ5FL/D\
-QdjDvZgA8xXYN+F6kWQ/V60nlvv/dCUJk=\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "268422e2-6b51-4174-b4da-1856ecc6872b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> ".md\nHere we passed pos and scale as p and s in order to \
-create only 2 instances of dynamic-symbols. Every time we change them on \
-Wolfram Kernel, the whole curve is regenerated on the frontend:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a45f1152-fb4a-411c-a375-4092a70b1372", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "Here we passed pos and scale as p and s in order to create \
-only 2 instances of dynamic-symbols. Every time we change them on Wolfram \
-Kernel, the whole curve is regenerated on the frontend:", 
-    "Display" -> "markdown", "Hash" -> 
-     "81ac5475-a150-48a6-a491-efaffc96b5a3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "scale = 5.0;", "Display" -> "codemirror", 
-    "Hash" -> "b8c84732-ec1d-4754-a66c-ef66af84b1a2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> ".md\n## Bezier curves\nHere is more compliced example on \
-generating many lines, that all depends on the same symbols:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c5ed46ca-d5e4-4292-9c54-a24a186e306d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "## Bezier curves\nHere is more compliced example on \
-generating many lines, that all depends on the same symbols:", 
-    "Display" -> "markdown", "Hash" -> 
-     "822b7042-7309-4f7c-9a84-ae80e66f6acf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "autoLine[t_, p1_, p2_, p3_] := \n Line[\n   With[{pc = p2, pi \
-= p1, pf = p3}, \n     {pi + t (pc - pi), pc + t (pf - pc)}\n   ] // \
-Offload\n ]\n\nSetAttributes[autoLine, HoldRest]", "Display" -> "codemirror", 
-    "Hash" -> "ece8b073-20d2-4e12-a2d3-924198064239", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> ".md\nNow we can plot it with draggable points", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a1cef1ea-a452-47b1-9397-555515dd65dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "Now we can plot it with draggable points", 
-    "Display" -> "markdown", "Hash" -> 
-     "9705d206-1150-47c2-8305-7e0f0ce37085", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "curve[p1_, p2_, p3_] := LeakyModule[{pi = p1, pc = p2, pf = \
-p3},\n  {\n    Blue, Table[autoLine[t, pi, pc, pf], {t, 0, 1, 0.1}],\n    \
-PointSize[0.06], Red, \n\n    EventHandler[Point[pi], {\"drag\" -> \
-Function[xy, pi = xy]}],\n    EventHandler[Point[pc], {\"drag\" -> \
-Function[xy, pc = xy]}],\n    EventHandler[Point[pf], {\"drag\" -> \
-Function[xy, pf = xy]}]\n  }\n]", "Display" -> "codemirror", 
-    "Hash" -> "82b58fba-2e5d-4f0f-9010-39bd86daccc9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> ".md\n__Draw__", "Display" -> "codemirror", 
-    "Hash" -> "d3e35a21-954e-4dd0-a7c3-fde0852f2d4c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "__Draw__", "Display" -> "markdown", 
-    "Hash" -> "92c97ec6-2b42-4104-8627-22f5e29100a7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "curve[{0.2,0.2}, {0.3,0.5}, {0.6,0.1}] // Graphics", 
-    "Display" -> "codemirror", "Hash" -> 
-     "38d377fe-5491-494f-a8d7-79719368530f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> ".md\nNote, that actual calculation of the intermediate blue \
-line happens on frontend's side, i.e. in the browser. Kernel is only updating \
-the positions of three points `p1`, `p2`, `p3`.", "Display" -> "codemirror", 
-    "Hash" -> "c0a8a780-7541-4c01-b39d-e9f3c5505e0c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>, 
-   <|"Data" -> "Note, that actual calculation of the intermediate blue line \
-happens on frontend's side, i.e. in the browser. Kernel is only updating the \
-positions of three points `p1`, `p2`, `p3`.", "Display" -> "markdown", 
-    "Hash" -> "ab414178-394d-4f39-afc6-c3a23b68d463", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bef46726-7495-4847-94a7-56bf42313212"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Generating points on the frontend
+
+We can push `Offload` further and run a small program inside, which generates a set of points without Wolfram Kernel. The interpreter supports a small subset of Wolfram Expressions including Table and With. Let's use them inside `Offload`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Generating points on the frontend
+
+We can push `Offload` further and run a small program inside, which generates a set of points without Wolfram Kernel. The interpreter supports a small subset of Wolfram Expressions including Table and With. Let's use them inside `Offload`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+scale = 10.0;
+pos = {0,0};
+Graphics[
+  Line[Offload[
+    With[{p=pos, s=scale}, 
+      Table[(Exp[-a/s]{Sin[a], Cos[a]})+p, {a,0,8Pi,0.1}]
+    ]
+  ]]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[Line[Offload[With[{p = pos, s = scale}, Table[Exp[-a/s]*{Sin[a], Cos[a]} + p, {a, 0, 8*Pi, 0.1}]]]]])(*,*)(*"1:eJxlkE0KwjAQRqNW9BqexIWILgotVnCdtgkdiE3oVPQqehNPp5lO/6xZfPDmMZNJNqk96ZkQAgMfR2typrWPQyVdARkOPoRSMa18RFobK3M97/QF6mKgELBmWvhIVI3U6RpyFv8V4pIyk0axJDzLtEMaGpsbjiRcVbseDdo/3NT9Inz8ae6Sg4ntXVW8QOMnL+inJ1C2rX1pZ5FL/DQdjDvZgA8xXYN+F6kWQ/V60nlvv/dCUJk="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here we passed pos and scale as p and s in order to create only 2 instances of dynamic-symbols. Every time we change them on Wolfram Kernel, the whole curve is regenerated on the frontend:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here we passed pos and scale as p and s in order to create only 2 instances of dynamic-symbols. Every time we change them on Wolfram Kernel, the whole curve is regenerated on the frontend:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+scale = 5.0;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Bezier curves
+Here is more compliced example on generating many lines, that all depends on the same symbols:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Bezier curves
+Here is more compliced example on generating many lines, that all depends on the same symbols:
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+autoLine[t_, p1_, p2_, p3_] := 
+ Line[
+   With[{pc = p2, pi = p1, pf = p3}, 
+     {pi + t (pc - pi), pc + t (pf - pc)}
+   ] // Offload
+ ]
+
+SetAttributes[autoLine, HoldRest]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we can plot it with draggable points
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we can plot it with draggable points
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+curve[p1_, p2_, p3_] := LeakyModule[{pi = p1, pc = p2, pf = p3},
+  {
+    Blue, Table[autoLine[t, pi, pc, pf], {t, 0, 1, 0.1}],
+    PointSize[0.06], Red, 
+
+    EventHandler[Point[pi], {"drag" -> Function[xy, pi = xy]}],
+    EventHandler[Point[pc], {"drag" -> Function[xy, pc = xy]}],
+    EventHandler[Point[pf], {"drag" -> Function[xy, pf = xy]}]
+  }
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+__Draw__
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+__Draw__
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+curve[{0.2,0.2}, {0.3,0.5}, {0.6,0.1}] // Graphics
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Note, that actual calculation of the intermediate blue line happens on frontend's side, i.e. in the browser. Kernel is only updating the positions of three points `p1`, `p2`, `p3`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Note, that actual calculation of the intermediate blue line happens on frontend's side, i.e. in the browser. Kernel is only updating the positions of three points `p1`, `p2`, `p3`.
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: pos
+%-------------------------------------------------------------------------%
+{0, 0}
+
+%-------------------------------------------------------------------------%
+Key: scale
+%-------------------------------------------------------------------------%
+5
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

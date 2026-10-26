@@ -6,8 +6,13 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelUtils`", {
   "CoffeeLiqueur`UInternal`",
   "CoffeeLiqueur`TCPUServer`",
   "CoffeeLiqueur`WebUSocketHandler`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`"
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
+
+(* 
+    Kernel Initialization helpers
+    Sets up websocket connection and loads extensions
+*)
 
 deinitializeKernel; 
 initializeKernel;
@@ -35,7 +40,7 @@ initializeKernel[parameters_][kernel_] := With[{
   With[{files = With[{
     filename = #
   },
-    Echo[StringJoin["Loading to Evaluation Kernel... ", #] ];
+    Echo[StringJoin["[Frontend/KernelUtils] Loading expression into the evaluation kernel: ", #]];
     filename
   ] &/@ WLJSPackages`Includes["kernel"]},
     GenericKernel`Send[kernel, Get[#, Path->paths]&/@files // Quiet;];
@@ -43,7 +48,7 @@ initializeKernel[parameters_][kernel_] := With[{
 
   (* GenericKernel`SendAsync[kernel, 1]; *)
 
-  Echo["Starting WS link"];
+  Echo["[Frontend/KernelUtils] Starting WS link"];
   wsStartListerning[kernel,  wsPort, parameters["env", "host"] ];
 
   kernel["WebSocket"] = wsPort;
@@ -60,7 +65,7 @@ initializeKernel[parameters_][kernel_] := With[{
 ]
 
 deinitializeKernel[kernel_] := With[{},
-  Echo["Cleaning up..."];
+  Echo["[Frontend/KernelUtils] Cleaning up."];
 
   kernel["ContainerReadyQ"] = False;
   kernel["WebSocket"] = .;
@@ -70,7 +75,7 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
-        System`$DefaultSerializer = ExportByteArray[#, "ExpressionJSON"]&;
+        
         Module[{Internal`Kernel`wcp, Internal`Kernel`ws},
           Internal`Kernel`wcp = TCPUServer[];
           Internal`Kernel`wcp["CompleteHandler", "WebSocket"] = WebSocketUPacketQ -> WebSocketUPacketLength;
@@ -83,20 +88,25 @@ wsStartListerning[kernel_, port_, host_] := With[{},
 
 
           Off[Function::fpct]; (* fixme, when a symbol gets cleared, see  Experimental`ValueFunction *)
+          Off[Function::slotn]; (* fixme they changed it in WL15 *)
           
           (* symbols tracking *)
-          WLJSTransportHandler["AddTracking"] = Function[{symbol, name, cli, callback},
+          WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
               (*Print["Add tracking... for "<>name];*)
-              Experimental`ValueFunction[ Unevaluated[symbol] ] = Function[{y,x}, 
-                If[FailureQ[callback[cli, x] ], 
-                  Experimental`ValueFunction[ Unevaluated[symbol] ] // Unset
+              Experimental`ValueFunction[ fullName ] = ( 
+                If[FailureQ[callback[cli, #2] ], 
+                  Experimental`ValueFunction[ fullName ] // Unset
                 ];
-              ];
+              )&;
           , HoldFirst];
 
-          WLJSTransportHandler["GetSymbol"] = Function[{expr, client, callback},
+          WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
               (*Print["evaluating the desired symbol on the Kernel"];*)
-              callback[expr // ReleaseHold];
+              If[ToExpression[exprString, InputForm, ValueQ],
+                callback[ToExpression[exprString, InputForm]];
+              ,
+                callback[$Failed];
+              ]
           ];
 
           (*Echo[StringTemplate["starting @ ``:port ``"][Internal`Kernel`Host, port] ];*)

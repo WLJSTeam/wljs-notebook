@@ -13,7 +13,7 @@
     "js": "src/kernel.js",
     "styles": "src/style.css",
     "category": "Cell types",
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

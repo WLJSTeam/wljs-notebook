@@ -1,5 +1,9 @@
 BeginPackage["CoffeeLiqueur`Notebook`Transactions`", {"CoffeeLiqueur`UObjects`", "CoffeeLiqueur`Misc`Events`"}]
 
+(*
+	Abstraction for transaction objects used to perform evaluation
+*)
+
 Transaction::usage = "creates transaction for Notebook <-> Kernel / Evaluator communication"
 
 Begin["`Private`"]

@@ -1090,11 +1090,11 @@ Legended /: MakeBoxes[Legended[expr_, legendFunction_ ], WLXForm] := With[{
 Unprotect[BarLegend];
 FormatValues[BarLegend] = {};
 
-BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_ColorDataFunction | cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: WLXForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
   MakeBoxes[o, form]
 ]
 
-BarLegend /: MakeBoxes[BarLegend[cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
+BarLegend /: MakeBoxes[BarLegend[cf_ColorDataFunction | cf_Function | cf_String | cf_Symbol, contours_Integer, opts:OptionsPattern[BarLegend]], form: StandardForm] := With[{o = CreateFrontEndObject[BoxForm`makeBarLegend[cf, contours, opts] ]},
  With[{out = MakeBoxes[o, StandardForm]},
   ViewBox[out, o]
  ]
@@ -1145,7 +1145,9 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
   },
   With[{
     legend =   With[{options = Association[List[opts] ]}, 
-    Module[{colorConvert, label = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
+    Module[{colorConvert, label = None, frameLabel = None, colorToRGB, colorPositions, sampledColors, vertices, vertexColors, polygons,
+      horizontal = Lookup[options, LegendLayout, Automatic] === "Row",
+      colorFunctionScaling = Lookup[options, ColorFunctionScaling, True],
       imageSize = 
         If[KeyExistsQ[options, ImageSize], options[ImageSize], 1.2 370 / 1.6180339  ],
       labelStyle = Lookup[options, LabelStyle, Automatic]},
@@ -1154,16 +1156,22 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
       imageSize = 
         If[!ListQ[imageSize], 
           (* If it's not a list, scale by the golden ratio *)
-          imageSize {0.1, 1.0} ,
+          imageSize If[horizontal, {1.0, 0.1}, {0.1, 1.0}] ,
           (* If it's a list, adjust by the second element *)
           imageSize
         ];
 
-      If[imageSize[[1]] < 50.0, imageSize[[1]] = 50.0];
+      (* The column layout needs room for its right-hand ticks. Horizontal
+         padding is added to the total row size below, so its requested size
+         remains the size of the color bar itself. *)
+      If[!horizontal && imageSize[[1]] < 50.0, imageSize[[1]] = 50.0];
 
       (* Color conversion function based on range *)
       colorConvert[value_] := 
-        cf @ ((value - range[[1]]) / (range[[2]] - range[[1]]));
+        cf @ If[TrueQ[colorFunctionScaling],
+          (value - range[[1]]) / (range[[2]] - range[[1]]),
+          value
+        ];
 
       colorToRGB[color_] := N[Take[List @@ ColorConvert[color, "RGB"], 3]];
 
@@ -1175,11 +1183,18 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
         {ticks[[All, 1]], colorConvert /@ ticks[[All, 1]]}
       ];
 
-      vertices = Flatten[({{-1, #}, {1, #}} &) /@ colorPositions, 1];
+      vertices = Flatten[(If[horizontal, {{#, -1}, {#, 1}}, {{-1, #}, {1, #}}] &) /@ colorPositions, 1];
       vertexColors = Flatten[({#, #} &) /@ (colorToRGB /@ sampledColors), 1];
       polygons = Table[{2 i - 1, 2 i, 2 i + 2, 2 i + 1}, {i, Length[colorPositions] - 1}];
 
       label = Replace[Lookup[options, LegendLabel, None] , {Automatic -> None}];
+      (* FrameLabel supports {label, {dx, dy}}, but a positioned right-side
+         label is otherwise ambiguous with its {{left, right}, {bottom, top}}
+         form. Its renderer ignores the trailing element while retaining the
+         absolute offset, which disambiguates the two forms. *)
+      frameLabel = Replace[label, {
+        {content_, offset : {_, _}} :> {content, offset, None}
+      }];
       
       (* Interpolate the sampled colors across a shared polygon mesh. *)
       Graphics[
@@ -1189,15 +1204,23 @@ BoxForm`makeBarLegend[cf_, range_List, contours_, opts:OptionsPattern[]] := With
           VertexColors -> vertexColors
         ],
         Axes -> True, Frame -> True, 
-        FrameTicks -> {{ticks, ticks}, {False, False}},
+        FrameTicks -> If[horizontal, {{False, False}, {ticks, ticks}}, {{ticks, ticks}, {False, False}}],
         FrameStyle -> labelStyle,
-        FrameLabel -> {{ None, label}, {None, None}},
+        FrameLabel -> If[horizontal, {{None, None}, {frameLabel, None}}, {{None, frameLabel}, {None, None}}],
         FrameTicksStyle -> labelStyle,
-        TickLabels -> {False, False, False, True}, 
-        PlotRange -> {{-1, 1}, range}, 
+        TickLabels -> If[horizontal, {True, False, False, False}, {False, False, False, True}],
+        PlotRange -> If[horizontal, {range, {-1, 1}}, {{-1, 1}, range}],
         "Controls" -> False, 
-        ImageSize -> imageSize + {If[label =!= Null, 40, 0], 0}, 
-        ImagePadding -> {{0, 25 + If[label =!= Null, 35, 0]}, {35,30}},
+        ImageSize -> If[horizontal,
+          imageSize + {50, 35 + If[label =!= None, 35, 0]},
+          imageSize + {If[label =!= Null, 40, 0], 0}
+        ],
+        ImagePadding -> If[horizontal,
+          (* Match the asymmetric left/right padding of a framed Graphics when
+             the legend is centered above or below it. *)
+          {{21, 29}, {35 + If[label =!= None, 35, 0], 0}},
+          {{0, 25 + If[label =!= Null, 35, 0]}, {35,30}}
+        ],
         "PaddingIsImportant" -> True
       ]
     ]
@@ -1240,6 +1263,8 @@ Unprotect[BoxForm`SummaryItem]
 BoxForm`SummaryItem[{label_String, view_}] := With[{encoded = ToString[view, StandardForm]//URLEncode}, BoxForm`SummaryItemView[label, EditorView[encoded//URLDecode//Hold, "ReadOnly"->True] ] ]
 
 BoxForm`SummaryItem[{label_String}] := BoxForm`SummaryItemView[label, ""]
+
+BoxForm`SummaryItem[{left_, mid_, right__}] := BoxForm`SummaryItemView[StringRiffle[ToString/@{left,mid,right}, " "], ""]
 
 BoxForm`SummaryItem[{view_}] := BoxForm`SummaryItem[{"", view}]
 
@@ -1300,13 +1325,13 @@ BoxForm`ArrangeSummaryBox[head_, interpretation_, icon_, above_List, _List, BoxF
           If[interpretationHead =!= headString && !StringQ[head],
             RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]          
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[BoxForm`ArrangedSummaryBox[iconSymbol, above, hidden] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ,
           If[interpretationHead =!= headString && !StringQ[head],
             RowBox[{headString, "[", "(*VB[*) ", interpretationString, " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol , above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ,
-            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol // FrontEndVirtual, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
+            RowBox[{headString, "[", "(*VB[*) ", StringDrop[StringDrop[interpretationString, -1], StringLength[interpretationHead] + 1], " (*,*)(*", ToString[CompressWithContext[ProvidedOptions[BoxForm`ArrangedSummaryBox[iconSymbol, above, hidden], "Event" -> event] ], InputForm ], "*)(*]VB*)", "]"}]
           ]
         ]
       
@@ -1448,6 +1473,29 @@ FormatValues[Region] = {}
 
 
 Region /: MakeBoxes[u_Region, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
+  If[ByteCount[u] > 3250,
+    LeakyModule[{temporal},
+      With[
+        {v = Interpretation[Labeled[r// BoxForm`ToViewBox, Style["Data is on Kernel", Gray, 10, FontFamily->"system-ui"] ]//Panel//Deploy, temporal]},
+        {box = MakeBoxes[v, StandardForm]},      
+        AppendTo[Kernel`Internal`garbage, Hold[temporal] ];
+        temporal = u;
+        box
+      ]
+    ]
+    
+  ,
+    ViewBox[b, r]
+  ]
+  
+]
+
+(* :: BooleanRegion :: *)
+
+Unprotect[BooleanRegion];
+FormatValues[BooleanRegion] = {};
+
+BooleanRegion /: MakeBoxes[u_BooleanRegion, StandardForm] := With[{b=u}, {r = If[RegionDimension[b] == 3, RegionPlot3D[b, ImageSize->70], Insert[RegionPlot[b, ImageSize->70, Axes->False, Frame->False, ImagePadding->10], "Controls"->False, {2,-1}]] // CreateFrontEndObject},
   If[ByteCount[u] > 3250,
     LeakyModule[{temporal},
       With[

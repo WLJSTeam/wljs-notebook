@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import {url, delay, evaluate, clearCell} from './common'
+import {url, delay, evaluate, clearCell, loadPage} from './common'
 
 test.describe.configure({ mode: 'default' });
 
@@ -13,9 +13,8 @@ test.describe('2D Plot', () => {
       page = await context.newPage();
       page.route('**', route => route.continue());
       
-      await page.goto(url);
+      await loadPage(page, url);
       await delay(6000);
-      page.on('console', msg => console.log(msg.text()));
   });
 
   test.afterAll(async ({ browser }) => {
@@ -156,7 +155,7 @@ test.describe('2D Plot', () => {
   test('Inset Test 2', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'g=Plot[Sin[x], {x, 0, 10}, Frame -> True, FrameTicks -> None, AspectRatio -> Full]; Table[Graphics[{Inset[g, Automatic, Automatic, {s, s}], Circle[{0, 0}, 2]}, Frame -> True, ImageSize->150], {s, {1, 2, 3}}]', 15000, 2500);
+    const outputCell = await evaluate(page, 'Clear[g];\ng=Plot[Sin[x], {x, 0, 10}, Frame -> True, FrameTicks -> None, AspectRatio -> Full]; Table[Graphics[{Inset[g, Automatic, Automatic, {s, s}], Circle[{0, 0}, 2]}, Frame -> True, ImageSize->150], {s, {1, 2, 3}}]', 15000, 2500);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'inset122.png']);
   }); 
 
@@ -164,14 +163,14 @@ test.describe('2D Plot', () => {
   test('Tabular Test', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'Tabular[{{1, x, Today}, {4, y, Tomorrow}}, {"col1", "col2", "col3"}]', 15000, 2000);
+    const outputCell = await evaluate(page, 'Tabular[{{1, x, DateObject[{2025, 3, 17}]}, {4, y, DateObject[{2025, 3, 18}]}}, {"col1", "col2", "col3"}]', 15000, 2000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular1.png']);
   });  
   
   test('Tabular Test2', async () => {
     await clearCell(page);
   
-    const outputCell = await evaluate(page, 'EntityValue[ EntityClass["Book", "DuneBooks"], {"FirstPublished", "Author",  "Image"}, "Tabular"]', 15000, 2000);
+    const outputCell = await evaluate(page, 'EntityValue[ EntityClass["Book", "DuneBooks"], {"FirstPublished", "Author",  "Image"}, "Tabular"]', 15000, 8000);
     await expect(outputCell).toHaveScreenshot(['screenshorts', 'tabular2.png']);
   });  
 

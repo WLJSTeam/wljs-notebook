@@ -3,7 +3,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`Communication`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 (* it was removed *)

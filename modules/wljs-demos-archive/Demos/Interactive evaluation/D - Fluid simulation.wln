@@ -1,266 +1,427 @@
-<|"Notebook" -> <|"Controller" -> "3ff19b1d-2b27-4dbc-af9d-08042b4efad3", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$594], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "7d5eb3fc-057e-4597-9b46-7882242b772a", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/D - Fluid simulation.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Real-time Fluid Simulation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$597]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Equations", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$579]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Advection function", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$581]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Function to remove divergence", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$584]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Bilinear interpolator", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$587]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Advection for test particles", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$590]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Demonstration", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$593]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Real-time Fluid Simulation\n*Using Wolfram \
-Language and WLJS libraries*", "Display" -> "codemirror", 
-    "Hash" -> "66bccf50-f085-4011-8cb9-dc0c3bbaeae5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "# Real-time Fluid Simulation\n*Using Wolfram Language and \
-WLJS libraries*", "Display" -> "markdown", 
-    "Hash" -> "c8b35917-ff51-4684-ae39-f24e22664216", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n## Equations\nWe based our implementation on the \
-Navier-Stokes equation for incompressible fluid with no \
-viscosity\n\n$$\n\\\\frac{\\\\partial \\\\mathbf{v}}{\\\\partial t} + \
-(\\\\mathbf{v} \\\\cdot \\\\nabla) \\\\mathbf{v} = f_{\\\\text{external}}, \
-\\\\qquad div~\\\\mathbf{v} = 0\n$$\n\nwhere $f_{external}$ accounts for the \
-pressure gradient and external forces.\n\nThen, we solve these two equations \
-in a discretized form on a grid using a technique mentioned in Jos Stam's \
-*Stable Fluids* work.", "Display" -> "codemirror", 
-    "Hash" -> "3b9b162c-1846-4b99-b2f0-29041f418972", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "## Equations\nWe based our implementation on the \
-Navier-Stokes equation for incompressible fluid with no \
-viscosity\n\n$$\n\\\\frac{\\\\partial \\\\mathbf{v}}{\\\\partial t} + \
-(\\\\mathbf{v} \\\\cdot \\\\nabla) \\\\mathbf{v} = f_{\\\\text{external}}, \
-\\\\qquad div~\\\\mathbf{v} = 0\n$$\n\nwhere $f_{external}$ accounts for the \
-pressure gradient and external forces.\n\nThen, we solve these two equations \
-in a discretized form on a grid using a technique mentioned in Jos Stam's \
-*Stable Fluids* work.", "Display" -> "markdown", 
-    "Hash" -> "35732085-b8ae-4b0c-9d93-0457193a6d71", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n### Advection function", "Display" -> "codemirror", 
-    "Hash" -> "b01b4698-67a6-4e60-95b2-9e6d175827bc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "### Advection function", "Display" -> "markdown", 
-    "Hash" -> "9bc20cbb-2d97-4cfb-84ad-1aa074f7c913", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "advect = Compile[{{v, _Real, 3}, {u, _Real, 3}, {\[Delta]t, \
-_Real, 0}} , With[{max = Length[v]}, With[{\n \n},\n  Table[ \n  \n    \
-With[{\n      v1 =  (*FB[*)((If[i-1 >= 1, v[[i-1, j]], {0.,0.}] + v[[i, \
-j]])(*,*)/(*,*)(2.0))(*]FB*).{1,0},\n      v2 =  (*FB[*)((If[j+1 <= max, \
-v[[i, j+1]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{0,-1},\n      v3 \
-=  (*FB[*)((If[i+1 <= max, v[[i+1, j]], {0.,0.}] + v[[i, \
-j]])(*,*)/(*,*)(2.0))(*]FB*).{-1,0},\n      v4 =  (*FB[*)((If[j-1 >= 1, v[[i, \
-j-1]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{0,1},\n      org = \
-u[[i,j]]\n    },\n\n      org +  (\n      \n        v1 If[v1 >0, If[i-1 >= 1, \
-u[[i-1, j]], {0.,0.} ], org]  + v3 If[v3>0,If[i+1 <= max, u[[i+1, j]], \
-{0.,0.} ], org]+\n        \n        v4 If[v4 >0, If[j-1 >= 1, u[[i, j-1]], \
-{0.,0.} ], org] + v2 If[v2>0, If[j+1 <= max, u[[i, j+1]], {0.,0.} ], org]\n   \
-     \n      ) \[Delta]t \n    ]\n    \n  , {i, max}, {j, max}] // Chop\n ]] \
-];", "Display" -> "codemirror", "Hash" -> 
-     "86f0d027-f273-4b22-b254-58e0a4a008ec", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n### Function to remove divergence", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c211f671-bed5-48d3-b7e7-87b3f65a3a65", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "### Function to remove divergence", "Display" -> "markdown", 
-    "Hash" -> "b72292b9-7eca-4109-8816-0a61e131876a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "removeDivergence = Compile[{{grid, _Real, 3}}, With[{\n  max \
-= grid // Length\n},\n  MapIndexed[Function[{val, i}, \n    val + \
-(*FB[*)((1)(*,*)/(*,*)(8.0))(*]FB*) (\n      (\n        (\n          \
-If[i[[1]] - 1 >= 1 && i[[1]] - 1 <= max && i[[2]] - 1 >= 1 && i[[2]] - 1 <= \
-max, grid[[i[[1]] - 1, i[[2]] - 1]], {0.,0.}] \n          \n          + \
-If[i[[1]] + 1 >=1 && i[[1]] + 1 <= max && i[[2]] + 1 >= 1 && i[[2]] + 1 <= \
-max, grid[[i[[1]] + 1, i[[2]] + 1]], {0.,0.}]\n        \n        ).{1,1}\n    \
-    \n      ){1,1} +\n\n      (\n        (\n          If[i[[1]] - 1 >= 1 && \
-i[[1]] - 1 <= max && i[[2]] + 1 >= 1 && i[[2]] + 1 <= max, grid[[i[[1]] - 1, \
-i[[2]] + 1]], {0.,0.}]\n          \n          + If[i[[1]] + 1 >= 1 && i[[1]] \
-+ 1 <= max && i[[2]] - 1 >= 1 && i[[2]] - 1 <= max, grid[[i[[1]] + 1, i[[2]] \
-- 1]], {0.,0.}]\n          \n        ).{1,-1}\n        \n      ){1,-1} +\n\n  \
-    (\n        If[i[[1]]-1 >= 1 && i[[1]]-1 <= max, grid[[i[[1]]-1, i[[2]] \
-]], {0.,0.}]\n        \n        + If[i[[1]]+1 >= 1 && i[[1]]+1 <= max, grid[[ \
-i[[1]]+1, i[[2]] ]], {0.,0.}]\n        \n        - If[i[[2]]-1 >= 1 && \
-i[[2]]-1 <= max, grid[[ i[[1]], i[[2]]-1 ]], {0.,0.}]\n        \n        - \
-If[i[[2]]+1 >= 1 && i[[2]]+1 <= max, grid[[i[[1]], i[[2]]+1]], {0.,0.}]\n     \
-   \n      ){2,-2} \n        \n        + grid[[ i[[1]], i[[2]] ]] (-4)\n\n    \
-)\n  ], grid, {2}]\n] ];", "Display" -> "codemirror", 
-    "Hash" -> "06291602-d2bb-49d4-b1c5-57a9120de379", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n### Bilinear interpolator", "Display" -> "codemirror", 
-    "Hash" -> "4aa00674-d856-414c-85d4-c0e45876d2c1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "### Bilinear interpolator", "Display" -> "markdown", 
-    "Hash" -> "07582422-5a23-4174-8b94-4864dec1dbdd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "bilinearInterpolation = Compile[{{array, _Real, 3}, {v, \
-_Real, 1}}, Module[\n  {rows, cols, x = v[[2]], y = v[[1]], x1, x2, y1, y2, \
-fQ11, fQ12, fQ21, fQ22},\n  \n  (* Get the dimensions of the array *)\n  \
-{rows, cols} = {Length[array], Length[array]};\n  \n  (* Clip points to the \
-boundaries *)\n  x = Clip[x, {1, cols}];\n  y = Clip[y, {1, rows}];\n  \n  (* \
-Find the bounding indices *)\n  x1 = Floor[x]; \n  x2 = Ceiling[x];\n  y1 = \
-Floor[y]; \n  y2 = Ceiling[y];\n  \n  (* Get the values at the four corners \
-*)\n  fQ11 = array[[y1, x1]];\n  fQ12 = array[[y2, x1]];\n  fQ21 = array[[y1, \
-x2]];\n  fQ22 = array[[y2, x2]];\n  \n  (* Perform bilinear interpolation \
-*)\n  If[x2 == x1,\n    If[y2 == y1,\n      fQ11,\n      1/(2 (y2 - y1)) * \
-(\n        fQ11 (y2 - y) +\n        fQ21 (y2 - y) +\n        fQ12 (y - y1) \
-+\n        fQ22 (y - y1)\n      )\n    ],\n    If[y2 == y1,\n      1/(2 (x2 - \
-x1)) * (\n        fQ11 (x2 - x) +\n        fQ21 (x - x1) +\n        fQ12 (x2 \
-- x) +\n        fQ22 (x - x1)\n      ),\n      1/((x2 - x1) (y2 - y1)) * (\n  \
-      fQ11 (x2 - x) (y2 - y) +\n        fQ21 (x - x1) (y2 - y) +\n        \
-fQ12 (x2 - x) (y - y1) +\n        fQ22 (x - x1) (y - y1)\n      )\n    ]\n  \
-]\n] ];", "Display" -> "codemirror", 
-    "Hash" -> "c61299c5-70a7-4f34-9f70-a57e94c82a2a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n### Advection for test particles", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d5e1a213-ec35-4d8d-957f-2b8821ca57a4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "### Advection for test particles", "Display" -> "markdown", 
-    "Hash" -> "43bf9ccb-9994-4242-ac1d-ce1e38d264bf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "advectParticles[v_, pts_, \[Delta]t_:0.02] := Map[Function[p, \
-p + \[Delta]t (bilinearInterpolation[v, p])], pts]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cdb710f6-cb69-4429-a1cc-e1879f07281a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> ".md\n---\n## Demonstration\n\n<span id=\"tldr\" \
-style=\"color: blue\"><b>Evaluate the cell below</b> in the notebook. Use \
-your mouse to draw velocity vectors.</span>", "Display" -> "codemirror", 
-    "Hash" -> "ca9626b9-f01f-4873-b79a-b55d8fe49f16", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "---\n## Demonstration\n\n<span id=\"tldr\" style=\"color: \
-blue\"><b >Evaluate the cell below</b> in the notebook. Use your mouse to \
-draw velocity vectors.</span>", "Display" -> "markdown", 
-    "Hash" -> "1c54bc3a-7a4a-4853-9f9f-33696be2c18a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>, 
-   <|"Data" -> "fgrid = Table[{0.,0.}, {i,15}, {j,15}];\nfcolors = Table[1.0, \
-{Length[fgrid]}, {Length[fgrid]}];\nframe = CreateUUID[];\n\nstart = \
-{1,1};\ndrawing = False;\ndest = {0,0};\nffps = 0;\n\nparticles = \
-RandomPointConfiguration[\n      HardcorePointProcess[10000\n      , 0.4, \
-2],\n      Rectangle[{1+4,1+4}, {15-4,15-4}], Method -> {\"LengthOfRun\" -> \
-10000000}][\"Points\"];\n\nWith[{\n  scene = FrontInstanceReference[]\n},\n\n \
- Graphics[{Arrowheads[Medium/2],\n    Table[With[{i=i, j=j}, \n      \
-(*BB[*)(* now we have dynamic Hue and dynamic Arrow \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n      Offload[{ \n        Hue[fcolors[[i]][[j]]],\n        \
-Arrow[{{i,j}, {i,j} +  fgrid[[i]][[j]]}]\n      }] \n    \n    ], {i,15}, \
-{j,15}],\n\n    (*BB[*)(*attach listeners to a user's mouse to manipulate the \
-grid*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KU\
-XxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCA\
-OFrJEU=\"*)(*]BB*)\n    EventHandler[Null, {\n      \"mouseup\" -> \
-Function[xy,\n        With[{v = -Normalize[start - xy]},\n          Do[ \
-(*BB[*)(* draw a line of velocities \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n            With[{p = Round /@ ((xy - start) a + start)},\n   \
-       \n              If[p[[1]] <= 15 && p[[1]] >=1 && p[[2]] <=15 && p[[2]] \
->=1,\n                fgrid[[p[[1]],p[[2]]]] = {v[[1]], v[[2]]};\n            \
-  ];\n\n            ];\n          , {a, 0, 1,0.1}];\n          \n        \
-];\n\n        Delete[drawing]; (*BB[*)(* delete temporal arrow \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n        drawing = False;\n      \n      ],\n\n      \
-\"mousemove\" -> Function[xy,\n        dest = xy;\n      ],\n    \n      \
-\"mousedown\" -> Function[xy,\n        start = xy;\n        dest = xy;\n      \
-\n        If[drawing =!= False, Delete[drawing]];\n        (*BB[*)(*append \
-GUI's arrow to existing \
-canvas*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+\
-KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVY\
-CAOFrJEU=\"*)(*]BB*)\n        drawing = FrontInstanceGroup[];\n        \n     \
-   FrontSubmit[{\n          AbsoluteThickness[3], Gray, \n          \
-Arrow[{xy, dest // Offload}]\n        } // drawing, \n          scene\n       \
- ];\n      \n      ]\n    }], \n\n    (*BB[*)(*sync with browser's repaint \
-cycle and update of fps \
-label*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+K\
-UXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYC\
-AOFrJEU=\"*)(*]BB*)\n    AnimationFrameListener[ffps // Offload, \
-\"Event\"->frame], \n    (*BB[*)(*mark this instance of Graphics with uid to \
-append new \
-elements*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5ua\
-V+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQ\
-VYCAOFrJEU=\"*)(*]BB*)\n    scene,\n    PointSize[0.02], \
-Point[particles//Offload],\n    Text[ffps // Offload, {0,0}]\n  }, \n    \
-Controls->False, \n    ImageSize->500, \n    PlotRange->{{-0.5,15.5}, \
-{-0.5,15.5}}, \n    ImagePadding->None, \n    TransitionDuration->35 \
-(*BB[*)(*since the simulation is slow, we have to \
-interpolate*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm\
-5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSc\
-zMQVYCAOFrJEU=\"*)(*]BB*)\n  ]\n]\n\n\nftime = AbsoluteTime[];\n\n(*BB[*)(* 1 \
-advection per 2 removeDivergence \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\nfpipeline = Composition[removeDivergence, removeDivergence, \
-advect[#,#, 0.2]&];\n\nEventHandler[frame, Function[Null,\n\n  (*BB[*)(*apply \
-the whole pipline as a single \
-function*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5ua\
-V+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQ\
-VYCAOFrJEU=\"*)(*]BB*)\n  fgrid = fpipeline[fgrid];\n  \n  fcolors = \
-Map[Function[val, (*FB[*)((\[Pi] + 2.0 ToPolarCoordinates[val]// \
-Last)(*,*)/(*,*)(3.0 \[Pi]))(*]FB*) ], fgrid, {2}];\n  \n  (*BB[*)(*2 times \
-advection*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5u\
-aV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczM\
-QVYCAOFrJEU=\"*)(*]BB*)\n  particles = With[{p = advectParticles[fgrid, \
-particles, 0.3]},\n    advectParticles[fgrid, p, 0.3]\n  ];\n\n  ffps = \
-(*FB[*)(((ffps + 1 / (AbsoluteTime[] - ftime)))(*,*)/(*,*)(2.0))(*]FB*) // \
-Round;\n  ftime = AbsoluteTime[]; \n]];", "Display" -> "codemirror", 
-    "Hash" -> "1d0b6f9e-ed4f-4ab7-84a5-36f503c4c563", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ce113947-1b28-4c59-8ad3-6b9f73f4c2fc"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Real-time Fluid Simulation
+*Using Wolfram Language and WLJS libraries*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Real-time Fluid Simulation
+*Using Wolfram Language and WLJS libraries*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Equations
+We based our implementation on the Navier-Stokes equation for incompressible fluid with no viscosity
+
+$$
+\\frac{\\partial \\mathbf{v}}{\\partial t} + (\\mathbf{v} \\cdot \\nabla) \\mathbf{v} = f_{\\text{external}}, \\qquad div~\\mathbf{v} = 0
+$$
+
+where $f_{external}$ accounts for the pressure gradient and external forces.
+
+Then, we solve these two equations in a discretized form on a grid using a technique mentioned in Jos Stam's *Stable Fluids* work.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Equations
+We based our implementation on the Navier-Stokes equation for incompressible fluid with no viscosity
+
+$$
+\\frac{\\partial \\mathbf{v}}{\\partial t} + (\\mathbf{v} \\cdot \\nabla) \\mathbf{v} = f_{\\text{external}}, \\qquad div~\\mathbf{v} = 0
+$$
+
+where $f_{external}$ accounts for the pressure gradient and external forces.
+
+Then, we solve these two equations in a discretized form on a grid using a technique mentioned in Jos Stam's *Stable Fluids* work.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Advection function
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Advection function
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+advect = Compile[{{v, _Real, 3}, {u, _Real, 3}, {δt, _Real, 0}} , With[{max = Length[v]}, With[{
+ 
+},
+  Table[ 
+  
+    With[{
+      v1 =  (*FB[*)((If[i-1 >= 1, v[[i-1, j]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{1,0},
+      v2 =  (*FB[*)((If[j+1 <= max, v[[i, j+1]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{0,-1},
+      v3 =  (*FB[*)((If[i+1 <= max, v[[i+1, j]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{-1,0},
+      v4 =  (*FB[*)((If[j-1 >= 1, v[[i, j-1]], {0.,0.}] + v[[i, j]])(*,*)/(*,*)(2.0))(*]FB*).{0,1},
+      org = u[[i,j]]
+    },
+
+      org +  (
+      
+        v1 If[v1 >0, If[i-1 >= 1, u[[i-1, j]], {0.,0.} ], org]  + v3 If[v3>0,If[i+1 <= max, u[[i+1, j]], {0.,0.} ], org]+
+        
+        v4 If[v4 >0, If[j-1 >= 1, u[[i, j-1]], {0.,0.} ], org] + v2 If[v2>0, If[j+1 <= max, u[[i, j+1]], {0.,0.} ], org]
+        
+      ) δt 
+    ]
+    
+  , {i, max}, {j, max}] // Chop
+ ]] ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Function to remove divergence
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Function to remove divergence
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+removeDivergence = Compile[{{grid, _Real, 3}}, With[{
+  max = grid // Length
+},
+  MapIndexed[Function[{val, i}, 
+    val + (*FB[*)((1)(*,*)/(*,*)(8.0))(*]FB*) (
+      (
+        (
+          If[i[[1]] - 1 >= 1 && i[[1]] - 1 <= max && i[[2]] - 1 >= 1 && i[[2]] - 1 <= max, grid[[i[[1]] - 1, i[[2]] - 1]], {0.,0.}] 
+          
+          + If[i[[1]] + 1 >=1 && i[[1]] + 1 <= max && i[[2]] + 1 >= 1 && i[[2]] + 1 <= max, grid[[i[[1]] + 1, i[[2]] + 1]], {0.,0.}]
+        
+        ).{1,1}
+        
+      ){1,1} +
+
+      (
+        (
+          If[i[[1]] - 1 >= 1 && i[[1]] - 1 <= max && i[[2]] + 1 >= 1 && i[[2]] + 1 <= max, grid[[i[[1]] - 1, i[[2]] + 1]], {0.,0.}]
+          
+          + If[i[[1]] + 1 >= 1 && i[[1]] + 1 <= max && i[[2]] - 1 >= 1 && i[[2]] - 1 <= max, grid[[i[[1]] + 1, i[[2]] - 1]], {0.,0.}]
+          
+        ).{1,-1}
+        
+      ){1,-1} +
+
+      (
+        If[i[[1]]-1 >= 1 && i[[1]]-1 <= max, grid[[i[[1]]-1, i[[2]] ]], {0.,0.}]
+        
+        + If[i[[1]]+1 >= 1 && i[[1]]+1 <= max, grid[[ i[[1]]+1, i[[2]] ]], {0.,0.}]
+        
+        - If[i[[2]]-1 >= 1 && i[[2]]-1 <= max, grid[[ i[[1]], i[[2]]-1 ]], {0.,0.}]
+        
+        - If[i[[2]]+1 >= 1 && i[[2]]+1 <= max, grid[[i[[1]], i[[2]]+1]], {0.,0.}]
+        
+      ){2,-2} 
+        
+        + grid[[ i[[1]], i[[2]] ]] (-4)
+
+    )
+  ], grid, {2}]
+] ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Bilinear interpolator
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Bilinear interpolator
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+bilinearInterpolation = Compile[{{array, _Real, 3}, {v, _Real, 1}}, Module[
+  {rows, cols, x = v[[2]], y = v[[1]], x1, x2, y1, y2, fQ11, fQ12, fQ21, fQ22},
+  
+  (* Get the dimensions of the array *)
+  {rows, cols} = {Length[array], Length[array]};
+  
+  (* Clip points to the boundaries *)
+  x = Clip[x, {1, cols}];
+  y = Clip[y, {1, rows}];
+  
+  (* Find the bounding indices *)
+  x1 = Floor[x]; 
+  x2 = Ceiling[x];
+  y1 = Floor[y]; 
+  y2 = Ceiling[y];
+  
+  (* Get the values at the four corners *)
+  fQ11 = array[[y1, x1]];
+  fQ12 = array[[y2, x1]];
+  fQ21 = array[[y1, x2]];
+  fQ22 = array[[y2, x2]];
+  
+  (* Perform bilinear interpolation *)
+  If[x2 == x1,
+    If[y2 == y1,
+      fQ11,
+      1/(2 (y2 - y1)) * (
+        fQ11 (y2 - y) +
+        fQ21 (y2 - y) +
+        fQ12 (y - y1) +
+        fQ22 (y - y1)
+      )
+    ],
+    If[y2 == y1,
+      1/(2 (x2 - x1)) * (
+        fQ11 (x2 - x) +
+        fQ21 (x - x1) +
+        fQ12 (x2 - x) +
+        fQ22 (x - x1)
+      ),
+      1/((x2 - x1) (y2 - y1)) * (
+        fQ11 (x2 - x) (y2 - y) +
+        fQ21 (x - x1) (y2 - y) +
+        fQ12 (x2 - x) (y - y1) +
+        fQ22 (x - x1) (y - y1)
+      )
+    ]
+  ]
+] ];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Advection for test particles
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Advection for test particles
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+advectParticles[v_, pts_, δt_:0.02] := Map[Function[p, p + δt (bilinearInterpolation[v, p])], pts]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+---
+## Demonstration
+
+<span id="tldr" style="color: blue"><b>Evaluate the cell below</b> in the notebook. Use your mouse to draw velocity vectors.</span>
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+---
+## Demonstration
+
+<span id="tldr" style="color: blue"><b >Evaluate the cell below</b> in the notebook. Use your mouse to draw velocity vectors.</span>
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+fgrid = Table[{0.,0.}, {i,15}, {j,15}];
+fcolors = Table[1.0, {Length[fgrid]}, {Length[fgrid]}];
+frame = CreateUUID[];
+
+start = {1,1};
+drawing = False;
+dest = {0,0};
+ffps = 0;
+
+particles = RandomPointConfiguration[
+      HardcorePointProcess[10000
+      , 0.4, 2],
+      Rectangle[{1+4,1+4}, {15-4,15-4}], Method -> {"LengthOfRun" -> 10000000}]["Points"];
+
+With[{
+  scene = FrontInstanceReference[]
+},
+
+  Graphics[{Arrowheads[Medium/2],
+    Table[With[{i=i, j=j}, 
+      (*BB[*)(* now we have dynamic Hue and dynamic Arrow *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+      Offload[{ 
+        Hue[fcolors[[i]][[j]]],
+        Arrow[{{i,j}, {i,j} +  fgrid[[i]][[j]]}]
+      }] 
+    
+    ], {i,15}, {j,15}],
+
+    (*BB[*)(*attach listeners to a user's mouse to manipulate the grid*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    EventHandler[Null, {
+      "mouseup" -> Function[xy,
+        With[{v = -Normalize[start - xy]},
+          Do[ (*BB[*)(* draw a line of velocities *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+            With[{p = Round /@ ((xy - start) a + start)},
+          
+              If[p[[1]] <= 15 && p[[1]] >=1 && p[[2]] <=15 && p[[2]] >=1,
+                fgrid[[p[[1]],p[[2]]]] = {v[[1]], v[[2]]};
+              ];
+
+            ];
+          , {a, 0, 1,0.1}];
+          
+        ];
+
+        Delete[drawing]; (*BB[*)(* delete temporal arrow *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+        drawing = False;
+      
+      ],
+
+      "mousemove" -> Function[xy,
+        dest = xy;
+      ],
+    
+      "mousedown" -> Function[xy,
+        start = xy;
+        dest = xy;
+      
+        If[drawing =!= False, Delete[drawing]];
+        (*BB[*)(*append GUI's arrow to existing canvas*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+        drawing = FrontInstanceGroup[];
+        
+        FrontSubmit[{
+          AbsoluteThickness[3], Gray, 
+          Arrow[{xy, dest // Offload}]
+        } // drawing, 
+          scene
+        ];
+      
+      ]
+    }], 
+
+    (*BB[*)(*sync with browser's repaint cycle and update of fps label*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    AnimationFrameListener[ffps // Offload, "Event"->frame], 
+    (*BB[*)(*mark this instance of Graphics with uid to append new elements*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    scene,
+    PointSize[0.02], Point[particles//Offload],
+    Text[ffps // Offload, {0,0}]
+  }, 
+    Controls->False, 
+    ImageSize->500, 
+    PlotRange->{{-0.5,15.5}, {-0.5,15.5}}, 
+    ImagePadding->None, 
+    TransitionDuration->35 (*BB[*)(*since the simulation is slow, we have to interpolate*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+  ]
+]
+
+
+ftime = AbsoluteTime[];
+
+(*BB[*)(* 1 advection per 2 removeDivergence *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+fpipeline = Composition[removeDivergence, removeDivergence, advect[#,#, 0.2]&];
+
+EventHandler[frame, Function[Null,
+
+  (*BB[*)(*apply the whole pipline as a single function*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+  fgrid = fpipeline[fgrid];
+  
+  fcolors = Map[Function[val, (*FB[*)((π + 2.0 ToPolarCoordinates[val]// Last)(*,*)/(*,*)(3.0 π))(*]FB*) ], fgrid, {2}];
+  
+  (*BB[*)(*2 times advection*)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+  particles = With[{p = advectParticles[fgrid, particles, 0.3]},
+    advectParticles[fgrid, p, 0.3]
+  ];
+
+  ffps = (*FB[*)(((ffps + 1 / (AbsoluteTime[] - ftime)))(*,*)/(*,*)(2.0))(*]FB*) // Round;
+  ftime = AbsoluteTime[]; 
+]];
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -20,14 +20,14 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   
   EventHandler[EventClone[LazyLoad], {
     "Load" -> Function[Null,
-      With[{cli = EventClone[$Client], client = $Client,  cloned = EventClone[appEvents]},
+      With[{cli = EventClone[$CurrentWebSocket], client = $CurrentWebSocket,  cloned = EventClone[appEvents]},
         EventHandler[cloned, {"AppendKernel" -> Function[kernel,
-          Echo["Kernels.wlx --> append Kernel"];
+          Echo["[Components/Kernel] Adding a kernel to the kernel list."];
           EventFire[Controller, "Append", <|"Client"->client, "Data" -> Item["Messager"->Messager, "Kernel"->kernel, "Client"->client] |> ];
         ]}];
 
         EventHandler[cli, {"Closed" -> Function[Null,
-          Echo["Kernel list holder >> destroyed!"];
+          Echo["[Components/Kernel] Kernel list holder was destroyed."];
           EventRemove[cloned];
           EventRemove[cli];
           EventRemove[LazyLoad];
@@ -38,8 +38,8 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   }];
   
   EventHandler[ButtonId, {"New" -> Function[Type,
-    Echo[Type];
-    With[{client = $Client, m = Messager, kernel = Switch[Type,
+    Echo[Type, "[Components/Kernel] kernel type: "];
+    With[{client = $CurrentWebSocket, m = Messager, kernel = Switch[Type,
                                                     "Master", MasterKernel["Name"->(Internal`NoWR`RandomWord[])],
                                                     _, LocalKernel`LocalKernel["Name"->(Internal`NoWR`RandomWord[])]
                                                   ]
@@ -100,7 +100,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   ,
     With[{
       KernelListComponent := 
-        Block[{client = $Client},
+        Block[{client = $CurrentWebSocket},
           Table[
             Item["Messager"->Messager, "Kernel"->K, "Client"->client]
           , {K, ReleaseHold[KernelList]} ] // Flatten // ToStringRiffle
@@ -109,7 +109,7 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
   
     <WebUIContainer Event={Controller}>
       <div class="mt-0 shrink-0 gap-y-1 flex flex-col" style="-webkit-app-region:none">
-          <WebUILazyLoad Event={EventClone[LazyLoad]}>
+          <WebUILazyLoad Event={EventClone[LazyLoad]} Class="gap-y-1 flex flex-col">
             <KernelListComponent/>
           </WebUILazyLoad>
           <WebUIContainerChild/> 
@@ -121,13 +121,13 @@ Component[OptionsPattern[]] := With[{controls = OptionValue["Controls"], deinitK
    <script type="module">
     if (window.electronAPI) {
       //window.electronAPI.openFinder(JSON.stringify(filename));
-      window.electronAPI.listener('newmasterkernel', () => server.emitt('<ButtonId/>', '"Master"', 'New'));
-      window.electronAPI.listener('newlocalkernel', () => server.emitt('<ButtonId/>', '"Local"', 'New'));
+      window.electronAPI.listener('newmasterkernel', () => server.io.fire('<ButtonId/>', "Master", 'New'));
+      window.electronAPI.listener('newlocalkernel', () => server.io.fire('<ButtonId/>', "Local", 'New'));
       window.electronAPI.listener('restartkernel', () => {
-        server.emitt('<ButtonId/>', 'True', "Restart")
+        server.io.fire('<ButtonId/>', true, "Restart")
       });
       window.electronAPI.listener('killallkernels', () => {
-        server.emitt('<ButtonId/>', 'True', "KillAll")
+        server.io.fire('<ButtonId/>', true, "KillAll")
       });
     }   
    </script>

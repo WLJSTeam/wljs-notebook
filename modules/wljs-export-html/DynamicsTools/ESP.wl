@@ -1,3 +1,5 @@
+(* Serializable widget/range model shared between master and evaluation kernels. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -6,6 +8,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`WidgetAPI`", {
 
 Begin["`Tools`"]
 
+(* HashMap preserves object identity across serialization boundaries. *)
 HashMap = <||>
 
 CreateUType[WidgetLike, init, {"Online"->False, "Interpolation"->True, "Hash"->Null, "Notebook"->Null, "Meta"-><|"Description"->"Generic"|>, "Ranges"->{}, "ResetStateFunction"->(Null&)}]
@@ -18,6 +21,7 @@ WidgetLike /: Delete[r_WidgetLike] := With[{h = r["Hash"]},
     DeleteObject[r];
 ]
 
+(* Route callbacks through events so serialized widgets do not retain closures. *)
 safeFunction[f_] := With[{uid = CreateUUID[]},
     EventHandler[uid, f];
     Function[Null, EventFire[uid, True] ]

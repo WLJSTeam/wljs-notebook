@@ -12,7 +12,7 @@
     "js": "dist/kernel.js",
     "minjs": "dist/kernel.min.js",
     "category": "Cell types",
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

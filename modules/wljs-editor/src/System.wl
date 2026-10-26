@@ -440,10 +440,6 @@ ChoiceDialogAsync[expr_String, rules : {Rule[_String, _]..}, Rule["Notebook", n_
 ]
 
 
-
-CoffeeLiqueur`Extensions`System`Internal`RequestDirectory;
-CoffeeLiqueur`Extensions`System`Internal`RequestFile;
-
 SystemDialogInput::noelectron = "WLJS Notebook Desktop application is required"
 SystemDialogInput[any__] := (Message[SystemDialogInput::noelectron]; $Failed) /; !TrueQ[Internal`Kernel`ElectronQ]
 SystemDialogInput[any__] := WaitAll[SystemDialogInputAsync[any], 99999]
@@ -466,7 +462,13 @@ fixPaths[p_Promise] := With[{b = Promise[]},
     b
 ]
 
-ff[any__] := FrontFetchAsync[any]
+CoffeeLiqueur`Extensions`System`Internal`RequestDirectory;
+CoffeeLiqueur`Extensions`System`Internal`RequestFile;
+
+ff[request_, ___] := With[{promise = Promise[]},
+    EventFire[Internal`Kernel`CommunicationChannel, "NotebookMessageRequest", <|"Request"->request, "Kernel"->Internal`Kernel`Hash, "Promise" -> (promise)|>];
+    promise
+]
 
 SystemDialogInputAsync["Directory", _, OptionsPattern[] ] := With[{title = OptionValue[WindowTitle], window = OptionValue["Window"]},
     ff[RequestDirectory[title], "Window"->window] // fixPath

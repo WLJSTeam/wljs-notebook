@@ -6,7 +6,7 @@ BeginPackage["AnimationFramework`", {
   "CoffeeLiqueur`Extensions`Communication`", 
   "CoffeeLiqueur`Extensions`FrontendObject`", 
   "CoffeeLiqueur`Extensions`Boxes`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`",
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
   "CoffeeLiqueur`UObjects`",
   "CoffeeLiqueur`WLX`",
   "CoffeeLiqueur`WLX`Importer`",
@@ -935,7 +935,7 @@ TimelinedAnimation[function_, opts:OptionsPattern[] ] := With[{
 
 FormatValues[timelined] = {};
 
-fetchNext[f_, w_, cbk_] := Then[FrontFetchAsync[f, "Window"->w, "Format"->"RawJSON"], cbk ]
+fetchNext[f_, w_, cbk_] := Then[FrontFetchAsync[f, "Window"->w], cbk ]
 
 timelined /: MakeBoxes[t_timelined, StandardForm] := Module[{timer, startingTime, delta, seekTime = 0, seekingTask = Null, seekTarget = 0}, With[{
   w = CurrentWindow[], tick = Unique["af"], uid = CreateUUID[], s = t["Scene"],

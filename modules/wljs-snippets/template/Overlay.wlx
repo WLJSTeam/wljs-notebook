@@ -67,7 +67,7 @@ With[{
 
 With[{
     destroy := (
-        Echo["Snippets >> removed"];
+        Echo["[wljs-snippets/Overlay] Removed the snippets overlay."];
         EventFire[localControls, "Remove", <|"Client"->client|>];
         EventFire[cancelListener, "Stop", <|"Client"->client|>];
         EventFire[keyListener, "Stop", <|"Client"->client|>];
@@ -90,11 +90,11 @@ With[{
 },
 
     If[fieldState === mode || fieldState === "Select" || fieldState === "Text" , 
-        Echo["Already opened >> Return"]; Return[]
+        Echo["[wljs-snippets/Overlay] The snippets overlay is already open; reusing it."]; Return[]
     ];
 
     If[fieldState =!= mode && fieldState =!= False,
-        Echo[StringJoin["Override >> switch to mode: ", mode]];
+        Echo[StringJoin["[wljs-snippets/Overlay] Switching overlay to mode: ", mode]];
         destroy;
         open[payload, mode, client, quickTags, ClickActions, path, controls, modals, messanger, localControls, typeWritter, keyListener, cancelListener, emptyPanel, aiPanel, searchPanel, fieldState, PlaceholderData, ulStyles];
         Return[];
@@ -103,13 +103,13 @@ With[{
 
     fieldState = mode;
 
-    Echo[StringJoin["Open: mode >> ", mode]];
+    Echo[StringJoin["[wljs-snippets/Overlay] Opening overlay in mode: ", mode]];
 
 
     Switch[mode,
         "Palette",
             EventHandler[ClickActions, {"Click" -> Function[data,
-                Echo[data];
+                Echo[data, "[wljs-snippets/Overlay] event data: "];
                 With[{c = currentText, d = data},
                     destroy;
                     EventFire[SnippetsEvents, d, <|"Client"->client, "Controls"->controls, "Modals"->modals, "Messanger"->messanger, "Path"->path, "Promt"->c|>];
@@ -124,7 +124,7 @@ With[{
             EventFire[keyListener, "Start", <|"Client"->client|>];
             EventFire[localControls, "CancelListen", <|"Client"->client|>];
         
-            EventHandler[cancelListener, {"Click" -> Function[Null, Echo["Destroy from cacnelListener"]; destroy]}];
+            EventHandler[cancelListener, {"Click" -> Function[Null, Echo["[wljs-snippets/Overlay] Destroying the view from its cancellation listener."]; destroy]}];
         
             EventHandler[keyListener, {"Pressed" -> Function[key,
                 Switch[key,
@@ -144,7 +144,7 @@ With[{
                     13,
                         If[position === 0 && StringLength[currentText] > 7, 
                             If[!StringMatchQ[StringTrim[currentText], "https://github" ~~ ___],
-                                Echo["Send data to AI"];
+                                Echo["[wljs-snippets/Overlay] Sending debugger context to the configured AI service."];
                                 EventFire[SnippetsEvents, "InvokeAI", <|"Client"->client, "Controls"->controls, "Modals"->modals, "Messanger"->messanger, "Path"->path, "Promt"->currentText|>];
                                 destroy;
                             ,
@@ -153,7 +153,7 @@ With[{
                         ,
                             If[Length[tagList] == 0, Return[]];
                             If[position < 1, Return[]];
-                            Echo[tagList[[position]]];
+                            Echo[tagList[[position]], "[wljs-snippets/Overlay] Selected snippet tag: "];
                             With[{t = tagList[[position]], c = currentText},
                                 destroy;
                                 EventFire[SnippetsEvents, t, <|"Client"->client, "Controls"->controls, "Modals"->modals, "Messanger"->messanger, "Path"->path, "Promt"->c|>];
@@ -161,7 +161,7 @@ With[{
                         ];
                     ,
                     _,
-                        Echo[key]
+                        Echo[key, "[wljs-snippets/Overlay] key: "]
                 ];
             ]}];
     
@@ -174,7 +174,7 @@ With[{
 
                         EventFire[emptyPanel, "Show", <|"Client"->client|>];
                         paneState = "Shown";
-                        Echo[paneState];
+                        Echo[paneState, "[wljs-snippets/Overlay] pane state: "];
                     ];
                     EventFire[searchPanel, "Remove", <|"Client"->client|>];
                     tagList = quickTags;
@@ -184,7 +184,7 @@ With[{
                     If[paneState === "Shown", 
                         EventFire[emptyPanel, "Hide", <|"Client"->client|>];
                         paneState = "Hidden";
-                        Echo[paneState];
+                        Echo[paneState, "[wljs-snippets/Overlay] pane state: "];
                     ];
                 
 
@@ -193,7 +193,7 @@ With[{
             
                 
             
-                Echo[currentText];
+                Echo[currentText, "[wljs-snippets/Overlay] current text: "];
                 If[AbsoluteTime[] - timer > 0.3,
                     timer = AbsoluteTime[];
                     With[{
@@ -205,8 +205,8 @@ With[{
                             ];
                         
                             If[lastResults =!= results,
-                                Echo["Update panel"];
-                                Echo[results];
+                                Echo["[wljs-snippets/Overlay] Updating the debugger panel."];
+                                Echo[results, "[wljs-snippets/Overlay] results: "];
                                 tagList = results;
                                 position = 0;
                                 EventFire[searchPanel, "Load", <|"Data"->Map[(SnippetsDatabase[#, "Template"]&), results], "Client"->client|>];
@@ -244,7 +244,7 @@ With[{
         
             
             EventHandler[cancelListener, {"Click" -> Function[Null, 
-                Echo["Debounce"];         
+                Echo["[wljs-snippets/Overlay] Debouncing repeated event."];
             ]}];     
 
             lastResults = payload["list"];
@@ -277,7 +277,7 @@ With[{
                     13,
                             If[Length[tagList] == 0, Return[]];
                             If[position < 1, Return[]];
-                            Echo[tagList[[position]]];
+                            Echo[tagList[[position]], "[wljs-snippets/Overlay] Selected answer tag: "];
                             With[{w = Position[payload["list"], tagList[[position]]][[1,1]]},
                                 destroy;
                                 EventFire[payload["Promise"], Resolve, w];
@@ -286,23 +286,23 @@ With[{
                             
                     ,
                     _,
-                        Echo[key]
+                        Echo[key, "[wljs-snippets/Overlay] key: "]
                 ];
             ]}];
 
             EventHandler[typeWritter, {"Type" -> Function[text,            
                 currentText = URLDecode[text];
             
-                Echo[text];
+                Echo[text, "[wljs-snippets/Overlay] text: "];
                 If[AbsoluteTime[] - timer > 0.3,
                     timer = AbsoluteTime[];
                     With[{
                         results = If[StringLength[text] > 1, simpleSearch[text, payload["list"]], payload["list"]]
                     },             
-                        Echo["Found:"]; Echo[results];           
+                        Echo["[wljs-snippets/Overlay] Found:"]; Echo[results, "[wljs-snippets/Overlay] results: "];
                         If[lastResults =!= results,
-                                Echo["Update panel"];
-                                Echo[results];
+                                Echo["[wljs-snippets/Overlay] Updating the debugger panel."];
+                                Echo[results, "[wljs-snippets/Overlay] results: "];
                                 tagList = results;
                                 position = 0;
                                 EventFire[searchPanel, "Load", <|"Data"->MapIndexed[selectItemTemplate, tagList], "Client"->client|>];
@@ -334,7 +334,7 @@ With[{
         
             
             EventHandler[cancelListener, {"Click" -> Function[Null, 
-                Echo["Debounce"]; 
+                Echo["[wljs-snippets/Overlay] Debouncing repeated event."];
             ]}];     
             
             EventHandler[keyListener, {"Pressed" -> Function[key,
@@ -345,8 +345,8 @@ With[{
                         
                     ,    
                     13,
-                        Echo["Done!"];
-                        Echo[currentText];
+                        Echo["[wljs-snippets/Overlay] Processing completed."];
+                        Echo[currentText, "[wljs-snippets/Overlay] current text: "];
                         With[{c = currentText},
                             destroy;
                             EventFire[payload["Promise"], Resolve, StringTrim[c]];
@@ -354,12 +354,12 @@ With[{
                        
                     ,
                     _,
-                        Echo[key]
+                        Echo[key, "[wljs-snippets/Overlay] key: "]
                 ];
             ]}];
 
             EventHandler[typeWritter, {"Type" -> Function[text,            
-                currentText = URLDecode[text];
+                currentText = text;
             ]}];
 
     ];
@@ -497,7 +497,7 @@ With[{
                 if (!window.electronAPI) {
                     window.addEventListener("keydown", function (e) {
                         if (e.ctrlKey && e.key == "p" || e.metaKey && e.key == "p") {
-                            server.emitt('<LocalControls/>', 'True', 'Open');
+                            server.io.fire('<LocalControls/>', true, 'Open');
                             e.preventDefault();
                             return false;
                         }
@@ -549,7 +549,7 @@ With[{
                         if (withinBoundaries) {
                           console.log('Click happened inside element');
                         } else {
-                          server.emitt('<CancelListener/>', 'True', 'Click');
+                          server.io.fire('<CancelListener/>', true, 'Click');
                           document.removeEventListener('click', clickOutside);
                         }
                 };
@@ -568,7 +568,7 @@ With[{
                     for (let i=0; i<storage.length; ++i) {
                         storage[i].addEventListener('click', (event) => {
                             console.log(['<ClickActions/>', '"'+storage[i].getAttribute("tag")+'"', 'Click']);
-                            server.emitt('<ClickActions/>', '"'+storage[i].getAttribute("tag")+'"', 'Click');
+                            server.io.fire('<ClickActions/>', String(storage[i].getAttribute("tag")), 'Click');
                             event.stopPropagation();
                         });
                     }
@@ -576,7 +576,7 @@ With[{
                     for (let i=0; i<btags.length; ++i) {
                         btags[i].addEventListener('click', (event) => {
                             console.log(['<ClickActions/>', '"'+btags[i].getAttribute("tag")+'"', 'Click']);
-                            server.emitt('<ClickActions/>', '"'+btags[i].getAttribute("btag")+'"', 'Click');
+                            server.io.fire('<ClickActions/>', String(btags[i].getAttribute("btag")), 'Click');
                             event.stopPropagation();
                         });
                     }

@@ -40,13 +40,13 @@ interpretate.contextExpand(g3d);
 "ColorFunction",
 "ControllerLinking", "ControllerMethod", "ControllerPath", 
 "CoordinatesToolOptions", "DisplayFunction", "Epilog", "FaceGrids", 
-"FaceGridsStyle", "FormatType", "ImageMargins", "ImagePadding", 
+"FaceGridsStyle", "FormatType", "ImageCache", "ImageMargins", "ImagePadding",
 "ImageSize", "ImageSizeRaw", "LabelStyle", "Lighting", "Method", 
 "PlotLabel", "PlotRange", "PlotRangePadding", "PlotRegion", 
 "PreserveImageOptions", "Prolog", "RotationAction", 
 "SphericalRegion", "Ticks", "TicksStyle", "TouchscreenAutoZoom", 
 "ViewAngle", "ViewCenter", "ViewMatrix", "ViewPoint", 
-"ViewProjection", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "VertexNormals", "VertexColors"].map((e)=>{
+"ViewProjection", "ViewSize", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "VertexNormals", "VertexColors"].map((e)=>{
   g3d[e] = () => e;
 });
 
@@ -279,6 +279,10 @@ g3d.Hue = async (args, env) => {
 
 g3d.EdgeForm = async (args, env) => {
   env.edgecolor = await interpretate(args[0], {...env});
+};
+
+g3d.PointSize = async (args, env) => {
+  env.pointSize = await interpretate(args[0], env);
 };
 
 g3d.RGBColor = async (args, env) => {
@@ -706,15 +710,21 @@ g3d.Tube.destroy = async (args, env) => {
 
 
 g3d.TubeArrow = async (args, env) => {
-
-
-  let radius = 1;
-  if (args.length > 1) radius = await interpretate(args[1], env);
   /**
    * @type {THREE.Vector3}}
    */
-  const coordinates = await interpretate(args[0], env);
-  //throw coordinates;
+  let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
+  const p2 = new THREE.Vector3(...coordinates[0]);
+  const p1 = new THREE.Vector3(...coordinates[1]);
+  const dp = p2.clone().addScaledVector(p1, -1);
+  const length = dp.length();
+  // Automatic dimensions must follow the diagram's scale. A fixed unit-radius
+  // shaft hides small imported diagrams. Explicit Tube/Arrowheads sizes retain
+  // their existing world-coordinate interpretation.
+  const radius = args.length > 1 ? await interpretate(args[1], env) : length * 0.02;
+  const headHeight = env.arrowHeight == null ? length * 0.2 : env.arrowHeight / 60;
+  const headRadius = env.arrowRadius == null ? length * 0.06 : env.arrowRadius / 100;
 
   /**
    * @type {env.material}}
@@ -747,13 +757,7 @@ thickness: env.materialThickness,
     
   });
 
-  //points 1, 2
-  const p2 = new THREE.Vector3(...coordinates[0]);
-  const p1 = new THREE.Vector3(...coordinates[1]);
-  //direction
-  const dp = p2.clone().addScaledVector(p1, -1);
-
-  const geometry = new THREE.CylinderGeometry(radius, radius, dp.length(), 32, 1);
+  const geometry = new THREE.CylinderGeometry(radius, radius, length, 32, 1);
 
   //calculate the center (might be done better, i hope BoundingBox doest not envolve heavy computations)
 
@@ -762,9 +766,9 @@ thickness: env.materialThickness,
   const cylinder = new THREE.Mesh(geometry, material);
 
   //cone
-  const conegeometry = new THREE.ConeGeometry(env.arrowRadius/100.0, env.arrowHeight/60.0, 32 );
+  const conegeometry = new THREE.ConeGeometry(headRadius, headHeight, 32);
   const cone = new THREE.Mesh(conegeometry, material);
-  cone.position.y = dp.length()/2 + env.arrowHeight/120.0;
+  cone.position.y = length / 2 + headHeight / 2;
 
   let group = new THREE.Group();
   group.add(cylinder, cone);
@@ -807,7 +811,8 @@ g3d.TubeArrow.update = async (args, env) => {
    */
   
   
-  const coordinates = await interpretate(args[0], env);
+  let coordinates = await interpretate(args[0], env);
+  if (NumericArrayObject.Q(coordinates)) coordinates = coordinates.normal();
   //points 1, 2
   const p2 = new THREE.Vector3(...coordinates[0]);
   const p1 = new THREE.Vector3(...coordinates[1]);
@@ -860,6 +865,9 @@ g3d.TubeArrow.update = async (args, env) => {
 
 g3d.Arrow = async (args, env) => {
   let arr;
+  // Saved Mathematica graphics can wrap an arrow's coordinates in Line.
+  // Read those coordinates directly; rendering Line returns a Three.js object.
+  const path = args[0][0] === 'Line' ? args[0][1] : args[0];
 
   if (args.length === 1) {
     if (args[0][0] === 'Tube' || args[0][0] === 'TubeArrow') {
@@ -867,10 +875,10 @@ g3d.Arrow = async (args, env) => {
       args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
+    arr = await interpretate(path, env);
   }
 
   if (arr instanceof NumericArrayObject) arr = arr.normal();
@@ -931,6 +939,7 @@ g3d.Arrow = async (args, env) => {
 
 g3d.Arrow.update = async (args, env) => {
   let arr;
+  const path = args[0][0] === 'Line' ? args[0][1] : args[0];
 
   if (args.length === 1) {
     if (args[0][0] === 'Tube' || args[0][0] === 'TubeArrow') {
@@ -938,14 +947,13 @@ g3d.Arrow.update = async (args, env) => {
       //args[0][0] = 'TubeArrow';
       return await interpretate(args[0], env);
     } else {
-      arr = await interpretate(args[0], env);
+      arr = await interpretate(path, env);
     }
   } else {
-    arr = await interpretate(args[0], env);
-    if (arr instanceof NumericArrayObject) {
-      arr = arr.normal();
-    }
+    arr = await interpretate(path, env);
   }
+
+  if (arr instanceof NumericArrayObject) arr = arr.normal();
   
   if (arr.length === 1) arr = arr[0];
 
@@ -1586,6 +1594,40 @@ g3d.Cuboid.destroy = async (args, env) => {
 };
 
 g3d.Cuboid.virtual = true;
+
+// Keep the full affine matrix: decomposing it would lose a skew cell's shear.
+g3d.Parallelepiped = async (args, env) => {
+  const group = new THREE.Group();
+  await g3d.Cuboid([['List', 0, 0, 0]], {...env, mesh: group});
+  group.matrixAutoUpdate = false;
+  env.local.parallelepiped = group;
+  await g3d.Parallelepiped.update(args, env);
+  env.mesh.add(group);
+  return group;
+};
+
+g3d.Parallelepiped.update = async (args, env) => {
+  let origin = await interpretate(args[0], env);
+  let vectors = await interpretate(args[1], env);
+  if (NumericArrayObject.Q(origin)) origin = origin.normal();
+  if (NumericArrayObject.Q(vectors)) vectors = vectors.normal();
+  const [a, b, c] = vectors;
+  env.local.parallelepiped.matrix.set(
+    a[0], b[0], c[0], origin[0],
+    a[1], b[1], c[1], origin[1],
+    a[2], b[2], c[2], origin[2],
+    0, 0, 0, 1
+  );
+  env.local.parallelepiped.matrixWorldNeedsUpdate = true;
+  env.wake(true);
+};
+
+g3d.Parallelepiped.destroy = async (args, env) => {
+  await g3d.Cuboid.destroy(args, env);
+  env.local.geometry.dispose();
+};
+
+g3d.Parallelepiped.virtual = true;
 
 
 g3d.Center = (args, env) => {
@@ -4769,8 +4811,6 @@ g3d.DefaultLighting = (args, env) => {
 const makeEditorView = async (data, env = { global: {} }) => {
     //check by hash if there such object, if not. Ask server to create one with EditorView and store.
     let hash = String(interpretate.hashv2(data))+'3lbl';
-    let obj;
-    let storage;
 
     if (!(hash in ObjectHashMap)) {
       //try legacy hash
@@ -4778,22 +4818,11 @@ const makeEditorView = async (data, env = { global: {} }) => {
       if (legacyHash in ObjectHashMap) hash = legacyHash;
     }
 
-    if (!(hash in ObjectHashMap)) {
-      obj = new ObjectStorage(hash);
-
-      try {
-        storage = await obj.get();
-      } catch(err) {
-        console.warn('Creating FE object by id '+hash);
-        await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics3D`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
-        storage = await obj.get();
-      }
-      
-    } else {
-      obj = ObjectHashMap[hash];
-    }
-
-    if (!storage) storage = await obj.get();
+    const obj = ObjectHashMap[hash] || new ObjectStorage(hash);
+    const storage = await obj.getOrCreate(async () => {
+      console.warn('Creating FE object by id '+hash);
+      await server.kernel.io.fetch('CoffeeLiqueur`Extensions`Graphics3D`Private`MakeExpressionBox', [JSON.stringify(data), hash]);
+    });
 
     console.log("g3d: creating an object");
     console.log('frontend executable');
@@ -5351,7 +5380,7 @@ g3d.EventListener.transform = (uid, object, env) => {
   env.global.scene.add(gizmo); 
 
   const updateData = throttle((x,y,z) => {
-    server.kernel.emitt(uid, `<|"position"->{${x.toFixed(4)}, ${y.toFixed(4)}, ${z.toFixed(4)}}|>`, 'transform');
+    server.kernel.io.fire(uid, {position:[x, y, z]}, 'transform');
   });
 
   control.addEventListener( 'change', function(event) {
@@ -5564,6 +5593,22 @@ async function processLabel(ref0, env) {
 
           return {offset: offset, element: labelX};
 }
+
+// Mathematica saves BoxRatios -> Automatic even when no explicit ratios were
+// requested. Only numeric triples should override the scene's natural scale.
+const graphics3DBoxScale = (size, ratios) => {
+  if (NumericArrayObject.Q(ratios)) ratios = ratios.normal();
+  const maxSize = Math.max(...size);
+  const modelScale = maxSize > 80 ? 10 / maxSize : 1;
+  if (!Array.isArray(ratios) || ratios.length !== 3 ||
+      !ratios.every(r => Number.isFinite(r) && r > 0)) {
+    return [modelScale, modelScale, modelScale];
+  }
+  const ordered = [ratios[0], ratios[2], ratios[1]];
+  const maxRatio = Math.max(...ordered);
+  return ordered.map((r, i) => size[i] > 0
+    ? (maxSize / size[i]) * (r / maxRatio) * modelScale : modelScale);
+};
 
 core.Graphics3D = async (args, env) => {  
 //Lazy loading
@@ -6145,8 +6190,8 @@ const envcopy = {
   mesh: group,
   metalness: 0,
   emissive: undefined,
-  arrowHeight: 30,
-  arrowRadius: 30,
+  arrowHeight: undefined,
+  arrowRadius: undefined,
   reflectivity: 0.5,
   clearcoat: 0,
   shadows: false,
@@ -6816,39 +6861,10 @@ group.applyMatrix4(new THREE.Matrix4().set(
   0, -1, 0, 0,
   0, 0, 0, 1));
 
-  let size = [bbox.max.x - bbox.min.x, bbox.max.z - bbox.min.z, bbox.max.y - bbox.min.y];
-  let max = Math.max(...size);
-  const maxSize = Math.max(...size);
-
-if ('BoxRatios' in options) {
-
-  const reciprocal = size.map((e) => 1.0/(e/max));
-
-  console.warn('Rescaling....');
-
-  let ratios = await interpretate(options.BoxRatios, env);
-  ratios = [ratios[0], ratios[2], ratios[1]];
-
-  max = Math.max(...ratios);
-  ratios = ratios.map((e, index) => reciprocal[index] * e/max);
-
-  
-  console.log(max);
-  if (maxSize > 80) {
-    console.warn('Model is too large!');
-    ratios = ratios.map((e) => (e / maxSize) * 10.0);
-  }
-
-  group.applyMatrix4(new THREE.Matrix4().makeScale(...ratios));
-} else {
-  let ratios = [1,1,1];
-  if (maxSize > 80) {
-    console.warn('Model is too large!');
-    ratios = ratios.map((e) => (e / maxSize) * 10.0);
-  }
-
-  group.applyMatrix4(new THREE.Matrix4().makeScale(...ratios));
-}
+const size = [bbox.max.x - bbox.min.x, bbox.max.z - bbox.min.z, bbox.max.y - bbox.min.y];
+const boxRatios = 'BoxRatios' in options
+  ? await interpretate(options.BoxRatios, {...env, context: g3d}) : undefined;
+group.applyMatrix4(new THREE.Matrix4().makeScale(...graphics3DBoxScale(size, boxRatios)));
 
 group.position.add(new THREE.Vector3(0,1,0));
 
@@ -7675,7 +7691,7 @@ g3d['CoffeeLiqueur`Extensions`Graphics3D`Private`SampledColorFunction'] = async 
   return { colors, type };
 };
 
-core.Image3D = async (args, env) => {
+const initializeImage3D = async (args, env) => {
   await interpretate.shared.THREE.load();
 
   if (!THREE) {
@@ -8038,9 +8054,35 @@ core.Image3D = async (args, env) => {
   animationLoop();
 };
 
+core.Image3D = (args, env) => {
+  env.local.initialized = false;
+  env.local.destroyed = false;
+  delete env.local.initError;
+
+  const initialization = initializeImage3D(args, env);
+
+  env.local.initComplete = initialization.then(
+    (result) => {
+      env.local.initialized = true;
+      return result;
+    },
+    (error) => {
+      env.local.initError = error;
+    }
+  );
+
+  return initialization;
+};
+
 core.Image3D.virtual = true;
 
 core.Image3D.update = async (args, env) => {
+  if (env.local.initComplete) {
+    await env.local.initComplete;
+  }
+
+  if (env.local.destroyed || env.local.initError || env.local.initialized === false) return;
+
   let data = await interpretate(args[0], env);
 
   if (Array.isArray(data)) {
@@ -8053,11 +8095,12 @@ core.Image3D.update = async (args, env) => {
   const converted = imageTypes[env.local.typeName].convert(data);
   env.local.volumeTexture.image.data.set(converted.data);
   env.local.volumeTexture.needsUpdate = true;
-  env.local?.wakeFunction();
+  env.local.wakeFunction?.();
 };
 
 core.Image3D.destroy = (args, env) => {
   console.warn('Dispose');
+  env.local.destroyed = true;
   env.element.classList.remove('wljs-canvas');
 
   if (env.local.animation) {

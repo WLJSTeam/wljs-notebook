@@ -1,259 +1,310 @@
-<|"Notebook" -> <|"Controller" -> "b1fba3ba-388a-4b51-a813-f95b048da6fd", 
-   "Directory" -> 
-    "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and Notebooks/", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$477], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "3e496652-f866-47a5-b773-d151e9e7ca15", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - User dialogs.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, "User Dialogs", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$413]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Message windows", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$413]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Choice dialogs", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$445]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Textual input", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$467]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "System Dialogs", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$586]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# User Dialogs\nWolfram Language provides \
-variety of functions to interact with a user using native dialog \
-windows.\n\n## Message windows\nUse `MessageDialog` to make a pop-up window \
-with a text or any WL expressions:", "Display" -> "codemirror", 
-    "Hash" -> "7a432b00-ea43-460d-bbb5-75ce18ae8b7b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "# User Dialogs\nWolfram Language provides variety of \
-functions to interact with a user using native dialog windows.\n\n## Message \
-windows\nUse `MessageDialog` to make a pop-up window with a text or any WL \
-expressions:", "Display" -> "markdown", 
-    "Hash" -> "90645150-8eda-4040-bef0-7f9159ae24c9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "MessageDialog[\"Operation completed!\"];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "36d944b7-821b-4d35-bf67-8e3b96d3b812", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "MessageDialog[Graphics[Disk[{0,0}, 1]]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "2f9e8741-c3a9-4008-a0bb-f39d1675c83d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\nIn the case of lost context, i.e. `MessageDialog` is \
-called by a timer, button click - provide `\"Notebook\"` as an option:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ebf15c0f-2914-4b8f-9c74-996d2ac04130", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "In the case of lost context, i.e. `MessageDialog` is called \
-by a timer, button click - provide `\"Notebook\"` as an option:", 
-    "Display" -> "markdown", "Hash" -> 
-     "40fba2ac-7e5c-45ef-9a25-38661dd3370f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "n = EvaluationNotebook[];\nButton[\"Message\", \
-MessageDialog[\"Operation completed!\", \"Notebook\"->n]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9d19303f-3417-4c77-a125-2faf343f0b87", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     ".md\n## Choice dialogs\nUse `ChoiceDialog` to prompt a user:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "47f10da8-dadc-4642-ab3a-4f8563401dbd", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "## Choice dialogs\nUse `ChoiceDialog` to prompt a user:", 
-    "Display" -> "markdown", "Hash" -> 
-     "0a95e4ba-82a0-40df-8781-cfdb8a00ed33", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "(* Simple OK/Cancel *)\nresult = ChoiceDialog[\"Proceed with \
-operation?\"];", "Display" -> "codemirror", 
-    "Hash" -> "143f9dae-c389-4b31-829d-79c1c434a37c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\nCustom choices:", "Display" -> "codemirror", 
-    "Hash" -> "acd25a55-26e0-4ac0-a42a-2bc3970d870f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "Custom choices:", "Display" -> "markdown", 
-    "Hash" -> "4a107a82-0661-4c82-ba3d-aa45f7514e9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "choice = ChoiceDialog[\"Select option:\", {\n  \"Option A\" \
--> \"a\",\n  \"Option B\" -> \"b\"\n}];", "Display" -> "codemirror", 
-    "Hash" -> "10924a4a-3fda-4c2e-b44d-2a55cd228293", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\n`ChoiceDialog` is  blocking function. Avoid using it in \
-timers like `SetTimeout`, external event handlers such as `InputButton` or \
-`Button`, or within `AsyncFunction`. Use `ChoiceDialogAsync` instead:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f0fdd2e5-2f12-456d-ac1c-b161d1669879", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "`ChoiceDialog` is  blocking function. Avoid using it in \
-timers like `SetTimeout`, external event handlers such as `InputButton` or \
-`Button`, or within `AsyncFunction`. Use `ChoiceDialogAsync` instead:", 
-    "Display" -> "markdown", "Hash" -> 
-     "f41d151d-36f8-4547-8dcd-9a21b7255733", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "n = EvaluationNotebook[];\nButton[\"Message\", \
-Then[ChoiceDialogAsync[\"Proceed with operation?\", \"Notebook\"->n], \
-Function[choise,\n  Print[choise];\n]]]", "Display" -> "codemirror", 
-    "Hash" -> "5a8b634b-5d3e-4443-a626-ffd6fc452dce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     ".md\n## Textual input\nUse `Input` or `InputString` to prompt a user:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0d70d754-e3ba-49ae-96ad-80a72a4b7b16", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     "## Textual input\nUse `Input` or `InputString` to prompt a user:", 
-    "Display" -> "markdown", "Hash" -> 
-     "74a6a605-a9bd-4062-ba2f-01da4c7d0e59", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     "Input[\"Enter expression:\", x^2]\nInputString[\"Enter your name:\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "db4e8e3c-71b0-4f33-864d-cfa2c47a1248", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "(*SpB[*)Power[x(*|*),(*|*)2](*]SpB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "76b29132-c9ab-4579-a0a1-b54e106cf985", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "\"Kirill\"", "Display" -> "codemirror", 
-    "Hash" -> "529b0f53-f718-4052-af7c-39e4568118df", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\nBoth of them are blocking functions. Again, use async \
-versions in `Button` and other even handlers:", "Display" -> "codemirror", 
-    "Hash" -> "da61e17b-f980-48c2-82e1-ec5345847c23", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "Both of them are blocking functions. Again, use async \
-versions in `Button` and other even handlers:", "Display" -> "markdown", 
-    "Hash" -> "79d08cfe-df6a-4d6e-ba9f-2a97bdbe26c6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "nb = EvaluationNotebook[];\nButton[\"Enter expr\", \
-Then[InputAsync[\"Enter expression:\", x^2, \"Notebook\"->nb],\n  \
-Function[expr,\n    NotebookWrite[nb, expr];\n  ]\n]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f58e232f-a45b-4597-9bfa-6eb4ddc95780", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\n## System Dialogs\n\n:::warning\nThis requires WLJS \
-desktop application\n:::\n\nTo open system (OS) dialogs use:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "706fe6ee-a4d7-41a4-bad4-3134d6b67d21", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "## System Dialogs\n\n:::warning\nThis requires WLJS desktop \
-application\n:::\n\nTo open system (OS) dialogs use:", 
-    "Display" -> "markdown", "Hash" -> 
-     "5947412e-33f9-490f-8b84-4d7fde9411cc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "(* Open file *)\nfile = SystemDialogInput[\"FileOpen\", \
-{Null, {\n  \"Images\" -> {\"*.png\", \"*.jpg\"},\n  \"All Files\" -> \
-{\"*.*\"}\n}}];", "Display" -> "codemirror", 
-    "Hash" -> "1a385cd7-e862-4a34-be2c-a45c8d2c5b34", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "(* Save file *)\npath = SystemDialogInput[\"FileSave\"];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d7d8e5ae-573b-4550-b3e0-c727bb1a536a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     "(* Select directory *)\ndir = SystemDialogInput[\"Directory\"];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "da5bf732-408e-45c7-a8d8-3203dfd47725", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\nAgain use `SystemDialogInputAsync` with explicitly \
-provided `\"Window\"` as an option:", "Display" -> "codemirror", 
-    "Hash" -> "3f5a83e9-c084-453d-81c2-b32c0dd04c17", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "Again use `SystemDialogInputAsync` with explicitly provided \
-`\"Window\"` as an option:", "Display" -> "markdown", 
-    "Hash" -> "e86edff3-6c52-4085-8431-7e25f5fea50e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "w = \
-CurrentWindow[];\nSetTimeout[Then[SystemDialogInputAsync[\"FileSave\", \
-\"Window\"->w], Print], 1000];", "Display" -> "codemirror", 
-    "Hash" -> "e4d8b248-60bc-4c88-a0f0-c6b39647d1f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> ".md\nHowever, you do not have to provide `\"Window\"` if the \
-dialog is called from a click of a button. Event context carries `\"Window\"` \
-implicitly:", "Display" -> "codemirror", 
-    "Hash" -> "447b822b-e189-4fb3-9801-e058de43fa4e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> "However, you do not have to provide `\"Window\"` if the \
-dialog is called from a click of a button. Event context carries `\"Window\"` \
-implicitly:", "Display" -> "markdown", 
-    "Hash" -> "2f73f391-1142-4802-ab6a-bc8014aa1225", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>, 
-   <|"Data" -> 
-     "Button[\"Save\", Then[SystemDialogInputAsync[\"FileSave\"], Print]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4613c96d-f5ac-4e08-84cf-0172fc6dc527", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "553e8934-8b3f-4554-817a-c6c3c22ec3d5"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# User Dialogs
+Wolfram Language provides variety of functions to interact with a user using native dialog windows.
+
+## Message windows
+Use `MessageDialog` to make a pop-up window with a text or any WL expressions:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# User Dialogs
+Wolfram Language provides variety of functions to interact with a user using native dialog windows.
+
+## Message windows
+Use `MessageDialog` to make a pop-up window with a text or any WL expressions:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MessageDialog["Operation completed!"];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MessageDialog[Graphics[Disk[{0,0}, 1]]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is another example
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is another example
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+n = EvaluationNotebook[];
+Button["Message", MessageDialog["Operation completed!"]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Choice dialogs
+Use `ChoiceDialog` to prompt a user:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Choice dialogs
+Use `ChoiceDialog` to prompt a user:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Simple OK/Cancel *)
+result = ChoiceDialog["Proceed with operation?"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Custom choices:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Custom choices:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+choice = ChoiceDialog["Select option:", {
+  "Option A" -> "a",
+  "Option B" -> "b"
+}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`ChoiceDialog` is  blocking function. Avoid using it in timers like `SetTimeout`, external event handlers such as `InputButton` or `Button`, or within `AsyncFunction`. Use `ChoiceDialogAsync` instead:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`ChoiceDialog` is  blocking function. Avoid using it in timers like `SetTimeout`, external event handlers such as `InputButton` or `Button`, or within `AsyncFunction`. Use `ChoiceDialogAsync` instead:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+n = EvaluationNotebook[];
+Button["Message", Then[ChoiceDialogAsync["Proceed with operation?", "Notebook"->n], Function[choise,
+  Print[choise];
+]]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Textual input
+Use `Input` or `InputString` to prompt a user:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Textual input
+Use `Input` or `InputString` to prompt a user:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Input["Enter expression:", x^2]
+InputString["Enter your name:"]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*SpB[*)Power[x(*|*),(*|*)22](*]SpB*)
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"Kirill"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Both of them are blocking functions. Again, use async versions in `Button` and other even handlers:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Both of them are blocking functions. Again, use async versions in `Button` and other even handlers:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ecell = EvaluationCell[];
+nb = EvaluationNotebook[];
+Button["Enter expr", Then[InputAsync["Enter expression:", x^2, "Notebook"->nb],
+  Function[expr,
+    NotebookWrite[NotebookLocationSpecifier[ecell, "After"], expr];
+  ]
+]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## System Dialogs
+
+:::warning
+This requires WLJS desktop application
+:::
+
+To open system (OS) dialogs use:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## System Dialogs
+
+:::warning
+This requires WLJS desktop application
+:::
+
+To open system (OS) dialogs use:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Open file *)
+file = SystemDialogInput["FileOpen", {Null, {
+  "Images" -> {"*.png", "*.jpg"},
+  "All Files" -> {"*.*"}
+}}];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Save file *)
+path = SystemDialogInput["FileSave"];
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+(* Select directory *)
+dir = SystemDialogInput["Directory"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is another example:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is another example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+SetTimeout[Then[SystemDialogInputAsync["FileSave"], Print], 1000];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can do it from a button too, the context it given automatically
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can do it from a button too, the context it given automatically
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Save", Then[SystemDialogInputAsync["FileSave"], Print]]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

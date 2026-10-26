@@ -5,7 +5,7 @@ Get["LibraryLink`"];
 
 root = $InputFileName // DirectoryName // ParentDirectory;
 
-Echo[root];
+Echo[root, "[Internal library build] Package root directory: "];
 
 lib = CreateLibrary[
     File[FileNameJoin[{root, "Source", "internal.c"}] ],   

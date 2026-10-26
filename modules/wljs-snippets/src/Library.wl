@@ -36,7 +36,7 @@ findCell[nb_, tag_String] := SelectFirst[nb["Cells"], ((StringSplit[#["Data"], "
 
 
 Parse[a_Association, path_] := With[{notebook = nb`LoadFromFile[ path ]}, With[{icon = findCell[notebook, "icon.wlx"]},
-    Echo["Snippets >> Deserialize notebook >> "<>path];
+    Echo[StringJoin["[wljs-snippets/Library] Deserializing snippet notebook ", path, "."]];
 
     notebook["Path"] = path;
     notebook["Directory"] = DirectoryName[path];
@@ -45,7 +45,7 @@ Parse[a_Association, path_] := With[{notebook = nb`LoadFromFile[ path ]}, With[{
         With[{t = findCell[notebook, ".md"]},
   
             If[!StringMatchQ[t["Data"], (".md\n"~~__) | (".md\r\n"~~__)], 
-                Echo["Snippets >> Library >> Title is missing!"]; Exit[-1]; 
+                Echo["[wljs-snippets/Library] Cannot add the snippet notebook to the library because its title is missing."]; Exit[-1];
                 
             ];
             
@@ -54,27 +54,27 @@ Parse[a_Association, path_] := With[{notebook = nb`LoadFromFile[ path ]}, With[{
 
         If[!MissingQ[icon], template = StringRiffle[Drop[StringSplit[icon["Data"], "\n"],1], "\n"] ];
 
-        Echo[title];
-        Echo[decription];
+        Echo[title, "[wljs-snippets/Library] title: "];
+        Echo[decription, "[wljs-snippets/Library] decription: "];
 
         {"Title" -> title, "Decription" -> decription, "Notebook" -> notebook, "RawTemplate" -> template, "Path" -> path}
     ]
 ] ] // Quiet
 
 
-ApplySync[f_, w_, {first_, rest___}] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}] ] ]
+ApplySync[f_, w_, {first_, rest___}] := f[w@@first, Function[Null, Echo["[wljs-snippets/Library] Continuing with the next asynchronous step."]; ApplySync[f,w, {rest}] ] ]
 ApplySync[f_, w_, {}] := Null;
 
 books = <||>;
 
 bookHandler[tag_String][assoc_] := With[{book = books[tag]},
-  Echo["Book hander"];
+  Echo["[wljs-snippets/Library] Book hander"];
   With[{result = EventFire[assoc["Controls"], "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n} , controls = assoc["Controls"]},
     Print[result];
     If[MatchQ[result, _nb`NotebookObj],
             Null;
     ,
-            Echo["rejected"];
+            Echo["[wljs-snippets/Library] Operation was rejected."];
             EventFire[assoc["Messanger"], "Warning", "There is no opened notebook" ];
             Return[];
     ];
@@ -84,7 +84,7 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
           If[
               TrueQ[notebook["WebSocketQ"] ] && notebook["Evaluator"]["Kernel"]["State"] === "Initialized" && TrueQ[notebook["Evaluator"]["Kernel"]["ContainerReadyQ"] ]
           ,
-              Echo["Context:"]; Echo[notebookContext];
+              Echo["[wljs-snippets/Library] Context:"]; Echo[notebookContext, "[wljs-snippets/Library] notebook context: "];
 
               GenericKernel`Send[notebook["Evaluator"]["Kernel"], 
                   Then[CoffeeLiqueur`Extensions`RemoteCells`NotebookEvaluateAsync[
@@ -94,7 +94,7 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
                       ], Function[Null, Null ] ];
               ];
           ,
-              Echo["rejected"];
+              Echo["[wljs-snippets/Library] Operation was rejected."];
               EventFire[assoc["Messanger"], "Warning", "The kernel isn't ready or connected to a notebook yet. Try running a cell" ];
           ];
     ];
@@ -102,9 +102,9 @@ bookHandler[tag_String][assoc_] := With[{book = books[tag]},
 ]
 
 bookOpen[tag_String][assoc_] := Module[{},
-  Echo["Book open hander"];
+  Echo["[wljs-snippets/Library] Book open hander"];
   With[{cli = assoc["Client"]},
-    Echo["Open path: "<>books[tag, "Path"] ];
+    Echo[StringJoin["[wljs-snippets/Library] ", "Open path: ", books[tag, "Path"]]];
     WebUILocation[books[tag, "Path"] // URLEncode, cli, "Target"->_];
   ]
 ]

@@ -1,5 +1,12 @@
 Begin["CoffeeLiqueur`Notebook`Views`"];
 
+(* 
+    File -> view router
+    This component is used to create views instances on specific file types like notebooks, HTML files, WL files and etc
+
+    View components are declared spearately.
+*)
+
 {EmptyComponent,       EmptyScript}        = ImportComponent["Views/Empty.wlx"];
 {NotebookComponent,    NotebookScript}     = ImportComponent["Views/Notebook/Notebook.wlx"];
 

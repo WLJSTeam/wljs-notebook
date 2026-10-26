@@ -2,56 +2,57 @@
 
 Component[OptionsPattern[]] := With[{EventChannel = CreateUUID[], decode = OptionValue["Decoder"], Color = If[StringQ[#], #, "{Color}"]& @ (OptionValue["Parameters"]["AccentColor"]), Path = OptionValue["Path"], Messager = OptionValue["Messanger"], Controls = OptionValue["Controls"], iframeQ = OptionValue["IframeQ"]},  
   EventHandler[EventChannel, Function[Null,
-    With[{client = Global`$Client(*`*)},
-    Echo[client];
+    With[{client = $CurrentWebSocket(*`*)},
+    Echo[client, "[wljs-export-html/Loader] client: "];
    
     
     With[{p = decode[Path, "Messager"->Messager, "Query" -> OptionValue["Query"], "Client"->client]},
-            Echo[p];
+            Echo[p, "[wljs-export-html/Loader] p: "];
             Then[p, Function[result,
               Pause[1];
-              Echo["Loader data::"];
-              Echo[result];
+              Echo["[wljs-export-html/Loader] Loader configuration:"];
+              Echo[result, "[wljs-export-html/Loader] operation result: "];
               (*/*EventFire[spinner["Promise"], Resolve, True];*/*)
               Which[
                 StringQ[result],
                   If[iframeQ, 
-                    WebUILocation[ StringJoin["/iframe/", URLEncode[ result ] ], client ] // Echo;
+                    Echo[WebUILocation[ StringJoin["/iframe/", URLEncode[ result ] ], client ], "[wljs-export-html/Loader] Embedded-notebook navigation result: "];
                   ,
-                    WebUILocation[ StringJoin["/", URLEncode[ result ] ], client ] // Echo;
+                    Echo[WebUILocation[ StringJoin["/", URLEncode[ result ] ], client ], "[wljs-export-html/Loader] Notebook navigation result: "];
                   ]
                 ,
 
                 ListQ[result],
-                  WebUILocation[ StringJoin[result[[1]], URLEncode[ result[[2]] ] ], client ] // Echo;
+                  Echo[WebUILocation[ StringJoin[result[[1]], URLEncode[ result[[2]] ] ], client ], "[wljs-export-html/Loader] Custom navigation result: "];
                 ,
 
                 AssociationQ[result],
                   Switch[result["Type"],
                     "MultipleWindows",
-                      Echo[result["Paths"] ];
+                      Echo[result["Paths"], "[wljs-export-html/Loader] Multiple-window export paths: "];
                       If[iframeQ, 
                         
                         Do[
-                          WebUILocation[ StringJoin["/iframe/", URLEncode[ i ] ], client, "Target"->_, "Features"->"left=100,top=100" ] // Echo;  
+                          Echo[WebUILocation[ StringJoin["/iframe/", URLEncode[ i ] ], client, "Target"->_, "Features"->"left=100,top=100" ], "[wljs-export-html/Loader] Embedded-window navigation result: "];
                         , {i, Drop[result["Paths"], 1] // Reverse }];
 
                            WebUILocation[ StringJoin["/iframe/", URLEncode[ result["Paths"][[1]] ] ], client ]
                       ,
                         
                         Do[
-                          Echo["Location:"]; Echo[StringJoin["/", URLEncode[ i ] ] ];
-                          WebUILocation[ StringJoin["/", URLEncode[ i ] ], client, "Target"->_, "Features"->"left=100,top=100" ] // Echo;  
+                          Echo[StringJoin["[wljs-export-html/Loader] Navigating to embedded notebook URL: /", URLEncode[i]]];
+                          Echo[WebUILocation[ StringJoin["/", URLEncode[ i ] ], client, "Target"->_, "Features"->"left=100,top=100" ], "[wljs-export-html/Loader] Window navigation result: "];
                         , {i, Drop[result["Paths"], 1] // Reverse }];
 
-                        WebUILocation[ StringJoin["/", URLEncode[ result["Paths"][[1]] ] ], client ] // Echo;  
+                        Echo[WebUILocation[ StringJoin["/", URLEncode[ result["Paths"][[1]] ] ], client ], "[wljs-export-html/Loader] Primary-window navigation result: "];
                         
                          
                       ];
                     ,
 
-                    _,
-                      WebUISubmit[System`Alert["Unknown loader message"](*`*), client];
+                    True,
+                      Echo["[wljs-export-html/Loader] Unknown loader message"];
+                      WebUISubmit[Alert[ToString[result]], client];
                   ];
               ];
 

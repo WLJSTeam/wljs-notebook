@@ -1,186 +1,245 @@
-<|"Notebook" -> <|"Controller" -> "f5d194b3-db39-433f-a510-726e98ad3ba7", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$3254], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "2a020fb8-7911-4ae4-82bc-c78265321224", 
-   "Objects" -> <|"be29971a-3db0-49a5-b6a9-215d906a043a" -> 
-      <|"Public" -> Hold[Graphics[{RGBColor[Rational[19, 27], 
-            Rational[19, 27], 1], Rectangle[{-1, 0}, {1, 1}], 
-           RGBColor[Rational[19, 27], 1, Rational[19, 27]], 
-           Rectangle[{-1, -1}, {1, 0}], RGBColor[1, 0, 0], 
-           Arrow[{{0, 0}, {0, 0.5}}], RGBColor[1, 0, 0], 
-           Arrow[{{0, 0}, {0.5, 0}}], Text[Style["Ez", FontSize -> 14, Bold], 
-            {0.1, 0.25}], Text[Style["Ex", FontSize -> 14, Bold], 
-            {0.25, -0.15}], GrayLevel[0], Text[Style["(d)", FontSize -> 16, 
-             Bold], {-0.7, 0.154464}], Text[Style["(m)", FontSize -> 16, 
-             Bold], {-0.7, -0.23125}]}, PlotRange -> {{-1, 1}, {-1, 1}}, 
-          Axes -> True, AxesStyle -> Directive[FontSize -> 14], 
-          AxesLabel -> {"x", "z"}, AspectRatio -> 0.6666666666666666, 
-          Controls -> False]]|>|>, "Path" -> "/Users/kirill/Github/wolfram-js\
--frontend/modules/wljs-demos-archive/Demos/for Physicists/D - Plasmons.wln", 
-   "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Logitudinal solution to Maxwell's Equations", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$3231]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Logitudinal solution to Maxwell's \
-Equations\nConsidering two interfaces with no free current and charges", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6d1ef15a-20ba-420d-8f73-666bc224a2d9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "># Logitudinal solution to Maxwell's Equations\nConsidering \
-two interfaces with no free current and charges", "Display" -> "markdown", 
-    "Hash" -> "c5143b21-e260-4907-8a86-c027e95f7f91", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "{ex, 0, ez} Exp[I (kx x + kz z) - I \[Omega] t]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "400a8aa3-3671-44f8-99c4-db7a290c1fd5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "Graphics[{(* Draw two materials *)\n  \
-Blue//Lighter//Lighter//Lighter, Rectangle[{-1, 0}, {1, 1}], (* Top material \
-*)\n  Green//Lighter//Lighter//Lighter, Rectangle[{-1, -1}, {1, 0}], (* \
-Bottom material *)\n  (* Draw electric field vectors *)\n  Red, Arrow[{{0, \
-0}, {0, 0.5}}], (* E_z *)\n  Red, Arrow[{{0, 0}, {0.5, 0}}], (* E_x *)\n  \
-Text[Style[\"Ez\", FontSize->14, Bold], {0.1, 0.25}],\n  Text[Style[\"Ex\", \
-FontSize->14, Bold], {0.25, -0.15}], Black,\n  Text[Style[\"(d)\", \
-FontSize->16, Bold], {-0.7, 0.154464}],\n  Text[Style[\"(m)\", FontSize->16, \
-Bold], {-0.7, -0.23125}]\n  },\n PlotRange -> {{-1, 1}, {-1, 1}},\n Axes -> \
-True,\n AxesStyle -> Directive[FontSize->14],\n AxesLabel -> {\"x\", \"z\"}, \
-AspectRatio->1/1.5, Controls->False\n ]", "Display" -> "codemirror", 
-    "Hash" -> "41207542-8d5a-48e9-813f-c9e16da3a812", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"be29971a-3db0-49a5-b6a9-215d906a043a\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6UaW\
-VqaGybqGqckGeiaWCaa6iaZJVrqGhmaplgamCUamBgnAgCEIxVp\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d6589c11-88b0-4062-91d6-4402bef9202a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> 
-     "ClearAll[k, \[Epsilon], EM, sample, rgbConvert, c, a, \[Omega]];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "39b60fb2-e974-40ab-9fbd-a320cfd707a1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ".md\nPropagation vectors", "Display" -> "codemirror", 
-    "Hash" -> "cb5d3b58-3ec7-4794-8f53-d99db607c055", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ">Propagation vectors", "Display" -> "markdown", 
-    "Hash" -> "71d2d53b-ed98-49e8-a4ce-b2fd77ef1c04", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "k[\"z\", \[Omega]_, c_, a_] :=  \
-(*FB[*)((\[Omega])(*,*)/(*,*)(c))(*]FB*) \
-(*SqB[*)Sqrt[((*FB[*)(((*SpB[*)Power[\[Epsilon][a](*|*),(*|*)2](*]SpB*))(*,*)\
-/(*,*)(\[Epsilon][\"d\"]+\[Epsilon][\"m\"]))(*]FB*))](*]SqB*)\nk[\"x\", \
-\[Omega]_, c_,  _] :=  (*FB[*)((\[Omega])(*,*)/(*,*)(c))(*]FB*) \
-(*SqB[*)Sqrt[((*FB[*)((\[Epsilon][\"d\"] \
-\[Epsilon][\"m\"])(*,*)/(*,*)(\[Epsilon][\"d\"]+\[Epsilon][\"m\"]))(*]FB*))](\
-*]SqB*)", "Display" -> "codemirror", 
-    "Hash" -> "a8c4afc6-8fd6-459a-92e5-a85ee87dd37f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ".md\nConstruct EM wave ", "Display" -> "codemirror", 
-    "Hash" -> "fc6d9ab0-caee-416c-97fa-5c361f704e92", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ">Construct EM wave ", "Display" -> "markdown", 
-    "Hash" -> "b2b71aa0-c5eb-4676-9489-04024bf7009c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "\[Epsilon][\"d\"] = 1.0; \[Epsilon][\"m\"] = 1.00001;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4ec11d20-d743-4a1a-97d1-21750643c40d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "EM[\[Omega]_, c_, x_, z_, t_] := \
-(*TB[*)Piecewise[{{(*|*){1,0,1} Exp[I k[\"z\", \[Omega], c, \"d\"] z + I \
-k[\"x\", \[Omega], c, \"d\"] x - I \[Omega] t] (*|*),(*|*)z > \
-0(*|*)},{(*|*){1,0, \
-(*FB[*)((\[Epsilon][\"d\"])(*,*)/(*,*)(\[Epsilon][\"m\"]))(*]FB*)} Exp[I \
-k[\"z\", \[Omega], c, \"m\"] z + I k[\"x\", \[Omega], c, \"m\"] x - I \
-\[Omega] t] \
-(*|*),(*|*)True(*|*)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmcWpTvkVmUxAAQBzV\
-Qdd*)(*]TB*)", "Display" -> "codemirror", 
-    "Hash" -> "e5672a00-634b-4bce-a258-e1ff5945d5e5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ".md\nSampling", "Display" -> "codemirror", 
-    "Hash" -> "1460fd8e-e2a3-4044-a047-35aab88f443a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ">Sampling", "Display" -> "markdown", 
-    "Hash" -> "0d5950da-f9b0-4336-95e8-eac480e53982", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "rgbConvert[val_] := 255.0 ({0.5,0,0.5} + 0.5 val)\nsample[t_] \
-:= NumericArray[\n  Table[rgbConvert @ Re[EM[1.0, 1.0, x, -z, t]], {z, \
--1.0,1.0, 0.1}, {x, 0.0, 10.0, 0.3}]\n, \"Byte\", \"ClipAndRound\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "245aaae6-be7e-4233-85c1-ae56c3d5b450", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ".md\nAnimation and controls", "Display" -> "codemirror", 
-    "Hash" -> "3268833d-2a24-4e5d-add4-8f0755422c9e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ">Animation and controls", "Display" -> "markdown", 
-    "Hash" -> "59935bf7-614c-4408-b496-4d3b1fa5922d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "controls = InputGroup[<|\n  \"ed\"  -> InputRange[-10.0, \
-10.0, 0.1, 1.0, \"Label\"->\"&epsilon; (d)\"],\n  \"rem\" -> \
-InputRange[-10.0, 10.0, 0.1, 1.0, \"Label\"->\"Re[&epsilon;] (m)\"],\n  \
-\"iem\" -> InputRange[-10.0, 0.0 , 0.1, 0  , \"Label\"->\"Im[&epsilon;] \
-(m)\"]\n|>];\n\nEventHandler[controls, Function[assoc,\n  \[Epsilon][\"d\"] = \
-assoc[\"ed\"];\n  \[Epsilon][\"m\"] = assoc[\"rem\"] + I \
-assoc[\"iem\"];\n]];", "Display" -> "codemirror", 
-    "Hash" -> "931c74ee-8af4-4e5d-aa3f-8e1a729b1cc1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ".md\nAnimate", "Display" -> "codemirror", 
-    "Hash" -> "54b254cb-8c2a-4e13-9b48-27d547feeacc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> ">Animate", "Display" -> "markdown", 
-    "Hash" -> "991a87f0-1020-4ecc-a3ea-0ae2fb478445", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>, 
-   <|"Data" -> "Module[{\n  array, t = 0., task\n},\n  \
-EventHandler[ResultCell[], {\"Destroy\" -> Function[Null, \
-TaskRemove[task]]}];\n\n  EventHandler[CurrentWindow[], {\"Closed\" -> \
-Function[Null,\n  TaskRemove[task]]}];\n\n  array = sample[t];\n  task  = \
-SetInterval[array = sample[t]; t = t + 0.1, 25];\n\n  Row[{\n    Image[array \
-// Offload, \"Byte\", Magnification->20], \n    controls\n  }]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f4c83cbe-570b-4234-81e6-2aa2b79ee3dc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "2fe8acd9-87ca-43ae-852e-7ac79a592e45"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Logitudinal solution to Maxwell's Equations
+Considering two interfaces with no free current and charges
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+># Logitudinal solution to Maxwell's Equations
+Considering two interfaces with no free current and charges
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{ex, 0, ez} Exp[I (kx x + kz z) - I ω t]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{(* Draw two materials *)
+  Blue//Lighter//Lighter//Lighter, Rectangle[{-1, 0}, {1, 1}], (* Top material *)
+  Green//Lighter//Lighter//Lighter, Rectangle[{-1, -1}, {1, 0}], (* Bottom material *)
+  (* Draw electric field vectors *)
+  Red, Arrow[{{0, 0}, {0, 0.5}}], (* E_z *)
+  Red, Arrow[{{0, 0}, {0.5, 0}}], (* E_x *)
+  Text[Style["Ez", FontSize->14, Bold], {0.1, 0.25}],
+  Text[Style["Ex", FontSize->14, Bold], {0.25, -0.15}], Black,
+  Text[Style["(d)", FontSize->16, Bold], {-0.7, 0.154464}],
+  Text[Style["(m)", FontSize->16, Bold], {-0.7, -0.23125}]
+  },
+ PlotRange -> {{-1, 1}, {-1, 1}},
+ Axes -> True,
+ AxesStyle -> Directive[FontSize->14],
+ AxesLabel -> {"x", "z"}, AspectRatio->1/1.5, Controls->False
+ ]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["be29971a-3db0-49a5-b6a9-215d906a043a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ6UaWVqaGybqGqckGeiaWCaa6iaZJVrqGhmaplgamCUamBgnAgCEIxVp"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[k, ϵ, EM, sample, rgbConvert, c, a, ω];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Propagation vectors
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Propagation vectors
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+k["z", ω_, c_, a_] :=  (*FB[*)((ω)(*,*)/(*,*)(c))(*]FB*) (*SqB[*)Sqrt[((*FB[*)(((*SpB[*)Power[ϵ[a](*|*),(*|*)2](*]SpB*))(*,*)/(*,*)(ϵ["d"]+ϵ["m"]))(*]FB*))](*]SqB*)
+k["x", ω_, c_,  _] :=  (*FB[*)((ω)(*,*)/(*,*)(c))(*]FB*) (*SqB[*)Sqrt[((*FB[*)((ϵ["d"] ϵ["m"])(*,*)/(*,*)(ϵ["d"]+ϵ["m"]))(*]FB*))](*]SqB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Construct EM wave 
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Construct EM wave 
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+ϵ["d"] = 1.0; ϵ["m"] = 1.00001;
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+EM[ω_, c_, x_, z_, t_] := (*TB[*)Piecewise[{{(*|*){1,0,1} Exp[I k["z", ω, c, "d"] z + I k["x", ω, c, "d"] x - I ω t] (*|*),(*|*)z > 0(*|*)},{(*|*){1,0, (*FB[*)((ϵ["d"])(*,*)/(*,*)(ϵ["m"]))(*]FB*)} Exp[I k["z", ω, c, "m"] z + I k["x", ω, c, "m"] x - I ω t] (*|*),(*|*)True(*|*)}}](*|*)(*1:eJxTTMoPSmNkYGAo5gESAZmpyanlmcWpTvkVmUxAAQBzVQdd*)(*]TB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Sampling
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Sampling
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+rgbConvert[val_] := 255.0 ({0.5,0,0.5} + 0.5 val)
+sample[t_] := NumericArray[
+  Table[rgbConvert @ Re[EM[1.0, 1.0, x, -z, t]], {z, -1.0,1.0, 0.1}, {x, 0.0, 10.0, 0.3}]
+, "Byte", "ClipAndRound"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animation and controls
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Animation and controls
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+controls = InputGroup[<|
+  "ed"  -> InputRange[-10.0, 10.0, 0.1, 1.0, "Label"->"&epsilon; (d)"],
+  "rem" -> InputRange[-10.0, 10.0, 0.1, 1.0, "Label"->"Re[&epsilon;] (m)"],
+  "iem" -> InputRange[-10.0, 0.0 , 0.1, 0  , "Label"->"Im[&epsilon;] (m)"]
+|>];
+
+EventHandler[controls, Function[assoc,
+  ϵ["d"] = assoc["ed"];
+  ϵ["m"] = assoc["rem"] + I assoc["iem"];
+]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animate
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+>Animate
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{
+  array, t = 0., task
+},
+  EventHandler[ResultCell[], {"Destroy" -> Function[Null, TaskRemove[task]]}];
+
+  EventHandler[CurrentWindow[], {"Closed" -> Function[Null,
+  TaskRemove[task]]}];
+
+  array = sample[t];
+  task  = SetInterval[array = sample[t]; t = t + 0.1, 25];
+
+  Row[{
+    Image[array // Offload, "Byte", Magnification->20], 
+    controls
+  }]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: be29971a-3db0-49a5-b6a9-215d906a043a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics[{RGBColor[Rational[19, 27], Rational[19, 27], 1], Rectangle[{-1, 0}, {1, 1}], RGBColor[Rational[19, 27], 1, Rational[19, 27]], Rectangle[{-1, -1}, {1, 0}], RGBColor[1, 0, 0], Arrow[{{0, 0}, {0, 0.5}}], RGBColor[1, 0, 0], Arrow[{{0, 0}, {0.5, 0}}], Text[Style["Ez", FontSize -> 14, Bold], {0.1, 0.25}], Text[Style["Ex", FontSize -> 14, Bold], {0.25, -0.15}], GrayLevel[0], Text[Style["(d)", FontSize -> 16, Bold], {-0.7, 0.154464}], Text[Style["(m)", FontSize -> 16, Bold], {-0.7, -0.23125}]}, PlotRange -> {{-1, 1}, {-1, 1}}, Axes -> True, AxesStyle -> Directive[FontSize -> 14], AxesLabel -> {"x", "z"}, AspectRatio -> 0.6666666666666666, Controls -> False]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

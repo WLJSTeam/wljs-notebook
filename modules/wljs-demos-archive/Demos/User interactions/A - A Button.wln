@@ -1,75 +1,114 @@
-<|"Notebook" -> <|"Controller" -> "a6e91268-dbc3-4ae8-a0c3-baef3f8629c1", 
-   "Directory" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demo\
-s-archive/Demos/User interactions/", "FocusedCell" -> 
-    CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$547], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "52951c0b-06d3-4418-9e36-674d1efbac48", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/User interactions/A - A Button.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Basic button example", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$671]]}|>, 
- "Cells" -> 
-  {<|"Data" -> 
-     ".md\n## Basic button example\nThe smallest building block of GUI is", 
-    "Display" -> "codemirror", "Hash" -> 
-     "acd07d9c-821d-4562-9938-b863b9ab3dda", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> 
-     "## Basic button example\nThe smallest building block of GUI is", 
-    "Display" -> "markdown", "Hash" -> 
-     "f3cb4ed1-0985-4c3c-8e1c-36ceb71fa093", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> "Button[\"Click to beep\", Beep[]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "cb7bc406-2246-430c-a5df-4bbf20a72fe0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> 
-     ".md\nThis button changes the color of the disk each time you click it:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "8bbae0cc-6377-4642-9757-22c8d7f1d9f9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> 
-     "This button changes the color of the disk each time you click it:", 
-    "Display" -> "markdown", "Hash" -> 
-     "60ef2464-97ef-4f0b-970c-ad84e3b1e2aa", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> "Module[{b = List @@ Red}, {Button[\"change\", \n   b = \
-RandomReal[{0, 1}, 3]],\n   Graphics[{RGBColor[Offload[b]], Disk[]}]}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ce9af6bb-60f5-4fc9-9dc4-8c0801966d7a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> ".md\nThis button changes position each time you click it:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3ff2e408-afab-4e36-a3e5-5bfeb3a39582", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> "This button changes position each time you click it:", 
-    "Display" -> "markdown", "Hash" -> 
-     "9ef1f50b-81c5-4d0c-8fd2-6b2a47aba4ca", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>, 
-   <|"Data" -> "Module[{pt = {0, 0}}, \n Framed@Graphics[\n   \
-Inset[Button[\"Click Me\", pt = RandomReal[{-1, 1}, 2]], Offload[pt]],\n    \
-PlotRange -> {{-1,1}, {-1,1}}, Controls->False]]", "Display" -> "codemirror", 
-    "Hash" -> "0b89a24e-1139-4321-a14f-0ef97f477334", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ec042297-6a9e-4cf1-8ae8-b6e0f16d2632"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Basic button example
+The smallest building block of GUI is
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Basic button example
+The smallest building block of GUI is
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Click to beep", Beep[]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This button changes the color of the disk each time you click it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This button changes the color of the disk each time you click it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{b = List @@ Red}, {Button["change", 
+   b = RandomReal[{0, 1}, 3]],
+   Graphics[{RGBColor[Offload[b]], Disk[]}]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This button changes position each time you click it:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This button changes position each time you click it:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{pt = {0, 0}}, 
+ Framed@Graphics[
+   Inset[Button["Click Me", pt = RandomReal[{-1, 1}, 2]], Offload[pt]],
+    PlotRange -> {{-1,1}, {-1,1}}, Controls->False]]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

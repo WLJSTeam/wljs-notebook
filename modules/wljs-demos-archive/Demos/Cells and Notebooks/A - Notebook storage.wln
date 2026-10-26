@@ -1,141 +1,186 @@
-<|"Notebook" -> <|"Controller" -> "21e2c500-5e25-402e-b37b-833175e8406c", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$450], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "400a3d7f-084d-44e3-a344-243e20ad1264", 
-   "Objects" -> <|"9fa1ccc4-e157-47ac-b928-2d2057a1c412" -> 
-      <|"Public" -> Hold[HTMLView["<button style=\"\" class=\"sm-controls \
-rounded bg-white px-2 py-1 text-xs text-gray-900 ring-1 ring-inset \
-ring-gray-300 \" type=\"button\" id=\"#instanceId\">Click</button>\n<script \
-type=\"module\"> const el = document.getElementById('#instanceId');\n         \
-   el.addEventListener('mousedown', (event)=>{el.style.boxShadow = 'inset 0px \
-0px 3px 2px rgba(15, 15, 15, 0.2)'});\n            \
-el.addEventListener('mouseup', (event)=>{el.style.boxShadow = ''});\n         \
-   el.addEventListener('mouseleave', (event)=>{el.style.boxShadow = ''});\n   \
-         el.addEventListener('click', (event)=>{\n                \
-server.kernel.io.fire('c7eb197a-c47d-4bc6-aa12-2837044a18ae', true, \
-'Default');     \n            });</script>", Prolog -> 
-           CoffeeLiqueur`Extensions`InputsOutputs`Tools`TemplateProcessor[
-            Association["instanceId" -> CreateUUID[]]]]]|>|>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - Notebook storage.wln", "PublicFields" -> {"Properties"}, 
-   "ReadOnly" -> True, "Storage" -> <|"date" -> "1:eJxTTMoPSmNhYGAo5gISLoklqf\
-5JWanJJWlsIDGQhE9mcUnmK3YGhkxGIC+TB0QIgghpIBEEIkyN9QyMDY0MzBIs9EzMzQ0NzEzMLYz\
-NzM3NzIKB+hg884pLEvNKgjmBbPei1PT8oszEvCIGMPhgDwCJrRqh", 
-     "data" -> "1:eJxl0jkOgzAARFGzBAhLWMNOJO5DRW6QwpIbKMz9FbtEv/nSvHrW37nLjxB\
-C+yab0pd07PJMvupQdtzFhXgQH/KABJAQEkGekBiSQFJIBnlBckgBKSEVpIY0kDekhXSQHjJARsgE\
-mSELxJ7kD9kaTs0=", "key" -> "1:eJxTTMoPyqxlYGAAAA04Ais=", 
-     "ruthlessly-0fa" -> "1:eJxTTMoPKmZmYGBwys8HABLGAts="|>, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      2, "Notebook Storage", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$365]]}|>, 
- "Cells" -> {<|"data" -> ".md\n## NotebookStore\nA safe storage for arbitary \
-expressions inside a notebook", "Data" -> ".md\n## Notebook Storage\nA \
-persistent storage for arbitrary expressions inside a \
-notebook.\n\n:::feature\nThe data is preserved even if the notebook is \
-exported to an HTML file and reimported back.\n:::", 
-    "display" -> "codemirror", "Display" -> "codemirror", 
-    "Hash" -> "b2de3f22-841e-443f-a74a-ee992874b317", 
-    "id" -> "bea124bf-b5ae-4531-9e04-46ff92850a87", "Invisible" -> False, 
-    "MetaOnly" -> False, "props" -> <|"hidden" -> True|>, 
-    "Props" -> <|"Hidden" -> True|>, "PublicFields" -> {"Properties"}, 
-    "sign" -> "unpack-c3875", "State" -> "Idle", "type" -> "input", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "## Notebook Storage\nA persistent storage for arbitrary \
-expressions inside a notebook.\n\n:::feature\nThe data is preserved even if \
-the notebook is exported to an HTML file and reimported back.\n:::", 
-    "Display" -> "markdown", "Hash" -> 
-     "b152891d-55da-4aae-87c3-a7fe0b128801", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"data" -> 
-     "NotebookStore[\"date\"] = Now // TextString \nNotebookStore[\"date\"]", 
-    "Data" -> "NotebookWrite[NotebookStore[\"date\"], \
-Now]\nNotebookRead[NotebookStore[\"date\"]]", "display" -> "codemirror", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9dcc35af-0461-400f-b40f-3c3cb826c820", 
-    "id" -> "c28c7d11-fffb-416a-9d17-a281f8b45c78", "Invisible" -> False, 
-    "MetaOnly" -> False, "props" -> <|"hidden" -> False|>, 
-    "Props" -> <|"Hidden" -> False|>, "PublicFields" -> {"Properties"}, 
-    "sign" -> "unpack-c3875", "State" -> "Idle", "type" -> "input", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "(*VB[*)(DateObject[{2026,1,12,17,27,53.031206`8.4771064783677\
-66},\"Instant\",\"Gregorian\",1.`])(*,*)(*\"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyfl\
-FiSX5RcEsQBGXxJLUYCkgQ8k3P0/B0EjBKzFPwcjAyEzB0NzKyNzK1FgJACBLD44=\"*)(*]VB*)"\
-, "Display" -> "codemirror", "Hash" -> 
-     "e826a1e1-4a6f-469e-a1ca-00b42848082b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"data" -> ".md\nIt keeps sent Wolfram Expressions under `Hold`, however, \
-it is recommended for storing large chunks of data to apply `Compress`", 
-    "Data" -> ".md\nIt stores any expressions as compressed WL code", 
-    "display" -> "codemirror", "Display" -> "codemirror", 
-    "Hash" -> "3fdac14e-7c5a-452b-aeb5-d4fda97eb49b", 
-    "id" -> "dc2bf967-72cb-4c0a-856e-540ab0e4cc76", "Invisible" -> False, 
-    "MetaOnly" -> False, "props" -> <|"hidden" -> True|>, 
-    "Props" -> <|"Hidden" -> True|>, "PublicFields" -> {"Properties"}, 
-    "sign" -> "unpack-c3875", "State" -> "Idle", "type" -> "input", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "It stores any expressions as compressed WL code", 
-    "Display" -> "markdown", "Hash" -> 
-     "3e30d646-cf3f-452d-a8fb-7022d0ba3615", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> ".md\nIn a case of the context loss, please, provide \
-`Notebook` explicitly and use async version - `NotebookReadAsync`", 
-    "Display" -> "codemirror", "Hash" -> 
-     "fe7b6c59-894b-4711-874d-bfc14425f575", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "In a case of the context loss, please, provide `Notebook` \
-explicitly and use async version - `NotebookReadAsync`", 
-    "Display" -> "markdown", "Hash" -> 
-     "7e395320-df94-4c92-ad4a-3cfeaea0c13e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "nb = EvaluationNotebook[];\nButton[\"Get\", \
-Then[NotebookReadAsync[NotebookStore[nb, \"date\"]], Print]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a56039fe-b951-4990-9670-e4c8551d0533", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> ".md\nOr use async-await:", "Display" -> "codemirror", 
-    "Hash" -> "45eeeb87-b283-4f16-9e5f-ae76ed19253e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "Or use async-await:", "Display" -> "markdown", 
-    "Hash" -> "61e47376-e16b-4a90-8e6b-0f5e3f2af853", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "NotebookWrite[NotebookStore[\"key\"], 123];\n\nWith[{n = \
-EvaluationNotebook[]},\n\t(* evaluation context is ok \
-*)\n\tEventHandler[InputButton[], AsyncFunction[Null, Module[{data},\n\t\t(* \
-evaluation context is lost!!! *)\n\t\t\n\t\tdata = \
-NotebookReadAsync[NotebookStore[n, \"key\"]] // Await;\n        \
-NotebookWrite[NotebookStore[n, \"key\"], data+1];\n\t]]]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "a00c2679-b10d-4e23-bb17-e627f38e298e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>, 
-   <|"Data" -> "(*VB[*)(EventObject[<|\"Id\" -> \
-\"c7eb197a-c47d-4bc6-aa12-2837044a18ae\", \"Initial\" -> False, \"View\" -> \
-\"9fa1ccc4-e157-47ac-b928-2d2057a1c412\"|>])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHv\
-k5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKW6YlGiYnJ5vophqamuuamCcm6yZZGlnoGqUYGZi\
-aA+VMDI0AjQYVlw==\"*)(*]VB*)", "Display" -> "codemirror", 
-    "Hash" -> "40e17c10-6825-4ce9-a354-23e5af05c66f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "50ebad1f-e5f3-4575-904a-bd4a14d738e4"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Notebook Storage
+A persistent storage for arbitrary expressions inside a notebook.
+
+:::feature
+The data is preserved even if the notebook is exported to an HTML file and reimported back.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Notebook Storage
+A persistent storage for arbitrary expressions inside a notebook.
+
+:::feature
+The data is preserved even if the notebook is exported to an HTML file and reimported back.
+:::
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookWrite[NotebookStore["date"], Now]
+NotebookRead[NotebookStore["date"]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(DateObject[{2026,10,23,15,15,39.240017`8.346304165380461},"Instant","Gregorian",2.`])(*,*)(*"1:eJxTTMoPSmNiYGAo5gUSYZmp5S6pyflFiSX5RcEsQBGXxJLUYCkgQ8mtKFPByFjBP7lEwcjAyEzB0NQKiIwtlQAgXA+T"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+It stores any expressions as compressed WL code
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+It stores any expressions as compressed WL code
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In a case of the context loss, please, provide `Notebook` explicitly and use async version - `NotebookReadAsync`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In a case of the context loss, please, provide `Notebook` explicitly and use async version - `NotebookReadAsync`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+nb = EvaluationNotebook[];
+Button["Get", Then[NotebookReadAsync[NotebookStore[nb, "date"]], Print]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or use async-await:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or use async-await:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookWrite[NotebookStore["key"], 123];
+
+With[{n = EvaluationNotebook[]},
+	(* evaluation context is ok *)
+	EventHandler[InputButton[], AsyncFunction[Null, Module[{data},
+		(* evaluation context is lost!!! *)
+		
+		data = NotebookReadAsync[NotebookStore[n, "key"]] // Await;
+        NotebookWrite[NotebookStore[n, "key"], data+1];
+	]]]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Click a few times and read it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Click a few times and read it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookRead[NotebookStore["key"]]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+Key: date
+%-------------------------------------------------------------------------%
+"1:eJxTTMoPSmNhYGAo5gISLoklqf5JWanJJWlsIDGQhE9mcUnmK3YGhkyQikxxEMEPI4KkgYSxpZ6RiYGBoXmChZ6xiZmxgYmhmamxhYGJmWEwUB+DZ15xSWJeSTAnkO1elJqeX5SZmFfEAAEOAIfEGaU="
+
+%-------------------------------------------------------------------------%
+Key: data
+%-------------------------------------------------------------------------%
+"1:eJxl0jkOgzAARFGzBAhLWMNOJO5DRW6QwpIbKMz9FbtEv/nSvHrW37nLjxBC+yab0pd07PJMvupQdtzFhXgQH/KABJAQEkGekBiSQFJIBnlBckgBKSEVpIY0kDekhXSQHjJARsgEmSELxJ7kD9kaTs0="
+
+%-------------------------------------------------------------------------%
+Key: key
+%-------------------------------------------------------------------------%
+"1:eJxTTMoPymxiYGAAAA1MAjA="
+
+%-------------------------------------------------------------------------%
+Key: ruthlessly-0fa
+%-------------------------------------------------------------------------%
+"1:eJxTTMoPKmZmYGBwys8HABLGAts="
+
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -1,43 +1,89 @@
-<|"Notebook" -> <|"Controller" -> "237f5a9e-4a78-4104-96b0-05278a31a46a", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$677], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "fd70054b-e634-4707-b1a1-68feebb961bd", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - Detect closing window.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      2, "Detect closing window", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$683]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Detect closing window\nIt comes handy to \
-stop tasks, or free up memory when a user closes a notebook", 
-    "Display" -> "codemirror", "Hash" -> 
-     "410e62b1-99a4-4719-a3c4-30b888bc8223", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f5948e29-7ff5-4cfa-b2b9-039baa727fa7"|>, 
-   <|"Data" -> "## Detect closing window\nIt comes handy to stop tasks, or \
-free up memory when a user closes a notebook", "Display" -> "markdown", 
-    "Hash" -> "990170e1-fab7-4b14-8385-6eb2eba7b45d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f5948e29-7ff5-4cfa-b2b9-039baa727fa7"|>, 
-   <|"Data" -> "test = {0,1,0};\n\nEventHandler[CurrentWindow[], {\"Closed\" \
--> Function[Null,\n  test = {1,0,0};\n]}];\n\nGraphics[{RGBColor[test // \
-Offload], Disk[{0,0}, 1]}]", "Display" -> "codemirror", 
-    "Hash" -> "d5612a75-4f1c-49bf-ba09-61d80fd5148e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f5948e29-7ff5-4cfa-b2b9-039baa727fa7"|>, 
-   <|"Data" -> ".md\n*Try to close notebook window and open again*", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0c5c1851-3d30-407b-bfc6-8984399cfdeb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f5948e29-7ff5-4cfa-b2b9-039baa727fa7"|>, 
-   <|"Data" -> "*Try to close notebook window and open again*", 
-    "Display" -> "markdown", "Hash" -> 
-     "fcdec72d-09a0-4c8d-adf9-3811243875da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f5948e29-7ff5-4cfa-b2b9-039baa727fa7"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Detect closing window
+It comes handy to stop tasks, or free up memory when a user closes a notebook
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Detect closing window
+It comes handy to stop tasks, or free up memory when a user closes a notebook
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+test = {0,1,0};
+
+EventHandler[CurrentWindow[], {"Closed" -> Function[Null,
+  test = {1,0,0};
+]}];
+
+Graphics[{RGBColor[test // Offload], Disk[{0,0}, 1]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*Try to close notebook window and open again*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*Try to close notebook window and open again*
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

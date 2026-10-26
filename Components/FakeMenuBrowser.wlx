@@ -150,7 +150,7 @@ LayoutMisc =
                     el.addEventListener('click', () => {
                       console.log('Emitt to <Event/>');
                       console.log(el.dataset.name);
-                      server.emitt('<Event/>', 'True', el.dataset.name);
+                      server.io.fire('<Event/>', true, el.dataset.name);
                       //window.electronAPI.topMenu(el.dataset.name);
                     });
                 }

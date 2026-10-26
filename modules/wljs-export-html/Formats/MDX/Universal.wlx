@@ -1,4 +1,6 @@
-(* tokenizer *)
+(* Renders notebook cells as MDX and references store/machine sidecars. *)
+
+(* Locate top-level HTML so MDX receives it through encoded wljs-html nodes. *)
 
 parseTag[str_] := {
     StringPosition[str, RegularExpression["\\<(\\w*)(\\s*(((\\w|-)*)=\\\"([^\"]+)\")*((\\w*)=\\{([^\\<\\>]+)\\})*)*\\>"]],
@@ -23,7 +25,7 @@ fixMarkdownBug[str_] := If[StringTake[str,1] == ">", StringDrop[str,1], str]
 escapeHTML[str_String] := Module[{
     tokens, depth, assembled = "", open, close, singular, higherLevel, isType
 },
-    Echo["Start escaping"];
+    Echo["[wljs-export-html/MDX] Start escaping"];
     isType[t_String][token_token] := token[[2]] == t;
     isType[_][_] := False;
 
@@ -154,13 +156,17 @@ getTitle[notebook_] := With[{},
   ]
 ]
 
-exportStore[notebook_] := With[{
-    objs = ExportByteArray[#["Public"] &/@ notebook["Objects"], "ExpressionJSON", "Compact"->1] // ByteArrayToString,
-    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON", "Compact"->1] // ByteArrayToString
+(* Store data is emitted separately and linked by metaCell. *)
+exportStore[notebook_] := Block[{
+    $Context = "dsc$`",
+    $ContextPath = {"dsc$`", "Global`", "System`"}
+}, With[{
+    objs = ExportByteArray[#["Public"] &/@ notebook["Objects"], "ExpressionJSON"] // ByteArrayToString,
+    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON"] // ByteArrayToString
   },
   
     StringJoin["{\n\"objects\":",objs,", \n\"symbols\":",syms,"\n}"]
-]
+] ]
 
 
 metaCell[notebook_, NId_, dynamicQ_, name_] := With[{},

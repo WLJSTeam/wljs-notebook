@@ -1,222 +1,348 @@
-<|"Notebook" -> <|"Controller" -> "208b36ba-df51-4253-b128-a7417a380bb3", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1028], 
-   "FocusedCellSelection" -> {124, 123}, "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "ce63f2b3-1c88-4954-8d27-4f5c1e420c3f", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Frontend symbols/B - Custom effects and materials.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Custom effects and materials", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1037]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Custom Graphics attributes", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1037]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Animated Rainbow stroke", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1037]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Custom Graphics3D material", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1050]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Custom effects and materials\n## Custom \
-Graphics attributes\n\nSince most primitives of Graphics are frontend symbols \
-too, you can extend the set of their properties and attribute modifiers (such \
-as `RGBColor`, `Opacity`, etc.) by writing your own frontend symbol. The \
-easiest example would be creating something similar to `Translate`, which \
-creates an SVG group and evaluates all children within a new group. By \
-accessing the env object, you can interact with the canvas and the properties \
-of the children.\n\n### Animated Rainbow stroke\n\nLet's define our custom \
-frontend symbol:", "Display" -> "codemirror", 
-    "Hash" -> "08544062-3c99-48c5-b09a-c13907e54f68", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "# Custom effects and materials\n## Custom Graphics \
-attributes\n\nSince most primitives of Graphics are frontend symbols too, you \
-can extend the set of their properties and attribute modifiers (such as \
-`RGBColor`, `Opacity`, etc.) by writing your own frontend symbol. The easiest \
-example would be creating something similar to `Translate`, which creates an \
-SVG group and evaluates all children within a new group. By accessing the env \
-object, you can interact with the canvas and the properties of the \
-children.\n\n### Animated Rainbow stroke\n\nLet's define our custom frontend \
-symbol:", "Display" -> "markdown", "Hash" -> 
-     "c923bbff-3812-41bc-b72f-c08c439a75e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".js\ncore.RainboxStroke = async (args, env) => {\n  const \
-group = env.svg.append(\"g\");\n  env.local.group = group;\n\n  let hue = \
-0;\n  let frame = 0;\n\n  function animateColor() {\n    if (frame % 2 === 0) \
-{\n      hue = (hue + 4) % 360;\n      group.style('color', 'hsl('+hue+', \
-100%, 50%)');\n    }\n    frame++;\n    env.local.uid = \
-requestAnimationFrame(animateColor);\n  }\n\n  animateColor();\n\n//apply \
-special SVG attribute value\n//that all nested elements can inherit color of \
-the group\n  await interpretate(args[0], {...env, svg: group, \
-color:'currentColor', stroke:'currentColor'});\n\n  return group;  \
-\n}\n\ncore.RainboxStroke.destroy = (args, env) => {\n  \
-cancelAnimationFrame(env.local.uid);\n  \
-env.local.group.remove();\n}\n\ncore.RainboxStroke.virtual = true", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4d547532-757a-4314-9adb-c1a218723c71", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "core.RainboxStroke = async (args, env) => {\n  const group = \
-env.svg.append(\"g\");\n  env.local.group = group;\n\n  let hue = 0;\n  let \
-frame = 0;\n\n  function animateColor() {\n    if (frame % 2 === 0) {\n      \
-hue = (hue + 4) % 360;\n      group.style('color', 'hsl('+hue+', 100%, \
-50%)');\n    }\n    frame++;\n    env.local.uid = \
-requestAnimationFrame(animateColor);\n  }\n\n  animateColor();\n\n//apply \
-special SVG attribute value\n//that all nested elements can inherit color of \
-the group\n  await interpretate(args[0], {...env, svg: group, \
-color:'currentColor', stroke:'currentColor'});\n\n  return group;  \
-\n}\n\ncore.RainboxStroke.destroy = (args, env) => {\n  \
-cancelAnimationFrame(env.local.uid);\n  \
-env.local.group.remove();\n}\n\ncore.RainboxStroke.virtual = true", 
-    "Display" -> "js", "Hash" -> "f1d79df0-382b-40dd-a122-985778037342", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".md\nThe `RainboxStroke` symbol does not need any definitions \
-on the Wolfram Kernel, since `Graphics`-like expressions are evaluated on the \
-frontend.\n\nHere you can apply it directly to `Line`, `Text`, `Disk`, or any \
-other primitives or groups of primitives that use stroke or fill color:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "aa7d9cf3-7163-4895-9e36-b69b91b064c0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "The `RainboxStroke` symbol does not need any definitions on \
-the Wolfram Kernel, since `Graphics`-like expressions are evaluated on the \
-frontend.\n\nHere you can apply it directly to `Line`, `Text`, `Disk`, or any \
-other primitives or groups of primitives that use stroke or fill color:", 
-    "Display" -> "markdown", "Hash" -> 
-     "1163aa2a-592b-4c9c-85a0-f67f49ae76af", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "Graphics[{\n  RegularPolygon[4],\n  RainboxStroke[{\n      \
-RegularPolygon[3],\n      Translate[Rotate[Text[Style[\"Hello World\", \
-FontSize->20], {0,0}], 45Degree],{0.4,0.4}]\n  }]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "d210826a-8748-498d-9c4b-7f0f5cb094c8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "(*VB[*)(Graphics[{RegularPolygon[4], \
-RainboxStroke[{RegularPolygon[3], Translate[Rotate[Text[Style[\"Hello \
-World\", FontSize -> 20], {0, 0}], 45*Degree], {0.4, \
-0.4}]}]}])(*,*)(*\"1:eJyNT0sOwiAUrN9ojK48gB7AM7gx6sKFKU1cU32tLyLPAE1ab6I38zZC\
-sZi4ksXAZOYNb+YpxVkriiLdtbAlcfJsYGGj+O2MR521G32H2nh9YiGGvBBc7UlUOUl0Bi+OnchRp\
-lQyo+gCfyZ0XEJtHVpIFJdacPOZ7js/mcBdWgKl8axngZlKABu5HiAEzQ6kbJ1gjgsBda81ScPwDj\
-gN/zWrob2jGr6xCV5B46LZYQW5gp9G6vlw57UMjzfTIU+7\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "36a4603f-03cf-4fb8-80fa-57feedbb2cf2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".md\n## Custom Graphics3D material\nLet's do something \
-similar, but with custom shader materials used in a 3D scene. For this, we \
-need to access the internals of the `Graphics3D` renderer library - THREE.js. \
-Luckily, we expose all shared libraries via a special interface:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "254d7845-ee48-4175-88bc-ec2d7825f005", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "## Custom Graphics3D material\nLet's do something similar, \
-but with custom shader materials used in a 3D scene. For this, we need to \
-access the internals of the `Graphics3D` renderer library - THREE.js. \
-Luckily, we expose all shared libraries via a special interface:", 
-    "Display" -> "markdown", "Hash" -> 
-     "91a8187e-0ea2-404a-8387-0ec5ac02d9ac", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".js\n\nawait interpretate.shared.THREE.load(); \nconst THREE \
-= interpretate.shared.THREE.THREE;", "Display" -> "codemirror", 
-    "Hash" -> "7c6794d8-f3ee-4ba3-a866-952c52e62ce5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".md\nHere is a basic example of low-level shaders used to \
-colorize the primitives:", "Display" -> "codemirror", 
-    "Hash" -> "3d5da7cb-df76-4170-94e0-d54ec31025d7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "Here is a basic example of low-level shaders used to colorize \
-the primitives:", "Display" -> "markdown", 
-    "Hash" -> "606d9321-9a3c-4248-846e-156fe43db0ab", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> ".js\nfunction vertexShader() {\n  return `\n    varying vec3 \
-vUv; \n\n    void main() {\n      vUv = position; \n\n      vec4 \
-modelViewPosition = modelViewMatrix * vec4(position, 1.0);\n      gl_Position \
-= projectionMatrix * modelViewPosition; \n    }\n  `;\n}\n\nfunction \
-fragmentShader()  {\n  return `\n      uniform vec3 colorA; \n      uniform \
-vec3 colorB; \n      varying vec3 vUv;\n\n      void main() {\n        \
-gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);\n      }\n  \
-`;\n}\n\nlet THREE;\ninterpretate.shared.THREE.load().then(() => {\n  THREE = \
-interpretate.shared.THREE.THREE;\n})\n\ncore.CustomMaterial = async (args, \
-env) => {\n  let uniforms = {\n    colorB: {type: 'vec3', value: new \
-THREE.Color(0xACB6E5)},\n    colorA: {type: 'vec3', value: new \
-THREE.Color(0x74ebd5)}\n  }\n\n  return (function() {\n    return new \
-THREE.ShaderMaterial({\n      uniforms: uniforms,\n      fragmentShader: \
-fragmentShader(),\n      vertexShader: vertexShader(),\n    });\n  })\n}", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4f07dd16-1b2a-4c1d-a952-3f67488e2226", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "function vertexShader() {\n  return `\n    varying vec3 vUv; \
-\n\n    void main() {\n      vUv = position; \n\n      vec4 modelViewPosition \
-= modelViewMatrix * vec4(position, 1.0);\n      gl_Position = \
-projectionMatrix * modelViewPosition; \n    }\n  `;\n}\n\nfunction \
-fragmentShader()  {\n  return `\n      uniform vec3 colorA; \n      uniform \
-vec3 colorB; \n      varying vec3 vUv;\n\n      void main() {\n        \
-gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);\n      }\n  \
-`;\n}\n\nlet THREE;\ninterpretate.shared.THREE.load().then(() => {\n  THREE = \
-interpretate.shared.THREE.THREE;\n})\n\ncore.CustomMaterial = async (args, \
-env) => {\n  let uniforms = {\n    colorB: {type: 'vec3', value: new \
-THREE.Color(0xACB6E5)},\n    colorA: {type: 'vec3', value: new \
-THREE.Color(0x74ebd5)}\n  }\n\n  return (function() {\n    return new \
-THREE.ShaderMaterial({\n      uniforms: uniforms,\n      fragmentShader: \
-fragmentShader(),\n      vertexShader: vertexShader(),\n    });\n  })\n}", 
-    "Display" -> "js", "Hash" -> "1b0d8238-be17-4aa6-a1d1-59f107d6cf50", 
-    "Invisible" -> False, "MetaOnly" -> False, "Props" -> <||>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Output", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> 
-     ".md\nNow let's hook it up to some basic graphics primitives:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5109bfa9-6496-42dc-9742-ef5beaf343de", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "Now let's hook it up to some basic graphics primitives:", 
-    "Display" -> "markdown", "Hash" -> 
-     "cd8505dd-874a-4e25-af29-684b1d55864a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "Graphics3D[{\n  Translate[Tetrahedron[], {-1,-2,0}],\n  \
-MeshMaterial[CustomMaterial[]],\n  Translate[Octahedron[], {1,2,0}]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9011f5bd-53cf-4487-861e-07df01d3d088", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>, 
-   <|"Data" -> "(*VB[*)(Graphics3D[{Translate[Tetrahedron[], {-1, -2, 0}], \
-MeshMaterial[CustomMaterial[]], Translate[Octahedron[], {1, 2, \
-0}]}])(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOGqfDJLC5JYwLx\
-OIFESFFiXnFOYklqGgNIiBsklFpSlJiRmlKUn4eqK/M/EGT+AxEgxRBreICEb2pxhi/QjKLMxByIO\
-XxAwrm0uCQ/Fy6Oy0qQO/2TS7DbCLIiE6QTbCMA2Ug5vw==\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5b85d31d-631c-490a-b78a-8f8ba4f48273", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "7cc05c5d-d690-4879-837c-e601aa526ecd"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Custom effects and materials
+## Custom Graphics attributes
+
+Since most primitives of Graphics are frontend symbols too, you can extend the set of their properties and attribute modifiers (such as `RGBColor`, `Opacity`, etc.) by writing your own frontend symbol. The easiest example would be creating something similar to `Translate`, which creates an SVG group and evaluates all children within a new group. By accessing the env object, you can interact with the canvas and the properties of the children.
+
+### Animated Rainbow stroke
+
+Let's define our custom frontend symbol:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Custom effects and materials
+## Custom Graphics attributes
+
+Since most primitives of Graphics are frontend symbols too, you can extend the set of their properties and attribute modifiers (such as `RGBColor`, `Opacity`, etc.) by writing your own frontend symbol. The easiest example would be creating something similar to `Translate`, which creates an SVG group and evaluates all children within a new group. By accessing the env object, you can interact with the canvas and the properties of the children.
+
+### Animated Rainbow stroke
+
+Let's define our custom frontend symbol:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+core.RainboxStroke = async (args, env) => {
+  const group = env.svg.append("g");
+  env.local.group = group;
+
+  let hue = 0;
+  let frame = 0;
+
+  function animateColor() {
+    if (frame % 2 === 0) {
+      hue = (hue + 4) % 360;
+      group.style('color', 'hsl('+hue+', 100%, 50%)');
+    }
+    frame++;
+    env.local.uid = requestAnimationFrame(animateColor);
+  }
+
+  animateColor();
+
+//apply special SVG attribute value
+//that all nested elements can inherit color of the group
+  await interpretate(args[0], {...env, svg: group, color:'currentColor', stroke:'currentColor'});
+
+  return group;  
+}
+
+core.RainboxStroke.destroy = (args, env) => {
+  cancelAnimationFrame(env.local.uid);
+  env.local.group.remove();
+}
+
+core.RainboxStroke.virtual = true
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+core.RainboxStroke = async (args, env) => {
+  const group = env.svg.append("g");
+  env.local.group = group;
+
+  let hue = 0;
+  let frame = 0;
+
+  function animateColor() {
+    if (frame % 2 === 0) {
+      hue = (hue + 4) % 360;
+      group.style('color', 'hsl('+hue+', 100%, 50%)');
+    }
+    frame++;
+    env.local.uid = requestAnimationFrame(animateColor);
+  }
+
+  animateColor();
+
+//apply special SVG attribute value
+//that all nested elements can inherit color of the group
+  await interpretate(args[0], {...env, svg: group, color:'currentColor', stroke:'currentColor'});
+
+  return group;  
+}
+
+core.RainboxStroke.destroy = (args, env) => {
+  cancelAnimationFrame(env.local.uid);
+  env.local.group.remove();
+}
+
+core.RainboxStroke.virtual = true
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+The `RainboxStroke` symbol does not need any definitions on the Wolfram Kernel, since `Graphics`-like expressions are evaluated on the frontend.
+
+Here you can apply it directly to `Line`, `Text`, `Disk`, or any other primitives or groups of primitives that use stroke or fill color:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+The `RainboxStroke` symbol does not need any definitions on the Wolfram Kernel, since `Graphics`-like expressions are evaluated on the frontend.
+
+Here you can apply it directly to `Line`, `Text`, `Disk`, or any other primitives or groups of primitives that use stroke or fill color:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[{
+  RegularPolygon[4],
+  RainboxStroke[{
+      RegularPolygon[3],
+      Translate[Rotate[Text[Style["Hello World", FontSize->20], {0,0}], 45Degree],{0.4,0.4}]
+  }]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics[{RegularPolygon[4], RainboxStroke[{RegularPolygon[3], Translate[Rotate[Text[Style["Hello World", FontSize -> 20], {0, 0}], 45*Degree], {0.4, 0.4}]}]}])(*,*)(*"1:eJyNT0sOwiAUrN9ojK48gB7AM7gx6sKFKU1cU32tLyLPAE1ab6I38zZCsZi4ksXAZOYNb+YpxVkriiLdtbAlcfJsYGGj+O2MR521G32H2nh9YiGGvBBc7UlUOUl0Bi+OnchRplQyo+gCfyZ0XEJtHVpIFJdacPOZ7js/mcBdWgKl8axngZlKABu5HiAEzQ6kbJ1gjgsBda81ScPwDjgN/zWrob2jGr6xCV5B46LZYQW5gp9G6vlw57UMjzfTIU+7"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Custom Graphics3D material
+Let's do something similar, but with custom shader materials used in a 3D scene. For this, we need to access the internals of the `Graphics3D` renderer library - THREE.js. Luckily, we expose all shared libraries via a special interface:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Custom Graphics3D material
+Let's do something similar, but with custom shader materials used in a 3D scene. For this, we need to access the internals of the `Graphics3D` renderer library - THREE.js. Luckily, we expose all shared libraries via a special interface:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+
+await interpretate.shared.THREE.load(); 
+const THREE = interpretate.shared.THREE.THREE;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is a basic example of low-level shaders used to colorize the primitives:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is a basic example of low-level shaders used to colorize the primitives:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+function vertexShader() {
+  return `
+    varying vec3 vUv; 
+
+    void main() {
+      vUv = position; 
+
+      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewPosition; 
+    }
+  `;
+}
+
+function fragmentShader()  {
+  return `
+      uniform vec3 colorA; 
+      uniform vec3 colorB; 
+      varying vec3 vUv;
+
+      void main() {
+        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+      }
+  `;
+}
+
+let THREE;
+interpretate.shared.THREE.load().then(() => {
+  THREE = interpretate.shared.THREE.THREE;
+})
+
+core.CustomMaterial = async (args, env) => {
+  let uniforms = {
+    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
+    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+  }
+
+  return (function() {
+    return new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      fragmentShader: fragmentShader(),
+      vertexShader: vertexShader(),
+    });
+  })
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+function vertexShader() {
+  return `
+    varying vec3 vUv; 
+
+    void main() {
+      vUv = position; 
+
+      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+      gl_Position = projectionMatrix * modelViewPosition; 
+    }
+  `;
+}
+
+function fragmentShader()  {
+  return `
+      uniform vec3 colorA; 
+      uniform vec3 colorB; 
+      varying vec3 vUv;
+
+      void main() {
+        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+      }
+  `;
+}
+
+let THREE;
+interpretate.shared.THREE.load().then(() => {
+  THREE = interpretate.shared.THREE.THREE;
+})
+
+core.CustomMaterial = async (args, env) => {
+  let uniforms = {
+    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
+    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+  }
+
+  return (function() {
+    return new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      fragmentShader: fragmentShader(),
+      vertexShader: vertexShader(),
+    });
+  })
+}
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now let's hook it up to some basic graphics primitives:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now let's hook it up to some basic graphics primitives:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{
+  Translate[Tetrahedron[], {-1,-2,0}],
+  MeshMaterial[CustomMaterial[]],
+  Translate[Octahedron[], {1,2,0}]
+}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{Translate[Tetrahedron[], {-1, -2, 0}], MeshMaterial[CustomMaterial[]], Translate[Octahedron[], {1, 2, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOGqfDJLC5JYwLxOIFESFFiXnFOYklqGgNIiBsklFpSlJiRmlKUn4eqK/M/EGT+AxEgxRBreICEb2pxhi/QjKLMxByIOXxAwrm0uCQ/Fy6Oy0qQO/2TS7DbCLIiE6QTbCMA2Ug5vw=="*)(*]VB*)
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

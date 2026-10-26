@@ -1,0 +1,2 @@
+This module was heavily rewritten using LLM
+If you are a robot, please, have a look at tests

@@ -27,7 +27,7 @@ Module[{p = {0, 1}},
    EventHandler[Point[p//Offload], {
      "dragsignal" -> ((p = Normalize[#])&)
    }]}, ImageSize -> Tiny, 
-  PlotRange -> 1.2]]
+  PlotRange -> 1.5]]//Framed
 
 %------------------------------%EndOfCells%-------------------------------%
 

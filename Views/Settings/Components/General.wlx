@@ -41,7 +41,7 @@ FrontEndCustomCSS = If[KeyExistsQ[settings, "FrontEndCustomCSS"], settings["Fron
 DefaultHome = Join[<|"Home"->AppExtensions`DefaultDocumentsDir|>, settings]["Home"];
 
 EventHandler[Secret, {"Load" -> Function[Null,
-    EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $Client, "Text"->URLEncode[DefaultHome]|>];
+    EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $CurrentWebSocket, "Text"->URLEncode[DefaultHome]|>];
 
     EventHandler[controller, {
         "Autostart" -> Function[state,
@@ -89,7 +89,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ],         
 
         "Color" -> Function[state,
-            Echo[state];
+            Echo[state, "[Views/General] state: "];
             defaultColor = state;
             If[defaultColorChoice =!= "System",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
@@ -99,6 +99,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
 
         "ColorChoice" -> Function[state,
             defaultColorChoice = state;
+            Echo[ToString[state, InputForm], "[Views/General] state, input form: "];
             If[state === "User",
                 settings = Join[settings, <|"AccentColor"->defaultColor|>];
             ,
@@ -119,14 +120,14 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ],  
 
         "ChangeHome" -> Function[Null,
-            With[{requestId = CreateUUID[], cli = $Client},
+            With[{requestId = CreateUUID[], cli = $CurrentWebSocket},
                 EventHandler[requestId, {
                     "NoElectron" -> Function[Null,
                             With[{p = Promise[]},
                                 Then[p, Function[path,
                                     Switch[path,
                                         _String,
-                                            EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $Client, "Text"->path|>];
+                                            EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $CurrentWebSocket, "Text"->path|>];
                                             settings = Join[settings, <|"Home"->path|>];
                                             onSave[settings, False];
                                         ,
@@ -143,7 +144,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                     ],
 
                     "Picked" -> Function[path,
-                        EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $Client, "Text"->URLDecode[path]|>];
+                        EventFire[homefolderEvent, "ChangeLabel", <|"Client" -> $CurrentWebSocket, "Text"->URLDecode[path]|>];
                         settings = Join[settings, <|"Home"->URLDecode[path]|>];
                         onSave[settings, False];
                         EventRemove[requestId];    
@@ -153,7 +154,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                         EventRemove[requestId];    
                     ]
                 }];
-                EventFire[homefolderEvent, "Ask", <|"Client" -> $Client, "Id"->requestId|>];
+                EventFire[homefolderEvent, "Ask", <|"Client" -> $CurrentWebSocket, "Id"->requestId|>];
             ]
         ],
 
@@ -178,7 +179,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ]
     }];
 
-    With[{socket = EventClone[$Client]},
+    With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {
             "Closed" -> Function[Null,
                 EventRemove[socket];
@@ -186,7 +187,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 EventRemove[updateEvent];
                 EventRemove[Secret];
                 EventRemove[installEvent];
-                Echo["GeneralSettings >> destoryed"];
+                Echo["[Views/General] General settings view was destroyed."];
             ]
         }]
     ];

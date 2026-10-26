@@ -10,7 +10,11 @@ System`ViewDecorator;
 System`ProvidedOptions;
 
 
-SetAttributes[WLJSDisplayForm, HoldAll]
+SetAttributes[WLJSDisplayForm, HoldAllComplete]
+
+(* The notebook importer supplies a held box tree prepared on the master.
+   In particular, no Cell or BoxData is evaluated on the WLJS kernel. *)
+WLJSDisplayForm[HoldComplete[a_]] := WLJSDisplayForm[a]
 
 WLJSDisplayForm[HoldForm[a_] ] := WLJSDisplayForm[a]
 
@@ -25,6 +29,16 @@ WLJSDisplayForm[InterpretationBox[_, c_CompressedData, ___] ] := With[{
 ]
 
 WLJSDisplayForm[TemplateBox[{g_GraphicsBox, ___}, ___] ] := WLJSDisplayForm[g]
+
+(* Standard Mathematica Row boxes use this template rather than RowBox.
+   WLJS displays native Rows using a one-row grid as well. *)
+WLJSDisplayForm[TemplateBox[items_List, "RowDefault", ___]] :=
+  WLJSDisplayForm[GridBox[{items}]]
+
+WLJSDisplayForm[TemplateBox[{_, separator_, items___}, "RowWithSeparators", ___]] :=
+  With[{values = Map[WLJSDisplayForm, Unevaluated[{items}]], sep = WLJSDisplayForm[separator]},
+    With[{row = Riffle[values, sep]}, WLJSDisplayForm[GridBox[{row}]]]
+  ]
 
 WLJSDisplayForm[RowBox[{
   SubsuperscriptBox["\[Integral]", m_, x_], 
@@ -145,15 +159,12 @@ WLJSDisplayForm[RowBox[{"\[VerticalSeparator]", a_, "\[RightAngleBracket]"}] ] :
   ]
 ]
 
-WLJSDisplayForm[TemplateBox[{
-      _, 
-      dateBoxes_
-    },
-     "DateObject",
-     _] ] := With[{
-        actualDate = ToString[ToExpression[dateBoxes, StandardForm], StandardForm]
-     },
-     WLJSDisplayForm[actualDate]
+WLJSDisplayForm[TemplateBox[{_, dateBoxes_}, "DateObject", ___]] := Module[{held},
+  held = Quiet[Check[ToExpression[Unevaluated[dateBoxes], StandardForm, HoldComplete], $Failed]];
+  Replace[held, {
+    HoldComplete[date_] :> ToString[Unevaluated[date], InputForm],
+    _ :> "(*Unsupported date box*)"
+  }]
 ]
 
 
@@ -163,12 +174,18 @@ WLJSDisplayForm[any_String] := any;
 
 WLJSDisplayForm[FormBox[b_, _]] := WLJSDisplayForm[b]
 
-WLJSDisplayForm[InterpretationBox[display_, expr_] ] := ToString[expr, StandardForm]
+(* InterpretationBox contains the input expression, which must never be evaluated
+   while importing an untrusted notebook. *)
+WLJSDisplayForm[InterpretationBox[_, expr_, ___] ] := ToString[Unevaluated[expr], InputForm]
 
-WLJSDisplayForm[InterpretationBox[display_, expr_, ___] ] := ToString[expr, StandardForm]
 
-
-WLJSDisplayForm[g_GraphicsBox | g_Graphics3DBox | g_RasterBox] := ToString[ToExpression[g, StandardForm], StandardForm]
+WLJSDisplayForm[g_GraphicsBox | g_Graphics3DBox | g_RasterBox] := Module[{held},
+  held = Quiet[Check[ToExpression[Unevaluated[g], StandardForm, HoldComplete], $Failed]];
+  Replace[held, {
+    HoldComplete[expr_] :> ToString[Unevaluated[expr], InputForm],
+    _ :> "(*Unsupported graphics box*)"
+  }]
+]
 
 
 WLJSDisplayForm[g_] := "(*Unsupported Box*)";
@@ -177,7 +194,7 @@ WLJSDisplayForm["\[IndentingNewLine]"] := "\n";
 
 WLJSDisplayForm["\[Rule]"] := " -> ";
 
-WLJSDisplayForm[FractionBox[s_,n_]] := With[{
+WLJSDisplayForm[FractionBox[s_,n_, ___]] := With[{
   a = WLJSDisplayForm[s],
   b = WLJSDisplayForm[n]
 },
@@ -186,7 +203,7 @@ WLJSDisplayForm[FractionBox[s_,n_]] := With[{
   ]
 ]
 
-WLJSDisplayForm[SqrtBox[b_]] := With[{
+WLJSDisplayForm[SqrtBox[b_, ___]] := With[{
   a = WLJSDisplayForm[b]
 },
   With[{r = RowBox[{"(*SqB[*)Sqrt[", a, "](*]SqB*)"}]},
@@ -242,7 +259,9 @@ WLJSDisplayForm[SubscriptBox[s_, n_, _]] := With[{
 
 
 WLJSDisplayForm[d_DynamicModuleBox] := "";
-WLJSDisplayForm[t_TooltipBox] := "";
+WLJSDisplayForm[TooltipBox[display_, ___]] := WLJSDisplayForm[display];
+WLJSDisplayForm[TemplateBox[<|"color" -> color_RGBColor, ___|>, "RGBColorSwatchTemplate", ___]] :=
+  ToString[Unevaluated[color], InputForm];
 WLJSDisplayForm[StyleBox[a_, ___]] := WLJSDisplayForm[a]
 WLJSDisplayForm[TagBox[a_, ___]] := WLJSDisplayForm[a]
 

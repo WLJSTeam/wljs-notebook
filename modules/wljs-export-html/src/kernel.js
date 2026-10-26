@@ -5,27 +5,32 @@ core['CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`Sniffer'] = async (a
 
 core['CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`Sniffer'].Inject = async (args, env) => {
     console.warn('Injecting a sniffer');
-    server.kernel.io.__headSymbol = server.kernel.io.headSymbol;
-    server.kernel.io.headSymbol = 'Internal`Kernel`CaptureEventFunction';
+    if (server.kernel.io.__snifferInjected) return true;
+
+    server.kernel.io.__fid = server.kernel.io.fid;
+    server.kernel.io.__pid = server.kernel.io.pid;
+    server.kernel.io.fid = 69;
+    server.kernel.io.pid = 70;
+    server.kernel.io.__snifferInjected = true;
     return true;
 }
 
 core['CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`Sniffer'].Eject = async (args, env) => {
     console.warn('Eject a sniffer');
-    server.kernel.io.headSymbol = server.kernel.io.__headSymbol;
+    if (!server.kernel.io.__snifferInjected) return true;
+
+    server.kernel.io.fid = server.kernel.io.__fid;
+    server.kernel.io.pid = server.kernel.io.__pid;
+    delete server.kernel.io.__fid;
+    delete server.kernel.io.__pid;
+    delete server.kernel.io.__snifferInjected;
     return true;
 }
 
 core['CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`Sniffer'].Retrack = async (args, env) => {
     console.warn('Retracking symbols...');
     console.log(Object.keys(server.kernel.trackedSymbols));
-    Object.keys(server.kernel.trackedSymbols).forEach((sym) => server.kernel.addTracker(sym));
-    return true;
-}
-
-core['CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`Sniffer'].Confirm = async (args, env) => {
-    const secret = await interpretate(args[0], env);
-    await server.kernel.io.fetch(secret);
+    await Promise.all(Object.keys(server.kernel.trackedSymbols).map((sym) => server.kernel.addTracker(sym)));
     return true;
 }
 

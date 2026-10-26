@@ -10,7 +10,8 @@ Head        = ImportComponent["Components/Head.wlx"];
 
 Alert           = ImportComponent["Components/Alert.wlx"];
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS =  extensionsJS;
 
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
@@ -65,7 +66,7 @@ generateEntry[Name_String, UId_, LocalControls_] := With[{
                 core.EditorView([['JSObject', '???'], ['Rule', "'ReadOnly'", true]], env);
 
                 breakCheckbox.addEventListener('change', () => {
-                    server.emitt('<LocalControls/>', '"'+breakCheckbox.checked+'"');
+                    server.io.fire('<LocalControls/>', String(breakCheckbox.checked));
                 });
 
                 let synced = false;
@@ -126,7 +127,7 @@ destroy[state_, ___] := With[{
         state["SymbolsContainer"]
     }
 },
-    Echo["Debugger >> Destroy"];
+    Echo["[wljs-debugger/GUI] Destroying the debugger window."];
 
     utilsRemoveBreak[kernel, "Assert"];
     utilsRemoveBreak[kernel, {"Symbol", #}] &/@ (Keys @ state["Symbols"]);
@@ -181,19 +182,19 @@ setThingsUp[state_] := With[{
     ];
 
     EventHandler[state["ClonedOrigin"], {"Closed"->Function[Null,
-        Echo["Debugger >> Origin was closed!"];
+        Echo["[wljs-debugger/GUI] Closing the debugger because its origin window was closed."];
         destroy[state];
     ]}];
 
     EventHandler[state["ClonedClient"], {"Closed"->Function[Null,
-        Echo["Debugger >> Client window was closed!"];
+        Echo["[wljs-debugger/GUI] The debugger client window was closed."];
         destroy[state];
     ]}];    
 
     (*/* monitor WSLink */*)
     EventHandler[state["ClonedMessanger"], {        
         "WebSocket:Kernel:Lost" -> Function[Null,
-            Echo["Debugger >> WSLink lost"];
+            Echo["[wljs-debugger/GUI] Lost the debugger WebSocket link."];
             destroy[state];
         ],
         
@@ -251,7 +252,7 @@ setThingsUp[state_] := With[{
     utilsTransition[notebook["Evaluator"]["Kernel"], "Logger"->(state["Info", #]&)];
 
     state["Warning", messsage_] := (
-        Block[{Global`$Client = origin(*`*)}, EventFire[messanger, "Warning", messsage] ];
+        Block[{$CurrentWebSocket = origin(*`*)}, EventFire[messanger, "Warning", messsage] ];
         EventFire[logWindow, "Warning", <|"Client"->cli, "Message"->messsage|>];
     );
 
@@ -273,7 +274,7 @@ setThingsUp[state_] := With[{
 
                 Map[Function[cell,
                     cell["State"] = "Idle";
-                    Block[{Global`$Client = origin(*`*)}, EventFire[cell, "State", "Idle"]];
+                    Block[{$CurrentWebSocket = origin(*`*)}, EventFire[cell, "State", "Idle"]];
                 ], Select[notebook["Cells"], (#["State"] =!= "Idle") &]];
 
             ], Function[messsage,
@@ -370,7 +371,7 @@ App[request_] := Module[{
     },
 
         EventHandler[secret, {
-            "Load" -> Function[Null, With[{cli = Global`$Client(*`*)},
+            "Load" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
 
                 state["ValidQ"] = True;
                 state["Client"] = cli;
@@ -387,7 +388,8 @@ App[request_] := Module[{
         <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}"> 
             <Head AccentColor={accentColor} Title={"Debugger"} Settings={settings}>
                 <meta charset="utf-8"/>
-                <WLJSHeader List={ExtensionsJS}/>  
+                <WLJSInterpreterScript/>
+                <WebUIHeaderJS List={ExtensionsJS}/>  
                 <WLJSTransportScript TwoKernels={False} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>   
                 <ExtensionsStyles/>  
                 <WebUIInitializationScript/>
@@ -577,7 +579,7 @@ App[request_] := Module[{
                     		state.innerText = text;
 
                             if (prev) {
-                                prev.classList.remove(...('bg-gray-100 dark:bg-gray-700 dark:text-white'.split(' ')));
+                                prev.classList.remove('bg-gray-100', 'dark:bg-gray-700');
                                 prev.firstChild.classList.remove('text-teal-500');
                                 prev = false;
                             } 
@@ -593,7 +595,7 @@ App[request_] := Module[{
 
                             switch(text) {
                                 case 'Inspect':
-                                    inspect.classList.add(...('bg-gray-100 dark:bg-gray-700 dark:text-white'.split(' ')));
+                                    inspect.classList.add('bg-gray-100', 'dark:bg-gray-700');
                                     inspect.firstChild.classList.add('text-teal-500');
                                     prev = inspect;
                                 break;

@@ -68,7 +68,7 @@ FormattingToolbar`Button[Child_, OptionsPattern[]] := With[{
     <script type="module">
       const uid = '<UId/>';
       document.getElementById(uid).addEventListener('click', () => {
-        server.kernel.emitt('<Event/>', 'True', '<Pattern/>');
+        server.kernel.io.fire('<Event/>', true, '<Pattern/>');
       })
     </script>
   }
@@ -136,7 +136,7 @@ FormattingToolbar`ColorSelector[Child_, OptionsPattern[]] := With[{
         const el = list[i];
         const color = el.style.background;
         el.addEventListener('click', () => {
-          server.kernel.emitt('<Event/>', '"' + RGBToHex(color) + '"', '<Pattern/>');
+          server.kernel.io.fire('<Event/>', String(RGBToHex(color)), '<Pattern/>');
           close();
         })
       }

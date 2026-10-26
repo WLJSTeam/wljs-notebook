@@ -34,8 +34,8 @@ checkReleaseNotes[assoc_] := Module[{client = assoc["Client"], env = AppExtensio
             {}
           ]
         },
-        Echo[StringJoin["Checking release notes for ", version] ];
-        Echo[books];
+        Echo[StringJoin["[wljs-demos-archive/Frontend] Checking release notes for version ", version]];
+        Echo[books, "[wljs-demos-archive/Frontend] notebook library: "];
         If[Length[books] > 0,
           If[!Lookup[assoc, "IFrameQ", False],
             WebUILocation[StringJoin["/", URLEncode[books[[1]] ] ], client, "Target"->_]
@@ -52,43 +52,43 @@ checkReleaseNotes[assoc_] := Module[{client = assoc["Client"], env = AppExtensio
 root = $InputFileName // DirectoryName;
 
 syncDemoFolder := With[{},
-  Echo["Syncing demo folders..."];
+  Echo["[wljs-demos-archive/Frontend] Syncing demo folders."];
 
   If[Length[FileNames["*", AppExtensions`DemosDir] ] > 4,
-    Echo["Not empty, backing up to \"Demos old\""];
+    Echo["[wljs-demos-archive/Frontend] Demo directory is not empty; backing it up to \"Demos old\"."];
     DeleteDirectory[FileNameJoin @ {ParentDirectory[AppExtensions`DemosDir], "Demos old"}, DeleteContents->True];
-    CopyDirectory[AppExtensions`DemosDir, FileNameJoin @ {ParentDirectory[AppExtensions`DemosDir], "Demos old"}] // Echo;
-    Echo["Removing an old one"];
+    Echo[CopyDirectory[AppExtensions`DemosDir, FileNameJoin @ {ParentDirectory[AppExtensions`DemosDir], "Demos old"}], "[wljs-demos-archive/Frontend] Demo backup path: "];
+    Echo["[wljs-demos-archive/Frontend] Removing an old one"];
     DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
-    Echo["Done!"];
+    Echo["[wljs-demos-archive/Frontend] Processing completed."];
   ];
 
-  Echo["Purge the original Demos dir"];
+  Echo["[wljs-demos-archive/Frontend] Purge the original Demos dir"];
   If[FileExistsQ[AppExtensions`DemosDir],
-    Echo["File IO is blocked for some reason... Waiting"];
+    Echo["[wljs-demos-archive/Frontend] File I/O is blocked; waiting before retrying."];
     Pause[10];
     DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
     If[FileExistsQ[AppExtensions`DemosDir] ,
-      Echo["File IO is blocked for some reason... it could be OneDrive or something"];
+      Echo["[wljs-demos-archive/Frontend] File I/O is blocked; the file may be locked by a synchronization service."];
       Pause[10];
       DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
       If[FileExistsQ[AppExtensions`DemosDir] ,
-        Echo["File IO is blocked for some reason... it could be OneDrive or something. Last try"];
+        Echo["[wljs-demos-archive/Frontend] File I/O is still blocked; making the final retry."];
         Pause[10];
         DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
       ];
     ];
   ];
 
-  Echo["Copying a new one to:"];
-  Echo[AppExtensions`DemosDir];
-  Echo["From: "]; Echo[FileNameJoin[{root, "Demos"}] ];
+  Echo["[wljs-demos-archive/Frontend] Copying a new one to:"];
+  Echo[AppExtensions`DemosDir, "[wljs-demos-archive/Frontend] app extensions demos dir: "];
+  Echo[FileNameJoin[{root, "Demos"}], "[wljs-demos-archive/Frontend] Source demo directory: "];
   If[FailureQ[CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir] ],
-    Echo["File IO is blocked for some reason... it could be OneDrive or something"];
+    Echo["[wljs-demos-archive/Frontend] File I/O is blocked; the file may be locked by a synchronization service."];
     Pause[10];
-    Echo["trying again (1 trial)"];
+    Echo["[wljs-demos-archive/Frontend] trying again (1 trial)"];
     DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
-    CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir] // Echo;
+    Echo[CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir], "[wljs-demos-archive/Frontend] Synchronized demo directory: "];
   ]; 
 ];
 

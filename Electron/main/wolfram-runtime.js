@@ -9,6 +9,7 @@ function createWolframRuntime({
     server,
     session,
     shell,
+    showProcessLogs,
     spawn,
     uuid4,
     windows,
@@ -146,7 +147,8 @@ Wolfram Engine is proprietary and distributed by Wolfram Research.
         }
 
 
-        program.on('close', (code) => {
+        program.on('close', (code, signal) => {
+            const exitedWhileRunning = server.running;
             console.log('on::close');
 
             if (_nohup) {
@@ -165,6 +167,16 @@ Wolfram Engine is proprietary and distributed by Wolfram Research.
                 setTimeout(() => {
                     check_wl(undefined, cbk, window);
                 }, 3000);
+            }
+
+            if (exitedWhileRunning) {
+                console.error(
+                    `Wolfram process exited unexpectedly (code: ${code}, signal: ${signal || 'none'})`
+                );
+                setImmediate(showProcessLogs);
+                dialog.showErrorBox('Wolfram Kernel Crashed',
+                'The Wolfram Kernel has crashed. Please report this issue on GitHub and include the log from the window that has opened in the background.'
+                );
             }
 
         });

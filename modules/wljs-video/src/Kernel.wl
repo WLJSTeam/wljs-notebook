@@ -5,7 +5,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Video`", {
     "CoffeeLiqueur`Extensions`InputsOutputs`", 
     "CoffeeLiqueur`Misc`Language`", 
     "CoffeeLiqueur`Misc`Async`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`CUSockets`EventsExtension`",
     "CoffeeLiqueur`CUSockets`",
     "CoffeeLiqueur`Extensions`EditorView`",
@@ -235,7 +235,7 @@ With[{
 
                     playing = True;   
 
-                    With[{socket = EventClone[Global`$Client]},
+                    With[{socket = EventClone[$CurrentWebSocket]},
                         EventHandler[socket, {
                             "Closed" -> Function[Null,
                                 EventRemove[socket];

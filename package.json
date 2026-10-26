@@ -1,6 +1,6 @@
 {
   "name": "wljs-notebook",
-  "version": "3.1.4",
+  "version": "3.2.0",
   "recommended-client-version": "2.6.3",
   "description": "A computational notebook IDE for Wolfram Language",
   "desktopName": "wljs-notebook.desktop",
@@ -11,21 +11,19 @@
   "main": "Electron/main.js",
   "scripts": {
     "start": "wolframscript -f Scripts/run.wls",
-    "build-terminal": "rollup --config Electron/rollup.config.mjs",
-    "build-terminal-preload": "rollup --config Electron/rollup.config_preload.mjs",
     "el": "electron .",
     "test": "npx playwright test",
+    "test-failed": "npx playwright test --last-failed",
     "test:electron-main": "node --test Electron/main.test.js",
     "test-update": "npx playwright test --update-snapshots",
-    "pre-dist": "wolframscript -f Scripts/bundle.wls",
+    "test-update-failed": "npx playwright test --last-failed --update-snapshots",
     "dist-mac": "electron-builder --mac --arm64 --publish always",
     "dist-mac86": "electron-builder --mac --x64 --publish always",
     "dist-win86": "electron-builder --win --x64 --publish always",
     "dist-linux86": "electron-builder --linux --x64 --config.productName=wljs-notebook --publish always",
     "dist-linux-rpm86": "electron-builder --linux rpm --x64 --config.productName=wljs-notebook --publish always",
     "dist-linux": "electron-builder --linux --arm64 --config.productName=wljs-notebook --publish always",
-    "remove-ds": "find . -name .DS_Store -print0 | xargs -0 git rm --ignore-unmatch",
-    "build-css": "npx tailwindcss build Assets/Styles/Tailwind.css -o Assets/Styles/Optimized.css"
+    "remove-ds": "find . -name .DS_Store -print0 | xargs -0 git rm --ignore-unmatch"
   },
   "build": {
     "publish": [
@@ -48,6 +46,7 @@
     "mac": {
       "icon": "./Electron/build/icon.icns",
       "artifactName": "wljs-notebook-${version}-${arch}-macos.${ext}",
+      "sign": "./Electron/build/mac-sign.js",
       "fileAssociations": [
         {
           "ext": "wln",
@@ -65,7 +64,37 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "extendInfo": {
-        "NSMicrophoneUsageDescription": "Please give us access to your microphone"
+        "NSMicrophoneUsageDescription": "Please give us access to your microphone",
+        "UTExportedTypeDeclarations": [
+          {
+            "UTTypeIdentifier": "com.coffeeliqueur.wljs.notebook",
+            "UTTypeDescription": "WLJS Notebook",
+            "UTTypeConformsTo": [
+              "public.content",
+              "public.data"
+            ],
+            "UTTypeTagSpecification": {
+              "public.filename-extension": [
+                "wln"
+              ],
+              "public.mime-type": "application/x-wljs-notebook"
+            }
+          },
+          {
+            "UTTypeIdentifier": "com.coffeeliqueur.wljs.widget",
+            "UTTypeDescription": "WLJS Widget",
+            "UTTypeConformsTo": [
+              "public.content",
+              "public.data"
+            ],
+            "UTTypeTagSpecification": {
+              "public.filename-extension": [
+                "wlw"
+              ],
+              "public.mime-type": "application/x-wljs-widget"
+            }
+          }
+        ]
       },
       "entitlements": "./Electron/build/entitlements.mac.plist",
       "entitlementsInherit": "./Electron/build/entitlements.mac.plist",
@@ -124,7 +153,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "include": "./Electron/build/installer.nsh"
     },
     "win": {
       "target": "NSIS",
@@ -134,12 +164,14 @@
         {
           "ext": "wln",
           "name": "WLJS Notebook",
+          "description": "WLJS Notebook",
           "role": "Editor",
           "icon": "./Electron/build/file/File.ico"
         },
         {
           "ext": "wlw",
           "name": "WLJS Widget",
+          "description": "WLJS Widget",
           "role": "Viewer",
           "icon": "./Electron/build/file/File-2.ico"
         }
@@ -164,6 +196,7 @@
       "./Electron/log.html",
       "./Electron/coffee.js",
       "./Electron/sudo.js",
+      "./Electron/Template.wln",
       "./Electron/device.html",
       "./Electron/log_padded.html",
       "./Electron/tailwind.css",
@@ -185,6 +218,7 @@
       "./package.json",
       "./PacletInfo.wl",
       "./LICENSE",
+      "./ACKNOWLEDGMENTS.md",
       "./licenses/**"
     ],
     "asar": false
@@ -200,6 +234,7 @@
   "homepage": "https://github.com/WLJSTeam/wljs-notebook#readme",
   "devDependencies": {
     "@electron/notarize": "^2.3.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "@playwright/test": "^1.51.0",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@types/node": "^22.13.10",

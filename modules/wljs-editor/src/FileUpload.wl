@@ -1,7 +1,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`FileUploader`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Notebook`Transactions`",
     "CoffeeLiqueur`Extensions`EditorViewMinimal`"
 }]
@@ -17,9 +17,9 @@ Begin["`Private`"]
 
 
 askUserToChoose[cellId_, list_] := With[{notebook = cell`HashMap[cellId]["Notebook"], p = Promise[]},
-    Echo["File uploader >> upload choise"];
-    Echo[cellId];
-    Echo[list];
+    Echo["[wljs-editor/FileUpload] File uploader received a file selection."];
+    Echo[cellId, "[wljs-editor/FileUpload] target cell identifier: "];
+    Echo[list, "[wljs-editor/FileUpload] uploaded files: "];
     EventFire[notebook["ModalsChannel"], "SelectBox", <|"Promise"->p, "title"->"File options", "message"->"Please, choose one above", "list"->list|>];
     p
 ];
@@ -123,7 +123,7 @@ pasteCells[cli_, controls_, data_, modals_, log_] := Module[{current}, With[{
 chunks = <||>;
 
 processRequest[cli_, controls_, data_, __] := With[{channel = data["Channel"]},
-    Echo["Drop request >> "];
+    Echo["[wljs-editor/FileUpload] Received file-drop request:"];
     Module[{count = data["Length"], files = <||>, finished},
         EventHandler[channel, {
             "Chunk" -> Function[payload,
@@ -132,7 +132,7 @@ processRequest[cli_, controls_, data_, __] := With[{channel = data["Channel"]},
                     If[!KeyExistsQ[chunks, name], chunks[name] = <||>];
 
                     chunks[name] = Join[chunks[name], <|payload["Chunk"] -> payload["Data"] |> ];
-                    Echo[StringTemplate[  "Received chunk: `` out of ``"] @@ {payload["Chunk"], payload["Chunks"]} ];
+                    Echo[StringJoin["[wljs-editor/FileUpload] ", StringTemplate[  "Received chunk: `` out of ``"] @@ {payload["Chunk"], payload["Chunks"]}]];
 
                     If[Length[Keys[chunks[name] ] ] === payload["Chunks"],
                         With[{merged = StringJoin @@ (KeySort[chunks[name] ] // Values)},
@@ -147,7 +147,7 @@ processRequest[cli_, controls_, data_, __] := With[{channel = data["Channel"]},
                             ]
                         ]
                     ,
-                        Echo[StringTemplate[  "Waiting for chunks: `` out of ``"] @@ {Length[Keys[chunks[name] ] ], payload["Chunks"]} ];
+                        Echo[StringJoin["[wljs-editor/FileUpload] ", StringTemplate[  "Waiting for chunks: `` out of ``"] @@ {Length[Keys[chunks[name] ] ], payload["Chunks"]}]];
                     ];   
              ];         
             
@@ -173,13 +173,13 @@ processRequest[cli_, controls_, data_, __] := With[{channel = data["Channel"]},
 
         finished := With[{path = DirectoryName[ data["Notebook"]["Path"] ]},
             If[!DirectoryQ[FileNameJoin[{path, "attachments"}] ], CreateDirectory[FileNameJoin[{path, "attachments"}] ] ];
-            Echo["Uploading files..."];
+            Echo["[wljs-editor/FileUpload] Uploading files."];
             (
                 With[{filename = FileNameJoin[{path, "attachments", # }]},
                     BinaryWrite[filename, files[#] ] // Close;
                 ]
             ) &/@ Keys[files];
-            Echo["Done!"];
+            Echo["[wljs-editor/FileUpload] Processing completed."];
 
             pasteFileNames[data["CellType"], cli, files];
             
@@ -225,13 +225,13 @@ insertFilePaths[cli_, controls_, data_, modals_, messager_] := Module[{files = U
 (* drop and paste events *)
 controlsListener[OptionsPattern[]] := With[{messager = OptionValue["Messager"], secret = OptionValue["Event"], controls = OptionValue["Controls"], appEvents = OptionValue["AppEvent"], modals = OptionValue["Modals"]},
     EventHandler[EventClone[controls], {
-        "CM:DropEvent" -> Function[data, processRequest[Global`$Client, controls, data, modals, messager] ],
-        "CM:PasteEvent" -> Function[data, processRequest[Global`$Client, controls, data, modals, messager] ],
-        "CM:PasteCellEvent" -> Function[data, pasteCells[Global`$Client, controls, data, modals, messager] ],
-        "CM:PasteCrappy1Event" -> Function[data, pasteCrappyContent1[Global`$Client, controls, data, modals, messager] ],
-        "CM:PasteCrappy2Event" -> Function[data, pasteCrappyContent2[Global`$Client, controls, data, modals, messager] ],
-        "CM:DropFilePaths" -> Function[data, pasteFilePaths[Global`$Client, controls, data, modals, messager] ],
-        "CM:InsertFilePaths" -> Function[data, insertFilePaths[Global`$Client, controls, data, modals, messager] ]
+        "CM:DropEvent" -> Function[data, processRequest[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:PasteEvent" -> Function[data, processRequest[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:PasteCellEvent" -> Function[data, pasteCells[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:PasteCrappy1Event" -> Function[data, pasteCrappyContent1[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:PasteCrappy2Event" -> Function[data, pasteCrappyContent2[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:DropFilePaths" -> Function[data, pasteFilePaths[$CurrentWebSocket, controls, data, modals, messager] ],
+        "CM:InsertFilePaths" -> Function[data, insertFilePaths[$CurrentWebSocket, controls, data, modals, messager] ]
     }];
 
     ""

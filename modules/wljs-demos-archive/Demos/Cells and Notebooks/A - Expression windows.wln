@@ -1,92 +1,144 @@
-<|"Notebook" -> <|"Controller" -> "7a7fe762-e262-425b-877b-99241306b5f3", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$734], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "0e1f42ae-8350-44af-992b-a3631d5bfd2f", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - Expression windows.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <||>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[
-      1, "Expression windows manipulation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$718]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Creating windows", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$718]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Create window from another window", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$733]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Expression windows manipulation\nWLJS \
-Notebook allows to create separate windows with expressions inside.\n\n### \
-Creating windows\n\nUse `CreateWindow` to open content in a new expression \
-window:", "Display" -> "codemirror", 
-    "Hash" -> "4d71f748-2d03-4181-8000-d57e8e925437", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "# Expression windows manipulation\nWLJS Notebook allows to \
-create separate windows with expressions inside.\n\n### Creating \
-windows\n\nUse `CreateWindow` to open content in a new expression window:", 
-    "Display" -> "markdown", "Hash" -> 
-     "2352033e-bd3b-46b4-8495-a88f514334d8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "win = CreateWindow[Plot[Sin[x], {x, 0, 2Pi}, \
-ImageSize->{300,300}], \n  WindowSize -> {400, 400}, \n  WindowTitle -> \"My \
-Plot\"\n];", "Display" -> "codemirror", 
-    "Hash" -> "8978cde0-df29-4263-ac82-665069051ac2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> ".md\nTo close it", "Display" -> "codemirror", 
-    "Hash" -> "f12573bf-4640-4734-8f54-d3611f739d98", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "To close it", "Display" -> "markdown", 
-    "Hash" -> "ece4a30c-ef0b-490a-8ce7-f2c0187b3c2f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "NotebookClose[win];", "Display" -> "codemirror", 
-    "Hash" -> "b70400c3-b2de-47c7-88f7-8d4c908bd6e2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> ".md\nCreate a window with HTML content:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "1694aa08-b097-4ab2-a69b-f878df837fc9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "Create a window with HTML content:", "Display" -> "markdown", 
-    "Hash" -> "290715e6-64d0-4604-bdbe-605bc22d4687", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "CreateWindow[Cell[\"<h2 style=\\\"color:red\\\">Hello</h2>\", \
-\"Output\", \"HTML\"]];", "Display" -> "codemirror", 
-    "Hash" -> "b8cd509b-21c3-4270-bb9a-05e3bb3d16e9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> ".md\n### Create window from another window\nCreate a window \
-with a button, that creates another window:", "Display" -> "codemirror", 
-    "Hash" -> "f935a284-d632-4cbf-92f3-014581cfc7c0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "### Create window from another window\nCreate a window with a \
-button, that creates another window:", "Display" -> "markdown", 
-    "Hash" -> "da23ae40-a711-44f9-abb6-86159d370474", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>, 
-   <|"Data" -> "CreateWindow[Button[\"Open\", CreateWindow[Plot3D[x y, \
-{x,-1,1}, {y,-1,1}]]]]", "Display" -> "codemirror", 
-    "Hash" -> "b0e7e995-5dad-4669-8697-3cad3ff77d40", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "ea2748ae-1c70-42c2-8272-fe9316a05da1"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Expression windows manipulation
+WLJS Notebook allows to create separate windows with expressions inside.
+
+### Creating windows
+
+Use `CreateWindow` to open content in a new expression window:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Expression windows manipulation
+WLJS Notebook allows to create separate windows with expressions inside.
+
+### Creating windows
+
+Use `CreateWindow` to open content in a new expression window:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+win = CreateWindow[Plot[Sin[x], {x, 0, 2Pi}, ImageSize->{300,300}], 
+  WindowSize -> {400, 400}, 
+  WindowTitle -> "My Plot"
+];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To close it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To close it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookClose[win];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Create a window with HTML content:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Create a window with HTML content:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CreateWindow[Cell["<h2 style=\"color:red\">Hello</h2>", "Output", "HTML"]];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Create window from another window
+Create a window with a button, that creates another window:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Create window from another window
+Create a window with a button, that creates another window:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CreateWindow[Button["Open", CreateWindow[Plot3D[x y, {x,-1,1}, {y,-1,1}]]]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+RemoteCellObj["52fa3994-0358-43a0-86d2-ef31b7c78e32"]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

@@ -15,7 +15,7 @@
     "styles": "src/styles.css",
     "priority": 500,
     "category": "Cell types",
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

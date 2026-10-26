@@ -14,7 +14,7 @@ Component[OptionsPattern[]] := With[{Data = OptionValue["Data"], Size = OptionVa
       </div>    
       <script type="module">
         document.getElementById('<Ref/>').addEventListener('click', () => {
-          server.kernel.emitt('<Ref/>', 'True');
+          server.kernel.io.fire('<Ref/>', true);
           document.getElementById('<Ref/>').remove();
         })
       </script>  

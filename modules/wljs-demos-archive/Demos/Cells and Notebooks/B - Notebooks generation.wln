@@ -1,86 +1,140 @@
-<|"Notebook" -> <|"Controller" -> "0c7aa7e1-acea-45e1-88b9-6f5cb98a0a80", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$539], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "c25cfb1d-6ed0-43ce-86db-1c83926c1e0f", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/B - Notebooks generation.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Programmatic notebook generation", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$527]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Different cell types", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$538]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Programmatic notebook generation\n\nCreate \
-a notebook with specific cell styles", "Display" -> "codemirror", 
-    "Hash" -> "16e90443-9964-4937-82e7-b5215fdd7177", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "## Programmatic notebook generation\n\nCreate a notebook with \
-specific cell styles", "Display" -> "markdown", 
-    "Hash" -> "2d534876-0274-4498-aeb1-0d5a36cbc741", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "nb = CreateDocument[{\n  TextCell[\"My Section\", \
-\"Section\"], \n  TextCell[\"Basic plot\"],\n  ExpressionCell[Defer[Plot[x, \
-{x,0,1}]], \"Input\"],\n  ExpressionCell[Plot[x, {x,0,1}], \"Output\"]\n}, \
-Visible->False];", "Display" -> "codemirror", 
-    "Hash" -> "c4f305f3-6764-4019-ba5b-bf5169db95eb", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> ".md\nOpen it", "Display" -> "codemirror", 
-    "Hash" -> "6b9022b0-6d72-4128-a408-5c84269a9e06", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "Open it", "Display" -> "markdown", 
-    "Hash" -> "05f44a2d-766c-4749-aaac-0bf9c9c51539", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "NotebookOpen[nb];", "Display" -> "codemirror", 
-    "Hash" -> "f42757df-0902-4493-88e3-ea3f1ce9961a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> ".md\nSave it", "Display" -> "codemirror", 
-    "Hash" -> "9a2d3529-25cd-4477-855e-484c10a203f5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "Save it", "Display" -> "markdown", 
-    "Hash" -> "787449c1-baa1-46c4-9c1f-5cec6e0d7545", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "NotebookSave[nb, \"MyNotebook.wln\"];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b0bfd38f-2cf4-4439-ab3d-dd4a0079fdb7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> ".md\n### Different cell types\nFor example, let's create a \
-document with HTML output cell:", "Display" -> "codemirror", 
-    "Hash" -> "fa7d64ed-0b91-46ca-8b8e-abcd13550478", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "### Different cell types\nFor example, let's create a \
-document with HTML output cell:", "Display" -> "markdown", 
-    "Hash" -> "d7c2b609-e51e-4e7a-ad60-9137b2ae6d43", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>, 
-   <|"Data" -> "CreateDocument[{\n    Cell[\"<h2>Hello World</h2>\", \
-\"Input\", \"html\"],\n    Cell[\"<h2>Hello World</h2>\", \"Output\", \
-\"html\"]\n}];", "Display" -> "codemirror", 
-    "Hash" -> "15f54177-a0f9-4bfb-91e1-7ec64bacef63", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e7e4e18a-ee70-4b9f-9db1-8ef9b896fa22"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Programmatic notebook generation
+
+Create a notebook with specific cell styles
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Programmatic notebook generation
+
+Create a notebook with specific cell styles
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+nb = CreateDocument[{
+  TextCell["My Section", "Section"], 
+  TextCell["Basic plot"],
+  ExpressionCell[Defer[Plot[x, {x,0,1}]], "Input"],
+  ExpressionCell[Plot[x, {x,0,1}], "Output"]
+}, Visible->False];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Open it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Open it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookOpen[nb];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Save it
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Save it
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+NotebookSave[nb, "MyNotebook.wln"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Different cell types
+For example, let's create a document with HTML output cell:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Different cell types
+For example, let's create a document with HTML output cell:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CreateDocument[{
+    Cell["<h2>Hello World</h2>", "Input", "html"],
+    Cell["<h2>Hello World</h2>", "Output", "html"]
+}];
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

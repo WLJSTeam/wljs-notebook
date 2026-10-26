@@ -1,85 +1,137 @@
-<|"Notebook" -> <|"Controller" -> "2672a90c-bc51-44d0-8a59-15b0b1eedec2", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$639], "FocusedCellSelection" -> 
-    {1427, 1426}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "7be3e064-6cae-45ef-9da3-d6d0b4166ae4", 
-   "Objects" -> <||>, "Path" -> "/Users/kirill/Github/wolfram-js-frontend/mod\
-ules/wljs-demos-archive/Demos/Interactive evaluation/C - Raster animated.wln"\
-, "PublicFields" -> {"Properties"}, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Animated Density Plot", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$638]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Animated Density Plot\nHere is our basic \
-implementation of a raster density plot function with an extra parameter used \
-for animation:", "Display" -> "codemirror", 
-    "Hash" -> "7d1d5664-370e-437a-9829-e046343447ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> "# Animated Density Plot\nHere is our basic implementation of \
-a raster density plot function with an extra parameter used for animation:", 
-    "Display" -> "markdown", "Hash" -> 
-     "eb5ecb87-18bd-47e4-9abe-aa6b8ddbe462", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> "rasterDensityPlotAnim[f_, {xs_, xmin_, xmax_}, {ys_, ymin_, \
-ymax_}, {ts_, tmin_, tmax_}, OptionsPattern[]] := \n With[{\n   time = \
-Unique[], buffer = Unique[], \n   cf = \
-With[{c=ColorData[OptionValue[ColorFunction]]}, (List@@c[#])&], \n   pts = \
-OptionValue[PlotPoints]//N,\n   dt = (tmax-tmin)/OptionValue[PlotPoints]//N\n \
- },\n  {\n   (*BB[*)(* call to resample our function on a grid \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n   raw := Table[\n    f /. {xs -> j, ys -> i, ts -> time} // \
-N, {i, ymin, \n     ymax, (ymax - ymin)/(pts - 1)}, {j, xmin, \n     xmax, \
-(xmax - xmin)/(pts - 1)}]\n  },\n  \n  time = tmin;\n\n  (*BB[*)(* rescale to \
-[0,1] and colorize \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n  buffer = Map[cf, raw // Rescale, {2}];\n  \n  Graphics[{\n  \
-  Raster[buffer//Offload, {{xmin, xmax}, {ymin, ymax}}],\n\n    (*BB[*)(* \
-animate infinitely \
-*)(*,*)(*\"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEM\
-Uqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJ\
-EU=\"*)(*]BB*)\n    EventHandler[AnimationFrameListener[buffer//Offload], \
-Function[Null,\n      buffer = Map[cf, raw // Rescale, {2}];\n      time = \
-If[time >= tmax, tmin, time + dt];\n    ]]\n  }, \
-Frame->True]\n]\n\nOptions[rasterDensityPlotAnim] = \
-{ColorFunction->\"AvocadoColors\", PlotPoints->100};", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4b7d308b-0be4-4c0a-a964-336799c4d7a7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> ".md\nLet's try it on this example function:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "0abf3216-01ac-47d8-8f39-ffe303dc3d9d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> "Let's try it on this example function:", 
-    "Display" -> "markdown", "Hash" -> 
-     "5691199f-d04f-4538-aa48-0d65686d24a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> "rasterDensityPlotAnim[x Sin[y+t], {x, -5, 5}, {y, 0, 10}, {t, \
-0, 2Pi}, PlotPoints->50]", "Display" -> "codemirror", 
-    "Hash" -> "3e7af638-1945-4e73-80ab-b19e1152f4d8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> ".md\n:::note\nThe data is not precalculated, but is generated \
-for each individual frame in real-time.\n:::", "Display" -> "codemirror", 
-    "Hash" -> "539f0a54-6501-4dac-af0b-73405503afb9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>, 
-   <|"Data" -> ":::note\nThe data is not precalculated, but is generated for \
-each individual frame in real-time.\n:::", "Display" -> "markdown", 
-    "Hash" -> "8132ce06-63de-411a-81fd-9f132de9b549", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e239ee5b-16c3-4450-84a5-9b1796ceac9c"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Animated Density Plot
+Here is our basic implementation of a raster density plot function with an extra parameter used for animation:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Animated Density Plot
+Here is our basic implementation of a raster density plot function with an extra parameter used for animation:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+rasterDensityPlotAnim[f_, {xs_, xmin_, xmax_}, {ys_, ymin_, ymax_}, {ts_, tmin_, tmax_}, OptionsPattern[]] := 
+ With[{
+   time = Unique[], buffer = Unique[], 
+   cf = With[{c=ColorData[OptionValue[ColorFunction]]}, (List@@c[#])&], 
+   pts = OptionValue[PlotPoints]//N,
+   dt = (tmax-tmin)/OptionValue[PlotPoints]//N
+  },
+  {
+   (*BB[*)(* call to resample our function on a grid *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+   raw := Table[
+    f /. {xs -> j, ys -> i, ts -> time} // N, {i, ymin, 
+     ymax, (ymax - ymin)/(pts - 1)}, {j, xmin, 
+     xmax, (xmax - xmin)/(pts - 1)}]
+  },
+  
+  time = tmin;
+
+  (*BB[*)(* rescale to [0,1] and colorize *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+  buffer = Map[cf, raw // Rescale, {2}];
+  
+  Graphics[{
+    Raster[buffer//Offload, {{xmin, xmax}, {ymin, ymax}}],
+
+    (*BB[*)(* animate infinitely *)(*,*)(*"1:eJxTTMoPSmNhYGAo5gcSAUX5ZZkpqSn+BSWZ+XnFaYwgCS4g4Zyfm5uaV+KUXxEMUqxsbm6exgSSBPGCSnNSg9mAjOCSosy8dLBYSFFpKpoKkDkeqYkpEFXBILO1sCgJSczMQVYCAOFrJEU="*)(*]BB*)
+    EventHandler[AnimationFrameListener[buffer//Offload], Function[Null,
+      buffer = Map[cf, raw // Rescale, {2}];
+      time = If[time >= tmax, tmin, time + dt];
+    ]]
+  }, Frame->True]
+]
+
+Options[rasterDensityPlotAnim] = {ColorFunction->"AvocadoColors", PlotPoints->100};
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Let's try it on this example function:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Let's try it on this example function:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+rasterDensityPlotAnim[x Sin[y+t], {x, -5, 5}, {y, 0, 10}, {t, 0, 2Pi}, PlotPoints->50]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+The data is not precalculated, but is generated for each individual frame in real-time.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+The data is not precalculated, but is generated for each individual frame in real-time.
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

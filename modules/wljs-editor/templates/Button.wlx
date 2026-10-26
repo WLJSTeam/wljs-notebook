@@ -1,6 +1,6 @@
 Component[OptionsPattern[]] := With[{
     Event = OptionValue["Event"], 
-    Topic = ToString[OptionValue["Topic"], InputForm], 
+    Topic = OptionValue["Topic"], 
     Uid = CreateUUID[], 
     Label = OptionValue["Label"],
     Class = OptionValue["Class"],
@@ -14,7 +14,7 @@ Component[OptionsPattern[]] := With[{
         <script type="module">
             const el = document.getElementById('<Uid/>');
             el.addEventListener('click', (event)=>{
-                server.kernel._emitt('<Event/>', 'True', '<Topic/>');     
+                server.io.fire('<Event/>', true, '<Topic/>');     
             });
         </script>
     }

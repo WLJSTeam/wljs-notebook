@@ -1,103 +1,135 @@
-<|"Notebook" -> <|"Controller" -> "c96286a7-ed61-440c-a912-3140d37cb200", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$478], "FocusedCellSelection" -> 
-    {171, 170}, "MessangerChannel" -> Messanger, 
-   "ModalsChannel" -> "a7269399-db61-4668-97d7-34e538ddb05a", 
-   "Objects" -> <|"b8db1760-acdf-4d94-8a67-cc23191866db" -> 
-      <|"Public" -> Hold[Image[Offload[board], "Bit", Magnification -> 3, 
-          Antialiasing -> False]]|>|>, "Path" -> "/Users/kirill/Github/wolfra\
-m-js-frontend/modules/wljs-demos-archive/Demos/Interactive evaluation/B - \
-Game Of Life.wln", "PublicFields" -> {"Properties"}, 
-   "Symbols" -> <|"board" -> 
-      CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSONCompressed["eJ\
-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\
-R9iSlnE"]|>, "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Game Of Life", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$473]]}|>, 
- "Cells" -> 
-  {<|"Data" -> ".md\n# Game Of Life\nA raster animation using `Image`", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9b30046b-9b72-40e2-bedf-9ddc1615fbb5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> "# Game Of Life\nA raster animation using `Image`", 
-    "Display" -> "markdown", "Hash" -> 
-     "ff9e7903-3930-4d3c-8d17-18d64d044d38", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> "board = CellularAutomaton[\"GameOfLife\", \
-RandomInteger[{0,1}, {100,100}], {{1}}] // First;\nImage[board // Offload, \
-\"Bit\", Magnification -> 3, Antialiasing->False]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8ec99a48-7bd7-45b8-96ff-cb28ef1f014f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> "(*VB[*)(FrontEndRef[\"b8db1760-acdf-4d94-8a67-cc23191866db\"]\
-)(*,*)(*\"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ1mkJ\
-BmamxnoJianpOmapFia6FokmpnrJicbGRtaGlqYmaUkAQCNvRXa\"*)(*]VB*)", 
-    "Display" -> "codemirror", "Hash" -> 
-     "3133c72a-4f7d-4e5f-8719-34525041db4f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> ".md\nSet a task to update", "Display" -> "codemirror", 
-    "Hash" -> "fbd92dfa-2d43-4a05-a0a6-72bc34aceca1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> "Set a task to update", "Display" -> "markdown", 
-    "Hash" -> "e7f595ff-8353-4e4b-8625-5630018d153c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> "task = Null;\n{\n  Button[\"Start\", If[task =!= Null, \
-Return[]];\n    task = SetInterval[\n      board = \
-CellularAutomaton[\"GameOfLife\", board, {{1}}] // First;\n    , 50]\n  ],\n  \
-Button[\"Stop\", If[task === Null, Return[]];\n    TaskRemove[task];\n    \
-task = Null;\n  ]\n} // Row ", "Display" -> "codemirror", 
-    "Hash" -> "f6c652c7-90fc-44f4-9901-9fdd1e6bed51", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> ".md\n:::note\nDo not forget to stop the animation before \
-closing a notebook\n:::", "Display" -> "codemirror", 
-    "Hash" -> "7a4c1ead-2c86-415c-81a0-96ccfcdb8c70", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>, 
-   <|"Data" -> ":::note\nDo not forget to stop the animation before closing a \
-notebook\n:::", "Display" -> "markdown", 
-    "Hash" -> "764b1b27-457d-4a4b-b013-8e9017595691", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "ea24fc17-b0b0-44fb-8164-12f35a8e9874"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Game Of Life
+A raster animation using `Image`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Game Of Life
+A raster animation using `Image`
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+board = CellularAutomaton["GameOfLife", RandomInteger[{0,1}, {100,100}], {{1}}] // First;
+Image[board // Offload, "Bit", Magnification -> 3, Antialiasing->False]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["b8db1760-acdf-4d94-8a67-cc23191866db"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKJ1mkJBmamxnoJianpOmapFia6FokmpnrJicbGRtaGlqYmaUkAQCNvRXa"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Set a task to update
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Set a task to update
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+Type: Input
+%-------------------------------------------------------------------------%
+task = Null;
+{
+  Button["Start", If[task =!= Null, Return[]];
+    task = SetInterval[
+      board = CellularAutomaton["GameOfLife", board, {{1}}] // First;
+    , 50]
+  ],
+  Button["Stop", If[task === Null, Return[]];
+    TaskRemove[task];
+    task = Null;
+  ]
+} // Row 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+Do not forget to stop the animation before closing a notebook
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+Do not forget to stop the animation before closing a notebook
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+Key: b8db1760-acdf-4d94-8a67-cc23191866db
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Image[Offload[board], "Bit", Magnification -> 3, Antialiasing -> False]]|>
+
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+Key: board
+%-------------------------------------------------------------------------%
+CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSONCompressed["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"]
+
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

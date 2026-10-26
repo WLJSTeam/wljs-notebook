@@ -1,123 +1,205 @@
-<|"Notebook" -> <|"Controller" -> "75415f95-2bd3-4787-84e3-138dfe3f7916", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$523], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "bbba1aef-f3a4-4788-b252-76f13166e163", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/14 - Utils/Editor \
-manipulations.wln", "ReadOnly" -> True, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Editor manupilation", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$513]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Replace selected / insert text to the editor", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$515]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Reading selected text", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$522]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, "Read cliboard", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$526]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Editor manupilation", 
-    "Display" -> "codemirror", "Hash" -> 
-     "c2c2d1c9-ad71-4feb-a097-f004d23edaa0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "\n## Editor manupilation", "Display" -> "markdown", 
-    "Hash" -> "38dc93b8-c000-4966-8d49-295eaec347ff", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> ".md\n### Replace selected / insert text to the \
-editor\nEvaluate *the cell below* first, then, select a text in the cell and \
-press the button.", "Display" -> "codemirror", 
-    "Hash" -> "d5099559-0027-4b30-8530-b9d4e46aa8b7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "\n### Replace selected / insert text to the editor\nEvaluate \
-*the cell below* first, then, select a text in the cell and press the \
-button.", "Display" -> "markdown", "Hash" -> 
-     "bb51248f-b45d-4164-98f6-5dc4b08843ed", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "With[{win = CurrentWindow[]},\n  \
-EventHandler[InputButton[\"Replace selected text\"],\n    Function[Null, \n   \
-   FrontSubmit[FrontEditorSelected[\"Set\", \"Yo\"]];\n    ]\n  ]\n] ", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ac1b548a-5952-4073-84e4-5b7297e1d0c3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> ".md\nExample cell", "Display" -> "codemirror", 
-    "Hash" -> "246efb5e-89e7-4f8c-ba02-4b448bc4ea08", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, <|"Data" -> "\nExample cell", 
-    "Display" -> "markdown", "Hash" -> 
-     "8383dc29-a5a1-4d21-8870-0a3ec718de2a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, <|"Data" -> "SeleYoext here", 
-    "Display" -> "codemirror", "Hash" -> 
-     "7dbed6cc-d1a2-41be-ae5c-37749563c975", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "940bd0c6-4e9c-48f2-b459-e261837a0de6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> ".md\n### Reading selected text\nThis is a bit more \
-complicated, since it involves communication back to the Wolfram Kernel", 
-    "Display" -> "codemirror", "Hash" -> 
-     "549186e9-dfec-4301-890d-764833e75ea3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "\n### Reading selected text\nThis is a bit more complicated, \
-since it involves communication back to the Wolfram Kernel", 
-    "Display" -> "markdown", "Hash" -> 
-     "a539f1f2-eb31-4cb3-b142-4e58be05cf10", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "With[{win = CurrentWindow[], cell = ResultCell[]},\n  \
-EventHandler[InputButton[\"Read selected text\"], Function[Null, \n    \n     \
- Then[FrontFetchAsync[FrontEditorSelected[\"Get\"]], Function[result,\n      \
-CellPrint[result \n        , \"After\"->cell];\n      ]\n    ]\n  ]]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "65d9c657-9b89-4f16-8214-fa74e43ec2c5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> " ", "Display" -> "codemirror", 
-    "Hash" -> "244ec372-6822-4f67-ad46-cbd33928721c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> ".md\n### Read cliboard\nThis is sort of an experimental \
-feature, that allows to read the content of a clipboard", 
-    "Display" -> "codemirror", "Hash" -> 
-     "decc6636-304e-4f1a-b526-73b5b9ad49d5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "\n### Read cliboard\nThis is sort of an experimental feature, \
-that allows to read the content of a clipboard", "Display" -> "markdown", 
-    "Hash" -> "1db22837-8f4d-4e0a-a07c-16eb57ddb257", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Output", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>, 
-   <|"Data" -> "With[{win = CurrentWindow[], cell = ResultCell[]},\n  \
-EventHandler[InputButton[\"Read clipboard\"], Function[Null, \n    \n      \
-Then[FrontFetchAsync[ReadClipboard[]], Function[result,\n      \
-CellPrint[result \n        , \"After\"->cell];\n      ]\n    ]\n  ]]\n]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "6df147af-997b-4b07-980f-913d1f3b86fc", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> False|>, "State" -> "Idle", 
-    "Type" -> "Input", "UID" -> Null, "Notebook" -> 
-     "0ca27aa5-4208-452e-91fd-89a31a63f5f1"|>}, "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Editor manupilation
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+## Editor manupilation
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Replace selected / insert text to the editor
+Evaluate *the cell below* first, then, select a text in the cell and press the button.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+### Replace selected / insert text to the editor
+Evaluate *the cell below* first, then, select a text in the cell and press the button.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+With[{win = CurrentWindow[]},
+  EventHandler[InputButton["Replace selected text"],
+    Function[Null, 
+      FrontSubmit[FrontEditorSelected["Set", "Yo"]];
+    ]
+  ]
+] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Example cell
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+Example cell
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+SeleYoext here
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Reading selected text
+This is a bit more complicated, since it involves communication back to the Wolfram Kernel
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+### Reading selected text
+This is a bit more complicated, since it involves communication back to the Wolfram Kernel
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+With[{win = CurrentWindow[], cell = ResultCell[]},
+  EventHandler[InputButton["Read selected text"], Function[Null, 
+    
+      Then[FrontFetchAsync[FrontEditorSelected["Get"]], Function[result,
+      CellPrint[result 
+        , "After"->cell];
+      ]
+    ]
+  ]]
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+ 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Read cliboard
+This is sort of an experimental feature, that allows to read the content of a clipboard
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+### Read cliboard
+This is sort of an experimental feature, that allows to read the content of a clipboard
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+With[{win = CurrentWindow[], cell = ResultCell[]},
+  EventHandler[InputButton["Read clipboard"], Function[Null, 
+    
+      Then[FrontFetchAsync[ReadClipboard[]], Function[result,
+      CellPrint[result 
+        , "After"->cell];
+      ]
+    ]
+  ]]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

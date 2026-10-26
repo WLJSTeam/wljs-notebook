@@ -1,158 +1,224 @@
-<|"Notebook" -> <|"Controller" -> "de38204f-ec81-4731-80e6-077427e2b185", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$564], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "5d5f41ee-6486-430d-bbf3-c0721e0c9833", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/C - Append Things.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "How to append or remove things", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$543]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Appending", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$547]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Removing", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$563]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n\n# How to append or remove things\nFor basic \
-cases, `Line`, `Point`, and `Polygon` naturally support variable numbers of \
-points or vertices:", "Display" -> "codemirror", 
-    "Hash" -> "32c175cd-7988-433c-af53-d662c965a967", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "\n# How to append or remove things\nFor basic cases, `Line`, \
-`Point`, and `Polygon` naturally support variable numbers of points or \
-vertices:", "Display" -> "markdown", 
-    "Hash" -> "955815fa-6a20-49bf-8d57-ed0bbb0afc6d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "points = {{0,0}};\nGraphics[Point[points//Offload], \
-PlotRange->{{-1,1},{-1,1}}]", "Display" -> "codemirror", 
-    "Hash" -> "0fec971c-0ab1-45ae-82e0-6bb43e09ed2c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "Do[\n  points = Append[points, \
-Last[points]+RandomReal[0.1{-1,1},2]];\n  Pause[0.03];\n, {100}];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4bb2c01e-beac-48e1-b70b-fafd18fd58a5", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ".md\n## Appending\nTo append new complex objects to an \
-existing visible plot or graphical canvas (i.e., `Graphics`, `Graphics3D`), \
-you need to reference it and submit an expression to be evaluated there as if \
-it were present from the beginning.\n\n:::note\nExpressions that support \
-updates (`Offload`) can usually be appended to or removed from an existing \
-graphical instance as well\n:::\n\nThe particular context of the instance can \
-be referenced with `FrontInstanceReference`:", "Display" -> "codemirror", 
-    "Hash" -> "139c886e-a1ab-4624-867c-128206691981", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "## Appending\nTo append new complex objects to an existing \
-visible plot or graphical canvas (i.e., `Graphics`, `Graphics3D`), you need \
-to reference it and submit an expression to be evaluated there as if it were \
-present from the beginning.\n\n:::note\nExpressions that support updates \
-(`Offload`) can usually be appended to or removed from an existing graphical \
-instance as well\n:::\n\nThe particular context of the instance can be \
-referenced with `FrontInstanceReference`:", "Display" -> "markdown", 
-    "Hash" -> "6075c8c0-79c3-4c2b-9d17-02f0e892465c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> 
-     "ref = FrontInstanceReference[];\nPlot[x, {x,0,1}, Prolog->{\n  ref\n}]"\
-, "Display" -> "codemirror", "Hash" -> 
-     "b259633b-ca99-4bbc-ac0c-a0796b3eaeb2", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ".md\n`ref` will point directly to what is inside `Prolog`. If \
-any color directives are present, they will be applied automatically to the \
-submitted expressions.\n\nTo submit anything for frontend evaluation, use \
-`FrontSubmit`. Using the second optional argument, we specify where to \
-evaluate the expression. For example, to add a red circle on our existing \
-plot:", "Display" -> "codemirror", "Hash" -> 
-     "ef4ab63e-5431-4f4a-9ca0-0220e7d75582", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "`ref` will point directly to what is inside `Prolog`. If any \
-color directives are present, they will be applied automatically to the \
-submitted expressions.\n\nTo submit anything for frontend evaluation, use \
-`FrontSubmit`. Using the second optional argument, we specify where to \
-evaluate the expression. For example, to add a red circle on our existing \
-plot:", "Display" -> "markdown", "Hash" -> 
-     "d7efff87-fd1b-478b-ab60-357fe2d3b4a9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "FrontSubmit[{Red, Disk[{0.5,0.5}, 0.5]}, ref]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "74c0301b-e148-44a1-9005-32ff558bd387", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ".md\n:::info\nYou can also apply specific actions using \
-FrontSubmit to a plot. For example, to zoom or pan \
-programmatically:\n\n```\nFrontSubmit[ZoomAt[1.2, {0.5,0.5}], \
-ref]\n```\n\nThis specific expression `ZoomAt` only lives on frontend and has \
-no action being evaluated on Wolfram Kernel.\n:::\n\nHere is another example, \
-let's call it Bubbles:", "Display" -> "codemirror", 
-    "Hash" -> "6c04780d-dac4-4e4a-a9d9-dbdfa73da619", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ":::info\nYou can also apply specific actions using \
-FrontSubmit to a plot. For example, to zoom or pan \
-programmatically:\n\n```\nFrontSubmit[ZoomAt[1.2, {0.5,0.5}], \
-ref]\n```\n\nThis specific expression `ZoomAt` only lives on frontend and has \
-no action being evaluated on Wolfram Kernel.\n:::\n\nHere is another example, \
-let's call it Bubbles:", "Display" -> "markdown", 
-    "Hash" -> "3361ee2b-b6d8-44a8-8d95-d981300f07b0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "ref = FrontInstanceReference[];\nEventHandler[Plot[x, \
-{x,0,1}, Epilog->{\n  ref\n}], {\"mousemove\" -> Function[xy,\n  \
-FrontSubmit[{\n    RandomColor[],\n    Disk[xy, {0.7, 1} RandomReal[{0.01, \
-0.1}]]\n  }, ref]\n]}]", "Display" -> "codemirror", 
-    "Hash" -> "10975719-853a-4cb2-a90c-cf1ac6674686", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ".md\n## Removing\nTo append and remove some objects, you need \
-to create a group first - `FrontInstanceGroup`", "Display" -> "codemirror", 
-    "Hash" -> "1e8ac42f-d1d7-44a7-bbf1-fd2baa9666d1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "## Removing\nTo append and remove some objects, you need to \
-create a group first - `FrontInstanceGroup`", "Display" -> "markdown", 
-    "Hash" -> "a062a1f5-d7fc-4e97-8da9-d764e70871a6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "group = FrontInstanceGroup[];\nPlot[x, {x,0,1}, Prolog->{\n  \
-group[Disk[{0,0}, 1]]\n}]", "Display" -> "codemirror", 
-    "Hash" -> "3f9d7aac-953f-450d-bb79-d8b2b0d4661b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> ".md\nLater to remove it use - `FrontInstanceGroupRemove`:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "9dbca65a-012a-4fce-859e-6ebc99412409", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>, 
-   <|"Data" -> "Later to remove it use - `FrontInstanceGroupRemove`:", 
-    "Display" -> "markdown", "Hash" -> 
-     "c5c440c7-ba80-46f8-93cb-c826c43b110c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "644f9689-80a8-4e69-9409-dcd26ade6d03"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+
+# How to append or remove things
+For basic cases, `Line`, `Point`, and `Polygon` naturally support variable numbers of points or vertices:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+
+# How to append or remove things
+For basic cases, `Line`, `Point`, and `Polygon` naturally support variable numbers of points or vertices:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+points = {{0,0}};
+Graphics[Point[points//Offload], PlotRange->{{-1,1},{-1,1}}]
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Do[
+  points = Append[points, Last[points]+RandomReal[0.1{-1,1},2]];
+  Pause[0.03];
+, {100}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Appending
+To append new complex objects to an existing visible plot or graphical canvas (i.e., `Graphics`, `Graphics3D`), you need to reference it and submit an expression to be evaluated there as if it were present from the beginning.
+
+:::note
+Expressions that support updates (`Offload`) can usually be appended to or removed from an existing graphical instance as well
+:::
+
+The particular context of the instance can be referenced with `FrontInstanceReference`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Appending
+To append new complex objects to an existing visible plot or graphical canvas (i.e., `Graphics`, `Graphics3D`), you need to reference it and submit an expression to be evaluated there as if it were present from the beginning.
+
+:::note
+Expressions that support updates (`Offload`) can usually be appended to or removed from an existing graphical instance as well
+:::
+
+The particular context of the instance can be referenced with `FrontInstanceReference`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ref = FrontInstanceReference[];
+Plot[x, {x,0,1}, Prolog->{
+  ref
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+`ref` will point directly to what is inside `Prolog`. If any color directives are present, they will be applied automatically to the submitted expressions.
+
+To submit anything for frontend evaluation, use `FrontSubmit`. Using the second optional argument, we specify where to evaluate the expression. For example, to add a red circle on our existing plot:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+`ref` will point directly to what is inside `Prolog`. If any color directives are present, they will be applied automatically to the submitted expressions.
+
+To submit anything for frontend evaluation, use `FrontSubmit`. Using the second optional argument, we specify where to evaluate the expression. For example, to add a red circle on our existing plot:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontSubmit[{Red, Disk[{0.5,0.5}, 0.5]}, ref]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::info
+You can also apply specific actions using FrontSubmit to a plot. For example, to zoom or pan programmatically:
+
+```
+FrontSubmit[ZoomAt[1.2, {0.5,0.5}], ref]
+```
+
+This specific expression `ZoomAt` only lives on frontend and has no action being evaluated on Wolfram Kernel.
+:::
+
+Here is another example, let's call it Bubbles:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::info
+You can also apply specific actions using FrontSubmit to a plot. For example, to zoom or pan programmatically:
+
+```
+FrontSubmit[ZoomAt[1.2, {0.5,0.5}], ref]
+```
+
+This specific expression `ZoomAt` only lives on frontend and has no action being evaluated on Wolfram Kernel.
+:::
+
+Here is another example, let's call it Bubbles:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ref = FrontInstanceReference[];
+EventHandler[Plot[x, {x,0,1}, Epilog->{
+  ref
+}], {"mousemove" -> Function[xy,
+  FrontSubmit[{
+    RandomColor[],
+    Disk[xy, {0.7, 1} RandomReal[{0.01, 0.1}]]
+  }, ref]
+]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Removing
+To append and remove some objects, you need to create a group first - `FrontInstanceGroup`
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Removing
+To append and remove some objects, you need to create a group first - `FrontInstanceGroup`
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+group = FrontInstanceGroup[];
+Plot[x, {x,0,1}, Prolog->{
+  group[Disk[{0,0}, 1]]
+}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Later to remove it use - `FrontInstanceGroupRemove`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Later to remove it use - `FrontInstanceGroupRemove`:
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

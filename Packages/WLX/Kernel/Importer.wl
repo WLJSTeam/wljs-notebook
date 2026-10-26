@@ -76,8 +76,8 @@ loadData[filename_String, base_, opts_Rule: Rule["Localize", True]] := Module[{d
     (* check swizzle *)
 
     If[KeyExistsQ[TemplateSwizzle, Hash[path] ],
-        Echo["Swizzle!!!!"];
-        Echo[path];
+        Echo["[Packages/Importer] Reordering notebook cells."];
+        Echo[path, "[Packages/Importer] Notebook path using reordered cells: "];
         data = Import[TemplateSwizzle[path // Hash], "Text"];
     ,
         data = Import[path, "Text"];

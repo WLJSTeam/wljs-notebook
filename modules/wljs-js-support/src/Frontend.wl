@@ -78,25 +78,25 @@ If[$OperatingSystem === "MacOSX", processEnv = <|"PATH"->Import["!source ~/.bash
 
 checkPackageJSON[path_] := Module[{jsonPath = FileNameJoin[{path, "package.json"}], res = True},
     If[!FileExistsQ[jsonPath], 
-        Echo["No package.json found"];
-        Echo["Making one..."];
+        Echo["[wljs-js-support/Frontend] No package.json found"];
+        Echo["[wljs-js-support/Frontend] Making one."];
         res = SystemShellRun["npm i esbuild --prefix .", ProcessDirectory->path, ProcessEnvironment->processEnv];
         If[res["ExitCode"] =!= 0, Return[res["StandardError"]] ];
         If[!FileExistsQ[jsonPath], Return["Failed to create package.json"] ];
         Return[True];
     ];
 
-    Echo["Found package.json"];
+    Echo["[wljs-js-support/Frontend] Found package.json"];
 
     json = Import[jsonPath, "Text"];
     If[StringCases[json, ___~~"esbuild"~~___] === {},
-        Echo["Adding esbuild to dependencies..."];
+        Echo["[wljs-js-support/Frontend] Adding esbuild to dependencies."];
         res = SystemShellRun["npm i esbuild", ProcessDirectory->path, ProcessEnvironment->processEnv];
         If[res["ExitCode"] =!= 0, Return[res["StandardError"]] ];
         Return[True];
     ];
 
-    Echo["esbuild is already in dependencies"];
+    Echo["[wljs-js-support/Frontend] esbuild is already in dependencies"];
     Return[True];
 ];
 

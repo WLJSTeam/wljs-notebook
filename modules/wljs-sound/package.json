@@ -14,8 +14,7 @@
         "js": "dist/kernel.js",
         "priority": 800,
         "category": "Sound",
-        "cellExportRequired": true,
-        "figureExportRequired": true
+        "exportable": true
     },
     "repository": {
         "type": "git",

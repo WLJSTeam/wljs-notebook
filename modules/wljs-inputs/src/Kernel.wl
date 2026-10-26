@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`InputsOutputs`", {
 	"CoffeeLiqueur`Misc`Events`Promise`",
 	"CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
-	"CoffeeLiqueur`Misc`WLJS`Transport`",
+	"CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
 	"CoffeeLiqueur`Misc`Language`",
 	"CoffeeLiqueur`Extensions`EditorView`",
 	"CoffeeLiqueur`Extensions`FrontendObject`",
@@ -222,7 +222,12 @@ InputAutocomplete[autocomplete_, opts: OptionsPattern[] ] := With[{},
 
 InputAutocomplete[autocomplete_, default_String, opts: OptionsPattern[] ] := With[{},
 	With[{uid = OptionValue["Event"], handler = Unique["System`xhxComplete"]},
-		handler[data_String][cbk_] := autocomplete[data // URLDecode, cbk];
+		handler[data_String] := With[{promise = Promise[]}, 
+		   autocomplete[data, Function[cbk,
+		    EventFire[promise, Resolve, cbk]
+		   ]];
+		   promise
+		];
 
 		EventObject[<|
 	     "Id"->uid, 
@@ -612,7 +617,7 @@ applyPatch := (
 		DatasetWrapperBox[d   // Normal, StandardForm] (*FIXME do not use Normal*)
 	,
 
-		With[{o = CreateFrontEndObject[d   ]}, {out = MakeBoxes[o, StandardForm]},
+		With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]   ]}, {out = MakeBoxes[o, StandardForm]},
 			ViewBox[out, o]
 		]
 	] ];
@@ -620,7 +625,7 @@ applyPatch := (
 	Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 		DatasetWrapperBox[d   // Normal, WLXForm] (*FIXME do not use Normal*)
 	,
-		With[{o = CreateFrontEndObject[d  ]},
+		With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]  ]},
 			MakeBoxes[o, WLXForm]
 		]
 	] ];
@@ -659,7 +664,7 @@ System`WLXForm;
 Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 	DatasetWrapperBox[d // Normal, WLXForm] (*FIXME do not use Normal*)
 ,
-	With[{o = CreateFrontEndObject[d]},
+	With[{o = CreateFrontEndObject[ProvidedOptions[d, "HashFunction"->"V2"]]},
 		MakeBoxes[o, WLXForm]
 	]
 ] ];
@@ -667,7 +672,7 @@ Dataset /: MakeBoxes[d_Dataset, WLXForm ] := Block[{}, If[ByteCount[d] > Interna
 Dataset`MakeDatasetWLXBoxes[d_Dataset ] := Block[{}, If[ByteCount[d] > Internal`Kernel`$FrontEndObjectSizeLimit*1024*1024/10.0, 
 	DatasetWrapperBox[d // Normal, WLXForm] (*FIXME do not use Normal*)
 ,
-	With[{o = CreateFrontEndObject[d]},
+	With[{o = CreateFrontEndObject[ProvidedOptions[d,"HashFunction"->"V2"]]},
 		MakeBoxes[o, WLXForm]
 	]
 ] ];
@@ -747,13 +752,13 @@ DatasetWrapperBox[ l: List[__List], form_ ] := With[{
 
 				EventHandler[event, {
 					"Part"->Function[part,
-						WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+						WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 								store = splitDataset[sorted];
-								WLJSTransportSend[req[store[[1]]], Global`$Client ]
+								WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -788,13 +793,13 @@ DatasetWrapperBox[ l: List[__List], StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"->Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -822,13 +827,13 @@ DatasetWrapperBox[ l_List , form_ ] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -864,13 +869,13 @@ DatasetWrapperBox[ l_List , StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"->Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[[col]]& ], True, Reverse @ SortBy[l, #[[col]]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -924,13 +929,13 @@ DatasetWrapperBox[ l : List[__Association] , form_] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[assocKeys[[col]] ]& ], True, Reverse @ SortBy[l, #[assocKeys[[col]] ]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -1013,12 +1018,12 @@ TabularPreviewBox[t_Tabular] := With[{
 			With[{out = tbView[ transform /@ data, props, heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
 				EventHandler[event, {
 					"Part"->Function[part,
-						WLJSTransportSend[req[takePart[t, reduced, transform][part] ], Global`$Client ] 
+						WLJSTransportSend[req[takePart[t, reduced, transform][part] ], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[keys[[col]] ]& ], True, Reverse @ enshureNormal @ SortBy[t, #[keys[[col]] ]& ] ]},
-								WLJSTransportSend[req[takePart[sorted, reduced, transform][1] ], Global`$Client ]
+								WLJSTransportSend[req[takePart[sorted, reduced, transform][1] ], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -1033,12 +1038,12 @@ TabularPreviewBox[t_Tabular] := With[{
 			With[{out = tbView[data, transformProp /@ schema["ColumnProperties"], heading, Context[req]<>SymbolName[req], event, trueLength, parts] // CreateFrontEndObject},
 				EventHandler[event, {
 					"Part"-> Function[part,
-						WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], Global`$Client ] 
+						WLJSTransportSend[req[takePart[t, reduced, Identity][part] ], $CurrentWebSocket ] 
 					],
 					"Sort"->Function[spec,
 						With[{col = spec[[1]], dir = spec[[2]]},
 							With[{sorted = Which[dir === 0, t, dir === 1, SortBy[t, #[[col]]& ], True, Reverse @ enshureNormal @ SortBy[t, #[[col]]& ] ]},
-								WLJSTransportSend[req[takePart[sorted, reduced, Identity][1] ], Global`$Client ]
+								WLJSTransportSend[req[takePart[sorted, reduced, Identity][1] ], $CurrentWebSocket ]
 							]
 						]
 					]
@@ -1060,13 +1065,13 @@ DatasetWrapperBox[ l : List[__Association] ,  StandardForm] := With[{
 
 		EventHandler[event, {
 			"Part"-> Function[part,
-				WLJSTransportSend[req[store[[part]]], Global`$Client ] 
+				WLJSTransportSend[req[store[[part]]], $CurrentWebSocket ] 
 			],
 			"Sort"->Function[spec,
 				With[{col = spec[[1]], dir = spec[[2]]},
 					With[{sorted = Which[dir === 0, l, dir === 1, SortBy[l, #[assocKeys[[col]] ]& ], True, Reverse @ SortBy[l, #[assocKeys[[col]] ]& ] ]},
 						store = splitDataset[sorted];
-						WLJSTransportSend[req[store[[1]]], Global`$Client ]
+						WLJSTransportSend[req[store[[1]]], $CurrentWebSocket ]
 					]
 				]
 			]
@@ -1090,7 +1095,10 @@ buggedDefs = {
 	TemporalData[TimeSeries, list_List, bool_, n_Integer] :> TemporalData[TimeSeries, list, bool, N[n] ] 
 }
 
-DatasetMakeBox[expr_String, uid_String] := CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] /. buggedDefs, StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet
+DatasetMakeBox[expr_String, uid_String] := With[{},
+    CreateFrontEndObject[EditorView[ToString[ImportString[ToString[expr, OutputForm, CharacterEncoding -> "UTF8"], "ExpressionJSON"] /. buggedDefs, StandardForm], "ReadOnly"->True, "Selectable"->False], uid] // Quiet;
+    uid
+]
 
 
 listener[p_, list_, uid_] := With[{}, With[{

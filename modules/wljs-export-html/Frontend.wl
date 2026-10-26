@@ -1,3 +1,5 @@
+(* Registers export UI, file routers, settings, and protocol entry points. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Async`",
@@ -5,8 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
-    "CoffeeLiqueur`Extensions`WLJSInterpreter`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 Needs["CoffeeLiqueur`ExtensionManager`" -> "WLJSPackages`"];
@@ -81,6 +82,7 @@ AppExtensions`TemplateInjection["AppNotebookTopBar"] = buttonTemplate["HandlerFu
 
 AppExtensions`SidebarIcons = ImportComponent[FileNameJoin[{rootFolder, "Templates", "Icons.wlx"}] ];
 
+(* The active notebook is discovered through the shared controls event pool. *)
 getNotebook[controls_] := EventFire[controls, "NotebookQ", True] /. {{___, n_nb`NotebookObj, ___} :> n};
 
 processRequest[controls_, modals_, messager_, client_, "SFX"] := With[{
@@ -141,13 +143,18 @@ processRequest[controls_, modals_, messager_, client_] := With[{
                         |>}
                     },
                     Then[collectStaticData[client, messager, notebookOnLine], Function[Null,
-                        Echo["Export >>"];
+                        Echo["[wljs-export-html/Frontend] Starting notebook export."];
                         Which[
                             choise===1,
                             askIfDynamic[modals, html`Static`export @@ args, html`Dynamic`export @@ args],
 
                             choise===2,
-                            askIfDynamic[modals, htmle`Static`export @@ args, htmle`Dynamic`export @@ args],
+                            askEmbeddableMode[
+                                modals,
+                                htmle`Static`export @@ args,
+                                htmle`Dynamic`export @@ args,
+                                htmle`Bundle`export[modals, messager, path, settings]
+                            ],
 
                             choise===3,
                             askIfDynamic[modals, mdx`Static`export @@ args, mdx`Dynamic`export @@ args],
@@ -186,13 +193,32 @@ askIfDynamic[modals_, callback1_, callback2_] := With[{
             ] ]
 ];
 
+SetAttributes[askEmbeddableMode, HoldRest]
+askEmbeddableMode[modals_, static_, interactive_, bootstrap_] := With[{p = Promise[]},
+    EventFire[modals, "SelectBox", <|
+        "Promise"->p,
+        "title"->"HTML Embeddable",
+        "message"->"Please, choose one below",
+        "list"->{"Static", "Interactive", "Bootstrap"}
+    |>];
+    Then[p, Function[choise,
+        Switch[choise,
+            1, static,
+            2, interactive,
+            3, bootstrap,
+            _, Null
+        ]
+    ]]
+]
+
 renderMarkdownToString;
 
 requestMarkdownProcessor[client_][data_] :=requestMarkdownProcessor[client][ToString[data] ]
-requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client, "Format"->"RawJSON"]
+requestMarkdownProcessor[client_][data_String] := WebUIFetch[renderMarkdownToString[data], client]
 
+(* Persist transient frontend objects before any static renderer reads them. *)
 collectStaticData[client_, messager_, notebook_] := Block[{
-    Global`$Client = client
+    $CurrentWebSocket = client
 },
     Pause[0.25];
     (* EventFire[messager, Notifications`NotificationMessage["Info"], "Collecting notebook data"]; *)
@@ -204,34 +230,63 @@ collectStaticData[client_, messager_, notebook_] := Block[{
 
 EventHandler[AppExtensions`AppProtocol, {
     "open_html" -> Function[assoc,
-        Echo[">> Handling URL protocol ! >>"];
-        Echo[assoc["url"] ];
-        Module[{path = assoc["url"]},
+        Echo["[wljs-export-html/Frontend] Handling an open_html URL protocol request."];
+        Echo[assoc["url"], "[wljs-export-html/Frontend] URL received from the open_html protocol: "];
+        Module[{
+            path = assoc["url"],
+            client = assoc["Client"],
+            messager = assoc["Messanger"],
+            target,
+            task
+        },
             If[StringTake[path, 5] === "file:",
-                Echo["Local file!"];
+                Echo["[wljs-export-html/Frontend] Local file!"];
+                (* URLParse decodes the path without leaking a query or an
+                   outline fragment into the local filename. *)
                 path = If[$OperatingSystem === "Windows",
-                    FileNameJoin[StringSplit[StringDrop[path, 6], "/"] ],
-                    "/"<>FileNameJoin[StringSplit[StringDrop[path, 5], "/"] ]
+                    FileNameJoin[DeleteCases[URLParse[path, "Path"], ""]],
+                    FileNameJoin[URLParse[path, "Path"]]
                 ];
-                Echo["Local path:"];
-                Echo[path];
-                path = URLDecode[path];
-                Echo["Local path decoded:"];
-                Echo[path];
+                Echo["[wljs-export-html/Frontend] Local path decoded:"];
+                Echo[path, "[wljs-export-html/Frontend] Decoded local HTML path: "];
+
+                WebUILocation[StringJoin["/", URLEncode[path]], client];
             ,
-                Echo["Web resource"];
-                Echo["Downloading..."];
-                path = URLDownload[path];
-            ];
+                Echo["[wljs-export-html/Frontend] Web resource"];
+                Echo["[wljs-export-html/Frontend] Downloading."];
 
-            With[{p = html`Static`decode[path, "Messager"->assoc["Messanger"], "Client"->assoc["Client"] ]},
-                Then[p, Function[result,
-                  Pause[1];
-                  Echo[result];
-                  (*/*EventFire[spinner["Promise"], Resolve, True];*/*)
-                  WebUILocation[ StringJoin["/", URLEncode[ result ] ], assoc["Client"] ] // Echo;
+                (* Some custom-protocol handlers collapse the two slashes after
+                   the HTTP scheme while forwarding the encoded payload. *)
+                If[StringStartsQ[path, "https:/"] && !StringStartsQ[path, "https://"],
+                    path = StringReplace[path, StartOfString ~~ "https:/" -> "https://"]
+                ];
+                If[StringStartsQ[path, "http:/"] && !StringStartsQ[path, "http://"],
+                    path = StringReplace[path, StartOfString ~~ "http:/" -> "http://"]
+                ];
 
-                ] ];
+                target = FileNameJoin[{$TemporaryDirectory, CreateUUID[] <> ".html"}];
+                task = Quiet @ Check[
+                    URLDownloadSubmit[
+                        path,
+                        target,
+                        HandlerFunctions -> <|
+                            "TaskFinished" -> Function[result,
+                                With[{file = Lookup[result, "File", Missing["NotAvailable"]]},
+                                    If[StringQ[file] && FileExistsQ[file] && FileByteCount[file] > 0,
+                                        WebUILocation[StringJoin["/", URLEncode[file]], client],
+                                        EventFire[messager, "Error", "Failed to download the HTML notebook"]
+                                    ]
+                                ]
+                            ]
+                        |>,
+                        HandlerFunctionsKeys -> {"File", "TaskStatus"}
+                    ],
+                    $Failed
+                ];
+
+                If[task === $Failed,
+                    EventFire[messager, "Error", "Failed to start the HTML notebook download"]
+                ];
             ];
         ];
     ]

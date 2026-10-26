@@ -1,5 +1,5 @@
 System`RowBoxFlatten;
-RowBoxFlatten[x_List, y___] := StringJoin @@ (ToString[#] & /@ x)
+RowBoxFlatten[BoxForm`F`x_List, BoxForm`F`y___] := StringJoin @@ (ToString[#] & /@ BoxForm`F`x)
 
 System`ProvidedOptions;
 

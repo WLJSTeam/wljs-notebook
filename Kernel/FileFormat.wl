@@ -1,5 +1,13 @@
 BeginPackage["CoffeeLiqueur`Notebook`FileFormat`"];
 
+(*
+    WLN Notebook Format
+    - serializer
+    - deserialier
+
+    A human readable format for storing WLJS notebooks
+*)
+
 readNotebook;
 writeNotebook;
 
@@ -79,6 +87,8 @@ fromUTF8MMA[str_String] :=
     FromCharacterCode[ToCharacterCode[str], "UTF8"],
     {"\r\n" -> "\n", "\r" -> "\n"}
   ]
+
+readFailureQ[value_] := FailureQ[value] || value === EndOfFile
 
 (* end of workarounds *)
 
@@ -391,7 +401,7 @@ readNotebook[stream_, timeout_:10] := Module[
             ,
             $Failed
         ];
-        If[FailureQ[temp],
+        If[readFailureQ[temp],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not find %Notebook% header"|>] ]
         ];
         temp = Check[
@@ -405,7 +415,7 @@ readNotebook[stream_, timeout_:10] := Module[
             ,
             $Failed
         ];
-        If[FailureQ[temp],
+        If[readFailureQ[temp],
              Return[ Failure["InvalidWLN", <|"Message" -> "Separator after %Notebook% not found"|>] ]
         ];
         notebookHeader = parseMiniYAML[StringTrim[temp]];
@@ -425,7 +435,7 @@ readNotebook[stream_, timeout_:10] := Module[
             ,
             $Failed
         ];
-        If[FailureQ[temp],
+        If[readFailureQ[temp],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not find %Cells% header"|>] ]
         ];
         temp = Check[
@@ -439,12 +449,12 @@ readNotebook[stream_, timeout_:10] := Module[
             ,
             $Failed
         ];
-        If[FailureQ[temp],
+        If[readFailureQ[temp],
             Return[ Failure["InvalidWLN", <|"Message" -> "Separator after %Cells% header not found"|>] ]
         ];
         temp = parseMiniYAML[StringTrim[temp]];
         buffer = ReadString[file, newLine[2] ~~ StartOfLine ~~ "%" ~~ Repeated["-", {16, 100}] ~~ "%", TimeConstraint -> timeout];
-        If[FailureQ[buffer],
+        If[readFailureQ[buffer],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse first cell"|>] ]
         ];
         AppendTo[list, Append[temp, "Data" -> fromUTF8MMA[buffer] ]];
@@ -462,17 +472,17 @@ readNotebook[stream_, timeout_:10] := Module[
                 ,
                 $Failed
             ];
-            If[FailureQ[temp],
+            If[readFailureQ[temp],
                 Return[ Failure["InvalidWLN", <|"Message" -> "Failed to parse the next cell"|>] ]
             ];
             temp = parseMiniYAML[StringTrim[temp]];
             buffer = ReadString[file, newLine[2] ~~ StartOfLine ~~ "%" ~~ Repeated["-", {16, 100}] ~~ "%", TimeConstraint -> timeout];
-            If[FailureQ[buffer],
+            If[readFailureQ[buffer],
                 Return[ Failure["InvalidWLN", <|"Message" -> "Could not find separator for the next cell"|>] ]
             ];
             AppendTo[list, Append[temp, "Data" -> fromUTF8MMA[buffer] ]];
         ];
-        If[FailureQ[temp] || FailureQ[buffer],
+        If[readFailureQ[temp] || readFailureQ[buffer],
             Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse any next cells"|>] ]
         ];
         keys["Cells"] = list;
@@ -492,7 +502,7 @@ readNotebook[stream_, timeout_:10] := Module[
                     ,
                     $Failed
                 ];
-                If[FailureQ[temp],
+                If[readFailureQ[temp],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse %"<>field<>"% data"|>] ]
                 ];
                 temp = Check[
@@ -506,7 +516,7 @@ readNotebook[stream_, timeout_:10] := Module[
                     ,
                     $Failed
                 ];
-                If[FailureQ[temp],
+                If[readFailureQ[temp],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse data of %"<>field<>"%"|>] ]
                 ];
                 If[StringLength[StringTrim[temp]] == 0,
@@ -514,7 +524,7 @@ readNotebook[stream_, timeout_:10] := Module[
                 ];
                 temp = parseMiniYAML[StringTrim[temp]];
                 buffer = ReadString[file, newLine[2] ~~ StartOfLine ~~ "%" ~~ Repeated["-", {16, 100}] ~~ "%", TimeConstraint -> timeout];
-                If[FailureQ[buffer],
+                If[readFailureQ[buffer],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not separator of %"<>field<>"%"|>] ]
                 ];
                 AppendTo[list, ToString[temp["Key"]] -> ToExpression[buffer, InputForm]];
@@ -532,17 +542,17 @@ readNotebook[stream_, timeout_:10] := Module[
                         ,
                         $Failed
                     ];
-                    If[FailureQ[temp],
+                    If[readFailureQ[temp],
                         Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse ending of %"<>field<>"% data"|>] ]
                     ];
                     temp = parseMiniYAML[StringTrim[temp]];
                     buffer = ReadString[file, newLine[2] ~~ StartOfLine ~~ "%" ~~ Repeated["-", {16, 100}] ~~ "%", TimeConstraint -> timeout];
-                    If[FailureQ[buffer],
+                    If[readFailureQ[buffer],
                         Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse header of %"<>field<>"% data"|>] ]
                     ];
                     AppendTo[list, ToString[temp["Key"]] -> ToExpression[buffer, InputForm]];
                 ];
-                If[FailureQ[temp] || FailureQ[buffer],
+                If[readFailureQ[temp] || readFailureQ[buffer],
                     Return[ Failure["InvalidWLN", <|"Message" -> "Could not parse %"<>field<>"% data end"|>] ]
                 ];
                 keys[field] = list;

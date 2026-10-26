@@ -181,7 +181,7 @@ class EditorWidget {
 
           env.global.element.appendChild(aa);
 
-          if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');
+          if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');
 
           return;
         }
@@ -242,7 +242,7 @@ class EditorWidget {
           ]
         });
 
-        if(self.events) server.kernel.emitt(self.events, 'Null', 'Mounted');  
+        if(self.events) server.kernel.io.fire(self.events, null, 'Mounted');  
 
       }, (err) => {errBox(span, self, err)});
 
@@ -297,7 +297,7 @@ class EditorWidget {
     }  
     this.editor.destroy();
 
-    if(this.events) server.kernel.emitt(this.events, 'Null', 'Destroy');
+    if(this.events) server.kernel.io.fire(this.events, null, 'Destroy');
 
     delete this.data;
   }

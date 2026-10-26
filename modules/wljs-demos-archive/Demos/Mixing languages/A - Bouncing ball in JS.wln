@@ -1,73 +1,182 @@
-<|"Notebook" -> <|"Controller" -> "79adf337-1d86-41e3-b54e-b5f58645e6cf", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$368], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "c6c5d77c-0bd9-4121-abda-e832495f0fad", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Mixing languages/A - Bouncing ball in JS.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Bouncing ball in JS", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$376]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Bouncing ball in JS\n\nThis notebook \
-demonstrates an interactive JavaScript example that creates a bouncing ball \
-animation on a canvas:", "Display" -> "codemirror", 
-    "Hash" -> "1a771a24-833f-4a12-a1d8-1b27f1587223", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>, 
-   <|"Data" -> "# Bouncing ball in JS\n\nThis notebook demonstrates an \
-interactive JavaScript example that creates a bouncing ball animation on a \
-canvas:", "Display" -> "markdown", "Hash" -> 
-     "68e036b6-6860-4c95-9c73-6c6da26f411a", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>, 
-   <|"Data" -> ".js\nconst canvas = document.createElement('canvas');\nvar \
-ctx = canvas.getContext('2d');\n\ncanvas.width = 400;\ncanvas.height = \
-400;\n\n\nconst ballRadius = 10;\nlet x = canvas.width / 2;\nlet y = \
-canvas.height - 30;\nlet dx = 2;\nlet dy = -2;\n\nfunction drawBall() {\n  \
-ctx.beginPath();\n  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);\n  \
-ctx.fillStyle = \"#0095DD\";\n  ctx.fill();\n  \
-ctx.closePath();\n}\n\nfunction draw() {\n  ctx.clearRect(0, 0, canvas.width, \
-canvas.height);\n  drawBall();\n\n  if (x + dx > canvas.width - ballRadius || \
-x + dx < ballRadius) {\n    dx = -dx;\n  }\n  if (y + dy > canvas.height - \
-ballRadius || y + dy < ballRadius) {\n    dy = -dy;\n  }\n\n  x += dx;\n  y \
-+= dy;\n}\n\nconst interval = setInterval(draw, 10);\n\nthis.ondestroy = () \
-=> {\n\tcancelInterval(interval);\n}\n\nreturn canvas;", 
-    "Display" -> "codemirror", "Hash" -> 
-     "8bb2646b-1185-4c06-a021-3730fbc95947", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>, 
-   <|"Data" -> "const canvas = document.createElement('canvas');\nvar ctx = \
-canvas.getContext('2d');\n\ncanvas.width = 400;\ncanvas.height = \
-400;\n\n\nconst ballRadius = 10;\nlet x = canvas.width / 2;\nlet y = \
-canvas.height - 30;\nlet dx = 2;\nlet dy = -2;\n\nfunction drawBall() {\n  \
-ctx.beginPath();\n  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);\n  \
-ctx.fillStyle = \"#0095DD\";\n  ctx.fill();\n  \
-ctx.closePath();\n}\n\nfunction draw() {\n  ctx.clearRect(0, 0, canvas.width, \
-canvas.height);\n  drawBall();\n\n  if (x + dx > canvas.width - ballRadius || \
-x + dx < ballRadius) {\n    dx = -dx;\n  }\n  if (y + dy > canvas.height - \
-ballRadius || y + dy < ballRadius) {\n    dy = -dy;\n  }\n\n  x += dx;\n  y \
-+= dy;\n}\n\nconst interval = setInterval(draw, 10);\n\nthis.ondestroy = () \
-=> {\n\tcancelInterval(interval);\n}\n\nreturn canvas;", "Display" -> "js", 
-    "Hash" -> "eed921c1-a1fd-4936-af79-40d5091a780e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>, 
-   <|"Data" -> ".md\n:::note\nAlways ustilize `this.ondestroy` to cancel \
-timers or animations. Otherwise they will continue to run in the background \
-if you reevaluate the same cell\n:::", "Display" -> "codemirror", 
-    "Hash" -> "c8a8ee61-c043-4a2a-a18c-512ce0a2abce", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>, 
-   <|"Data" -> ":::note\nAlways ustilize `this.ondestroy` to cancel timers or \
-animations. Otherwise they will continue to run in the background if you \
-reevaluate the same cell\n:::", "Display" -> "markdown", 
-    "Hash" -> "6f3aa3ba-6863-411d-9dde-56f96f85bf52", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "bcce8a9c-3f58-4418-9b9e-2cf18373edcf"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Bouncing ball in JS
+
+This notebook demonstrates an interactive JavaScript example that creates a bouncing ball animation on a canvas:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Bouncing ball in JS
+
+This notebook demonstrates an interactive JavaScript example that creates a bouncing ball animation on a canvas:
+
+%-------------------------------------------------------------------------%
+Props:
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+const canvas = document.createElement('canvas');
+var ctx = canvas.getContext('2d');
+
+canvas.width = 400;
+canvas.height = 400;
+
+
+const ballRadius = 10;
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = -2;
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBall();
+
+  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+    dx = -dx;
+  }
+  if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+    dy = -dy;
+  }
+
+  x += dx;
+  y += dy;
+}
+
+const interval = setInterval(draw, 10);
+
+this.ondestroy = () => {
+	cancelInterval(interval);
+}
+
+return canvas;
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+const canvas = document.createElement('canvas');
+var ctx = canvas.getContext('2d');
+
+canvas.width = 400;
+canvas.height = 400;
+
+
+const ballRadius = 10;
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = -2;
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBall();
+
+  if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+    dx = -dx;
+  }
+  if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+    dy = -dy;
+  }
+
+  x += dx;
+  y += dy;
+}
+
+const interval = setInterval(draw, 10);
+
+this.ondestroy = () => {
+	cancelInterval(interval);
+}
+
+return canvas;
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+Always ustilize `this.ondestroy` to cancel timers or animations. Otherwise they will continue to run in the background if you reevaluate the same cell
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+Always ustilize `this.ondestroy` to cancel timers or animations. Otherwise they will continue to run in the background if you reevaluate the same cell
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

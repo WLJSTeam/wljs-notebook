@@ -1,7 +1,14 @@
 BeginPackage["CoffeeLiqueur`Notebook`AppExtensions`"]
 
+(*
+    Application Extensions Interface
+    This package defines shared events, templates, directories and objects to be used by the whole application as well as extensions
+*)
+
 AppExtensions;
 ExtensionEvent;
+
+HeaderAssets;
 
 AppEvents;
 AppProtocol;
@@ -30,6 +37,8 @@ Templates;
 TemplateInjection;
 
 Begin["`Internal`"];
+
+HeaderAssets = {};
 
 templates = <||>;
 

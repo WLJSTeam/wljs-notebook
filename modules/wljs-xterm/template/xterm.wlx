@@ -75,14 +75,14 @@ App[request_] := Module[{client, channel, target}, With[{
 
     EventHandler[secret, {
         "Load" -> Function[Null,
-            client = Global`$Client(*`*);
+            client = $CurrentWebSocket(*`*);
             cachedClient = client;
             channel = CreateUUID[];
 
             With[{socket = EventClone[client]},
                 EventHandler[socket, {"Closed" -> Function[Null,
 
-                    Echo["Xterm was destroyed!"];
+                    Echo["[wljs-xterm/xterm] Destroyed the terminal instance."];
                     (*KillProcess[shell];
                     shell = Null;*)
                     ClearAll[client];
@@ -130,7 +130,8 @@ App[request_] := Module[{client, channel, target}, With[{
     <html class="h-full"> 
         <Head AccentColor={accentColor} Title={"xTerm"} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WLJSInterpreterScript/>
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <script type="module" src="/wljs-xterm/dist/kernel.js"></script>
             <WLJSTransportScript PrefixMode={$Env["wsprefix"]} TwoKernels={False} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>

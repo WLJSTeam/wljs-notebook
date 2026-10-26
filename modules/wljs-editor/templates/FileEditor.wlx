@@ -22,7 +22,7 @@ cacheLoad[path_] := With[{},
 cacheUpdate[path_, content_] := cache[path] = content;
 
 save[path_String, log_String, cli_] := With[{},
-    Echo[cache[path]];
+    Echo[cache[path], "[wljs-editor/FileEditor] Cached content being saved: "];
     Export[path, cache[path], "Text"];
     signature[path] = FileDate[path, "Modification"];
 
@@ -44,7 +44,7 @@ save[{new_String, path_String}, log_String, cli_] := With[{},
 updateContentIfModified[path_, Controls_, cli_] := With[{},
     With[{sign = FileDate[path, "Modification"]},
         If[sign =!= signature[path],
-            Echo["FileEditor >> External modification!"];
+            Echo["[wljs-editor/FileEditor] Detected an external modification to the edited file."];
             signature[path] = sign;
 
             With[{content = Import[path, "Text"]},
@@ -62,7 +62,7 @@ Component[path_String, OptionsPattern[]] := With[{
     log = OptionValue["Messanger"]
 },
     EventHandler[EventChannel, {
-        "Loaded" -> Function[Null, With[{cli = Global`$Client(*`*)},
+        "Loaded" -> Function[Null, With[{cli = $CurrentWebSocket(*`*)},
             EventFire[Controls, "Load", <|"Data" -> URLEncode[cacheLoad[path]], "Client" -> cli|>];
             WebUISubmit[UIAutocompleteActivate[], cli];
 
@@ -75,7 +75,7 @@ Component[path_String, OptionsPattern[]] := With[{
                     EventRemove[EventChannel];
                     EventRemove[Controls];
                     TaskRemove[task];
-                    Echo["FileEditor >> Destroyed!"];
+                    Echo["[wljs-editor/FileEditor] Destroyed the file editor."];
                 ]}];
             ];
         ]],
@@ -84,9 +84,9 @@ Component[path_String, OptionsPattern[]] := With[{
             cacheUpdate[path, URLDecode @ content]
         ],
 
-        "Save" -> (save[path, log, Global`$Client(*`*)]&),
+        "Save" -> (save[path, log, $CurrentWebSocket(*`*)]&),
 
-        "SaveAs" -> (save[{#, path}, log, Global`$Client(*`*) ]&),
+        "SaveAs" -> (save[{#, path}, log, $CurrentWebSocket(*`*) ]&),
 
         any_ :> Function[Null,
             EventFire[log, "Warning", "Operation is not possible. This is a text editor"]
@@ -126,11 +126,11 @@ Component[path_String, OptionsPattern[]] := With[{
                         blockUpdates = false;
                         return;
                     }
-                    server.emitt('<EventChannel/>', '"'+content+'"', 'Upload');
+                    server.io.fire('<EventChannel/>', content, 'Upload');
                   },
 
                   eval: (content) => {
-                    server.emitt('<EventChannel/>', '"'+content+'"', 'Eval');
+                    server.io.fire('<EventChannel/>', content, 'Eval');
                   },
 
                   focusNext: () => {},
@@ -144,28 +144,28 @@ Component[path_String, OptionsPattern[]] := With[{
             
             if (api) {
                 api.listener('save', () => {
-                    server.emitt('<EventChannel/>', 'True', 'Save');
+                    server.io.fire('<EventChannel/>', true, 'Save');
                 });
         
                 api.listener('saveas', (ev, path) => {
-                    server.emitt('<EventChannel/>', `"${path}"`, 'SaveAs');
+                    server.io.fire('<EventChannel/>', path, 'SaveAs');
                 });
                 
             } else {
                 window.addEventListener("keydown", function (e) {
                     if (e.ctrlKey && e.key == "s" || e.metaKey && e.key == "s") {
-                        server.emitt('<EventChannel/>', 'True', 'Save');
+                        server.io.fire('<EventChannel/>', true, 'Save');
                         e.preventDefault();
                         return false;
                     }
                     if (e.altKey && e.key == "." || e.metaKey && e.key == ".") {
-                        server.emitt('<EventChannel/>', 'True', 'Abort');
+                        server.io.fire('<EventChannel/>', true, 'Abort');
                         e.preventDefault();
                         return false;
                     }           
                     
                     if (e.altKey && e.key == "2" || e.metaKey && e.key == "2") {
-                        server.emitt('<EventChannel/>', 'True', 'ToggleFocusedCell');
+                        server.io.fire('<EventChannel/>', true, 'ToggleFocusedCell');
                         e.preventDefault();
                         return false;
                     }

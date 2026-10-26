@@ -3,6 +3,11 @@ ElectronMenuComponent = ImportComponent["Components/ElectronMenuComponent.wlx"];
 
 UploadId = CreateUUID[];
 
+UIOpenExplorer = Unique["notebookUI"];
+UIOpenDownloadWindow = Unique["notebookUI"];
+UIOpenCopyLink = Unique["notebookUI"];
+UIOpenWindow = Unique["notebookUI"];
+
 EventHandler[UploadId, Function[payload,
     With[{base64 = payload[[1]], uploadDir = URLDecode[payload[[2]]], filename = payload[[3]]},
       With[{stream = OpenWrite[FileNameJoin[{uploadDir, filename}], BinaryFormat->True]},
@@ -32,20 +37,20 @@ Controller["Duplicate", sidebarId_, __, Secret_] := Function[name,
   With[{decoded = URLDecode[name]},
     CopyFile[decoded, FileNameJoin[{DirectoryName[decoded], StringJoin[FileBaseName[decoded], "-dup", ".", FileExtension[decoded]]}]];
   ];
-  EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];
-  EventFire[Secret, "Change", <|"Client"->$Client|>];
+  EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];
+  EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
 ];
 
 Controller["Reveal", __] := Function[name,
-  WebUISubmit[Global`UIOpenExplorer[FileNameSplit[URLDecode[name]]] (*`*), $Client];
+  WebUISubmit[UIOpenExplorer[FileNameSplit[URLDecode[name]]] (*`*), $CurrentWebSocket];
 ];
 
 Controller["Download", __] := Function[name,
-  WebUISubmit[Global`UIOpenDownloadWindow[name, FileNameTake[name // URLDecode]] (*`*), $Client];
+  WebUISubmit[UIOpenDownloadWindow[name, FileNameTake[name // URLDecode]] (*`*), $CurrentWebSocket];
 ];
 
 Controller["CopyLink", __] := Function[name,
-  WebUISubmit[Global`UIOpenCopyLink[name] (*`*), $Client];
+  WebUISubmit[UIOpenCopyLink[name] (*`*), $CurrentWebSocket];
 ];
 
 
@@ -64,11 +69,11 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
               Then[EventFire[Controls, "RenameFile", {decoded, name}], Function[Null,
                 If[decoded == path,
                 
-                  WebUISubmit[UILocation[URLEncode[name] ], $Client];
+                  WebUISubmit[UILocation[URLEncode[name] ], $CurrentWebSocket];
                 ];
               ]];
             ];
-            EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];
+            EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];
           ,
             If[DirectoryQ[decoded],
               RenameDirectory[decoded, FileNameJoin[Flatten @ {Drop[splitted,-1], name} ]];
@@ -77,12 +82,12 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
 
               Then[EventFire[Controls, "RenameFile", {decoded, FileNameJoin[Flatten @ {Drop[splitted,-1], name} ]}], Function[Null,
                 If[decoded == path,
-                  WebUISubmit[UILocation[URLEncode[ FileNameJoin[Flatten @ {Drop[splitted,-1], name} ] ]], $Client];
+                  WebUISubmit[UILocation[URLEncode[ FileNameJoin[Flatten @ {Drop[splitted,-1], name} ] ]], $CurrentWebSocket];
                 ];
               ]];
             ];
-            EventFire[sidebarId, "Refresh", <|"Client"->$Client|>];   
-            EventFire[Secret, "Change", <|"Client"->$Client|>];     
+            EventFire[sidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>];   
+            EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];     
           ];
         ]
       ]];
@@ -93,11 +98,12 @@ Controller["Rename", sidebarId_, modals_, path_, Controls_, Secret_] := Function
 ];
 
 Controller["Window", __] := Function[name,
-  WebUISubmit[Global`UIOpenWindow[name] (*`*), $Client];
+  WebUISubmit[UIOpenWindow[name] (*`*), $CurrentWebSocket];
 ];
 
 orderlessSameQ[a_List, b_List] := (Length@a == Length@b) && (Sort@Tally@a === Sort@Tally@b);
 
+fileOpQ = StringMatchQ["IO:"~~__]
 
 Component[OptionsPattern[]] :=  Module[{timer, cached},
 With[{
@@ -139,14 +145,14 @@ With[{
         With[{files = FileNames["*", dir, 2]},
           If[!orderlessSameQ[files, cached],
             cached = files;
-            Echo["Refresh sidebar!"];
-            EventFire[SidebarId, "Refresh", <|"Client"->$Client|>]; 
-            EventFire[Secret, "Change", <|"Client"->$Client|>];
+            Echo["[Components/Sidebar] Refreshing the sidebar."];
+            EventFire[SidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>]; 
+            EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
           ]
         ]
       ];
     ],
-    FileOperate[any_] :> Controller[any, SidebarId, modals, Path, Controls, Secret]
+    any_?fileOpQ :> Controller[StringDrop[any, 3], SidebarId, modals, Path, Controls, Secret]
   }];
 
   EventHandler[Button1Id, Function[Null,
@@ -162,8 +168,8 @@ With[{
               With[{path = If[DirectoryQ[Path], Path, DirectoryName[Path]]},
                 CreateDirectory[FileNameJoin[{path, StringTrim[name]}]];
               ];
-              EventFire[SidebarId, "Refresh", <|"Client"->$Client|>]; 
-              EventFire[Secret, "Change", <|"Client"->$Client|>];
+              EventFire[SidebarId, "Refresh", <|"Client"->$CurrentWebSocket|>]; 
+              EventFire[Secret, "Change", <|"Client"->$CurrentWebSocket|>];
             ];
           ];
 
@@ -214,7 +220,7 @@ With[{
     ]
   ,
     <script type="module">
-      core.UIOpenExplorer = async (args, env) => {
+      core['<UIOpenExplorer/>'] = async (args, env) => {
         const filename = await interpretate(args[0], env);
         console.warn(filename);
         
@@ -223,7 +229,7 @@ With[{
         }   
       }
 
-      core.UIOpenDownloadWindow = async (args, env) => {
+      core['<UIOpenDownloadWindow/>'] = async (args, env) => {
         const url = await interpretate(args[0], env);
         const name = await interpretate(args[1], env);
         const  link = document.createElement("a")
@@ -232,7 +238,7 @@ With[{
         link.click();        
       }
 
-      core.UIOpenWindow = async (args, env) => {
+      core['<UIOpenWindow/>'] = async (args, env) => {
         const url = await interpretate(args[0], env);
         const  link = document.createElement("a")
         link.href = '/folder/' + url;
@@ -240,8 +246,9 @@ With[{
         link.click();
       }
 
-      core.UIOpenCopyLink = async (args, env) => {
-       const url = await interpretate(args[0], env);
+      core['<UIOpenCopyLink/>'] = async (args, env) => {
+       let url = await interpretate(args[0], env);
+       url = window.location.origin + '/' + url;
        try {
          await navigator.clipboard.writeText(url);
          console.log('Link copied to clipboard!');
@@ -251,7 +258,7 @@ With[{
       }
 
       setInterval(() => {
-        server.emitt('<Secret/>', 'True', 'CheckFiles');
+        server.io.fire('<Secret/>', true, 'CheckFiles');
       }, 3000);
       const dropZone = document.getElementById('<DropZone/>');
       const dir = '<DirEncoded/>';

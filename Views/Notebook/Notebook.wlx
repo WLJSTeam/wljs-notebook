@@ -13,12 +13,17 @@ KernelIndicator = ImportComponent["Skeleton/KernelIndicator.wlx"];
 
 ElectronBinds  = ImportComponent["Skeleton/ElectronBinds.wlx"];
 
-Global`UINotebook (*`*);
+(* Frontend symbol *)
+UINotebook = Unique["notebookUI"];
 
-ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["Async >> Next"]; ApplySync[f,w, {rest}, final]]]
+ApplySync[f_, w_, {first_, rest___}, final_] := f[w@@first, Function[Null, Echo["[Views/Notebook] Continuing with the next asynchronous step."]; ApplySync[f,w, {rest}, final]]]
 ApplySync[f_, w_, {}, final_] := final[];
 
-
+(* Add cell wrapper tools *)
+(* Assuming that root directory is in the PATH of HTTPHandler *)
+With[{}, (* use with With, so WLX importer won't localize HeaderAssets *)
+    AppExtensions`HeaderAssets = {AppExtensions`HeaderAssets, <|"Type"->"JS", "Path"->"/Views/Common/Assets/wrappers.js"|>} // Flatten // DeleteDuplicates;
+];
 
 trashCell[notebook_, cell_] := Module[{},
     If[!cell`InputCellQ[cell], Return[Null, Module]];
@@ -36,7 +41,7 @@ untrashCell[notebook_, log_, modals_] := Module[{},
     ]; With[{promise = Promise[]},
 
         Then[promise, Function[result, 
-          Echo[StringJoin["Picked cell >> ", ToString[result]]];
+          Echo[StringJoin["[Views/Notebook] Selected cell: ", ToString[result]]];
           Switch[result,
             _Integer, 
                 cell`CellObj[
@@ -66,7 +71,7 @@ getTopic = "1:eJw9kFFKBDEMQEcRFJQVEUT/6gG8xAr6466yPUGnm5kGO8nQZFy8vYmL/oTmvSRN+9
 addAfterHelper[notebook_, uid_] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->"", "After"-> o];   
     ]
 ]
@@ -74,7 +79,7 @@ addAfterHelper[notebook_, uid_] := With[{},
 addAfterHelper[notebook_, {uid_, data_}] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->data, "After"-> o];   
     ]
 ]
@@ -82,7 +87,7 @@ addAfterHelper[notebook_, {uid_, data_}] := With[{},
 addBeforeHelper[notebook_, uid_] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->"", "Before"-> o];   
     ]
 ]
@@ -90,7 +95,7 @@ addBeforeHelper[notebook_, uid_] := With[{},
 addBeforeHelper[notebook_, {uid_, data_}] := With[{},
     (*/* request from the client with event provided */*)
 
-    With[{o = cell`HashMap[uid] (*`*)},
+    With[{o = cell`HashMap[uid] },
         cell`CellObj["Notebook"->notebook, "Data"->data, "Before"-> o];   
     ]
 ]
@@ -99,9 +104,9 @@ addListeners[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     (* /* don't clone Notebook event, must be one ! */ *)
     EventHandler[clonedEvent, {
         "New Cell" -> Function[cell,
-            Echo["New cell"];
+            Echo["[Views/Notebook] Creating a new notebook cell."];
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions], cell`Serialize[cell] , list, secret], client]
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell] , list, secret], client]
             ];
         ],
 
@@ -116,7 +121,7 @@ addListeners[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
         EventHandler[socket, {"Closed" -> Function[Null,
             EventRemove[socket];
             EventRemove[clonedEvent];
-            Echo["addListeners >> destroed listeners"];        
+            Echo["[Views/Notebook] Removed event listeners."];
         ]}];
     ];
 ];
@@ -125,7 +130,7 @@ restoreCells[notebook_nb`NotebookObj, secret_String, client_, parameters_, exten
     Map[
         Function[cell,
             With[{list = #["Hash"] &/@ (cell["Notebook","Cells"])},
-                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] (*`*), client];
+                WebUISubmit[UINotebook["NewCell", CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook], cell`Serialize[cell], list, secret, "IgnoreList" -> True, "FocusFirst" -> True] , client];
             ]
         ]   
     ,    
@@ -137,10 +142,10 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
     promise = If[p === Null, Promise[], p]
 },
     (*/* check if connected already */*)
-    Echo["checkWSLink >> "];
+    Echo["[Views/Notebook] Checking the evaluation-kernel WebSocket link."];
 
     If[notebook["WebSocketQ"] === True, 
-        Echo["checkWSLink >> Already connected"];
+        Echo["[Views/Notebook] The evaluation-kernel WebSocket is already connected."];
         EventFire[promise, Resolve, True];
         Return[];
     ];
@@ -154,7 +159,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                 notebookEvent = EventClone[notebook],
                 spinner = Notifications`Spinner["Topic"->getTopic[], "Body"->"Please, wait"]
             },
-                Echo["checkWSLink >> Asking to connect"];
+                Echo["[Views/Notebook] Requesting an evaluation-kernel WebSocket connection."];
 
                 EventFire[log, spinner, True];
                 EventFire[log, "WebSocket:Kernel:RequestConnection", notebook];
@@ -165,7 +170,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                     EventHandler[notebookEvent, {
                         "AfterWebSocketConnected" -> Function[Null,
                             EventRemove[notebookEvent];
-                            Echo["Resolved! Starting to evaluate!"];
+                            Echo["[Views/Notebook] Kernel connection is ready; starting evaluation."];
                             EventFire[log, "WebSocket:Kernel:Connected", notebook];
                             Delete[spinner];
                             EventFire[promise, Resolve, True];
@@ -187,7 +192,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                             EventRemove[cloned];
                             EventRemove[notebookEvent];
                             EventFire[log, "WebSocket:Kernel:Lost", notebook];
-                            Echo["checkWSLink >> Kernel connection lost >> removing..."];
+                            Echo["[Views/Notebook] Kernel connection was lost; removing its handlers."];
                             notebook["WebSocketQ"] = False;
                         ]
                     }];
@@ -200,7 +205,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
                                 EventRemove[cloned];
                                 EventRemove[notebookEvent];
 
-                                Echo["checkWSLink >> Socket connection lost >> removing handlers"];
+                                Echo["[Views/Notebook] WebSocket connection was lost; removing its handlers."];
                                 EventRemove[promise // First];
                             ]
                         }];
@@ -210,7 +215,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
             ];
         ,
             (*/* subscribe when ready */*)
-            Echo["checkWSLink >> subscribing when ready"];
+            Echo["[Views/Notebook] Waiting for the kernel before subscribing to its WebSocket."];
 
             With[{clone = EventClone[notebook["Evaluator"]["Kernel"]]},
                 EventHandler[clone, {"State" -> Function[Null,
@@ -225,7 +230,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
     ,
         (*/* subscribe when it will be attached */*)
 
-        Echo["checkWSLink >> no Kernel available... >> subscribing"];
+        Echo["[Views/Notebook] No kernel is available; subscribing to kernel availability events."];
 
         With[{cloned = EventClone[notebook]},
             EventHandler[cloned, {"AquairedKernel" -> Function[Null,
@@ -236,7 +241,7 @@ checkWSLink[notebook_, client_, event_String, log_String, p_:Null] := With[{
             With[{socket = EventClone[client]},
                 EventHandler[socket, {"Closed" -> Function[Null,
                     EventRemove[socket];
-                    Echo["checkWSLink >> destroy"];
+                    Echo["[Views/Notebook] Cancelling the pending kernel WebSocket subscription."];
                     EventRemove[cloned];
                     EventRemove[promise // First];
                 ]}];
@@ -251,7 +256,7 @@ requestKernel[notebook_, kernels_, modals_, client_, Success_] := With[{},
     Print["requesting modal...."];
     With[{promise = Promise[]},
         Then[promise, Function[result, 
-          Echo[StringJoin["Picked kernel >> ", ToString[result]]];
+          Echo[StringJoin["[Views/Notebook] Selected kernel: ", ToString[result]]];
           Switch[result,
             _Integer, 
              With[{k = ReleaseHold[kernels][[result]]},
@@ -271,7 +276,7 @@ requestKernel[notebook_, kernels_, modals_, client_, Success_] := With[{},
         ] ] ];
 
         If[Length[ReleaseHold[kernels]] == 1,
-            Echo["Autoselected 1"];
+            Echo["[Views/Notebook] Automatically selected the only available kernel."];
             EventFire[promise, Resolve, 1];    
         ,
             Print["fire!"];
@@ -299,7 +304,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
             cloned = EventClone[win]
         },
             output = Null;
-            Echo["Create a new window"];
+            Echo["[Views/Notebook] Create a new window"];
 
 
 
@@ -325,7 +330,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
 
                     ClearAll[output];
                     Delete[transaction];
-                    Echo["Done! Resolving window promise"];
+                    Echo["[Views/Notebook] Window initialization completed; resolving its promise."];
                     EventFire[promise, Resolve, True];
 
                 ],
@@ -357,7 +362,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
         },
             output = Null;
 
-            Echo["Reload existing window"];
+            Echo["[Views/Notebook] Reload existing window"];
 
             EventHandler[EventClone @ transaction, {
                 "Result" -> Function[data,
@@ -382,7 +387,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
 
                     ClearAll[output];
                     Delete[transaction];
-                    Echo["Done! Resolving window promise"];
+                    Echo["[Views/Notebook] Window initialization completed; resolving its promise."];
                     EventFire[win, "OnReload", True];
                     EventFire[promise, Resolve, True];
 
@@ -430,7 +435,7 @@ projectCellOrUpdate[cell_, notebook_, secret_String, log_String, kernels_, cli_,
                             If[cell["State"] != "Idle",
                                 WebUISubmit[Alert["Cell is still under evaluation"], client];
                             ,
-                                Echo["Success!"];
+                                Echo["[Views/Notebook] Operation completed successfully."];
                                 Then[checkWSLink[notebook, client, secret, log], project];
                             ]
                 ];
@@ -480,7 +485,7 @@ projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_
                 
                 ClearAll[output];
                 Delete[transaction];
-                Echo["Done! Resolving window promise"];
+                Echo["[Views/Notebook] Window initialization completed; resolving its promise."];
                 EventFire[promise, Resolve, True];
                 
             ],
@@ -532,7 +537,7 @@ projectCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals_
                             If[cell["State"] != "Idle",
                                 WebUISubmit[Alert["Cell is still under evaluation"], client];
                             ,
-                                Echo["Success!"];
+                                Echo["[Views/Notebook] Operation completed successfully."];
                                 Then[checkWSLink[notebook, client, secret, log], project];
                             ]
                 ];
@@ -581,7 +586,7 @@ projectCellPromised[cell_, winOpts_, notebook_, secret_String, log_String, kerne
                 
                 ClearAll[output];
                 Delete[transaction];
-                Echo["Done! Resolving window promise"];
+                Echo["[Views/Notebook] Window initialization completed; resolving its promise."];
                 EventFire[promise, Resolve, True];
                 
             ],
@@ -602,11 +607,11 @@ projectCellPromised[cell_, winOpts_, notebook_, secret_String, log_String, kerne
 
         EventHandler[cloned, {
             "AfterWebSocketConnected" -> Function[Null,
-                Echo["Subscribe to window events AfterLoad"];
+                Echo["[Views/Notebook] Subscribe to window events AfterLoad"];
                 EventHandler[cloned, {
                     "AfterLoad" -> Function[Null,
                         EventRemove[cloned];
-                        Echo["Window was loaded, time to resolve promise"];
+                        Echo["[Views/Notebook] Window was loaded, time to resolve promise"];
                         EventFire[finalPromise, Resolve, win];
                     ]
                 }];
@@ -645,7 +650,7 @@ projectCellPromised[cell_, winOpts_, notebook_, secret_String, log_String, kerne
                             If[cell["State"] != "Idle",
                                 WebUISubmit[Alert["Cell is still under evaluation"], client];
                             ,
-                                Echo["Success!"];
+                                Echo["[Views/Notebook] Operation completed successfully."];
                                 Then[checkWSLink[notebook, client, secret, log], project];
                             ]
                 ];
@@ -662,7 +667,7 @@ checkEvaluationCells[currentCell_, notebook_, secret_, log_, kernels_, client_, 
 },
     If[TrueQ[notebook["CellsInitialized"]], Return[Null, Module]];
     notebook["CellsInitialized"] = True;
-    Echo[">> Found initialization cells!"];
+    Echo["[Views/Notebook] Found notebook initialization cells."];
 
     With[{
         rpromise = Promise[],
@@ -674,7 +679,7 @@ checkEvaluationCells[currentCell_, notebook_, secret_, log_, kernels_, client_, 
                         #, notebook, secret, log, kernels, client, modals, parameters, extensions
                     } &/@ Select[notebook["Cells"], TrueQ[#["Props"]["InitGroup"]]&], Function[Null,
                     
-                    Echo[">> Found initialization cells >> done"];
+                    Echo["[Views/Notebook] Finished evaluating notebook initialization cells."];
                     If[TrueQ[currentCell["Props"]["InitGroup"]], 
                         EventFire[promise, Reject, True];
                     ,
@@ -703,11 +708,11 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
 
     With[{},
         If[cell["Type"] == "Output",
-            Echo["Morphing..."];
+            Echo["[Views/Notebook] Morphing the notebook cell into its target type."];
             cell["Type"] = "Input";
 
-            With[{template = CellGenerator[cell, client, parameters, extensions]},
-                WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] (*`*)], client];
+            With[{template = CellGenerator[cell, client, parameters, extensions, "UINotebook"->UINotebook]},
+                WebUISubmit[UINotebook["Morph", cell["Hash"], template, cell`Serialize[cell, "MetaOnly"->True] ], client];
             ];
         ];
     ];
@@ -739,10 +744,10 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
 
                             EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                 Delete[transaction];
-                                Echo["Finished evaluation"];
+                                Echo["[Views/Notebook] Cell evaluation completed."];
                             ], "Error" -> Function[Null,
                                 Delete[transaction];
-                                Echo["Transaction error"];
+                                Echo["[Views/Notebook] Cell evaluation transaction failed."];
                             ]}];
 
                             notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];
@@ -750,7 +755,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                         EventFire[promise, Resolve, True];
                     ],
                     Function[Null,
-                        Echo["Skipping the given cell"];
+                        Echo["[Views/Notebook] Skipping a cell that is not eligible for evaluation."];
                         EventFire[promise, Resolve, True];
                     ]];
                 ]];
@@ -764,17 +769,17 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                         If[cell["State"] != "Idle",
                             WebUISubmit[Alert["Cell is still under evaluation"], client];
                         ,
-                            Echo["Success!"];
+                            Echo["[Views/Notebook] Operation completed successfully."];
                             Then[checkWSLink[notebook, client, secret, log], Function[Null,
                                 Then[checkEvaluationCells[cell, notebook, secret, log, kernels, client, modals, parameters, extensions], Function[Null,
                                     With[{transaction = cell // cell`ToTransaction},
 
                                         EventHandler[transaction // EventClone, {"Finished" -> Function[Null,
                                             Delete[transaction];
-                                            Echo["Finished evaluation"];
+                                            Echo["[Views/Notebook] Cell evaluation completed."];
                                         ], "Error" -> Function[Null,
                                             Delete[transaction];
-                                            Echo["Transaction error"];
+                                            Echo["[Views/Notebook] Cell evaluation transaction failed."];
                                         ]}];
 
                                         notebook["Evaluator"][transaction, <|"Ref" -> cell["Hash"], "Notebook" -> notebook["Hash"], "KernelWebSocket" -> notebook["KernelWebSocket"]|> ];
@@ -783,7 +788,7 @@ evaluateCell[cell_, notebook_, secret_String, log_String, kernels_, cli_, modals
                                     EventFire[promise, Resolve, True];
                                 ],
                                 Function[Null,
-                                    Echo["Skipping the given cell"];
+                                    Echo["[Views/Notebook] Skipping a cell that is not eligible for evaluation."];
                                     EventFire[promise, Resolve, True];
                                 ]
                                 ];
@@ -814,21 +819,24 @@ Script[OptionsPattern[]] := With[{
         <script type="module">
             CellWrapper.inputSaveDelay = <InputSaveDelay/>;
 
-            core.UINotebook = async (args, env) => {
+            core['<UINotebook/>'] = async (args, env) => {
                 const type = await interpretate(args[0], env);
-                return await core.UINotebook[type](args.slice(1), env);
+                return await core['<UINotebook/>'][type](args.slice(1), env);
             }
 
-            core.UINotebook.CreateServer = async (args, env) => {
+            core['<UINotebook/>'].CreateServer = async (args, env) => {
                 server.kernel = new Server('Evaluation Kernel');
                 console.warn("server.kernel :: created, waiting for initialization...");
             }
 
-            core.UINotebook.KernelSocket = async (args, env) => {
-                return await server.kernel.ask('Global`$Client');
+            core['<UINotebook/>'].KernelSocket = async (args, env) => {
+                const raw = await server.kernel.io.fetch('$CurrentWebSocket');
+                console.warn(raw);
+                raw[1] = await interpretate(raw[1], env);
+                return {Head: raw[0], Arg: raw[1]};
             }
 
-            core.UINotebook.WSConnect = async (args, env) => {
+            core['<UINotebook/>'].WSConnect = async (args, env) => {
                 
                 const options = await core._getRules(args, env);
                 const port = await interpretate(args[0], env);
@@ -854,7 +862,7 @@ Script[OptionsPattern[]] := With[{
                 socket.onopen = function(e) {
                   console.warn("[open] Evaluation Kernel");
                   server.kernel.init({socket: socket});
-                  server.emitt(ev, 'True', 'WebSocketConnected');
+                  server.io.fire(ev, true, 'WebSocketConnected');
                 }; 
 
                 
@@ -866,12 +874,12 @@ Script[OptionsPattern[]] := With[{
                   server.kernel.connected = false;
                   server.kernel.dispose();
 
-                  server.emitt(ev, 'True', 'WebSocketLost');
+                  server.io.fire(ev, true, 'WebSocketLost');
                 }; 
                 return {Connected:true};
             }
 
-            core.UINotebook.Morph = async (args, env) => {
+            core['<UINotebook/>'].Morph = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const template = await interpretate(args[1], env);
                 const props = await interpretate(args[2], env);
@@ -879,36 +887,36 @@ Script[OptionsPattern[]] := With[{
                 CellWrapper.morph(uid, template, props);
             } 
 
-            core.UINotebook.UnhideAllCells  = async (args, env) => {
+            core['<UINotebook/>'].UnhideAllCells  = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.unhideAll(uid); 
             }
 
-            core.UINotebook.ToggleCell = async (args, env) => {
+            core['<UINotebook/>'].ToggleCell = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 CellWrapper.toggleCell(uid); 
             }
 
-            core.UINotebook.ToggleInitGroup = async (args, env) => {
+            core['<UINotebook/>'].ToggleInitGroup = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.setInit(uid, state);
             }
-            core.UINotebook.ToggleFade = async (args, env) => {
+            core['<UINotebook/>'].ToggleFade = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.fadeCell(uid, state);
             }      
-            core.UINotebook.ToggleLock = async (args, env) => {
+            core['<UINotebook/>'].ToggleLock = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
                 CellWrapper.lockCell(uid, state);
             }             
 
-            core.UINotebook.ToggleInvisible = async (args, env) => {
+            core['<UINotebook/>'].ToggleInvisible = async (args, env) => {
                 const uid   = await interpretate(args[0], env);
                 const state = await interpretate(args[1], env);
 
@@ -916,14 +924,14 @@ Script[OptionsPattern[]] := With[{
             }      
 
 
-            core.UINotebook.RemoveCell = async (args, env) => {
+            core['<UINotebook/>'].RemoveCell = async (args, env) => {
                 const uid = await interpretate(args[0], env);
                 const ev = await interpretate(args[1], env);
 
                 CellWrapper.remove(uid, ev);
             }        
 
-            core.UINotebook.NewCell = async (args, env) => {
+            core['<UINotebook/>'].NewCell = async (args, env) => {
                 const template = await interpretate(args[0], env);
                 const store    = await interpretate(args[1], env);
                 const list     = await interpretate(args[2], env);
@@ -935,7 +943,7 @@ Script[OptionsPattern[]] := With[{
                 new CellWrapper(template, store, list, ev, opts);
             };;
             <CellGeneratorScript/>;;
-            <EvaluationBarScript/>;;
+            <EvaluationBarScript UINotebook={UINotebook}/>;;
             <ControlsScript/>;;
             <HrScript/>;;
             <DropdownScript/>;;
@@ -945,10 +953,10 @@ Script[OptionsPattern[]] := With[{
 ] 
 
 destructor[notebook_, secret_, __] := With[{},
-    Echo["Notebook.wlx >> Destroy"];
+    Echo["[Views/Notebook] Destroying the notebook view."];
 
-    Echo["!!!!Our socket number!!!!"];
-    Echo[notebook["KernelWebSocket"]];
+    Echo["[Views/Notebook] Notebook kernel WebSocket:"];
+    Echo[notebook["KernelWebSocket"], "[Views/Notebook] Kernel WebSocket being destroyed: "];
     
     (* /* clean up secret and all handlers created */ *)
     EventRemove[secret];
@@ -965,14 +973,14 @@ askForReload[notebook_, controller_, modals_, client_] := Module[{}, With[{promi
 
     notebook["AskedForReload"] = True;
     Then[promise, Function[result,
-        Echo[result];
+        Echo[result, "[Views/Notebook] operation result: "];
         If[TrueQ[result] || result["response"] === 0,
-                Echo["Restoring"];
+                Echo["[Views/Notebook] Restoring notebook state."];
                 Delete /@ (notebook["Cells"]//Reverse);
                 EventFire[controller, "DumpReloadCells", notebook];
                 notebook["AskedForReload"] = False;
         ,
-            Echo["Cancelled"];
+            Echo["[Views/Notebook] Operation was cancelled."];
                 notebook["AskedForReload"] = False;
         ];
     ]];
@@ -984,6 +992,8 @@ askForReload[notebook_, controller_, modals_, client_] := Module[{}, With[{promi
         "title"->"File hash mismatch"
     |>]; 
 ] ]
+
+forwardedQ = StringMatchQ[__~~":"~~__];
 
 (* /*  Exstension API */  *)
 (* /*  Prolog, Epilog, Mesis, EventHandler */  *)
@@ -1022,9 +1032,9 @@ Component[OptionsPattern[]] := With[{
             notebook["SavingInProgress"] = True;
             EventFire[log, "Notebook:Sync:Started", True];
 
-            With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $Client, "Log"->log|>]},
+            With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $CurrentWebSocket, "Log"->log|>]},
                 Then[tt, Function[Null,
-                    Echo["SAVED!!!!!!!!!!!!!!!!!!!!!!!!!!!!"];
+                    Echo["[Views/Notebook] Notebook saved successfully."];
                     EventFire[log, "Notebook:Sync:Finished", True];
                     
                     Then[EventFire[controller, "DumpSave", notebook], Function[Null, 
@@ -1042,10 +1052,10 @@ Component[OptionsPattern[]] := With[{
             EventFire[log, "Notebook:Sync:Started", True];
             
 
-            With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $Client, "Log"->log|>], client = $Client},
+            With[{tt = EventFire[notebook, "OnBeforeSave", <|"Client" -> $CurrentWebSocket, "Log"->log|>], client = $CurrentWebSocket},
 
                 Then[tt, Function[Null,
-                    Echo["SAVEDAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!"];
+                    Echo["[Views/Notebook] Notebook saved to the selected path."];
                     EventFire[log, "Notebook:Sync:Finished", True];
                     Then[EventFire[controller, "DumpSaveAs", <|"Notebook" -> notebook, "Client"-> client, "Path" -> URLDecode[path]|>], Function[Null, 
                         notebook["SavingInProgress"] = False;
@@ -1060,11 +1070,11 @@ Component[OptionsPattern[]] := With[{
 
         "CheckFileHash" -> Function[data, Module[{}, 
             If[!TrueQ[notebook["ProbablyLoaded"]] || TrueQ[notebook["HashCheckInProgress"]] || TrueQ[notebook["SavingInProgress"]], Return[]];
-            Echo["Checking file hash"];
+            Echo["[Views/Notebook] Checking file hash"];
             notebook["HashCheckInProgress"] = True;
             Then[EventFire[controller, "DumpHashCheck", notebook], Function[results,
                 If[Length[Cases[results, "HashMismatchFound"]] > 0,
-                    Echo["Reloading is needed!"];
+                    Echo["[Views/Notebook] Reloading is needed!"];
                     askForReload[notebook, controller, modals, client];
                 ];
                 notebook["HashCheckInProgress"] = False;
@@ -1090,13 +1100,13 @@ Component[OptionsPattern[]] := With[{
         ]]],   
         
         "WindowFocus" -> Function[Null,
-            appGlobals["CurrentNotebook"] = notebook;
+            If[appGlobals =!= Null, appGlobals["CurrentNotebook"] = notebook];
         ],
 
         "ChangeKernel" -> Function[p, Module[{kernel, client, payload = <||>},
             If[AssociationQ[p], payload = p];
 
-            client = Lookup[payload, "Client", $Client];
+            client = Lookup[payload, "Client", $CurrentWebSocket];
 
             If[Length[ReleaseHold @ kernels] == 0, WebUISubmit[Alert["No Kernels are available"], client]; Return[] ];
          
@@ -1117,13 +1127,13 @@ Component[OptionsPattern[]] := With[{
                     If[TrueQ[kernel["ContainerReadyQ"]],
                         EventFire[notebook, "AquairedKernel", True];
                         Then[checkWSLink[notebook, cli, secret, log], Function[Null,
-                            Echo["Kernel was changed!"];
+                            Echo["[Views/Notebook] Notebook evaluation kernel changed."];
 
                             ClearAll[client];
                             ClearAll[kernel]; ClearAll[payload];
                         ] ];
                     ,
-                        Echo[kernel];
+                        Echo[kernel, "[Views/Notebook] kernel: "];
                         WebUISubmit[Alert["Initialization is not complete"], cli];
                     ];
 
@@ -1131,7 +1141,7 @@ Component[OptionsPattern[]] := With[{
 
                     requestKernel[notebook, kernels, modals, cli, Function[Null,
                         Then[checkWSLink[notebook, cli, secret, log], Function[Null,
-                            Echo["Kernel was changed!"];
+                            Echo["[Views/Notebook] Notebook evaluation kernel changed."];
 
                             ClearAll[client];
                             ClearAll[kernel]; ClearAll[payload];
@@ -1143,12 +1153,12 @@ Component[OptionsPattern[]] := With[{
         ] ],
 
         "RestartKernel" -> Function[Null,
-            Echo["Manual Kernel restart"];
+            Echo["[Views/Notebook] Restarting the evaluation kernel manually."];
             notebook["Evaluator"]["Kernel"] // GenericKernel`Restart;
         ],
 
         "ClearOutputs" -> Function[Null,
-            Echo["ClearOutputs"];
+            Echo["[Views/Notebook] Clearing all cell outputs."];
             Delete /@ Select[notebook["Cells"], (cell`OutputCellQ[#] && #["Display"] =!= "markdown") &];
         ], 
         
@@ -1157,18 +1167,18 @@ Component[OptionsPattern[]] := With[{
         ],
         
         "UnhideAllCells" -> Function[Null,
-            WebUISubmit[UINotebook["UnhideAllCells", notebook["Hash"]], $Client];
+            WebUISubmit[UINotebook["UnhideAllCells", notebook["Hash"]], $CurrentWebSocket];
         ],
 
         "ToggleFocusedCell" -> Function[Null,
             With[{focused = notebook["FocusedCell"]},
-                If[MatchQ[focused, _cell`CellObj], WebUISubmit[UINotebook["ToggleCell", focused["Hash"]], $Client] ];
+                If[MatchQ[focused, _cell`CellObj], WebUISubmit[UINotebook["ToggleCell", focused["Hash"]], $CurrentWebSocket] ];
             ]
         ],
 
         "ToggleCell" -> Function[cell,
             With[{},
-                WebUISubmit[UINotebook["ToggleCell", cell["Hash"]], $Client];
+                WebUISubmit[UINotebook["ToggleCell", cell["Hash"]], $CurrentWebSocket];
             ]
         ],        
 
@@ -1186,12 +1196,12 @@ Component[OptionsPattern[]] := With[{
         
         "EvaluateInitCells" -> Function[Null,
             notebook["CellsInitialized"] = True;
-            ApplySync[Then, evaluateCell, {#, notebook, secret, log, kernels, $Client, modals, parameters, extensions} &/@ Select[notebook["Cells"], TrueQ[#["Props"]["InitGroup"]]&], Null]
+            ApplySync[Then, evaluateCell, {#, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions} &/@ Select[notebook["Cells"], TrueQ[#["Props"]["InitGroup"]]&], Null]
         ],
 
         "EvaluateAllCells" -> Function[Null,
             notebook["CellsInitialized"] = True;
-            ApplySync[Then, evaluateCell, {#, notebook, secret, log, kernels, $Client, modals, parameters, extensions} &/@ Select[notebook["Cells"], (#["Type"] === "Input" && !StringTake[#["Data"],3]===".md")& ], Null]
+            ApplySync[Then, evaluateCell, {#, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions} &/@ Select[notebook["Cells"], (#["Type"] === "Input" && !StringTake[#["Data"],3]===".md")& ], Null]
         ],
 
         "Abort" -> Function[Null,
@@ -1208,11 +1218,11 @@ Component[OptionsPattern[]] := With[{
             ], Select[notebook["Cells"], (#["State"] =!= "Idle") &]];
         ],
 
-        "NotebookCellEvaluate" -> Function[cell, evaluateCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellEvaluateTemporal" -> Function[cell, evaluateCellPromised[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellProject" -> Function[cell, projectCell[cell, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellProjectTemporal" -> Function[cell, projectCellPromised[cell, <||>, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
-        "NotebookCellProjectTemporalOpts" -> Function[assoc, projectCellPromised[assoc["Cell"], assoc, notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "NotebookCellEvaluate" -> Function[cell, evaluateCell[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "NotebookCellEvaluateTemporal" -> Function[cell, evaluateCellPromised[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "NotebookCellProject" -> Function[cell, projectCell[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "NotebookCellProjectTemporal" -> Function[cell, projectCellPromised[cell, <||>, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
+        "NotebookCellProjectTemporalOpts" -> Function[assoc, projectCellPromised[assoc["Cell"], assoc, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
         
         
         "NotebookQ" -> Function[Null,
@@ -1227,22 +1237,22 @@ Component[OptionsPattern[]] := With[{
 
         "Load" -> Function[Null,
             Print["Notebook is about to be shown"];
-            Echo[StringJoin["Connected using socket: ", $Client // ToString]];
+            Echo[StringJoin["[Views/Notebook] Connected through WebSocket: ", $CurrentWebSocket // ToString]];
 
             (* /* reset WS connection for sure, in a case of incorrect closed socket */*)
             notebook["WebSocketQ"] = False; 
             notebook["Opened"] = True;
-            notebook["Socket"] = $Client;
+            notebook["Socket"] = $CurrentWebSocket;
             notebook["ModalsChannel"] = modals;
             notebook["MessangerChannel"] = log;
             notebook["Controller"] = controller;
 
-            appGlobals["CurrentNotebook"] = notebook;
+            If[appGlobals =!= Null, appGlobals["CurrentNotebook"] = notebook];
 
             (* /* Destructor */ *)
-            With[{socket = EventClone[Global`$Client(*`*)]},
+            With[{socket = EventClone[$CurrentWebSocket]},
                 EventHandler[socket, {"Closed" -> Function[Null,
-                    Echo[">> SOCKET CLOSED!!!"];
+                    Echo["[Views/Notebook] WebSocket connection closed."];
                     EventRemove[socket];
                     EventFire[appEvents, "Notebook:Close", notebook];
                     EventFire[notebook, "OnClose", True];
@@ -1252,29 +1262,29 @@ Component[OptionsPattern[]] := With[{
             ];
 
             (* /* Add all listeners to a **notebook** */ *)
-            addListeners[notebook, secret, $Client, parameters, extensions];
+            addListeners[notebook, secret, $CurrentWebSocket, parameters, extensions];
 
             (* /* controllers events */ *)
-            Then[EventFire[notebook, "OnBeforeLoad", <|"Client" -> $Client|>], Function[Null,
+            Then[EventFire[notebook, "OnBeforeLoad", <|"Client" -> $CurrentWebSocket|>], Function[Null,
                 (* /* Create a preliminary link to a Kernel */ *)
-                WebUISubmit[UINotebook["CreateServer"], $Client];
+                WebUISubmit[UINotebook["CreateServer"], $CurrentWebSocket];
     
                 (* /* Establish WS Connection to a Kernel (if available) */ *)
-                If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized", Then[checkWSLink[notebook, $Client, secret, log], Echo] ];
+                If[notebook["Evaluator"]["Kernel"]["State"] === "Initialized", Then[checkWSLink[notebook, $CurrentWebSocket, secret, log], Function[result, Echo[result, "[Views/Notebook] Kernel-link check result: "]]] ];
     
                 (* /* Restore cells */ *)
                 If[Length[notebook["Cells"]] > 0, With[{n = notebook}, n["FocusedCell"] = n["Cells"][[1]]] ];
-                restoreCells[notebook, secret, $Client, parameters, extensions];
+                restoreCells[notebook, secret, $CurrentWebSocket, parameters, extensions];
     
                 (*/* finish */*)
                 EventFire[event, "Loaded", notebook];
-                EventFire[controller, "NotebookShown", <|"Client"->$Client, "Notebook"->notebook|>];
+                EventFire[controller, "NotebookShown", <|"Client"->$CurrentWebSocket, "Notebook"->notebook|>];
                 notebook["ProbablyLoaded"] = True;
 
                 If[MemberQ[notebook["Properties"], "AutoconnectKernel"],
-                    Echo["Autoconnecting provided kernel"];
+                    Echo["[Views/Notebook] Autoconnecting provided kernel"];
                     
-                    EventFire[controller, "ChangeKernel", <|"Client"->$Client, "Kernel"->notebook["AutoconnectKernel"]|>];
+                    EventFire[controller, "ChangeKernel", <|"Client"->$CurrentWebSocket, "Kernel"->notebook["AutoconnectKernel"]|>];
                     notebook["AutoconnectKernel"] = .;
                 ];
             ] ];
@@ -1282,76 +1292,77 @@ Component[OptionsPattern[]] := With[{
         ],
 
         "WebSocketConnected" -> Function[Null,
-            Echo["Notebook.wlx >> WebSocket link to evaluation Kernel was established"];
-            Then[WebUIFetch[UINotebook["KernelSocket"], $Client ], Function[data,
+            Echo["[Views/Notebook] Established the WebSocket link to the evaluation kernel."];
+            Then[WebUIFetch[UINotebook["KernelSocket"], $CurrentWebSocket ], Function[data,
                 notebook["WebSocketQ"] = True;
-                notebook["KernelWebSocket"] = data;
-                Then[EventFire[notebook, "OnWebSocketConnected", <|"Client" -> $Client|>], Function[Null,
-                    EventFire[notebook, "AfterWebSocketConnected", <|"Client" -> $Client|>]
+                notebook["KernelWebSocket"] = ToExpression[data["Head"]][data["Arg"]];
+                Echo[StringJoin["[Views/Notebook] Kernel WebSocket object: ", ToString[notebook["KernelWebSocket"], InputForm]]];
+                Then[EventFire[notebook, "OnWebSocketConnected", <|"Client" -> $CurrentWebSocket|>], Function[Null,
+                    EventFire[notebook, "AfterWebSocketConnected", <|"Client" -> $CurrentWebSocket|>]
                 ] ];
             ] ];
         ],
 
         "WebSocketLost" -> Function[Null,
-            Echo["Notebook.wlx >> WebSocket link to evaluation Kernel was LOST"];
+            Echo["[Views/Notebook] Lost the WebSocket link to the evaluation kernel."];
             notebook["WebSocketQ"] = False;
             EventFire[log, "WebSocket:Kernel:Lost", notebook];
 
             (* /* reset a preliminary link */ *)
-            WebUISubmit[UINotebook["CreateServer"], $Client];
+            WebUISubmit[UINotebook["CreateServer"], $CurrentWebSocket];
         ],
 
         "CallDropdown" -> Function[data,
-            Echo[data];
+            Echo[data, "[Views/Notebook] event data: "];
         ], 
 
         "MakeInit" -> Function[uid,
-            Echo["Toggle initialization cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            Echo["[Views/Notebook] Toggling initialization-cell status."];
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"InitGroup" -> !TrueQ[cell["Props", "InitGroup"]]|>];
-                WebUISubmit[UINotebook["ToggleInitGroup", uid, TrueQ[cell["Props", "InitGroup"]]], $Client];
+                WebUISubmit[UINotebook["ToggleInitGroup", uid, TrueQ[cell["Props", "InitGroup"]]], $CurrentWebSocket];
             ]
         ],
 
         "Lock" -> Function[uid,
-            Echo["Lock cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            Echo["[Views/Notebook] Toggling cell edit lock."];
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"Locked" -> !TrueQ[cell["Props", "Locked"]]|>];
-                WebUISubmit[UINotebook["ToggleLock", uid, TrueQ[cell["Props", "Locked"]]], $Client];
+                WebUISubmit[UINotebook["ToggleLock", uid, TrueQ[cell["Props", "Locked"]]], $CurrentWebSocket];
             ]
         ],  
 
         "Hide" -> Function[uid,
-            Echo["Fade cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
-                WebUISubmit[UINotebook["ToggleCell", cell["Hash"]], $Client];
+            Echo["[Views/Notebook] Toggling cell visibility."];
+            With[{cell = cell`HashMap[uid]},
+                WebUISubmit[UINotebook["ToggleCell", cell["Hash"]], $CurrentWebSocket];
             ]            
         ],         
         
         "Fade" -> Function[uid,
-            Echo["Fade cell..."];
-            With[{cell = cell`HashMap[uid](*`*)},
+            Echo["[Views/Notebook] Toggling cell visibility."];
+            With[{cell = cell`HashMap[uid]},
                 cell["Props"] = Join[cell["Props"], <|"Fade" -> !TrueQ[cell["Props", "Fade"]]|>];
-                WebUISubmit[UINotebook["ToggleFade", uid, TrueQ[cell["Props", "Fade"]]], $Client];
+                WebUISubmit[UINotebook["ToggleFade", uid, TrueQ[cell["Props", "Fade"]]], $CurrentWebSocket];
             ]
         ],         
 
         "ClearOutputs" -> Function[uid,
-            Echo["Clear outputs"];
-            With[{cell = cell`HashMap[uid](*`*)},
-                Delete /@ cell`SelectCells[cell["Notebook"]["Cells"], Sequence[cell, __?cell`OutputCellQ]](*`*);
+            Echo["[Views/Notebook] Clearing all cell outputs."];
+            With[{cell = cell`HashMap[uid]},
+                Delete /@ cell`SelectCells[cell["Notebook"]["Cells"], Sequence[cell, __?cell`OutputCellQ]];
             ]
         ],
 
         "Vanish" -> Function[uid,
-            If[!TrueQ[cell`HashMap[uid]["Invisible"](*`*)],
+            If[!TrueQ[cell`HashMap[uid]["Invisible"]],
                 With[{promise = Promise[]},
                     Then[promise, Function[result, 
                         If[TrueQ[result] || (result["response"] === 0),
 
-                            With[{cell = cell`HashMap[uid](*`*)},
+                            With[{cell = cell`HashMap[uid]},
                                 cell["Invisible"] = !TrueQ[cell["Invisible"]];
-                                WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $Client];
+                                WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $CurrentWebSocket];
                             ];
                         ];
                     ]];
@@ -1366,26 +1377,35 @@ Component[OptionsPattern[]] := With[{
 
                 ];
             ,
-                With[{cell = cell`HashMap[uid](*`*)},
+                With[{cell = cell`HashMap[uid]},
                     cell["Invisible"] = !TrueQ[cell["Invisible"]];
-                    WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $Client];
+                    WebUISubmit[UINotebook["ToggleInvisible", uid, TrueQ[cell["Invisible"]]], $CurrentWebSocket];
                 ] 
             ];
         ],
 
-        "Project" -> Function[uid, projectCell[cell`HashMap[uid](*`*), notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "Project" -> Function[uid, projectCell[cell`HashMap[uid], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]],
 
-        "ProjectOrUpdate" -> Function[uid, projectCellOrUpdate[cell`HashMap[uid](*`*), notebook, secret, log, kernels, $Client, modals, parameters, extensions]],
+        "ProjectOrUpdate" -> Function[uidOrArray, 
+            If[ListQ[uidOrArray], 
+              With[{cell = cell`HashMap[uidOrArray[[1]]]},
+                cell["Data"] = Identity[uidOrArray[[2]]];
+                projectCellOrUpdate[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+              ]
+            ,
+                projectCellOrUpdate[cell`HashMap[uidOrArray], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+            ]
+        ],
 
         "UpdateCell" -> Function[payload,
-            With[{cell = cell`HashMap[payload[[1]] ], content = payload[[2]] (*`*)},
-                cell["Data"] = URLDecode[content];
+            With[{cell = cell`HashMap[payload[[1]] ], content = payload[[2]] },
+                cell["Data"] = Identity[content];
                 If[cell["Type"] == "Output",
-                    Echo["Morphing..."];
+                    Echo["[Views/Notebook] Morphing the notebook cell into its target type."];
                     cell["Type"] = "Input";
     
-                    With[{template = CellGenerator[cell, $Client, parameters, extensions]},
-                        WebUISubmit[UINotebook["Morph", payload[[1]], template, cell`Serialize[cell, "MetaOnly"->True]], $Client];
+                    With[{template = CellGenerator[cell, $CurrentWebSocket, parameters, extensions, "UINotebook"->UINotebook]},
+                        WebUISubmit[UINotebook["Morph", payload[[1]], template, cell`Serialize[cell, "MetaOnly"->True]], $CurrentWebSocket];
                     ];
                 ];                
             ];   
@@ -1393,15 +1413,15 @@ Component[OptionsPattern[]] := With[{
 
         "RemoveCell" -> Function[uid,
             trashCell[notebook, cell`HashMap[uid]];
-            cell`HashMap[uid] (*`*) //Delete;
+            cell`HashMap[uid]  //Delete;
             If[Select[notebook["Cells"], Function[c, !TrueQ[c["Invisible"]] && cell`InputCellQ[c]]] === {}, cell`CellObj["Notebook"->notebook, "Data"->""]];
         ],
 
         "SetProperty" -> Function[json,
             Print["Prop set..."];
-            With[{obj = ImportString[json, "JSON"] // Association},
+            With[{obj = json},
                 If[AssociationQ[obj],
-                    With[{c = cell`HashMap[obj["Cell"]]  (*`*), key = obj["Key"]},
+                    With[{c = cell`HashMap[obj["Cell"]]  , key = obj["Key"]},
                         c["Props", key] = obj["Value"];
                     ];
                 ];
@@ -1413,25 +1433,34 @@ Component[OptionsPattern[]] := With[{
         "AddAfterOutputs" -> Function[uid,
             (*/* request from the client with event provided */*)
 
-            With[{o = cell`HashMap[uid] (*`*)},
+            With[{o = cell`HashMap[uid] },
                 cell`CellObj["Notebook"->notebook, "Data"->"", "After"-> Sequence[o, ___?cell`OutputCellQ]];   
             ]
         ],        
 
         "AddBefore" -> (addBeforeHelper[notebook, ##]&),        
 
-        Global`Forwarded[type_] (*`*):> Function[data,
-            (*/* redirected events to Controls */*)
-            Echo["Forward events >> "];
-            If[AssociationQ[data],
-                EventFire[controller, type, Join[data, <|"Notebook"->notebook|>]];
-            ,
-                EventFire[controller, type, data];
-            ]   
-            
+        "Evaluate" -> Function[uidOrArray, 
+            If[ListQ[uidOrArray], 
+             With[{cell = cell`HashMap[uidOrArray[[1]]]}, 
+                cell["Data"] = Identity[uidOrArray[[2]]];
+                evaluateCell[cell, notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+             ],
+             evaluateCell[cell`HashMap[uidOrArray], notebook, secret, log, kernels, $CurrentWebSocket, modals, parameters, extensions]
+            ]
         ],
 
-        "Evaluate" -> Function[celluid, evaluateCell[cell`HashMap[celluid](*`*), notebook, secret, log, kernels, $Client, modals, parameters, extensions]]
+        unknown_?forwardedQ :> Function[data,
+        
+            (*/* Redirect special type of events XX:YY to controls */*)
+            
+            Echo["[Views/Notebook] Forwarding unhandled notebook event:"]; Echo[unknown, "[Views/Notebook] unknown: "];
+            If[AssociationQ[data],
+                EventFire[controller, unknown, Join[data, <|"Notebook"->notebook|>]];
+            ,
+                EventFire[controller, unknown, data];
+            ]                 
+        ]
     }];
 
     With[{nid = notebook["Hash"], mainStyle = If[TrueQ[parameters["Draggable"]], "app-region: drag", "app-region: no-drag"]},
@@ -1466,4 +1495,3 @@ emptyStringFunction[x__] := ""
 sequenceIdentity[first__, rulels___Rule] := first 
 
 {Component, ""&}
-

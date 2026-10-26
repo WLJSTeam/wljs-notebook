@@ -1,0 +1,527 @@
+(* Self-contained HTML export built on the embeddable web components. *)
+
+(* Dynamic exports carry replay machines as inert JSON in the document body. *)
+GetMachinesData[OptionsPattern[]] := With[{
+    data = OptionValue["Data"],
+    dynamicQ = TrueQ[OptionValue["DynamicQ"]]
+},
+    If[dynamicQ,
+        With[{Data = ExportString[data, "ExpressionJSON", "Compact"->1]},
+            {
+                <script type="application/json" id="json-machines-data"><Data/></script>
+            } // ToStringRiffle
+        ],
+        ""
+    ]
+]
+
+Options[GetMachinesData] = {"Data"->{}, "DynamicQ"->False}
+
+pmIncludes[param_, blacklist_List] :=
+Table[
+    Table[
+      FileNameJoin[{WLJSPackages`Packages[i, "name"], StringSplit[j, "/"]} // Flatten]
+    , {j, {WLJSPackages`Packages[i, "wljs-meta", param]} // Flatten}]
+, {i, Select[WLJSPackages`Packages // Keys, (!MemberQ[blacklist, #] && WLJSPackages`Packages[#, "enabled"] && KeyExistsQ[WLJSPackages`Packages[#, "wljs-meta"], param])&]}] // Flatten;
+
+existsOrEmpty[settings_, field_] := If[KeyExistsQ[settings, field], settings[field], {}]
+existsOrTrue[settings_, field_] := If[KeyExistsQ[settings, field], settings[field], True]
+
+assetUrlsToPath[url_] := FileNameJoin[{Directory[], StringSplit[url, "/"]} /. {"" -> Nothing} // Flatten]
+
+ExtensionsJS[Rule["Settings", settings_]] :=
+  Join[
+    With[{Data = Import[#, "Text", Path->{Directory[], "", "/"}]},
+      <script type="module">
+        <Data/>
+      </script>
+    ] &/@ Join[$WLJSInterpreterAssets, $WLJSTransportAssets, assetUrlsToPath/@Select[AppExtensions`HeaderAssets, (#1["Type"] === "JS")&][[All, "Path"]]],
+    With[{Data = Import[#, "Text", Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}]},
+      <script type="module">
+        <Data/>
+      </script>
+    ] &/@ pmIncludes["minjs", existsOrEmpty[settings, "ExportHTMLExclude"]]
+  ] // ToStringRiffle;
+
+ExtensionsStyles[Rule["Settings", settings_]] :=
+  With[{Data = Import[#, "Text", Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}]},
+    <style>
+      <Data/>
+    </style>
+  ] &/@ pmIncludes["styles", existsOrEmpty[settings, "ExportHTMLExclude"]] // ToStringRiffle;
+
+ExtensionsStylesAlt[Rule["Settings", settings_]] :=
+  With[{Data = Import[#, "Text", Path->{FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}]},
+    <style>
+      <Data/>
+    </style>
+  ] &/@ pmIncludes["exportStyles", existsOrEmpty[settings, "ExportHTMLExclude"]] // ToStringRiffle;
+
+ProduceStyles[path_] := With[{},
+  With[{Data = Import[#, "Text"]},
+    <style>
+      <Data/>
+    </style>
+  ] &/@ {FileNameJoin[{path, "Assets", "web-components.css"}]}
+] // ToStringRiffle
+
+GetAssetsData[Rule["Notebook", notebook_]] := If[
+  MemberQ[notebook["Properties"], "RuntimeCache"],
+    StringRiffle[Select[Flatten[{EventFire[NotebookEditorChannel, "GetRuntimeAssetsBundle", notebook["RuntimeCache"]]}], StringQ]],
+    ""
+]
+
+GetWebComponentsScript[root_] := Import[FileNameJoin[{root, "Assets", "web-components.js"}], "Text"]
+
+imageProcessor[i_String, notebook_] := Module[{img, path = StringSplit[i, "/"]},
+  img = {Import[FileNameJoin[{DirectoryName @ notebook["Path"], Drop[path,-1], URLDecode[path // Last]} // Flatten]]} // Flatten // First;
+  StringJoin["data:image/jpeg;base64,", ExportString[img, {"Base64", "JPEG"}, CompressionLevel->0]]
+]
+
+embedImages[str_String, notebook_, settings_] := If[
+  Lookup[settings, "ExportHTMLImages", True] === False,
+  str,
+  StringReplace[str, {
+    RegularExpression["!\\[[\\w| |\\d]*\\]\\(([^):]*)\\)"] :> With[{i = imageProcessor["$1", notebook]},
+      StringJoin["![](", StringReplace[i, "\n"->""], ")"]
+    ],
+    RegularExpression["src=\"\\s?([^):\"=\\>\\<]*).(png|svg|jpeg|jpg|ttf|gif|webm|bmp)\"\\s?"] :> With[{i = imageProcessor[StringJoin["$1", ".", "$2"], notebook]},
+      StringJoin["src=\"", StringReplace[i, "\n"->""], "\" "]
+    ]
+  }]
+]
+
+embedImages[any_, _, _] := any
+
+fixLinks[str_] := StringReplace[str, {
+    RegularExpression["\\[([^\\[^\\]]*)\\]\\(\\/([^\\[^\\]]+)\\)"] :> StringJoin["[$1]", "($2"],
+    RegularExpression["src=\"\\/([^\"]+)\""] :> StringJoin["src=\"", "$1", "\""],
+    RegularExpression["href=\"\\/([^\"]+)\""] :> StringJoin["href=\"", "$1", "\""]
+}]
+
+fixMarkdownBug[""] := ""
+fixMarkdownBug[str_String] := If[StringTake[str,1] == ">", StringDrop[str,1], str]
+
+wrapHTML[str_String] := StringJoin["<", "wljs-html encoded=\"true\"", ">", URLEncode[str], "<", "/", "wljs-html>"]
+
+defaultMarkdownTransformer[data_String] := StringJoin[
+  "<", "wljs-editor display=\"markdown\" type=\"Output\"", ">",
+  "<", "xmp", ">", data, "<", "/", "xmp", ">",
+  "<", "/", "wljs-editor", ">"
+]
+
+transformCell[cell_, "Input", "markdown", _, _] := Nothing
+transformCell[cell_, "Output", "markdown", notebook_, settings_] := needsTransform[fixLinks @ fixMarkdownBug @ embedImages[cell["Data"], notebook, settings]]
+
+transformCell[cell_, "Output", "html", notebook_, settings_] := wrapHTML @ fixLinks @ embedImages[cell["Data"], notebook, settings]
+
+transformCell[cell_, "Input", "codemirror", _, _] := With[{
+    display = cell["Display"],
+    data = cell["Data"]
+},
+    If[!(!TrueQ[cell["Props"]["Hidden"]] && !TrueQ[cell["Invisible"]] && StringLength[StringTrim[data]] > 0),
+        Nothing,
+        StringJoin["<", "wljs-editor ", "display=\"", display, "\" ", "type=\"Input\" ", If[TrueQ[cell["Props"]["Fade"]], "fade=\"true\"", ""], " ", ">", "<", "xmp", ">", data, "<", "/", "xmp", ">", "<", "/", "wljs-editor", ">"]
+    ]
+]
+
+transformCell[cell_, "Output", "mjs" | "js" | "javascript", _, _] := With[{
+    display = cell["Display"],
+    data = cell["Data"]
+},
+    StringJoin["<", "wljs-editor ", "display=\"", display, "\" ", "type=\"Output\" ", "encoded=\"true\" class=\"wljs-hide-undefined\"", " ", ">", URLEncode[data], "<", "/", "wljs-editor", ">"]
+]
+
+transformCell[cell_, "Output", display_, notebook_, settings_] := With[{
+    data = If[MemberQ[{"slide", "slides", "wlx"}, display], embedImages[cell["Data"], notebook, settings], cell["Data"]]
+},
+    StringJoin["<", "wljs-editor ", "display=\"", display, "\" ", "type=\"Output\" ", If[TrueQ[cell["Props"]["Fade"]], "fade=\"true\"", ""], " ", ">", "<", "xmp", ">", data, "<", "/", "xmp", ">", "<", "/", "wljs-editor", ">"]
+]
+
+transformCell[cell_, notebook_, settings_] := transformCell[cell, cell["Type"], cell["Display"], notebook, settings]
+
+stripHTMLTags[s_String] := StringReplace[s, Uncompress["1:eJxTTMoPSmNmYGAoZgESPpnFJWlMMF5QaU5qMCOQoRIMJBhQJSCaBIBEcElRZl66a0VBUWpxcWZ+HliLTRqILOYAqU4tSE0sSU0p5gVywvOLUpwzEosSk0tSi8Aq7UgzHKTORp9E0wFHSzGb"]]
+stripHTMLTags[_] := ""
+
+getTitle[notebook_] := With[{inputs = Select[notebook["Cells"], cell`InputCellQ]},
+  With[{markdown = Select[inputs, StringMatchQ[#["Data"], ".md\n"~~__]&]},
+    If[Length[markdown] == 0,
+      "WLJS Notebook",
+      With[{r = StringCases[markdown[[1]]["Data"], RegularExpression[".md\n#+(.*)"] :> "$1"]},
+        stripHTMLTags[If[Length[r] == 0, StringSplit[markdown[[1]]["Data"], "\n"][[2]], r[[1]]]]
+      ]
+    ]
+  ]
+]
+
+generateCompressed[notebook_] := With[{
+    temporal = File[CreateFile[]],
+    savedObjects = If[MemberQ[notebook["Properties"], "Objects"], notebook["Objects"], <||>],
+    savedSymbols = If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>]
+}, {
+    stream = OpenWrite[temporal, DOSTextFormat->False]
+},
+    (* temporary remove them *)
+    notebook["Objects"] = <||>;
+    notebook["Symbols"] = <||>;
+
+    nb`SerializeToStream[stream, notebook];
+    
+    notebook["Objects"] = savedObjects;
+    notebook["Symbols"] = savedSymbols;   
+
+    Close[stream];
+    With[{payload = ReadByteArray[temporal,  TimeConstraint->10]},
+        DeleteFile[temporal];
+        payload // Compress
+    ]
+]
+
+compress[expr_ByteArray] := With[{arr = Normal[expr ]}, BaseEncode[ByteArray[Developer`RawCompress[arr] ] ] ]
+
+exportStore[notebook_] := Block[{
+    $Context = "dsc$`",
+    $ContextPath = {"dsc$`", "Global`", "System`"}
+}, With[{
+    objs = ExportByteArray[#["Public"] &/@ If[MemberQ[notebook["Properties"], "Objects"], notebook["Objects"], <||>], "ExpressionJSON", "Compact"->1] // compress,
+    syms = ExportByteArray[If[MemberQ[notebook["Properties"], "Symbols"], notebook["Symbols"], <||>], "ExpressionJSON", "Compact"->1] // compress
+  },
+    StringJoin["{\n\"objects\":\"", objs, "\", \n\"symbols\":\"", syms, "\"\n}"]
+] ]
+
+scriptSafeJSON[str_String] := str
+
+metaCell[] := StringJoin["<", "wljs-store id=\"wljs-store\"", ">", "<", "/", "wljs-store", ">", "\r\n\n"]
+
+hexColor = (IntegerDigits[ToExpression@StringReplace[#, "#" -> "16^^"], 256, If[StringLength[#] > 7, 4, 3]]) &;
+
+(* Blob URLs adapt embedded payloads to wljs-store; replay code is dynamic-only. *)
+Component[OptionsPattern[]] := Module[{accentColor, mainClass, bodyClass}, With[{
+    notebook = OptionValue["Notebook"],
+    ExtensionTemplates = OptionValue["ExtensionTemplates"],
+    RootStyles = ProduceStyles[OptionValue["Root"]],
+    settings = OptionValue["Settings"],
+    FrontEndCustomCSS = If[KeyExistsQ[OptionValue["Settings"], "FrontEndCustomCSS"] && StringLength[OptionValue["Settings"]["FrontEndCustomCSS"]] > 0,
+      With[{CSSValue = OptionValue["Settings"]["FrontEndCustomCSS"]},
+        <style>
+          <CSSValue/>
+        </style>
+      ],
+      ""
+    ],
+    markdownTransformer = Replace[OptionValue["MarkdownTransformer"], Automatic -> defaultMarkdownTransformer],
+    StoreData = scriptSafeJSON[exportStore[OptionValue["Notebook"]]],
+    WebComponentsScript = GetWebComponentsScript[OptionValue["Root"]],
+    dynamicQ = TrueQ[OptionValue["DynamicQ"]],
+    machinesData = OptionValue["MachinesData"],
+    MachinesRuntime = If[TrueQ[OptionValue["DynamicQ"]],
+      StringRiffle[{
+        "const wljsMachinesData = document.getElementById(\"json-machines-data\").textContent;",
+        "const wljsMachinesURL = URL.createObjectURL(new Blob([wljsMachinesData], {type: \"application/json\"}));",
+        "document.getElementById(\"wljs-store\").setAttribute(\"kernel\", wljsMachinesURL);",
+        "window.addEventListener(\"pagehide\", () => URL.revokeObjectURL(wljsMachinesURL), {once: true});"
+      }, "\n"],
+      ""
+    ],
+    MachinesRunners = If[TrueQ[OptionValue["DynamicQ"]],
+      Import[FileNameJoin[{OptionValue["Root"], "DynamicsTools", "Runners.js"}], "Text"],
+      ""
+    ],
+    DocumentTitle = getTitle[OptionValue["Notebook"]],
+    CompressedNotebook = generateCompressed[OptionValue["Notebook"]]
+  },
+
+  accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env(*`*), "AccentColor", "#f67070"], c]];
+
+  With[{
+    data = Map[Function[s, If[StringQ[s], s, markdownTransformer[s[[1]]]]], Flatten @ {metaCell[], transformCell[#, notebook, settings]& /@ notebook["Cells"]}],
+    p = Promise[],
+    AccentColor = accentColor,
+    EditorTintColor = With[{h = hexColor[accentColor]}, StringTemplate["rgb(`` `` `` / 5%)"][h[[1]], h[[2]], h[[3]]]],
+    AccentColor25 = With[{h = hexColor[accentColor]}, StringTemplate["rgb(`` `` `` / 25%)"][h[[1]], h[[2]], h[[3]]]]
+  },
+
+    mainClass = If[existsOrTrue[settings, "ExportHTMLAutomaticDark"], "dark:bg-black bg-white", ""];
+    bodyClass = If[existsOrTrue[settings, "ExportHTMLAutomaticDark"], "dark:invert dark:contrast-75 dark:brightness-5 dark:hue-rotate-180", ""];
+
+    Then[data, Function[resolvedStrings,
+      EventFire[p, Resolve,
+        With[{EmbeddedCells = StringRiffle[embedImages[#, notebook, settings]& /@ resolvedStrings, "\r\n\r\n"]},
+          {"<!DOCTYPE html>",
+          <html class="h-full {mainClass}" os="Browser">
+            <head>
+              <meta charset="UTF-8"/>
+              <meta serializer="hsfn-5"/>
+              <title><DocumentTitle/></title>
+              <RootStyles/>
+              <ExtensionsStyles Settings={settings}/>
+              <ExtensionsStylesAlt Settings={settings}/>
+              <ExtensionsJS Settings={settings}/>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+              <style>
+                body {
+                    font-family: system-ui;
+                    padding: 1rem;
+                    padding-top: 0.5rem;
+                }
+                wljs-editor {
+                    font-family: monospace;
+                    position: relative;
+                    display: block;
+                    padding-left: 0.5rem;
+                    margin-bottom: 0.75rem;
+                    font-size: small;
+                }
+                wljs-editor[type="Input"]:after {
+                    background: #d5d5d5;
+                    position: absolute;
+                    width: 0.15rem;
+                    border-radius: 0.25rem;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    content: "";
+                }
+                .wljs-document-layout {
+                    display: grid;
+                    grid-template-columns: minmax(0, 1fr);
+                    gap: 2rem;
+                    align-items: start;
+                }
+                .wljs-document-layout[data-outline="visible"] {
+                    grid-template-columns: minmax(0, 1fr) 16rem;
+                }
+                .wljs-document-layout main {
+                    min-width: 0;
+                }
+                #sidebar-right {
+                    position: sticky;
+                    top: 1rem;
+                    max-height: calc(100vh - 2rem);
+                    overflow-y: auto;
+                    padding: 0.75rem;
+                    border-radius: 0.5rem;
+                    font-size: 0.875rem;
+                    line-height: 1.3;
+                    scrollbar-width: thin;
+                }
+                #sidebar-right[hidden] {
+                    display: none;
+                }
+                .wljs-outline-title {
+                    margin: 0 0 0.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    letter-spacing: 0.04em;
+                    text-transform: uppercase;
+                    opacity: 0.65;
+                }
+                .wljs-outline-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.125rem;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+                .wljs-outline-link {
+                    display: block;
+                    padding: 0.3rem 0.4rem;
+                    border-radius: 0.3rem;
+                    color: inherit;
+                    text-decoration: none;
+                    opacity: 0.72;
+                    overflow-wrap: anywhere;
+                }
+                .wljs-outline-link:hover {
+                    background: color-mix(in srgb, currentColor 7%, transparent);
+                    opacity: 1;
+                }
+                .wljs-outline-link[aria-current="location"] {
+                    color: var(--system-accent-color);
+                    background: color-mix(in srgb, var(--system-accent-color) 12%, transparent);
+                    opacity: 1;
+                }
+                .wljs-outline-footer {
+                    margin-top: 0.5rem;
+                    padding-top: 0.5rem;
+                    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+                }
+                .wljs-outline-open {
+                    display: inline-block;
+                    color: inherit;
+                    text-decoration: none;
+                    font-size: 0.75rem;
+                    opacity: 0.55;
+                }
+                .wljs-outline-open:hover {
+                    color: var(--system-accent-color);
+                    text-decoration: underline;
+                    opacity: 1;
+                }
+                main :is(h1, h2, h3, h4, h5, h6) {
+                    scroll-margin-top: 1rem;
+                }
+                @media (max-width: 1023px) {
+                    .wljs-document-layout[data-outline="visible"] {
+                        grid-template-columns: minmax(0, 1fr);
+                    }
+                    #sidebar-right {
+                        display: none;
+                    }
+                }
+                :root{--system-accent-color: <AccentColor/>; --system-accent-color-25: <AccentColor25/>; accent-color: <AccentColor/>; --editor-selected-tint: <EditorTintColor/>;}
+              </style>
+              <GetAssetsData Notebook={notebook}/>
+              <FrontEndCustomCSS/>
+              <script id="wljs-store-data" type="application/json"><StoreData/></script>
+            </head>
+            <body class="{bodyClass}" style="margin:0">
+              <GetMachinesData Data={machinesData} DynamicQ={dynamicQ}/>
+              <div>
+                <div class="px-2" id="frame">
+                  <div id="wljs-document-layout" class="wljs-document-layout h-full relative" data-outline="hidden" style="width: calc(100vw - 2rem);">
+                    <main class="grow">
+                      <EmbeddedCells/>
+                    </main>
+                    <aside id="sidebar-right" aria-label="Document outline" hidden="true">
+                      <div class="wljs-outline-title">Document outline</div>
+                      <nav aria-label="Table of contents">
+                        <ol class="wljs-outline-list"></ol>
+                      </nav>
+                      <div class="wljs-outline-footer">
+                        <a id="wljs-open-in-app" class="wljs-outline-open" href="#">Open in WLJS</a>
+                      </div>
+                    </aside>
+                  </div>
+                </div>
+              </div>
+              <script type="module">
+                const wljsStoreData = JSON.parse(document.getElementById("wljs-store-data").textContent);
+                wljsStoreData.objects = JSON.parse(await interpretate.unzlib64String(wljsStoreData.objects));
+                wljsStoreData.symbols = JSON.parse(await interpretate.unzlib64String(wljsStoreData.symbols));
+                const wljsStorePayload = JSON.stringify(wljsStoreData);
+                const wljsStoreURL = URL.createObjectURL(new Blob([wljsStorePayload], {type: "application/json"}));
+                document.getElementById("wljs-store").setAttribute("json", wljsStoreURL);
+                window.addEventListener("pagehide", () => URL.revokeObjectURL(wljsStoreURL), {once: true});
+                <MachinesRuntime/>
+
+                const wljsOutlineLayout = document.getElementById("wljs-document-layout");
+                const wljsOutlineMain = wljsOutlineLayout.querySelector("main");
+                const wljsOutline = document.getElementById("sidebar-right");
+                const wljsOutlineList = wljsOutline.querySelector(".wljs-outline-list");
+                const wljsOpenInApp = document.getElementById("wljs-open-in-app");
+                const wljsSourceURL = new URL(window.location.href);
+                wljsSourceURL.hash = "";
+                wljsOpenInApp.href = "wljs-url-message://" + encodeURIComponent(JSON.stringify({type: "open_html", url: wljsSourceURL.href}));
+                let wljsOutlineHeadings = [];
+                let wljsOutlineLinks = new Map();
+
+                const wljsHeadingId = (heading, index) => {
+                  if (heading.id) return heading.id;
+
+                  const base = heading.textContent
+                    .trim()
+                    .normalize("NFKD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLocaleLowerCase()
+                    .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+                    .replace(/^-+|-+$/g, "") || "section-" + (index + 1);
+
+                  let candidate = base;
+                  let suffix = 2;
+                  while (document.getElementById(candidate)) {
+                    candidate = base + "-" + suffix++;
+                  }
+
+                  heading.id = candidate;
+                  return candidate;
+                };
+
+                const wljsUpdateActiveOutlineItem = () => {
+                  if (wljsOutlineHeadings.length === 0) return;
+
+                  const marker = Math.min(160, window.innerHeight * 0.2);
+                  let active = wljsOutlineHeadings[0];
+                  for (const heading of wljsOutlineHeadings) {
+                    if (Math.sign(heading.getBoundingClientRect().top - marker) !== 1) active = heading;
+                    else break;
+                  }
+
+                  for (const [heading, link] of wljsOutlineLinks) {
+                    if (heading === active) link.setAttribute("aria-current", "location");
+                    else link.removeAttribute("aria-current");
+                  }
+                };
+
+                const wljsBuildOutline = () => {
+                  const headings = Array.from(wljsOutlineMain.querySelectorAll("h1, h2, h3, h4, h5, h6"))
+                    .filter((heading) => heading.textContent.trim().length !== 0 && !heading.closest("[hidden], template"));
+
+                  if ([0, 1, 2].includes(headings.length)) {
+                    wljsOutline.hidden = true;
+                    wljsOutlineLayout.dataset.outline = "hidden";
+                    wljsOutlineList.replaceChildren();
+                    wljsOutlineHeadings = [];
+                    wljsOutlineLinks = new Map();
+                    return;
+                  }
+
+                  const minLevel = Math.min(...headings.map((heading) => Number(heading.tagName.slice(1))));
+                  const items = headings.map((heading, index) => ({
+                    heading,
+                    id: wljsHeadingId(heading, index),
+                    level: Number(heading.tagName.slice(1)),
+                    label: heading.textContent.trim().replace(/\s+/g, " ")
+                  }));
+                  const fragment = document.createDocumentFragment();
+
+                  for (const item of items) {
+                    const listItem = document.createElement("li");
+                    const link = document.createElement("a");
+                    link.className = "wljs-outline-link";
+                    link.href = "#" + encodeURIComponent(item.id);
+                    link.textContent = item.label;
+                    link.style.paddingInlineStart = (0.4 + (item.level - minLevel) * 0.75) + "rem";
+                    link.addEventListener("click", () => {
+                      requestAnimationFrame(wljsUpdateActiveOutlineItem);
+                    });
+                    listItem.appendChild(link);
+                    fragment.appendChild(listItem);
+                    wljsOutlineLinks.set(item.heading, link);
+                  }
+
+                  wljsOutlineList.replaceChildren(fragment);
+                  wljsOutlineHeadings = items.map(({heading}) => heading);
+                  wljsOutline.hidden = false;
+                  wljsOutlineLayout.dataset.outline = "visible";
+                  wljsUpdateActiveOutlineItem();
+                };
+
+                window.addEventListener("scroll", wljsUpdateActiveOutlineItem, {passive: true});
+                wljsBuildOutline();
+
+                <MachinesRunners/>
+                <WebComponentsScript/>
+              </script>
+              <script id="wljs-notebook-compressed" type="text/plain"><CompressedNotebook/></script>
+            </body>
+          </html>} // StringRiffle
+        ]
+      ];
+    ], Function[error,
+      EventFire[p, Reject, error];
+    ]];
+
+    p
+  ]
+]];
+
+Options[Component] = {
+    "MarkdownTransformer"->Automatic,
+    "Title"->"Example", "Notebook"->"",
+    "MachinesData"->{},
+    "ExtensionTemplates"->{}, "Settings"-><||>, "Root"->"", "DynamicQ"->False
+}
+
+Component

@@ -35,7 +35,7 @@ Component[OptionsPattern[]] := With[{
 
 EventHandler[Event, {
     "Ok" -> Function[result,
-        Echo["Result:"]; Echo[result];
+        Echo["[wljs-editor/MessageDialog] Operation result:"]; Echo[result, "[wljs-editor/MessageDialog] operation result: "];
         
         EventFire[objectsLoader, "Destroy", <|"Client"->client|>];
         EventFire[ModalController, "Close", True];
@@ -132,7 +132,7 @@ EventHandler[OnLoad, Function[Null,
                  document.removeEventListener('keydown', keyListener);
                  //element.removeEventListener('click', submit);
                  window.removeEventListener('click', close);  
-                 server.emitt('<Event/>', index + 1, 'Ok');
+                 server.io.fire('<Event/>', index + 1, 'Ok');
                  submit = () => {};
              };
 
@@ -140,7 +140,7 @@ EventHandler[OnLoad, Function[Null,
                  document.removeEventListener('keydown', keyListener);
                  //element.removeEventListener('click', submit);
                  if (noButtons) window.removeEventListener('click', close);  
-                 server.emitt('<Event/>', 'Null', 'Cancel');
+                 server.io.fire('<Event/>', null, 'Cancel');
              };
 
             if (noButtons) window.addEventListener('click', close);   

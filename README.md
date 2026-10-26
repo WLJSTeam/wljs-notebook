@@ -104,6 +104,11 @@ Official desktop releases are digitally signed. See [Code signing](#code-signing
 
 If WLJS helped with your research, teaching, visualization, or application, please share a screenshot, notebook, repository, or short write-up. Community examples are one of the best ways to help new users understand what is possible.
 
+# Acknowledgments
+
+WLJS Notebook is made possible by the people who support its continued development. Thank you to everyone listed below and to everyone, who contributes code, documentation, bug reports, ideas, and encouragement.
+See [ACKNOWLEDGMENTS.md](./ACKNOWLEDGMENTS.md) for the full list ❤️
+
 ## Contributing
 
 Contributions do not need to start with a large code change. You can help by:
@@ -142,6 +147,13 @@ You can also help by:
 
 WLJS does not transfer information to networked systems unless requested by the person installing or operating it. See the [privacy and security policy](SECURITY.md) for details.
 
+
+## AI usage disclosure
+We used LLM to refactor these sources:
+
+- modules/wljs-export-html/Formats/Mathematica/Mathematica.wl (Completely rewritten NB format converter to WLN)
+- Electron/main.js (Refactored desktop wrapper)
+- Electron/QuickLook (Fully generated QuickLook extension for MacOS)
 
 
 ## Code signing

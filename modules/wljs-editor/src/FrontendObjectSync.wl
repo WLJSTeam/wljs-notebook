@@ -4,8 +4,9 @@ BeginPackage["CoffeeLiqueur`Extensions`FrontendObject`Sync`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Misc`Language`",
+    "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`Extensions`Editor`"
 }]
 
@@ -20,16 +21,14 @@ Begin["`Private`"]
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
-syncMonitor = ImportComponent[FileNameJoin[{rootDir, "templates", "SyncMonitor.wlx"}] ];
-
 EventHandler[NotebookEditorChannel // EventClone, {
     "FetchFrontEndObject" -> Function[data,
-           Echo["Sync >> requested from master kernel"];
+           Echo["[wljs-editor/FrontendObjectSync] Master kernel requested frontend-object synchronization."];
            With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]}, 
                 (* [FIXME] Include these symbols normally using Needs[] *)
                 (* we release any possible deferred compression wrappers *)
-                With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Public"]},
-                    With[{c =  CoffeeLiqueur`Extensions`FrontendObject`Internal`releaseCompression[result]},
+                With[{result = Lookup[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ], "Public", CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Private"]]},
+                    With[{c =  result},
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, c ] ];
                     ];
                 ];
@@ -37,76 +36,33 @@ EventHandler[NotebookEditorChannel // EventClone, {
     ]
 }];
 
-syncMonitorConstructor[uids_List, opts_Association, title_String: "Syncing data"] := LeakyModule[{
-    object, 
-    monitor = CreateUUID[], 
-    time = AbsoluteTime[],
-    cnt = 0,
-    controller = CreateUUID[]
-},
-
-    If[Length[uids] < 3, 
+fetchFromKernel[keys_, kernel_, test_, default_, function_] := With[{promise = Promise[], prePromise = Promise[]}, {
+    watchdog = SetTimeout[
+            Echo["[wljs-editor/FrontendObjectSync] Kernel fetch request timed out!"];
+            EventFire[promise, Resolve, $TimedOut], 
+        1000 12]
+}, 
+    Then[prePromise, Function[results,
+        TaskRemove[watchdog];
+        EventFire[promise, Resolve, If[test[results], results, default]];
+    ]];
     
-        EventHandler[monitor, Function[Null,
-            cnt = cnt + 1;
-            Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-        ] ];
-
-        object /: Delete[object] := (
-            EventRemove[monitor];
-            ClearAll[cnt];
-            ClearAll[time];
-            ClearAll[controller];
-            ClearAll[object];
-            Echo["SyncMonitor >> removed"];
-        );
-
-        Return[{object, monitor}];
+    GenericKernel`SendAsync[kernel, 
+        EventFire[
+            Internal`Kernel`RemoteEvent[prePromise // First], 
+            Resolve, 
+            function[keys]
+        ] 
     ];
 
-    With[{notification = Notifications`Custom["Topic"->title, "Body"->syncMonitor[controller], "Controls"->False]},
-        
-        object /: Delete[object] := (
-            EventRemove[monitor];
-            EventRemove[controller];
-            ClearAll[cnt];
-            ClearAll[time];
-            ClearAll[object];
-            ClearAll[controller];
-            Delete[notification];
-            Echo["SyncMonitor >> removed"];
-        );
-        
-        EventHandler[monitor, Function[Null,
-            cnt = cnt + 1;
-            Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-            With[{t = AbsoluteTime[]},
-                If[t - time > 2,
-                    Echo["SyncMonitor >> Too long"];
+    promise
+]; 
 
-                    EventFire[opts["Log"], notification, True];
-                    EventFire[controller, "Sync", <|"Client"->opts["Client"], "Current"->cnt, "Total"->Length[uids] |>];
-
-                    EventHandler[monitor, Function[Null,
-                        cnt = cnt + 1;
-                        Echo["SyncMonitor >> Syncing "<>ToString[cnt]<>" out of "<>ToString[Length[uids] ] ];
-                        EventFire[controller, "Sync", <|"Client"->opts["Client"], "Current"->cnt, "Total"->Length[uids] |>];
-                    ] ];
-                ];
-            ];
-        ] ];
-
-
-    ];
-
-    {object, monitor}
-]
-
-WLJSTransportHandler["GetSymbol"] = Function[{expr, client, callback},
-              Print["evaluating cached symbol"];
-              With[{name = StringDrop[StringDrop[ToString[expr], StringLength["Hold["] ], -1]},
+WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
+              Echo["[wljs-editor/FrontendObjectSync] Getting cached symbol"];
+              With[{name = exprString},
                 If[KeyExistsQ[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, name],
-                    Print[name];
+                    Echo[name, "[wljs-editor/FrontendObjectSync] name: "];
                     callback[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols[name] ]
                 ,
                     callback[$Failed]
@@ -123,27 +79,204 @@ filterEmptyOrFailed[keys_, values_] := With[{t = {keys, values} // Transpose},
     Select[t, Function[val, !FailureQ[val[[2]]] && val[[2]] =!= False ] ] // Transpose
 ]
 
-(* [TODO] [REFACTOR] *)
+(* Good enough*)
+
+(* Just a fast parser for Compressed data *)
+(* main feature: it does not evaluate any symbols *)
+
+stringsFromCompressed[compressed_String] := Module[{
+    badTag
+    ,
+    stringTag
+    ,
+    fields
+    ,
+    bytes
+    ,
+    data
+    ,
+    dataLength
+    ,
+    position = 1
+    ,
+    require
+    ,
+    readInt32LE
+    ,
+    decodeString
+    ,
+    readObject
+    ,
+    harvested
+    ,
+    isFrontEndExecutableHead
+    ,
+    frontEndExecutableBytes
+},
+    Catch[
+        fields = StringSplit[StringTrim[compressed], ":", 2];
+        If[Length[fields] =!= 2 || First[fields] =!= "1",
+            Throw["expected a version-1 prefix", badTag]
+        ];
+        bytes = Quiet @ Check[Developer`RawUncompress[Normal @ BaseDecode[Last[fields]]], $Failed];
+        If[!MatchQ[bytes, {_Integer..}],
+            Throw["bad zlib stream", badTag]
+        ];
+        If[Take[bytes, UpTo[4]] =!= ToCharacterCode["!boR"],
+            Throw["missing !boR header", badTag]
+        ];
+        data = Drop[bytes, 4];
+        dataLength = Length[data];
+        require[p_, count_] := If[!IntegerQ[p] || !IntegerQ[count] || p < 1 || count < 0 || p + count - 1 > dataLength,
+            Throw["truncated object", badTag]
+        ];
+        readInt32LE[p_] := Module[{u},
+            require[p, 4];
+            u = data[[p]] + 256 data[[p + 1]] + 65536 data[[p + 2]] + 16777216 data[[p + 3]];
+            If[u >= 2^31,
+                u - 2^32
+                ,
+                u
+            ]
+        ];
+        frontEndExecutableBytes = ToCharacterCode["FrontEndExecutable"];
+        isFrontEndExecutableHead[p_] := Module[{length},
+            require[p, 1];
+            (* A symbol is tagged with lowercase s. *)
+            If[data[[p]] =!= 115,
+                Return[False]
+            ];
+            length = readInt32LE[p + 1];
+            require[p + 5, length];
+            data[[p + 5 ;; p + 4 + length]] === frontEndExecutableBytes
+        ];
+(* Strings in !boR use doubled backslashes and octal-escaped
+   UTF-8 bytes. *)
+        decodeString[raw_] := Module[{i = 1, n = Length[raw], output = {}, octal, byte},
+            While[
+                i <= n
+                ,
+                Which[
+                    raw[[i]] =!= 92,
+                        byte = raw[[i]]; i++
+                    ,
+                    i < n && raw[[i + 1]] === 92,
+                        byte = 92; i += 2
+                    ,
+                    i + 3 <= n && AllTrue[raw[[i + 1 ;; i + 3]], 48 <= # <= 55&],
+                        octal = raw[[i + 1 ;; i + 3]] - 48; byte = octal . {64, 8, 1}; i += 4
+                    ,
+                    True,
+                        Throw["bad string escape", badTag]
+                ];
+                If[byte > 127,
+                    Throw["non-ASCII string", badTag]
+                ];
+                AppendTo[output, byte];
+            ];
+            FromCharacterCode[output]
+        ];
+        readObject[p_, collectString_:False] := Module[{tag, length, arity, q, rank, dimensions, targetExpression},
+            require[p, 1];
+            tag = data[[p]];
+            Switch[tag,
+                105,(* i: machine integer *)require[p + 1, 4]; p + 5
+                ,
+                114,(* r: machine real *)require[p + 1, 8]; p + 9
+                ,
+                73 | 82 | 115 | 83,
+(* I: arbitrary integer
+   R: arbitrary real
+   s: symbol
+   S: string *)length = readInt32LE[p + 1];
+                    require[p + 5, length];
+                    If[tag === 83 && TrueQ[collectString],
+                        Sow[decodeString[data[[p + 5 ;; p + 4 + length]]], stringTag]
+                    ];
+                    p + 5 + length
+                ,
+                102,(* f: expression *)arity = readInt32LE[p + 1];
+                    If[arity < 0,
+                        Throw["negative expression arity", badTag]
+                    ];
+                    q = p + 5;
+                    (* Exact equivalent of System`FrontEndExecutable[_String]. *)
+                    targetExpression = arity === 1 && isFrontEndExecutableHead[q];
+                    (* Read the expression head. *)
+                    q = readObject[q];
+                    (* Only a direct string argument is collected. *)
+                    Do[q = readObject[q, targetExpression], arity];
+                    q
+                ,
+                101, (* e: packed real array *)rank = readInt32LE[p + 1];
+                    If[rank <= 0,
+                        Throw["invalid packed-array rank", badTag]
+                    ];
+                    require[p + 5, 4 rank];
+                    dimensions = Table[readInt32LE[p + 5 + 4 k], {k, 0, rank - 1}];
+                    If[AnyTrue[dimensions, # < 0&],
+                        Throw["negative packed-array dimension", badTag]
+                    ];
+                    q = p + 5 + 4 rank;
+                    require[q, 8 Times @@ dimensions];
+                    q + 8 Times @@ dimensions
+                ,
+                _,
+                    Throw["unknown type tag " <> ToString[tag], badTag]
+            ]
+        ];
+        harvested = Reap[While[position <= dataLength, position = readObject[position]], stringTag][[2]];
+        If[harvested === {},
+            {}
+            ,
+            First[harvested]
+        ]
+        ,
+        badTag
+        ,
+        ($Failed)&
+    ]
+]
+
+captureStringFromCells[notebook_] := Module[{cellData, allUIDs, compressed, extra1, extra2},
+    cellData = Map[(#["Data"])&, notebook["Cells"]];
+    allUIDs = Keys @ CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects;
+
+    (* Scan the cells once with all known UIDs instead of scanning every cell once per UID. *)
+    extra1 = If[allUIDs === {},
+        {}
+        ,
+        StringCases[cellData, Alternatives @@ allUIDs, Overlaps -> All] // Flatten // DeleteDuplicates
+    ];
+
+    (* Decode each distinct compressed expression only once. Base64 padding is significant. *)
+    compressed = StringCases[cellData, RegularExpression["1:[A-Za-z0-9+/]+={0,2}"]] // Flatten // DeleteDuplicates;
+    extra2 = Select[Flatten[stringsFromCompressed /@ compressed], StringQ] // DeleteDuplicates;
+
+    Echo[StringJoin["[wljs-editor/FrontendObjectSync] Object identifiers found in cell text and the master kernel: ", ToString[Length[extra1]]]];
+    Echo[StringJoin["[wljs-editor/FrontendObjectSync] Candidate object identifiers found in compressed text: ", ToString[Length[extra2]]]];
+    {extra1, extra2}
+];
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-editor/FrontendObjectSync] Attaching extension event listeners to the notebook."];
     EventHandler[notebook // EventClone, {
         "OnBeforeLoad" -> Function[opts,
             If[MemberQ[notebook["Properties"], "Objects"],
-                Echo["FrontendObject`Sync >> restored!"];
+                Echo["[wljs-editor/FrontendObjectSync] Restored synchronized frontend objects."];
                 CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, notebook["Objects"] ];
             ,
-                Echo["FrontendObject`Sync >> nothing to restore "];
+                Echo["[wljs-editor/FrontendObjectSync] No synchronized frontend objects were available to restore."];
             ];
             If[MemberQ[notebook["Properties"], "Symbols"],
                 CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, notebook["Symbols"] ];
-                Echo["FrontendObject`Sync`Symbols >> restored!"];
+                Echo["[wljs-editor/FrontendObjectSync] Restored synchronized frontend symbols."];
             ,
-                Echo["FrontendObject`Sync >> nothing to restore "];
+                Echo["[wljs-editor/FrontendObjectSync] No synchronized frontend symbols were available to restore."];
             ];
         ],
-        "OnBeforeSave" -> Function[opts,
-            Echo["OnBefore Save!!!!!!!!"];
+        "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel, extra, timedOut = False},
+            Echo["[wljs-editor/FrontendObjectSync] OnBefore Save!"];
 
             If[!MemberQ[notebook["Properties"], "Objects"], 
                 notebook["Objects"] = <||>;
@@ -152,140 +285,115 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             If[!MemberQ[notebook["Properties"], "Symbols"], 
                 notebook["Symbols"] = <||>;
                 notebook["ObjectFields"] = Join[notebook["ObjectFields"], {"Symbols"}] // DeleteDuplicates;
-            ];            
+            ]; 
+ 
+            Echo["[wljs-editor/FrontendObjectSync] Getting objects from the frontend"];
+            objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllObjects"] , opts["Client"]] // Await;
+            
+            Echo[StringJoin["[wljs-editor/FrontendObjectSync] ", StringTemplate["``: ``"]["Resolved uids", objects]]];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
+            
+            Echo[StringJoin["[wljs-editor/FrontendObjectSync] Frontend objects: ", ToString[Length[objects]], "; missing from cache: ", ToString[Length[missing]]]];
 
-            With[{promise = Promise[]},
-                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllUids"] , opts["Client"] , "Format"->"ExpressionJSON"],
-                    Function[uids,
-                        Echo["uids resolved!"];
-                        Echo[uids];
+            kernel = notebook["Evaluator"]["Kernel"];
+            If[TrueQ[kernel["ReadyQ"]] && Length[missing]>0,
+                Echo["[wljs-editor/FrontendObjectSync] Kernel is available, fetching from it"];
+                missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[x, KeyTake[x][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects] ]] // Await;
 
-                        LeakyModule[{
-                            monitor, monitorHandler,
-                            monitorSym, monitorHandlerSym, promises
-                        },
+                If[missing === $TimedOut,
+                    timedOut = True;
+                    missing = <||>;
+                    
+                    EventFire[opts["Log"], "Warning", "Some objects could not be saved since the kernel link had been lost"];
+                ];
+                
+                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, missing];
+                missing = Keys[missing];
+                Echo[StringJoin["[wljs-editor/FrontendObjectSync] Objects fetched from the kernel: ", ToString[Length[missing]]]];
+            ];
 
-                            {monitorHandler, monitor} = syncMonitorConstructor[uids, opts];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
+            objects = Complement[objects, missing];
 
-                            WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", True], opts["Client"]];
+            Echo["[wljs-editor/FrontendObjectSync] Last sweep. Check all input and output cells for uids."];
 
-                            With[{requests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetById", i, "MonitorEvent"->monitor] , opts["Client"] , "Format"->"ExpressionJSON"], {i, uids}]},
-                                Echo["Number of requests to resolve: "<>ToString[Length[requests] ] ];
-                                If[Length[requests] == 0,
-                                    promises = Promise[];
-                                    EventFire[promises, Resolve, {}];
-                                ,
-                                    promises = requests;
-                                ];
-                                
-                                If[Length[requests] == 0 && False, (* just pass though *)
-                                    notebook["Objects"] = <||>;
-                                    notebook["Symbols"] = <||>;
-                                    EventFire[promise, Resolve, True];
-                                    WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                , 
+            extra = captureStringFromCells[notebook];
 
-                                    Echo["Promises: "<>ToString[requests ] ];
+            (* Why do we do that? An editor does not render the content, which is too far from the scroll, i.e. virtual rendering *)
+            (* May be we should consider removing this feature *)
 
-                                    Then[promises,
-                                        Function[results,
-                                            Echo["results resolved!"];
+            With[{
+                oldLength = Length[objects]
+            },
+                objects = Join[objects, extra[[1]]] // DeleteDuplicates;
+                Echo[StringJoin["[wljs-editor/FrontendObjectSync] Additional objects found in cell text: ", ToString[Length[objects] - oldLength]]];
+            ];
 
-
-                                            With[{processed = With[{fixed = filterEmptyOrFailed[uids, results]}, If[Length[fixed]==0, <||>, Map[<|"Public"->#|>&, AssociationThread[Rule @@ fixed ] ] ] ]},
-                                                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects , processed];
-                                                notebook["Objects"] = processed;
-
-                                                monitorHandler // Delete;
-                                                ClearAll[monitor];
-                                                ClearAll[monitorHandler];
-
-                                                Echo["FrontendObject`Sync`Objects >> ok "];
-
-
-                                                Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbolsNames"] , opts["Client"] ],
-                                                    Function[names,
-                                                        Echo["symbols names resolved!"];
-                                                        Echo[names];
-
-                                                        {monitorHandlerSym, monitorSym} = syncMonitorConstructor[names, opts, "Syncing symbols"];
-
-                                                        With[{symRequests = Table[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetSymbolByName", i, "MonitorEvent"->monitorSym] , opts["Client"] ], {i, names}]},
-                                                            If[Length[symRequests] == 0,
-                                                                notebook["Symbols"] = <||>;
-                                                                EventFire[promise, Resolve, True];
-                                                                WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                                                ClearAll[promises];
-                                                            , 
-                                                                Then[symRequests,
-                                                                    Function[symResults,
-                                                                        Echo["symbols resolved!"];
-                                                          
-
-                                                                        notebook["Symbols"] = AssociationThread[names -> symResults];
-
-                                                                        Delete[monitorHandlerSym];
-
-                                                                        ClearAll[monitorSym];
-                                                                        ClearAll[monitorHandlerSym];
-
-                                                                        Echo["FrontendObject`Sync`Symbols >> ok "];
-                                                                        EventFire[promise, Resolve, True];
-                                                                        WebUISubmit[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["WatchDog", False], opts["Client"]];
-                                                                        ClearAll[promises];
-                                                                    ]
-                                                                ]
-                                                            ]
-                                                        ]
-                                                    ]
-                                                ];
-                                            ]
-                                        ],
-                                        Function[rejected,
-                                            Echo["REJECTED: "<>ToString[rejected ] ];
-                                            Echo["FIXME!"];
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ];
-                    ], 
-                    Function[error,
-                        Echo["FrontendObject`Sync >> Syncing error!"];
-                        Echo[error]
-                    ]
+            With[{masterObjects = Keys[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]},
+                With[{oldLength = Length[objects]},
+                    objects = Join[objects, Intersection[extra[[2]], masterObjects]] // DeleteDuplicates;
+                    Echo[StringJoin["[wljs-editor/FrontendObjectSync] Additional objects verified from compressed text: ", ToString[Length[objects] - oldLength]]];
                 ];
 
-                (*Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAll"] , opts["Client"] ],
-                    Function[pay,
-                        Echo["resolved!"];
-                        With[{processed = Map[<|"Public"->#|>&, pay]},
-                            CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects , processed];
-                            notebook["Objects"] = processed;
+                extra[[2]] = Complement[extra[[2]], objects];
+                Echo[StringJoin["[wljs-editor/FrontendObjectSync] Compressed-text objects still missing: ", ToString[Length[extra[[2]]]]]];
+            ];
 
-                            Echo["FrontendObject`Sync`Objects >> ok "];
-                            Then[WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbols"] , opts["Client"] ],
-                                Function[symbols,
-                                    notebook["Symbols"] = symbols;
-                                    
+            If[TrueQ[kernel["ReadyQ"]] && Length[extra[[2]]] > 0 && !timedOut,
+                Echo["[wljs-editor/FrontendObjectSync] Kernel is available, fetching from it"];
+                extra[[2]] = fetchFromKernel[extra[[2]], kernel, AssociationQ, <||>, Function[x, KeyTake[x][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects] ]] // Await;
 
-                                    Echo["FrontendObject`Sync`Symbols >> ok "];
-                                    EventFire[promise, Resolve, True];
-                                ]
-                            ]
-                            
-                        ];
-                    ]
-                , Function[error,
-                    Echo["FrontendObject`Sync >> Syncing error!"];
-                    Echo[error]
-                ] ];*)
+                If[extra[[2]] === $TimedOut,
+                    timedOut = True;
+                    extra[[2]] = <||>;
 
-                promise
-            ]
+                    EventFire[opts["Log"], "Warning", "Some objects could not be saved since the kernel link had been lost"];
+                ];
 
-        
-        ]
+                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, extra[[2]]];
+                extra[[2]] = Keys[extra[[2]]];
+                Echo[StringJoin["[wljs-editor/FrontendObjectSync] Additional objects fetched from the kernel: ", ToString[Length[extra[[2]]]]]];
+                objects = Join[objects, extra[[2]]] // DeleteDuplicates;
+            ];
+
+            (* Nah... 100 uids x 30-50 cells = too much? *)
+
+            notebook["Objects"] = Map[<|"Public"->#["Public"]|>&, KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects]];
+
+            Echo["[wljs-editor/FrontendObjectSync] Getting symbols from the frontend"];
+            objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbols"] , opts["Client"]] // Await;
+            
+            Echo[StringJoin["[wljs-editor/FrontendObjectSync] ", StringTemplate["``: ``"]["Resolved names", objects]]];
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
+            
+            Echo[StringJoin["[wljs-editor/FrontendObjectSync] Frontend symbols: ", ToString[Length[objects]], "; missing from cache: ", ToString[Length[missing]]]];
+
+            kernel = notebook["Evaluator"]["Kernel"];
+            If[TrueQ[kernel["ReadyQ"]] && !timedOut,
+                Echo["[wljs-editor/FrontendObjectSync] Kernel is available, fetching from it"];
+                
+                missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[names, 
+                    AssociationMap[Function[name, With[{r = ToExpression[name]},
+                        If[MatchQ[_Symbol][r], $Failed, r]
+                    ]], names]
+                ]] // Await;
+
+                missing = Select[missing, Not@*FailureQ];
+                
+                CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, missing];
+                missing = Keys[missing];
+                Echo[StringJoin["[wljs-editor/FrontendObjectSync] Symbols fetched from the kernel: ", ToString[Length[missing]]]];
+            ];
+
+            missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
+            objects = Complement[objects, missing];
+
+
+            notebook["Symbols"] = KeyTake[objects][CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
+
+            Echo["[wljs-editor/FrontendObjectSync] Notebook evaluation is almost complete."];
+            ClearAll[objects, missing, kernel, extra, timedOut];
+        ] ]
     }]; 
 ]
 

@@ -34,6 +34,10 @@ if (isCli) {
 const { createDevicePermissions } = require('./main/device-permissions');
 const { registerIpcHandlers } = require('./main/ipc-handlers');
 const { createMenuManager } = require('./main/menu-manager');
+const {
+    createProcessLogWindow,
+    installProcessLogCapture
+} = require('./main/process-log-buffer');
 const { createWolframRuntime } = require('./main/wolfram-runtime');
 const { spawn } = require('node:child_process');
 
@@ -147,6 +151,14 @@ majorVersion = majorVersion.join('');
 
 let server;
 let wolframRuntime;
+let processLogCapture;
+
+function showProcessLogs() {
+    createProcessLogWindow(
+        BrowserWindow,
+        processLogCapture?.buffer.snapshot() || []
+    );
+}
 
 const initServer = () => {
     server = {
@@ -1175,6 +1187,7 @@ const {
     rootAppFolder,
     server,
     shell,
+    showProcessLogs,
     userExtensions,
     windows
 });
@@ -1246,11 +1259,13 @@ app.on('open-file', (ev, path) => {
 })
 
 app.on('open-url', (event, url) => {
+    event.preventDefault();
     const protocol = new RegExp('wljs-url-message:\/\/(.*)').exec(url);
     console.log(protocol);
 
+    if (!protocol) return;
+
     if (!server.running) {
-        server.path.requested = path;
         server.protocol = protocol[1];
         return;
     }
@@ -1613,6 +1628,9 @@ function start_server (window) {
     const ipc = {
         'runningAt': (ip, port) => {
             server.url.local = `http://${ip}:${port}`;
+            if (!processLogCapture) {
+                processLogCapture = installProcessLogCapture({ capacity: 100 });
+            }
             console.log('Open first window');
             //open a first window. could be a file or second instance
             create_first_window();
@@ -1783,6 +1801,7 @@ wolframRuntime = createWolframRuntime({
     server,
     session,
     shell,
+    showProcessLogs,
     spawn,
     uuid4,
     windows,

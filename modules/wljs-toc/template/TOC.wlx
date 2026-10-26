@@ -10,7 +10,7 @@ Component[OptionsPattern[]] := With[{
         "NotebookShown" -> Function[assoc, With[{n = assoc["Notebook"], cli = assoc["Client"], cloned = EventClone[assoc["Notebook"]]},
 
             If[TrueQ[Length[Flatten[n["TOC"]]] > 1],
-                Echo["TOC Load widget!"];
+                Echo["[wljs-toc/TOC] Loading the table-of-contents widget."];
                 EventFire[event, "Load", <|"Client" -> cli, "Port" -> port, "TOC" -> n["TOC"], "Notebook" -> n|>];
 
                 EventHandler[cloned, {"UpdateTOC" -> Function[Null,
@@ -22,7 +22,7 @@ Component[OptionsPattern[]] := With[{
                         "Closed" -> Function[Null,
                             EventRemove[socket];
                             EventRemove[cloned];
-                            Echo["TOK Widget was destroyed"];
+                            Echo["[wljs-toc/TOC] TOK Widget was destroyed"];
                         ]
                     }];
                 ];

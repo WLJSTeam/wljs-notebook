@@ -5,8 +5,12 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelAutolaunch`", {
   "CoffeeLiqueur`UInternal`",
   "CoffeeLiqueur`TCPUServer`",
   "CoffeeLiqueur`WebUSocketHandler`",
-  "CoffeeLiqueur`Misc`WLJS`Transport`"
+  "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
+
+(* 
+    Kernel autolaunch helper
+*)
 
 autostart;
 
@@ -21,7 +25,7 @@ SetAttributes[appendHeld, HoldFirst];
 SetAttributes[removeHeld, HoldFirst];
 
 autostart[kernel_, KernelList_, initKernel_, deinitKernel_] := Module[{},
-  Echo["Kernel autolaunch >> autostart"];
+  Echo["[Frontend/Autolaunch] Starting the configured kernel automatically."];
   appendHeld[KernelList, kernel];
 
   EventHandler[EventClone[kernel], {
@@ -31,7 +35,7 @@ autostart[kernel_, KernelList_, initKernel_, deinitKernel_] := Module[{},
 
 
   kernel // GenericKernel`Start;
-  Echo["Kernel autolaunch >> started"];
+  Echo["[Frontend/Autolaunch] Automatic kernel startup completed."];
 ];
 
 End[]

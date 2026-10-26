@@ -1,161 +1,206 @@
-<|"Notebook" -> <|"Controller" -> "4ddc353f-438d-46dd-969c-297082b1396b", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$667], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "d0ba2d2a-8c63-42fa-b1ea-66f715b81b14", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wljs-demos-archive/Demos/Cells and \
-Notebooks/A - Clipboard.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, "Clipboard", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$663]], 
-     CoffeeLiqueur`Extensions`TOC`Private`heading[3, 
-      "Directly read clipboard", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$707]]}|>, 
- "Cells" -> 
-  {<|"Data" -> 
-     ".md\n## Clipboard\nUse CopyToClipboard to programmatically copy:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "5eb5895b-0812-481a-b713-62c58a6d2fbe", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "## Clipboard\nUse CopyToClipboard to programmatically copy:", 
-    "Display" -> "markdown", "Hash" -> 
-     "92bd7872-965a-431f-ac5d-da624b82e72b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "CopyToClipboard[{1, 2, 3, 4, 5}];", 
-    "Display" -> "codemirror", "Hash" -> 
-     "122f4233-e82d-4fbf-8ab7-c17c7083ec9c", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\nIn the case of context loss, provide `\"Window\"` object \
-as an option, i.e.", "Display" -> "codemirror", 
-    "Hash" -> "d1b400bd-758c-446a-9f39-74b08553c515", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "In the case of context loss, provide `\"Window\"` object as \
-an option, i.e.", "Display" -> "markdown", 
-    "Hash" -> "6fa68f9f-f52f-4063-9b0b-efb158f52250", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "win = \
-CurrentWindow[];\nSetTimeout[CopyToClipboard[RandomWord[], \"Window\"->win]; \
-Echo[\"Copied\"], 1000];", "Display" -> "codemirror", 
-    "Hash" -> "08622589-ca8b-46fe-988a-5b4fdfe86873", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\nUse `ClickToCopy` for interactive copy buttons:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "4c1c5375-1ddf-4057-b636-6ad566734bea", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "Use `ClickToCopy` for interactive copy buttons:", 
-    "Display" -> "markdown", "Hash" -> 
-     "e5915961-a1c1-4c2c-88d5-6796ea2d6ce6", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "ClickToCopy[\"Copy Code\", \"Plot[Sin[x], {x, 0, 2Pi}]\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "ede457e3-2d7b-45b1-a6e6-e2b56bbe2391", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\nUse `Paste` to paste clipboard content as a new cell:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "f11e9e01-8f95-4cfc-9163-ea8679ca3ece", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "Use `Paste` to paste clipboard content as a new cell:", 
-    "Display" -> "markdown", "Hash" -> 
-     "1452aaea-e008-459f-ae0c-7995b3a2304b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "Paste[]", "Display" -> "codemirror", 
-    "Hash" -> "4be9510c-b95b-4539-9900-3aaaf19f5300", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\nUse `PasteButton` for interactive paste buttons:", 
-    "Display" -> "codemirror", "Hash" -> 
-     "bc3618f1-595b-4616-a623-2213f2738bd1", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "Use `PasteButton` for interactive paste buttons:", 
-    "Display" -> "markdown", "Hash" -> 
-     "ccbc4221-9151-43c1-8862-face3b5f02ba", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "PasteButton[\"Paste this expression\"]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "94f4934e-463a-4364-aec9-dfb6a79bc96b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\n### Directly read clipboard\n`ReadClipboard` is symbol \
-is defined on the frontend and allows to directly read clipboard from a given \
-window. Since this is a frontend-only function, you need to use `FrontFetch` \
-or `FrontFetchAsync`:", "Display" -> "codemirror", 
-    "Hash" -> "0b3692e7-cb28-4a97-974f-227cb33b5f48", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "### Directly read clipboard\n`ReadClipboard` is symbol is \
-defined on the frontend and allows to directly read clipboard from a given \
-window. Since this is a frontend-only function, you need to use `FrontFetch` \
-or `FrontFetchAsync`:", "Display" -> "markdown", 
-    "Hash" -> "e5cabc24-1b49-41f8-b6b1-47e0d3aafa45", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "FrontFetch[ReadClipboard[]]", "Display" -> "codemirror", 
-    "Hash" -> "71de1c6d-d571-456e-81bc-9a3af7e2f8e0", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\nor by a click on a button:", "Display" -> "codemirror", 
-    "Hash" -> "d9c56f4e-828f-49f5-8ae1-bb0d0ce97952", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> "or by a click on a button:", "Display" -> "markdown", 
-    "Hash" -> "67775ece-6298-4e04-9b50-ed3262a12d90", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> 
-     "Button[\"Read\", Then[FrontFetchAsync[ReadClipboard[]], Print]]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "048803e4-4856-4fdf-b0ed-c8607a10107e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ".md\n:::note\nNote, that events generated by button clicks or \
-other UI interactions provide `\"Window\"` object to `FrontFetchAsync` \
-implicitly. This will not work automatically for timers, i.e. `SetTimeout` or \
-events generated by parallel kernels\n:::", "Display" -> "codemirror", 
-    "Hash" -> "3b025b7d-f524-433a-8222-069eeab788e7", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>, 
-   <|"Data" -> ":::note\nNote, that events generated by button clicks or \
-other UI interactions provide `\"Window\"` object to `FrontFetchAsync` \
-implicitly. This will not work automatically for timers, i.e. `SetTimeout` or \
-events generated by parallel kernels\n:::", "Display" -> "markdown", 
-    "Hash" -> "0121da55-ccd6-4197-bc79-da4d2b86737e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "14cb915b-4e8b-44d5-823a-bba4035cfc65"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Clipboard
+Use CopyToClipboard to programmatically copy:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Clipboard
+Use CopyToClipboard to programmatically copy:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+CopyToClipboard[{1, 2, 3, 4, 5}];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+In the case of context loss, provide `"Window"` object as an option, i.e.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+In the case of context loss, provide `"Window"` object as an option, i.e.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+win = CurrentWindow[];
+SetTimeout[CopyToClipboard[RandomWord[], "Window"->win]; Echo["[Clipboard demo] Copied a random word to the clipboard."], 1000];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use `ClickToCopy` for interactive copy buttons:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use `ClickToCopy` for interactive copy buttons:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClickToCopy["Copy Code", "Plot[Sin[x], {x, 0, 2Pi}]"] 
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use `Paste` to paste clipboard content as a new cell:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use `Paste` to paste clipboard content as a new cell:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Paste[]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Use `PasteButton` for interactive paste buttons:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Use `PasteButton` for interactive paste buttons:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+PasteButton["Paste this expression"]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+### Directly read clipboard
+`ReadClipboard` is symbol is defined on the frontend and allows to directly read clipboard from a given window. Since this is a frontend-only function, you need to use `FrontFetch` or `FrontFetchAsync`:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+### Directly read clipboard
+`ReadClipboard` is symbol is defined on the frontend and allows to directly read clipboard from a given window. Since this is a frontend-only function, you need to use `FrontFetch` or `FrontFetchAsync`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+FrontFetch[ReadClipboard[]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+or by a click on a button:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+or by a click on a button:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Button["Read", Then[FrontFetchAsync[ReadClipboard[]], Print]]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::note
+Note, that events generated by button clicks or other UI interactions provide `"Window"` object to `FrontFetchAsync` implicitly. This will not work automatically for timers, i.e. `SetTimeout` or events generated by parallel kernels
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::note
+Note, that events generated by button clicks or other UI interactions provide `"Window"` object to `FrontFetchAsync` implicitly. This will not work automatically for timers, i.e. `SetTimeout` or events generated by parallel kernels
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

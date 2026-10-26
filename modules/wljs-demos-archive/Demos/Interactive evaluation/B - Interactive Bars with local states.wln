@@ -1,73 +1,119 @@
-<|"Notebook" -> <|"Controller" -> "388d901e-dd41-40f1-b677-21adc75b8e0e", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1542], 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "051833f0-c511-4702-8771-1221580794d8", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Interactive evaluation/B - Moving bars.wln", 
-   "PublicFields" -> {"Properties"}, "ReadOnly" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Interactive Bars with local states", 
-      CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1582]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Interactive Bars with local states\nHere is \
-an example of how you can generate multiple bars, each with its own event \
-listener and state control:", "Display" -> "codemirror", 
-    "Hash" -> "8f9ac546-e4dc-4a10-b128-c9d5ea8d40f4", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> "## Interactive Bars with local states\nHere is an example of \
-how you can generate multiple bars, each with its own event listener and \
-state control:", "Display" -> "markdown", 
-    "Hash" -> "7123ec1b-be9c-4d4d-ae81-01877bde6009", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> "bar[initial_:0, dims_:{{-1,-1}, {1,1}}] := Module[{state = \
-initial},\n  {\n    LightBlue, EventHandler[Rectangle@@dims, {\"mousemove\" \
--> Function[pos, state = pos[[2]]]}], \n    LightRed, Rectangle[{dims[[1,1]], \
-0}, {dims[[2,1]], Offload[state]}]\n  }\n]", "Display" -> "codemirror", 
-    "Hash" -> "754d8905-7d1f-4609-be9e-cffbfef231da", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> 
-     ".md\nNow, we can create any of these bars and render them on a canvas:"\
-, "Display" -> "codemirror", "Hash" -> 
-     "ad4a59f7-7089-4e2d-bb7d-270e7aec1971", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> 
-     "Now, we can create any of these bars and render them on a canvas:", 
-    "Display" -> "markdown", "Hash" -> 
-     "a606fb7f-da59-4513-bb03-bea2b6ad4d3f", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> "Graphics[Table[Translate[bar[], {2i,0}], {i, -5,5}], \
-PlotRange->{{-10,10}, {-1,1}}, ImagePadding->None]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "961171dd-1c80-48b2-8d09-bf11198d1d89", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> ".md\n*Try moving your mouse over \
-them*\n\n<br/>\n\n:::tip\nAvoid generating 100-1000 bars, as each instance \
-carries its own symbol and event handler. This can lead to performance and \
-memory issues due to symbol allocation and synchronization.\n:::", 
-    "Display" -> "codemirror", "Hash" -> 
-     "b8300a86-70d4-4bc6-807d-d8333c366abf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>, 
-   <|"Data" -> "*Try moving your mouse over them*\n\n<br />\n\n:::tip\nAvoid \
-generating 100-1000 bars, as each instance carries its own symbol and event \
-handler. This can lead to performance and memory issues due to symbol \
-allocation and synchronization.\n:::", "Display" -> "markdown", 
-    "Hash" -> "2205c191-41af-457b-bc92-05e940b59018", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f5e53f6a-0fcd-4784-88b8-2142dc9ad604"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Interactive Bars with local states
+Here is an example of how you can generate multiple bars, each with its own event listener and state control:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Interactive Bars with local states
+Here is an example of how you can generate multiple bars, each with its own event listener and state control:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+bar[initial_:0, dims_:{{-1,-1}, {1,1}}] := Module[{state = initial},
+  {
+    LightBlue, EventHandler[Rectangle@@dims, {"mousemove" -> Function[pos, state = pos[[2]]]}], 
+    LightRed, Rectangle[{dims[[1,1]], 0}, {dims[[2,1]], Offload[state]}]
+  }
+]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now, we can create any of these bars and render them on a canvas:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now, we can create any of these bars and render them on a canvas:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics[Table[Translate[bar[], {2i,0}], {i, -5,5}], PlotRange->{{-10,10}, {-1,1}}, ImagePadding->None]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*Try moving your mouse over them*
+
+<br/>
+
+:::tip
+Avoid generating 100-1000 bars, as each instance carries its own symbol and event handler. This can lead to performance and memory issues due to symbol allocation and synchronization.
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*Try moving your mouse over them*
+
+<br />
+
+:::tip
+Avoid generating 100-1000 bars, as each instance carries its own symbol and event handler. This can lead to performance and memory issues due to symbol allocation and synchronization.
+:::
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

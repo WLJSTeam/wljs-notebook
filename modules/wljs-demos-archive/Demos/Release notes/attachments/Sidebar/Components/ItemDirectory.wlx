@@ -23,19 +23,19 @@ Component[OptionsPattern[]] := With[{
       Switch[State,
         "Empty",
           State = "Open";
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
               EventFire[Controller, "Load", <|"Client"->client|>];
           ],
         
         "Open",
           State = "Hidden";
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
             EventFire[Controller, "Hide", <|"Client"->client|>];
           ], 
         
         "Hidden",
           State = "Open";
-          With[{client = $Client},
+          With[{client = $CurrentWebSocket},
             EventFire[Controller, "Show", <|"Client"->client|>];
           ]       
       ];

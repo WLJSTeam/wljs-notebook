@@ -4,7 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`NeuralNet`", {
     "CoffeeLiqueur`Extensions`InputsOutputs`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Language`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Boxes`",
     "CoffeeLiqueur`Extensions`EditorView`"
 }]
@@ -183,8 +183,19 @@ If[neuralNetLoadedQ === True,
         Unprotect[NeuralNetworks`Private`NetGraph`makeNetGraphBoxes];
         ClearAll[NeuralNetworks`Private`NetGraph`makeNetGraphBoxes];
 
-        NeuralNetworks`Private`NetGraph`makeNetGraphBoxes[c_] := With[{msg = Style["We are looking for volunteers to implement NetGraph", Italic, Background->Yellow]},
-          MakeBoxes[msg, StandardForm]
+        NeuralNetworks`Private`NetGraph`makeNetGraphBoxes[c_] := With[{},
+
+        BoxForm`ArrangeSummaryBox[
+               NetGraph, (* head *)
+               c,      (* interpretation *)
+               Information[c, "SummaryGraphic"],    (* icon, use None if not needed *)
+               (* above and below must be in a format suitable for Grid or Column *)
+               {
+         
+               },    (* always shown content *)
+               Null (* expandable content. Currently not supported!*)
+            ]        
+          
         ];            
 
 If[!AssociationQ[associatedNets], associatedNets = <||>];
@@ -199,14 +210,13 @@ neuralPrinter[assoc_Association] := If[!AssociationQ[System`$EvaluationContext],
 
     Null;
   ,
-    Module[{generator, length, plot, params, cellContent},
+    Module[{generator, length, plot, params},
       associatedNets[callId] = Function[{data, p}, 
           PlotlyExtendTraces[plot, <|"y" -> {Drop[data, length]}|>, {0}];
           length = Length[data];
           params = p;
 
           If[p[[2]] < 3,
-            cellContent = ToString[Style["Complete", Background->LightGreen], StandardForm];
             associatedNets[callId] = Null;
           ];
       ];
@@ -218,25 +228,25 @@ neuralPrinter[assoc_Association] := If[!AssociationQ[System`$EvaluationContext],
         assoc["RoundLoss"], assoc["LearningRate"]
       };
 
-      cellContent = ToString[{
-        {Style["Target device", 10], Style[assoc["TargetDevice"], Italic, 10]} // Row,
+      {
+        {Style["Target device", 10], Style[assoc["TargetDevice"], 10]} // Row,
         {{
-          TextView[params[[1]] // Offload, "Label"->"Time elapsed", ImageSize->100],
-          TextView[params[[2]] // Offload, "Label"->"Time remaining", ImageSize->100]
+          TextView[params[[1]] // Offload, "Label"->"Time elapsed", ImageSize->250, Appearance->None],
+          TextView[params[[2]] // Offload, "Label"->"Time remaining", ImageSize->250, Appearance->None]
         },
         {
-          TextView[params[[3]] // Offload, "Label"->"Round loss", ImageSize->100],
-          TextView[params[[4]] // Offload, "Label"->"Learning rate", ImageSize->100]  
+          TextView[params[[3]] // Offload, "Label"->"Round loss", ImageSize->250, Appearance->None],
+          TextView[params[[4]] // Offload, "Label"->"Learning rate", ImageSize->250, Appearance->None]  
         }} // Grid,
         plot = Plotly[<|
           "y" -> assoc["RoundLossList"],
           "mode" -> "line"
       |>, <|
-          "width"->250, "height"->300
+          "width"->500, "height"->300,
+          "margin"-><|"autoexpand"->False|>
         |>]
-      } // Column, StandardForm];
+      } // Column // Deploy
     
-      EditorView[cellContent // Offload]
 
     ]
     

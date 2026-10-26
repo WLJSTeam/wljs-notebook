@@ -1,10 +1,12 @@
+(* Exports WLJS notebooks to Markdown and imports Markdown into notebook cells. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`Markdown`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
 
 
@@ -64,7 +66,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
        Then[p, Function[result, 
            Module[{filename = If[StringQ[result], URLDecode @ result, URLDecode @ result["filePath"] ] },
                If[!StringQ[filename] || TrueQ[result["canceled"] ] || StringLength[filename] === 0, 
-                 Echo["Cancelled saving"]; Echo[result];
+                 Echo["[wljs-export-html/Markdown] Save operation was cancelled."]; Echo[result, "[wljs-export-html/Markdown] operation result: "];
                  Return[];
                ];
                
@@ -75,7 +77,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
                     Export[filename, generateMarkdown["Settings"->settings, "Notebook" -> notebookOnLine, "Title"->name] // ToStringRiffle, "Text"];
                     EventFire[messager, "Saved", "Exported to "<>filename];
                 ];
-            ], Function[result, Echo["Exported Markdown"]; Echo[result] ] ];
+            ], Function[result, Echo["[wljs-export-html/Markdown] Exported Markdown"]; Echo[result, "[wljs-export-html/Markdown] operation result: "] ] ];
             
         ]
     ]
@@ -83,6 +85,7 @@ export[controls_, modals_, messager_, client_, notebookOnLine_nb`NotebookObj, pa
 
 
 
+(* Map fenced-code languages to WLJS first-line display directives. *)
 lang["mathematica"] := ""
 lang["wolfram"] := ""
 lang["wl"] := ""
@@ -103,10 +106,10 @@ codeBlock;
 codeBlock["mermaid", rest_] := codeBlockInPlace["mermaid", rest] 
 
 findFile[filename_, d_] := With[{},
-  Echo["Trying to find ..."];
-  Echo[filename];
-  Echo["at"];
-  Echo[d];  
+  Echo["[wljs-export-html/Markdown] Searching for the referenced attachment."];
+  Echo[filename, "[wljs-export-html/Markdown] filename: "];
+  Echo["[wljs-export-html/Markdown] Search directory:"];
+  Echo[d, "[wljs-export-html/Markdown] search directory: "];
 
   With[{result = {FileNames[filename, d, 3], "Missing"} // Flatten // First},
       With[{splitted = FileNameSplit[result]},
@@ -121,8 +124,8 @@ fixImages[s_String, r_] := With[{},
     label = "$1",
     url = "$2"
 },
-      Echo["Fixing..."<>" $1"<>" with $2"];
-      Echo[r];
+      Echo[StringJoin["[wljs-export-html/Markdown] ", "Fixing...", " $1", " with $2"]];
+      Echo[r, "[wljs-export-html/Markdown] error details: "];
 
       If[StringTake[url, 1] == "/",
         With[{
@@ -159,6 +162,7 @@ fixImages[s_String, r_] := With[{},
   }]
 ]
 
+(* Fenced blocks become input cells; remaining text becomes Markdown output. *)
 decode[path_String, OptionsPattern[] ] := Module[{str, cells, objects, notebook, store, root},
 With[{
     dir = DirectoryName[path],
@@ -173,21 +177,21 @@ With[{
 
     str = Import[path, "Text"];
 
-    Echo["Query"];
-    Echo[query];
+    Echo["[wljs-export-html/Markdown] URL query parameters:"];
+    Echo[query, "[wljs-export-html/Markdown] query parameters: "];
 
     root = DirectoryName[path];
-    Echo["Root: "];
-    Echo[root];
+    Echo["[wljs-export-html/Markdown] Resolved root path:"];
+    Echo[root, "[wljs-export-html/Markdown] root path: "];
 
     If[KeyExistsQ[query, "root"],
-      Echo["Decoder. found root"];
-      Echo[  URLDecode[query["root"] ] ];
+      Echo["[wljs-export-html/Markdown] Decoder. found root"];
+      Echo[URLDecode[query["root"] ], "[wljs-export-html/Markdown] Root path decoded from the URL: "];
       root = URLDecode[query["root"] ];
     ];
 
-    Echo["Root: "];
-    Echo[root];
+    Echo["[wljs-export-html/Markdown] Resolved root path:"];
+    Echo[root, "[wljs-export-html/Markdown] root path: "];
 
     notebook = nb`NotebookObj[];
     With[{n = notebook},
@@ -254,14 +258,14 @@ With[{
               ];
             ,
             _,
-              Echo["skip"];
+              Echo["[wljs-export-html/Markdown] Skipping unsupported markdown element."];
           ]
         ], 
         list
       ]
     ];    
 
-    Echo["SAVING////////"];
+    Echo["[wljs-export-html/Markdown] Saving exported content."];
     Then[saveNotebook[notebook["Path"], notebook, "NoCache"->True], Function[Null,
 
       EventFire[spinner["Promise"], Resolve, True];

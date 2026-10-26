@@ -133,7 +133,7 @@ Component["Error", Message_, OptionsPattern[]] := With[{Uid = CreateUUID[]},
        </div>
        </div>       
     },
-        <|"Data" -> template, "ID" -> Uid, "Timeout" -> False|>
+        <|"Data" -> template, "ID" -> Uid|>
     ]
 ];
 
@@ -186,7 +186,7 @@ Script[OptionsPattern[]] := With[{Controller = OptionValue["Controller"], BackCo
         }
 
         showall() {
-          //server.emitt('<BackController/>', 'True', 'ShowAll');
+
         }
 
         dispose() {

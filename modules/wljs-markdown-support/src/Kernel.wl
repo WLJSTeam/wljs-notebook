@@ -8,7 +8,7 @@ BeginPackage["CoffeeLiqueur`Extensions`MarkdownCells`", {
     "CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Extensions`Boxes`",
     "CoffeeLiqueur`Misc`Parallel`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
 
 TeXView::usage = "TeXView[expr_] renders expr as LaTeX equation"

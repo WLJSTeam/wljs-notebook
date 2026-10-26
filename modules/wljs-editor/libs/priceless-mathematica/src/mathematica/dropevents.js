@@ -29,7 +29,10 @@ import {
       }
     }
 
-    const id = new Date().valueOf();
+    // Event channels are keyed by strings on the Wolfram side. The legacy
+    // transport stringified this value implicitly, whereas WXF preserves a
+    // JavaScript number and leaves the follow-up File/Chunk events unmatched.
+    const id = String(new Date().valueOf());
     let count = 0;
 
     const progress = (num) => {
@@ -51,12 +54,10 @@ import {
 
     progress(0);
     handler.transaction(ev, view, id, list.length);
-   // server.kernel.emitt('<Event/>', `<|"Id" -> "${id}", "Length" -> ${list.length}|>`, 'Transaction');
     
     for (const file of list) {
         readFile(file, (name, result) => {
             handler.file(ev, view, id, name, result);
-            //server.kernel.emitt('id', `<|"Transaction" -> "${id}", "Name" -> "${name}", "Data" -> "${result}"|>`, 'File');
             count++;
             progress(count);
             if (count >= list.length && view.dom) {
@@ -122,6 +123,18 @@ const regex = new RegExp("^jsfc4uri");
 const crappy1Regex = new RegExp(decodeURIComponent('%EF%9F%81%EF%9F%89%EF%9F%88'));
 const crappyString = decodeURIComponent('%5C!%5C(%5C*');
 
+const activateEditor = (view, ev) => {
+    const selection = view.state.selection;
+    const position = ev
+      ? view.posAtCoords({x: ev.clientX, y: ev.clientY})
+      : null;
+
+    view.dispatch({
+      selection: position === null ? selection : {anchor: position}
+    });
+    view.focus();
+}
+
 //drag and drop and past events
 export const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = console.log, crappyHandler2 = console.log) => EditorView.domEventHandlers({
 	drop(ev, view) {
@@ -148,6 +161,7 @@ export const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = co
             });
         }
 
+        if (filesArray.length > 0) activateEditor(view, ev);
         transferFiles(filesArray, ev, view, hd);
 
     },
@@ -173,12 +187,15 @@ export const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = co
                const content = paste.getData("text");
                if (regex.test(content)) {
                  ev.preventDefault();
+                 activateEditor(view);
                  hcc(ev, view, content.slice(8));
                } else if (crappy1Regex.test(content)) {
                  ev.preventDefault();
+                 activateEditor(view);
                  crappyHandler1(ev, view, content)
                } else if (content.includes(crappyString) === true) {
                  ev.preventDefault();
+                 activateEditor(view);
                  crappyHandler2(ev, view, content)                
                }
            
@@ -187,12 +204,14 @@ export const DropPasteHandlers = (hd, hp, hcc = console.log, crappyHandler1 = co
                
                ev.preventDefault();
                if (stringOnly) return;
+               activateEditor(view);
                transferFiles([obj.getAsFile()], ev, view, hp);
                break;
              }
            } else {
             ev.preventDefault();
             if (stringOnly) return;
+            activateEditor(view);
             transferFiles([obj.getAsFile()], ev, view, hp);
            }
         }

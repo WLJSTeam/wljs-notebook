@@ -17,7 +17,7 @@
       "src/frontsubmit.js"
     ],
     "js": [
-      "dist/kernel.js",
+      "dist/kernel.min.js",
       "src/boxes.js",
       "src/objects.js",
       "src/autocomplete.js",
@@ -67,7 +67,7 @@
     "styles": "src/styles.css",
     "priority": -10,
     "important": true,
-    "cellExportRequired": true,
+    "exportable": true,
     "category": "Editor",
     "contextMenu": [
       {

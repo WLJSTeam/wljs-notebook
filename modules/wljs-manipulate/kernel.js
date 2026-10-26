@@ -19,13 +19,34 @@ core.RefreshBox = async (args, env) => {
             if (!env.local.readyQ) return;
             console.log('Fire!', event);
             env.local.readyQ = false;
-            server.kernel.emitt(event, 'True');
+            server.kernel.io.fire(event, true);
         }, interval);
     }
 }
 
-core.RefreshBox.update = (args, env) => {
-    env.local.readyQ = true;   
+core.RefreshBox.update = async (args, env) => {
+    if (env.local.blocked) return;
+    const speedFlag = await interpretate(args[3], env);
+    switch (speedFlag) {
+      case 1:
+        env.local.blocked = true;
+        env.local.readyQ = false;
+        setTimeout(() => {
+          env.local.blocked = false;
+          env.local.readyQ = true;
+        }, 600)
+      break;
+      case 2:
+        env.local.blocked = true;
+        env.local.readyQ = false;
+        setTimeout(() => {
+          env.local.blocked = false;
+          env.local.readyQ = true;
+        }, 800)      
+      break;
+      default:
+        env.local.readyQ = true;
+    }  
 }
 
 core.Appearance = () => 'Appearance'
@@ -308,17 +329,23 @@ helper.update = async (args, env) => {
   //Something changed
 
   const sync = await interpretate(args[8], env);
+  
   //1: is this  is a synchronization signal
   //   to trigger an update (evaluation has finished)
   if (env.local.syncIndicator != sync) {
+    if (sync - env.local.syncIndicator > 10) {
+      //throttle signal (jump by more than 10)
+      setTimeout(() => {env.local.readyQ = true}, 800);
+    } else {
+      //go to the next frame
+      env.local.readyQ = true;
+    }    
     env.local.syncIndicator = sync;
-    //go to the next frame
-    env.local.readyQ = true;
   }
 
   //2: this is JIT failure
   if (!env.local.jitTimer) {
-        const innerCode = await interpretate(args[7], env);
+        const innerCode = await interpretate(args[7], env);    
         if (env.local.innerCode == innerCode) return;
         env.local.innerCode = innerCode;
         if (!env.local.jitIcon) return;

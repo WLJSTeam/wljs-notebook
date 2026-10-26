@@ -16,8 +16,7 @@
     "deferred": "packages/Canvas2D.wl",
     "category": "Plotting & Graphics",
     "priority": 10,
-    "figureExportRequired": true,
-    "cellExportRequired": true
+    "exportable": true
   },
   "repository": {
     "type": "git",

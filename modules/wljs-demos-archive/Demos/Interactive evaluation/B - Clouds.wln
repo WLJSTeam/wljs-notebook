@@ -1,60 +1,111 @@
-<|"Notebook" -> <|"Controller" -> "9e58e27b-e67c-46f5-97b3-ce6fff63c3f8", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1004], "HaveToSaveAs" -> False, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "13ab5a3c-372d-41bd-b3a7-e4ddd3e6d2de", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Animation/B - Clouds.wln", "PublicFields" -> {"Properties"}, 
-   "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[2, 
-      "Clouds using Gaussian noise", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1005]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n## Clouds using Gaussian noise\nThis is a 2D \
-Gaussian random field with a $1/k^2$ spectrum and linear dispersion \
-$\\\\omega \\\\propto k$. I clip the field to positive values and square root \
-it to give an edge to the \"clouds\".\n\n*Adapted from \
-https://mathematica.stackexchange.com/questions/80486/generating-animations-o\
-f-clouds-with-mathematica*", "Display" -> "codemirror", 
-    "Hash" -> "12e7c8a8-b3d9-44e1-a4ac-f0f6b8a81e1d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>, 
-   <|"Data" -> "## Clouds using Gaussian noise\nThis is a 2D Gaussian random \
-field with a $1/k^2$ spectrum and linear dispersion $\\\\omega \\\\propto k$. \
-I clip the field to positive values and square root it to give an edge to the \
-\"clouds\".\n\n*Adapted from \
-https://mathematica.stackexchange.com/questions/80486/generating-animations-o\
-f-clouds-with-mathematica*", "Display" -> "markdown", 
-    "Hash" -> "86ae07fb-dea7-441a-9e80-0f0583846397", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>, 
-   <|"Data" -> "ClearAll[n,k2,spectrum,im,p,p0,buffer];\n\nn = 256;\nk2 = \
-Outer[Plus, #, #] &[RotateRight[N@Range[-n, n - 1, 2]/n, n/2]^2];\n\nspectrum \
-= With[{d := RandomReal[NormalDistribution[], {n, n}]},\n   (1/n) (d + I \
-d)/(0.000001 + k2)]; \nspectrum[[1, 1]] *= 0;\n\nim[p_] := \
-Clip[Re[InverseFourier[spectrum Exp[I p]]], {0, \[Infinity]}]^0.5\n\np0 = p = \
-Sqrt[k2];", "Display" -> "codemirror", 
-    "Hash" -> "27eb2023-64e4-4785-8a05-14ca3a52f754", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>, 
-   <|"Data" -> ".md\nAnimate", "Display" -> "codemirror", 
-    "Hash" -> "f8607b96-e89a-4502-8dc4-65472f4d3dd9", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>, 
-   <|"Data" -> "Animate", "Display" -> "markdown", 
-    "Hash" -> "5b308232-cfb0-470d-adfa-716d587292cf", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>, 
-   <|"Data" -> "buffer = im[p0 += p];\n\nImage[buffer // Offload, \"Real32\", \
-Epilog->{\n    EventHandler[AnimationFrameListener[buffer // Offload], \n     \
- Function[Null, buffer = im[p0 += 2 p]]\n    ]\n}]", 
-    "Display" -> "codemirror", "Hash" -> 
-     "33b6998c-5e5e-492e-aa4f-14eff0332c2b", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "e80794db-0e20-447c-bc6d-2378b64ee44a"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Clouds using Gaussian noise
+This is a 2D Gaussian random field with a $1/k^2$ spectrum and linear dispersion $\\omega \\propto k$. I clip the field to positive values and square root it to give an edge to the "clouds".
+
+*Adapted from https://mathematica.stackexchange.com/questions/80486/generating-animations-of-clouds-with-mathematica*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Clouds using Gaussian noise
+This is a 2D Gaussian random field with a $1/k^2$ spectrum and linear dispersion $\\omega \\propto k$. I clip the field to positive values and square root it to give an edge to the "clouds".
+
+*Adapted from https://mathematica.stackexchange.com/questions/80486/generating-animations-of-clouds-with-mathematica*
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ClearAll[n,k2,spectrum,im,p,p0,buffer];
+
+n = 256;
+k2 = Outer[Plus, #, #] &[RotateRight[N@Range[-n, n - 1, 2]/n, n/2]^2];
+
+spectrum = With[{d := RandomReal[NormalDistribution[], {n, n}]},
+   (1/n) (d + I d)/(0.000001 + k2)]; 
+spectrum[[1, 1]] *= 0;
+
+im[p_] := Clip[Re[InverseFourier[spectrum Exp[I p]]], {0, ∞}]^0.5
+
+p0 = p = Sqrt[k2];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Animate
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Animate
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+buffer = im[p0 += p];
+
+Image[buffer // Offload, "Real32", Epilog->{
+    EventHandler[AnimationFrameListener[buffer // Offload], 
+      Function[Null, buffer = im[p0 += 2 p]]
+    ]
+}]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

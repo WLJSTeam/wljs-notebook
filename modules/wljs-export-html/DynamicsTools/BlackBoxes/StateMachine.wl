@@ -1,3 +1,5 @@
+(* Samples discrete event combinations into a replayable symbol-state table. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`StateMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -5,7 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`StateMachine`", {
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`UObjects`"
 }]
 
@@ -24,7 +26,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`" , FileNam
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
-Echo["BlackBox :: StateMachine"];
+Echo["[wljs-export-html/StateMachine] BlackBox :: StateMachine"];
 
 CreateUType[stateMachine, blackBox`BlackBox];
 
@@ -39,7 +41,7 @@ stateMachine /: blackBox`construct[stateMachine, group_, kernel_] := With[{symbo
     With[{machine = stateMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/StateMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Events"] = With[{allEventsForSymbol = proto`event[#]["Id"] &/@ (Select[group["Raw"], Function[item, item[[2, 2]] == symbol ] ][[All, 1, {1,2}]] // DeleteDuplicates)},
@@ -54,6 +56,7 @@ stateMachine /: blackBox`construct[stateMachine, group_, kernel_] := With[{symbo
 ]
 
 
+(* Build the Cartesian product while holding values against evaluation. *)
 runOverNested[array_, depth_, res_] := If[depth == Length[array], 
   Table[With[{i=i},Flatten[{res, Hold[i]}] ], {i, array[[depth, "Values"]]}]
 , 
@@ -65,7 +68,7 @@ SubmitState;
 
 
 prepareFeedbackSignal[kernel_] := With[{},
-    Echo["Prepare feedback loop handlers"];
+    Echo["[wljs-export-html/StateMachine] Prepare feedback loop handlers"];
     GenericKernel`Send[kernel,  (  
         Internal`Kernel`LoopBackTrueMessage = True;
     ), "Once"->True];
@@ -78,7 +81,7 @@ probeState[action_, kernel_, symbol_, aborted_, {values_, events_}, client_] := 
   promise = Promise[]
 },
 
-  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage"], client, "Format"->"RawJSON"], Function[hash,
+  Then[WebUIFetch[SubmitState[values, events, "Internal`Kernel`LoopBackTrueMessage"], client], Function[hash,
 
     Then[KernelSniffer[kernel, "FetchSymbol", symbol], Function[data,
 
@@ -101,6 +104,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr /. {n_NumericArray :>
   ]
 ]
 
+(* Export consumes the sampled machine and its backing data structure. *)
 stateMachine /: blackBox`export[machine_stateMachine] := With[{},
 With[{data = <|"CompressedMap" -> compress[KeyValueMap[List, Normal[machine["HashTable"] ] ] ],
   "Basis" -> machine["Basis"],
@@ -124,8 +128,8 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
     events = machine["Events"][[All, "FullForm"]],
     notification = Notifications`Custom["Topic"->"State Machine", "Body"->infoWindow["Channel"->channel, "Message"->"Sampling states", "Client"->client, "Log"->messager, "Notebook"->notebookOnLine], "Controls"->False]
   },
-    Block[{Global`$Client = client},
-      Echo["Total states: "<>ToString[total] ];
+    Block[{$CurrentWebSocket = client},
+      Echo[StringJoin["[wljs-export-html/StateMachine] ", "Total states: ", ToString[total]]];
       EventFire[messager, notification, True];
       EventFire[channel, "Progress", <|"Bar"->0, "Max"->1.0, "Info"->StringJoin[ToString[total], " to be sampled"]|>];
     ];
@@ -139,7 +143,7 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
         "Abort" -> Function[Null,
             EventFire[channel, "Progress", <|"Info"->"Aborting..."|>];
             machine["Aborted"] = True;
-            Echo["Aborting..."];
+            Echo["[wljs-export-html/StateMachine] Aborting the current operation."];
         ],
 
         "Continue" -> Function[Null,
@@ -179,18 +183,18 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
 
                               EventFire[p, Resolve, True];
                           ], Function[Null,
-                            Echo["Rejected!"];
+                            Echo["[wljs-export-html/StateMachine] Operation was rejected."];
                             EventFire[p, Reject, True];
                           ] ];  
 
                           Then[p, Function[Null, 
-                            Echo["DONE"];
+                            Echo["[wljs-export-html/StateMachine] Processing completed."];
                             EventFire[channel, "Progress", <|"Bar"->1, "Max"->1, "Info"->"Finished!", "Size"->(ByteCount[machine["HashTable"]["Values"] ]/1024//N)|>];
                             EventFire[channel, "Done", True];
                             
 
                           ], Function[Null,
-                            Echo["Abort"];
+                            Echo["[wljs-export-html/StateMachine] Aborting the current operation."];
                             Delete[notification];
                             EventFire[promise, Reject, True];
                           ] ];

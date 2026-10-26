@@ -3,8 +3,8 @@ processRequest = $Options["HandlerFunction"];
 Component[OptionsPattern[]] := With[{messager = OptionValue["Messanger"], controls = OptionValue["Controls"], appEvents = OptionValue["AppEvent"], modals = OptionValue["Modals"]},
     (*/* this uid will be shared with Electron's shortcuts, therefore we use a public Controls pool of events */*)
     EventHandler[EventClone[controls], {
-        "export-html" -> Function[Null, processRequest[controls, modals, messager, Global`$Client (*`*)]],
-        "archive-files" -> Function[Null, processRequest[controls, modals, messager, Global`$Client (*`*), "SFX"]]
+        "export-html" -> Function[Null, processRequest[controls, modals, messager, $CurrentWebSocket (*`*)]],
+        "archive-files" -> Function[Null, processRequest[controls, modals, messager, $CurrentWebSocket (*`*), "SFX"]]
     }];
 
     {

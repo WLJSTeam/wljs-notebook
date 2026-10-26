@@ -9,19 +9,22 @@ BeginPackage["CoffeeLiqueur`Extensions`Terminal`", {
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
     "CoffeeLiqueur`Extensions`CommandPalette`",
-    "CoffeeLiqueur`WLX`WLJS`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CodeFormatter`",
     "CoffeeLiqueur`UObjects`"
 }]
 
 
+
+
+Begin["`Private`"]
+
+(* frontend symbols *)
 UIXtermLoad;
 UIXtermPrint;
 UIXtermResolve;
 UIXtermColorize;
 
-Begin["`Private`"]
 Needs["CoffeeLiqueur`Notebook`Cells`" -> "cell`"];
 Needs["CoffeeLiqueur`Notebook`" -> "nb`"];
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
@@ -70,7 +73,7 @@ With[{
     Controls = OptionValue["Controls"]
 },
     EventHandler[EventClone[Controls], {"xterm_open" -> Function[Null, 
-        WebUILocation["/xterm", Global`$Client, "Target"->_, "Features"->"width=660, height=500, top=0, left=800"]
+        WebUILocation["/xterm", $CurrentWebSocket, "Target"->_, "Features"->"width=660, height=500, top=0, left=800"]
     ]}];
     ""
 ]

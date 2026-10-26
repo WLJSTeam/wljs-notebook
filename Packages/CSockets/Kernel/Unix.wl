@@ -49,30 +49,30 @@ $libFile := FileNameJoin[{
 }]; 
 
 
-Echo["CSockets >> Unix >> " <> $SystemID];
+Echo[$SystemID, "[Packages/Unix] Initializing sockets for system: "];
 
 uvLib = FileNameJoin[{$directory, "UV", $SystemID, "libuv."<>Internal`DynamicLibraryExtension[]}];
 If[FileExistsQ[uvLib],
-    Echo["CSockets >> Unix >> Loading UV library..."];
+    Echo["[Packages/Unix] Loading the Unix UV socket library."];
     LibraryLoad[uvLib];
 ];
 
-Echo["CSockets >> Unix >> Loading library... LLink "<>ToString[getLibraryLinkVersion[] ] ];
+Echo[getLibraryLinkVersion[], "[Packages/Unix] Loading the socket library with LibraryLink version: "];
 
 While[FailureQ[
     runLoop = LibraryFunctionLoad[$libFile, "run_uvloop", {Integer}, Integer]
 ] && getLibraryLinkVersion[] > 5,
     getLibraryLinkVersion[] = getLibraryLinkVersion[] - 1;
-    Echo["CSockets >> Unix >> Another attempt to load v"<>ToString[getLibraryLinkVersion[] ] ];
+    Echo[getLibraryLinkVersion[], "[Packages/Unix] Retrying the socket library with LibraryLink version: "];
 ];
 
 If[getLibraryLinkVersion[] <= 5, 
-    Echo["CSockets >> Unix >> Loading process failed. "];
+    Echo["[Packages/Unix] Failed to load the native socket library."];
     Exit[-1];
 ]
 
 
-Echo["CSockets >> Unix >> Succesfully loaded! LLink "];
+Echo["[Packages/Unix] Loaded the native socket library through LibraryLink."];
 
 
 socketsInfo = <||>;
@@ -113,7 +113,7 @@ socketConnectInternal = LibraryFunctionLoad[$libFile, "socket_connect", {Integer
 buffers;
 
 socketConnect[host_String, port_String] := Module[{state = False}, With[{sid = socketConnectInternal[socketOpen[host, port] ]},
-    Echo["sid >> "<>ToString[sid] ];
+    Echo[sid, "[Packages/Unix] Socket identifier: "];
     
     buffers[sid] = {};
 

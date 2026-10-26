@@ -49,7 +49,7 @@ import { EditorState, Compartment, Facet, StateField, StateEffect, Prec, EditorS
 import { syntaxHighlighting, indentOnInput, bracketMatching, HighlightStyle, foldGutter} from "@codemirror/language"
 import { history, historyKeymap } from "@codemirror/commands"
 import { highlightSelectionMatches } from "@codemirror/search"
-import { autocompletion, closeBrackets, acceptCompletion } from "@codemirror/autocomplete"
+import { autocompletion, closeBrackets, acceptCompletion, closeCompletion } from "@codemirror/autocomplete"
 import {tooltips} from "@codemirror/view";
 
 import {
@@ -579,7 +579,7 @@ const EditorSelected = {
   },
 
   setContent: (data, e) => {
-    const editor = e || selectedEditor;
+    let editor = e || selectedEditor;
 
     if (!editor) return;
     if (!editor.viewState) return;
@@ -627,7 +627,7 @@ compactWLEditor = (args) => {
     args.extensions || [],   
     minimalSetup,
     editorCustomThemeCompact,  
-    tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+    tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
     syntaxHighlighting(defaultHighlightStyle, { fallback: false }),    
     wolframLanguage.of(EditorAutocomplete, false),
     FractionBoxWidget(compactWLEditor),
@@ -743,7 +743,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"wl"|>`, 'Forwarded["CM:DropEvent"]');
+        server.io.fire(channel, {Channel: String(id), Length: length, CellType: 'wl'}, 'CM:DropEvent');
       }
     },
 
@@ -761,7 +761,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:InsertFilePaths"]');
+        server.io.fire(channel, {JSON: String(encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))), CellType: "wl"}, "CM:InsertFilePaths");
       }
     },
 
@@ -769,7 +769,7 @@ const wlDrop = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:DropFilePaths"]');
+        server.io.fire(channel, {JSON: String(encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))), CellType: "wl"}, "CM:DropFilePaths");
       }
     },
 
@@ -781,10 +781,10 @@ const wlDrop = {
         if (result.length > 5 * 1024 * 1024) {
           const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
           chunks.forEach((chunk, index) => {
-            server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+            server.io.fire(id, {Data: String(chunk), Name: name, Chunks: chunks.length, Chunk: index+1}, "Chunk");
           });
         } else {
-          server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+          server.io.fire(id, {Data: result, Name: name}, "File");
         }
       }
     }
@@ -795,7 +795,7 @@ const wlPaste = {
     console.log(view.dom.ocellref);
     if (view.dom.ocellref) {
       const channel = view.dom.ocellref.origin.channel;
-      server._emitt(channel, `<|"Channel"->"${id}", "Length"->${length}, "CellType"->"wl"|>`, 'Forwarded["CM:PasteEvent"]');
+      server.io.fire(channel, {Channel: id, Length: length, CellType: "wl"}, "CM:PasteEvent");
     }
   },
 
@@ -810,7 +810,7 @@ const wlPaste = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:InsertFilePaths"]');
+        server.io.fire(channel, {JSON: encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent))), CellType: "wl"}, "CM:InsertFilePaths");
       }
   },
 
@@ -818,7 +818,7 @@ const wlPaste = {
       selectedEditor = view;
       if (view.dom.ocellref) {
         const channel = view.dom.ocellref.origin.channel;
-        server._emitt(channel, `<|"JSON"->"${encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent)))}", "CellType"->"wl"|>`, 'Forwarded["CM:DropFilePaths"]');
+        server.io.fire(channel, {JSON: encodeURIComponent(JSON.stringify(pathsArray.map(encodeURIComponent))), CellType: "wl"}, "CM:DropFilePaths");
       }
   },  
 
@@ -828,10 +828,10 @@ const wlPaste = {
       if (result.length > 5 * 1024 * 1024) {
         const chunks = splitStringIntoChunks(result, 5 * 1024 * 1024);
         chunks.forEach((chunk, index) => {
-          server.emitt(id, `<|"Data"->"${chunk}", "Name"->"${name}", "Chunk"->${index+1}, "Chunks"->${chunks.length}|>`, 'Chunk');
+          server.io.fire(id, {Data: String(chunk), Name: name, Chunk: index+1, Chunks: chunks.length}, "Chunk");
         });
       } else {
-        server.emitt(id, `<|"Data"->"${result}", "Name"->"${name}"|>`, 'File');
+        server.io.fire(id, {Data: result, Name: name}, "File");
       }
     }
   }
@@ -842,7 +842,7 @@ const wlCellPaste = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${content}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCellEvent"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: String(content), CellType: "wl"}, "CM:PasteCellEvent");
   }  
 }
 
@@ -851,7 +851,7 @@ const wlPasteCrappy1 = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${encodeURIComponent(content)}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCrappy1Event"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: encodeURIComponent(content), CellType: "wl"}, "CM:PasteCrappy1Event");
   }  
 }
 
@@ -860,7 +860,7 @@ const wlPasteCrappy2 = (ev, view, content) => {
   if (view.dom.ocellref) {
     const channel = view.dom.ocellref.origin.channel;
     const uid = view.dom.ocellref.origin.uid;
-    server._emitt(channel, `<|"CellUID"->"${uid}", "Content"->"${encodeURIComponent(content)}", "CellType"->"wl"|>`, 'Forwarded["CM:PasteCrappy2Event"]');
+    server.io.fire(channel, {CellUID: String(uid), Content: encodeURIComponent(content), CellType: "wl"}, "CM:PasteCrappy2Event");
   }  
 }
 
@@ -974,7 +974,7 @@ const EditorExtensionsMinimal = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches()
 ] 
@@ -1001,7 +1001,7 @@ const EditorExtensions = [
   //() => closeBrackets(),
   () => EditorView.lineWrapping,
   () => autocompletion(),
-  () => tooltips({parent: document.getElementsByTagName('main')[0] || document.body, position: "absolute"}),
+  () => tooltips({parent: document.getElementsByTagName('body')[0] || document.body, position: "absolute"}),
   () => syntaxHighlighting(defaultHighlightStyle, { fallback: false }),
   () => highlightSelectionMatches(),
   () => cellTypesHighlight,
@@ -1064,7 +1064,7 @@ const EditorExtensions = [
   (self, initialLang) => EditorView.updateListener.of((v) => { 
     if (v.docChanged) {
       //TODO: TOO SLOW FIXME!!!
-      self.origin.save(encodeURIComponent(v.state.doc.toString()));
+      self.origin.save(v.state.doc.toString());
     }
     if (v.selectionSet) {
       //console.log('selected editor:');
@@ -1108,8 +1108,9 @@ class CodeMirrorCell {
     }
 
 
-    setContent (data) {
+    setContent (data, visQOnly = false) {
       console.warn('content mutation!');
+      if (visQOnly) console.log('prevent saving');
       if (!this.editor.viewState) return;
   
   const editor = this.editor;
@@ -1122,6 +1123,7 @@ class CodeMirrorCell {
         , insert: ''}
     });  */ //FIXED already
 
+      if (visQOnly === true) this.origin?.ignoreNextUpdate();
       this.editor.dispatch({
           changes: {
             from: 0,
@@ -1336,11 +1338,11 @@ class CodeMirrorCell {
         }
 
         console.log('editor view emitt data: '+data); //[FIXME] move to a new API
-        server.kernel.emitt(options.Event, '"'+data.replaceAll('\\\"', '\\\\\"').replaceAll('\"', '\\"')+'"', 'Input');
+        server.kernel.io.fire(options.Event, String(data), 'Input');
       }
 
       evalFunction = () => {
-        server.kernel.emitt(options.Event, '"'+state.replaceAll('\\\"', '\\\\\"').replaceAll('\"', '\\"')+'"', 'Evaluate');
+        server.kernel.io.fire(options.Event, String(state), 'Evaluate');
       }
       
     }
@@ -1435,6 +1437,7 @@ class CodeMirrorCell {
       linter: linter,
       EditorView: EditorView,
       EditorState: EditorState,
+      closeCompletion: closeCompletion,
       highlightSpecialChars: highlightSpecialChars,
       syntaxHighlighting: syntaxHighlighting,
       defaultHighlightStyle: defaultHighlightStyle,

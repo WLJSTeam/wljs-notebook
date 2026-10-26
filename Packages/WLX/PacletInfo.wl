@@ -16,7 +16,6 @@ PacletObject[
         "Context" -> {
           {"CoffeeLiqueur`WLX`", "WLX.wl"},
           {"CoffeeLiqueur`WLX`Importer`", "Importer.wl"},
-          {"CoffeeLiqueur`WLX`WLJS`", "WLJS.wl"},
           {"CoffeeLiqueur`WLX`WebUI`", "WebUI.wl"}
         },
         "Symbols" -> {}

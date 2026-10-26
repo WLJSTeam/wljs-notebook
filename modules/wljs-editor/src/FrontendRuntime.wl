@@ -3,7 +3,7 @@ BeginPackage["CoffeeLiqueur`Extensions`RuntimeTools`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
     "CoffeeLiqueur`Misc`Async`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`Extensions`Editor`",
     "CoffeeLiqueur`WLX`WebUI`"  
 }]
@@ -25,13 +25,13 @@ cacheFile = FileNameJoin[{AppExtensions`AppDataDir, "runtime_cache.wl"}];
 cacheRoutesFile = FileNameJoin[{AppExtensions`AppDataDir, "routes_cache.wl"}];
 
 If[FileExistsQ[cacheFile], 
-    Echo["FrontendRuntime >> restoring cached 3rd party assets"];
+    Echo["[wljs-editor/FrontendRuntime] Restoring cached third-party frontend assets."];
     frontEndRuntime = Get[cacheFile];    
 ];
 
 loadOnce;
 If[FileExistsQ[cacheRoutesFile], 
-    Echo["FrontendRuntime >> restoring cached 3rd party routes"];
+    Echo["[wljs-editor/FrontendRuntime] Restoring cached third-party frontend routes."];
     routes = Get[cacheRoutesFile];    
     loadOnce := (
         loadOnce = Null;
@@ -40,12 +40,12 @@ If[FileExistsQ[cacheRoutesFile],
 ];
 
 cacheRuntime := (
-    Echo["FrontendRuntime >> backing up cached 3rd party assets"];
+    Echo["[wljs-editor/FrontendRuntime] Backing up cached third-party frontend assets."];
     Put[frontEndRuntime, cacheFile ];
 );
 
 cacheRoutes := (
-    Echo["FrontendRuntime >> backing up cached 3rd party routes"];
+    Echo["[wljs-editor/FrontendRuntime] Backing up cached third-party frontend routes."];
     Put[routes, cacheRoutesFile ];
 );
 
@@ -94,10 +94,10 @@ checkHealth := With[{modules = KeySelect[frontEndRuntime, MatchQ[#, {"Modules", 
         !With[{files = Flatten[{modules[key]}]}, If[Length[files]>0, And @@ (If[!StringQ[#], FileExistsQ[ FileNameJoin[ #["Path"] ] ], True ] &/@ files), True] ]
     ] ]},
         If[Length[broken] > 0,
-            Echo["FrontendRuntime >> found broken modules!"];
-            Echo /@ broken;
+            Echo["[wljs-editor/FrontendRuntime] Found invalid cached frontend modules."];
+            Echo[#, "[wljs-editor/FrontendRuntime] Broken module key: "]& /@ broken;
             frontEndRuntime = KeyDrop[frontEndRuntime, broken];
-            Echo["FrontendRuntime >> rebuilding..."];
+            Echo["[wljs-editor/FrontendRuntime] Rebuilding the frontend runtime cache."];
             rebuild; 
             setTimer;       
         ];
@@ -160,8 +160,8 @@ EventHandler[NotebookEditorChannel // EventClone,
                 With[{
                     new = Complement[Keys[assets][[All, 2;;]], Keys[frontEndRuntime][[All, 2;;]] ] // DeleteDuplicates
                 },
-                    Echo["FrontEndRuntime >> Loaded live >> Will be injected now:"];
-                    Echo[new];
+                    Echo["[wljs-editor/FrontendRuntime] Injecting newly loaded assets into the live frontend runtime."];
+                    Echo[new, "[wljs-editor/FrontendRuntime] Newly discovered runtime assets: "];
 
                     KeyValueMap[injectInRuntime, KeySelect[assets, Function[key, key[[1]] =!= "Bundles" && MemberQ[new, key[[2;;]]] ] ] ];
                 ];
@@ -188,7 +188,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             Map[
                 Function[notebook, 
                     If[TrueQ[notebook["Opened"] ], 
-                        Echo["FrontendRuntime >> clear notebook "<>notebook["Hash"] ];
+                        Echo[StringJoin["[wljs-editor/FrontendRuntime] Clearing runtime assets from notebook ", notebook["Hash"], "."]];
                         notebook["RuntimeCache"] = .;
                     ]; 
                 ], 
@@ -199,7 +199,7 @@ EventHandler[NotebookEditorChannel // EventClone,
             Map[
                 Function[notebook, 
                     If[TrueQ[notebook["Opened"] ], 
-                        Echo["FrontendRuntime >> storing to notebook "<>notebook["Hash"] ];
+                        Echo[StringJoin["[wljs-editor/FrontendRuntime] Storing runtime assets in notebook ", notebook["Hash"], "."]];
 
                         (* prioritize bundles over modules, so it is easier to other people to import *)
                         notebook["RuntimeCache"] = Association[With[{keyA = Key @ Join[{"Modules"}, #], keyB = Key @ Join[{"Bundles"}, # ] },
@@ -218,7 +218,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "UpdateRuntimeHTTPPaths" -> Function[assoc,
             With[{kernel = GenericKernel`HashMap[assoc["Kernel"] ], promise = assoc["Promise"]},
-                 Echo["Runtime >> added to HTTP path >> "<>ToString[assoc["Path"] ] ];
+                 Echo[StringJoin["[wljs-editor/FrontendRuntime] Added runtime asset to HTTP path ", ToString[assoc["Path"]], "."]];
                  EventFire[AppExtensions`AppEvents, "App:ExtendPath", assoc["Path"] ];
                  GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, True] ];
             ]        
@@ -226,7 +226,7 @@ EventHandler[NotebookEditorChannel // EventClone,
 
         "UpdateRuntimeHTTPRoutes" -> Function[assoc,
             With[{kernel = GenericKernel`HashMap[assoc["Kernel"] ], promise = assoc["Promise"]},
-                 Echo["Runtime >> added to HTTP route >> "<>ToString[assoc["Route"] ] ];
+                 Echo[StringJoin["[wljs-editor/FrontendRuntime] Added runtime asset to HTTP route ", ToString[assoc["Route"]], "."]];
                  routes = Join[routes, assoc["Route"] ]; (* duplicate to save for later *)
 
                  EventFire[AppExtensions`AppEvents, "App:ExtendRoute", assoc["Route"] ];
@@ -243,13 +243,13 @@ EventHandler[AppExtensions`AppEvents// EventClone, {
 }];
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-editor/FrontendRuntime] Attaching extension event listeners to the notebook."];
     loadOnce;
     
     EventHandler[notebook // EventClone, {
         "OnBeforeLoad" -> Function[opts,
             If[MemberQ[notebook["Properties"], "RuntimeCache"],
-                Echo["FrontendRuntime >> restored from the notebook"];
+                Echo["[wljs-editor/FrontendRuntime] Restored frontend runtime assets from the notebook."];
                 
                 With[{new = KeySelect[notebook["RuntimeCache"], Function[keyB,
                         With[{o = Key[Join[{"Modules"}, keyB[[2;;]]] ]},
@@ -257,9 +257,9 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                         ]
                     ] ] },
 
-                    Echo["FrontendRuntime >> new, which were not installed: "];
-                    Echo[new // Keys];
-                    Echo["Inject them live"];
+                    Echo["[wljs-editor/FrontendRuntime] Found runtime assets that are not installed locally."];
+                    Echo[new // Keys, "[wljs-editor/FrontendRuntime] new keys: "];
+                    Echo["[wljs-editor/FrontendRuntime] Inject them live"];
                     KeyValueMap[injectInRuntime, new ];
                 ];
             ];

@@ -1,10 +1,9 @@
 BeginPackage["CoffeeLiqueur`Notebook`Utils`"];
 
 (*
-	Useful utilites package
+	Useful utilites
 *)
 
-console::usage = "console[\"log\", message, args]"
 NullQ::usage = "NullQ[x]"
 Cached::usage = "Cached[expr_, interval_String: \"Minute\"]"
 RandomString::usage = "RandomString[length]"
@@ -21,9 +20,6 @@ ElectronIPCSend[name_String, args__] := WriteString[$StandardOutputStream, "<<<I
 
 
 NullQ[expr_] := expr===Null;
-
-console["log", message_, args___] := Print[StringTemplate[message][args]]
-console["memory stat"] := (CoffeeLiqueur`WolframJSFrontend`ram = {CoffeeLiqueur`WolframJSFrontend`ram, Round[MemoryInUse[]/1024,1]/1024//N}//Flatten);
 
 (* smart caching. credits https://github.com/KirillBelovTest *)
 ClearAll[Cached]

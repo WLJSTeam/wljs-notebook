@@ -1,3 +1,15 @@
+(*
+    Deep links app component
+    no actual view component
+
+    This is used when wljs is called via browser link
+    for example to import something or launch a command
+    
+    All symbols used in WLX template are scoped
+*)
+
+(* Shared constants *)
+
 http                      =  $Options["HTTPUHandler"];
 env                       =  $Options["Env"];
 AppEvent                  =  $Options["AppEvent"];
@@ -6,6 +18,7 @@ ExtensionTemplates        =  $Options["ExtensionTemplates"];
 ExtensionSidebarIcons        =  $Options["ExtensionSidebarIcons"];
 middleware                = $Options["Middleware"];
 
+(* UI components *)
 
 Head        = ImportComponent["Components/Head.wlx"];
 
@@ -27,9 +40,13 @@ BrowserMenu            = ImportComponent["Components/FakeMenuBrowser.wlx"];
 
 FakeMenu            = "";
 
+(* Notebook and kernel tools *)
+
 {saveNotebook, loadNotebook, renameNotebook, cloneNotebook}         = {loader`save, loader`load, loader`rename, loader`clone};
 
 {deinitKernel, initKernel}           = {kernelUtils`deinitializeKernel, kernelUtils`initializeKernel};
+
+(* Settings helpers *)
 
 {loadSettings, storeSettings}        = {settings`initialize, settings`storeConfiguration};
 
@@ -50,14 +67,20 @@ loadSettingsOnceMore := With[{},
 ];
 
 
+(* Extension scripts and styles *)
 
+extensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
+ExtensionsJS = extensionsJS;
 
-ExtensionsJS = (StringJoin["/", FileNameToUURLPath[#]]) &/@ WLJSPackages`Includes["js"];
 ExtensionsStyles = With[{Path = StringJoin["/", FileNameToUURLPath[#]]},
   <link rel="stylesheet" href="{Path}"/> 
 ] &/@ WLJSPackages`Includes["styles"] // ToStringRiffle;
 
-defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir (*`*)|>, settings]["Home"] ];
+(* Home folder *)
+
+defaultHomeFolder = If[KeyExistsQ[$Env, "folder"], $Env["folder"], Join[<|"Home"->AppExtensions`DefaultDocumentsDir |>, settings]["Home"] ];
+
+(* Build a menu *)
 
 ExtensionMenuItems = <|"file"->{}, "misc"->{}, "kernel"->{}, "view"->{}, "edit"->{}|>;
 
@@ -70,6 +93,8 @@ Map[Function[item,
     ExtensionMenuItems["misc"] = Append[ExtensionMenuItems["misc"], item]
   ];
 ], Select[Flatten[WLJSPackages`Packages[#, "wljs-meta", "menu"] &/@ Keys[WLJSPackages`Packages]], AssociationQ]];
+
+(* App entry point *)
 
 App[request_] := With[{
   Secret = CreateUUID[], 
@@ -97,7 +122,7 @@ App[request_] := With[{
         OnLoad    = CreateUUID[],
         ModalController = CreateUUID[],
         accentColor = With[{c = Lookup[settings, "AccentColor", "System"]}, If[c === "System", Lookup[System`$Env, "AccentColor", "#f67070"], c]],
-        kernels = Hold[AppExtensions`KernelList] (*`*),
+        kernels = Hold[AppExtensions`KernelList] ,
         GlobalMessanger = CreateUUID[],
         GlobalParameters = Join[<|"Navigator"->(If[KeyExistsQ[#, "AppOS"], #["AppOS"], "Browser"] &@ request["Headers"]), "ElectronQ" -> ElectronQ[request], "AccentColor"->"teal", "BackupTimeout" -> (3 60 1000)|>, settings],
         AppClass = If[ElectronQ[request], "", "dark:bg-gray-800"],
@@ -110,12 +135,13 @@ App[request_] := With[{
     loadSettingsOnceMore;
 
     EventHandler[OnLoad, Function[Null,
-      cachedClient = $Client;
+      (* After UI has been loaded *)
+      cachedClient = $CurrentWebSocket;
 
-      With[{socket = EventClone[$Client]},
+      With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {"Closed" -> Function[Null,
           EventRemove[socket];  
-          Echo["Protocol >> Destroy"];
+          Echo["[Frontend/Protocol] Destroying the protocol handler."];
           EventRemove[Secret];
           EventRemove[GlobalControls];
           EventRemove[ModalController];
@@ -125,9 +151,10 @@ App[request_] := With[{
         ]}]
       ];
 
+      (* Pass downstream the payload from a deep link *)
       With[{msg = ImportString[Protocol, "RawJSON"]},
-        Echo[msg];
-        EventFire[AppProtocol, msg["type"], Join[<|"URL" -> Protocol, "Client" -> $Client, "Controls" -> GlobalControls, "Messanger" -> GlobalMessanger, "Modals"->ModalController, "KernelList"->kernels|>, msg]];
+        Echo[msg, "[Frontend/Protocol] message: "];
+        EventFire[AppProtocol, msg["type"], Join[<|"URL" -> Protocol, "Client" -> $CurrentWebSocket, "Controls" -> GlobalControls, "Messanger" -> GlobalMessanger, "Modals"->ModalController, "KernelList"->kernels|>, msg]];
       ];
       
 
@@ -151,7 +178,8 @@ App[request_] := With[{
     <html class="h-full {AppClass}" os="{NavigatorOS}" transparency="{Transparency}" > 
         <Head AccentColor={accentColor} Title={FileNameTake[Path]} Settings={settings}>
             <meta charset="utf-8"/>
-            <WLJSHeader List={ExtensionsJS}/>  
+            <WLJSInterpreterScript/>
+            <WebUIHeaderJS List={ExtensionsJS}/>  
             <WLJSTransportScript TwoKernels={True} PrefixMode={$Env["wsprefix"]} Port={$Env["ws"]}/>     
             <WebUIInitializationScript/>
             <ExtensionsStyles/>
@@ -184,6 +212,8 @@ Script[Rule["Secret", Secret_]] := With[{},
   ""
 ];
 
+(* Command line entry point *)
+(* not used at the moment *)
 
 CMDAPIHandler[request_] := With[{
   Secret = CreateUUID[], 
@@ -201,18 +231,20 @@ CMDAPIHandler[request_] := With[{
   ]) 
  },
 
-Echo["Protocol"];
-Echo[Protocol];
+      Echo["[Frontend/Protocol] Protocol message:"];
+      Echo[Protocol, "[Frontend/Protocol] protocol: "];
       With[{msg = ImportString[FromCharacterCode@ToCharacterCode[Protocol, "UTF-8"], "RawJSON"]},
-        Echo[msg];
+        Echo[msg, "[Frontend/Protocol] message: "];
         With[{reply = EventFire[AppProtocol, StringJoin["cmd_", msg["c"]], Join[<|"URL" -> Protocol, "KernelList"->kernels|>, msg]]},
           reply
         ]
       ]
 ]
 
+(* Assign routes *)
 
 http["MessageHandler", "Protocol"] = AssocUMatchQ[<|"Path" -> "/protocol/" ~~ ___|>] -> middleware[App];
+
 http["MessageHandler", "CMD API"] = AssocUMatchQ[<|"Path" -> "/cmdapi/" ~~ ___|>] -> middleware[CMDAPIHandler];
 
 

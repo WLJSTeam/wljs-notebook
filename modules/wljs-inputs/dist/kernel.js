@@ -582,26 +582,20 @@ atoms.Blank = async (data, contextEnv, element, store, hashFunction = interpreta
   const hash = String(hf(data));
 
   let obj;
-  let storage;
 
   if (!(hash in ObjectHashMap)) {
     obj = new ObjectStorage(hash);
     obj.doNotCollect = true;
     store.objects.push(obj);
-
-    try {
-      storage = await obj.get();
-    } catch(err) {
-      console.warn('Creating FE object by id '+hash);
-      await server.kernel.io.fetch('CoffeeLiqueur`Extensions`InputsOutputs`Private`DatasetMakeBox', [JSON.stringify(data), hash]);
-      storage = await obj.get();
-    }
-    
   } else {
     obj = ObjectHashMap[hash];
   }
 
-  if (!storage) storage = await obj.get();
+  const storage = await obj.getOrCreate(async () => {
+    console.warn('Creating FE object by id '+hash);
+    await server.kernel.io.fetch('CoffeeLiqueur`Extensions`InputsOutputs`Private`DatasetMakeBox', [JSON.stringify(data), hash]);
+    console.warn('Waiting for '+hash);
+  });
 
   let env = {global: {}, element: element}; 
   console.log("Dataset: creating an object");
@@ -874,7 +868,9 @@ core.Dataset = async (args, env) => {
   const data = await interpretate(args[0], {...env, hold:true, context: datasetContext});
   
   let hashFunction = interpretate.hash;
-  if (env?.options?.HashFunction == 'V2') hashFunction = interpretate.hashv2;
+  if (env?.options?.HashFunction == 'V2') {
+    hashFunction = interpretate.hashv2;
+  }
   
 
   

@@ -6,7 +6,7 @@ Window[OptionsPattern[]] := With[{promise = OptionValue["Data"]["Promise"], Comm
 
       EventHandler[Uid, {
         "Ok" -> Function[choice,
-            Echo["Choice:"];Echo[choice];
+            Echo["[wljs-editor/Photoshoot] Selected choice:"];Echo[choice, "[wljs-editor/Photoshoot] selected choice: "];
             EventFire[loader, "Remove", <|"Client" -> client|>];
             EventFire[promise, Resolve, <|"Client" -> client, "Result"->choice|>];
         ],

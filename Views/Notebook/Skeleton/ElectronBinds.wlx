@@ -7,68 +7,68 @@ Component[OptionsPattern[]] := With[{
     const api = window.electronAPI || window.iframeAPI;
     if (api) {
         api.listener('abort', () => {
-            server.emitt('<Controls/>', 'True', 'Abort');
+            server.io.fire('<Controls/>', true, 'Abort');
         });
         api.listener('changekernel', () => {
-            server.emitt('<Controls/>', 'True', 'ChangeKernel');
+            server.io.fire('<Controls/>', true, 'ChangeKernel');
         });
 
         api.listener('save', () => {
-            server.emitt('<Controls/>', 'True', 'Save');
+            server.io.fire('<Controls/>', true, 'Save');
         });
 
         api.listener('saveas', (ev, path) => {
-            server.emitt('<Controls/>', `"${path}"`, 'SaveAs');
+            server.io.fire('<Controls/>', String(path), 'SaveAs');
         });
 
         api.listener('reopenasquick', (ev) => {
-            server.emitt('<Controls/>', `True`, 'ReopenAsQuickNote');
+            server.io.fire('<Controls/>', true, 'ReopenAsQuickNote');
         });
         
 
         api.listener('unhideallcells', () => {
-            server.emitt('<Controls/>', 'True', 'UnhideAllCells');
+            server.io.fire('<Controls/>', true, 'UnhideAllCells');
         });
 
         api.listener('clearoutputs', () => {
-            server.emitt('<Controls/>', 'True', 'ClearOutputs');
+            server.io.fire('<Controls/>', true, 'ClearOutputs');
         });
 
         api.listener('togglecell', () => {
-            server.emitt('<Controls/>', 'True', 'ToggleFocusedCell');
+            server.io.fire('<Controls/>', true, 'ToggleFocusedCell');
         });
 
         api.listener('deletecell', () => {
-            server.emitt('<Controls/>', 'True', 'DeleteFocusedCell');
+            server.io.fire('<Controls/>', true, 'DeleteFocusedCell');
         });
 
         api.listener('untrashcell', () => {
-            server.emitt('<Controls/>', 'True', 'UntrashCell');
+            server.io.fire('<Controls/>', true, 'UntrashCell');
         });
     
         api.listener('evaluateinit', () => {
-            server.emitt('<Controls/>', 'True', 'EvaluateInitCells');
+            server.io.fire('<Controls/>', true, 'EvaluateInitCells');
         });
 
         api.listener('evaluateall', () => {
-            server.emitt('<Controls/>', 'True', 'EvaluateAllCells');
+            server.io.fire('<Controls/>', true, 'EvaluateAllCells');
         });
         
     } else {
         window.addEventListener("keydown", function (e) {
             if (e.ctrlKey && e.key == "s" || e.metaKey && e.key == "s") {
-                server.emitt('<Controls/>', 'True', 'Save');
+                server.io.fire('<Controls/>', true, 'Save');
                 e.preventDefault();
                 return false;
             }
             if (e.altKey && e.key == "." || e.metaKey && e.key == ".") {
-                server.emitt('<Controls/>', 'True', 'Abort');
+                server.io.fire('<Controls/>', true, 'Abort');
                 e.preventDefault();
                 return false;
             }           
             
             if (e.altKey && e.key == "2" || e.metaKey && e.key == "2") {
-                server.emitt('<Controls/>', 'True', 'ToggleFocusedCell');
+                server.io.fire('<Controls/>', true, 'ToggleFocusedCell');
                 e.preventDefault();
                 return false;
             }

@@ -1,3 +1,5 @@
+(* Replays frequently repeated event-driven symbol values as animation frames. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`AnimationMachine`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
@@ -5,7 +7,7 @@ BeginPackage["CoffeeLiqueur`Extensions`ExportImport`BlackBox`AnimationMachine`",
     "CoffeeLiqueur`Misc`Async`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`", 
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`UObjects`"
 }]
 
@@ -26,7 +28,7 @@ Needs["CoffeeLiqueur`Extensions`ExportImport`BlackBox`" -> "blackBox`" , FileNam
 
 Needs["CoffeeLiqueur`Notebook`Kernel`" -> "GenericKernel`"];
 
-Echo["BlackBox :: AnimationMachine"];
+Echo["[wljs-export-html/AnimationMachine] BlackBox :: AnimationMachine"];
 
 CreateUType[animationMachine, blackBox`BlackBox];
 
@@ -34,6 +36,7 @@ blackBox`definedBoxes = Append[blackBox`definedBoxes, animationMachine];
 
 animationMachine /: blackBox`priority[animationMachine] := 10;
 
+(* High duplicate density identifies a periodic stream rather than discrete states. *)
 animationMachine /: blackBox`test[animationMachine, group_Association] := (
 
     If[(Length[group["Summary"]["Symbols"] ] > 0 && Length[group["Summary"]["Events"] ] == 1),
@@ -50,7 +53,7 @@ animationMachine /: blackBox`construct[animationMachine, group_, kernel_] := Wit
     With[{machine = animationMachine[]},
       machine["Kernel"] = kernel;
       machine["Aborted"] = False;
-      EventHandler[machine, {"Abort" -> Function[Null, Echo["Abort machine!"]; machine["Aborted"] = True]}];
+      EventHandler[machine, {"Abort" -> Function[Null, Echo["[wljs-export-html/AnimationMachine] Aborting the state machine."]; machine["Aborted"] = True]}];
 
       machine["Symbol"] = symbol;
       machine["Event"] = group["Summary"]["Events"][[1]];
@@ -70,7 +73,7 @@ animationMachine /: blackBox`process[machine_animationMachine, {controls_, modal
 
     machine["Interpolation"] = Lookup[settings, "HTMLExportStatesInterpolation", True];
   
-    Block[{Global`$Client = client},
+    Block[{$CurrentWebSocket = client},
         EventFire[messager, notification, True];
     ];
 
@@ -108,6 +111,7 @@ compress[expr_] := With[{arr = Normal[ExportByteArray[expr /. {n_NumericArray :>
 ]
 
 
+(* Export consumes the captured frames to release memory promptly. *)
 animationMachine /: blackBox`export[machine_animationMachine] := With[{},
 With[{data = <|"Compressed" -> compress[ machine["Values"] ],
   "Class" -> "AnimationMachine",

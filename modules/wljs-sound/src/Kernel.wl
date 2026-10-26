@@ -2,7 +2,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Sound`", {
     "CoffeeLiqueur`Misc`Language`",
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
 	"CoffeeLiqueur`Extensions`Communication`",
     "CoffeeLiqueur`Extensions`FrontendObject`"
 }]
@@ -33,6 +33,8 @@ EmitSound[s_Sound, opts: OptionsPattern[] ] := With[{},
 EmitSound[s_Audio, opts: OptionsPattern[] ] := With[{},
     FrontSubmit[PCMPlayer[s, "AutoRemove"->True, "GUI"->False], opts]
 ]
+
+EmitSound[{a__Audio}, opts:OptionsPattern[]] := EmitSound[AudioJoin[a], opts]
 
 Options[EmitSound] = {"Window" :> CurrentWindow[]}
 

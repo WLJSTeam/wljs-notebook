@@ -4,8 +4,7 @@ BeginPackage["CoffeeLiqueur`Extensions`Debugger`", {
     "CoffeeLiqueur`WLX`",
     "CoffeeLiqueur`WLX`Importer`",
     "CoffeeLiqueur`WLX`WebUI`",
-    "CoffeeLiqueur`WLX`WLJS`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`",
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`",
     "CoffeeLiqueur`HTTPUHandler`",
     "CoffeeLiqueur`HTTPUHandler`Extensions`",
     "CoffeeLiqueur`UInternal`",
@@ -51,7 +50,7 @@ With[{
         "open_debugger" -> Function[Null, 
             With[{
                 notebook = getNotebook[Controls],
-                cli = Global`$Client
+                cli = $CurrentWebSocket
             },
                 If[!MatchQ[notebook, _nb`NotebookObj],
                     EventFire[Messanger, "Warning", "Notebook not found"];

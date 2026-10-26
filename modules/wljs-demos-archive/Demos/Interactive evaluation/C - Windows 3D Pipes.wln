@@ -1,97 +1,234 @@
-<|"Notebook" -> <|"Controller" -> "0fea926c-5f1e-40b1-bae5-aa1082c4b3df", 
-   "FocusedCell" -> CoffeeLiqueur`Notebook`Cells`CellObj[
-     CoffeeLiqueur`Notebook`Cells`CellObj`$1247], "HaveToSaveAs" -> True, 
-   "MessangerChannel" -> Messanger, "ModalsChannel" -> 
-    "9ddb47a1-57fc-41e5-83aa-f6af3f89e9fd", "Objects" -> <||>, 
-   "Path" -> "/Users/kirill/Github/wolfram-js-frontend/modules/wljs-demos-arc\
-hive/Demos/Animation/C - Windows 3D Pipes.wln", 
-   "PublicFields" -> {"Properties"}, "Quick" -> True, "Symbols" -> <||>, 
-   "TOC" -> {CoffeeLiqueur`Extensions`TOC`Private`heading[1, 
-      "Windows 3D Pipes screensaver", CoffeeLiqueur`Notebook`Cells`CellObj[
-       CoffeeLiqueur`Notebook`Cells`CellObj`$1243]]}|>, 
- "Cells" -> {<|"Data" -> ".md\n# Windows 3D Pipes screensaver\nA legendary \
-screensaver recreated in Woflram Language.\n\n> Based on web port by \
-[1j01](https://github.com/1j01/pipes)", "Display" -> "codemirror", 
-    "Hash" -> "b9756086-6c47-4c97-a3e9-9987efd71e9e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>, 
-   <|"Data" -> "# Windows 3D Pipes screensaver\nA legendary screensaver \
-recreated in Woflram Language.\n\n> Based on web port by \
-[1j01](https://github.com/1j01/pipes)", "Display" -> "markdown", 
-    "Hash" -> "414a1ec4-1282-4f05-b1bd-d9c123ac8145", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>, 
-   <|"Data" -> "RandomIntegerVectorWithinBox[min_List, max_List] := Table[\n  \
-RandomInteger[{min[[i]], max[[i]]}],\n  {i, \
-Length[min]}\n]\n\nPositionKey[pos_] := ToString[pos]\n\nWithinBoundsQ[pos_, \
-gridMin_, gridMax_] := And @@ Thread[pos >= gridMin] && And @@ Thread[pos <= \
-gridMax]\n\nIsUnoccupied[pos_, occupiedPositions_] := ! \
-KeyExistsQ[occupiedPositions, PositionKey[pos]]\n\n(* Main function to \
-simulate a pipe *)\nSimulatePipe[] := Module[\n  {\n    gridMin = {-10, -10, \
--10},\n    gridMax = {10, 10, 10},\n    occupiedPositions = <||>,\n    \
-currentPosition,\n    positions,\n    lastPosition,\n    lastDirectionVector \
-= Null,\n    directionVector,\n    newPosition,\n    axis,\n    dir,\n    \
-possibleDirections,\n    triedDirections,\n    moveMade\n  },\n  \n  (* \
-Initialize the starting position *)\n  currentPosition = \
-RandomIntegerVectorWithinBox[gridMin, gridMax];\n  positions = \
-{currentPosition};\n  occupiedPositions[PositionKey[currentPosition]] = \
-True;\n  \n  (* Simulate the pipe growth *)\n  Function[Null,\n    \n    (* \
-Initialize possible directions *)\n    possibleDirections = {\n      {1, 0, \
-0}, {-1, 0, 0},\n      {0, 1, 0}, {0, -1, 0},\n      {0, 0, 1}, {0, 0, -1}\n  \
-  };\n    \n    (* Prioritize continuing in the same direction *)\n    \
-If[lastDirectionVector =!= Null && RandomReal[] < 0.5,\n      (* Try to \
-continue in the same direction *)\n      directionVector = \
-lastDirectionVector;\n      possibleDirections = \
-Prepend[DeleteCases[possibleDirections, directionVector], \
-directionVector];,\n      (* Shuffle possible directions *)\n      \
-possibleDirections = RandomSample[possibleDirections];\n    ];\n    \n    \
-triedDirections = {};\n    moveMade = False;\n    (* Try each possible \
-direction *)\n    Do[\n      directionVector = dir;\n      newPosition = \
-currentPosition + directionVector;\n      If[\n        \
-WithinBoundsQ[newPosition, gridMin, gridMax] && IsUnoccupied[newPosition, \
-occupiedPositions],\n        (* Valid move found *)\n        positions = \
-Append[positions, newPosition];\n        \
-occupiedPositions[PositionKey[newPosition]] = True;\n        \
-lastDirectionVector = directionVector;\n        currentPosition = \
-newPosition;\n        moveMade = True;\n        Break[];\n      ];\n      \
-AppendTo[triedDirections, dir];\n      ,\n      {dir, possibleDirections}\n   \
- ];\n    \n    If[!moveMade,\n      (* No valid moves, terminate simulation \
-*)\n      $Failed\n    ,\n      positions\n    ]\n\n    \n  ]\n  \n]\n\n", 
-    "Display" -> "codemirror", "Hash" -> 
-     "37042bf3-e149-4196-81f6-cd996d2c542e", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"InitGroup" -> True, "Fade" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>, 
-   <|"Data" -> ".md\nMake it animated", "Display" -> "codemirror", 
-    "Hash" -> "de838ad5-bb93-4a4e-959a-482d45f837b8", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <|"Hidden" -> True|>, 
-    "PublicFields" -> {"Properties"}, "State" -> "Idle", "Type" -> "Input", 
-    "UID" -> Null, "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>, 
-   <|"Data" -> "Make it animated", "Display" -> "markdown", 
-    "Hash" -> "af390865-64bb-46dc-b4ab-859ece07ca2d", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Output", "UID" -> Null, 
-    "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>, 
-   <|"Data" -> "\nWith[{\n  frame = CreateUUID[],\n  scene = \
-FrontInstanceReference[]\n},\n  Module[{\n    pipeFunction = Function[Null, \
-$Failed],\n    pipesNumber = 0,\n    trigger = 1,handler\n  },\n\n    handler \
-= Function[Null,\n      With[{\n        result = pipeFunction[]\n      },\n   \
-     If[FailureQ[result],\n          With[{\n            segments = \
-Unique[\"pipe\"],\n            generator = SimulatePipe[]\n          },\n     \
-       pipesNumber++;\n            pipeFunction = Function[Null,\n            \
-  With[{seg = generator[]}, \n                If[FailureQ[seg],\n             \
-     $Failed\n                ,\n                  segments = seg // N;\n     \
-           ]\n              ]\n            ];\n\n            \
-pipeFunction[];\n\n            FrontSubmit[{\n              \
-ColorData[97][pipesNumber],\n              Tube[segments // Offload, 0.2]\n   \
-         }, scene];\n          ]\n        ]\n      ];\n\n      trigger++;\n   \
- ];\n    \n\n    Graphics3D[{\n      Opacity[0], Cuboid[{-4,-4,-4}, {4,4,4}], \
-Opacity[1], scene,\n      EventHandler[AnimationFrameListener[trigger // \
-Offload], handler]\n    }]\n  ]\n]", "Display" -> "codemirror", 
-    "Hash" -> "d6725aa7-c9b0-46d6-9e4b-98db3d2016b3", "Invisible" -> False, 
-    "MetaOnly" -> False, "Props" -> <||>, "PublicFields" -> {"Properties"}, 
-    "State" -> "Idle", "Type" -> "Input", "UID" -> Null, 
-    "Notebook" -> "f00a81c3-9888-462a-930b-34f1a7599aac"|>}, 
- "serializer" -> "jsfn4"|>
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: true
+ObjectFields:
+  - Objects
+  - Symbols
+  - Storage
+  - ExcalidrawImages
+  - RuntimeCache
+  - ZIPArchive
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# Windows 3D Pipes screensaver
+A legendary screensaver recreated in Woflram Language.
+
+> Based on web port by [1j01](https://github.com/1j01/pipes)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# Windows 3D Pipes screensaver
+A legendary screensaver recreated in Woflram Language.
+
+> Based on web port by [1j01](https://github.com/1j01/pipes)
+
+%-------------------------------------------------------------------------%
+Props:
+  InitGroup: true
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+RandomIntegerVectorWithinBox[min_List, max_List] := Table[
+  RandomInteger[{min[[i]], max[[i]]}],
+  {i, Length[min]}
+]
+
+PositionKey[pos_] := ToString[pos]
+
+WithinBoundsQ[pos_, gridMin_, gridMax_] := And @@ Thread[pos >= gridMin] && And @@ Thread[pos <= gridMax]
+
+IsUnoccupied[pos_, occupiedPositions_] := ! KeyExistsQ[occupiedPositions, PositionKey[pos]]
+
+(* Main function to simulate a pipe *)
+SimulatePipe[] := Module[
+  {
+    gridMin = {-10, -10, -10},
+    gridMax = {10, 10, 10},
+    occupiedPositions = <||>,
+    currentPosition,
+    positions,
+    lastPosition,
+    lastDirectionVector = Null,
+    directionVector,
+    newPosition,
+    axis,
+    dir,
+    possibleDirections,
+    triedDirections,
+    moveMade
+  },
+  
+  (* Initialize the starting position *)
+  currentPosition = RandomIntegerVectorWithinBox[gridMin, gridMax];
+  positions = {currentPosition};
+  occupiedPositions[PositionKey[currentPosition]] = True;
+  
+  (* Simulate the pipe growth *)
+  Function[Null,
+    
+    (* Initialize possible directions *)
+    possibleDirections = {
+      {1, 0, 0}, {-1, 0, 0},
+      {0, 1, 0}, {0, -1, 0},
+      {0, 0, 1}, {0, 0, -1}
+    };
+    
+    (* Prioritize continuing in the same direction *)
+    If[lastDirectionVector =!= Null && RandomReal[] < 0.5,
+      (* Try to continue in the same direction *)
+      directionVector = lastDirectionVector;
+      possibleDirections = Prepend[DeleteCases[possibleDirections, directionVector], directionVector];,
+      (* Shuffle possible directions *)
+      possibleDirections = RandomSample[possibleDirections];
+    ];
+    
+    triedDirections = {};
+    moveMade = False;
+    (* Try each possible direction *)
+    Do[
+      directionVector = dir;
+      newPosition = currentPosition + directionVector;
+      If[
+        WithinBoundsQ[newPosition, gridMin, gridMax] && IsUnoccupied[newPosition, occupiedPositions],
+        (* Valid move found *)
+        positions = Append[positions, newPosition];
+        occupiedPositions[PositionKey[newPosition]] = True;
+        lastDirectionVector = directionVector;
+        currentPosition = newPosition;
+        moveMade = True;
+        Break[];
+      ];
+      AppendTo[triedDirections, dir];
+      ,
+      {dir, possibleDirections}
+    ];
+    
+    If[!moveMade,
+      (* No valid moves, terminate simulation *)
+      $Failed
+    ,
+      positions
+    ]
+
+    
+  ]
+  
+]
+
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Make it animated
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Make it animated
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+
+With[{
+  frame = CreateUUID[],
+  scene = FrontInstanceReference[]
+},
+  Module[{
+    pipeFunction = Function[Null, $Failed],
+    pipesNumber = 0,
+    trigger = 1,handler
+  },
+
+    handler = Function[Null,
+      With[{
+        result = pipeFunction[]
+      },
+        If[FailureQ[result],
+          With[{
+            segments = Unique["pipe"],
+            generator = SimulatePipe[]
+          },
+            pipesNumber++;
+            pipeFunction = Function[Null,
+              With[{seg = generator[]}, 
+                If[FailureQ[seg],
+                  $Failed
+                ,
+                  segments = seg // N;
+                ]
+              ]
+            ];
+
+            pipeFunction[];
+
+            FrontSubmit[{
+              ColorData[97][pipesNumber],
+              Tube[segments // Offload, 0.2]
+            }, scene];
+          ]
+        ]
+      ];
+
+      trigger++;
+    ];
+    
+
+    Graphics3D[{
+      Opacity[0], Cuboid[{-4,-4,-4}, {4,4,4}], Opacity[1], scene,
+      EventHandler[AnimationFrameListener[trigger // Offload], handler]
+    }]
+  ]
+]
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+%--------------------------------%Storage%--------------------------------%
+%-----------------------------%EndOfStorage%------------------------------%
+
+
+
+%---------------------------%ExcalidrawImages%----------------------------%
+%-------------------------%EndOfExcalidrawImages%-------------------------%
+
+
+
+%-----------------------------%RuntimeCache%------------------------------%
+%---------------------------%EndOfRuntimeCache%---------------------------%
+
+
+
+%------------------------------%ZIPArchive%-------------------------------%
+%----------------------------%EndOfZIPArchive%----------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%

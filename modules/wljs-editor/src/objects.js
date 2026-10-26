@@ -8,9 +8,15 @@ window.ObjectStorage = class {
     cached = false
     cache = []
     doNotCollect = false
+    initialization = null
   
     garbageCollect() {
       console.warn('garbage collector started...');
+      if (this.initialization) {
+        console.warn('Object initialization is in progress. Keeping...');
+        return;
+      }
+
       let toBeRemoved = true;
       const refs = this.refs;
       Object.keys(refs).forEach((key) => {
@@ -99,6 +105,32 @@ window.ObjectStorage = class {
 
       return promise.promise;
     }
+
+    // Run the complete lookup/create/lookup sequence only once for this uid.
+    // Concurrent callers share the same task, while failures clear it so a
+    // later render can retry.
+    getOrCreate(create) {
+      if (this.cached) return Promise.resolve(this.cache);
+      if (this.initialization) return this.initialization;
+
+      const task = (async () => {
+        try {
+          return await this.get();
+        } catch (error) {
+          await create(error);
+          return await this.get();
+        }
+      })();
+
+      this.initialization = task;
+
+      const clear = () => {
+        if (this.initialization === task) this.initialization = null;
+      };
+
+      task.then(clear, clear);
+      return task;
+    }
 }
 
 
@@ -116,16 +148,15 @@ core['CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed'] = async (arg
 //Extend Server Class
 function getObject(server, id) {
     //console.log(server);
-    return server.ask('CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject["'+id+'"]'); 
+    return server.io.fetch('CoffeeLiqueur`Extensions`FrontendObject`Internal`GetObject', [id]); 
 }
 
+//legacy polyfill (do not remove!)
 core.FrontEndVirtual = async (args, env) => {
   const copy = {...env};
   const store = args[0];
   const instance = new ExecutableObject('fevirtual-'+uuidv4(), copy, store);
   instance.assignScope(copy);
-
-
   return await instance.execute();
 }
 
@@ -223,46 +254,12 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Unprotect = asyn
   list.forEach((e) => protectedObjects.delete(e));
 }
 
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAll = async (args, env) => {
+
+core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllObjects = async (args, env) => {
   garbageCollect();
-  const list = Object.values(ObjectHashMap);
-  const message = [];
-  for (let i=0; i<list.length; i++) {
-    message.push(['Rule', "'"+list[i].uid+"'", list[i].cache]);
-  }
-  message.unshift('Association');
-  //console.log(message);
-  return message;
+  console.log(Object.keys(ObjectHashMap));
+  return Object.keys(ObjectHashMap);
 }
-
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllUids = async (args, env) => {
-  garbageCollect();
-  const list = Object.values(ObjectHashMap);
-  const message = [];
-  for (let i=0; i<list.length; i++) {
-    message.push("'"+list[i].uid+"'");
-  }
-  message.unshift('List');
-  console.log(message);
-  return message;
-}
-
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetById = async (args, env) => {
-  const uid = await interpretate(args[0], env);
-  const opts = await core._getRules(args, env);
-
-  if ('MonitorEvent' in opts) {
-    server.emitt(opts['MonitorEvent'], '"'+uid+'"');
-  }
-
-  if (!ObjectHashMap[uid]) return false; //if got cleaned up
-  const message = ObjectHashMap[uid].cache;
-  
-  console.log(message);//WL can't import empty arrays
-  if (message.length) return message;
-  return false;
-}
-
 
 core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllSymbols = async (args, env) => {
   //garbageCollect();
@@ -272,34 +269,13 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllSymbols = 
     if (Object.keys(core[list[i]].instances).length == 0) {
       console.warn('Dead symbol: '+list[i] + ' found!');
       if (!garbageCollector) {
-        console.warn('keeping since gabrbage collector is disabled');
+        console.warn('keeping since garbage collector is disabled');
       } else {
         continue;
       }
     }
-    message.push(['Rule', "'"+list[i]+"'", core[list[i]].data]);
+    message.push(list[i]);
   }
-  message.unshift('Association');
-
-  return message;
-}
-
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetAllSymbolsNames = async (args, env) => {
-  //garbageCollect();
-  const list = Object.keys(server.kernel.trackedSymbols);
-  const message = [];
-  for (let i=0; i<list.length; i++) {
-    if (Object.keys(core[list[i]].instances).length == 0) {
-      console.warn('Dead symbol: '+list[i] + ' found!');
-      if (!garbageCollector) {
-        console.warn('keeping since gabrbage collector is disabled');
-      } else {
-        continue;
-      }
-    }
-    message.push("'"+list[i]+"'");
-  }
-  message.unshift('List');
   console.log(message);
   return message;
 }
@@ -322,66 +298,6 @@ core["CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractCompressed"] = async 
 
   const parsed = JSON.parse(s);
   return await interpretate(parsed, env);
-}
-
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].GetSymbolByName = async (args, env) => {
-  //garbageCollect();
-  const name = await interpretate(args[0], env);
-  const opts = await core._getRules(args, env);
-
-  if ('MonitorEvent' in opts) {
-    server.emitt(opts['MonitorEvent'], '"'+name+'"');
-  }
-
-  //omg. this looks so sketchy
-  const s = core[name].data;
-  if (Array.isArray(s)) {
-    if (s[0] == 'JSObject') {
-      const str = JSON.stringify(s[1]);
-      if (str.length < 1024)
-        return ["CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSON", "'"+window.btoa(encodeURIComponent(str))+"'"];
-
-      const compressedGzip = await interpretate.zlib64String(str); 
-      return ["CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractJSONCompressed", "'"+compressedGzip+"'"];
-    }
-  }
-
-  if (Array.isArray(s)) {
-    if (s[0] == 'CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractCompressed') {
-      return s; //already compressed
-    }
-  }
-
-  //estiamte length
-  const estimate = JSON.stringify(s);
-  if (estimate.length > 1024) {
-    const compressedGzip = await interpretate.zlib64String(estimate); 
-    return ["CoffeeLiqueur`Extensions`FrontendObject`Tools`ExtractCompressed", "'"+compressedGzip+"'"];
-  }
- 
-  return s;
-}
-
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].Get = async (args, env) => {
-  //garbageCollect();
-  //const list = Object.values(ObjectHashMap);
-  const uid = await interpretate(args[0], env);
-  if (ObjectHashMap[uid]) { 
-    return ObjectHashMap[uid].cache;
-  } else {
-    console.error('UIObjects get could not find an object');
-    return ['$Failed'];
-  }
-}
-
-let watchdog = false;
-core["CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects"].WatchDog = async (args, env) => {
-  const state = await interpretate(args[0], env);
-  if (state && watchdog === false) watchdog = setTimeout(() => window.location.reload(), 75000);
-  if (!state && watchdog !== false) {
-    clearTimeout(watchdog);
-    watchdog = false;
-  }
 }
 
 core['CoffeeLiqueur`Extensions`System`Internal`frontDownload'] = async (args, env) => {

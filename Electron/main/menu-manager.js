@@ -12,6 +12,7 @@ function createMenuManager({
     rootAppFolder,
     server,
     shell,
+    showProcessLogs,
     userExtensions,
     windows
 }) {
@@ -490,7 +491,10 @@ function createMenuManager({
                             windows.focused.call('settings', true);
                         }
                     },
-
+                    {
+                        label: 'Show logs',
+                        click: showProcessLogs
+                    },
                     { type: 'separator' },
 
                     ...(options.plugins.misc.sort((a, b)=> (a.priority - b.priority)))
@@ -663,19 +667,23 @@ function createMenuManager({
     }
 
     callFakeMenu["zoomIn"] = () => {
-        windows.focused.call('zoomIn', true);
+        const contents = windows.focused.win.webContents;
+        contents.setZoomFactor(contents.getZoomFactor() * 1.5);
     }
 
     callFakeMenu["devTools"] = () => {
         windows.focused.win.webContents.openDevTools()
     }
 
+    callFakeMenu["showProcessLogs"] = showProcessLogs;
+
     callFakeMenu["zoomOut"] = () => {
-        windows.focused.call('zoomOut', true);
+        const contents = windows.focused.win.webContents;
+        contents.setZoomFactor(contents.getZoomFactor() / 1.5);
     }
 
     callFakeMenu["zoomReset"] = () => {
-        windows.focused.call('zoomReset', true);
+        windows.focused.win.webContents.setZoomLevel(0);
     }
 
 

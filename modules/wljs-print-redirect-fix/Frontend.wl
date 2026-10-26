@@ -20,7 +20,7 @@ EventHandler[AppExtensions`AppEvents// EventClone, {
 }];
 
 attachListeners[notebook_nb`NotebookObj] := With[{},
-    Echo["Attach event listeners to notebook from EXTENSION"];
+    Echo["[wljs-print-redirect-fix/Frontend] Attaching extension event listeners to the notebook."];
     EventHandler[notebook // EventClone, {
         "OnWebSocketConnected" -> Function[payload,
             GenericKernel`Send[notebook["Evaluator"]["Kernel"], Unevaluated[

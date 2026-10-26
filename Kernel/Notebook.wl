@@ -4,6 +4,13 @@ BeginPackage["CoffeeLiqueur`Notebook`", {
     "CoffeeLiqueur`UObjects`"
 }]
 
+(*
+	Notebook object definition
+	events, properties, serializers, deserializers
+
+	This does not define its controller or renderer
+*)
+
 NotebookObj;
 
 HashMap;
@@ -55,35 +62,36 @@ DeserializeFromStream[stream_InputStream, opts: OptionsPattern[] ] := With[{a = 
 
 Options[DeserializeFromStream] = {"Hash" :> CreateUUID[]}
 
-LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ},
+LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ, firstLine},
     If[!FileExistsQ[path],
         Return[$Failed];
     ];
 
-    Echo["Loading cells from file"];
+    Echo["[Kernel/Notebook] Loading cells from file"];
 
     stream = OpenRead[path, DOSTextFormat->False];
     result = readNotebook[stream, 10];
     Close[stream];
 
     If[!FailureQ[result],
-        Echo["Succesfully parsed."];
+        Echo["[Kernel/Notebook] Notebook content parsed successfully."];
         notebook["Cells"] = CoffeeLiqueur`Notebook`Cells`DeserializeLive[#, "Notebook"->notebook] &/@ result["Cells"];
-        Echo["Cells were replaced"];
+        Echo["[Kernel/Notebook] Cells were replaced"];
     ,
-        Echo["Loading failed. Retrying with a legacy .wln parser..."];
+        Echo["[Kernel/Notebook] Notebook parsing failed; retrying with the legacy .wln parser."];
         
         stream = OpenRead[path, DOSTextFormat->False];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
         If[legacyQ,
-            Echo["Legacy format did work. Importing..."];
+            Echo["[Kernel/Notebook] Legacy notebook parsing succeeded; importing cells."];
             With[{a = Get[path]},
                 Deserialize[a["serializer"], "cells", a, notebook]
             ];
-            Echo["Cells were replaced"];
+            Echo["[Kernel/Notebook] Cells were replaced"];
         ,
             Return[$Failed];
         ];
@@ -91,30 +99,31 @@ LoadCellFromFile[path_, notebook_] := Module[{stream, result, legacyQ},
     notebook  
 ]
 
-LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ},
+LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ, firstLine},
     If[!FileExistsQ[path],
         Return[$Failed];
     ];
 
-    Echo["Loading from file"];
+    Echo["[Kernel/Notebook] Loading from file"];
 
     stream = OpenRead[path, DOSTextFormat->False];
     notebook = DeserializeFromStream[stream, opts];
     Close[stream];
 
     If[!FailureQ[notebook],
-        Echo["Succesfully parsed."];
+        Echo["[Kernel/Notebook] Notebook content parsed successfully."];
         With[{n = notebook}, n["Path"] = path];
     ,
-        Echo["Loading failed. Retrying with a legacy .wln parser..."];
+        Echo["[Kernel/Notebook] Notebook parsing failed; retrying with the legacy .wln parser."];
         
         stream = OpenRead[path, DOSTextFormat->False];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
         If[legacyQ,
-            Echo["Legacy format did work. Importing..."];
+            Echo["[Kernel/Notebook] Legacy notebook parsing succeeded; importing cells."];
 
             (* legacy format. Keep it for backward compatibillity! *)
             (* it does not take that much space! *)
@@ -132,24 +141,25 @@ LoadFromFile[path_String | File[path_], opts: OptionsPattern[] ] := Module[{stre
 
 Options[LoadFromFile] = {"Hash" :> CreateUUID[]}
 
-LoadFromString[string_String, opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ},
-    Echo["Loading from string"];
+LoadFromString[string_String, opts: OptionsPattern[] ] := Module[{stream, notebook, legacyQ, firstLine},
+    Echo["[Kernel/Notebook] Loading from string"];
     stream = StringToStream[string];
     notebook = DeserializeFromStream[stream, opts];
     Close[stream];
 
     If[!FailureQ[notebook],
-        Echo["Succesfully parsed."];
+        Echo["[Kernel/Notebook] Notebook content parsed successfully."];
     ,
-        Echo["Loading failed. Retrying with a legacy .wln parser..."];
+        Echo["[Kernel/Notebook] Notebook parsing failed; retrying with the legacy .wln parser."];
         
         stream = StringToStream[string];
-        legacyQ = StringMatchQ[ReadLine[stream, TimeConstraint->10], ___~~"<|"~~__];
+        firstLine = ReadLine[stream, TimeConstraint->10];
+        legacyQ = StringQ[firstLine] && StringMatchQ[firstLine, ___~~"<|"~~__];
         Close[stream];
 
 
         If[legacyQ,
-            Echo["Legacy format did work. Importing..."];
+            Echo["[Kernel/Notebook] Legacy notebook parsing succeeded; importing cells."];
 
             (* legacy format. Keep it for backward compatibillity! *)
             (* it does not take that much space! *)
@@ -184,8 +194,8 @@ Deserialize[n_Association, notebook_NotebookObj] := With[{},
 
 (* depricated! *)
 Deserialize[any_, n_Association, notebook_NotebookObj] := With[{},
-    Echo["Notebook.wl >> Unknown Serializer: "];
-    Echo[any];
+    Echo["[Kernel/Notebook] Cannot deserialize the notebook with an unknown serializer."];
+    Echo[any, "[Kernel/Notebook] Unknown serializer: "];
     $Failed["Unknown Serializer: "<>ToString[any] ]
 ]
 

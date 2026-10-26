@@ -4,7 +4,7 @@ Component[OptionsPattern[]] := With[{
     cloned = EventClone[OptionValue["actions"]]
 },
 
-    EventHandler[cloned, {any_ :> Echo}];
+    EventHandler[cloned, {any_ :> Function[data, Echo[data, "[wljs-snippets/Recent] Event data: "]]}];
 
     <li class="list-none pt-1 pb-1">
         <h2 class="mb-1 mt-1 px-2 text-xs font-semibold text-gray-400">Recent searches</h2>

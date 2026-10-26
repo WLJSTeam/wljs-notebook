@@ -50,7 +50,7 @@ Array.prototype.max = function() {
   }; 
 
   const iPlotlyNewPlot = async (args, env) => {
-    if (!Plotly) Plotly = await import('./plotly.min-228dfaa3.js').then(function (n) { return n.p; });
+    if (!Plotly) Plotly = await import('./plotly.min-eca0d907.js').then(function (n) { return n.p; });
 
     const options = await core._getRules(args, env);
     const copy = {...env, context: plotly};
@@ -171,7 +171,7 @@ Array.prototype.max = function() {
   };
   
   const iListPlotly =  async function(args, env) {
-      if (!Plotly) Plotly = await import('./plotly.min-228dfaa3.js').then(function (n) { return n.p; });
+      if (!Plotly) Plotly = await import('./plotly.min-eca0d907.js').then(function (n) { return n.p; });
  
       env.numerical = true;
       let arr = await interpretate(args[0], {...env, context: plotly});
@@ -291,7 +291,7 @@ Array.prototype.max = function() {
     
 
     const iListLinePlotly = async function(args, env) {
-      if (!Plotly) Plotly = await import('./plotly.min-228dfaa3.js').then(function (n) { return n.p; });
+      if (!Plotly) Plotly = await import('./plotly.min-eca0d907.js').then(function (n) { return n.p; });
       console.log('listlineplot: getting the data...');
       let options = await core._getRules(args, env);
 

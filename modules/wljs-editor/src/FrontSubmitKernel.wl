@@ -3,7 +3,7 @@
 BeginPackage["CoffeeLiqueur`Extensions`Communication`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`",
-    "CoffeeLiqueur`Misc`WLJS`Transport`"
+    "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }]
 
 (*Offload::usage = "Offload[exp] to keep it from evaluation on Kernel"*)
@@ -24,13 +24,15 @@ WindowObj::usage = "Represenation of a current window"
 
 Begin["`Private`"]
 
+FSAsk;
+
 CoffeeLiqueur`Extensions`Communication`Internal`$lastClient;
 
 CurrentWindow[] := WindowObj[<|"Socket" -> If[AssociationQ[System`$EvaluationContext], 
     System`$EvaluationContext["KernelWebSocket"], 
-    If[Head[Global`$Client] === Symbol, 
+    If[Head[$CurrentWebSocket] === Symbol, 
         CoffeeLiqueur`Extensions`Communication`Internal`$lastClient, 
-        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = Global`$Client
+        CoffeeLiqueur`Extensions`Communication`Internal`$lastClient = $CurrentWebSocket
     ] 
 ] |>]
 
@@ -118,29 +120,18 @@ FrontInstanceGroup /: MakeBoxes[f: FrontInstanceGroup[uid_], StandardForm] := Mo
 
 exec;
 
-FrontFetchAsync[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["Socket"], format = OptionValue["Format"], event = CreateUUID[], promise = Promise[]},
-    EventHandler[event, Function[payload,
+FrontFetchAsync[expr_, OptionsPattern[] ] := With[{cli = OptionValue["Window"]["Socket"],  event = CreateUUID[], promise = Promise[]},
+    EventHandler[event, Function[result,
         EventRemove[event];
 
-        With[{result = Switch[format,
-            "Raw",
-                FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"],
-            "ExpressionJSON",
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "ExpressionJSON"], 
-            "JSON",
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "JSON"],
-            _,
-                ImportString[FromCharacterCode@ToCharacterCode[URLDecode[payload], "UTF-8"], "RawJSON"]
-        ]},
-            If[FailureQ[result],
-                EventFire[promise, Reject, result]
-            ,
-                EventFire[promise, Resolve, result]
-            ]
+        If[FailureQ[result],
+            EventFire[promise, Reject, result]
+        ,
+            EventFire[promise, Resolve, result]
         ]
     ] ];
 
-    If[FailureQ[WLJSTransportSend[System`FSAsk[expr, event], cli]],
+    If[FailureQ[WLJSTransportSend[FSAsk[expr, event], cli]],
         EventFire[promise, Reject, $Failed]
     ];
 
@@ -151,8 +142,8 @@ FrontFetchAsync[expr_, FrontInstanceReference[m_], opts___] := FrontFetchAsync[e
 
 FrontFetch[expr_, rest___] := WaitAll[FrontFetchAsync[expr, rest], 60]
 
-Options[FrontFetch] = {"Format"->"RawJSON", "Window" :> CurrentWindow[]};
-Options[FrontFetchAsync] = {"Format"->"RawJSON", "Window" :> CurrentWindow[]};
+Options[FrontFetch] = {"Window" :> CurrentWindow[]};
+Options[FrontFetchAsync] = {"Window" :> CurrentWindow[]};
 
 FrontSubmit[expr_String, opts: OptionsPattern[] ] := FrontSubmit[execJS[expr], opts ] 
 FrontSubmit[expr_, OptionsPattern[] ] := With[{win = OptionValue["Window"]},

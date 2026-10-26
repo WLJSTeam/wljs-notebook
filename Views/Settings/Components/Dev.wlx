@@ -27,13 +27,13 @@ EventHandler[Secret, {"Load" -> Function[Null,
         ]
     }];
 
-    With[{socket = EventClone[$Client]},
+    With[{socket = EventClone[$CurrentWebSocket]},
         EventHandler[socket, {
             "Closed" -> Function[Null,
                 EventRemove[socket];
                 EventRemove[controller];
                 EventRemove[Secret];
-                Echo["DevSettings >> destoryed"];
+                Echo["[Views/Dev] Developer settings view was destroyed."];
             ]
         }]
     ];

@@ -1,3 +1,5 @@
+(* Reduces raw sniffer events into candidate dynamic-dependency groups. *)
+
 BeginPackage["CoffeeLiqueur`Extensions`ExportImport`DynamicAnalyzer`", {
     "CoffeeLiqueur`Misc`Events`",
     "CoffeeLiqueur`Misc`Events`Promise`"
@@ -15,6 +17,7 @@ folder = DirectoryName[$InputFileName];
 Needs["CoffeeLiqueur`Extensions`ExportImport`Proto`" -> "proto`", FileNameJoin[{folder, "Proto.wl"}] ]
 Needs["CoffeeLiqueur`Extensions`ExportImport`KernelSniffer`" , FileNameJoin[{folder, "KernelSniffer.wl"}] ]
 
+(* The compact view omits payloads and is safe for periodic UI refreshes. *)
 showAllConnections[kernel_] := With[{
     promise = Promise[],
     request = KernelSniffer[kernel, "SelectCompressed", Function[item, MatchQ[item[[2]], {"Symbol", __} | {"FrontSubmit", __}] ], Function[item, item[[1]] -> Take[item[[2]], 2] ] ]
@@ -39,6 +42,7 @@ showAllConnections[kernel_] := With[{
    promise 
 ]
 
+(* The full report retains raw payloads for black-box construction. *)
 report[kernel_] := With[{
     promise = Promise[],
     request = KernelSniffer[kernel, "SelectCompressed", Function[item, MatchQ[item[[2]], {"Symbol", __} | {"FrontSubmit", __}] ] ]
