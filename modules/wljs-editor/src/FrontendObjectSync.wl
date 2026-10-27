@@ -21,9 +21,52 @@ Begin["`Private`"]
 
 rootDir = $InputFileName // DirectoryName // ParentDirectory;
 
+SetAttributes[ensureAssociationStore, HoldFirst];
+ensureAssociationStore[store_, label_String] := Module[{current, recovered},
+    current = Quiet @ Check[store, $Failed];
+    If[AssociationQ[current],
+        current
+        ,
+        (* A failed Join can remain assigned to the store. Recover its valid
+           association operands before falling back to an empty cache. *)
+        recovered = Flatten[
+            Cases[
+                OwnValues[store],
+                HoldPattern[RuleDelayed[_, Join[args___]]] :>
+                    Cases[HoldComplete[args], association_Association :> association, {1}],
+                {1}
+            ],
+            1
+        ];
+        current = If[recovered === {}, <||>, Join @@ recovered];
+        store = current;
+        Echo[StringJoin[
+            "[wljs-editor/FrontendObjectSync] Recovered invalid ", label,
+            " cache; retained entries: ", ToString[Length[current]], "."
+        ]];
+        current
+    ]
+];
+
+SetAttributes[mergeAssociationStore, HoldAll];
+mergeAssociationStore[store_, incoming_, label_String] := Module[{current, addition},
+    current = ensureAssociationStore[store, label];
+    addition = Quiet @ Check[incoming, $Failed];
+    If[AssociationQ[addition],
+        store = Join[current, addition]
+        ,
+        Echo[StringJoin[
+            "[wljs-editor/FrontendObjectSync] Ignoring invalid ", label,
+            " cache update."
+        ]];
+        current
+    ]
+];
+
 EventHandler[NotebookEditorChannel // EventClone, {
     "FetchFrontEndObject" -> Function[data,
            Echo["[wljs-editor/FrontendObjectSync] Master kernel requested frontend-object synchronization."];
+           ensureAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, "frontend-object"];
            With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]}, 
                 (* [FIXME] Include these symbols normally using Needs[] *)
                 (* we release any possible deferred compression wrappers *)
@@ -60,6 +103,7 @@ fetchFromKernel[keys_, kernel_, test_, default_, function_] := With[{promise = P
 
 WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
               Echo["[wljs-editor/FrontendObjectSync] Getting cached symbol"];
+              ensureAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, "frontend-symbol"];
               With[{name = exprString},
                 If[KeyExistsQ[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, name],
                     Echo[name, "[wljs-editor/FrontendObjectSync] name: "];
@@ -240,7 +284,7 @@ stringsFromCompressed[compressed_String] := Module[{
 
 captureStringFromCells[notebook_] := Module[{cellData, allUIDs, compressed, extra1, extra2},
     cellData = Map[(#["Data"])&, notebook["Cells"]];
-    allUIDs = Keys @ CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects;
+    allUIDs = Keys @ ensureAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, "frontend-object"];
 
     (* Scan the cells once with all known UIDs instead of scanning every cell once per UID. *)
     extra1 = If[allUIDs === {},
@@ -264,12 +308,12 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
         "OnBeforeLoad" -> Function[opts,
             If[MemberQ[notebook["Properties"], "Objects"],
                 Echo["[wljs-editor/FrontendObjectSync] Restored synchronized frontend objects."];
-                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, notebook["Objects"] ];
+                mergeAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, notebook["Objects"], "frontend-object"];
             ,
                 Echo["[wljs-editor/FrontendObjectSync] No synchronized frontend objects were available to restore."];
             ];
             If[MemberQ[notebook["Properties"], "Symbols"],
-                CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, notebook["Symbols"] ];
+                mergeAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, notebook["Symbols"], "frontend-symbol"];
                 Echo["[wljs-editor/FrontendObjectSync] Restored synchronized frontend symbols."];
             ,
                 Echo["[wljs-editor/FrontendObjectSync] No synchronized frontend symbols were available to restore."];
@@ -277,6 +321,9 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
         ],
         "OnBeforeSave" -> AsyncFunction[opts, Module[{objects, missing, kernel, extra, timedOut = False},
             Echo["[wljs-editor/FrontendObjectSync] OnBefore Save!"];
+
+            ensureAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, "frontend-object"];
+            ensureAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, "frontend-symbol"];
 
             If[!MemberQ[notebook["Properties"], "Objects"], 
                 notebook["Objects"] = <||>;
@@ -289,6 +336,10 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
  
             Echo["[wljs-editor/FrontendObjectSync] Getting objects from the frontend"];
             objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllObjects"] , opts["Client"]] // Await;
+            If[!ListQ[objects],
+                objects = {};
+                EventFire[opts["Log"], "Warning", "Frontend objects could not be enumerated while saving"];
+            ];
             
             Echo[StringJoin["[wljs-editor/FrontendObjectSync] ", StringTemplate["``: ``"]["Resolved uids", objects]]];
             missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects];
@@ -307,7 +358,13 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                     EventFire[opts["Log"], "Warning", "Some objects could not be saved since the kernel link had been lost"];
                 ];
                 
-                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, missing];
+                If[!AssociationQ[missing],
+                    timedOut = True;
+                    missing = <||>;
+                    EventFire[opts["Log"], "Warning", "The evaluation kernel returned an invalid frontend-object cache while saving"];
+                ];
+
+                mergeAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, missing, "frontend-object"];
                 missing = Keys[missing];
                 Echo[StringJoin["[wljs-editor/FrontendObjectSync] Objects fetched from the kernel: ", ToString[Length[missing]]]];
             ];
@@ -350,7 +407,13 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                     EventFire[opts["Log"], "Warning", "Some objects could not be saved since the kernel link had been lost"];
                 ];
 
-                CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, extra[[2]]];
+                If[!AssociationQ[extra[[2]]],
+                    timedOut = True;
+                    extra[[2]] = <||>;
+                    EventFire[opts["Log"], "Warning", "The evaluation kernel returned an invalid frontend-object cache while saving"];
+                ];
+
+                mergeAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, extra[[2]], "frontend-object"];
                 extra[[2]] = Keys[extra[[2]]];
                 Echo[StringJoin["[wljs-editor/FrontendObjectSync] Additional objects fetched from the kernel: ", ToString[Length[extra[[2]]]]]];
                 objects = Join[objects, extra[[2]]] // DeleteDuplicates;
@@ -362,6 +425,10 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
 
             Echo["[wljs-editor/FrontendObjectSync] Getting symbols from the frontend"];
             objects = WebUIFetch[CoffeeLiqueur`Extensions`FrontendObject`Tools`UIObjects["GetAllSymbols"] , opts["Client"]] // Await;
+            If[!ListQ[objects],
+                objects = {};
+                EventFire[opts["Log"], "Warning", "Frontend symbols could not be enumerated while saving"];
+            ];
             
             Echo[StringJoin["[wljs-editor/FrontendObjectSync] ", StringTemplate["``: ``"]["Resolved names", objects]]];
             missing = Complement[objects, Keys@CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols];
@@ -369,7 +436,7 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
             Echo[StringJoin["[wljs-editor/FrontendObjectSync] Frontend symbols: ", ToString[Length[objects]], "; missing from cache: ", ToString[Length[missing]]]];
 
             kernel = notebook["Evaluator"]["Kernel"];
-            If[TrueQ[kernel["ReadyQ"]] && !timedOut,
+            If[TrueQ[kernel["ReadyQ"]] && Length[missing] > 0 && !timedOut,
                 Echo["[wljs-editor/FrontendObjectSync] Kernel is available, fetching from it"];
                 
                 missing = fetchFromKernel[missing, kernel, AssociationQ, <||>, Function[names, 
@@ -378,9 +445,22 @@ attachListeners[notebook_nb`NotebookObj] := With[{},
                     ]], names]
                 ]] // Await;
 
+                If[missing === $TimedOut,
+                    timedOut = True;
+                    missing = <||>;
+
+                    EventFire[opts["Log"], "Warning", "Some symbols could not be saved since the kernel link had been lost"];
+                ];
+
+                If[!AssociationQ[missing],
+                    timedOut = True;
+                    missing = <||>;
+                    EventFire[opts["Log"], "Warning", "The evaluation kernel returned an invalid frontend-symbol cache while saving"];
+                ];
+
                 missing = Select[missing, Not@*FailureQ];
-                
-                CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, missing];
+
+                mergeAssociationStore[CoffeeLiqueur`Extensions`FrontendObject`Internal`Symbols, missing, "frontend-symbol"];
                 missing = Keys[missing];
                 Echo[StringJoin["[wljs-editor/FrontendObjectSync] Symbols fetched from the kernel: ", ToString[Length[missing]]]];
             ];
