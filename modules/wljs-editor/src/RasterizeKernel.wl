@@ -140,6 +140,20 @@ Options[CurrentNotebookImage] = {"Window":>CurrentWindow[]};
 Unprotect[Rasterize]
 ClearAll[Rasterize]
 
+resize[img_, _] := img;
+resize[img_Image, w_?NumberQ] := ImageResize[img, w];
+resize[img_Image, {w_?NumberQ, h_?NumberQ}] := If[Abs[ImageAspectRatio[img] - h/w] > 0.01, 
+  ImageCrop[If[w > h,
+    ImageResize[img, {Automatic, h}]
+  ,
+    ImageResize[img, w]
+  ], {w,h}]
+,
+    ImageResize[img, {w,h}]
+];
+resize[img_Image, {Automatic, h_?NumberQ}] := ImageResize[img, {Automatic,h}];
+resize[img_Image, {w_?NumberQ, Automatic}] := ImageResize[img, {w,Automatic}];
+
 Rasterize::noelectron = "Rasterization requires WLJS Notebook desktop app"
 
 RasterizeAsync[n_Notebook, opts___] := (
@@ -213,15 +227,41 @@ Rasterize::frontget = "Could not get the rasterized data from the frontend";
 Rasterize::needraster = "Not supported directly. Please, apply Rasterize before exporting as an image"
 Rasterize::nowindow = "No active window found to render an expression. Trying again in 3 seconds"
 
+Rasterize[expr_, rest: OptionsPattern[] ] := With[{channel = CreateUUID[], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
+  resize[WaitAll[RasterizeAsync[expr,  rest], 25 + exposure], OptionValue[RasterSize]]
+] 
 
-Rasterize[any_, ___, OptionsPattern[] ] := (
+Rasterize[expr_Image, "Image", rest:OptionsPattern[]] := resize[expr, OptionValue[RasterSize]]
+Rasterize[expr_, "Image", rest:OptionsPattern[]] := Rasterize[expr, rest]
+Rasterize[expr_Image, "Data", rest:OptionsPattern[]] := ImageData[resize[expr, OptionValue[RasterSize]], "Real32"]
+Rasterize[expr_, "Data", rest:OptionsPattern[]] := ImageData[Rasterize[expr, rest], "Real32"]
+Rasterize[expr_Image, "RasterSize", rest:OptionsPattern[]] := ImageDimensions[resize[expr, OptionValue[RasterSize]]]
+Rasterize[expr_, "RasterSize", rest:OptionsPattern[]] := ImageDimensions[Rasterize[expr, rest]]
+Rasterize[expr_Image, "Graphics", rest:OptionsPattern[]] := Module[{img, data, size},
+  img = resize[expr, OptionValue[RasterSize]];
+  data = ImageData[img, "Real32"];
+  size = Reverse @ Take[Dimensions[data], 2];
+  Graphics[
+    Raster[Reverse[data], {{0, 0}, size}],
+    PlotRange -> Thread[{0, size}]
+  ]
+]
+Rasterize[expr_, "Graphics", rest:OptionsPattern[]] := Rasterize[Rasterize[expr, rest], "Graphics", rest]
+Rasterize[expr_Image, list:{__String}, rest:OptionsPattern[]] := With[{image = expr},
+  Rasterize[image, #, rest] &/@ list
+]
+Rasterize[expr_, list:{__String}, rest:OptionsPattern[]] := With[{image = Rasterize[expr, rest]},
+  Rasterize[image, #, rest] &/@ list
+]
+
+Rasterize[expr_, _, rest:OptionsPattern[]] := Rasterize[expr, rest]
+
+Rasterize[___] := (
   Message[Rasterize::noelectron];
   $Failed
 ) /; !TrueQ[Internal`Kernel`ElectronQ]
 
-Rasterize[any_, ___, opts: OptionsPattern[] ] := With[{channel = CreateUUID[], exposure = OptionValue["ExposureTime"], oversampling = OptionValue["ImageUpscaling"]},
-  WaitAll[RasterizeAsync[any,  opts], 25 + exposure]
-] 
+
 
 
 RasterizeAsync[any_, ___, OptionsPattern[] ] := (
@@ -248,9 +288,11 @@ RasterizeAsync[any_, ___, opts: OptionsPattern[] ] := With[{p = Promise[], chann
     p
 ]
 
-Options[Rasterize] = {"ExposureTime" -> 3.7, "ImageUpscaling"->1, "Notebook" :> EvaluationNotebook[]}
+Options[Rasterize] = {"ExposureTime" -> 3.7, "ImageUpscaling"->1, "Notebook" :> EvaluationNotebook[], RasterSize->Automatic}
 
 Options[RasterizeAsync] = Options[Rasterize]
+
+
 
 Options[producePDF] = {"Crop"->True,   "Notebook" :> EvaluationNotebook[], "ExposureTime" -> 4.7, "ImageUpscaling"->1, "Landscape"->True}
 Options[pdfEndpoint] = Options[producePDF];
