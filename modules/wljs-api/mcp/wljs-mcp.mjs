@@ -397,7 +397,13 @@ async function wlPost(path, body = {}) {
         path: normalizedPath,
       });
     }
-    throw error;
+    if (error instanceof WlApiError) throw error;
+
+    throw new WlApiError(
+      "Could not connect to WLJS. Start an instance with `wljs .` and wait until it is ready, then retry. " +
+        "`wljs -c '1+1'` connects to an existing instance and evaluates the expression; it does not start WLJS.",
+      { path: normalizedPath },
+    );
   } finally {
     clearTimeout(timer);
   }
