@@ -371,10 +371,6 @@ SocketListen[USocketOpen[$Env["host"], $Env["http"]], tcp@#&]
 
 Print["Staring WS/HTTP server..."];
 
-wcp = TCPUServer[]
-wcp["CompleteHandler", "WebSocket"] = WebSocketUPacketQ -> WebSocketUPacketLength
-wcp["MessageHandler", "WebSocket"]  = WebSocketUPacketQ -> ws
-
 ws = WebSocketUHandler[]
 $Server["WebSocketUHandler"] = ws;
 
@@ -382,7 +378,12 @@ $Server["WebSocketUHandler"] = ws;
 ws["MessageHandler", "Evaluate"]  = Function[True] -> WLJSTransportHandler
 
 (* Open WebSockets port *)
-SocketListen[USocketOpen[$Env["host"], $Env["ws"] ], wcp@#&, "SocketEventsHandler"->CSocketsClosingHandler];
+SocketListen[USocketOpen[$Env["host"], $Env["ws"] ], Function[packet,
+  WebSocketUStreamHandler[ws, packet["SourceSocket"], packet["DataByteArray"]]
+], "SocketEventsHandler" -> Function[{event, client},
+  If[MemberQ[{"Closed", "Error"}, event], WebSocketUDisconnect[ws, client]];
+  CSocketsClosingHandler[event, client]
+]];
 
 (* Start all extra webservers loaded from extensions *)
 Map[Function[key, 

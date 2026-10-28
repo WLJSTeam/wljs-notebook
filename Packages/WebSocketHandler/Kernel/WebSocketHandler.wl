@@ -69,6 +69,12 @@ WebSocketUChannel::usage =
 WebSocketUHandler::usage = 
 "WebSocketUHandler[opts] handle messages received via WebSocket protocol."; 
 
+WebSocketUStreamHandler::usage =
+"WebSocketUStreamHandler[handler, client, bytes] process one TCP read containing zero or more WebSocket packets.";
+
+WebSocketUDisconnect::usage =
+"WebSocketUDisconnect[handler, client] discard receive state after a TCP disconnect.";
+
 
 (*::Section::Close::*)
 (*Begin private*)
@@ -177,7 +183,10 @@ CreateUType[WebSocketUHandler, init, {
 	"Deserializer" -> $deserializer, (*Input: <|.., "Data" -> ByteArray[]|>*)
 	"Serializer" -> $serializer, (*Return: ByteArray[]*) 
 	"Connections", 
-	"Buffer"
+	"Buffer",
+	"StreamState" -> <||>,
+	"MaxHandshakeBytes" -> 16384,
+	"MaxFrameBytes" -> 64 * 2^20
 }]; 
 
 
@@ -188,7 +197,9 @@ Module[{connections, deserializer, messageHandler, defaultMessageHandler, frame,
 	connections = handler["Connections"]; 
 	deserializer = handler["Deserializer"]; 
 	(* lost bytes from the last round + current message *)
-	joinedMessage = Join[getRawFromLater[client], message];
+	With[{saved = getRawFromLater[client]},
+		joinedMessage = If[Length[saved] == 0, message, Join[saved, message]]
+	];
 
 	Which[
 		(*Return: Null*)
@@ -238,7 +249,7 @@ Module[{connections, deserializer, messageHandler, defaultMessageHandler, frame,
 			connections["Insert", client]; 
 			$connections[client] = connections; 
 			saveRawForLater[ByteArray[{}], client]; (* flush the rest [FIXME]*)
-			handshake[client, message]
+			handshake[client, joinedMessage]
 	]
 ]; 
 
@@ -509,6 +520,119 @@ getRawFromLater[client_: _[uuid_] ] := With[{saved = bufferedRawData[uuid]},
 	bufferedRawData[uuid] = ByteArray[{}];
 	saved
 ]
+
+(* TCP read boundaries are independent of both the HTTP upgrade header and
+   WebSocket frame boundaries. Keep only incomplete packets between reads. *)
+newStreamState[] := <|"Chunks" -> {}, "Length" -> 0, "Expected" -> 0|>;
+
+streamBytes[chunks_List] := Switch[Length[chunks],
+	0, ByteArray[{}],
+	1, First[chunks],
+	_, Apply[Join, chunks]
+];
+
+streamSlice[bytes_ByteArray, start_Integer, length_Integer] :=
+If[start == 1 && length == Length[bytes], bytes, bytes[[start ;; start + length - 1]]];
+
+framePacketLength[header_ByteArray, maximum_Integer] :=
+Module[{code, extended, headerLength, payloadLength},
+	If[Length[header] < 2, Return[Missing["NeedMore"]]];
+	If[BitAnd[header[[2]], 128] == 0, Return[Failure["UnmaskedClientFrame", <||>]]];
+	code = BitAnd[header[[2]], 127];
+	extended = Switch[code, 126, 2, 127, 8, _, 0];
+	headerLength = 2 + extended + 4;
+	If[Length[header] < headerLength, Return[Missing["NeedMore"]]];
+	payloadLength = If[extended == 0, code,
+		FromDigits[Normal[header[[3 ;; 2 + extended]]], 256]
+	];
+	If[payloadLength > maximum, Return[Failure["FrameTooLarge", <|"Length" -> payloadLength|>]]];
+	headerLength + payloadLength
+];
+
+WebSocketUDisconnect[handler_WebSocketUHandler, client: _[uuid_]] := Module[{buffer, connections},
+	handler["StreamState"] = KeyDrop[handler["StreamState"], uuid];
+	$connections = KeyDrop[$connections, client];
+	connections = handler["Connections"];
+	If[connections["MemberQ", client], connections["Remove", client]];
+	buffer = handler["Buffer"];
+	If[buffer["KeyExistsQ", uuid], buffer["KeyDrop", uuid]];
+	Quiet[bufferedRawData[uuid] =., Unset::norep];
+];
+
+WebSocketUStreamHandler[handler_WebSocketUHandler, client: _[uuid_], bytes_ByteArray] :=
+Module[{state, position = 1, size = Length[bytes], stored, expected, available,
+	maxHandshake, prefix, part, delimiter, take, packet, response, handshakePacket},
+	state = Lookup[handler["StreamState"], uuid, newStreamState[]];
+	maxHandshake = handler["MaxHandshakeBytes"];
+	While[position <= size,
+		stored = state["Length"];
+		expected = state["Expected"];
+		available = size - position + 1;
+		handshakePacket = !frameQ[client, ByteArray[{}]];
+
+		If[expected == 0,
+			If[handshakePacket,
+				If[stored >= maxHandshake, Break[]];
+				part = streamSlice[bytes, position, Min[available, maxHandshake - stored]];
+				prefix = Join[streamBytes[state["Chunks"]], part];
+				delimiter = BytesUPosition[prefix, $httpEndOfHead];
+				If[Length[delimiter] > 0,
+					expected = delimiter[[1, 2]];
+					state["Expected"] = expected,
+					If[stored + available >= maxHandshake, Break[]];
+					state["Chunks"] = Append[state["Chunks"], streamSlice[bytes, position, available]];
+					state["Length"] = stored + available;
+					position = size + 1;
+					Continue[]
+				],
+				part = streamSlice[bytes, position, Min[available, Max[1, 14 - stored]]];
+				prefix = Join[streamBytes[state["Chunks"]], part];
+				expected = framePacketLength[prefix, handler["MaxFrameBytes"]];
+				If[MissingQ[expected],
+					state["Chunks"] = Append[state["Chunks"], streamSlice[bytes, position, available]];
+					state["Length"] = stored + available;
+					position = size + 1;
+					Continue[]
+				];
+				If[FailureQ[expected], Break[]];
+				state["Expected"] = expected
+			]
+		];
+
+		take = Min[expected - stored, available];
+		If[stored == 0 && take == expected,
+			packet = streamSlice[bytes, position, take],
+			state["Chunks"] = Append[state["Chunks"], streamSlice[bytes, position, take]];
+			packet = If[stored + take == expected, streamBytes[state["Chunks"]], Null]
+		];
+		position += take;
+		state["Length"] = stored + take;
+		If[state["Length"] == expected,
+			state = newStreamState[];
+			response = handler[client, packet];
+			Which[
+				ByteArrayQ[response], BinaryWrite[client, response],
+				StringQ[response], WriteString[client, response]
+			];
+			If[!frameQ[client, ByteArray[{}]],
+				WebSocketUDisconnect[handler, client];
+				Close[client];
+				Return[Null]
+			]
+		]
+	];
+
+	If[position <= size,
+		WebSocketUDisconnect[handler, client];
+		Close[client];
+		Return[Null]
+	];
+	If[state["Length"] > 0,
+		handler["StreamState", uuid] = state,
+		handler["StreamState"] = KeyDrop[handler["StreamState"], uuid]
+	];
+	Null
+];
 
 saveFrameToBuffer[buffer_DataStructure, client: _[uuid_], frame_] := 
 Module[{clientBuffer}, 

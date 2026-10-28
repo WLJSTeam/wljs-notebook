@@ -4,7 +4,6 @@ BeginPackage["CoffeeLiqueur`Notebook`KernelUtils`", {
   "CoffeeLiqueur`CUSockets`",
   "CoffeeLiqueur`CUSockets`EventsExtension`",
   "CoffeeLiqueur`UInternal`",
-  "CoffeeLiqueur`TCPUServer`",
   "CoffeeLiqueur`WebUSocketHandler`",
   "CoffeeLiqueur`WLJS`Tools`","CoffeeLiqueur`WLJS`Transport`"
 }];
@@ -76,12 +75,8 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
         
-        Module[{Internal`Kernel`wcp, Internal`Kernel`ws},
-          Internal`Kernel`wcp = TCPUServer[];
-          Internal`Kernel`wcp["CompleteHandler", "WebSocket"] = WebSocketUPacketQ -> WebSocketUPacketLength;
-          
+        Module[{Internal`Kernel`ws},
           Internal`Kernel`ws = WebSocketUHandler[];
-          Internal`Kernel`wcp["MessageHandler", "WebSocket"]  = WebSocketUPacketQ -> Internal`Kernel`ws;
 
           (* configure the handler for WLJS communications *)
           Internal`Kernel`ws["MessageHandler", "Evaluate"]  = Function[True] -> WLJSTransportHandler;
@@ -110,9 +105,17 @@ wsStartListerning[kernel_, port_, host_] := With[{},
           ];
 
           (*Echo[StringTemplate["starting @ ``:port ``"][Internal`Kernel`Host, port] ];*)
-          SocketListen[USocketOpen[host, port ], Internal`Kernel`wcp@#&, "SocketEventsHandler"->CSocketsClosingHandler];
+          SocketListen[USocketOpen[host, port ], Function[packet,
+              WebSocketUStreamHandler[Internal`Kernel`ws,
+                packet["SourceSocket"], packet["DataByteArray"]]
+            ],
+            "SocketEventsHandler" -> Function[{event, client},
+              If[MemberQ[{"Closed", "Error"}, event],
+                WebSocketUDisconnect[Internal`Kernel`ws, client]];
+              CSocketsClosingHandler[event, client]
+            ]
+          ];
 
-          (*SocketListen[port, wcp@#&];*)
         ];
     ) ]
 ]

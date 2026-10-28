@@ -178,7 +178,7 @@ core.WLJSIOPromiseResolve = (args, env) => {
 let attempts = 0;
 
 window.tryreload = (failed) => {
-  document.body.style.filter = "blur(10px)";
+  setTimeout(() => {document.body.style.filter = "blur(10px)"}, 1000);
   attempts++;
 
   if (attempts > 5) {
