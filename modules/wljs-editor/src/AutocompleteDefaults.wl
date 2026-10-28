@@ -455,6 +455,8 @@ uses rules <i>v</i>-&gt;<i>w</i> to specify the graph <i>g</i>. "|>,
 adjacency matrix of the graph \
 <i>g</i>.\n\nAdjacencyMatrix[{<i>v</i>-&gt;<i>w</i>,...}] uses \
 rules <i>v</i>-&gt;<i>w</i> to specify the graph <i>g</i>. "|>, 
+ <|"label" -> "AdjacentMeshCells", "type" -> "keyword",
+  "info" -> "AdjacentMeshCells[<i>mreg</i>,<i>cellspec</i>,<i>d</i>] gives cells of dimension <i>d</i> adjacent to the cell specified by <i>cellspec</i> in the mesh region <i>mreg</i>."|>,
  <|"label" -> "Adjugate", "type" -> "keyword", 
   "info" -> 
    "Adjugate[<i>m</i>] gives the adjugate of a square matrix <i>m</i>."|>, 
@@ -1059,7 +1061,9 @@ dimensions.\n\nArrayFilter[<i>f</i>,<i>array</i>,<i>template</i>] applies \
 ...}] creates a single flattened matrix from a matrix of matrices \
 <i>m</i><sub><i>i\[InvisibleSpace]j</i></sub>. \
 \n\nArrayFlatten[<i>a</i>,<i>r</i>] flattens out <i>r</i> pairs of levels in \
-the array <i>a</i>."|>, <|"label" -> "ArrayPad", "type" -> "keyword", 
+the array <i>a</i>."|>, <|"label" -> "ArrayMesh", "type" -> "keyword",
+  "info" -> "ArrayMesh[<i>array</i>] generates a mesh region from an array in which each full-dimensional cell represents a nonzero array value."|>,
+ <|"label" -> "ArrayPad", "type" -> "keyword",
   "info" -> "ArrayPad[<i>array</i>,<i>m</i>] gives an array with <i>m</i> \
 zeros of padding on every side. \
 \n\nArrayPad[<i>array</i>,<i>m</i>,<i>padding</i>] uses the specified \
@@ -2557,7 +2561,9 @@ min</i></sub>,<i>x</i><sub><i>max</i></sub>},...}] restricts to the \
 bounds [x<sub>min</sub>,x<sub>max</sub>]\[Times]\[CenterEllipsis]."|>, 
  <|"label" -> "BoundaryMesh", "type" -> "keyword", 
   "info" -> "BoundaryMesh[<i>mreg</i>] gives a BoundaryMeshRegion from a \
-MeshRegion <i>mreg</i>. "|>, <|"label" -> "BoundaryMeshRegionQ", 
+MeshRegion <i>mreg</i>. "|>, <|"label" -> "BoundaryMeshRegion", "type" -> "keyword",
+  "info" -> "BoundaryMeshRegion[{<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,...},{<i>cell</i><sub>1</sub>,<i>cell</i><sub>2</sub>,...}] yields a boundary mesh with cells whose integer coordinates refer to the points <i>p</i><sub><i>i</i></sub>."|>,
+ <|"label" -> "BoundaryMeshRegionQ",
   "type" -> "keyword", "info" -> "BoundaryMeshRegionQ[<i>reg</i>] yields True \
 if the region <i>reg</i> is a valid BoundaryMeshRegion object and False \
 otherwise."|>, <|"label" -> "BoundaryStyle", "type" -> "keyword", 
@@ -11279,7 +11285,9 @@ i><sub>2</sub>,...}] highlights several regions of interest \
 feature defined by the symbolic wrapper \
 <i>w</i>.\n\nHighlightImage[<i>image</i>,<i>fg</i>,<i>bgstyle</i>] applies \
 the styling <i>bgstyle</i> to the complement of all the regions of interest."\
-|>, <|"label" -> "HighpassFilter", "type" -> "keyword", 
+|>, <|"label" -> "HighlightMesh", "type" -> "keyword",
+  "info" -> "HighlightMesh[<i>mreg</i>,<i>cellspec</i>] highlights the specified cells in the mesh region <i>mreg</i>."|>,
+ <|"label" -> "HighpassFilter", "type" -> "keyword",
   "info" -> "HighpassFilter[<i>data</i>,\[Omega]<sub><i>c</i></sub>] applies \
 a highpass filter with a cutoff frequency \[Omega]<sub><i>c</i></sub> to an \
 array of \
@@ -15627,10 +15635,14 @@ Plot3D, DensityPlot, and other plotting functions that specifies what mesh \
 should be drawn. "|>, <|"label" -> "MeshCellCentroid", "type" -> "keyword", 
   "info" -> "MeshCellCentroid is an annotation of MeshRegion and \
 BoundaryMeshRegion objects that gives the centroids of mesh cells."|>, 
+ <|"label" -> "MeshCellCount", "type" -> "keyword",
+  "info" -> "MeshCellCount[<i>mreg</i>] gives the counts of cells of each dimension in the mesh region <i>mreg</i>.\n\nMeshCellCount[<i>mreg</i>,<i>d</i>] gives the number of cells of dimension <i>d</i>."|>,
  <|"label" -> "MeshCellHighlight", "type" -> "keyword", 
   "info" -> "MeshCellHighlight is an option and annotation of MeshRegion, \
 BoundaryMeshRegion, and related functions that specifies mesh cells to \
-highlight."|>, <|"label" -> "MeshCellLabel", "type" -> "keyword", 
+highlight."|>, <|"label" -> "MeshCellIndex", "type" -> "keyword",
+  "info" -> "MeshCellIndex[<i>mreg</i>,<i>d</i>] gives the cell indices for cells of dimension <i>d</i> in the mesh region <i>mreg</i>.\n\nMeshCellIndex[<i>mreg</i>,<i>cellspec</i>] gives the cell indices for the cells specified by <i>cellspec</i>."|>,
+ <|"label" -> "MeshCellLabel", "type" -> "keyword",
   "info" -> "MeshCellLabel is an option to MeshRegion, BoundaryMeshRegion and \
 related functions that specifies labels and placements for mesh cells. "|>, 
  <|"label" -> "MeshCellMarker", "type" -> "keyword", 
@@ -15641,7 +15653,9 @@ that specifies integer markers to associate with mesh cells. "|>,
 BoundaryMeshRegion objects that gives the measures of mesh cells."|>, 
  <|"label" -> "MeshCellQuality", "type" -> "keyword", 
   "info" -> "MeshCellQuality is an annotation of MeshRegion and \
-BoundaryMeshRegion objects that gives a quality measure for mesh cells."|>, 
+BoundaryMeshRegion objects that gives a quality measure for mesh cells."|>,
+ <|"label" -> "MeshCells", "type" -> "keyword",
+  "info" -> "MeshCells[<i>mreg</i>,<i>d</i>] gives the cells of dimension <i>d</i> in the mesh region <i>mreg</i>.\n\nMeshCells[<i>mreg</i>,<i>cellspec</i>] gives the cells specified by <i>cellspec</i>."|>,
  <|"label" -> "MeshCellShapeFunction", "type" -> "keyword", 
   "info" -> "MeshCellShapeFunction is an option and annotation for \
 MeshRegion, BoundaryMeshRegion, and related functions that specifies \
@@ -15660,11 +15674,17 @@ that share a cell of dimension <i>r</i>."|>, <|"label" -> "MeshCoordinates",
 of coordinates in the mesh region <i>mreg</i>."|>, 
  <|"label" -> "MeshFunctions", "type" -> "keyword", 
   "info" -> "MeshFunctions is an option for plotting functions that specifies \
-functions to use to determine the placement of mesh divisions. "|>, 
+functions to use to determine the placement of mesh divisions. "|>,
+ <|"label" -> "MeshPrimitives", "type" -> "keyword",
+  "info" -> "MeshPrimitives[<i>mreg</i>,<i>d</i>] gives graphics primitives for the cells of dimension <i>d</i> in the mesh region <i>mreg</i>."|>,
+ <|"label" -> "MeshQualityGoal", "type" -> "keyword",
+  "info" -> "MeshQualityGoal is an option for DiscretizeRegion and related functions that specifies a mesh cell quality goal for the result."|>,
  <|"label" -> "MeshRefinementFunction", "type" -> "keyword", 
   "info" -> "MeshRefinementFunction is an option for DiscretizeRegion and \
 related functions that specifies a function to indicate whether mesh cells \
-should be refined or not."|>, <|"label" -> "MeshRegionQ", 
+should be refined or not."|>, <|"label" -> "MeshRegion", "type" -> "keyword",
+  "info" -> "MeshRegion[{<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,...},{<i>cell</i><sub>1</sub>,<i>cell</i><sub>2</sub>,...}] yields a mesh whose cell coordinates refer to the points <i>p</i><sub><i>i</i></sub>.\n\nMeshRegion[<i>mreg</i>,<i>opts</i>] yields a mesh from <i>mreg</i> with options <i>opts</i>."|>,
+ <|"label" -> "MeshRegionQ",
   "type" -> "keyword", "info" -> "MeshRegionQ[<i>reg</i>] yields True if the \
 region <i>reg</i> is a valid MeshRegion object and False otherwise."|>, 
  <|"label" -> "MeshShading", "type" -> "keyword", 
@@ -15965,6 +15985,8 @@ displays a window that initially contains the Molecule <i>mol</i>."|>,
   "info" -> "MoleculeMatchQ[<i>mol</i>,<i>patt</i>] returns True if the \
 Molecule matches the given pattern.\n\nMoleculeMatchQ[<i>patt</i>] represents \
 an operator form of MoleculeMatchQ that can be applied to a molecule."|>, 
+ <|"label" -> "MoleculeMesh", "type" -> "keyword",
+  "info" -> "MoleculeMesh[<i>mol</i>] returns a BoundaryMeshRegion representing the Molecule or BioMolecule <i>mol</i>.\n\nMoleculeMesh[<i>mol</i>,<i>type</i>] returns a mesh of surface type <i>type</i>."|>,
  <|"label" -> "MoleculeProperty", "type" -> "keyword", 
   "info" -> "MoleculeProperty[<i>pname</i>] represents a property identified \
 by <i>pname</i> for use in \
@@ -16360,6 +16382,8 @@ NearestFunction[...] that can be applied repeatedly to different \
 <i>x</i>. "|>, <|"label" -> "NearestFunction", "type" -> "keyword", 
   "info" -> "NearestFunction[<i>data</i>] represents a function whose values \
 give the elements closest to an element that is supplied."|>, 
+ <|"label" -> "NearestMeshCells", "type" -> "keyword",
+  "info" -> "NearestMeshCells[<i>mreg</i>,<i>pt</i>] gives the indices of the cells nearest to the point <i>pt</i> in the mesh region <i>mreg</i>.\n\nNearestMeshCells[<i>mreg</i>,<i>pt</i>,<i>n</i>] gives the <i>n</i> nearest cell indices."|>,
  <|"label" -> "NearestNeighborG", "type" -> "keyword", 
   "info" -> "NearestNeighborG[<i>pdata</i>,<i>r</i>] estimates the nearest \
 neighbor function G(r) at radius <i>r</i> in the point data \
@@ -22420,7 +22444,9 @@ spanned by points <i>p</i><sub><i>i</i></sub>."|>,
 >] performs a sequence of algebraic and other transformations on <i>expr</i> \
 and returns the simplest form it finds. \
 \n\nSimplify[<i>expr</i>,<i>assum</i>] does simplification using assumptions. \
-"|>, <|"label" -> "Sin", "type" -> "keyword", 
+"|>, <|"label" -> "SimplifyMesh", "type" -> "keyword",
+  "info" -> "SimplifyMesh[<i>mesh</i>] simplifies the mesh region <i>mesh</i> by reducing the number of polygons while keeping its overall shape.\n\nSimplifyMesh[<i>mesh</i>,<i>crit</i>] reduces the number of polygons using the specified criteria <i>crit</i>."|>,
+ <|"label" -> "Sin", "type" -> "keyword",
   "info" -> "Sin[<i>z</i>] gives the sine of <i>z</i>. "|>, 
  <|"label" -> "Sinc", "type" -> "keyword", 
   "info" -> "Sinc[<i>z</i>] gives sinc(z). "|>, 
@@ -22613,7 +22639,9 @@ othKernelDistribution[...,<i>bw</i>] represents a smooth kernel \
 distribution with bandwidth \
 <i>bw</i>.\n\nSmoothKernelDistribution[...,<i>bw</i>,<i>ker</i>] \
 represents a smooth kernel distribution with bandwidth <i>bw</i> and \
-smoothing kernel <i>ker</i>."|>, <|"label" -> "SmoothPointDensity", 
+smoothing kernel <i>ker</i>."|>, <|"label" -> "SmoothMesh", "type" -> "keyword",
+  "info" -> "SmoothMesh[<i>mesh</i>] smooths the mesh region <i>mesh</i> by adjusting cells while keeping the overall shape."|>,
+ <|"label" -> "SmoothPointDensity",
   "type" -> "keyword", "info" -> "SmoothPointDensity[<i>pdata</i>] estimates \
 the point density function \[Mu](x) for point data \
 <i>pdata</i>.\n\nSmoothPointDensity[<i>pdata</i>,<i>bw</i>] estimates the \
