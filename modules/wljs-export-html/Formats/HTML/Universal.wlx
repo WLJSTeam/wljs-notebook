@@ -121,7 +121,7 @@ transformCell[cell_, "Input", "codemirror", _, _] := With[{
 },
     If[!(!TrueQ[cell["Props"]["Hidden"]] && !TrueQ[cell["Invisible"]] && StringLength[StringTrim[data]] > 0),
         Nothing,
-        StringJoin["<", "wljs-editor ", "display=\"", display, "\" ", "type=\"Input\" ", If[TrueQ[cell["Props"]["Fade"]], "fade=\"true\"", ""], " ", ">", "<", "xmp", ">", data, "<", "/", "xmp", ">", "<", "/", "wljs-editor", ">"]
+        StringJoin["<", "wljs-editor ", "display=\"", display, "\" ", "type=\"Input\" editable=\"true\" ", If[TrueQ[cell["Props"]["Fade"]], "fade=\"true\"", ""], " ", ">", "<", "xmp", ">", data, "<", "/", "xmp", ">", "<", "/", "wljs-editor", ">"]
     ]
 ]
 
