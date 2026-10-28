@@ -32,13 +32,13 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-Define new material in Javascript
+Soft pearl shading with a gold, lavender and teal palette. Evaluate the JavaScript cell once before evaluating the example below. The upper-left studio light is built into the shader, so the finish stays consistent while rotating the scene.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-Define new material in Javascript
+Soft pearl shading with a gold, lavender and teal palette. Evaluate the JavaScript cell once before evaluating the example below. The upper-left studio light is built into the shader, so the finish stays consistent while rotating the scene.
 
 %-------------------------------------------------------------------------%
 Props:
@@ -46,103 +46,787 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .js
-function vertexShader() {
-  return `
-    varying vec3 vUv; 
+// Raster shader and physical path-tracing backend. Material maps are generated locally.
+const pearlPalette = Object.freeze({
+  Gold: '#d8ae70', Lavender: '#ad9bd5', Teal: '#62a6b8',
+  Ice: '#cee6ef', Bond: '#b1a6cb', GoldBond: '#d6b17c', Glass: '#c8e4ed'
+});
 
-    void main() {
-      vUv = position; 
-
-      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_Position = projectionMatrix * modelViewPosition; 
-    }
-  `;
-}
-
-function fragmentShader()  {
-  return `
-      uniform vec3 colorA; 
-      uniform vec3 colorB; 
-      varying vec3 vUv;
-
+function createPearlMaterial(THREE, options = {}) {
+  if (options.pathTracing || options.renderer === 'PathTracing') return createPearlPhysicalMaterial(THREE, options);
+  const preset = options.preset ?? 'Lavender';
+  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
+  const roughness = Math.min(1, Math.max(0, options.roughness ?? 0.42));
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const isBond = options.bond ?? (preset === 'Bond' || preset === 'GoldBond');
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
+  const outputChunk = THREE.ShaderChunk.colorspace_fragment
+    ? 'colorspace_fragment' : 'encodings_fragment';
+  const material = new THREE.ShaderMaterial({
+    name: `Pearl / ${preset}`,
+    uniforms: {
+      baseColor: { value: color },
+      pearlRoughness: { value: roughness },
+      pearlGrain: { value: grain },
+      pearlOpacity: { value: opacity },
+      pearlHighlight: { value: options.highlight ?? (preset === 'Glass' ? 0.0 : 1.0) },
+      pearlWash: { value: options.wash ?? (isBond ? 0.22 : 0.10) },
+      pearlGlass: { value: preset === 'Glass' ? 1.0 : 0.0 },
+      pearlBond: { value: isBond ? 1.0 : 0.0 },
+      pearlBleed: { value: options.bleed ?? (isBond ? 0.30 : 0.0) },
+      startColor: { value: new THREE.Color(options.startColor ?? color) },
+      endColor: { value: new THREE.Color(options.endColor ?? color) },
+      keyDirection: { value: new THREE.Vector3(-0.65, 0.85, 1.25).normalize() },
+      fillDirection: { value: new THREE.Vector3(0.8, -0.2, 0.6).normalize() }
+    },
+    vertexShader: `
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      varying vec2 pearlUv;
       void main() {
-        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+        #include <beginnormal_vertex>
+        #include <defaultnormal_vertex>
+        pearlNormal = normalize(transformedNormal);
+        pearlLocalPosition = position;
+        pearlUv = uv;
+        #include <begin_vertex>
+        #include <project_vertex>
+        pearlViewPosition = -mvPosition.xyz;
       }
-  `;
+    `,
+    fragmentShader: `
+      uniform vec3 baseColor;
+      uniform vec3 keyDirection;
+      uniform vec3 fillDirection;
+      uniform float pearlRoughness;
+      uniform float pearlGrain;
+      uniform float pearlOpacity;
+      uniform float pearlHighlight;
+      uniform float pearlWash;
+      uniform float pearlGlass;
+      uniform float pearlBond;
+      uniform float pearlBleed;
+      uniform vec3 startColor;
+      uniform vec3 endColor;
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      varying vec2 pearlUv;
+      float grainHash(vec3 p) {
+        p = fract(p * 0.1031);
+        p += dot(p, p.yzx + 33.33);
+        return fract((p.x + p.y) * p.z);
+      }
+      float grainNoise(vec3 p) {
+        vec3 cell = floor(p);
+        vec3 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(mix(grainHash(cell), grainHash(cell + vec3(1,0,0)), f.x),
+              mix(grainHash(cell + vec3(0,1,0)), grainHash(cell + vec3(1,1,0)), f.x), f.y),
+          mix(mix(grainHash(cell + vec3(0,0,1)), grainHash(cell + vec3(1,0,1)), f.x),
+              mix(grainHash(cell + vec3(0,1,1)), grainHash(cell + vec3(1,1,1)), f.x), f.y), f.z);
+      }
+      void main() {
+        vec3 N = normalize(pearlNormal) * (gl_FrontFacing ? 1.0 : -1.0);
+        vec3 V = isOrthographic ? vec3(0.0, 0.0, 1.0) : normalize(pearlViewPosition);
+        vec3 H = normalize(keyDirection + V);
+        float key = pow(clamp(dot(N, keyDirection) * 0.5 + 0.5, 0.0, 1.0), 1.3);
+        float fill = max(dot(N, fillDirection), 0.0);
+        float facing = max(dot(N, V), 0.0);
+        float edge = pow(1.0 - facing, 2.0);
+        float wash = grainNoise(pearlLocalPosition * 2.8 + vec3(11.7, 4.2, 8.1));
+        float broad = pow(max(dot(N, H), 0.0), mix(16.0, 4.0, pearlRoughness));
+        float tight = pow(max(dot(N, H), 0.0), mix(130.0, 30.0, pearlRoughness));
+        vec3 pigment = baseColor;
+        float startWeight = 1.0 - smoothstep(0.0, 0.48, pearlUv.y);
+        float endWeight = smoothstep(0.52, 1.0, pearlUv.y);
+        pigment = mix(pigment, startColor, startWeight * pearlBond * pearlBleed);
+        pigment = mix(pigment, endColor, endWeight * pearlBond * pearlBleed);
+        pigment *= mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
+          (1.0 + pearlWash * (wash - 0.5));
+        float shade = (0.34 + 0.66 * key + 0.07 * fill) * (1.0 - 0.18 * edge);
+        vec3 rgb = pigment * shade;
+        // Keep grain visible as atoms get smaller: blend to coarser surface noise.
+        float footprint = max(length(dFdx(pearlLocalPosition)), length(dFdy(pearlLocalPosition)));
+        float fineWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 64.0);
+        float mediumWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 16.0);
+        float coarseWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 4.0);
+        float coarse = grainNoise(pearlLocalPosition * 4.0);
+        float medium = grainNoise(pearlLocalPosition * 16.0);
+        float fine = grainNoise(pearlLocalPosition * 64.0);
+        float surfaceGrain = mix(coarse, medium, mediumWeight);
+        surfaceGrain = mix(surfaceGrain, fine, fineWeight);
+        // Value noise is smoothed; restore useful contrast for the strength control.
+        rgb *= 1.0 + 3.5 * pearlGrain * coarseWeight * (2.0 * surfaceGrain - 1.0);
+        rgb = mix(rgb, baseColor * (0.92 + 0.08 * key), pearlGlass);
+        // Broad pearl sheen plus a brighter softbox core, added in linear light.
+        float highlight = (0.40 * broad + 0.22 * tight) * pearlHighlight;
+        highlight *= 1.0 + 0.20 * (wash - 0.5);
+        rgb += vec3(1.0, 0.975, 0.94) * highlight;
+        rgb += mix(pigment, vec3(0.7, 0.8, 0.94), 0.5) * edge * 0.075;
+        gl_FragColor = vec4(max(rgb, vec3(0.0)), pearlOpacity);
+        #include <${outputChunk}>
+      }
+    `,
+    // Deliberately self-lit: a portable illustration look under any scene lights.
+    lights: false,
+    toneMapped: false,
+    transparent: opacity < 1,
+    depthWrite: opacity >= 1,
+    side: opacity < 1 ? THREE.DoubleSide : THREE.FrontSide
+  });
+  // Also works with older Three.js WebGL1 builds used by some WLJS versions.
+  material.extensions.derivatives = true;
+  return material;
 }
 
-let THREE;
-interpretate.shared.THREE.load().then(() => {
-  THREE = interpretate.shared.THREE.THREE;
-})
+// Baked material maps are shared between matching presets, including repeated bonds.
+const pearlPhysicalCaches = new WeakMap();
 
-core.CustomMaterial = async (args, env) => {
-  let uniforms = {
-    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
-    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+function pearlNoise2(x, y) {
+  const hash = (a, b) => {
+    let n = Math.imul(a, 374761393) ^ Math.imul(b, 668265263);
+    n = Math.imul(n ^ (n >>> 13), 1274126177);
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+  };
+  const ix = Math.floor(x), iy = Math.floor(y);
+  let fx = x - ix, fy = y - iy;
+  fx *= fx * (3 - 2 * fx); fy *= fy * (3 - 2 * fy);
+  const a = hash(ix, iy), b = hash(ix + 1, iy);
+  const c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+  return (a + (b - a) * fx) * (1 - fy) + (c + (d - c) * fx) * fy;
+}
+
+function pearlPhysicalMaps(THREE, options, color) {
+  let cache = pearlPhysicalCaches.get(THREE);
+  if (!cache) { cache = new Map(); pearlPhysicalCaches.set(THREE, cache); }
+  const bond = options.bond ?? ['Bond', 'GoldBond'].includes(options.preset);
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const wash = options.wash ?? (bond ? 0.22 : 0.10);
+  const start = new THREE.Color(options.startColor ?? color);
+  const end = new THREE.Color(options.endColor ?? color);
+  const bleed = Math.min(1, Math.max(0, options.bleed ?? (bond ? 0.30 : 0)));
+  const key = JSON.stringify([color.getHex(), bond, grain, wash, start.getHex(), end.getHex(), bleed]);
+  if (cache.has(key)) return cache.get(key);
+  const size = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const pixels = ctx.createImageData(size, size);
+  const rgb = new THREE.Color();
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x-a)/(b-a))); return t*t*(3-2*t); };
+  for (let y = 0; y < size; y++) {
+    const v = 1 - (y + 0.5) / size;
+    for (let x = 0; x < size; x++) {
+      const u = (x + 0.5) / size;
+      const broad = pearlNoise2(u * 7, v * 9);
+      const fine = pearlNoise2(u * 93, v * 93);
+      rgb.copy(color);
+      if (bond) {
+        rgb.lerp(start, (1 - smooth(0, 0.48, v)) * bleed);
+        rgb.lerp(end, smooth(0.52, 1, v) * bleed);
+      }
+      const gain = 1 + wash * (broad - 0.5) + 3.5 * grain * (2 * fine - 1);
+      rgb.multiplyScalar(gain).convertLinearToSRGB();
+      const i = 4 * (y * size + x);
+      pixels.data[i] = Math.min(255, Math.max(0, Math.round(rgb.r * 255)));
+      pixels.data[i+1] = Math.min(255, Math.max(0, Math.round(rgb.g * 255)));
+      pixels.data[i+2] = Math.min(255, Math.max(0, Math.round(rgb.b * 255)));
+      pixels.data[i+3] = 255;
+    }
   }
-
-  return (function() {
-    return new THREE.ShaderMaterial({
-      uniforms: uniforms,
-      fragmentShader: fragmentShader(),
-      vertexShader: vertexShader(),
-    });
-  })
+  ctx.putImageData(pixels, 0, 0);
+  const map = new THREE.CanvasTexture(canvas);
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  map.minFilter = THREE.LinearMipmapLinearFilter;
+  map.magFilter = THREE.LinearFilter;
+  // Roughness and normal maps are shared by all materials.
+  if (!cache.has('microstructure')) {
+    const roughData = new Uint8Array(size * size * 4);
+    const normalData = new Uint8Array(size * size * 4);
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const u = (x+0.5)/size, v = (y+0.5)/size;
+      const h = pearlNoise2(u*93, v*93);
+      const dx = pearlNoise2((u+1/size)*93, v*93) - pearlNoise2((u-1/size)*93, v*93);
+      const dy = pearlNoise2(u*93, (v+1/size)*93) - pearlNoise2(u*93, (v-1/size)*93);
+      const n = new THREE.Vector3(-dx, -dy, 1).normalize();
+      const i = 4 * (y*size+x), r = Math.round(205 + 45*h);
+      roughData.set([r,r,r,255], i);
+      normalData.set([Math.round(127.5*(n.x+1)),Math.round(127.5*(n.y+1)),Math.round(127.5*(n.z+1)),255], i);
+    }
+    const roughnessMap = new THREE.DataTexture(roughData,size,size);
+    const normalMap = new THREE.DataTexture(normalData,size,size);
+    for (const texture of [roughnessMap,normalMap]) {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.minFilter = texture.magFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
+    }
+    cache.set('microstructure',{roughnessMap,normalMap});
+  }
+  const maps = {map,...cache.get('microstructure')};
+  cache.set(key,maps);
+  return maps;
 }
+
+function createPearlPhysicalMaterial(THREE, options = {}) {
+  const preset = options.preset ?? 'Lavender';
+  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const roughness = Math.min(1, Math.max(0.08, options.roughness ?? 0.42));
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
+  const highlight = Math.max(0, options.highlight ?? 1);
+  if (preset === 'Glass') {
+    return new THREE.MeshPhysicalMaterial({name:'Pearl physical / Glass',color,
+      roughness:0.65,metalness:0,opacity,transparent:true,depthWrite:false,
+      side:THREE.DoubleSide,transmission:0,ior:1.1,clearcoat:0});
+  }
+  const maps = pearlPhysicalMaps(THREE,options,color);
+  return new THREE.MeshPhysicalMaterial({
+    name:`Pearl physical / ${preset}`,color:0xffffff,...maps,
+    roughness:Math.min(1,roughness*0.90),
+    metalness:['Gold','GoldBond'].includes(preset) ? 0.18 : 0.025,
+    normalScale:new THREE.Vector2(grain*2,grain*2),
+    clearcoat:Math.min(1,0.45*highlight),clearcoatRoughness:0.18,
+    sheen:0.12,sheenColor:color.clone().lerp(new THREE.Color('white'),0.35),
+    sheenRoughness:0.55,specularIntensity:Math.min(2,highlight),ior:1.48,
+    opacity,transparent:opacity<1,depthWrite:opacity>=1,
+    side:opacity<1 ? THREE.DoubleSide : THREE.FrontSide
+  });
+}
+
+function addPearlStudioLighting(THREE, scene, camera, target = new THREE.Vector3(0,1,0)) {
+  if (scene.userData.pearlStudio) return scene.userData.pearlStudio;
+  const forward = camera.getWorldDirection(new THREE.Vector3()).normalize();
+  const right = new THREE.Vector3().crossVectors(forward,camera.up).normalize();
+  const up = new THREE.Vector3().crossVectors(right,forward).normalize();
+  const make = (x,y,z,intensity,width,height) => {
+    const light = new THREE.RectAreaLight(0xffffff,intensity,width,height);
+    light.position.copy(target).addScaledVector(right,x).addScaledVector(up,y).addScaledVector(forward,-z);
+    light.lookAt(target); scene.add(light); return light;
+  };
+  const lights = [make(-4,5,7,12,4,5), make(4,1,5,1.5,5,5)];
+  scene.userData.pearlStudio = lights;
+  return lights;
+}
+
+// WLJS adapter. Evaluate this cell before using PearlMaterial in Graphics3D.
+const ready = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
+core.PearlMaterial = async (args, env) => {
+  const THREE = await ready;
+  const values = await Promise.all(args.map(arg => interpretate(arg, env)));
+  const [preset = "Lavender", roughness = 0.42, grain = 0.014, opacity, highlight, wash = 0.10] = values;
+  if (!(preset in pearlPalette)) throw new Error("Unknown PearlMaterial preset: " + preset);
+  const pathTracing = env.PathRendering === true;
+  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
+  return function PearlMaterialFactory() {
+    return createPearlMaterial(THREE, {preset, roughness, grain, opacity, highlight, wash, pathTracing});
+  };
+};
+core.PearlBondMaterial = async (args, env) => {
+  const THREE = await ready;
+  const [preset = "Bond", start = "Lavender", end = "Lavender", bleed = 0.30,
+    roughness = 0.35, grain = 0.012] = await Promise.all(args.map(arg => interpretate(arg, env)));
+  for (const name of [preset, start, end]) {
+    if (!(name in pearlPalette)) throw new Error("Unknown pearl preset: " + name);
+  }
+  const pathTracing = env.PathRendering === true;
+  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
+  return function PearlBondMaterialFactory() {
+    return createPearlMaterial(THREE, {preset, roughness, grain, bond:true,
+      startColor:pearlPalette[start], endColor:pearlPalette[end], bleed, pathTracing});
+  };
+};
+// Static atom and bond swatches, rendered once with the raster shader.
+const panel = document.createElement('div');
+panel.style.cssText = 'background:white;border:1px solid #e1e5ea;border-radius:12px;padding:18px;max-width:720px;color:#17263d;font:14px system-ui';
+const status = document.createElement('div');
+status.textContent = 'Loading pearl materials…';
+panel.append(status);
+const swatches = document.createElement('div');
+swatches.style.cssText = 'position:relative;width:100%';
+panel.append(swatches);
+let renderer;
+const geometries = [];
+const materials = [];
+let destroyed = false;
+this.ondestroy = () => {
+  destroyed = true;
+  geometries.forEach(geometry => geometry.dispose());
+  materials.forEach(material => material.dispose());
+  renderer?.dispose();
+};
+ready.then(THREE => {
+  if (destroyed) return;
+  renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(640, 350);
+  if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+  else renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.domElement.style.cssText = 'width:100%;height:auto;display:block';
+  swatches.append(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('white');
+  const camera = new THREE.OrthographicCamera(-3.6,3.6,1.96875,-1.96875,0.1,20);
+  camera.position.z = 6;
+  const sphere = new THREE.SphereGeometry(0.65,64,48);
+  const cylinder = new THREE.CylinderGeometry(0.115,0.115,1.75,48,16);
+  const endpoint = new THREE.SphereGeometry(0.19,32,24);
+  geometries.push(sphere,cylinder,endpoint);
+  const materialFor = options => {
+    const material = createPearlMaterial(THREE,options);
+    materials.push(material); return material;
+  };
+  ['Gold','Lavender','Teal'].forEach((preset,i) => {
+    const mesh = new THREE.Mesh(sphere,materialFor({preset,grain:0.014}));
+    mesh.position.set((i-1)*2.4,1.0,0);
+    scene.add(mesh);
+  });
+  const bonds = [
+    {preset:'Bond',start:'Lavender',end:'Lavender'},
+    {preset:'Bond',start:'Ice',end:'Lavender'},
+    {preset:'GoldBond',start:'Lavender',end:'Gold'}
+  ];
+  bonds.forEach(({preset,start,end},i) => {
+    const group = new THREE.Group();
+    group.position.set((i-1)*2.4,-0.95,0);
+    group.rotation.z = 0.12;
+    const rod = new THREE.Mesh(cylinder,materialFor({
+      preset,bond:true,roughness:0.35,grain:0.012,bleed:0.30,
+      startColor:pearlPalette[start],endColor:pearlPalette[end]
+    }));
+    // Cylinder v=0 is the bottom end; rotating it puts that end on the left.
+    rod.rotation.z = -Math.PI/2;
+    group.add(rod);
+    [start,end].forEach((atom,j) => {
+      const mesh = new THREE.Mesh(endpoint,materialFor({preset:atom,grain:0.014}));
+      mesh.position.x = (j-0.5)*1.75;
+      group.add(mesh);
+    });
+    scene.add(group);
+  });
+  const labels = (top,items) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'position:absolute;left:0;right:0;top:'+top+'%;display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px;line-height:1.4;font-size:13px;pointer-events:none';
+    items.forEach(([title,detail]) => {
+      const label = document.createElement('div');
+      const name = document.createElement('strong'); name.textContent=title;
+      label.append(name);
+      if(detail) {
+        const sub=document.createElement('div'); sub.textContent=detail;
+        sub.style.cssText='color:#627087;font-size:11px';
+        label.append(sub);
+      }
+      row.append(label);
+    });
+    swatches.append(row);
+  };
+  labels(44,[['Gold','Atoms'],['Lavender','Atoms'],['Teal','Atoms']]);
+  labels(84,[['Bond','Lavender → Lavender'],['Bond · carbon end','Ice → Lavender'],['GoldBond','Lavender → Gold']]);
+  const errors = [];
+  renderer.debug.onShaderError = (gl,program,vertex,fragment) => {
+    errors.push(gl.getProgramInfoLog(program),gl.getShaderInfoLog(vertex),gl.getShaderInfoLog(fragment));
+  };
+  renderer.render(scene,camera);
+  if(errors.some(Boolean)) throw new Error(errors.filter(Boolean).join('\n'));
+  status.textContent='Pearl materials · atoms and bonds · raster preview · Three.js r'+THREE.REVISION;
+}).catch(error => {status.textContent='Shader error: '+error.message;console.error(error);});
+return panel;
 
 %-------------------------------------------------------------------------%
 Display: js
 Type: Output
 %-------------------------------------------------------------------------%
+// Raster shader and physical path-tracing backend. Material maps are generated locally.
+const pearlPalette = Object.freeze({
+  Gold: '#d8ae70', Lavender: '#ad9bd5', Teal: '#62a6b8',
+  Ice: '#cee6ef', Bond: '#b1a6cb', GoldBond: '#d6b17c', Glass: '#c8e4ed'
+});
 
-function vertexShader() {
-  return `
-    varying vec3 vUv; 
-
-    void main() {
-      vUv = position; 
-
-      vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
-      gl_Position = projectionMatrix * modelViewPosition; 
-    }
-  `;
-}
-
-function fragmentShader()  {
-  return `
-      uniform vec3 colorA; 
-      uniform vec3 colorB; 
-      varying vec3 vUv;
-
+function createPearlMaterial(THREE, options = {}) {
+  if (options.pathTracing || options.renderer === 'PathTracing') return createPearlPhysicalMaterial(THREE, options);
+  const preset = options.preset ?? 'Lavender';
+  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
+  const roughness = Math.min(1, Math.max(0, options.roughness ?? 0.42));
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const isBond = options.bond ?? (preset === 'Bond' || preset === 'GoldBond');
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
+  const outputChunk = THREE.ShaderChunk.colorspace_fragment
+    ? 'colorspace_fragment' : 'encodings_fragment';
+  const material = new THREE.ShaderMaterial({
+    name: `Pearl / ${preset}`,
+    uniforms: {
+      baseColor: { value: color },
+      pearlRoughness: { value: roughness },
+      pearlGrain: { value: grain },
+      pearlOpacity: { value: opacity },
+      pearlHighlight: { value: options.highlight ?? (preset === 'Glass' ? 0.0 : 1.0) },
+      pearlWash: { value: options.wash ?? (isBond ? 0.22 : 0.10) },
+      pearlGlass: { value: preset === 'Glass' ? 1.0 : 0.0 },
+      pearlBond: { value: isBond ? 1.0 : 0.0 },
+      pearlBleed: { value: options.bleed ?? (isBond ? 0.30 : 0.0) },
+      startColor: { value: new THREE.Color(options.startColor ?? color) },
+      endColor: { value: new THREE.Color(options.endColor ?? color) },
+      keyDirection: { value: new THREE.Vector3(-0.65, 0.85, 1.25).normalize() },
+      fillDirection: { value: new THREE.Vector3(0.8, -0.2, 0.6).normalize() }
+    },
+    vertexShader: `
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      varying vec2 pearlUv;
       void main() {
-        gl_FragColor = vec4(mix(colorA, colorB, vUv.z), 1.0);
+        #include <beginnormal_vertex>
+        #include <defaultnormal_vertex>
+        pearlNormal = normalize(transformedNormal);
+        pearlLocalPosition = position;
+        pearlUv = uv;
+        #include <begin_vertex>
+        #include <project_vertex>
+        pearlViewPosition = -mvPosition.xyz;
       }
-  `;
+    `,
+    fragmentShader: `
+      uniform vec3 baseColor;
+      uniform vec3 keyDirection;
+      uniform vec3 fillDirection;
+      uniform float pearlRoughness;
+      uniform float pearlGrain;
+      uniform float pearlOpacity;
+      uniform float pearlHighlight;
+      uniform float pearlWash;
+      uniform float pearlGlass;
+      uniform float pearlBond;
+      uniform float pearlBleed;
+      uniform vec3 startColor;
+      uniform vec3 endColor;
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      varying vec2 pearlUv;
+      float grainHash(vec3 p) {
+        p = fract(p * 0.1031);
+        p += dot(p, p.yzx + 33.33);
+        return fract((p.x + p.y) * p.z);
+      }
+      float grainNoise(vec3 p) {
+        vec3 cell = floor(p);
+        vec3 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(mix(grainHash(cell), grainHash(cell + vec3(1,0,0)), f.x),
+              mix(grainHash(cell + vec3(0,1,0)), grainHash(cell + vec3(1,1,0)), f.x), f.y),
+          mix(mix(grainHash(cell + vec3(0,0,1)), grainHash(cell + vec3(1,0,1)), f.x),
+              mix(grainHash(cell + vec3(0,1,1)), grainHash(cell + vec3(1,1,1)), f.x), f.y), f.z);
+      }
+      void main() {
+        vec3 N = normalize(pearlNormal) * (gl_FrontFacing ? 1.0 : -1.0);
+        vec3 V = isOrthographic ? vec3(0.0, 0.0, 1.0) : normalize(pearlViewPosition);
+        vec3 H = normalize(keyDirection + V);
+        float key = pow(clamp(dot(N, keyDirection) * 0.5 + 0.5, 0.0, 1.0), 1.3);
+        float fill = max(dot(N, fillDirection), 0.0);
+        float facing = max(dot(N, V), 0.0);
+        float edge = pow(1.0 - facing, 2.0);
+        float wash = grainNoise(pearlLocalPosition * 2.8 + vec3(11.7, 4.2, 8.1));
+        float broad = pow(max(dot(N, H), 0.0), mix(16.0, 4.0, pearlRoughness));
+        float tight = pow(max(dot(N, H), 0.0), mix(130.0, 30.0, pearlRoughness));
+        vec3 pigment = baseColor;
+        float startWeight = 1.0 - smoothstep(0.0, 0.48, pearlUv.y);
+        float endWeight = smoothstep(0.52, 1.0, pearlUv.y);
+        pigment = mix(pigment, startColor, startWeight * pearlBond * pearlBleed);
+        pigment = mix(pigment, endColor, endWeight * pearlBond * pearlBleed);
+        pigment *= mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
+          (1.0 + pearlWash * (wash - 0.5));
+        float shade = (0.34 + 0.66 * key + 0.07 * fill) * (1.0 - 0.18 * edge);
+        vec3 rgb = pigment * shade;
+        // Keep grain visible as atoms get smaller: blend to coarser surface noise.
+        float footprint = max(length(dFdx(pearlLocalPosition)), length(dFdy(pearlLocalPosition)));
+        float fineWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 64.0);
+        float mediumWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 16.0);
+        float coarseWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 4.0);
+        float coarse = grainNoise(pearlLocalPosition * 4.0);
+        float medium = grainNoise(pearlLocalPosition * 16.0);
+        float fine = grainNoise(pearlLocalPosition * 64.0);
+        float surfaceGrain = mix(coarse, medium, mediumWeight);
+        surfaceGrain = mix(surfaceGrain, fine, fineWeight);
+        // Value noise is smoothed; restore useful contrast for the strength control.
+        rgb *= 1.0 + 3.5 * pearlGrain * coarseWeight * (2.0 * surfaceGrain - 1.0);
+        rgb = mix(rgb, baseColor * (0.92 + 0.08 * key), pearlGlass);
+        // Broad pearl sheen plus a brighter softbox core, added in linear light.
+        float highlight = (0.40 * broad + 0.22 * tight) * pearlHighlight;
+        highlight *= 1.0 + 0.20 * (wash - 0.5);
+        rgb += vec3(1.0, 0.975, 0.94) * highlight;
+        rgb += mix(pigment, vec3(0.7, 0.8, 0.94), 0.5) * edge * 0.075;
+        gl_FragColor = vec4(max(rgb, vec3(0.0)), pearlOpacity);
+        #include <${outputChunk}>
+      }
+    `,
+    // Deliberately self-lit: a portable illustration look under any scene lights.
+    lights: false,
+    toneMapped: false,
+    transparent: opacity < 1,
+    depthWrite: opacity >= 1,
+    side: opacity < 1 ? THREE.DoubleSide : THREE.FrontSide
+  });
+  // Also works with older Three.js WebGL1 builds used by some WLJS versions.
+  material.extensions.derivatives = true;
+  return material;
 }
 
-let THREE;
-interpretate.shared.THREE.load().then(() => {
-  THREE = interpretate.shared.THREE.THREE;
-})
+// Baked material maps are shared between matching presets, including repeated bonds.
+const pearlPhysicalCaches = new WeakMap();
 
-core.CustomMaterial = async (args, env) => {
-  let uniforms = {
-    colorB: {type: 'vec3', value: new THREE.Color(0xACB6E5)},
-    colorA: {type: 'vec3', value: new THREE.Color(0x74ebd5)}
+function pearlNoise2(x, y) {
+  const hash = (a, b) => {
+    let n = Math.imul(a, 374761393) ^ Math.imul(b, 668265263);
+    n = Math.imul(n ^ (n >>> 13), 1274126177);
+    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
+  };
+  const ix = Math.floor(x), iy = Math.floor(y);
+  let fx = x - ix, fy = y - iy;
+  fx *= fx * (3 - 2 * fx); fy *= fy * (3 - 2 * fy);
+  const a = hash(ix, iy), b = hash(ix + 1, iy);
+  const c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+  return (a + (b - a) * fx) * (1 - fy) + (c + (d - c) * fx) * fy;
+}
+
+function pearlPhysicalMaps(THREE, options, color) {
+  let cache = pearlPhysicalCaches.get(THREE);
+  if (!cache) { cache = new Map(); pearlPhysicalCaches.set(THREE, cache); }
+  const bond = options.bond ?? ['Bond', 'GoldBond'].includes(options.preset);
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const wash = options.wash ?? (bond ? 0.22 : 0.10);
+  const start = new THREE.Color(options.startColor ?? color);
+  const end = new THREE.Color(options.endColor ?? color);
+  const bleed = Math.min(1, Math.max(0, options.bleed ?? (bond ? 0.30 : 0)));
+  const key = JSON.stringify([color.getHex(), bond, grain, wash, start.getHex(), end.getHex(), bleed]);
+  if (cache.has(key)) return cache.get(key);
+  const size = 256;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const pixels = ctx.createImageData(size, size);
+  const rgb = new THREE.Color();
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x-a)/(b-a))); return t*t*(3-2*t); };
+  for (let y = 0; y < size; y++) {
+    const v = 1 - (y + 0.5) / size;
+    for (let x = 0; x < size; x++) {
+      const u = (x + 0.5) / size;
+      const broad = pearlNoise2(u * 7, v * 9);
+      const fine = pearlNoise2(u * 93, v * 93);
+      rgb.copy(color);
+      if (bond) {
+        rgb.lerp(start, (1 - smooth(0, 0.48, v)) * bleed);
+        rgb.lerp(end, smooth(0.52, 1, v) * bleed);
+      }
+      const gain = 1 + wash * (broad - 0.5) + 3.5 * grain * (2 * fine - 1);
+      rgb.multiplyScalar(gain).convertLinearToSRGB();
+      const i = 4 * (y * size + x);
+      pixels.data[i] = Math.min(255, Math.max(0, Math.round(rgb.r * 255)));
+      pixels.data[i+1] = Math.min(255, Math.max(0, Math.round(rgb.g * 255)));
+      pixels.data[i+2] = Math.min(255, Math.max(0, Math.round(rgb.b * 255)));
+      pixels.data[i+3] = 255;
+    }
   }
-
-  return (function() {
-    return new THREE.ShaderMaterial({
-      uniforms: uniforms,
-      fragmentShader: fragmentShader(),
-      vertexShader: vertexShader(),
-    });
-  })
+  ctx.putImageData(pixels, 0, 0);
+  const map = new THREE.CanvasTexture(canvas);
+  map.colorSpace = THREE.SRGBColorSpace;
+  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  map.minFilter = THREE.LinearMipmapLinearFilter;
+  map.magFilter = THREE.LinearFilter;
+  // Roughness and normal maps are shared by all materials.
+  if (!cache.has('microstructure')) {
+    const roughData = new Uint8Array(size * size * 4);
+    const normalData = new Uint8Array(size * size * 4);
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const u = (x+0.5)/size, v = (y+0.5)/size;
+      const h = pearlNoise2(u*93, v*93);
+      const dx = pearlNoise2((u+1/size)*93, v*93) - pearlNoise2((u-1/size)*93, v*93);
+      const dy = pearlNoise2(u*93, (v+1/size)*93) - pearlNoise2(u*93, (v-1/size)*93);
+      const n = new THREE.Vector3(-dx, -dy, 1).normalize();
+      const i = 4 * (y*size+x), r = Math.round(205 + 45*h);
+      roughData.set([r,r,r,255], i);
+      normalData.set([Math.round(127.5*(n.x+1)),Math.round(127.5*(n.y+1)),Math.round(127.5*(n.z+1)),255], i);
+    }
+    const roughnessMap = new THREE.DataTexture(roughData,size,size);
+    const normalMap = new THREE.DataTexture(normalData,size,size);
+    for (const texture of [roughnessMap,normalMap]) {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.minFilter = texture.magFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
+    }
+    cache.set('microstructure',{roughnessMap,normalMap});
+  }
+  const maps = {map,...cache.get('microstructure')};
+  cache.set(key,maps);
+  return maps;
 }
 
+function createPearlPhysicalMaterial(THREE, options = {}) {
+  const preset = options.preset ?? 'Lavender';
+  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const roughness = Math.min(1, Math.max(0.08, options.roughness ?? 0.42));
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
+  const highlight = Math.max(0, options.highlight ?? 1);
+  if (preset === 'Glass') {
+    return new THREE.MeshPhysicalMaterial({name:'Pearl physical / Glass',color,
+      roughness:0.65,metalness:0,opacity,transparent:true,depthWrite:false,
+      side:THREE.DoubleSide,transmission:0,ior:1.1,clearcoat:0});
+  }
+  const maps = pearlPhysicalMaps(THREE,options,color);
+  return new THREE.MeshPhysicalMaterial({
+    name:`Pearl physical / ${preset}`,color:0xffffff,...maps,
+    roughness:Math.min(1,roughness*0.90),
+    metalness:['Gold','GoldBond'].includes(preset) ? 0.18 : 0.025,
+    normalScale:new THREE.Vector2(grain*2,grain*2),
+    clearcoat:Math.min(1,0.45*highlight),clearcoatRoughness:0.18,
+    sheen:0.12,sheenColor:color.clone().lerp(new THREE.Color('white'),0.35),
+    sheenRoughness:0.55,specularIntensity:Math.min(2,highlight),ior:1.48,
+    opacity,transparent:opacity<1,depthWrite:opacity>=1,
+    side:opacity<1 ? THREE.DoubleSide : THREE.FrontSide
+  });
+}
 
+function addPearlStudioLighting(THREE, scene, camera, target = new THREE.Vector3(0,1,0)) {
+  if (scene.userData.pearlStudio) return scene.userData.pearlStudio;
+  const forward = camera.getWorldDirection(new THREE.Vector3()).normalize();
+  const right = new THREE.Vector3().crossVectors(forward,camera.up).normalize();
+  const up = new THREE.Vector3().crossVectors(right,forward).normalize();
+  const make = (x,y,z,intensity,width,height) => {
+    const light = new THREE.RectAreaLight(0xffffff,intensity,width,height);
+    light.position.copy(target).addScaledVector(right,x).addScaledVector(up,y).addScaledVector(forward,-z);
+    light.lookAt(target); scene.add(light); return light;
+  };
+  const lights = [make(-4,5,7,12,4,5), make(4,1,5,1.5,5,5)];
+  scene.userData.pearlStudio = lights;
+  return lights;
+}
 
+// WLJS adapter. Evaluate this cell before using PearlMaterial in Graphics3D.
+const ready = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
+core.PearlMaterial = async (args, env) => {
+  const THREE = await ready;
+  const values = await Promise.all(args.map(arg => interpretate(arg, env)));
+  const [preset = "Lavender", roughness = 0.42, grain = 0.014, opacity, highlight, wash = 0.10] = values;
+  if (!(preset in pearlPalette)) throw new Error("Unknown PearlMaterial preset: " + preset);
+  const pathTracing = env.PathRendering === true;
+  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
+  return function PearlMaterialFactory() {
+    return createPearlMaterial(THREE, {preset, roughness, grain, opacity, highlight, wash, pathTracing});
+  };
+};
+core.PearlBondMaterial = async (args, env) => {
+  const THREE = await ready;
+  const [preset = "Bond", start = "Lavender", end = "Lavender", bleed = 0.30,
+    roughness = 0.35, grain = 0.012] = await Promise.all(args.map(arg => interpretate(arg, env)));
+  for (const name of [preset, start, end]) {
+    if (!(name in pearlPalette)) throw new Error("Unknown pearl preset: " + name);
+  }
+  const pathTracing = env.PathRendering === true;
+  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
+  return function PearlBondMaterialFactory() {
+    return createPearlMaterial(THREE, {preset, roughness, grain, bond:true,
+      startColor:pearlPalette[start], endColor:pearlPalette[end], bleed, pathTracing});
+  };
+};
+// Static atom and bond swatches, rendered once with the raster shader.
+const panel = document.createElement('div');
+panel.style.cssText = 'background:white;border:1px solid #e1e5ea;border-radius:12px;padding:18px;max-width:720px;color:#17263d;font:14px system-ui';
+const status = document.createElement('div');
+status.textContent = 'Loading pearl materials…';
+panel.append(status);
+const swatches = document.createElement('div');
+swatches.style.cssText = 'position:relative;width:100%';
+panel.append(swatches);
+let renderer;
+const geometries = [];
+const materials = [];
+let destroyed = false;
+this.ondestroy = () => {
+  destroyed = true;
+  geometries.forEach(geometry => geometry.dispose());
+  materials.forEach(material => material.dispose());
+  renderer?.dispose();
+};
+ready.then(THREE => {
+  if (destroyed) return;
+  renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(640, 350);
+  if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+  else renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.domElement.style.cssText = 'width:100%;height:auto;display:block';
+  swatches.append(renderer.domElement);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color('white');
+  const camera = new THREE.OrthographicCamera(-3.6,3.6,1.96875,-1.96875,0.1,20);
+  camera.position.z = 6;
+  const sphere = new THREE.SphereGeometry(0.65,64,48);
+  const cylinder = new THREE.CylinderGeometry(0.115,0.115,1.75,48,16);
+  const endpoint = new THREE.SphereGeometry(0.19,32,24);
+  geometries.push(sphere,cylinder,endpoint);
+  const materialFor = options => {
+    const material = createPearlMaterial(THREE,options);
+    materials.push(material); return material;
+  };
+  ['Gold','Lavender','Teal'].forEach((preset,i) => {
+    const mesh = new THREE.Mesh(sphere,materialFor({preset,grain:0.014}));
+    mesh.position.set((i-1)*2.4,1.0,0);
+    scene.add(mesh);
+  });
+  const bonds = [
+    {preset:'Bond',start:'Lavender',end:'Lavender'},
+    {preset:'Bond',start:'Ice',end:'Lavender'},
+    {preset:'GoldBond',start:'Lavender',end:'Gold'}
+  ];
+  bonds.forEach(({preset,start,end},i) => {
+    const group = new THREE.Group();
+    group.position.set((i-1)*2.4,-0.95,0);
+    group.rotation.z = 0.12;
+    const rod = new THREE.Mesh(cylinder,materialFor({
+      preset,bond:true,roughness:0.35,grain:0.012,bleed:0.30,
+      startColor:pearlPalette[start],endColor:pearlPalette[end]
+    }));
+    // Cylinder v=0 is the bottom end; rotating it puts that end on the left.
+    rod.rotation.z = -Math.PI/2;
+    group.add(rod);
+    [start,end].forEach((atom,j) => {
+      const mesh = new THREE.Mesh(endpoint,materialFor({preset:atom,grain:0.014}));
+      mesh.position.x = (j-0.5)*1.75;
+      group.add(mesh);
+    });
+    scene.add(group);
+  });
+  const labels = (top,items) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'position:absolute;left:0;right:0;top:'+top+'%;display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px;line-height:1.4;font-size:13px;pointer-events:none';
+    items.forEach(([title,detail]) => {
+      const label = document.createElement('div');
+      const name = document.createElement('strong'); name.textContent=title;
+      label.append(name);
+      if(detail) {
+        const sub=document.createElement('div'); sub.textContent=detail;
+        sub.style.cssText='color:#627087;font-size:11px';
+        label.append(sub);
+      }
+      row.append(label);
+    });
+    swatches.append(row);
+  };
+  labels(44,[['Gold','Atoms'],['Lavender','Atoms'],['Teal','Atoms']]);
+  labels(84,[['Bond','Lavender → Lavender'],['Bond · carbon end','Ice → Lavender'],['GoldBond','Lavender → Gold']]);
+  const errors = [];
+  renderer.debug.onShaderError = (gl,program,vertex,fragment) => {
+    errors.push(gl.getProgramInfoLog(program),gl.getShaderInfoLog(vertex),gl.getShaderInfoLog(fragment));
+  };
+  renderer.render(scene,camera);
+  if(errors.some(Boolean)) throw new Error(errors.filter(Boolean).join('\n'));
+  status.textContent='Pearl materials · atoms and bonds · raster preview · Three.js r'+THREE.REVISION;
+}).catch(error => {status.textContent='Shader error: '+error.message;console.error(error);});
+return panel;
 
 %-------------------------------------------------------------------------%
 Props:
@@ -150,37 +834,174 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-Now use it as if it was a normal `MeshMaterial`
+**Atoms and faces:** `MeshMaterial[PearlMaterial["Gold"]]`. Other presets: `"Lavender"`, `"Teal"`, `"Ice"` and `"Glass"`.
+
+Optional controls: `PearlMaterial[preset, roughness, grain, opacity, highlight, wash]`. Increase **grain** for texture, **highlight** for shine, or **wash** for colour variation.
+
+**Bonds:** `MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]]`. The last two colours tint the bond ends. Use `"GoldBond"` for gold bonds. Optional controls: `PearlBondMaterial[base, start, end, bleed, roughness, grain]`; set **bleed** to `0` to remove the end tints.
+
+**Path tracing:** add `"Renderer" -> "PathTracing"` and `"MultipleImportanceSampling" -> True`. For a five-second preview, use `"SleepAfter" -> 5 1000` and `Rasterize[..., "ExposureTime" -> 5]`. Increase both times for a cleaner image.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-Now use it as if it was a normal `MeshMaterial`
+**Atoms and faces:** `MeshMaterial[PearlMaterial["Gold"]]`. Other presets: `"Lavender"`, `"Teal"`, `"Ice"` and `"Glass"`.
+
+Optional controls: `PearlMaterial[preset, roughness, grain, opacity, highlight, wash]`. Increase **grain** for texture, **highlight** for shine, or **wash** for colour variation.
+
+**Bonds:** `MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]]`. The last two colours tint the bond ends. Use `"GoldBond"` for gold bonds. Optional controls: `PearlBondMaterial[base, start, end, bleed, roughness, grain]`; set **bleed** to `0` to remove the end tints.
+
+**Path tracing:** add `"Renderer" -> "PathTracing"` and `"MultipleImportanceSampling" -> True`. For a five-second preview, use `"SleepAfter" -> 5 1000` and `Rasterize[..., "ExposureTime" -> 5]`. Increase both times for a cleaner image.
 
 %-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Minimal example
+Two atoms joined by a bond, using both material functions.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Minimal example
+Two atoms joined by a bond, using both material functions.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
 Type: Input
 %-------------------------------------------------------------------------%
 Graphics3D[{
-   MeshMaterial[MeshToonMaterial[]],
-  Translate[PolyhedronData["Dodecahedron"][[1]]//N , {-2,0,0}],
-  MeshMaterial[CustomMaterial[]],
-  Translate[PolyhedronData["Dodecahedron"][[1]]//N , {2,0,0}]
-}]
+  {MeshMaterial[PearlMaterial["Ice"]],
+    Sphere[{-1, 0, 0}, .35]},
+  {MeshMaterial[PearlMaterial["Lavender"]],
+    Sphere[{1, 0, 0}, .35]},
+  {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]],
+    Cylinder[{{-1, 0, 0}, {1, 0, 0}}, .09]}
+},  Background -> White,
+   ImageSize -> 450, ViewPoint -> {0, -3, 1}]
 
 %-------------------------------------------------------------------------%
 Type: Output
 %-------------------------------------------------------------------------%
-(*VB[*)(FrontEndRef["6ad5b48f-9dc6-4904-80d0-a703e1fdfb22"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgEKmyWmmCaZWKTpWqYkm+maWBqY6FoYpBjoJpobGKcapqWkJRkZAQCH6BXR"*)(*]VB*)
+(*VB[*)(Graphics3D[{{MeshMaterial[PearlMaterial["Ice"]], Sphere[{-1, 0, 0}, 0.35]}, {MeshMaterial[PearlMaterial["Lavender"]], Sphere[{1, 0, 0}, 0.35]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]], Cylinder[{{-1, 0, 0}, {1, 0, 0}}, 0.09]}}, Background -> GrayLevel[1], ImageSize -> 450, ViewPoint -> {0, -3, 1}])(*,*)(*"1:eJy1ksFKAzEQhndVRBc8+Ai+geBZhFbRwhZKFzxvuvunOxiTNdmt1tfxIbz7EPo0okmWtLaUemoOP5lh5p9vQs4maszjKIrMgZU7JUruLiaxcqtZXVFhLq75fqhIyTR8byXy3edW+opzIKWnFq3Ob14aSENKmnxplA9hqiFroImJrvPEyghMi5DO3LBBgW7MoZWsrqCxCkE/9pANIi+a+/N5tWu4I+fMZpAl9D+EcYDbEaGfdhoIe0qWC0rn7hLhLTdgu0x/LmiZWSBte+jtOyZfb/Vl8v5nx3Er4H9TjxUPU61aWXYrH3c/bJ5iBuF91ppcweCRTZHRK+gj3lhwT3geKZLr0B7p25E751/1Zr5+"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Cage
+The cosahedral cage, camera, atom sizes and bond connectivity, rendered with the pearl materials
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Cage
+The cosahedral cage, camera, atom sizes and bond connectivity, rendered with the pearl materials
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+PearlCageFigure = Module[
+ {phi, cageSites, edgePairs, view, carbonIndices, boronIndices,
+  hSites, cageBonds, terminalBonds, faces, sitePreset},
+ phi = GoldenRatio;
+ cageSites = N@Join[
+   Flatten[Table[{0, s, t phi}, {s, {-1, 1}}, {t, {-1, 1}}], 1],
+   Flatten[Table[{s, t phi, 0}, {s, {-1, 1}}, {t, {-1, 1}}], 1],
+   Flatten[Table[{t phi, 0, s}, {s, {-1, 1}}, {t, {-1, 1}}], 1]];
+ edgePairs = Select[Subsets[Range[Length[cageSites]], {2}],
+   Abs[EuclideanDistance @@ cageSites[[#]] - 2] < 10^-6 &];
+ view = Normalize[{2.4, -2.8, 2.1}];
+ carbonIndices = First@MaximalBy[edgePairs, Dot[Mean[cageSites[[#]]], view] &];
+ boronIndices = Complement[Range[12], carbonIndices];
+ hSites = (# + .78 Normalize[#]) & /@ cageSites;
+ sitePreset[i_] := If[MemberQ[carbonIndices, i], "Ice", "Lavender"];
+ cageBonds = ({MeshMaterial[PearlBondMaterial["Bond",
+     sitePreset[#[[1]]], sitePreset[#[[2]]], .30,  .35, 3 .012]],
+     Cylinder[cageSites[[#]], .055]} &) /@ edgePairs;
+ terminalBonds = Table[{
+   MeshMaterial[PearlBondMaterial["GoldBond", sitePreset[i], "Gold", .25, .32, .012]],
+   Cylinder[{cageSites[[i]], hSites[[i]]}, .045]}, {i, 12}];
+ faces = MeshPrimitives[ConvexHullMesh[cageSites], 2];
+ Graphics3D[{
+   {MeshMaterial[PearlMaterial["Glass", .60, 0., .12, 0.]], faces},
+   cageBonds,
+   terminalBonds,
+   {MeshMaterial[PearlMaterial["Lavender", .36, 2 .014]], Sphere[cageSites[[boronIndices]], .23]},
+   {MeshMaterial[PearlMaterial["Ice", .34, 2 .008]], Sphere[cageSites[[carbonIndices]], .27]},
+   {MeshMaterial[PearlMaterial["Gold", .32, 2 .012]], Sphere[hSites, .13]},
+   {Black, Directive[FontSize -> 18],
+    (Text[Style["C", Bold], # + .4 {1,0,-1}] &)@
+      First@MaximalBy[cageSites[[carbonIndices]], Dot[#, view] &],
+    (Text[Style["B", Bold], # + {0.4,-0.2,-1.8}] &)@
+      First@MaximalBy[cageSites[[boronIndices]], Dot[#, view] &],
+    (Text[Style["H", Bold], # + .45 Normalize[#]] &)@
+      First@MaximalBy[hSites, Dot[#, view] &]}
+  }, Boxed -> False, Background -> White, SphericalRegion -> True,
+   ViewPoint -> {2.4, -2.8, 2.1}, ViewVertical -> {0,0,1},
+   PlotRange -> All, ImageSize -> {750,750}, "AcesToneMapping" -> False, "OrthographicCameraZoom" -> .72]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["Fe48f3792-1a5b-42df-b9cd-a9c856c19681"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJp5pYpBmbWxrpGiaaJumaGKWk6SZZJqfoJlomW5iaJRtamlkYAgCeexX9"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Path-traced pearl cage
+The same geometry and material calls with `"Renderer" -> "PathTracing"`. The material factories automatically use physical materials and locally generated pigment, roughness and normal textures, with two soft studio lights. Rasterization continues to use the custom shader.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Path-traced pearl cage
+The same geometry and material calls with `"Renderer" -> "PathTracing"`. The material factories automatically use physical materials and locally generated pigment, roughness and normal textures, with two soft studio lights. Rasterization continues to use the custom shader.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+Type: Input
+%-------------------------------------------------------------------------%
+Show[PearlCageFigure,
+ "Renderer" -> "PathTracing", "MultipleImportanceSampling" -> True,
+ "EnvironmentIntensity" -> .50, "BackgroundAlpha" -> 0,
+ "Bounces" -> 5, 
+ "SleepAfter" -> 30 1000]
 
 %------------------------------%EndOfCells%-------------------------------%
 
 
 
 %--------------------------------%Objects%--------------------------------%
-Key: 6ad5b48f-9dc6-4904-80d0-a703e1fdfb22
+Key: Fe48f3792-1a5b-42df-b9cd-a9c856c19681
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[Graphics3D[{MeshMaterial[MeshToonMaterial[]], Translate[GraphicsComplex[{{-1.3763819204711736, 0, 0.2628655560595668}, {1.3763819204711736, 0, -0.26286555605956685}, {-0.42532540417601994, -1.3090169943749475, 0.2628655560595668}, {-0.42532540417601994, 1.3090169943749475, 0.2628655560595668}, {1.1135163644116066, -0.8090169943749475, 0.2628655560595668}, {1.1135163644116066, 0.8090169943749475, 0.2628655560595668}, {-0.26286555605956685, -0.8090169943749475, 1.1135163644116066}, {-0.26286555605956685, 0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, -1.1135163644116066}, {0.6881909602355868, -0.5, 1.1135163644116066}, {0.6881909602355868, 0.5, 1.1135163644116066}, {0.85065080835204, 0, -1.1135163644116066}, {-1.1135163644116066, -0.8090169943749475, -0.26286555605956685}, {-1.1135163644116066, 0.8090169943749475, -0.26286555605956685}, {-0.8506508083520399, 0, 1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, -1.1135163644116066}, {0.42532540417601994, -1.3090169943749475, -0.26286555605956685}, {0.42532540417601994, 1.3090169943749475, -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 16, 1, 14}, {16, 8, 4, 15, 1}}]], {-2, 0, 0}], MeshMaterial[CustomMaterial[]], Translate[GraphicsComplex[{{-1.3763819204711736, 0, 0.2628655560595668}, {1.3763819204711736, 0, -0.26286555605956685}, {-0.42532540417601994, -1.3090169943749475, 0.2628655560595668}, {-0.42532540417601994, 1.3090169943749475, 0.2628655560595668}, {1.1135163644116066, -0.8090169943749475, 0.2628655560595668}, {1.1135163644116066, 0.8090169943749475, 0.2628655560595668}, {-0.26286555605956685, -0.8090169943749475, 1.1135163644116066}, {-0.26286555605956685, 0.8090169943749475, 1.1135163644116066}, {-0.6881909602355868, -0.5, -1.1135163644116066}, {-0.6881909602355868, 0.5, -1.1135163644116066}, {0.6881909602355868, -0.5, 1.1135163644116066}, {0.6881909602355868, 0.5, 1.1135163644116066}, {0.85065080835204, 0, -1.1135163644116066}, {-1.1135163644116066, -0.8090169943749475, -0.26286555605956685}, {-1.1135163644116066, 0.8090169943749475, -0.26286555605956685}, {-0.8506508083520399, 0, 1.1135163644116066}, {0.2628655560595668, -0.8090169943749475, -1.1135163644116066}, {0.2628655560595668, 0.8090169943749475, -1.1135163644116066}, {0.42532540417601994, -1.3090169943749475, -0.26286555605956685}, {0.42532540417601994, 1.3090169943749475, -0.26286555605956685}}, Polygon[{{15, 10, 9, 14, 1}, {2, 6, 12, 11, 5}, {5, 11, 7, 3, 19}, {11, 12, 8, 16, 7}, {12, 6, 20, 4, 8}, {6, 2, 13, 18, 20}, {2, 5, 19, 17, 13}, {4, 20, 18, 10, 15}, {18, 13, 17, 9, 10}, {17, 19, 3, 14, 9}, {3, 7, 16, 1, 14}, {16, 8, 4, 15, 1}}]], {2, 0, 0}]}]]|>
+<|"Public" -> Hold[Graphics3D[{{MeshMaterial[PearlMaterial["Glass", 0.6, 0., 0.12, 0.]], {Polygon[{{0., -1., -1.618033988749895}, {-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}], Polygon[{{-1., 1.618033988749895, 0.}, {0., 1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}], Polygon[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}, {1.618033988749895, 0., -1.}}], Polygon[{{0., 1., -1.618033988749895}, {0., -1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}], Polygon[{{1., -1.618033988749895, 0.}, {0., -1., 1.618033988749895}, {-1., -1.618033988749895, 0.}}], Polygon[{{1., -1.618033988749895, 0.}, {0., -1., -1.618033988749895}, {1.618033988749895, 0., -1.}}], Polygon[{{0., -1., -1.618033988749895}, {1., -1.618033988749895, 0.}, {-1., -1.618033988749895, 0.}}], Polygon[{{-1.618033988749895, 0., 1.}, {-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}], Polygon[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}, {-1.618033988749895, 0., -1.}}], Polygon[{{0., -1., 1.618033988749895}, {-1.618033988749895, 0., 1.}, {-1., -1.618033988749895, 0.}}], Polygon[{{0., 1., 1.618033988749895}, {-1.618033988749895, 0., 1.}, {0., -1., 1.618033988749895}}], Polygon[{{-1.618033988749895, 0., 1.}, {0., 1., 1.618033988749895}, {-1., 1.618033988749895, 0.}}], Polygon[{{0., 1., 1.618033988749895}, {1., 1.618033988749895, 0.}, {-1., 1.618033988749895, 0.}}], Polygon[{{1., 1.618033988749895, 0.}, {0., 1., -1.618033988749895}, {-1., 1.618033988749895, 0.}}], Polygon[{{0., 1., -1.618033988749895}, {1., 1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}], Polygon[{{1.618033988749895, 0., 1.}, {1., -1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}], Polygon[{{1.618033988749895, 0., 1.}, {0., 1., 1.618033988749895}, {0., -1., 1.618033988749895}}], Polygon[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., 1.}, {0., -1., 1.618033988749895}}], Polygon[{{1.618033988749895, 0., 1.}, {1., 1.618033988749895, 0.}, {0., 1., 1.618033988749895}}], Polygon[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., 1.}, {1.618033988749895, 0., -1.}}]}}, {{MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {-1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {0., 1., 1.618033988749895}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {-1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {-1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {-1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1.618033988749895, 0., -1.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1.618033988749895, 0., -1.}, {1.618033988749895, 0., 1.}}, 0.055]}}, {{MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., -1., -1.618033988749895}, {0., -1.4100702674529242, -2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Ice", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., -1., 1.618033988749895}, {0., -1.4100702674529242, 2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., 1., -1.618033988749895}, {0., 1.4100702674529242, -2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., 1., 1.618033988749895}, {0., 1.4100702674529242, 2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.4100702674529242, -2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.4100702674529242, 2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Ice", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1., -1.618033988749895, 0.}, {1.4100702674529242, -2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1., 1.618033988749895, 0.}, {1.4100702674529242, 2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1.618033988749895, 0., -1.}, {-2.281541619264486, 0., -1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1.618033988749895, 0., -1.}, {2.281541619264486, 0., -1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1.618033988749895, 0., 1.}, {-2.281541619264486, 0., 1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1.618033988749895, 0., 1.}, {2.281541619264486, 0., 1.4100702674529242}}, 0.045]}}, {MeshMaterial[PearlMaterial["Lavender", 0.36, 0.028]], Sphere[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}, {0., 1., 1.618033988749895}, {-1., -1.618033988749895, 0.}, {-1., 1.618033988749895, 0.}, {1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}, {1.618033988749895, 0., -1.}, {-1.618033988749895, 0., 1.}, {1.618033988749895, 0., 1.}}, 0.23]}, {MeshMaterial[PearlMaterial["Ice", 0.34, 0.016]], Sphere[{{0., -1., 1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.27]}, {MeshMaterial[PearlMaterial["Gold", 0.32, 0.024]], Sphere[{{0., -1.4100702674529242, -2.281541619264486}, {0., -1.4100702674529242, 2.281541619264486}, {0., 1.4100702674529242, -2.281541619264486}, {0., 1.4100702674529242, 2.281541619264486}, {-1.4100702674529242, -2.281541619264486, 0.}, {-1.4100702674529242, 2.281541619264486, 0.}, {1.4100702674529242, -2.281541619264486, 0.}, {1.4100702674529242, 2.281541619264486, 0.}, {-2.281541619264486, 0., -1.4100702674529242}, {2.281541619264486, 0., -1.4100702674529242}, {-2.281541619264486, 0., 1.4100702674529242}, {2.281541619264486, 0., 1.4100702674529242}}, 0.13]}, {GrayLevel[0], Directive[FontSize -> 18], Text[Style["C", Bold], {1.4, -1.618033988749895, -0.4}], Text[Style["B", Bold], {2.018033988749895, -0.2, -0.8}], Text[Style["H", Bold], {1.6466492679065343, -2.664334483022904, 0.}]}}, Boxed -> False, Background -> GrayLevel[1], SphericalRegion -> True, ViewPoint -> {2.4, -2.8, 2.1}, ViewVertical -> {0, 0, 1}, PlotRange -> All, ImageSize -> {750, 750}, "AcesToneMapping" -> False, "OrthographicCameraZoom" -> 0.72]]|>
+
+%-------------------------------------------------------------------------%
+Key: 48
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 96
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0[0]", "ReadOnly" -> True, "Selectable" -> False]]|>
 
 %-----------------------------%EndOfObjects%------------------------------%
 
