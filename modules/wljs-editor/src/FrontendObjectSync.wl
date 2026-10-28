@@ -70,8 +70,8 @@ EventHandler[NotebookEditorChannel // EventClone, {
            With[{promise = data["Promise"],  kernel = GenericKernel`HashMap[ data["Kernel"] ]}, 
                 (* [FIXME] Include these symbols normally using Needs[] *)
                 (* we release any possible deferred compression wrappers *)
-                With[{result = Lookup[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ], "Public", CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]["Private"]]},
-                    With[{c =  result},
+                With[{result = CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects[data["UId"] ]},
+                    With[{c =  If[AssociationQ[result], result, $Failed]},
                         GenericKernel`SendAsync[kernel, EventFire[promise, Resolve, c ] ];
                     ];
                 ];

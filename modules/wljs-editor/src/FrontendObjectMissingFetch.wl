@@ -11,7 +11,13 @@ Begin["`Internal`"]
 CoffeeLiqueur`Extensions`FrontendObject`Internal`$MissingHandler[uid_String, "Private" | "Public"] := With[{promise = Promise[]},
     EventFire[Internal`Kernel`CommunicationChannel, "FetchFrontEndObject", <|"UId"->uid, "Promise" -> promise, "Kernel"->Internal`Kernel`Hash|>];
     With[{result = WaitAll[promise, 15]},
-        If[MissingQ[result], $Failed, result]
+        If[!AssociationQ[result], $Failed, 
+            (* add it to cache *)
+            CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects = Join[CoffeeLiqueur`Extensions`FrontendObject`Internal`Objects, 
+                <|uid->result|>
+            ];
+            result["Public"]
+        ]
     ]
 ]
 

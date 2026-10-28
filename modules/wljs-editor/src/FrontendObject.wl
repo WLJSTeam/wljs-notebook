@@ -48,16 +48,7 @@ compression[expr_, {"ExpressionJSON", "ZLIB"}] := With[{arr = Normal[exportWithC
 
 CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
     With[{
-        data = Switch[OptionValue["Store"]
-            , "Kernel"
-            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB"}]|>
-
-            , "Frontend"
-            , <|"Public"  -> compression[expr, {"ExpressionJSON", "ZLIB"}]|>
-
-            ,_
-            , <|"Private" -> compression[expr, {"ExpressionJSON", "ZLIB"}], "Public" :> Objects[uid, "Private"]|>
-        ]
+        data = <|"Public" -> compression[expr, {"ExpressionJSON", "ZLIB"}], "Private" :> Objects[uid, "Public"]|>
     },
         If[!AssociationQ[Objects], 
             Echo["[wljs-editor/FrontendObject] Frontend object storage is corrupted: the object collection is no longer an association."];
@@ -79,14 +70,14 @@ CreateFrontEndObject[expr_, uid_String, OptionsPattern[] ] := With[{},
 (* CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][Hash[expr]], opts] *)
 CreateFrontEndObject[expr_, opts: OptionsPattern[] ] := CreateFrontEndObject[expr, StringTemplate["F``"][CreateUUID[]], opts]
 
-Options[CreateFrontEndObject] = {"Store" -> All}
+Options[CreateFrontEndObject] = {}
 
 FrontEndRef[uid_String] := If[KeyExistsQ[Objects, uid], 
-    With[{o = Objects[uid, "Private"]},
+    With[{o = Objects[uid, "Public"]},
         o
     ] // ReleaseHold
 ,
-    $MissingHandler[uid, "Private"] // ReleaseHold
+    $MissingHandler[uid, "Public"] // ReleaseHold
 ]
 
 FrontEndExecutable /: MakeBoxes[FrontEndExecutable[uid_String], StandardForm] := RowBox[{"FrontEndRef[\"", uid, "\"]"}]
