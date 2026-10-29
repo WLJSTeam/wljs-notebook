@@ -248,26 +248,29 @@ diff[Point[data1_List], Point[data2_List], level_, attributes_] :=
 ]
 
 diff[RGBColor[data1__], RGBColor[data2__], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "Graphics3DQ", False] ||
+     ((Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False]),
     diffObject[RGBColor[data1], RGBColor[data2], Hash[RGBColor[data1]], Hash[RGBColor[data2]]]
   ,
-    failureMessage["Cannot link two RGBColor primitives in 3D context or inside  GraphicsComplex", {RGBColor[data1], RGBColor[data2]}];
+    failureMessage["Cannot link two RGBColor primitives in this graphics context", {RGBColor[data1], RGBColor[data2]}];
     $Failed
 ]
 
 diff[Hue[data1__], Hue[data2__], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "Graphics3DQ", False] ||
+     ((Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False]),
     diffObject[Hue[data1], Hue[data2], Hash[Hue[data1]], Hash[Hue[data2]]]
   ,
-    failureMessage["Cannot link two Hue primitives in 3D context or inside  GraphicsComplex", {Hue[data1], Hue[data2]}];
+    failureMessage["Cannot link two Hue primitives in this graphics context", {Hue[data1], Hue[data2]}];
     $Failed
 ]
 
 diff[Opacity[data1_], Opacity[data2_], level_, attributes_] := 
-  If[(Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False],
+  If[Lookup[attributes, "Graphics3DQ", False] ||
+     ((Lookup[attributes, "GraphicsQ", False] || !Lookup[attributes, "Graphics3DQ", False] ) && !Lookup[attributes, "GraphicsComplexQ", False]),
     diffObject[Opacity[data1], Opacity[data2], Hash[Opacity[data1]], Hash[Opacity[data2]]]
   ,
-    failureMessage["Cannot link two Opacity primitives in 3D context or inside  GraphicsComplex", {Opacity[data1], Opacity[data2]}];
+    failureMessage["Cannot link two Opacity primitives in this graphics context", {Opacity[data1], Opacity[data2]}];
     $Failed
 ]
 
