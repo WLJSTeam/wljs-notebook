@@ -1,5 +1,5 @@
 %-------------------------------%Notebook%--------------------------------%
-HaveToSaveAs: true
+HaveToSaveAs: false
 ObjectFields:
   - Objects
   - Symbols
@@ -51,91 +51,115 @@ const sign = document.createElement("div");
 sign.style.color = "gray";
 sign.innerText = "Idle";
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioContext.createAnalyser();
-const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
+
+const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
 
 let isRunning = false;
 let mediaStream = null;
 let inputNode = null;
-
-analyser.smoothingTimeConstant = 0.3;
-analyser.fftSize = 1024;
 
 function setStatus(text, color) {
   sign.innerText = text;
   sign.style.color = color;
 }
 
+function onAudioProcess(event) {
+  const input = event.inputBuffer.getChannelData(0);
+
+  // Copy because the browser reuses the underlying audio buffer.
+  const samples = new Float32Array(input);
+
+  // Keep the output silent.
+  event.outputBuffer.getChannelData(0).fill(0);
+
+  server.kernel.io.fire("audio", samples);
+}
+
 function connectGraph(stream) {
   mediaStream = stream;
-  inputNode = audioContext.createMediaStreamSource(stream);   
-  inputNode.connect(analyser);
-  analyser.connect(scriptProcessor);
-  scriptProcessor.connect(audioContext.destination);  
+  inputNode = audioContext.createMediaStreamSource(stream);
+
+  inputNode.connect(scriptProcessor);
+  scriptProcessor.connect(audioContext.destination);
+
   scriptProcessor.onaudioprocess = onAudioProcess;
 }
 
 function disconnectGraph() {
-  scriptProcessor.onaudioprocess = null;  
-  try { inputNode?.disconnect(); } catch {}
-  try { analyser?.disconnect(); } catch {}
-  try { scriptProcessor?.disconnect(); } catch {} 
-  inputNode = null;   
-  // Optional: stop mic hardware capture
-  mediaStream?.getTracks?.().forEach((t) => t.stop());
-  mediaStream = null;
-}
+  scriptProcessor.onaudioprocess = null;
 
-function onAudioProcess() {
-  const data = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteTimeDomainData(data);   
-  server.kernel.io.fire("audio", data);
+  try {
+    inputNode?.disconnect();
+  } catch {}
+
+  try {
+    scriptProcessor.disconnect();
+  } catch {}
+
+  inputNode = null;
+
+  mediaStream?.getTracks().forEach((track) => track.stop());
+  mediaStream = null;
 }
 
 async function requestMicrophoneAccess() {
   try {
-    return await navigator.mediaDevices.getUserMedia({ audio: true });
-  } catch (err) {
+    return await navigator.mediaDevices.getUserMedia({
+      audio: {
+        channelCount: 1,
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+  } catch (error) {
+    console.error("Microphone access failed:", error);
+
     alert(
-      "Could not access the microphone." +
-      "Make sure you're using https and you granted permission."
+      "Could not access the microphone. " +
+      "Make sure you are using HTTPS and have granted permission."
     );
+
     return null;
   }
 }
 
 core.MicStart = async () => {
   if (isRunning) return;
-  isRunning = true;   
-  // Some browsers need this on a user gesture
+
   if (audioContext.state === "suspended") {
     await audioContext.resume();
-  }   
+  }
+
   const stream = await requestMicrophoneAccess();
+
   if (!stream) {
-    isRunning = false;
     setStatus("Idle", "gray");
     return;
-  }   
+  }
+
+  isRunning = true;
   connectGraph(stream);
   setStatus("Recording...", "red");
 };
 
-core.MicStop = async () => {
+core.MicStop = () => {
   if (!isRunning) return;
-  isRunning = false;  
+
+  isRunning = false;
   disconnectGraph();
   setStatus("Stopped", "blue");
 };
 
 this.ondestroy = () => {
-  if (!isRunning) return;
-  isRunning = false;  
-  disconnectGraph();
+  if (isRunning) {
+    isRunning = false;
+    disconnectGraph();
+  }
 };
 
-// Return UI element
 return sign;
 
 %-------------------------------------------------------------------------%
@@ -146,91 +170,115 @@ const sign = document.createElement("div");
 sign.style.color = "gray";
 sign.innerText = "Idle";
 
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioContext.createAnalyser();
-const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioContext = new AudioContext();
+
+const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
 
 let isRunning = false;
 let mediaStream = null;
 let inputNode = null;
-
-analyser.smoothingTimeConstant = 0.3;
-analyser.fftSize = 1024;
 
 function setStatus(text, color) {
   sign.innerText = text;
   sign.style.color = color;
 }
 
+function onAudioProcess(event) {
+  const input = event.inputBuffer.getChannelData(0);
+
+  // Copy because the browser reuses the underlying audio buffer.
+  const samples = new Float32Array(input);
+
+  // Keep the output silent.
+  event.outputBuffer.getChannelData(0).fill(0);
+
+  server.kernel.io.fire("audio", samples);
+}
+
 function connectGraph(stream) {
   mediaStream = stream;
-  inputNode = audioContext.createMediaStreamSource(stream);   
-  inputNode.connect(analyser);
-  analyser.connect(scriptProcessor);
-  scriptProcessor.connect(audioContext.destination);  
+  inputNode = audioContext.createMediaStreamSource(stream);
+
+  inputNode.connect(scriptProcessor);
+  scriptProcessor.connect(audioContext.destination);
+
   scriptProcessor.onaudioprocess = onAudioProcess;
 }
 
 function disconnectGraph() {
-  scriptProcessor.onaudioprocess = null;  
-  try { inputNode?.disconnect(); } catch {}
-  try { analyser?.disconnect(); } catch {}
-  try { scriptProcessor?.disconnect(); } catch {} 
-  inputNode = null;   
-  // Optional: stop mic hardware capture
-  mediaStream?.getTracks?.().forEach((t) => t.stop());
-  mediaStream = null;
-}
+  scriptProcessor.onaudioprocess = null;
 
-function onAudioProcess() {
-  const data = new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteTimeDomainData(data);   
-  server.kernel.io.fire("audio", Array.from(data));
+  try {
+    inputNode?.disconnect();
+  } catch {}
+
+  try {
+    scriptProcessor.disconnect();
+  } catch {}
+
+  inputNode = null;
+
+  mediaStream?.getTracks().forEach((track) => track.stop());
+  mediaStream = null;
 }
 
 async function requestMicrophoneAccess() {
   try {
-    return await navigator.mediaDevices.getUserMedia({ audio: true });
-  } catch (err) {
+    return await navigator.mediaDevices.getUserMedia({
+      audio: {
+        channelCount: 1,
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+  } catch (error) {
+    console.error("Microphone access failed:", error);
+
     alert(
-      "Could not access the microphone." +
-      "Make sure you're using https and you granted permission."
+      "Could not access the microphone. " +
+      "Make sure you are using HTTPS and have granted permission."
     );
+
     return null;
   }
 }
 
 core.MicStart = async () => {
   if (isRunning) return;
-  isRunning = true;   
-  // Some browsers need this on a user gesture
+
   if (audioContext.state === "suspended") {
     await audioContext.resume();
-  }   
+  }
+
   const stream = await requestMicrophoneAccess();
+
   if (!stream) {
-    isRunning = false;
     setStatus("Idle", "gray");
     return;
-  }   
+  }
+
+  isRunning = true;
   connectGraph(stream);
   setStatus("Recording...", "red");
 };
 
-core.MicStop = async () => {
+core.MicStop = () => {
   if (!isRunning) return;
-  isRunning = false;  
+
+  isRunning = false;
   disconnectGraph();
   setStatus("Stopped", "blue");
 };
 
 this.ondestroy = () => {
-  if (!isRunning) return;
-  isRunning = false;  
-  disconnectGraph();
+  if (isRunning) {
+    isRunning = false;
+    disconnectGraph();
+  }
 };
 
-// Return UI element
 return sign;
 
 %-------------------------------------------------------------------------%
@@ -241,10 +289,18 @@ Type: Input
 .md
 Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
 
-```
-const data = new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteTimeDomainData(data);   
-server.kernel.io.fire("audio", data);
+```js
+function onAudioProcess(event) {
+  const input = event.inputBuffer.getChannelData(0);
+
+  // Copy because the browser reuses the underlying audio buffer.
+  const samples = new Float32Array(input);
+
+  // Keep the output silent.
+  event.outputBuffer.getChannelData(0).fill(0);
+
+  server.kernel.io.fire("audio", samples);
+}
 ```
 
 %-------------------------------------------------------------------------%
@@ -253,10 +309,18 @@ Type: Output
 %-------------------------------------------------------------------------%
 Here we introduce two frontend symbols, `MicStart` and `MicStop`, to control the streaming. The rest is boilerplate code for handling the standard WebAudio API. The actual data is sent via
 
-```
-const data = new Uint8Array(analyser.frequencyBinCount);
-analyser.getByteTimeDomainData(data);   
-server.kernel.io.fire("audio", data);
+```js
+function onAudioProcess(event) {
+  const input = event.inputBuffer.getChannelData(0);
+
+  // Copy because the browser reuses the underlying audio buffer.
+  const samples = new Float32Array(input);
+
+  // Keep the output silent.
+  event.outputBuffer.getChannelData(0).fill(0);
+
+  server.kernel.io.fire("audio", samples);
+}
 ```
 
 %-------------------------------------------------------------------------%
@@ -302,7 +366,7 @@ Module[{line = {}},
 
   Graphics[
       Line[line // Offload], 
-      PlotRange -> {{0,512}, {127-50, 127+50}},
+      PlotRange -> {{0,512}, 0.25 {-1, 1}},
       "TransitionDuration"->30,
       Axes->True, AspectRatio->1/2
   ]
@@ -328,19 +392,19 @@ Type: Input
 Module[{line = {}, fft={}},
     EventHandler["audio", Function[data, With[{ndata = Normal@data},
       line = Transpose[{Range[data//Length], ndata}];
-      fft = Drop[Transpose[{Range[128]//N, Log@Take[Fourier[ndata], 128]//Abs}],1];
+      fft = Drop[Transpose[{Range[(Length[ndata]/2)//Floor], -(Log@Take[Fourier[ndata], (Length[ndata]/2)//Floor ]//Abs)}],4];
     ]]];
   
     {Graphics[
       {Blue, Line[line // Offload]},
-      PlotRange -> {{0,512}, {127-50, 127+50}},
-      TransitionDuration->30,
+      PlotRange -> {{0,512}, 0.25 {-1,1}},
+      "TransitionType"->None,
       Axes->True, AspectRatio->1/2
     ],
     Graphics[
       {Red, Line[fft // Offload]},
-      PlotRange -> {{1,128}, {0,6}},
-      TransitionDuration->30,
+      PlotRange -> {{1,256}, {-16,0}},
+      "TransitionType"->None,
       Axes->True, AspectRatio->1/2
     ]}  // Row
 ]
