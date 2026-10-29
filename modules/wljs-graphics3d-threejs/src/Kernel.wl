@@ -20,8 +20,8 @@ MeshLambertMaterial::usage = ""
 MeshPhongMaterial::usage = ""
 MeshFogMaterial::usage = "works only with RTX on"
 
-Unprotect[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading];
-ClearAll[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading];
+Unprotect[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading,PhongShading];
+ClearAll[ToonShading, GoochShading, HatchShading, HalftoneShading, StippleShading,PhongShading];
 
 ToonShading[] = MeshMaterial[MeshToonMaterial[]];
 ToonShading[color_] := Directive[color, MeshMaterial[MeshToonMaterial[]]];
@@ -85,12 +85,22 @@ listener[p_, list_] := With[{uid = CreateUUID[]}, With[{
     EventListener[p, rules]
 ] ]
 
-Unprotect[Sphere, Locator];
+Unprotect[Sphere, Locator, Graphics3D];
 
 Sphere      /: EventHandler[p_Sphere, list_List] := listener[p, list]
 Locator      /: EventHandler[p_Locator, list_List] := listener[p, list]
 
-Protect[Sphere, Locator];
+Graphics3D /: EventHandler[Graphics3D[args_, opts:OptionsPattern[] ], list_List ] := With[{
+    epilog = {OptionValue[Graphics3D, {opts}, Epilog]}
+},
+    With[{options = Join[Association[opts], <|Epilog -> Join[{
+        listener[Null, list]
+    }, epilog]|>]},
+        Graphics3D[args, Sequence @@ Normal[options] ]
+    ]
+] // Quiet
+
+Protect[Sphere, Locator, Graphics3D];
 
 
 (* CALL A MODAL HERE 

@@ -5346,25 +5346,179 @@ g3d.MeshFogMaterial = async (args, env) => {
 
 let TransformControls = false;
 
+const raycastEvent = (event, object, env, raycaster, pointer) => {
+  // Pointer events are attached to the CSS2D overlay because it also drives
+  // the controls, but NDC must be calculated against the WebGL viewport. The
+  // overlay can have a different offset in centered/slide layouts.
+  const domElement = env.global.renderer?.domElement || env.global.domElement;
+  const camera = env.global.camera || env.camera;
+
+  if (!domElement || !camera || !object) return null;
+
+  const bounds = domElement.getBoundingClientRect();
+  if (!bounds.width || !bounds.height) return null;
+
+  // Three.js defaults Line and Points raycasting to a threshold of one world
+  // unit. That is large enough for a unit-sized plot's box and axes to mask
+  // the surface below them. Convert roughly two CSS pixels to world units so
+  // thin primitives remain selectable without swallowing nearby meshes.
+  if (raycaster.wljsPointerThreshold === undefined) {
+    const plotBounds = new THREE.Box3().setFromObject(
+      env.global.plotGroup || object
+    );
+    const plotSize = plotBounds.getSize(new THREE.Vector3());
+    const plotSpan = Math.max(plotSize.x, plotSize.y, plotSize.z);
+    const viewportSpan = Math.max(1, Math.min(bounds.width, bounds.height));
+    const threshold = Number.isFinite(plotSpan) && plotSpan > 0
+      ? 2 * plotSpan / viewportSpan : 0.01;
+
+    raycaster.params.Line.threshold = threshold;
+    raycaster.params.Points.threshold = threshold;
+    raycaster.wljsPointerThreshold = threshold;
+  }
+
+  pointer.set(
+    ((event.clientX - bounds.left) / bounds.width) * 2 - 1,
+    -((event.clientY - bounds.top) / bounds.height) * 2 + 1
+  );
+
+  raycaster.setFromCamera(pointer, camera);
+
+  const intersections = Array.isArray(object)
+    ? raycaster.intersectObjects(object, true)
+    : raycaster.intersectObject(object, true);
+
+  if (!intersections.length) return null;
+
+  // Graphics3D applies centering, axis conversion and BoxRatios to its root
+  // group. Convert the world-space hit back to the coordinates used by the
+  // Wolfram expression before sending it to the kernel.
+  const point = intersections[0].point.clone();
+  if (env.global.plotGroup) env.global.plotGroup.worldToLocal(point);
+
+  return point.toArray();
+};
+
+const pointerGestureState = (env) => {
+  if (env.global.pointerGestureState) {
+    return env.global.pointerGestureState;
+  }
+
+  const state = {
+    pointers: new Map(),
+    suppressClickUntil: 0,
+    suppressedClickEvent: null
+  };
+  const domElement = env.global.domElement;
+  const dragThresholdSq = 4 * 4;
+
+  domElement.addEventListener('pointerdown', (event) => {
+    state.suppressClickUntil = 0;
+    state.suppressedClickEvent = null;
+    state.pointers.set(event.pointerId, {
+      x: event.clientX,
+      y: event.clientY,
+      dragged: false
+    });
+  }, true);
+
+  domElement.addEventListener('pointermove', (event) => {
+    const pointer = state.pointers.get(event.pointerId);
+    if (!pointer || pointer.dragged) return;
+
+    const dx = event.clientX - pointer.x;
+    const dy = event.clientY - pointer.y;
+    if (dx * dx + dy * dy > dragThresholdSq) pointer.dragged = true;
+  }, true);
+
+  domElement.addEventListener('pointerup', (event) => {
+    const pointer = state.pointers.get(event.pointerId);
+    if (pointer?.dragged) {
+      // A native click, when generated, follows pointerup immediately. Keep
+      // this bounded so a drag without a click cannot suppress a later click.
+      state.suppressClickUntil = event.timeStamp + 250;
+    }
+    state.pointers.delete(event.pointerId);
+  }, true);
+
+  domElement.addEventListener('pointercancel', (event) => {
+    state.pointers.delete(event.pointerId);
+  }, true);
+
+  env.global.pointerGestureState = state;
+  return state;
+};
+
+const isGestureClick = (event, state) => {
+  // Several object/scene listeners can receive the same DOM event. Once one
+  // marks it as suppressed, all of them must make the same decision.
+  if (state.suppressedClickEvent === event) return true;
+  if (state.suppressClickUntil === 0) return false;
+  if (event.timeStamp > state.suppressClickUntil) return false;
+
+  state.suppressedClickEvent = event;
+  state.suppressClickUntil = 0;
+  return true;
+};
+
+const pointerEventListener = (eventName) => (uid, object, env) => {
+  // A scene-level listener should pick the rendered graphic, not Epilog
+  // annotations (such as a locator sphere) or decorations added afterwards.
+  // The Graphics3D wrapper installs this listener at the start of Epilog, so
+  // taking a shallow snapshot here preserves the base plot objects while the
+  // recursive raycast still reaches their meshes.
+  const plotObjects = env.global.plotGroup
+    ? [...env.global.plotGroup.children] : [];
+  const target = object || (plotObjects.length
+    ? plotObjects : env.global.plotGroup || env.global.scene);
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+  const gestureState = eventName === 'click'
+    ? pointerGestureState(env) : null;
+  const updatePosition = throttle((point) => {
+    server.kernel.io.fire(uid, point, eventName);
+  });
+
+  env.global.domElement.addEventListener(eventName, (event) => {
+    if (gestureState && isGestureClick(event, gestureState)) return;
+
+    // Match Graphics2D: a regular click does not also handle Alt-clicks.
+    if (eventName === 'click' && event.altKey) return;
+
+    const point = raycastEvent(event, target, env, raycaster, pointer);
+    if (point) updatePosition(point);
+  });
+};
+
 g3d.EventListener = async (args, env) => {
   const rules = await interpretate(args[1], env);
 
   const copy = {...env};
 
-  let object = await interpretate(args[0], env);
-  if (Array.isArray(object)) object = object[0];
+  let object = await interpretate(args[0], copy);
+  if (Array.isArray(object) && object.length === 1) object = object[0];
 
-  if (!TransformControls) {
+  const needsTransformControls = rules.some((rule) =>
+    rule.lhs === 'transform' || rule.lhs === 'drag'
+  );
+
+  if (needsTransformControls && !TransformControls) {
     await interpretate.shared.THREETransformControls.load();
     TransformControls = interpretate.shared.THREETransformControls.TransformControls;
     //TransformControls = (await import('three/addons/controls/TransformControls.js')).TransformControls;
   }
   rules.forEach((rule)=>{
-    g3d.EventListener[rule.lhs](rule.rhs, object, copy);
+    const target = Array.isArray(object) &&
+      (rule.lhs === 'transform' || rule.lhs === 'drag')
+      ? object[0] : object;
+    g3d.EventListener[rule.lhs](rule.rhs, target, copy);
   });
 
   return null;
 };
+
+g3d.EventListener.click = pointerEventListener('click');
+g3d.EventListener.mousemove = pointerEventListener('mousemove');
 
 g3d.EventListener.transform = (uid, object, env) => {
   console.log(env);
@@ -6168,6 +6322,7 @@ if (PathRendering) {
 
 
 const group = new THREE.Group();
+env.global.plotGroup = group;
 
 const allowLerp = false;
 if (options.TransitionType) {
@@ -6241,6 +6396,7 @@ env.global.renderer = renderer;
 env.global.labelRenderer = labelRenderer;
 env.global.domElement = domElement;
 env.global.scene    = scene;
+env.global.camera   = activeCamera;
 envcopy.camera   = activeCamera;
 //activeCamera.layers.enableAll();
 
@@ -7116,6 +7272,7 @@ function updateCamera( cameraProjection ) {
   controls.update();
 
   env.local.camera   = activeCamera;
+  env.global.camera   = activeCamera;
   envcopy.camera   = activeCamera;
 
 
