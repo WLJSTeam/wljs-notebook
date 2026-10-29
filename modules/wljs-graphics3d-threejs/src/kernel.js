@@ -3317,8 +3317,14 @@ g3dComplex.Polygon.reassign = (v, local) => {
       if (v.colored)
         g.setAttribute( 'color', v.colors );
       
-      if (local.normals)
+      if (local.normals) {
         g.setAttribute('normal', v.normals);
+      } else {
+        // computeVertexNormals() reuses an existing normal attribute even when
+        // the position attribute has grown. Remove the stale attribute so the
+        // vertex update handler recreates it with the new capacity.
+        g.deleteAttribute('normal');
+      }
 
       //g.setIndex(local.indexes);
 
@@ -3761,7 +3767,9 @@ g3dComplex.Polygon.update = async (args, env) => {
       
 
 
-    //if (!env.local.normals) env.local.geometry.computeVertexNormals();
+    // The GraphicsComplex vertex handler runs before the Polygon indices are
+    // updated. Recompute implicit normals again against the new topology.
+    if (!env.local.normals) env.local.geometry.computeVertexNormals();
 
     
     env.local.geometry.computeBoundingBox();
