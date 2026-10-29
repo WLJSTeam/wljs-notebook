@@ -43,14 +43,17 @@ function formatFixed(val, f) {
   return rounded.toFixed(f);
 }
 
-function padIntegerPart(str, targetIntDigits) {
+function padIntegerPart(str, targetIntDigits, padString) {
   const negative = str.startsWith("-");
   const unsigned = negative ? str.slice(1) : str;
   const dotIndex = unsigned.indexOf(".");
   const intLen = dotIndex === -1 ? unsigned.length : dotIndex;
-  const padLen = Math.max(0, targetIntDigits - intLen);
-  return " ".repeat(padLen) + (negative ? "-" : "") + unsigned;
+  const padLen = Math.max(0, targetIntDigits - intLen - (negative ? 1 : 0));
+  return  (negative ? "-" : "") + padString.repeat(padLen) + unsigned;
 }
+
+core.NumberPadding = () => 'NumberPadding'
+core.NumberPadding.update = () => 'NumberPadding'
 
 core.NumberForm = async (args, env) => {
   let val = await interpretate(args[0], env);
@@ -58,9 +61,12 @@ core.NumberForm = async (args, env) => {
   const spec = args.length > 1 ? await interpretate(args[1], env) : undefined;
 
   if (spec === undefined) return String(val);
+  const opts = await core._getRules(args, env);
+  const numberPadding = opts.NumberPadding || " ";
+  
   if (Array.isArray(spec)) {
     const [n, f] = spec;
-    return padIntegerPart(formatFixed(val, f), n - f);
+    return padIntegerPart(formatFixed(val, f), n - f, numberPadding);
   }
   return val.toPrecision(spec);
 };
