@@ -20,7 +20,7 @@ View[opts__] := With[{list = Association[ List[opts] ]},
 
 (* /* Default */ *)
 Router[any_, _, _] := With[{},
-    Print["Default router"];
+    Echo[StringTemplate["[Default Rounter: Empty] at ``"][any]];
     ({EmptyComponent[##], EmptyScript[##]} &)
 ];
 

@@ -14,7 +14,6 @@ env                       =  $Options["Env"];
 AppEvent                  =  $Options["AppEvent"];
 ExtensionTemplates        =  $Options["ExtensionTemplates"];
 ExtensionSidebarIcons     =  $Options["ExtensionSidebarIcons"];
-middleware                = $Options["Middleware"];
 
 
 (* UI components *)
@@ -323,9 +322,19 @@ Map[Function[item,
 ], Select[Flatten[WLJSPackages`Packages[#, "wljs-meta", "menu"] &/@ Keys[WLJSPackages`Packages]], AssociationQ]];
 
 
+decodeRealPath[request_] := Switch[$OperatingSystem,
+  "Windows",  
+  URLDecode @ StringDrop[request["Path"],1],  
+  
+  "Linux",
+  URLDecode @ StringDrop[request["Path"],1 ],
+
+  _,
+  URLDecode @ StringDrop[request["Path"],1 ]];
+
 (* App component *)
 
-App[request_] := With[{
+App[request_, realPath_] := With[{
   Secret = CreateUUID[], 
   GlobalControls  = CreateUUID[],
   ModalController = CreateUUID[],
@@ -333,15 +342,7 @@ App[request_] := With[{
   
   ExtensionsJS = Join[Select[AppExtensions`HeaderAssets, (#["Type"] === "JS")&][[All, "Path"]], extensionsJS],
   
-  Path = Switch[$OperatingSystem,
-    "Windows",  
-    URLDecode @ StringDrop[request["Path"],1],  
-    
-    "Linux",
-    URLDecode @ StringDrop[request["Path"],1 ],
-
-    _,
-    URLDecode @ StringDrop[request["Path"],1 ]]
+  Path = realPath
 },
 
   Echo[Path, "[Frontend/App] Loading notebook by path: "];
@@ -547,7 +548,19 @@ Options[Script] = {"Secret" -> "", "GlobalControls" -> ""};
 
 (* Assign an app to HTTP route *)
 
-http["MessageHandler", "App"] = AssocUMatchQ[<|"Method" -> "GET"|>] -> middleware[App];
+middleware[request_] := With[{realPath = decodeRealPath[request]},
+    If[FileExistsQ[realPath],
+        App[request, realPath]
+    ,
+        <|
+            "Code" -> 418,
+            "Body" -> "Why is a raven like a writing desk"
+        |> 
+    ]
+]
+
+
+http["MessageHandler", "App"] = AssocUMatchQ[<|"Method" -> "GET"|>] -> middleware;
 
 Print["App loaded!"];
 
