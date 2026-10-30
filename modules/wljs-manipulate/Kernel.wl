@@ -151,7 +151,7 @@ applyLocatorPatch[expr_Graphics, vars_] := If[FreeQ[vars, Locator], expr,
     },
         Show[expr, Graphics[{
             Map[Function[l, {
-                RandomColor[] // Darker,
+                RandomColor[],
                 EventListener[Locator[l["Initial"]], {
                     "drag" -> l["UId"]
                 }]
