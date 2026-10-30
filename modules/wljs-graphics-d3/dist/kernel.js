@@ -6868,6 +6868,7 @@ return object;
 
     visual.append("circle")
       .attr("r", 8)
+      .attr("fill", "transparent")
       .attr("vector-effect", "non-scaling-stroke");
 
     visual.append("path")

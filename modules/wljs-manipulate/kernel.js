@@ -366,7 +366,7 @@ helper.destroy = (args, env) => {
     if (env.local.viewChange) {
         server.kernel.io.fire(env.local.viewChange, true, 'Destroy');
     }    
-    if (env.local.jitTimer) cancelTimeout(env.local.jitTimer);
+    if (env.local.jitTimer) clearTimeout(env.local.jitTimer);
 }
 
 helper.virtual = true;
@@ -513,7 +513,7 @@ man.destroy = (args, env) => {
     if (env.local.ViewChange) server.kernel.io.fire(env.local.ViewChange, true, 'Destroy');
     env.local.container.remove();
     if (env.local.restoreCSS) env.local.restoreCSS();
-    if (env.local.jitTimer) cancelTimeout(env.local.jitTimer);
+    if (env.local.jitTimer) clearTimeout(env.local.jitTimer);
 }
 
 core['CoffeeLiqueur`Extensions`Manipulate`Internal`ManipulateHelper']

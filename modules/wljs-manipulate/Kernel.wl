@@ -105,7 +105,7 @@ SetAttributes[assignUnderHold, HoldFirst]
 SetAttributes[clearUnderHold, HoldFirst]
 
 
-Manipulate[f_, paramters:({_Subscript | _Symbol | {_Subscript, _?NumericQ} | {_Symbol, _?NumericQ} | {_Subscript, _?NumericQ, _String} | {_Symbol, _?NumericQ, _String}, ___?NumericQ} | {_Subscript | {_Subscript, _} | {_Subscript, _, _String}, _List} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., rawopts: OptionsPattern[] ] := With[{
+Manipulate[f_, paramters:({_Subscript | _Symbol | {_Subscript, _?NumericQ} | {_Symbol, _?NumericQ} | {_Subscript, _?NumericQ, _String} | {_Symbol, _?NumericQ, _String}, ___?NumericQ} | {_Subscript | {_Subscript, _} | {_Subscript, _, _String}, _List} | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}}, Locator} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List}).., rawopts: OptionsPattern[] ] := With[{
   scripts = Cases[Hold[ List[paramters] ], _Subscript, Infinity]
 },
 {
@@ -144,7 +144,26 @@ Manipulate[f_, paramters:({_Subscript | _Symbol | {_Subscript, _?NumericQ} | {_S
 
 limitString[str_, max_] := StringTake[str, Min[max, StringLength[str]]];
 
-Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style ).., OptionsPattern[] ] := Module[{code, currentData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
+applyLocatorPatch[expr_, vars_] := expr
+applyLocatorPatch[expr_Graphics, vars_] := If[FreeQ[vars, Locator], expr,
+    With[{
+        locators = Select[vars, (#["Controller"] === Locator)&]
+    },
+        Show[expr, Graphics[{
+            Map[Function[l, {
+                RandomColor[] // Darker,
+                EventListener[Locator[l["Initial"]], {
+                    "drag" -> l["UId"]
+                }]
+            }], locators]
+        }]]
+    ]
+]
+
+(* I hate you Wolfram! API is nonsence *)
+includeLocatorsQ[vars_] := !FreeQ[vars, Locator]
+
+Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}}, Locator} ).., OptionsPattern[] ] := Module[{code, currentData, locatorData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
   pvars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = ToString[Hash[{f//Hold, parameters, Now}] ],
   updateFunction = OptionValue["UpdateFunction"],
@@ -205,7 +224,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
 
         currentData = (#["Initial"] &/@ vars);
         With[{result = updateFunction @@ (#["Initial"] &/@ vars)},
-  code = ToString[anonymous @@ (#["Initial"] &/@ vars), StandardForm];
+          code = ToString[applyLocatorPatch[anonymous @@ (#["Initial"] &/@ vars), vars], StandardForm];
           If[result === False || !TrueQ[jit],
             If[result === False, jitFailedQQ = False];
           
@@ -237,6 +256,8 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
               InputSelect,
                 Select[v["List"], !SameQ[#, v["Initial"]] &],
 
+              Locator, (* yeah, this is kinda stupid *)
+                {RandomReal[{-1,1}, 2], RandomReal[{-1,1}, 2], RandomReal[{-1,1}, 2]},
               _,
                 {}
             ]
@@ -303,7 +324,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
           ];
 
           df`Private`processDiffs[diffTable, expr, expr, diffList, Function[editorExpr,
-            code = ToString[editorExpr, StandardForm];
+            code = ToString[applyLocatorPatch[editorExpr, vars], StandardForm];
             False
           ] ];
 
@@ -334,9 +355,11 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
 
                   InputSelect,
                     InputSelect[#["List"], #["Initial"], "Label"->(#["Label"]), "TrackedExpression"->passPart[index, OptionValue["TrackedExpression"] ] ],
-                  
+
+                  Locator,
+                    EventObject[<|"Id" -> #["UId"], "Initial" -> #["Initial"]|>],
                   _,
-                    Null
+                    Nothing
                 ] ] &,  vars];
 
       widgetInstance["Ranges"] = Table[
@@ -363,6 +386,17 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
             ]
 
           ,
+          Locator,
+
+            wapi`Tools`RangeSet[
+                  "Range"->Table[RandomReal[{-1,1}, 2], {10}],
+                  "Event"->{c[[2]][[1]]["Id"], "Default"},
+                  "Initial"->c[[2]][[1]]["Initial"],
+                  "Type"->"Select",
+                  "Delay"->If[jitFailedQQ, 500, 100]
+            ]
+
+          ,          
           _,
           Nothing
         ]
@@ -385,7 +419,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                     {diffList = Flatten[{df`Private`diff[originalExpression, expr, 1, <||>]}]},
 
                     df`Private`processDiffsStateless[diffTable, originalExpression, expr, diffList, Function[editorExpr,
-                      code = ToString[editorExpr, StandardForm];
+                      code = ToString[applyLocatorPatch[editorExpr, vars], StandardForm];
                       False
                     ], Function[Null,
                       code = o;
@@ -396,7 +430,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                 ,
                   With[
                     {expr = anonymous @@ data},
-                    code = ToString[expr, StandardForm];
+                    code = ToString[applyLocatorPatch[expr, vars], StandardForm];
                     originalExpression = expr;
                   ]
                 ];
@@ -651,6 +685,12 @@ makeVariableObject[{{s_Symbol, init_, _}, list_List, ___Rule}] := <|"Controller"
 
 makeVariableObject[{{s_Symbol, init_, label_String}, list_List, ___Rule}] := <|"Controller"->InputSelect, "Symbol" :> s, "Label"->label, "List"->list, "Initial" -> If[init === Automatic, First[list], init]|>
 
+
+makeVariableObject[{s_Symbol, Locator, ___Rule}] := <|"Controller"->Locator, "Symbol" :> s, "Initial" -> {0.,0.}, "UId"->CreateUUID[]|>
+
+makeVariableObject[{{s_Symbol, init_}, Locator, ___Rule}] := <|"Controller"->Locator, "Symbol" :> s,  "Initial" -> If[init === Automatic, {0.,0.}, init], "UId"->CreateUUID[]|>
+
+makeVariableObject[{{s_Symbol, init_, label_}, Locator, ___Rule}] := <|"Controller"->Locator, "Symbol" :> s,  "Initial" -> If[init === Automatic, {0.,0.}, init], "UId"->CreateUUID[]|>
 
 
 makeVariableObject[{s_Symbol, min_, max_, ___Rule}] := <|"Controller"->InputRange, "Symbol" :> s, "Label"->ToString[Unevaluated[s]], "MinRaw"->min, "MaxRaw"->max, "Min"->N[min], "Max"->N[max], "Step" -> N[((max-min)/50.0)], "StepRaw" -> N[((max-min)/50.0)], "Initial" -> N[((min + max)/2.0)]|>
