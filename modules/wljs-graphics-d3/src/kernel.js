@@ -7770,6 +7770,10 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     eventNames.forEach((eventName) => {
       el.node().addEventListener(eventName, (e) => {
         //console.log(e);
+        if (eventName === 'keydown' && e.repeat) {
+          e.preventDefault();
+          return;
+        }
         server.kernel.io.fire(uid, formatEvent(eventName, e), channel);
         e.preventDefault();
       });
@@ -7778,7 +7782,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
 
   const keyCode = (eventName, event) => String(event.code);
   const keyEvent = (eventName, event) =>
-    `${eventName === 'keydown' ? 'DOWN' : 'UP'}:${String(event.code)}`;
+    {return {DownQ:(eventName === 'keydown'), Code:String(event.code)}};
 
   g2d.EventListener.capturekeydown = capturedKeyListener(['keydown'], 'capturekeydown', keyCode);
   g2d.EventListener.capturekeyup = capturedKeyListener(['keyup'], 'capturekeyup', keyCode);
