@@ -148,22 +148,27 @@ applyLocatorPatch[expr_, vars_] := expr
 applyLocatorPatch[expr_Graphics, vars_] := If[FreeQ[vars, Locator], expr,
     With[{
         locators = Select[vars, (#["Controller"] === Locator)&]
-    },
-        Show[expr, Graphics[{
-            Map[Function[l, {
+    },  
+         Show[expr, Graphics[{
+            Map[Function[l, If[NumberQ[ l["Initial"][[1]] ], {
                 RandomColor[],
                 EventListener[Locator[l["Initial"]], {
                     "drag" -> l["UId"]
                 }]
-            }], locators]
-        }]]
+            },  (* if there are multiple locators within one *)
+                MapIndexed[Function[{pos, index}, {RandomColor[],
+                EventListener[Locator[pos], {
+                    "drag" -> l["UId"]<>ToString[index[[1]]]
+                }]}], l["Initial"]]               
+            ]], locators]
+         }]]     
     ]
 ]
 
 (* I hate you Wolfram! API is nonsence *)
 includeLocatorsQ[vars_] := !FreeQ[vars, Locator]
 
-Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}}, Locator} ).., OptionsPattern[] ] := Module[{code, currentData, locatorData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
+Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}} | {_Symbol, {{_?NumericQ, _?NumericQ}..}}, Locator} ).., OptionsPattern[] ] := Module[{code, currentData, locatorData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
   pvars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = ToString[Hash[{f//Hold, parameters, Now}] ],
   updateFunction = OptionValue["UpdateFunction"],
@@ -257,7 +262,10 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                 Select[v["List"], !SameQ[#, v["Initial"]] &],
 
               Locator, (* yeah, this is kinda stupid *)
-                {RandomReal[{-1,1}, 2], RandomReal[{-1,1}, 2], RandomReal[{-1,1}, 2]},
+                If[NumberQ[v["Initial"][[1]]],
+                    Table[RandomReal[{-1,1}, 2], {3}],
+                    Table[Table[RandomReal[{-1,1}, 2], {Length[v["Initial"]]}], {3}] (* if there are multiple locators *)
+                ],
               _,
                 {}
             ]
@@ -357,6 +365,17 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                     InputSelect[#["List"], #["Initial"], "Label"->(#["Label"]), "TrackedExpression"->passPart[index, OptionValue["TrackedExpression"] ] ],
 
                   Locator,
+                    If[ListQ[#["Initial"][[1]]], (* if there are multiple locators within one *)
+                        With[{accumulatedData = Unique[]}, (* Hello memory leak! *)
+                            accumulatedData = #["Initial"]; (* for the love of God, why did you make such API, Steven?!  *)
+                            Table[With[{i=i}, 
+                                EventHandler[#["UId"]<>ToString[i], Function[val,
+                                    accumulatedData[[i]] = val;
+                                    EventFire[#["UId"], accumulatedData]; (* FWD to the main event *)
+                                ]];
+                            ], {i, Length[#["Initial"]]}];
+                        ];
+                    ];
                     EventObject[<|"Id" -> #["UId"], "Initial" -> #["Initial"]|>],
                   _,
                     Nothing
@@ -389,7 +408,9 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
           Locator,
 
             wapi`Tools`RangeSet[
-                  "Range"->Table[RandomReal[{-1,1}, 2], {10}],
+                  "Range"->Table[If[NumberQ[c[[2]][[1]]["Initial"][[1]]], RandomReal[{-1,1}, 2], (* if again multiple locators.. *)
+                    Table[RandomReal[{-1,1}, 2], {Length[c[[2]][[1]]["Initial"]]}]
+                  ], {10}],
                   "Event"->{c[[2]][[1]]["Id"], "Default"},
                   "Initial"->c[[2]][[1]]["Initial"],
                   "Type"->"Select",
