@@ -1,0 +1,84 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+# DOOM Fire
+A lore-accurate fire simulation used on Playstation 1 (PSX) DOOM port
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+# DOOM Fire
+A lore-accurate fire simulation used on Playstation 1 (PSX) DOOM port
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+fire = Table[0, {100}, {300}];
+
+propagateFire = Compile[
+    {{ifire, _Integer, 2}},
+    Module[{fire = ifire, rand},
+        With[{h = Length[fire], w = Length[fire[[1]]]},
+            Do[
+                rand = RandomInteger[{0, 3}];
+                With[{icol = h - col - 1, irow = Clip[row - rand + 2, {1, w}]},
+                    fire[[icol, irow]] = Clip[
+                      fire[[icol + 1, row]] - BitAnd[rand, 1], 
+                      {0, 36}
+                    ];
+                ],
+                {col, 0, h - 2},
+                {row, 1, w}
+            ]
+        ];
+        fire
+    ],
+    RuntimeOptions -> "Speed"
+];
+
+Column[
+    {
+      Refresh[
+            fire = propagateFire[fire]; 
+            ArrayPlot[fire, 
+              ColorFunction -> "SolarColors", 
+              ImagePadding -> None, AspectRatio -> 1/2],
+          1/60.0
+      ],
+      Row[{
+          Button["Ignite", fire[[-1, All]] = 36], 
+          Button["Extinguish", fire[[-1, All]] = 0]
+      }]
+    }
+] // Deploy
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
