@@ -9,6 +9,26 @@ Begin["CoffeeLiqueur`Extensions`Boxes`Workarounds`"]
 System`ViewDecorator;
 System`ProvidedOptions;
 
+
+(* ::: Chemistry ::: *)
+
+Unprotect[ChemicalReaction]
+FormatValues[ChemicalReaction] = {}
+
+MakeBoxes[c_ChemicalReaction, StandardForm] := Module[{above, below},
+        above = { 
+          {BoxForm`SummaryItem[{c["EquationDisplay"]//TraditionalForm}]}
+        };
+        BoxForm`ArrangeSummaryBox[
+           ChemicalReaction, (* head *)
+           c,      (* interpretation *)
+           None,    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+    ];
+
 (* ::: Short reimplementation ::: *)
 (* it messes up with formatting and cuts comments used in WLJS *)
 
