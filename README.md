@@ -8,6 +8,10 @@
   Build interactive research notebooks, scientific tools, and presentations with typeset math, rich media, live controls, and JavaScript integration.
 </p>
 
+<p align="center">
+  <i>This project began in 2018 as a web-based 3D graphics engine for Wolfram Language and grew into a standalone notebook application in 2022</i>
+</p>
+
 ![WLJS Notebook preview](imgs/Toster.png)
 
 <p align="center">
