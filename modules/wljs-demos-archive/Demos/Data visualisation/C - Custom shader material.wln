@@ -16,15 +16,29 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-# Custom shader material
+# 24K Gold, Lavender Pearls, and inked custom materials in your 3D plots
+Blender, ZBrush, SculptGL, or other programs are the way to go if you want to create sophisticated 3D figures for a presentation, paper, or blog post. However, if you already generate your shapes programmatically or derive them from external data sources, it is convenient to render them using the same set of tools.
 
+WLJS Notebook uses THREE.js on the frontend to render 3D graphics, such as this example:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-# Custom shader material
+# 24K Gold, Lavender Pearls, and inked custom materials in your 3D plots
+Blender, ZBrush, SculptGL, or other programs are the way to go if you want to create sophisticated 3D figures for a presentation, paper, or blog post. However, if you already generate your shapes programmatically or derive them from external data sources, it is convenient to render them using the same set of tools.
 
+WLJS Notebook uses THREE.js on the frontend to render 3D graphics, such as this example:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2QajwySwugfDYgERwQUZqUWoaM7JsJpBmQBAAo2ERrg=="*)(*]VB*)
 
 %-------------------------------------------------------------------------%
 Props:
@@ -32,443 +46,618 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-Soft pearl shading with a gold, lavender and teal palette. Evaluate the JavaScript cell once before evaluating the example below. The upper-left studio light is built into the shader, so the finish stays consistent while rotating the scene.
+This makes the pipeline quite customizable. To access the frontend realm, you only need to define a Wolfram Language symbol there, since the two worlds are tightly interconnected.
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-Soft pearl shading with a gold, lavender and teal palette. Evaluate the JavaScript cell once before evaluating the example below. The upper-left studio light is built into the shader, so the finish stays consistent while rotating the scene.
+This makes the pipeline quite customizable. To access the frontend realm, you only need to define a Wolfram Language symbol there, since the two worlds are tightly interconnected.
 
 %-------------------------------------------------------------------------%
-Props:
-  Fade: true
 Type: Input
 %-------------------------------------------------------------------------%
 .js
-// Raster shader and physical path-tracing backend. Material maps are generated locally.
-const pearlPalette = Object.freeze({
-  Gold: '#d8ae70', Lavender: '#ad9bd5', Teal: '#62a6b8',
-  Ice: '#cee6ef', Bond: '#b1a6cb', GoldBond: '#d6b17c', Glass: '#c8e4ed'
-});
 
-function createPearlMaterial(THREE, options = {}) {
-  if (options.pathTracing || options.renderer === 'PathTracing') return createPearlPhysicalMaterial(THREE, options);
-  const preset = options.preset ?? 'Lavender';
-  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
-  const roughness = Math.min(1, Math.max(0, options.roughness ?? 0.42));
-  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const isBond = options.bond ?? (preset === 'Bond' || preset === 'GoldBond');
-  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
-  const outputChunk = THREE.ShaderChunk.colorspace_fragment
-    ? 'colorspace_fragment' : 'encodings_fragment';
-  const material = new THREE.ShaderMaterial({
-    name: `Pearl / ${preset}`,
-    uniforms: {
-      baseColor: { value: color },
-      pearlRoughness: { value: roughness },
-      pearlGrain: { value: grain },
-      pearlOpacity: { value: opacity },
-      pearlHighlight: { value: options.highlight ?? (preset === 'Glass' ? 0.0 : 1.0) },
-      pearlWash: { value: options.wash ?? (isBond ? 0.22 : 0.10) },
-      pearlGlass: { value: preset === 'Glass' ? 1.0 : 0.0 },
-      pearlBond: { value: isBond ? 1.0 : 0.0 },
-      pearlBleed: { value: options.bleed ?? (isBond ? 0.30 : 0.0) },
-      startColor: { value: new THREE.Color(options.startColor ?? color) },
-      endColor: { value: new THREE.Color(options.endColor ?? color) },
-      keyDirection: { value: new THREE.Vector3(-0.65, 0.85, 1.25).normalize() },
-      fillDirection: { value: new THREE.Vector3(0.8, -0.2, 0.6).normalize() }
-    },
-    vertexShader: `
-      varying vec3 pearlNormal;
-      varying vec3 pearlViewPosition;
-      varying vec3 pearlLocalPosition;
-      varying vec2 pearlUv;
-      void main() {
-        #include <beginnormal_vertex>
-        #include <defaultnormal_vertex>
-        pearlNormal = normalize(transformedNormal);
-        pearlLocalPosition = position;
-        pearlUv = uv;
-        #include <begin_vertex>
-        #include <project_vertex>
-        pearlViewPosition = -mvPosition.xyz;
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 baseColor;
-      uniform vec3 keyDirection;
-      uniform vec3 fillDirection;
-      uniform float pearlRoughness;
-      uniform float pearlGrain;
-      uniform float pearlOpacity;
-      uniform float pearlHighlight;
-      uniform float pearlWash;
-      uniform float pearlGlass;
-      uniform float pearlBond;
-      uniform float pearlBleed;
-      uniform vec3 startColor;
-      uniform vec3 endColor;
-      varying vec3 pearlNormal;
-      varying vec3 pearlViewPosition;
-      varying vec3 pearlLocalPosition;
-      varying vec2 pearlUv;
-      float grainHash(vec3 p) {
-        p = fract(p * 0.1031);
-        p += dot(p, p.yzx + 33.33);
-        return fract((p.x + p.y) * p.z);
-      }
-      float grainNoise(vec3 p) {
-        vec3 cell = floor(p);
-        vec3 f = fract(p);
-        f = f * f * (3.0 - 2.0 * f);
-        return mix(
-          mix(mix(grainHash(cell), grainHash(cell + vec3(1,0,0)), f.x),
-              mix(grainHash(cell + vec3(0,1,0)), grainHash(cell + vec3(1,1,0)), f.x), f.y),
-          mix(mix(grainHash(cell + vec3(0,0,1)), grainHash(cell + vec3(1,0,1)), f.x),
-              mix(grainHash(cell + vec3(0,1,1)), grainHash(cell + vec3(1,1,1)), f.x), f.y), f.z);
-      }
-      void main() {
-        vec3 N = normalize(pearlNormal) * (gl_FrontFacing ? 1.0 : -1.0);
-        vec3 V = isOrthographic ? vec3(0.0, 0.0, 1.0) : normalize(pearlViewPosition);
-        vec3 H = normalize(keyDirection + V);
-        float key = pow(clamp(dot(N, keyDirection) * 0.5 + 0.5, 0.0, 1.0), 1.3);
-        float fill = max(dot(N, fillDirection), 0.0);
-        float facing = max(dot(N, V), 0.0);
-        float edge = pow(1.0 - facing, 2.0);
-        float wash = grainNoise(pearlLocalPosition * 2.8 + vec3(11.7, 4.2, 8.1));
-        float broad = pow(max(dot(N, H), 0.0), mix(16.0, 4.0, pearlRoughness));
-        float tight = pow(max(dot(N, H), 0.0), mix(130.0, 30.0, pearlRoughness));
-        vec3 pigment = baseColor;
-        float startWeight = 1.0 - smoothstep(0.0, 0.48, pearlUv.y);
-        float endWeight = smoothstep(0.52, 1.0, pearlUv.y);
-        pigment = mix(pigment, startColor, startWeight * pearlBond * pearlBleed);
-        pigment = mix(pigment, endColor, endWeight * pearlBond * pearlBleed);
-        pigment *= mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
-          (1.0 + pearlWash * (wash - 0.5));
-        float shade = (0.34 + 0.66 * key + 0.07 * fill) * (1.0 - 0.18 * edge);
-        vec3 rgb = pigment * shade;
-        // Keep grain visible as atoms get smaller: blend to coarser surface noise.
-        float footprint = max(length(dFdx(pearlLocalPosition)), length(dFdy(pearlLocalPosition)));
-        float fineWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 64.0);
-        float mediumWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 16.0);
-        float coarseWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 4.0);
-        float coarse = grainNoise(pearlLocalPosition * 4.0);
-        float medium = grainNoise(pearlLocalPosition * 16.0);
-        float fine = grainNoise(pearlLocalPosition * 64.0);
-        float surfaceGrain = mix(coarse, medium, mediumWeight);
-        surfaceGrain = mix(surfaceGrain, fine, fineWeight);
-        // Value noise is smoothed; restore useful contrast for the strength control.
-        rgb *= 1.0 + 3.5 * pearlGrain * coarseWeight * (2.0 * surfaceGrain - 1.0);
-        rgb = mix(rgb, baseColor * (0.92 + 0.08 * key), pearlGlass);
-        // Broad pearl sheen plus a brighter softbox core, added in linear light.
-        float highlight = (0.40 * broad + 0.22 * tight) * pearlHighlight;
-        highlight *= 1.0 + 0.20 * (wash - 0.5);
-        rgb += vec3(1.0, 0.975, 0.94) * highlight;
-        rgb += mix(pigment, vec3(0.7, 0.8, 0.94), 0.5) * edge * 0.075;
-        gl_FragColor = vec4(max(rgb, vec3(0.0)), pearlOpacity);
-        #include <${outputChunk}>
-      }
-    `,
-    // Deliberately self-lit: a portable illustration look under any scene lights.
-    lights: false,
-    toneMapped: false,
-    transparent: opacity < 1,
-    depthWrite: opacity >= 1,
-    side: opacity < 1 ? THREE.DoubleSide : THREE.FrontSide
-  });
-  // Also works with older Three.js WebGL1 builds used by some WLJS versions.
-  material.extensions.derivatives = true;
-  return material;
+core.Pearl = (args, env) => {
+  alert('I am Pearl');
 }
 
-// Baked material maps are shared between matching presets, including repeated bonds.
-const pearlPhysicalCaches = new WeakMap();
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now, if you use the symbol `Pearl` as a graphics primitive or directive in a `Graphics3D` expression, it will display the message `I am Pearl`:
 
-function pearlNoise2(x, y) {
-  const hash = (a, b) => {
-    let n = Math.imul(a, 374761393) ^ Math.imul(b, 668265263);
-    n = Math.imul(n ^ (n >>> 13), 1274126177);
-    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
-  };
-  const ix = Math.floor(x), iy = Math.floor(y);
-  let fx = x - ix, fy = y - iy;
-  fx *= fx * (3 - 2 * fx); fy *= fy * (3 - 2 * fy);
-  const a = hash(ix, iy), b = hash(ix + 1, iy);
-  const c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
-  return (a + (b - a) * fx) * (1 - fy) + (c + (d - c) * fx) * fy;
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now, if you use the symbol `Pearl` as a graphics primitive or directive in a `Graphics3D` expression, it will display the message `I am Pearl`:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{Pearl[], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+You can also access the shared variables of the 3D scene through `env`. In the simplest case, you can directly modify some of them as follows:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+You can also access the shared variables of the 3D scene through `env`. In the simplest case, you can directly modify some of them as follows:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+
+core.Pearl = (args, env) => {
+  env.opacity = 0.1;
 }
 
-function pearlPhysicalMaps(THREE, options, color) {
-  let cache = pearlPhysicalCaches.get(THREE);
-  if (!cache) { cache = new Map(); pearlPhysicalCaches.set(THREE, cache); }
-  const bond = options.bond ?? ['Bond', 'GoldBond'].includes(options.preset);
-  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const wash = options.wash ?? (bond ? 0.22 : 0.10);
-  const start = new THREE.Color(options.startColor ?? color);
-  const end = new THREE.Color(options.endColor ?? color);
-  const bleed = Math.min(1, Math.max(0, options.bleed ?? (bond ? 0.30 : 0)));
-  const key = JSON.stringify([color.getHex(), bond, grain, wash, start.getHex(), end.getHex(), bleed]);
-  if (cache.has(key)) return cache.get(key);
-  const size = 256;
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  const pixels = ctx.createImageData(size, size);
-  const rgb = new THREE.Color();
-  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x-a)/(b-a))); return t*t*(3-2*t); };
-  for (let y = 0; y < size; y++) {
-    const v = 1 - (y + 0.5) / size;
-    for (let x = 0; x < size; x++) {
-      const u = (x + 0.5) / size;
-      const broad = pearlNoise2(u * 7, v * 9);
-      const fine = pearlNoise2(u * 93, v * 93);
-      rgb.copy(color);
-      if (bond) {
-        rgb.lerp(start, (1 - smooth(0, 0.48, v)) * bleed);
-        rgb.lerp(end, smooth(0.52, 1, v) * bleed);
-      }
-      const gain = 1 + wash * (broad - 0.5) + 3.5 * grain * (2 * fine - 1);
-      rgb.multiplyScalar(gain).convertLinearToSRGB();
-      const i = 4 * (y * size + x);
-      pixels.data[i] = Math.min(255, Math.max(0, Math.round(rgb.r * 255)));
-      pixels.data[i+1] = Math.min(255, Math.max(0, Math.round(rgb.g * 255)));
-      pixels.data[i+2] = Math.min(255, Math.max(0, Math.round(rgb.b * 255)));
-      pixels.data[i+3] = 255;
-    }
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{Pearl[], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{Opacity[0.1], Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOCqfDJLC6BqGAHEv4FicmZJZVFs2aCwE57iAwbkAguyEgtSk1jRtaXCaQZEAQAlPwaag=="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To modify the color and other properties, you need access to THREE.js classes and their objects. Most *heavy* libraries are shared through the `interpretate.shared` interface.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To modify the color and other properties, you need access to THREE.js classes and their objects. Most *heavy* libraries are shared through the `interpretate.shared` interface.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+let THREE;
+
+core.Pearl = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
   }
-  ctx.putImageData(pixels, 0, 0);
-  const map = new THREE.CanvasTexture(canvas);
-  map.colorSpace = THREE.SRGBColorSpace;
-  map.wrapS = map.wrapT = THREE.RepeatWrapping;
-  map.minFilter = THREE.LinearMipmapLinearFilter;
-  map.magFilter = THREE.LinearFilter;
-  // Roughness and normal maps are shared by all materials.
-  if (!cache.has('microstructure')) {
-    const roughData = new Uint8Array(size * size * 4);
-    const normalData = new Uint8Array(size * size * 4);
-    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-      const u = (x+0.5)/size, v = (y+0.5)/size;
-      const h = pearlNoise2(u*93, v*93);
-      const dx = pearlNoise2((u+1/size)*93, v*93) - pearlNoise2((u-1/size)*93, v*93);
-      const dy = pearlNoise2(u*93, (v+1/size)*93) - pearlNoise2(u*93, (v-1/size)*93);
-      const n = new THREE.Vector3(-dx, -dy, 1).normalize();
-      const i = 4 * (y*size+x), r = Math.round(205 + 45*h);
-      roughData.set([r,r,r,255], i);
-      normalData.set([Math.round(127.5*(n.x+1)),Math.round(127.5*(n.y+1)),Math.round(127.5*(n.z+1)),255], i);
-    }
-    const roughnessMap = new THREE.DataTexture(roughData,size,size);
-    const normalMap = new THREE.DataTexture(normalData,size,size);
-    for (const texture of [roughnessMap,normalMap]) {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      texture.minFilter = texture.magFilter = THREE.LinearFilter;
-      texture.needsUpdate = true;
-    }
-    cache.set('microstructure',{roughnessMap,normalMap});
-  }
-  const maps = {map,...cache.get('microstructure')};
-  cache.set(key,maps);
-  return maps;
+  env.color = new THREE.Color('gold');
 }
-
-function createPearlPhysicalMaterial(THREE, options = {}) {
-  const preset = options.preset ?? 'Lavender';
-  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
-  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const roughness = Math.min(1, Math.max(0.08, options.roughness ?? 0.42));
-  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
-  const highlight = Math.max(0, options.highlight ?? 1);
-  if (preset === 'Glass') {
-    return new THREE.MeshPhysicalMaterial({name:'Pearl physical / Glass',color,
-      roughness:0.65,metalness:0,opacity,transparent:true,depthWrite:false,
-      side:THREE.DoubleSide,transmission:0,ior:1.1,clearcoat:0});
-  }
-  const maps = pearlPhysicalMaps(THREE,options,color);
-  return new THREE.MeshPhysicalMaterial({
-    name:`Pearl physical / ${preset}`,color:0xffffff,...maps,
-    roughness:Math.min(1,roughness*0.90),
-    metalness:['Gold','GoldBond'].includes(preset) ? 0.18 : 0.025,
-    normalScale:new THREE.Vector2(grain*2,grain*2),
-    clearcoat:Math.min(1,0.45*highlight),clearcoatRoughness:0.18,
-    sheen:0.12,sheenColor:color.clone().lerp(new THREE.Color('white'),0.35),
-    sheenRoughness:0.55,specularIntensity:Math.min(2,highlight),ior:1.48,
-    opacity,transparent:opacity<1,depthWrite:opacity>=1,
-    side:opacity<1 ? THREE.DoubleSide : THREE.FrontSide
-  });
-}
-
-function addPearlStudioLighting(THREE, scene, camera, target = new THREE.Vector3(0,1,0)) {
-  if (scene.userData.pearlStudio) return scene.userData.pearlStudio;
-  const forward = camera.getWorldDirection(new THREE.Vector3()).normalize();
-  const right = new THREE.Vector3().crossVectors(forward,camera.up).normalize();
-  const up = new THREE.Vector3().crossVectors(right,forward).normalize();
-  const make = (x,y,z,intensity,width,height) => {
-    const light = new THREE.RectAreaLight(0xffffff,intensity,width,height);
-    light.position.copy(target).addScaledVector(right,x).addScaledVector(up,y).addScaledVector(forward,-z);
-    light.lookAt(target); scene.add(light); return light;
-  };
-  const lights = [make(-4,5,7,12,4,5), make(4,1,5,1.5,5,5)];
-  scene.userData.pearlStudio = lights;
-  return lights;
-}
-
-// WLJS adapter. Evaluate this cell before using PearlMaterial in Graphics3D.
-const ready = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
-core.PearlMaterial = async (args, env) => {
-  const THREE = await ready;
-  const values = await Promise.all(args.map(arg => interpretate(arg, env)));
-  const [preset = "Lavender", roughness = 0.42, grain = 0.014, opacity, highlight, wash = 0.10] = values;
-  if (!(preset in pearlPalette)) throw new Error("Unknown PearlMaterial preset: " + preset);
-  const pathTracing = env.PathRendering === true;
-  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
-  return function PearlMaterialFactory() {
-    return createPearlMaterial(THREE, {preset, roughness, grain, opacity, highlight, wash, pathTracing});
-  };
-};
-core.PearlBondMaterial = async (args, env) => {
-  const THREE = await ready;
-  const [preset = "Bond", start = "Lavender", end = "Lavender", bleed = 0.30,
-    roughness = 0.35, grain = 0.012] = await Promise.all(args.map(arg => interpretate(arg, env)));
-  for (const name of [preset, start, end]) {
-    if (!(name in pearlPalette)) throw new Error("Unknown pearl preset: " + name);
-  }
-  const pathTracing = env.PathRendering === true;
-  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
-  return function PearlBondMaterialFactory() {
-    return createPearlMaterial(THREE, {preset, roughness, grain, bond:true,
-      startColor:pearlPalette[start], endColor:pearlPalette[end], bleed, pathTracing});
-  };
-};
-// Static atom and bond swatches, rendered once with the raster shader.
-const panel = document.createElement('div');
-panel.style.cssText = 'background:white;border:1px solid #e1e5ea;border-radius:12px;padding:18px;max-width:720px;color:#17263d;font:14px system-ui';
-const status = document.createElement('div');
-status.textContent = 'Loading pearl materials…';
-panel.append(status);
-const swatches = document.createElement('div');
-swatches.style.cssText = 'position:relative;width:100%';
-panel.append(swatches);
-let renderer;
-const geometries = [];
-const materials = [];
-let destroyed = false;
-this.ondestroy = () => {
-  destroyed = true;
-  geometries.forEach(geometry => geometry.dispose());
-  materials.forEach(material => material.dispose());
-  renderer?.dispose();
-};
-ready.then(THREE => {
-  if (destroyed) return;
-  renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(640, 350);
-  if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
-  else renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.domElement.style.cssText = 'width:100%;height:auto;display:block';
-  swatches.append(renderer.domElement);
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color('white');
-  const camera = new THREE.OrthographicCamera(-3.6,3.6,1.96875,-1.96875,0.1,20);
-  camera.position.z = 6;
-  const sphere = new THREE.SphereGeometry(0.65,64,48);
-  const cylinder = new THREE.CylinderGeometry(0.115,0.115,1.75,48,16);
-  const endpoint = new THREE.SphereGeometry(0.19,32,24);
-  geometries.push(sphere,cylinder,endpoint);
-  const materialFor = options => {
-    const material = createPearlMaterial(THREE,options);
-    materials.push(material); return material;
-  };
-  ['Gold','Lavender','Teal'].forEach((preset,i) => {
-    const mesh = new THREE.Mesh(sphere,materialFor({preset,grain:0.014}));
-    mesh.position.set((i-1)*2.4,1.0,0);
-    scene.add(mesh);
-  });
-  const bonds = [
-    {preset:'Bond',start:'Lavender',end:'Lavender'},
-    {preset:'Bond',start:'Ice',end:'Lavender'},
-    {preset:'GoldBond',start:'Lavender',end:'Gold'}
-  ];
-  bonds.forEach(({preset,start,end},i) => {
-    const group = new THREE.Group();
-    group.position.set((i-1)*2.4,-0.95,0);
-    group.rotation.z = 0.12;
-    const rod = new THREE.Mesh(cylinder,materialFor({
-      preset,bond:true,roughness:0.35,grain:0.012,bleed:0.30,
-      startColor:pearlPalette[start],endColor:pearlPalette[end]
-    }));
-    // Cylinder v=0 is the bottom end; rotating it puts that end on the left.
-    rod.rotation.z = -Math.PI/2;
-    group.add(rod);
-    [start,end].forEach((atom,j) => {
-      const mesh = new THREE.Mesh(endpoint,materialFor({preset:atom,grain:0.014}));
-      mesh.position.x = (j-0.5)*1.75;
-      group.add(mesh);
-    });
-    scene.add(group);
-  });
-  const labels = (top,items) => {
-    const row = document.createElement('div');
-    row.style.cssText = 'position:absolute;left:0;right:0;top:'+top+'%;display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px;line-height:1.4;font-size:13px;pointer-events:none';
-    items.forEach(([title,detail]) => {
-      const label = document.createElement('div');
-      const name = document.createElement('strong'); name.textContent=title;
-      label.append(name);
-      if(detail) {
-        const sub=document.createElement('div'); sub.textContent=detail;
-        sub.style.cssText='color:#627087;font-size:11px';
-        label.append(sub);
-      }
-      row.append(label);
-    });
-    swatches.append(row);
-  };
-  labels(44,[['Gold','Atoms'],['Lavender','Atoms'],['Teal','Atoms']]);
-  labels(84,[['Bond','Lavender → Lavender'],['Bond · carbon end','Ice → Lavender'],['GoldBond','Lavender → Gold']]);
-  const errors = [];
-  renderer.debug.onShaderError = (gl,program,vertex,fragment) => {
-    errors.push(gl.getProgramInfoLog(program),gl.getShaderInfoLog(vertex),gl.getShaderInfoLog(fragment));
-  };
-  renderer.render(scene,camera);
-  if(errors.some(Boolean)) throw new Error(errors.filter(Boolean).join('\n'));
-  status.textContent='Pearl materials · atoms and bonds · raster preview · Three.js r'+THREE.REVISION;
-}).catch(error => {status.textContent='Shader error: '+error.message;console.error(error);});
-return panel;
 
 %-------------------------------------------------------------------------%
 Display: js
 Type: Output
 %-------------------------------------------------------------------------%
-// Raster shader and physical path-tracing backend. Material maps are generated locally.
-const pearlPalette = Object.freeze({
-  Gold: '#d8ae70', Lavender: '#ad9bd5', Teal: '#62a6b8',
-  Ice: '#cee6ef', Bond: '#b1a6cb', GoldBond: '#d6b17c', Glass: '#c8e4ed'
-});
+let THREE;
 
-function createPearlMaterial(THREE, options = {}) {
-  if (options.pathTracing || options.renderer === 'PathTracing') return createPearlPhysicalMaterial(THREE, options);
-  const preset = options.preset ?? 'Lavender';
-  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
+core.Pearl = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+  env.color = new THREE.Color('gold');
+}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{Pearl[], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{Pearl[], Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOCqfDJLC5JYwDxWIFEQGpiUQ5EAxuQCC7ISC1KTWNGVpwJUowgANMvFIE="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Mesh materials
+In the same way, we can supply custom shaders to use as materials for our objects. The Wolfram Language does not have an API for this, so WLJS adds one:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Mesh materials
+In the same way, we can supply custom shaders to use as materials for our objects. The Wolfram Language does not have an API for this, so WLJS adds one:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+MeshMaterial // Context 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+"CoffeeLiqueur`Extensions`Graphics3D`"
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+There are already a few built-in materials that react to lighting differently:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+There are already a few built-in materials that react to lighting differently:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{
+  PointLight[Red, {-2,0,5}],
+  PointLight[Green, 3{2,0,5}],
+  MeshMaterial[MeshToonMaterial[]], Sphere[{0,-2,0}],
+  MeshMaterial[MeshPhysicalMaterial[]], Sphere[{0,2,0}]
+}, Lighting->None]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{PointLight[RGBColor[1, 0, 0], {-2, 0, 5}], PointLight[RGBColor[0, 1, 0], {6, 0, 15}], MeshMaterial[MeshToonMaterial[]], Sphere[{0, -2, 0}], MeshMaterial[MeshPhysicalMaterial[]], Sphere[{0, 2, 0}]}, Lighting -> None])(*,*)(*"1:eJylUcsKwjAQbOsD8eI3+AeCHjz7QA+tSPUDWuvGLISsJinoz1ubSFsQBIuXgezMzs5mxyeKme95nu6WsCVxZoF9DUvYqPTKMdPTFetXihC1aRR7QmlCvHDDOrY2KCHeLJYkSKF1Ra+Ct6CywGdRFG+yZ8nfHJ3e/+LYr8eNLOl2mpSwJMYAQrzlkKtkfTcgNZLUSbNeEoHmUWpAYSqY9dCzFp1HIll3u7k2y+HKQcFHSJev3v3fkPMWnXv+0Jilok3QoP7qoCLjXIA7irsRyour7kjCC49nmL4="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To write your own, you need to know GLSL, the language used for GPU data processing. Everything you need is in the `THREE.ShaderMaterial` API:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To write your own, you need to know GLSL, the language used for GPU data processing. Everything you need is in the `THREE.ShaderMaterial` API:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.mermaid
+flowchart TB
+    %% Styling
+
+    classDef shader fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#f8fafc
+    classDef gpu fill:#7c2d12,stroke:#fb923c,stroke-width:2px,color:#f8fafc
+
+    subgraph CPU ["1. Three.js (CPU)"]
+        Mat["<b>ShaderMaterial</b><br/>• uniforms (global)<br/>• attributes (normals, colors etc)<br/>• vertex shader program<br/>• fragment shader program "]:::js
+    end
+
+    subgraph GPU ["2. GPU Pipeline"]
+        direction LR
+        VS["<b>Vertex Shader</b><br/>Positions each vertex<br/><i>Output: gl_Position</i>"]:::shader
+        Rast["<b>Rasterizer</b><br/>Turns triangles into pixels<br/>& interpolates <code>varying</code> data"]:::gpu
+        FS["<b>Fragment Shader</b><br/>Colors each pixel<br/><i>Output: gl_FragColor</i>"]:::shader
+        Screen["<b>Screen</b>"]:::gpu
+    end
+
+    Mat -->|"Attributes"| VS
+    Mat -->|"Uniforms"| FS
+    VS -->Rast
+    Rast --> FS
+    FS --> Screen
+
+
+
+%-------------------------------------------------------------------------%
+Display: mermaid
+Type: Output
+%-------------------------------------------------------------------------%
+flowchart TB
+    %% Styling
+
+    classDef shader fill:#4c1d95,stroke:#c084fc,stroke-width:2px,color:#f8fafc
+    classDef gpu fill:#7c2d12,stroke:#fb923c,stroke-width:2px,color:#f8fafc
+
+    subgraph CPU ["1. Three.js (CPU)"]
+        Mat["<b>ShaderMaterial</b><br/>• uniforms (global)<br/>• attributes (normals, colors etc)<br/>• vertex shader program<br/>• fragment shader program "]:::js
+    end
+
+    subgraph GPU ["2. GPU Pipeline"]
+        direction LR
+        VS["<b>Vertex Shader</b><br/>Positions each vertex<br/><i>Output: gl_Position</i>"]:::shader
+        Rast["<b>Rasterizer</b><br/>Turns triangles into pixels<br/>& interpolates <code>varying</code> data"]:::gpu
+        FS["<b>Fragment Shader</b><br/>Colors each pixel<br/><i>Output: gl_FragColor</i>"]:::shader
+        Screen["<b>Screen</b>"]:::gpu
+    end
+
+    Mat -->|"Attributes"| VS
+    Mat -->|"Uniforms"| FS
+    VS -->Rast
+    Rast --> FS
+    FS --> Screen
+
+
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Note that `MeshMaterial` expects the inner expression to return a material factory. Let's try the simplest one, using only a *fragment shader*:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Note that `MeshMaterial` expects the inner expression to return a material factory. Let's try the simplest one, using only a *fragment shader*:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+let THREE;
+
+core.PearlMaterial1 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 1',
+        uniforms: {},
+        fragmentShader: `
+          void main() {
+            gl_FragColor = vec4(1.0, 0.77, 0.34, 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+let THREE;
+
+core.PearlMaterial1 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 1',
+        uniforms: {},
+        fragmentShader: `
+          void main() {
+            gl_FragColor = vec4(1.0, 0.77, 0.34, 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{MeshMaterial[PearlMaterial1[]], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{MeshMaterial[PearlMaterial1[]], Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOCqfDJLC6BqDAAEs75aWmpqT6ZhaWppUUJrhUlqXnFmfl5xQkIrQm+qcUZvoklqUWZiTlpDCCdfEAiIDWxKAcmbAgxkQ1IBBdkpBalpjEj25cJ0oUgAM1NK9c="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Without a vertex shader, we don't know much about the camera position or viewpoint. However, if we define `vertexShader`, we also need to add boilerplate code that determines where the points of our mesh should be placed. This is typical in 3D applications:
+
+> We do this by calculating where the points are in the scene by multiplying the position of the mesh in the scene (modelViewMatrix) and the position of the point. After that we multiply this value with the camera's relation to the scene (projectionMatrix) so the camera settings within THREE.js are respected by our shader. The gl_Position is the value that the GPU takes to draw our points.
+> *https://dev.to/maniflames/creating-a-custom-shader-in-threejs-3bhi*
+
+Let's pass the data from the vertex shader to the fragment shader to create basic lighting:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Without a vertex shader, we don't know much about the camera position or viewpoint. However, if we define `vertexShader`, we also need to add boilerplate code that determines where the points of our mesh should be placed. This is typical in 3D applications:
+
+> We do this by calculating where the points are in the scene by multiplying the position of the mesh in the scene (modelViewMatrix) and the position of the point. After that we multiply this value with the camera's relation to the scene (projectionMatrix) so the camera settings within THREE.js are respected by our shader. The gl_Position is the value that the GPU takes to draw our points.
+> *https://dev.to/maniflames/creating-a-custom-shader-in-threejs-3bhi*
+
+Let's pass the data from the vertex shader to the fragment shader to create basic lighting:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+let THREE;
+
+core.PearlMaterial2 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 2',
+        uniforms: {},
+        vertexShader: `
+          varying vec3 vPaperNormal; //new!
+          void main() {
+            vPaperNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,      
+        fragmentShader: `
+          varying vec3 vPaperNormal;
+          void main() {
+            vec3 n = normalize(vPaperNormal);
+            gl_FragColor = vec4(vec3(1.0, 0.77, 0.34)*(clamp(dot(n, vec3(1.0,1.0,1.0)), 0.0,0.75) + 0.25), 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+let THREE;
+
+core.PearlMaterial2 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 2',
+        uniforms: {},
+        vertexShader: `
+          varying vec3 vPaperNormal; //new!
+          void main() {
+            vPaperNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,      
+        fragmentShader: `
+          varying vec3 vPaperNormal;
+          void main() {
+            vec3 n = normalize(vPaperNormal);
+            gl_FragColor = vec4(vec3(1.0, 0.77, 0.34)*(clamp(dot(n, vec3(1.0,1.0,1.0)), 0.0,0.75) + 0.25), 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{MeshMaterial[PearlMaterial2[]], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{MeshMaterial[PearlMaterial2[]], Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOCqfDJLC6BqDAAEs75aWmpqT6ZhaWppUUJrhUlqXnFmfl5xQkIrQm+qcUZvoklqUWZiTlpDCCdfEAiIDWxKAcmbAQxkQ1IBBdkpBalpjEj25cJ0oUgAM17K9g="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here, we normalize `vPaperNormal` because the fragment shader linearly interpolates it between pixel coordinates. This interpolation breaks the normalization.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here, we normalize `vPaperNormal` because the fragment shader linearly interpolates it between pixel coordinates. This interpolation breaks the normalization.
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To make it look like gold, we can add a tinted specular highlight (which makes metal look metallic). The vertex shader stays as is, while the fragment shader also uses the half-vector between the light and viewing directions. The normal is in view space, so the viewing direction is simply `(0, 0, 1)`. Because the highlight is multiplied by the gold color, it remains gold-tinted rather than white, which is how real metals behave.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To make it look like gold, we can add a tinted specular highlight (which makes metal look metallic). The vertex shader stays as is, while the fragment shader also uses the half-vector between the light and viewing directions. The normal is in view space, so the viewing direction is simply `(0, 0, 1)`. Because the highlight is multiplied by the gold color, it remains gold-tinted rather than white, which is how real metals behave.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+let THREE;
+
+core.PearlMaterial3 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 3',
+        uniforms: {},
+        vertexShader: `
+          varying vec3 vPaperNormal; //new!
+          void main() {
+            vPaperNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,      
+        fragmentShader: `
+          varying vec3 vPaperNormal;
+          void main() {
+            vec3 n = normalize(vPaperNormal), l = normalize(vec3(1.0));
+            float diff = clamp(dot(n, l), 0.0, 0.75) + 0.25;
+            float spec = pow(max(dot(n, normalize(l + vec3(0.0, 0.0, 1.0))), 0.0), 40.0);
+            
+            gl_FragColor = vec4(vec3(1.0, 0.77, 0.34) * (diff + spec * 1.5), 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+let THREE;
+
+core.PearlMaterial3 = async (args, env) => {
+  if (!THREE) {
+    await interpretate.shared.THREE.load()
+    THREE = interpretate.shared.THREE.THREE;
+  }
+
+  return function() {
+    return new THREE.ShaderMaterial({
+        name: 'PearlMaterial / Test 3',
+        uniforms: {},
+        vertexShader: `
+          varying vec3 vPaperNormal; //new!
+          void main() {
+            vPaperNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,      
+        fragmentShader: `
+          varying vec3 vPaperNormal;
+          void main() {
+            vec3 n = normalize(vPaperNormal), l = normalize(vec3(1.0));
+            float diff = clamp(dot(n, l), 0.0, 0.75) + 0.25;
+            float spec = pow(max(dot(n, normalize(l + vec3(0.0, 0.0, 1.0))), 0.0), 40.0);
+            
+            gl_FragColor = vec4(vec3(1.0, 0.77, 0.34) * (diff + spec * 1.5), 1.0);
+          }
+        `,
+        lights: false,
+        toneMapped: false
+      });    
+  }
+}
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Graphics3D[{MeshMaterial[PearlMaterial3[]], Sphere[]}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(Graphics3D[{MeshMaterial[PearlMaterial3[]], Sphere[{0, 0, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOCqfDJLC6BqDAAEs75aWmpqT6ZhaWppUUJrhUlqXnFmfl5xQkIrQm+qcUZvoklqUWZiTlpDCCdfEAiIDWxKAcmbAwxkQ1IBBdkpBalpjEj25cJ0oUgAM2pK9k="*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Neat!
+
+## HandInked Materials 🫟
+By exploring these ideas and adding a noisy texture on top, I prepared a set of mesh materials for `Graphics3D` that render surfaces as if they were hand-inked with softly glazed pigment: a flat key/fill shading model with paper-fleck grain, a soft sheen, and darkened edges.
+
+It includes a named palette (`Gold`, `Lavender`, `Teal`, `Coral`, etc.) plus custom colors and two special finishes: `Ice` (pearlescent, with grain adapted to atom size) and `Glass` (translucent, frosted sky-blue). To use it in your plot, copy and paste this shader code into your notebook:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Neat!
+
+## HandInked Materials 🫟
+By exploring these ideas and adding a noisy texture on top, I prepared a set of mesh materials for `Graphics3D` that render surfaces as if they were hand-inked with softly glazed pigment: a flat key/fill shading model with paper-fleck grain, a soft sheen, and darkened edges.
+
+It includes a named palette (`Gold`, `Lavender`, `Teal`, `Coral`, etc.) plus custom colors and two special finishes: `Ice` (pearlescent, with grain adapted to atom size) and `Glass` (translucent, frosted sky-blue). To use it in your plot, copy and paste this shader code into your notebook:
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: false
+  Fade: true
+Type: Input
+%-------------------------------------------------------------------------%
+.js
+const paperPalette = {
+  Gold: '#e8bd81',
+  Oxygen: '#dcaa5b',
+  Lavender: '#a47bd5',
+  Coral: '#f04b37',
+  Red: '#ed382a',
+  Teal: '#239bb8',
+  Cyan: '#38bedb',
+  Blue: '#1652bb',
+  Green: '#168c3c'
+};
+const paperReady = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
+
+// Ice-only raster material. 
+function createPaperIceRasterMaterial(THREE, options = {}) {
   const roughness = Math.min(1, Math.max(0, options.roughness ?? 0.42));
   const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const isBond = options.bond ?? (preset === 'Bond' || preset === 'GoldBond');
-  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? 1));
   const outputChunk = THREE.ShaderChunk.colorspace_fragment
     ? 'colorspace_fragment' : 'encodings_fragment';
   const material = new THREE.ShaderMaterial({
-    name: `Pearl / ${preset}`,
+    name: 'Pearl / Ice',
     uniforms: {
-      baseColor: { value: color },
+      baseColor: { value: new THREE.Color('#cee6ef') },
       pearlRoughness: { value: roughness },
       pearlGrain: { value: grain },
       pearlOpacity: { value: opacity },
-      pearlHighlight: { value: options.highlight ?? (preset === 'Glass' ? 0.0 : 1.0) },
-      pearlWash: { value: options.wash ?? (isBond ? 0.22 : 0.10) },
-      pearlGlass: { value: preset === 'Glass' ? 1.0 : 0.0 },
-      pearlBond: { value: isBond ? 1.0 : 0.0 },
-      pearlBleed: { value: options.bleed ?? (isBond ? 0.30 : 0.0) },
-      startColor: { value: new THREE.Color(options.startColor ?? color) },
-      endColor: { value: new THREE.Color(options.endColor ?? color) },
+      pearlHighlight: { value: options.highlight ?? 1.0 },
+      pearlWash: { value: options.wash ?? 0.10 },
       keyDirection: { value: new THREE.Vector3(-0.65, 0.85, 1.25).normalize() },
       fillDirection: { value: new THREE.Vector3(0.8, -0.2, 0.6).normalize() }
     },
@@ -476,13 +665,11 @@ function createPearlMaterial(THREE, options = {}) {
       varying vec3 pearlNormal;
       varying vec3 pearlViewPosition;
       varying vec3 pearlLocalPosition;
-      varying vec2 pearlUv;
       void main() {
         #include <beginnormal_vertex>
         #include <defaultnormal_vertex>
         pearlNormal = normalize(transformedNormal);
         pearlLocalPosition = position;
-        pearlUv = uv;
         #include <begin_vertex>
         #include <project_vertex>
         pearlViewPosition = -mvPosition.xyz;
@@ -497,15 +684,9 @@ function createPearlMaterial(THREE, options = {}) {
       uniform float pearlOpacity;
       uniform float pearlHighlight;
       uniform float pearlWash;
-      uniform float pearlGlass;
-      uniform float pearlBond;
-      uniform float pearlBleed;
-      uniform vec3 startColor;
-      uniform vec3 endColor;
       varying vec3 pearlNormal;
       varying vec3 pearlViewPosition;
       varying vec3 pearlLocalPosition;
-      varying vec2 pearlUv;
       float grainHash(vec3 p) {
         p = fract(p * 0.1031);
         p += dot(p, p.yzx + 33.33);
@@ -532,16 +713,12 @@ function createPearlMaterial(THREE, options = {}) {
         float wash = grainNoise(pearlLocalPosition * 2.8 + vec3(11.7, 4.2, 8.1));
         float broad = pow(max(dot(N, H), 0.0), mix(16.0, 4.0, pearlRoughness));
         float tight = pow(max(dot(N, H), 0.0), mix(130.0, 30.0, pearlRoughness));
-        vec3 pigment = baseColor;
-        float startWeight = 1.0 - smoothstep(0.0, 0.48, pearlUv.y);
-        float endWeight = smoothstep(0.52, 1.0, pearlUv.y);
-        pigment = mix(pigment, startColor, startWeight * pearlBond * pearlBleed);
-        pigment = mix(pigment, endColor, endWeight * pearlBond * pearlBleed);
-        pigment *= mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
+        vec3 pigment = baseColor *
+          mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
           (1.0 + pearlWash * (wash - 0.5));
         float shade = (0.34 + 0.66 * key + 0.07 * fill) * (1.0 - 0.18 * edge);
         vec3 rgb = pigment * shade;
-        // Keep grain visible as atoms get smaller: blend to coarser surface noise.
+        // Adapt grain to the visible size of each atom.
         float footprint = max(length(dFdx(pearlLocalPosition)), length(dFdy(pearlLocalPosition)));
         float fineWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 64.0);
         float mediumWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 16.0);
@@ -551,10 +728,7 @@ function createPearlMaterial(THREE, options = {}) {
         float fine = grainNoise(pearlLocalPosition * 64.0);
         float surfaceGrain = mix(coarse, medium, mediumWeight);
         surfaceGrain = mix(surfaceGrain, fine, fineWeight);
-        // Value noise is smoothed; restore useful contrast for the strength control.
         rgb *= 1.0 + 3.5 * pearlGrain * coarseWeight * (2.0 * surfaceGrain - 1.0);
-        rgb = mix(rgb, baseColor * (0.92 + 0.08 * key), pearlGlass);
-        // Broad pearl sheen plus a brighter softbox core, added in linear light.
         float highlight = (0.40 * broad + 0.22 * tight) * pearlHighlight;
         highlight *= 1.0 + 0.20 * (wash - 0.5);
         rgb += vec3(1.0, 0.975, 0.94) * highlight;
@@ -563,270 +737,460 @@ function createPearlMaterial(THREE, options = {}) {
         #include <${outputChunk}>
       }
     `,
-    // Deliberately self-lit: a portable illustration look under any scene lights.
     lights: false,
     toneMapped: false,
     transparent: opacity < 1,
     depthWrite: opacity >= 1,
     side: opacity < 1 ? THREE.DoubleSide : THREE.FrontSide
   });
-  // Also works with older Three.js WebGL1 builds used by some WLJS versions.
   material.extensions.derivatives = true;
   return material;
 }
 
-// Baked material maps are shared between matching presets, including repeated bonds.
-const pearlPhysicalCaches = new WeakMap();
-
-function pearlNoise2(x, y) {
-  const hash = (a, b) => {
-    let n = Math.imul(a, 374761393) ^ Math.imul(b, 668265263);
-    n = Math.imul(n ^ (n >>> 13), 1274126177);
-    return ((n ^ (n >>> 16)) >>> 0) / 4294967295;
-  };
-  const ix = Math.floor(x), iy = Math.floor(y);
-  let fx = x - ix, fy = y - iy;
-  fx *= fx * (3 - 2 * fx); fy *= fy * (3 - 2 * fy);
-  const a = hash(ix, iy), b = hash(ix + 1, iy);
-  const c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
-  return (a + (b - a) * fx) * (1 - fy) + (c + (d - c) * fx) * fy;
-}
-
-function pearlPhysicalMaps(THREE, options, color) {
-  let cache = pearlPhysicalCaches.get(THREE);
-  if (!cache) { cache = new Map(); pearlPhysicalCaches.set(THREE, cache); }
-  const bond = options.bond ?? ['Bond', 'GoldBond'].includes(options.preset);
-  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const wash = options.wash ?? (bond ? 0.22 : 0.10);
-  const start = new THREE.Color(options.startColor ?? color);
-  const end = new THREE.Color(options.endColor ?? color);
-  const bleed = Math.min(1, Math.max(0, options.bleed ?? (bond ? 0.30 : 0)));
-  const key = JSON.stringify([color.getHex(), bond, grain, wash, start.getHex(), end.getHex(), bleed]);
-  if (cache.has(key)) return cache.get(key);
-  const size = 256;
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  const pixels = ctx.createImageData(size, size);
-  const rgb = new THREE.Color();
-  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x-a)/(b-a))); return t*t*(3-2*t); };
-  for (let y = 0; y < size; y++) {
-    const v = 1 - (y + 0.5) / size;
-    for (let x = 0; x < size; x++) {
-      const u = (x + 0.5) / size;
-      const broad = pearlNoise2(u * 7, v * 9);
-      const fine = pearlNoise2(u * 93, v * 93);
-      rgb.copy(color);
-      if (bond) {
-        rgb.lerp(start, (1 - smooth(0, 0.48, v)) * bleed);
-        rgb.lerp(end, smooth(0.52, 1, v) * bleed);
-      }
-      const gain = 1 + wash * (broad - 0.5) + 3.5 * grain * (2 * fine - 1);
-      rgb.multiplyScalar(gain).convertLinearToSRGB();
-      const i = 4 * (y * size + x);
-      pixels.data[i] = Math.min(255, Math.max(0, Math.round(rgb.r * 255)));
-      pixels.data[i+1] = Math.min(255, Math.max(0, Math.round(rgb.g * 255)));
-      pixels.data[i+2] = Math.min(255, Math.max(0, Math.round(rgb.b * 255)));
-      pixels.data[i+3] = 255;
-    }
+core.HandInked = async (args, env) => {
+  const THREE = await paperReady;
+  let uni;
+  let preset = 'Gold';
+  if (args.length > 0) preset = await interpretate(args[0], env);
+  if (preset === 'Ice') {
+    const values = await Promise.all(args.slice(1).map(arg => interpretate(arg, env)));
+    const [roughness = 0.42, grain = 0.014, opacity = 1, highlight = 1, wash = 0.10] = values;
+    return function PaperIceFactory() {
+      return createPaperIceRasterMaterial(THREE, {roughness, grain, opacity, highlight, wash});
+    };
   }
-  ctx.putImageData(pixels, 0, 0);
-  const map = new THREE.CanvasTexture(canvas);
-  map.colorSpace = THREE.SRGBColorSpace;
-  map.wrapS = map.wrapT = THREE.RepeatWrapping;
-  map.minFilter = THREE.LinearMipmapLinearFilter;
-  map.magFilter = THREE.LinearFilter;
-  // Roughness and normal maps are shared by all materials.
-  if (!cache.has('microstructure')) {
-    const roughData = new Uint8Array(size * size * 4);
-    const normalData = new Uint8Array(size * size * 4);
-    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
-      const u = (x+0.5)/size, v = (y+0.5)/size;
-      const h = pearlNoise2(u*93, v*93);
-      const dx = pearlNoise2((u+1/size)*93, v*93) - pearlNoise2((u-1/size)*93, v*93);
-      const dy = pearlNoise2(u*93, (v+1/size)*93) - pearlNoise2(u*93, (v-1/size)*93);
-      const n = new THREE.Vector3(-dx, -dy, 1).normalize();
-      const i = 4 * (y*size+x), r = Math.round(205 + 45*h);
-      roughData.set([r,r,r,255], i);
-      normalData.set([Math.round(127.5*(n.x+1)),Math.round(127.5*(n.y+1)),Math.round(127.5*(n.z+1)),255], i);
-    }
-    const roughnessMap = new THREE.DataTexture(roughData,size,size);
-    const normalMap = new THREE.DataTexture(normalData,size,size);
-    for (const texture of [roughnessMap,normalMap]) {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      texture.minFilter = texture.magFilter = THREE.LinearFilter;
-      texture.needsUpdate = true;
-    }
-    cache.set('microstructure',{roughnessMap,normalMap});
-  }
-  const maps = {map,...cache.get('microstructure')};
-  cache.set(key,maps);
-  return maps;
-}
-
-function createPearlPhysicalMaterial(THREE, options = {}) {
-  const preset = options.preset ?? 'Lavender';
-  const color = new THREE.Color(options.color ?? pearlPalette[preset] ?? preset);
-  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
-  const roughness = Math.min(1, Math.max(0.08, options.roughness ?? 0.42));
-  const opacity = Math.min(1, Math.max(0, options.opacity ?? (preset === 'Glass' ? 0.16 : 1)));
-  const highlight = Math.max(0, options.highlight ?? 1);
   if (preset === 'Glass') {
-    return new THREE.MeshPhysicalMaterial({name:'Pearl physical / Glass',color,
-      roughness:0.65,metalness:0,opacity,transparent:true,depthWrite:false,
-      side:THREE.DoubleSide,transmission:0,ior:1.1,clearcoat:0});
+    // Fixed-opacity sky-blue glass
+    const requestedFrost = args.length > 1 ? await interpretate(args[1], env) : 0.2;
+    const frostAmount = Number.isFinite(Number(requestedFrost))
+      ? Math.max(0, Math.min(2.5, Number(requestedFrost))) : 0.20;
+    const outputChunk = THREE.ShaderChunk.colorspace_fragment ? 'colorspace_fragment' : 'encodings_fragment';
+    return function PaperGlassFactory() {
+      // Alpha comes from this shader, not from surrounding Graphics3D Opacity directives.
+      return new THREE.ShaderMaterial({
+        name: 'Paper / Glass',
+        uniforms: {
+          glassTint: { value: new THREE.Color('#77c5df') },
+          glassGlint: { value: new THREE.Color('#e9faff') },
+          glassOpacity: { value: 0.09 },
+          glassFrost: { value: frostAmount }
+        },
+        vertexShader: `
+          varying vec3 vGlassNormal;
+          varying vec3 vGlassLocal;
+          void main() {
+            vGlassNormal = normalize(normalMatrix * normal);
+            vGlassLocal = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 glassTint;
+          uniform vec3 glassGlint;
+          uniform float glassOpacity;
+          uniform float glassFrost;
+          varying vec3 vGlassNormal;
+          varying vec3 vGlassLocal;
+          float hash31(vec3 p) {
+            p = fract(p * 0.1031);
+            p += dot(p, p.yzx + 33.33);
+            return fract((p.x + p.y) * p.z);
+          }
+          float noise3(vec3 p) {
+            vec3 cell = floor(p), f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+            return mix(
+              mix(mix(hash31(cell), hash31(cell + vec3(1,0,0)), f.x),
+                  mix(hash31(cell + vec3(0,1,0)), hash31(cell + vec3(1,1,0)), f.x), f.y),
+              mix(mix(hash31(cell + vec3(0,0,1)), hash31(cell + vec3(1,0,1)), f.x),
+                  mix(hash31(cell + vec3(0,1,1)), hash31(cell + vec3(1,1,1)), f.x), f.y), f.z);
+          }
+          void main() {
+            vec3 N = normalize(vGlassNormal);
+            if (!gl_FrontFacing) N = -N;
+            vec3 V = vec3(0.0, 0.0, 1.0);
+            vec3 key = normalize(vec3(-0.45, 0.78, 0.95));
+            float facing = abs(dot(N, V));
+            float rim = pow(1.0 - facing, 1.65);
+            float light = 0.86 + 0.15 * max(dot(N, key), 0.0);
+            float glint = pow(max(dot(N, normalize(key + V)), 0.0), 22.0);
+            float cloud = noise3(vGlassLocal * 8.0 + vec3(7.1, 1.3, 2.9));
+            float fiber = noise3(vGlassLocal * 31.0 + vec3(2.4, 8.7, 4.2));
+            float frost = 1.5 * (cloud - 0.5) + 0.5 * (fiber - 0.5);
+            float speck = hash31(vec3(floor(gl_FragCoord.xy / 2.5), 1.71));
+            vec3 rgb = glassTint * light * (1.0 + 0.35 * glassFrost * frost);
+            rgb = mix(rgb, glassGlint, 0.14 * glint);
+            rgb *= 1.0 - 0.20 * rim;
+            float veil = clamp(1.0 + 2.2 * glassFrost * frost, 0.30, 2.10);
+            float alpha = clamp(glassOpacity * (0.78 + 1.45 * rim + 0.16 * glint)
+              * veil * (1.0 + 0.20 * glassFrost * (speck - 0.5)), 0.0, 0.52);
+            gl_FragColor = vec4(max(rgb, vec3(0.0)), alpha);
+            #include <${outputChunk}>
+          }
+        `,
+        lights: false,
+        toneMapped: false,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide
+      });
+    };
   }
-  const maps = pearlPhysicalMaps(THREE,options,color);
-  return new THREE.MeshPhysicalMaterial({
-    name:`Pearl physical / ${preset}`,color:0xffffff,...maps,
-    roughness:Math.min(1,roughness*0.90),
-    metalness:['Gold','GoldBond'].includes(preset) ? 0.18 : 0.025,
-    normalScale:new THREE.Vector2(grain*2,grain*2),
-    clearcoat:Math.min(1,0.45*highlight),clearcoatRoughness:0.18,
-    sheen:0.12,sheenColor:color.clone().lerp(new THREE.Color('white'),0.35),
-    sheenRoughness:0.55,specularIntensity:Math.min(2,highlight),ior:1.48,
-    opacity,transparent:opacity<1,depthWrite:opacity>=1,
-    side:opacity<1 ? THREE.DoubleSide : THREE.FrontSide
-  });
-}
-
-function addPearlStudioLighting(THREE, scene, camera, target = new THREE.Vector3(0,1,0)) {
-  if (scene.userData.pearlStudio) return scene.userData.pearlStudio;
-  const forward = camera.getWorldDirection(new THREE.Vector3()).normalize();
-  const right = new THREE.Vector3().crossVectors(forward,camera.up).normalize();
-  const up = new THREE.Vector3().crossVectors(right,forward).normalize();
-  const make = (x,y,z,intensity,width,height) => {
-    const light = new THREE.RectAreaLight(0xffffff,intensity,width,height);
-    light.position.copy(target).addScaledVector(right,x).addScaledVector(up,y).addScaledVector(forward,-z);
-    light.lookAt(target); scene.add(light); return light;
-  };
-  const lights = [make(-4,5,7,12,4,5), make(4,1,5,1.5,5,5)];
-  scene.userData.pearlStudio = lights;
-  return lights;
-}
-
-// WLJS adapter. Evaluate this cell before using PearlMaterial in Graphics3D.
-const ready = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
-core.PearlMaterial = async (args, env) => {
-  const THREE = await ready;
-  const values = await Promise.all(args.map(arg => interpretate(arg, env)));
-  const [preset = "Lavender", roughness = 0.42, grain = 0.014, opacity, highlight, wash = 0.10] = values;
-  if (!(preset in pearlPalette)) throw new Error("Unknown PearlMaterial preset: " + preset);
-  const pathTracing = env.PathRendering === true;
-  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
-  return function PearlMaterialFactory() {
-    return createPearlMaterial(THREE, {preset, roughness, grain, opacity, highlight, wash, pathTracing});
-  };
-};
-core.PearlBondMaterial = async (args, env) => {
-  const THREE = await ready;
-  const [preset = "Bond", start = "Lavender", end = "Lavender", bleed = 0.30,
-    roughness = 0.35, grain = 0.012] = await Promise.all(args.map(arg => interpretate(arg, env)));
-  for (const name of [preset, start, end]) {
-    if (!(name in pearlPalette)) throw new Error("Unknown pearl preset: " + name);
+  
+  if (paperPalette[preset]) {
+    const color = new THREE.Color(paperPalette[preset]);
+    uni = { pigment: { value: color }, shineTint: { value: new THREE.Color(preset === 'Lavender' ? '#ffffff' : (preset === 'Teal' || preset === 'Cyan') ? '#d9faff' : '#fff5de') }, shineScale: { value: (preset === 'Red' || preset === 'Cyan') ? 0.43 : 1.0 } };
+  } else {
+    uni = { pigment: { value: preset }, shineTint: { value: (await interpretate(args[1], env)) || new THREE.Color('#fff5de') }, shineScale: { value: (await interpretate(args[2], env)) || 1.0 } };
+    preset = interpretate.hashv2(uni);
   }
-  const pathTracing = env.PathRendering === true;
-  if (pathTracing) addPearlStudioLighting(THREE, env.global.scene, env.camera, env.controlObject?.o?.target);
-  return function PearlBondMaterialFactory() {
-    return createPearlMaterial(THREE, {preset, roughness, grain, bond:true,
-      startColor:pearlPalette[start], endColor:pearlPalette[end], bleed, pathTracing});
-  };
-};
-// Static atom and bond swatches, rendered once with the raster shader.
-const panel = document.createElement('div');
-panel.style.cssText = 'background:white;border:1px solid #e1e5ea;border-radius:12px;padding:18px;max-width:720px;color:#17263d;font:14px system-ui';
-const status = document.createElement('div');
-status.textContent = 'Loading pearl materials…';
-panel.append(status);
-const swatches = document.createElement('div');
-swatches.style.cssText = 'position:relative;width:100%';
-panel.append(swatches);
-let renderer;
-const geometries = [];
-const materials = [];
-let destroyed = false;
-this.ondestroy = () => {
-  destroyed = true;
-  geometries.forEach(geometry => geometry.dispose());
-  materials.forEach(material => material.dispose());
-  renderer?.dispose();
-};
-ready.then(THREE => {
-  if (destroyed) return;
-  renderer = new THREE.WebGLRenderer({antialias:true, alpha:false});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer.setSize(640, 350);
-  if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
-  else renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.domElement.style.cssText = 'width:100%;height:auto;display:block';
-  swatches.append(renderer.domElement);
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color('white');
-  const camera = new THREE.OrthographicCamera(-3.6,3.6,1.96875,-1.96875,0.1,20);
-  camera.position.z = 6;
-  const sphere = new THREE.SphereGeometry(0.65,64,48);
-  const cylinder = new THREE.CylinderGeometry(0.115,0.115,1.75,48,16);
-  const endpoint = new THREE.SphereGeometry(0.19,32,24);
-  geometries.push(sphere,cylinder,endpoint);
-  const materialFor = options => {
-    const material = createPearlMaterial(THREE,options);
-    materials.push(material); return material;
-  };
-  ['Gold','Lavender','Teal'].forEach((preset,i) => {
-    const mesh = new THREE.Mesh(sphere,materialFor({preset,grain:0.014}));
-    mesh.position.set((i-1)*2.4,1.0,0);
-    scene.add(mesh);
-  });
-  const bonds = [
-    {preset:'Bond',start:'Lavender',end:'Lavender'},
-    {preset:'Bond',start:'Ice',end:'Lavender'},
-    {preset:'GoldBond',start:'Lavender',end:'Gold'}
-  ];
-  bonds.forEach(({preset,start,end},i) => {
-    const group = new THREE.Group();
-    group.position.set((i-1)*2.4,-0.95,0);
-    group.rotation.z = 0.12;
-    const rod = new THREE.Mesh(cylinder,materialFor({
-      preset,bond:true,roughness:0.35,grain:0.012,bleed:0.30,
-      startColor:pearlPalette[start],endColor:pearlPalette[end]
-    }));
-    // Cylinder v=0 is the bottom end; rotating it puts that end on the left.
-    rod.rotation.z = -Math.PI/2;
-    group.add(rod);
-    [start,end].forEach((atom,j) => {
-      const mesh = new THREE.Mesh(endpoint,materialFor({preset:atom,grain:0.014}));
-      mesh.position.x = (j-0.5)*1.75;
-      group.add(mesh);
+  
+  const outputChunk = THREE.ShaderChunk.colorspace_fragment ? 'colorspace_fragment' : 'encodings_fragment';
+  return function PaperMaterialFactory() {
+    const material = new THREE.ShaderMaterial({
+      name: 'Paper / ' + preset,
+      uniforms: uni,
+      vertexShader: `
+        varying vec3 vPaperNormal;
+        varying vec3 vPaperPosition;
+        void main() {
+          vPaperNormal = normalize(normalMatrix * normal);
+          vPaperPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 pigment;
+        uniform vec3 shineTint;
+        uniform float shineScale;
+        varying vec3 vPaperNormal;
+        varying vec3 vPaperPosition;
+        float hash31(vec3 p) {
+          p = fract(p * 0.1031);
+          p += dot(p, p.yzx + 33.33);
+          return fract((p.x + p.y) * p.z);
+        }
+        float noise3(vec3 p) {
+          vec3 i = floor(p), f = fract(p);
+          f = f*f*(3.0-2.0*f);
+          return mix(
+            mix(mix(hash31(i),hash31(i+vec3(1,0,0)),f.x),
+                mix(hash31(i+vec3(0,1,0)),hash31(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(hash31(i+vec3(0,0,1)),hash31(i+vec3(1,0,1)),f.x),
+                mix(hash31(i+vec3(0,1,1)),hash31(i+vec3(1,1,1)),f.x),f.y),f.z);
+        }
+        void main() {
+          vec3 N = normalize(vPaperNormal);
+          vec3 key = normalize(vec3(-0.45, 0.78, 0.95));
+          vec3 fill = normalize(vec3(0.78, 0.15, 0.5));
+          vec3 V = vec3(0.0, 0.0, 1.0);
+          float lit = max(dot(N,key),0.0);
+          float shade = 0.41 + 0.58 * pow(lit,0.72) + 0.08 * max(dot(N,fill),0.0);
+          float facing = max(dot(N,V),0.0);
+          float ink = 1.0 - 0.34 * pow(1.0-facing,2.2);
+          vec3 H = normalize(key+V);
+          float softbox = pow(max(dot(N,H),0.0),8.0);
+          float core = pow(max(dot(N,H),0.0),42.0);
+          float fleck = noise3(vPaperPosition*26.0);
+          float micro = noise3(vPaperPosition*55.0);
+          float paper = 1.0 + 0.11*(fleck-0.5) + 0.065*(micro-0.5);
+          vec3 rgb = pigment * shade * ink * paper;
+          rgb += shineTint * shineScale * (0.36*softbox + 0.13*core);
+          gl_FragColor = vec4(max(rgb,vec3(0.0)),1.0);
+          #include <${outputChunk}>
+        }
+      `,
+      lights: false,
+      toneMapped: false
     });
-    scene.add(group);
-  });
-  const labels = (top,items) => {
-    const row = document.createElement('div');
-    row.style.cssText = 'position:absolute;left:0;right:0;top:'+top+'%;display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px;line-height:1.4;font-size:13px;pointer-events:none';
-    items.forEach(([title,detail]) => {
-      const label = document.createElement('div');
-      const name = document.createElement('strong'); name.textContent=title;
-      label.append(name);
-      if(detail) {
-        const sub=document.createElement('div'); sub.textContent=detail;
-        sub.style.cssText='color:#627087;font-size:11px';
-        label.append(sub);
+    return material;
+  };
+};
+return 'HandInked registered';
+
+%-------------------------------------------------------------------------%
+Display: js
+Type: Output
+%-------------------------------------------------------------------------%
+
+const paperPalette = {
+  Gold: '#e8bd81',
+  Oxygen: '#dcaa5b',
+  Lavender: '#a47bd5',
+  Coral: '#f04b37',
+  Red: '#ed382a',
+  Teal: '#239bb8',
+  Cyan: '#38bedb',
+  Blue: '#1652bb',
+  Green: '#168c3c'
+};
+const paperReady = interpretate.shared.THREE.load().then(() => interpretate.shared.THREE.THREE);
+
+// Ice-only raster material. 
+function createPaperIceRasterMaterial(THREE, options = {}) {
+  const roughness = Math.min(1, Math.max(0, options.roughness ?? 0.42));
+  const grain = Math.min(0.1, Math.max(0, options.grain ?? 0.014));
+  const opacity = Math.min(1, Math.max(0, options.opacity ?? 1));
+  const outputChunk = THREE.ShaderChunk.colorspace_fragment
+    ? 'colorspace_fragment' : 'encodings_fragment';
+  const material = new THREE.ShaderMaterial({
+    name: 'Pearl / Ice',
+    uniforms: {
+      baseColor: { value: new THREE.Color('#cee6ef') },
+      pearlRoughness: { value: roughness },
+      pearlGrain: { value: grain },
+      pearlOpacity: { value: opacity },
+      pearlHighlight: { value: options.highlight ?? 1.0 },
+      pearlWash: { value: options.wash ?? 0.10 },
+      keyDirection: { value: new THREE.Vector3(-0.65, 0.85, 1.25).normalize() },
+      fillDirection: { value: new THREE.Vector3(0.8, -0.2, 0.6).normalize() }
+    },
+    vertexShader: `
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      void main() {
+        #include <beginnormal_vertex>
+        #include <defaultnormal_vertex>
+        pearlNormal = normalize(transformedNormal);
+        pearlLocalPosition = position;
+        #include <begin_vertex>
+        #include <project_vertex>
+        pearlViewPosition = -mvPosition.xyz;
       }
-      row.append(label);
+    `,
+    fragmentShader: `
+      uniform vec3 baseColor;
+      uniform vec3 keyDirection;
+      uniform vec3 fillDirection;
+      uniform float pearlRoughness;
+      uniform float pearlGrain;
+      uniform float pearlOpacity;
+      uniform float pearlHighlight;
+      uniform float pearlWash;
+      varying vec3 pearlNormal;
+      varying vec3 pearlViewPosition;
+      varying vec3 pearlLocalPosition;
+      float grainHash(vec3 p) {
+        p = fract(p * 0.1031);
+        p += dot(p, p.yzx + 33.33);
+        return fract((p.x + p.y) * p.z);
+      }
+      float grainNoise(vec3 p) {
+        vec3 cell = floor(p);
+        vec3 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(
+          mix(mix(grainHash(cell), grainHash(cell + vec3(1,0,0)), f.x),
+              mix(grainHash(cell + vec3(0,1,0)), grainHash(cell + vec3(1,1,0)), f.x), f.y),
+          mix(mix(grainHash(cell + vec3(0,0,1)), grainHash(cell + vec3(1,0,1)), f.x),
+              mix(grainHash(cell + vec3(0,1,1)), grainHash(cell + vec3(1,1,1)), f.x), f.y), f.z);
+      }
+      void main() {
+        vec3 N = normalize(pearlNormal) * (gl_FrontFacing ? 1.0 : -1.0);
+        vec3 V = isOrthographic ? vec3(0.0, 0.0, 1.0) : normalize(pearlViewPosition);
+        vec3 H = normalize(keyDirection + V);
+        float key = pow(clamp(dot(N, keyDirection) * 0.5 + 0.5, 0.0, 1.0), 1.3);
+        float fill = max(dot(N, fillDirection), 0.0);
+        float facing = max(dot(N, V), 0.0);
+        float edge = pow(1.0 - facing, 2.0);
+        float wash = grainNoise(pearlLocalPosition * 2.8 + vec3(11.7, 4.2, 8.1));
+        float broad = pow(max(dot(N, H), 0.0), mix(16.0, 4.0, pearlRoughness));
+        float tight = pow(max(dot(N, H), 0.0), mix(130.0, 30.0, pearlRoughness));
+        vec3 pigment = baseColor *
+          mix(vec3(0.93, 0.96, 1.06), vec3(1.06, 1.01, 0.96), wash) *
+          (1.0 + pearlWash * (wash - 0.5));
+        float shade = (0.34 + 0.66 * key + 0.07 * fill) * (1.0 - 0.18 * edge);
+        vec3 rgb = pigment * shade;
+        // Adapt grain to the visible size of each atom.
+        float footprint = max(length(dFdx(pearlLocalPosition)), length(dFdy(pearlLocalPosition)));
+        float fineWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 64.0);
+        float mediumWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 16.0);
+        float coarseWeight = 1.0 - smoothstep(0.35, 1.2, footprint * 4.0);
+        float coarse = grainNoise(pearlLocalPosition * 4.0);
+        float medium = grainNoise(pearlLocalPosition * 16.0);
+        float fine = grainNoise(pearlLocalPosition * 64.0);
+        float surfaceGrain = mix(coarse, medium, mediumWeight);
+        surfaceGrain = mix(surfaceGrain, fine, fineWeight);
+        rgb *= 1.0 + 3.5 * pearlGrain * coarseWeight * (2.0 * surfaceGrain - 1.0);
+        float highlight = (0.40 * broad + 0.22 * tight) * pearlHighlight;
+        highlight *= 1.0 + 0.20 * (wash - 0.5);
+        rgb += vec3(1.0, 0.975, 0.94) * highlight;
+        rgb += mix(pigment, vec3(0.7, 0.8, 0.94), 0.5) * edge * 0.075;
+        gl_FragColor = vec4(max(rgb, vec3(0.0)), pearlOpacity);
+        #include <${outputChunk}>
+      }
+    `,
+    lights: false,
+    toneMapped: false,
+    transparent: opacity < 1,
+    depthWrite: opacity >= 1,
+    side: opacity < 1 ? THREE.DoubleSide : THREE.FrontSide
+  });
+  material.extensions.derivatives = true;
+  return material;
+}
+
+core.HandInked = async (args, env) => {
+  const THREE = await paperReady;
+  let uni;
+  let preset = 'Gold';
+  if (args.length > 0) preset = await interpretate(args[0], env);
+  if (preset === 'Ice') {
+    const values = await Promise.all(args.slice(1).map(arg => interpretate(arg, env)));
+    const [roughness = 0.42, grain = 0.014, opacity = 1, highlight = 1, wash = 0.10] = values;
+    return function PaperIceFactory() {
+      return createPaperIceRasterMaterial(THREE, {roughness, grain, opacity, highlight, wash});
+    };
+  }
+  if (preset === 'Glass') {
+    // Fixed-opacity sky-blue glass
+    const requestedFrost = args.length > 1 ? await interpretate(args[1], env) : 0.2;
+    const frostAmount = Number.isFinite(Number(requestedFrost))
+      ? Math.max(0, Math.min(2.5, Number(requestedFrost))) : 0.20;
+    const outputChunk = THREE.ShaderChunk.colorspace_fragment ? 'colorspace_fragment' : 'encodings_fragment';
+    return function PaperGlassFactory() {
+      // Alpha comes from this shader, not from surrounding Graphics3D Opacity directives.
+      return new THREE.ShaderMaterial({
+        name: 'Paper / Glass',
+        uniforms: {
+          glassTint: { value: new THREE.Color('#77c5df') },
+          glassGlint: { value: new THREE.Color('#e9faff') },
+          glassOpacity: { value: 0.09 },
+          glassFrost: { value: frostAmount }
+        },
+        vertexShader: `
+          varying vec3 vGlassNormal;
+          varying vec3 vGlassLocal;
+          void main() {
+            vGlassNormal = normalize(normalMatrix * normal);
+            vGlassLocal = position;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform vec3 glassTint;
+          uniform vec3 glassGlint;
+          uniform float glassOpacity;
+          uniform float glassFrost;
+          varying vec3 vGlassNormal;
+          varying vec3 vGlassLocal;
+          float hash31(vec3 p) {
+            p = fract(p * 0.1031);
+            p += dot(p, p.yzx + 33.33);
+            return fract((p.x + p.y) * p.z);
+          }
+          float noise3(vec3 p) {
+            vec3 cell = floor(p), f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+            return mix(
+              mix(mix(hash31(cell), hash31(cell + vec3(1,0,0)), f.x),
+                  mix(hash31(cell + vec3(0,1,0)), hash31(cell + vec3(1,1,0)), f.x), f.y),
+              mix(mix(hash31(cell + vec3(0,0,1)), hash31(cell + vec3(1,0,1)), f.x),
+                  mix(hash31(cell + vec3(0,1,1)), hash31(cell + vec3(1,1,1)), f.x), f.y), f.z);
+          }
+          void main() {
+            vec3 N = normalize(vGlassNormal);
+            if (!gl_FrontFacing) N = -N;
+            vec3 V = vec3(0.0, 0.0, 1.0);
+            vec3 key = normalize(vec3(-0.45, 0.78, 0.95));
+            float facing = abs(dot(N, V));
+            float rim = pow(1.0 - facing, 1.65);
+            float light = 0.86 + 0.15 * max(dot(N, key), 0.0);
+            float glint = pow(max(dot(N, normalize(key + V)), 0.0), 22.0);
+            float cloud = noise3(vGlassLocal * 8.0 + vec3(7.1, 1.3, 2.9));
+            float fiber = noise3(vGlassLocal * 31.0 + vec3(2.4, 8.7, 4.2));
+            float frost = 1.5 * (cloud - 0.5) + 0.5 * (fiber - 0.5);
+            float speck = hash31(vec3(floor(gl_FragCoord.xy / 2.5), 1.71));
+            vec3 rgb = glassTint * light * (1.0 + 0.35 * glassFrost * frost);
+            rgb = mix(rgb, glassGlint, 0.14 * glint);
+            rgb *= 1.0 - 0.20 * rim;
+            float veil = clamp(1.0 + 2.2 * glassFrost * frost, 0.30, 2.10);
+            float alpha = clamp(glassOpacity * (0.78 + 1.45 * rim + 0.16 * glint)
+              * veil * (1.0 + 0.20 * glassFrost * (speck - 0.5)), 0.0, 0.52);
+            gl_FragColor = vec4(max(rgb, vec3(0.0)), alpha);
+            #include <${outputChunk}>
+          }
+        `,
+        lights: false,
+        toneMapped: false,
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide
+      });
+    };
+  }
+  
+  if (paperPalette[preset]) {
+    const color = new THREE.Color(paperPalette[preset]);
+    uni = { pigment: { value: color }, shineTint: { value: new THREE.Color(preset === 'Lavender' ? '#ffffff' : (preset === 'Teal' || preset === 'Cyan') ? '#d9faff' : '#fff5de') }, shineScale: { value: (preset === 'Red' || preset === 'Cyan') ? 0.43 : 1.0 } };
+  } else {
+    uni = { pigment: { value: preset }, shineTint: { value: (await interpretate(args[1], env)) || new THREE.Color('#fff5de') }, shineScale: { value: (await interpretate(args[2], env)) || 1.0 } };
+    preset = interpretate.hashv2(uni);
+  }
+  
+  const outputChunk = THREE.ShaderChunk.colorspace_fragment ? 'colorspace_fragment' : 'encodings_fragment';
+  return function PaperMaterialFactory() {
+    const material = new THREE.ShaderMaterial({
+      name: 'Paper / ' + preset,
+      uniforms: uni,
+      vertexShader: `
+        varying vec3 vPaperNormal;
+        varying vec3 vPaperPosition;
+        void main() {
+          vPaperNormal = normalize(normalMatrix * normal);
+          vPaperPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 pigment;
+        uniform vec3 shineTint;
+        uniform float shineScale;
+        varying vec3 vPaperNormal;
+        varying vec3 vPaperPosition;
+        float hash31(vec3 p) {
+          p = fract(p * 0.1031);
+          p += dot(p, p.yzx + 33.33);
+          return fract((p.x + p.y) * p.z);
+        }
+        float noise3(vec3 p) {
+          vec3 i = floor(p), f = fract(p);
+          f = f*f*(3.0-2.0*f);
+          return mix(
+            mix(mix(hash31(i),hash31(i+vec3(1,0,0)),f.x),
+                mix(hash31(i+vec3(0,1,0)),hash31(i+vec3(1,1,0)),f.x),f.y),
+            mix(mix(hash31(i+vec3(0,0,1)),hash31(i+vec3(1,0,1)),f.x),
+                mix(hash31(i+vec3(0,1,1)),hash31(i+vec3(1,1,1)),f.x),f.y),f.z);
+        }
+        void main() {
+          vec3 N = normalize(vPaperNormal);
+          vec3 key = normalize(vec3(-0.45, 0.78, 0.95));
+          vec3 fill = normalize(vec3(0.78, 0.15, 0.5));
+          vec3 V = vec3(0.0, 0.0, 1.0);
+          float lit = max(dot(N,key),0.0);
+          float shade = 0.41 + 0.58 * pow(lit,0.72) + 0.08 * max(dot(N,fill),0.0);
+          float facing = max(dot(N,V),0.0);
+          float ink = 1.0 - 0.34 * pow(1.0-facing,2.2);
+          vec3 H = normalize(key+V);
+          float softbox = pow(max(dot(N,H),0.0),8.0);
+          float core = pow(max(dot(N,H),0.0),42.0);
+          float fleck = noise3(vPaperPosition*26.0);
+          float micro = noise3(vPaperPosition*55.0);
+          float paper = 1.0 + 0.11*(fleck-0.5) + 0.065*(micro-0.5);
+          vec3 rgb = pigment * shade * ink * paper;
+          rgb += shineTint * shineScale * (0.36*softbox + 0.13*core);
+          gl_FragColor = vec4(max(rgb,vec3(0.0)),1.0);
+          #include <${outputChunk}>
+        }
+      `,
+      lights: false,
+      toneMapped: false
     });
-    swatches.append(row);
+    return material;
   };
-  labels(44,[['Gold','Atoms'],['Lavender','Atoms'],['Teal','Atoms']]);
-  labels(84,[['Bond','Lavender → Lavender'],['Bond · carbon end','Ice → Lavender'],['GoldBond','Lavender → Gold']]);
-  const errors = [];
-  renderer.debug.onShaderError = (gl,program,vertex,fragment) => {
-    errors.push(gl.getProgramInfoLog(program),gl.getShaderInfoLog(vertex),gl.getShaderInfoLog(fragment));
-  };
-  renderer.render(scene,camera);
-  if(errors.some(Boolean)) throw new Error(errors.filter(Boolean).join('\n'));
-  status.textContent='Pearl materials · atoms and bonds · raster preview · Three.js r'+THREE.REVISION;
-}).catch(error => {status.textContent='Shader error: '+error.message;console.error(error);});
-return panel;
+};
+return 'HandInked registered';
 
 %-------------------------------------------------------------------------%
 Props:
@@ -834,128 +1198,49 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-**Atoms and faces:** `MeshMaterial[PearlMaterial["Gold"]]`. Other presets: `"Lavender"`, `"Teal"`, `"Ice"` and `"Glass"`.
-
-Optional controls: `PearlMaterial[preset, roughness, grain, opacity, highlight, wash]`. Increase **grain** for texture, **highlight** for shine, or **wash** for colour variation.
-
-**Bonds:** `MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]]`. The last two colours tint the bond ends. Use `"GoldBond"` for gold bonds. Optional controls: `PearlBondMaterial[base, start, end, bleed, roughness, grain]`; set **bleed** to `0` to remove the end tints.
-
-**Path tracing:** add `"Renderer" -> "PathTracing"` and `"MultipleImportanceSampling" -> True`. For a five-second preview, use `"SleepAfter" -> 5 1000` and `Rasterize[..., "ExposureTime" -> 5]`. Increase both times for a cleaner image.
+Here is a little demo:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-**Atoms and faces:** `MeshMaterial[PearlMaterial["Gold"]]`. Other presets: `"Lavender"`, `"Teal"`, `"Ice"` and `"Glass"`.
-
-Optional controls: `PearlMaterial[preset, roughness, grain, opacity, highlight, wash]`. Increase **grain** for texture, **highlight** for shine, or **wash** for colour variation.
-
-**Bonds:** `MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]]`. The last two colours tint the bond ends. Use `"GoldBond"` for gold bonds. Optional controls: `PearlBondMaterial[base, start, end, bleed, roughness, grain]`; set **bleed** to `0` to remove the end tints.
-
-**Path tracing:** add `"Renderer" -> "PathTracing"` and `"MultipleImportanceSampling" -> True`. For a five-second preview, use `"SleepAfter" -> 5 1000` and `Rasterize[..., "ExposureTime" -> 5]`. Increase both times for a cleaner image.
-
-%-------------------------------------------------------------------------%
-Props:
-  Hidden: true
-Type: Input
-%-------------------------------------------------------------------------%
-.md
-## Minimal example
-Two atoms joined by a bond, using both material functions.
-
-%-------------------------------------------------------------------------%
-Display: markdown
-Type: Output
-%-------------------------------------------------------------------------%
-## Minimal example
-Two atoms joined by a bond, using both material functions.
+Here is a little demo:
 
 %-------------------------------------------------------------------------%
 Props:
   Hidden: false
 Type: Input
 %-------------------------------------------------------------------------%
-Graphics3D[{
-  {MeshMaterial[PearlMaterial["Ice"]],
-    Sphere[{-1, 0, 0}, .35]},
-  {MeshMaterial[PearlMaterial["Lavender"]],
-    Sphere[{1, 0, 0}, .35]},
-  {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]],
-    Cylinder[{{-1, 0, 0}, {1, 0, 0}}, .09]}
-},  Background -> White,
-   ImageSize -> 450, ViewPoint -> {0, -3, 1}]
+specs = {
+  {HandInked["Gold"],              "Gold"},
+  {HandInked["Lavender"],          "Lavender"},
+  {HandInked["Coral"],             "Coral"},
+  {HandInked["Teal"],              "Teal"},
+  {HandInked["Green"],             "Green"},
+  {HandInked[LightBlue, Red],      "LightBlue, Red"},
+  {HandInked[Orange, White, 10.0], "Orange, White"},
+  {HandInked["Glass"],             "Glass"},
+  {HandInked["Ice"],               "Ice"}
+};
 
-%-------------------------------------------------------------------------%
-Type: Output
-%-------------------------------------------------------------------------%
-(*VB[*)(Graphics3D[{{MeshMaterial[PearlMaterial["Ice"]], Sphere[{-1, 0, 0}, 0.35]}, {MeshMaterial[PearlMaterial["Lavender"]], Sphere[{1, 0, 0}, 0.35]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender"]], Cylinder[{{-1, 0, 0}, {1, 0, 0}}, 0.09]}}, Background -> GrayLevel[1], ImageSize -> 450, ViewPoint -> {0, -3, 1}])(*,*)(*"1:eJy1ksFKAzEQhndVRBc8+Ai+geBZhFbRwhZKFzxvuvunOxiTNdmt1tfxIbz7EPo0okmWtLaUemoOP5lh5p9vQs4maszjKIrMgZU7JUruLiaxcqtZXVFhLq75fqhIyTR8byXy3edW+opzIKWnFq3Ob14aSENKmnxplA9hqiFroImJrvPEyghMi5DO3LBBgW7MoZWsrqCxCkE/9pANIi+a+/N5tWu4I+fMZpAl9D+EcYDbEaGfdhoIe0qWC0rn7hLhLTdgu0x/LmiZWSBte+jtOyZfb/Vl8v5nx3Er4H9TjxUPU61aWXYrH3c/bJ5iBuF91ppcweCRTZHRK+gj3lhwT3geKZLr0B7p25E751/1Zr5+"*)(*]VB*)
-
-%-------------------------------------------------------------------------%
-Props:
-  Hidden: true
-Type: Input
-%-------------------------------------------------------------------------%
-.md
-## Cage
-The cosahedral cage, camera, atom sizes and bond connectivity, rendered with the pearl materials
-
-%-------------------------------------------------------------------------%
-Display: markdown
-Type: Output
-%-------------------------------------------------------------------------%
-## Cage
-The cosahedral cage, camera, atom sizes and bond connectivity, rendered with the pearl materials
-
-%-------------------------------------------------------------------------%
-Props:
-  Hidden: false
-Type: Input
-%-------------------------------------------------------------------------%
-PearlCageFigure = Module[
- {phi, cageSites, edgePairs, view, carbonIndices, boronIndices,
-  hSites, cageBonds, terminalBonds, faces, sitePreset},
- phi = GoldenRatio;
- cageSites = N@Join[
-   Flatten[Table[{0, s, t phi}, {s, {-1, 1}}, {t, {-1, 1}}], 1],
-   Flatten[Table[{s, t phi, 0}, {s, {-1, 1}}, {t, {-1, 1}}], 1],
-   Flatten[Table[{t phi, 0, s}, {s, {-1, 1}}, {t, {-1, 1}}], 1]];
- edgePairs = Select[Subsets[Range[Length[cageSites]], {2}],
-   Abs[EuclideanDistance @@ cageSites[[#]] - 2] < 10^-6 &];
- view = Normalize[{2.4, -2.8, 2.1}];
- carbonIndices = First@MaximalBy[edgePairs, Dot[Mean[cageSites[[#]]], view] &];
- boronIndices = Complement[Range[12], carbonIndices];
- hSites = (# + .78 Normalize[#]) & /@ cageSites;
- sitePreset[i_] := If[MemberQ[carbonIndices, i], "Ice", "Lavender"];
- cageBonds = ({MeshMaterial[PearlBondMaterial["Bond",
-     sitePreset[#[[1]]], sitePreset[#[[2]]], .30,  .35, 3 .012]],
-     Cylinder[cageSites[[#]], .055]} &) /@ edgePairs;
- terminalBonds = Table[{
-   MeshMaterial[PearlBondMaterial["GoldBond", sitePreset[i], "Gold", .25, .32, .012]],
-   Cylinder[{cageSites[[i]], hSites[[i]]}, .045]}, {i, 12}];
- faces = MeshPrimitives[ConvexHullMesh[cageSites], 2];
- Graphics3D[{
-   {MeshMaterial[PearlMaterial["Glass", .60, 0., .12, 0.]], faces},
-   cageBonds,
-   terminalBonds,
-   {MeshMaterial[PearlMaterial["Lavender", .36, 2 .014]], Sphere[cageSites[[boronIndices]], .23]},
-   {MeshMaterial[PearlMaterial["Ice", .34, 2 .008]], Sphere[cageSites[[carbonIndices]], .27]},
-   {MeshMaterial[PearlMaterial["Gold", .32, 2 .012]], Sphere[hSites, .13]},
-   {Black, Directive[FontSize -> 18],
-    (Text[Style["C", Bold], # + .4 {1,0,-1}] &)@
-      First@MaximalBy[cageSites[[carbonIndices]], Dot[#, view] &],
-    (Text[Style["B", Bold], # + {0.4,-0.2,-1.8}] &)@
-      First@MaximalBy[cageSites[[boronIndices]], Dot[#, view] &],
-    (Text[Style["H", Bold], # + .45 Normalize[#]] &)@
-      First@MaximalBy[hSites, Dot[#, view] &]}
-  }, Boxed -> False, Background -> White, SphericalRegion -> True,
-   ViewPoint -> {2.4, -2.8, 2.1}, ViewVertical -> {0,0,1},
-   PlotRange -> All, ImageSize -> {750,750}, "AcesToneMapping" -> False, "OrthographicCameraZoom" -> .72]
+Graphics3D[
+  MapIndexed[
+    With[{y = #2[[1]] - 4},
+      {
+        MeshMaterial[#1[[1]]], 
+        Sphere[{y 0.35, y, 0}, 0.4],
+        Black, Directive[FontSize->14],
+        Text[#1[[2]], {y 0.35 - 0.2, y + 0.2, -0.6}, {1,0}]
+      }
+    ] &,
+    specs
+  ]
 ]
 
 %-------------------------------------------------------------------------%
 Type: Output
 %-------------------------------------------------------------------------%
-(*VB[*)(FrontEndRef["Fe48f3792-1a5b-42df-b9cd-a9c856c19681"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJp5pYpBmbWxrpGiaaJumaGKWk6SZZJqfoJlomW5iaJRtamlkYAgCeexX9"*)(*]VB*)
+(*VB[*)(FrontEndRef["Feb9b1528-372d-4281-928a-e728dda7d1b8"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJpyZZJhmaGlnoGpsbpeiaGFkY6loaWSTqppobWaSkJJqnGCZZAACUVRXE"*)(*]VB*)
 
 %-------------------------------------------------------------------------%
 Props:
@@ -963,45 +1248,605 @@ Props:
 Type: Input
 %-------------------------------------------------------------------------%
 .md
-## Path-traced pearl cage
-The same geometry and material calls with `"Renderer" -> "PathTracing"`. The material factories automatically use physical materials and locally generated pigment, roughness and normal textures, with two soft studio lights. Rasterization continues to use the custom shader.
+### Use cases
+The original motivation was to emulate the look of a 3D crystal structure made by hand with paper and ink. The author (me) is not quite sure that it really matches the intended mood, but the illustrations are much more eye-catching than the physically based materials (or even path tracing) used by default in `Graphics3D`. Here are a few examples:
 
 %-------------------------------------------------------------------------%
 Display: markdown
 Type: Output
 %-------------------------------------------------------------------------%
-## Path-traced pearl cage
-The same geometry and material calls with `"Renderer" -> "PathTracing"`. The material factories automatically use physical materials and locally generated pigment, roughness and normal textures, with two soft studio lights. Rasterization continues to use the custom shader.
+### Use cases
+The original motivation was to emulate the look of a 3D crystal structure made by hand with paper and ink. The author (me) is not quite sure that it really matches the intended mood, but the illustrations are much more eye-catching than the physically based materials (or even path tracing) used by default in `Graphics3D`. Here are a few examples:
 
 %-------------------------------------------------------------------------%
 Props:
-  Hidden: false
+  Hidden: true
 Type: Input
 %-------------------------------------------------------------------------%
-Show[PearlCageFigure,
- "Renderer" -> "PathTracing", "MultipleImportanceSampling" -> True,
- "EnvironmentIntensity" -> .50, "BackgroundAlpha" -> 0,
- "Bounces" -> 5, 
- "SleepAfter" -> 30 1000]
+(* Grouped spheres by material and reused the Glass material within each GraphicsComplex. *)
+Graphics3D[
+    {
+        GrayLevel[0.53],
+        {
+            Arrowheads[25],
+            {
+                Line[
+                    {
+                        {0, 0, 0.5},
+                        {-5.4673624547375885, -3.156583185, 0.5},
+                        {-5.4673624547375885, -3.156583185, 9.923988},
+                        {0., 0., 9.923988},
+                        {0, 0, 0.5},
+                        {0., 6.313166369999999, 0.5},
+                        {0., 6.313166369999999, 9.923988},
+                        {0., 0., 9.923988},
+                        {0, 0, 0.5},
+                        {-5.4673624547375885, -3.156583185, 0.5},
+                        {-5.4673624547375885, 3.156583184999999, 0.5},
+                        {-5.4673624547375885, 3.156583184999999, 9.923988},
+                        {-5.4673624547375885, -3.156583185, 9.923988},
+                        {-5.4673624547375885, 3.156583184999999, 9.923988},
+                        {0., 6.313166369999999, 9.923988},
+                        {0., 6.313166369999999, 0.5},
+                        {-5.4673624547375885, 3.156583184999999, 0.5}
+                    }
+                ],
+                GeometricTransformation[
+                    {
+                        0,
+                        Reflectivity[0.8],
+                        Null,
+                        {
+                            {Opacity[0.1]},
+                            {
+                                {
+                                    MeshMaterial[HandInked["Lavender"]],
+                                    Sphere[{-1.8224541515791959, 3.1565831849999992, 3.926661666666668}, 0.515],
+                                    Sphere[{-3.64490830315839, -4.4408920985006257*^-16, -0.7853323333333329}, 0.515],
+                                    Sphere[{-1.8224523291250447, 3.156586341583184, 0.38526205342799896}, 0.515],
+                                    Sphere[{-3.6449101256125425, -3.15658318372769*^-6, 5.097256053428}, 0.515]
+                                },
+                                {
+                                    MeshMaterial[HandInked["Gold"]],
+                                    Sphere[{-0.9005347372822836, 1.5597656057872344, 7.029484585032}, 0.63],
+                                    Sphere[{-1.8010640072021111, 3.156583185504047*^-6, 2.317490585031999}, 0.63],
+                                    Sphere[{-4.56683318481776, -1.5968144226295797, 2.317490585031999}, 0.63],
+                                    Sphere[{-0.9005347372822834, 4.753400764212765, 7.029484585032}, 0.63],
+                                    Sphere[{-3.6662984475354774, 3.156586341583185, 7.029484585032}, 0.63],
+                                    Sphere[{-4.56683318481776, 1.5968144226295797, 2.317490585031999}, 0.63]
+                                },
+                                {
+                                    MeshMaterial[HandInked["Oxygen"]],
+                                    Sphere[{-4.5097429860653895, 1.4979312977762709, 6.057503886699998}, 0.20666666666666667],
+                                    Sphere[{-3.5521180500307374, 3.1565863415831834, 1.3455098866999986}, 0.20666666666666667],
+                                    Sphere[{-0.9576194686721984, 4.654520795942637, 1.3455098866999986}, 0.20666666666666667],
+                                    Sphere[{-4.5097429860653895, -1.4979376109426392, 6.057503886699998}, 0.20666666666666667],
+                                    Sphere[{-1.9152444047068515, -3.156583185504047*^-6, 6.057503886699998}, 0.20666666666666667],
+                                    Sphere[{-0.9576194686721982, 1.6586518872237301, 1.3455098866999986}, 0.20666666666666667],
+                                    Sphere[{-2.798895926728904, -1.465336419807959, 3.622477323332001}, 0.20666666666666667],
+                                    Sphere[{-2.798895926728904, 4.847829950192038, 3.622477323332001}, 0.20666666666666667],
+                                    Sphere[{-0.13042939872022075, 3.1565831849999992, -1.0895166766679996}, 0.20666666666666667],
+                                    Sphere[{-0.13042939872022075, 3.1565831849999992, 8.334471323332002}, 0.20666666666666667],
+                                    Sphere[{-5.597791853457807, 4.4408920985006257*^-16, -1.0895166766679996}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, 1.6912467651920402, -1.0895166766679996}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, 1.6912467651920402, 8.334471323332002}, 0.20666666666666667],
+                                    Sphere[{-2.798895926728904, 1.465336419807959, 3.622477323332001}, 0.20666666666666667],
+                                    Sphere[{0., 0., -1.386051883076}, 0.20666666666666667],
+                                    Sphere[{0., 0., 8.037936116924001}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737589, -3.1565831849999997, -1.386051883076}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737589, -3.1565831849999997, 8.037936116924001}, 0.20666666666666667],
+                                    Sphere[{0., 6.313166369999999, -1.386051883076}, 0.20666666666666667],
+                                    Sphere[{0., 6.313166369999999, 8.037936116924001}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737588, 3.1565831849999997, -1.386051883076}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737588, 3.1565831849999997, 8.037936116924001}, 0.20666666666666667],
+                                    Sphere[{0., 0., 3.3259421169240007}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737589, -3.1565831849999997, 3.3259421169240007}, 0.20666666666666667],
+                                    Sphere[{0., 6.313166369999999, 3.3259421169240007}, 0.20666666666666667],
+                                    Sphere[{-5.467362454737588, 3.1565831849999997, 3.3259421169240007}, 0.20666666666666667],
+                                    Sphere[{-1.8224523291250447, 3.156586341583184, 5.862040951592}, 0.20666666666666667],
+                                    Sphere[{0.13042939872022075, 3.1565831849999992, 3.622477323332001}, 0.20666666666666667],
+                                    Sphere[{-5.336933056017368, -4.4408920985006257*^-16, 3.622477323332001}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, -1.6912467651920402, -1.0895166766679996}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, -1.6912467651920402, 8.334471323332002}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, 4.621919604807959, -1.0895166766679996}, 0.20666666666666667],
+                                    Sphere[{-2.6684665280086834, 4.621919604807959, 8.334471323332002}, 0.20666666666666667],
+                                    Sphere[{-3.6449101256125425, -3.15658318372769*^-6, 1.1500469515919995}, 0.20666666666666667]
+                                },
+                                {RGBColor[0.50284, 0.348442, 0.978155]},
+                                {RGBColor[0.50284, 0.348442, 0.978155]},
+                                {RGBColor[1., 0.37, 0.1]},
+                                {RGBColor[1., 0.37, 0.1]},
+                                {RGBColor[1., 0.37, 0.1]},
+                                {RGBColor[1., 0.37, 0.1]},
+                                {RGBColor[1., 0.37, 0.1]}
+                            },
+                            {
+                                Opacity[0.18],
+                                GeometricTransformation[
+                                    GraphicsComplex[
+                                        {
+                                            {-0.9764417751497083, 1.6912467651920386, -0.3041843433346667},
+                                            {-0.9764417751497083, -1.6912467651920402, -0.3041843433346667},
+                                            {1.8224541511457915*^-6, 3.1565831846158687*^-6, 1.9353792849253324},
+                                            {1.9528835502994166, 0., -0.3041843433346667}
+                                        },
+                                        {
+                                            RGBColor[1, 0, 0],
+                                            {
+                                                Opacity[0.48],
+                                                RGBColor[0.36, 0.53, 0.61],
+                                                Thickness[Large],
+                                                {Line[{4, 2}], Line[{2, 1}], Line[{1, 4}], Line[{3, 4}], Line[{1, 3}], Line[{2, 3}]},
+                                                Opacity[0.18],
+                                                {
+                                                    RGBColor[0.2, 0.6, 0.76],
+                                                    MeshMaterial[HandInked["Glass"]],
+                                                    Polygon[{4, 2, 1}],
+                                                    Polygon[{3, 4, 1}],
+                                                    Polygon[{2, 3, 1}],
+                                                    Polygon[{3, 2, 4}]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    {-1.8224541515791959, 3.1565831849999992, 3.926661666666668}
+                                ],
+                                GeometricTransformation[
+                                    GraphicsComplex[
+                                        {
+                                            {-1.9528835502994166, 8.881784197001251*^-16, -0.3041843433346667},
+                                            {0.9764417751497065, 1.6912467651920406, -0.3041843433346667},
+                                            {0.9764417751497065, -1.6912467651920398, -0.3041843433346667},
+                                            {-1.822454152478059*^-6, -3.1565831832836007*^-6, 1.9353792849253324}
+                                        },
+                                        {
+                                            RGBColor[1, 0, 0],
+                                            {
+                                                Opacity[0.48],
+                                                RGBColor[0.36, 0.53, 0.61],
+                                                Thickness[Large],
+                                                {Line[{2, 3}], Line[{3, 1}], Line[{1, 2}], Line[{4, 2}], Line[{1, 4}], Line[{3, 4}]},
+                                                Opacity[0.18],
+                                                {
+                                                    RGBColor[0.2, 0.6, 0.76],
+                                                    MeshMaterial[HandInked["Glass"]],
+                                                    Polygon[{2, 3, 1}],
+                                                    Polygon[{4, 2, 1}],
+                                                    Polygon[{3, 4, 1}],
+                                                    Polygon[{4, 3, 2}]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    {-3.64490830315839, -4.4408920985006257*^-16, -0.7853323333333329}
+                                ] *
+                                GeometricTransformation[
+                                    GraphicsComplex[
+                                        {
+                                            {-1.7296657209056927, -4.440892098500626*^-16, 0.9602478332719997},
+                                            {0.8648328604528464, 1.497934454359453, 0.9602478332719997},
+                                            {0.8648328604528466, -1.4979344543594537, 0.9602478332719997},
+                                            {1.692022930404824, -3.1565831846158687*^-6, -1.4747787300959985},
+                                            {-0.8460141988836387, -1.4653395763911437, -1.4747787300959985},
+                                            {-0.8460141988836387, 1.4653332632247755, -1.4747787300959985}
+                                        },
+                                        {
+                                            RGBColor[1, 0, 0],
+                                            {
+                                                Opacity[0.48],
+                                                RGBColor[0.36, 0.53, 0.61],
+                                                Thickness[Large],
+                                                {
+                                                    Line[{3, 2}],
+                                                    Line[{2, 1}],
+                                                    Line[{1, 3}],
+                                                    Line[{3, 4}],
+                                                    Line[{4, 2}],
+                                                    Line[{5, 3}],
+                                                    Line[{1, 5}],
+                                                    Line[{5, 4}],
+                                                    Line[{6, 2}],
+                                                    Line[{4, 6}],
+                                                    Line[{6, 1}],
+                                                    Line[{5, 6}]
+                                                },
+                                                Opacity[0.18],
+                                                {
+                                                    RGBColor[0.2, 0.6, 0.76],
+                                                    MeshMaterial[HandInked["Glass"]],
+                                                    Polygon[{3, 2, 1}],
+                                                    Polygon[{2, 3, 4}],
+                                                    Polygon[{5, 3, 1}],
+                                                    Polygon[{3, 5, 4}],
+                                                    Polygon[{6, 2, 4}],
+                                                    Polygon[{2, 6, 1}],
+                                                    Polygon[{5, 6, 4}],
+                                                    Polygon[{6, 5, 1}]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    {-1.8224523291250447, 3.156586341583184, 0.38526205342799896}
+                                ],
+                                GeometricTransformation[
+                                    GraphicsComplex[
+                                        {
+                                            {-0.864832860452847, 1.4979344543594546, 0.9602478332719988},
+                                            {-0.864832860452847, -1.4979344543594555, 0.9602478332719988},
+                                            {1.729665720905691, -1.776357262916724*^-15, 0.9602478332719988},
+                                            {0.8460141988836383, -1.4653332632247753, -1.4747787300959985},
+                                            {0.8460141988836383, 1.4653395763911428, -1.4747787300959985},
+                                            {-1.6920229304048253, 3.1565831832836007*^-6, -1.4747787300959985}
+                                        },
+                                        {
+                                            RGBColor[1, 0, 0],
+                                            {
+                                                Opacity[0.48],
+                                                RGBColor[0.36, 0.53, 0.61],
+                                                Thickness[Large],
+                                                {
+                                                    Line[{2, 1}],
+                                                    Line[{1, 6}],
+                                                    Line[{6, 2}],
+                                                    Line[{2, 3}],
+                                                    Line[{3, 1}],
+                                                    Line[{1, 5}],
+                                                    Line[{5, 6}],
+                                                    Line[{3, 5}],
+                                                    Line[{2, 4}],
+                                                    Line[{4, 3}],
+                                                    Line[{6, 4}],
+                                                    Line[{4, 5}]
+                                                },
+                                                Opacity[0.18],
+                                                {
+                                                    RGBColor[0.2, 0.6, 0.76],
+                                                    MeshMaterial[HandInked["Glass"]],
+                                                    Polygon[{2, 1, 6}],
+                                                    Polygon[{1, 2, 3}],
+                                                    Polygon[{1, 5, 6}],
+                                                    Polygon[{5, 1, 3}],
+                                                    Polygon[{2, 4, 3}],
+                                                    Polygon[{4, 2, 6}],
+                                                    Polygon[{4, 5, 3}],
+                                                    Polygon[{5, 4, 6}]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    {-3.6449101256125425, -3.15658318372769*^-6, 5.097256053428}
+                                ]
+                            }
+                        },
+                        Thickness[10],
+                        Arrowheads[0.14285714285714288],
+                        RGBColor[0, 1, 1],
+                        {
+                            {
+                                {
+                                    {3.6907122184208045, -0.008141724475178247, -4.297326333333332},
+                                    {3.6907122184208045, -0.008141724475178247, -5.997326333333332}
+                                },
+                                0.14
+                            },
+                            {
+                                {
+                                    {1.8682580668416104, -3.1647249094751775, -1.2853323333333364},
+                                    {1.8682580668416104, -3.1647249094751775, 0.41466766666666355}
+                                },
+                                0.14
+                            }
+                        },
+                        RGBColor[1, 0, 0],
+                        {
+                            {
+                                {
+                                    {3.690714040874955, -0.008138567891993631, -0.11473794657200109},
+                                    {3.690714040874955, -0.008138567891993631, 1.5852620534279989}
+                                },
+                                0.14
+                            },
+                            {
+                                {
+                                    {1.8682562443874566, -3.1647280660583608, -3.126731946572},
+                                    {1.8682562443874566, -3.1647280660583608, -4.826731946572}
+                                },
+                                0.14
+                            }
+                        },
+                        Arrowheads[0.28571428571428575],
+                        Null
+                    },
+                    {0, 0, 2}
+                ]
+            },
+            Translate[
+                {
+                    Arrowheads[0.14285714285714288],
+                    MeshMaterial[HandInked["Teal"]],
+                    {
+                        Arrow[
+                            Tube[
+                                {
+                                    {3.6907122184208045, -0.008141724475178247, -4.297326333333332},
+                                    {3.6907122184208045, -0.008141724475178247, -5.997326333333332}
+                                },
+                                0.14
+                            ]
+                        ],
+                        Arrow[
+                            Tube[
+                                {
+                                    {1.8682580668416104, -3.1647249094751775, -1.2853323333333364},
+                                    {1.8682580668416104, -3.1647249094751775, 0.41466766666666355}
+                                },
+                                0.14
+                            ]
+                        ]
+                    },
+                    MeshMaterial[HandInked["Coral"]],
+                    {
+                        Arrow[
+                            Tube[
+                                {
+                                    {3.690714040874955, -0.008138567891993631, -0.7147379465720011},
+                                    {3.690714040874955, -0.008138567891993631, -2.244737946572001}
+                                },
+                                0.14
+                            ]
+                        ],
+                        Arrow[
+                            Tube[
+                                {
+                                    {1.8682562443874566, -3.1647280660583608, -7.026731946572},
+                                    {1.8682562443874566, -3.1647280660583608, -5.526731946572}
+                                },
+                                0.14
+                            ]
+                        ]
+                    }
+                },
+                {-5.440065661648595, 3.179783921094067, 7.493938226991094}
+            ]
+        },
+        MeshMaterial[MeshPhongMaterial[]],
+        RGBColor[0.85, 0.87, 0.9],
+        Tube[
+            {
+                {0, 0, 0.5},
+                {-5.4673624547375885, -3.156583185, 0.5},
+                {-5.4673624547375885, -3.156583185, 9.923988},
+                {0., 0., 9.923988},
+                {0, 0, 0.5},
+                {0., 6.313166369999999, 0.5},
+                {0., 6.313166369999999, 9.923988},
+                {0., 0., 9.923988},
+                {0, 0, 0.5},
+                {-5.4673624547375885, -3.156583185, 0.5},
+                {-5.4673624547375885, 3.156583184999999, 0.5},
+                {-5.4673624547375885, 3.156583184999999, 9.923988},
+                {-5.4673624547375885, -3.156583185, 9.923988},
+                {-5.4673624547375885, 3.156583184999999, 9.923988},
+                {0., 6.313166369999999, 9.923988},
+                {0., 6.313166369999999, 0.5},
+                {-5.4673624547375885, 3.156583184999999, 0.5}
+            },
+            0.02
+        ],
+        MeshMaterial[MeshToonMaterial[]],
+        PointLight[GrayLevel[1], {-3.3551, 11.0347, 12.1915}, "Intensity" -> 20],
+        DirectionalLight[GrayLevel[1], {-1.0771, 9.2067, 9.9754}, "Intensity" -> 3.2]
+    },
+    Lighting -> None,
+    ViewPoint -> {-14, -14, 8},
+    "OrthographicCameraZoom" -> 0.255,
+    Epilog -> {
+        MeshMaterial[MeshToonMaterial[]],
+        Translate[
+            {
+                GrayLevel[0],
+                Text[Style["L", Bold, FontSize -> 28], {-5.0026, -10.8503, 2.2156}],
+                Arrowheads[0.14],
+                MeshMaterial[HandInked["Teal"]],
+                Arrow[Tube[{{-6.2711`,-8.1797`,-0.8982000000000001`},{-6.2711`,-8.1797`,5.1018`}},0.07`]]
+            },
+            {3.8124000000000002, 0., 0.5455}
+        ],
+        Arrowheads[0.14],
+        MeshMaterial[HandInked["Coral"]],
+        Arrow[Tube[{{5.0066`,3.4165`,0.2045`},{5.0066`,3.4165`,6.2045`}},0.07`]],
+        GrayLevel[0],
+        Text[Style["P", Bold, FontSize -> 28], {5.7886, 4.4249, 3.7273}],
+        Arrowheads[0.1],
+        MeshMaterial[HandInked["Coral"]],
+        Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-5.6004, 0.0082, 0.5241}}, 0.04]],
+        MeshMaterial[HandInked["Green"]],
+        Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-2.7167, 4.7583, 0.5241}}, 0.04]],
+        MeshMaterial[HandInked["Blue"]],
+        Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-5.4903, 3.1815, 4}}, 0.04]],
+        RGBColor[0.025, 0.04, 0.12],
+        Directive[FontSize -> 26],
+        Text["a", {-5.6004, 0.0082, -0.1759}],
+        Text["b", {-2.7167, 4.7583, -0.1759}],
+        Text["c", {-5.4903, 3.9315, 4}]
+    },
+    ImageSize -> {830, 555}/1.9
+]
+
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["F58d83b75-59a5-406b-9e0f-71bf709fb778"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJm1qkWBgnmZvqmlommuqaGJgl6VqmGqTpmhsmpZkbWKYlmZtbAACS7BWm"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+*These are not images! Try zooming and panning.*
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+*These are not images! Try zooming and panning.*
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+Module[
+  {cells, aSites, bSites, oSites, bonds, bPolyhedra, edges},
+  cells = Tuples[Range[0, 1], 3];
+  
+  aSites = Tuples[Range[0, 2], 3];
+  bSites = N[cells + ConstantArray[1/2, {Length[cells], 3}]];
+  oSites = N@Join[
+    Flatten[Table[{i + 1/2, j + 1/2, k}, {i, 0, 1}, {j, 0, 1}, {k, 0, 2}], 2],
+    Flatten[Table[{i + 1/2, j, k + 1/2}, {i, 0, 1}, {j, 0, 2}, {k, 0, 1}], 2],
+    Flatten[Table[{i, j + 1/2, k + 1/2}, {i, 0, 2}, {j, 0, 1}, {k, 0, 1}], 2]
+  ];
+  
+  bonds = Flatten[
+    ({Cylinder[{#, # + {1/2, 0, 0}}, .025],
+       Cylinder[{#, # - {1/2, 0, 0}}, .025],
+       Cylinder[{#, # + {0, 1/2, 0}}, .025],
+       Cylinder[{#, # - {0, 1/2, 0}}, .025],
+       Cylinder[{#, # + {0, 0, 1/2}}, .025],
+       Cylinder[{#, # - {0, 0, 1/2}}, .025]} &) /@ bSites
+  ];
+
+  bPolyhedra = Flatten[
+    Table[
+      Polygon[site + # & /@ {{sx/2, 0, 0}, {0, sy/2, 0}, {0, 0, sz/2}}],
+      {site, bSites}, {sx, {-1, 1}}, {sy, {-1, 1}}, {sz, {-1, 1}}
+    ], 3
+  ];
+  
+  edges = Line /@ {
+    {{0, 0, 0}, {2, 0, 0}, {2, 2, 0}, {0, 2, 0}, {0, 0, 0}},
+    {{0, 0, 2}, {2, 0, 2}, {2, 2, 2}, {0, 2, 2}, {0, 0, 2}},
+    {{0, 0, 0}, {0, 0, 2}}, {{2, 0, 0}, {2, 0, 2}},
+    {{2, 2, 0}, {2, 2, 2}}, {{0, 2, 0}, {0, 2, 2}}
+  };
+  
+  Graphics3D[
+    { 
+      {{MeshMaterial[HandInked["Glass"]], bPolyhedra}, Lighter[Blue, 0.5]//Darker//Darker,
+        Flatten[
+  Table[
+    With[{v = site + # & /@ {{sx/2, 0, 0}, {0, sy/2, 0}, {0, 0, sz/2}}},
+      Line[Append[v, First[v]]]
+    ],
+    {site, bSites}, {sx, {-1, 1}}, {sy, {-1, 1}}, {sz, {-1, 1}}
+  ],
+  3
+]
+      },
+      {Directive[MeshMaterial[HandInked["Gold"]], Opacity[1]], bonds},
+      Opacity[1],
+      {MeshMaterial[HandInked[LightBlue]], Sphere[aSites, .13]},
+      {Black, MeshMaterial[HandInked["Lavender"]], Sphere[bSites, .19]},
+      {MeshMaterial[HandInked["Gold"]], Sphere[oSites, .10]},
+      {
+        Black,
+        Directive[Bold, FontSize -> 16],
+        Text[Style["La/Ca", Bold], {2, 0, 2} + 2{.10, -.12, .12} + {-0.9,0.4,0.2}],
+        Text[Style["Mn", Bold], {1.5, .5, 1.5} + {.18, -.12, .14} - {0,0.1,0.5}],
+        Text[Style["O", Bold], {1.5, 0, 1.5} + {.18, -.10, .08}]
+      }
+    },
+    Boxed -> False,
+    ViewPoint -> {2.4, -2.8, 2.1},
+    ViewVertical -> {0, 0, 1},
+    PlotRange -> {{-.2, 2.2}, {-.2, 2.2}, {-.2, 2.2}},
+    ImageSize -> {830, 555}/1.9
+  ]
+]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["F53adba0e-4d9d-4276-b528-e91bbd28ed72"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJmxonpiQlGqTqmqRYpuiaGJmb6SaZGlnoploaJiWlGFmkppgbAQCjpRZL"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Can we use it on regular 3D plots? Well, not directly: the Wolfram Language strips unknown styles from `PlotStyle`. However, we can try to pass our custom style through the `Prolog` option:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Can we use it on regular 3D plots? Well, not directly: the Wolfram Language strips unknown styles from `PlotStyle`. However, we can try to pass our custom style through the `Prolog` option:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Plot3D[x^2 + y^2, {x, -2, 2}, {y, -2, 2}, Prolog->Directive[{MeshMaterial[HandInked["Ice"]]}]]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["F5560d348-74f4-484e-a5e6-b27939a53a10"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJm5qaGaQYm1jompukmeiaWJik6iaapprpJhmZWxpbJpoaJxoaAACLVBUz"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Cool, isn't it? I hope this post has given you a little more artistic freedom with our notebook.
+
+See ya!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Cool, isn't it? I hope this post has given you a little more artistic freedom with our notebook.
+
+See ya!
 
 %------------------------------%EndOfCells%-------------------------------%
 
 
 
 %--------------------------------%Objects%--------------------------------%
-Key: Fe48f3792-1a5b-42df-b9cd-a9c856c19681
+Key: F53adba0e-4d9d-4276-b528-e91bbd28ed72
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[Graphics3D[{{MeshMaterial[PearlMaterial["Glass", 0.6, 0., 0.12, 0.]], {Polygon[{{0., -1., -1.618033988749895}, {-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}], Polygon[{{-1., 1.618033988749895, 0.}, {0., 1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}], Polygon[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}, {1.618033988749895, 0., -1.}}], Polygon[{{0., 1., -1.618033988749895}, {0., -1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}], Polygon[{{1., -1.618033988749895, 0.}, {0., -1., 1.618033988749895}, {-1., -1.618033988749895, 0.}}], Polygon[{{1., -1.618033988749895, 0.}, {0., -1., -1.618033988749895}, {1.618033988749895, 0., -1.}}], Polygon[{{0., -1., -1.618033988749895}, {1., -1.618033988749895, 0.}, {-1., -1.618033988749895, 0.}}], Polygon[{{-1.618033988749895, 0., 1.}, {-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}], Polygon[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}, {-1.618033988749895, 0., -1.}}], Polygon[{{0., -1., 1.618033988749895}, {-1.618033988749895, 0., 1.}, {-1., -1.618033988749895, 0.}}], Polygon[{{0., 1., 1.618033988749895}, {-1.618033988749895, 0., 1.}, {0., -1., 1.618033988749895}}], Polygon[{{-1.618033988749895, 0., 1.}, {0., 1., 1.618033988749895}, {-1., 1.618033988749895, 0.}}], Polygon[{{0., 1., 1.618033988749895}, {1., 1.618033988749895, 0.}, {-1., 1.618033988749895, 0.}}], Polygon[{{1., 1.618033988749895, 0.}, {0., 1., -1.618033988749895}, {-1., 1.618033988749895, 0.}}], Polygon[{{0., 1., -1.618033988749895}, {1., 1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}], Polygon[{{1.618033988749895, 0., 1.}, {1., -1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}], Polygon[{{1.618033988749895, 0., 1.}, {0., 1., 1.618033988749895}, {0., -1., 1.618033988749895}}], Polygon[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., 1.}, {0., -1., 1.618033988749895}}], Polygon[{{1.618033988749895, 0., 1.}, {1., 1.618033988749895, 0.}, {0., 1., 1.618033988749895}}], Polygon[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., 1.}, {1.618033988749895, 0., -1.}}]}}, {{MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {-1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., -1.618033988749895}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {0., 1., 1.618033988749895}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {-1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., -1., 1.618033988749895}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {-1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., -1.618033988749895}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {-1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{0., 1., 1.618033988749895}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Ice", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {1., -1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {1., 1.618033988749895, 0.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Ice", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., -1.618033988749895, 0.}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., -1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1., 1.618033988749895, 0.}, {1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{-1.618033988749895, 0., -1.}, {-1.618033988749895, 0., 1.}}, 0.055]}, {MeshMaterial[PearlBondMaterial["Bond", "Lavender", "Lavender", 0.3, 0.35, 0.036000000000000004]], Cylinder[{{1.618033988749895, 0., -1.}, {1.618033988749895, 0., 1.}}, 0.055]}}, {{MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., -1., -1.618033988749895}, {0., -1.4100702674529242, -2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Ice", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., -1., 1.618033988749895}, {0., -1.4100702674529242, 2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., 1., -1.618033988749895}, {0., 1.4100702674529242, -2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{0., 1., 1.618033988749895}, {0., 1.4100702674529242, 2.281541619264486}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1., -1.618033988749895, 0.}, {-1.4100702674529242, -2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1., 1.618033988749895, 0.}, {-1.4100702674529242, 2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Ice", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1., -1.618033988749895, 0.}, {1.4100702674529242, -2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1., 1.618033988749895, 0.}, {1.4100702674529242, 2.281541619264486, 0.}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1.618033988749895, 0., -1.}, {-2.281541619264486, 0., -1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1.618033988749895, 0., -1.}, {2.281541619264486, 0., -1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{-1.618033988749895, 0., 1.}, {-2.281541619264486, 0., 1.4100702674529242}}, 0.045]}, {MeshMaterial[PearlBondMaterial["GoldBond", "Lavender", "Gold", 0.25, 0.32, 0.012]], Cylinder[{{1.618033988749895, 0., 1.}, {2.281541619264486, 0., 1.4100702674529242}}, 0.045]}}, {MeshMaterial[PearlMaterial["Lavender", 0.36, 0.028]], Sphere[{{0., -1., -1.618033988749895}, {0., 1., -1.618033988749895}, {0., 1., 1.618033988749895}, {-1., -1.618033988749895, 0.}, {-1., 1.618033988749895, 0.}, {1., 1.618033988749895, 0.}, {-1.618033988749895, 0., -1.}, {1.618033988749895, 0., -1.}, {-1.618033988749895, 0., 1.}, {1.618033988749895, 0., 1.}}, 0.23]}, {MeshMaterial[PearlMaterial["Ice", 0.34, 0.016]], Sphere[{{0., -1., 1.618033988749895}, {1., -1.618033988749895, 0.}}, 0.27]}, {MeshMaterial[PearlMaterial["Gold", 0.32, 0.024]], Sphere[{{0., -1.4100702674529242, -2.281541619264486}, {0., -1.4100702674529242, 2.281541619264486}, {0., 1.4100702674529242, -2.281541619264486}, {0., 1.4100702674529242, 2.281541619264486}, {-1.4100702674529242, -2.281541619264486, 0.}, {-1.4100702674529242, 2.281541619264486, 0.}, {1.4100702674529242, -2.281541619264486, 0.}, {1.4100702674529242, 2.281541619264486, 0.}, {-2.281541619264486, 0., -1.4100702674529242}, {2.281541619264486, 0., -1.4100702674529242}, {-2.281541619264486, 0., 1.4100702674529242}, {2.281541619264486, 0., 1.4100702674529242}}, 0.13]}, {GrayLevel[0], Directive[FontSize -> 18], Text[Style["C", Bold], {1.4, -1.618033988749895, -0.4}], Text[Style["B", Bold], {2.018033988749895, -0.2, -0.8}], Text[Style["H", Bold], {1.6466492679065343, -2.664334483022904, 0.}]}}, Boxed -> False, Background -> GrayLevel[1], SphericalRegion -> True, ViewPoint -> {2.4, -2.8, 2.1}, ViewVertical -> {0, 0, 1}, PlotRange -> All, ImageSize -> {750, 750}, "AcesToneMapping" -> False, "OrthographicCameraZoom" -> 0.72]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["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", {"ExpressionJSON", "ZLIB"}]]|>
 
 %-------------------------------------------------------------------------%
-Key: 48
+Key: F5560d348-74f4-484e-a5e6-b27939a53a10
 %-------------------------------------------------------------------------%
-<|"Public" -> Hold[EditorView["0", "ReadOnly" -> True, "Selectable" -> False]]|>
+<|"Public" -> Hold[CoffeeLiqueur`Extensions`FrontendObject`Internal`Compressed["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", {"ExpressionJSON", "ZLIB"}]]|>
+
+%-------------------------------------------------------------------------%
+Key: F58d83b75-59a5-406b-9e0f-71bf709fb778
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics3D[{GrayLevel[0.53], {Arrowheads[25], {Line[{{0, 0, 0.5}, {-5.4673624547375885, -3.156583185, 0.5}, {-5.4673624547375885, -3.156583185, 9.923988}, {0., 0., 9.923988}, {0, 0, 0.5}, {0., 6.313166369999999, 0.5}, {0., 6.313166369999999, 9.923988}, {0., 0., 9.923988}, {0, 0, 0.5}, {-5.4673624547375885, -3.156583185, 0.5}, {-5.4673624547375885, 3.156583184999999, 0.5}, {-5.4673624547375885, 3.156583184999999, 9.923988}, {-5.4673624547375885, -3.156583185, 9.923988}, {-5.4673624547375885, 3.156583184999999, 9.923988}, {0., 6.313166369999999, 9.923988}, {0., 6.313166369999999, 0.5}, {-5.4673624547375885, 3.156583184999999, 0.5}}], GeometricTransformation[{0, Reflectivity[0.8], Null, {{Opacity[0.1]}, {{MeshMaterial[HandInked["Lavender"]], Sphere[{-1.8224541515791959, 3.1565831849999992, 3.926661666666668}, 0.515], Sphere[{-3.64490830315839, -4.4408920985006257*^-16, -0.7853323333333329}, 0.515], Sphere[{-1.8224523291250447, 3.156586341583184, 0.38526205342799896}, 0.515], Sphere[{-3.6449101256125425, -3.15658318372769*^-6, 5.097256053428}, 0.515]}, {MeshMaterial[HandInked["Gold"]], Sphere[{-0.9005347372822836, 1.5597656057872344, 7.029484585032}, 0.63], Sphere[{-1.8010640072021111, 3.156583185504047*^-6, 2.317490585031999}, 0.63], Sphere[{-4.56683318481776, -1.5968144226295797, 2.317490585031999}, 0.63], Sphere[{-0.9005347372822834, 4.753400764212765, 7.029484585032}, 0.63], Sphere[{-3.6662984475354774, 3.156586341583185, 7.029484585032}, 0.63], Sphere[{-4.56683318481776, 1.5968144226295797, 2.317490585031999}, 0.63]}, {MeshMaterial[HandInked["Oxygen"]], Sphere[{-4.5097429860653895, 1.4979312977762709, 6.057503886699998}, 0.20666666666666667], Sphere[{-3.5521180500307374, 3.1565863415831834, 1.3455098866999986}, 0.20666666666666667], Sphere[{-0.9576194686721984, 4.654520795942637, 1.3455098866999986}, 0.20666666666666667], Sphere[{-4.5097429860653895, -1.4979376109426392, 6.057503886699998}, 0.20666666666666667], Sphere[{-1.9152444047068515, -3.156583185504047*^-6, 6.057503886699998}, 0.20666666666666667], Sphere[{-0.9576194686721982, 1.6586518872237301, 1.3455098866999986}, 0.20666666666666667], Sphere[{-2.798895926728904, -1.465336419807959, 3.622477323332001}, 0.20666666666666667], Sphere[{-2.798895926728904, 4.847829950192038, 3.622477323332001}, 0.20666666666666667], Sphere[{-0.13042939872022075, 3.1565831849999992, -1.0895166766679996}, 0.20666666666666667], Sphere[{-0.13042939872022075, 3.1565831849999992, 8.334471323332002}, 0.20666666666666667], Sphere[{-5.597791853457807, 4.4408920985006257*^-16, -1.0895166766679996}, 0.20666666666666667], Sphere[{-2.6684665280086834, 1.6912467651920402, -1.0895166766679996}, 0.20666666666666667], Sphere[{-2.6684665280086834, 1.6912467651920402, 8.334471323332002}, 0.20666666666666667], Sphere[{-2.798895926728904, 1.465336419807959, 3.622477323332001}, 0.20666666666666667], Sphere[{0., 0., -1.386051883076}, 0.20666666666666667], Sphere[{0., 0., 8.037936116924001}, 0.20666666666666667], Sphere[{-5.467362454737589, -3.1565831849999997, -1.386051883076}, 0.20666666666666667], Sphere[{-5.467362454737589, -3.1565831849999997, 8.037936116924001}, 0.20666666666666667], Sphere[{0., 6.313166369999999, -1.386051883076}, 0.20666666666666667], Sphere[{0., 6.313166369999999, 8.037936116924001}, 0.20666666666666667], Sphere[{-5.467362454737588, 3.1565831849999997, -1.386051883076}, 0.20666666666666667], Sphere[{-5.467362454737588, 3.1565831849999997, 8.037936116924001}, 0.20666666666666667], Sphere[{0., 0., 3.3259421169240007}, 0.20666666666666667], Sphere[{-5.467362454737589, -3.1565831849999997, 3.3259421169240007}, 0.20666666666666667], Sphere[{0., 6.313166369999999, 3.3259421169240007}, 0.20666666666666667], Sphere[{-5.467362454737588, 3.1565831849999997, 3.3259421169240007}, 0.20666666666666667], Sphere[{-1.8224523291250447, 3.156586341583184, 5.862040951592}, 0.20666666666666667], Sphere[{0.13042939872022075, 3.1565831849999992, 3.622477323332001}, 0.20666666666666667], Sphere[{-5.336933056017368, -4.4408920985006257*^-16, 3.622477323332001}, 0.20666666666666667], Sphere[{-2.6684665280086834, -1.6912467651920402, -1.0895166766679996}, 0.20666666666666667], Sphere[{-2.6684665280086834, -1.6912467651920402, 8.334471323332002}, 0.20666666666666667], Sphere[{-2.6684665280086834, 4.621919604807959, -1.0895166766679996}, 0.20666666666666667], Sphere[{-2.6684665280086834, 4.621919604807959, 8.334471323332002}, 0.20666666666666667], Sphere[{-3.6449101256125425, -3.15658318372769*^-6, 1.1500469515919995}, 0.20666666666666667]}, {RGBColor[0.50284, 0.348442, 0.978155]}, {RGBColor[0.50284, 0.348442, 0.978155]}, {RGBColor[1., 0.37, 0.1]}, {RGBColor[1., 0.37, 0.1]}, {RGBColor[1., 0.37, 0.1]}, {RGBColor[1., 0.37, 0.1]}, {RGBColor[1., 0.37, 0.1]}}, {Opacity[0.18], GeometricTransformation[GraphicsComplex[{{-0.9764417751497083, 1.6912467651920386, -0.3041843433346667}, {-0.9764417751497083, -1.6912467651920402, -0.3041843433346667}, {1.8224541511457915*^-6, 3.1565831846158687*^-6, 1.9353792849253324}, {1.9528835502994166, 0., -0.3041843433346667}}, {RGBColor[1, 0, 0], {Opacity[0.48], RGBColor[0.36, 0.53, 0.61], Thickness[Large], {Line[{4, 2}], Line[{2, 1}], Line[{1, 4}], Line[{3, 4}], Line[{1, 3}], Line[{2, 3}]}, Opacity[0.18], {RGBColor[0.2, 0.6, 0.76], MeshMaterial[HandInked["Glass"]], Polygon[{4, 2, 1}], Polygon[{3, 4, 1}], Polygon[{2, 3, 1}], Polygon[{3, 2, 4}]}}}], {-1.8224541515791959, 3.1565831849999992, 3.926661666666668}], GeometricTransformation[GraphicsComplex[{{-1.9528835502994166, 8.881784197001251*^-16, -0.3041843433346667}, {0.9764417751497065, 1.6912467651920406, -0.3041843433346667}, {0.9764417751497065, -1.6912467651920398, -0.3041843433346667}, {-1.822454152478059*^-6, -3.1565831832836007*^-6, 1.9353792849253324}}, {RGBColor[1, 0, 0], {Opacity[0.48], RGBColor[0.36, 0.53, 0.61], Thickness[Large], {Line[{2, 3}], Line[{3, 1}], Line[{1, 2}], Line[{4, 2}], Line[{1, 4}], Line[{3, 4}]}, Opacity[0.18], {RGBColor[0.2, 0.6, 0.76], MeshMaterial[HandInked["Glass"]], Polygon[{2, 3, 1}], Polygon[{4, 2, 1}], Polygon[{3, 4, 1}], Polygon[{4, 3, 2}]}}}], {-3.64490830315839, -4.4408920985006257*^-16, -0.7853323333333329}]*GeometricTransformation[GraphicsComplex[{{-1.7296657209056927, -4.440892098500626*^-16, 0.9602478332719997}, {0.8648328604528464, 1.497934454359453, 0.9602478332719997}, {0.8648328604528466, -1.4979344543594537, 0.9602478332719997}, {1.692022930404824, -3.1565831846158687*^-6, -1.4747787300959985}, {-0.8460141988836387, -1.4653395763911437, -1.4747787300959985}, {-0.8460141988836387, 1.4653332632247755, -1.4747787300959985}}, {RGBColor[1, 0, 0], {Opacity[0.48], RGBColor[0.36, 0.53, 0.61], Thickness[Large], {Line[{3, 2}], Line[{2, 1}], Line[{1, 3}], Line[{3, 4}], Line[{4, 2}], Line[{5, 3}], Line[{1, 5}], Line[{5, 4}], Line[{6, 2}], Line[{4, 6}], Line[{6, 1}], Line[{5, 6}]}, Opacity[0.18], {RGBColor[0.2, 0.6, 0.76], MeshMaterial[HandInked["Glass"]], Polygon[{3, 2, 1}], Polygon[{2, 3, 4}], Polygon[{5, 3, 1}], Polygon[{3, 5, 4}], Polygon[{6, 2, 4}], Polygon[{2, 6, 1}], Polygon[{5, 6, 4}], Polygon[{6, 5, 1}]}}}], {-1.8224523291250447, 3.156586341583184, 0.38526205342799896}], GeometricTransformation[GraphicsComplex[{{-0.864832860452847, 1.4979344543594546, 0.9602478332719988}, {-0.864832860452847, -1.4979344543594555, 0.9602478332719988}, {1.729665720905691, -1.776357262916724*^-15, 0.9602478332719988}, {0.8460141988836383, -1.4653332632247753, -1.4747787300959985}, {0.8460141988836383, 1.4653395763911428, -1.4747787300959985}, {-1.6920229304048253, 3.1565831832836007*^-6, -1.4747787300959985}}, {RGBColor[1, 0, 0], {Opacity[0.48], RGBColor[0.36, 0.53, 0.61], Thickness[Large], {Line[{2, 1}], Line[{1, 6}], Line[{6, 2}], Line[{2, 3}], Line[{3, 1}], Line[{1, 5}], Line[{5, 6}], Line[{3, 5}], Line[{2, 4}], Line[{4, 3}], Line[{6, 4}], Line[{4, 5}]}, Opacity[0.18], {RGBColor[0.2, 0.6, 0.76], MeshMaterial[HandInked["Glass"]], Polygon[{2, 1, 6}], Polygon[{1, 2, 3}], Polygon[{1, 5, 6}], Polygon[{5, 1, 3}], Polygon[{2, 4, 3}], Polygon[{4, 2, 6}], Polygon[{4, 5, 3}], Polygon[{5, 4, 6}]}}}], {-3.6449101256125425, -3.15658318372769*^-6, 5.097256053428}]}}, Thickness[10], Arrowheads[0.14285714285714288], RGBColor[0, 1, 1], {{{{3.6907122184208045, -0.008141724475178247, -4.297326333333332}, {3.6907122184208045, -0.008141724475178247, -5.997326333333332}}, 0.14}, {{{1.8682580668416104, -3.1647249094751775, -1.2853323333333364}, {1.8682580668416104, -3.1647249094751775, 0.41466766666666355}}, 0.14}}, RGBColor[1, 0, 0], {{{{3.690714040874955, -0.008138567891993631, -0.11473794657200109}, {3.690714040874955, -0.008138567891993631, 1.5852620534279989}}, 0.14}, {{{1.8682562443874566, -3.1647280660583608, -3.126731946572}, {1.8682562443874566, -3.1647280660583608, -4.826731946572}}, 0.14}}, Arrowheads[0.28571428571428575], Null}, {0, 0, 2}]}, Translate[{Arrowheads[0.14285714285714288], MeshMaterial[HandInked["Teal"]], {Arrow[Tube[{{3.6907122184208045, -0.008141724475178247, -4.297326333333332}, {3.6907122184208045, -0.008141724475178247, -5.997326333333332}}, 0.14]], Arrow[Tube[{{1.8682580668416104, -3.1647249094751775, -1.2853323333333364}, {1.8682580668416104, -3.1647249094751775, 0.41466766666666355}}, 0.14]]}, MeshMaterial[HandInked["Coral"]], {Arrow[Tube[{{3.690714040874955, -0.008138567891993631, -0.7147379465720011}, {3.690714040874955, -0.008138567891993631, -2.244737946572001}}, 0.14]], Arrow[Tube[{{1.8682562443874566, -3.1647280660583608, -7.026731946572}, {1.8682562443874566, -3.1647280660583608, -5.526731946572}}, 0.14]]}}, {-5.440065661648595, 3.179783921094067, 7.493938226991094}]}, MeshMaterial[MeshPhongMaterial[]], RGBColor[0.85, 0.87, 0.9], Tube[{{0, 0, 0.5}, {-5.4673624547375885, -3.156583185, 0.5}, {-5.4673624547375885, -3.156583185, 9.923988}, {0., 0., 9.923988}, {0, 0, 0.5}, {0., 6.313166369999999, 0.5}, {0., 6.313166369999999, 9.923988}, {0., 0., 9.923988}, {0, 0, 0.5}, {-5.4673624547375885, -3.156583185, 0.5}, {-5.4673624547375885, 3.156583184999999, 0.5}, {-5.4673624547375885, 3.156583184999999, 9.923988}, {-5.4673624547375885, -3.156583185, 9.923988}, {-5.4673624547375885, 3.156583184999999, 9.923988}, {0., 6.313166369999999, 9.923988}, {0., 6.313166369999999, 0.5}, {-5.4673624547375885, 3.156583184999999, 0.5}}, 0.02], MeshMaterial[MeshToonMaterial[]], PointLight[GrayLevel[1], {-3.3551, 11.0347, 12.1915}, "Intensity" -> 20], DirectionalLight[GrayLevel[1], {-1.0771, 9.2067, 9.9754}, "Intensity" -> 3.2]}, Lighting -> None, ViewPoint -> {-14, -14, 8}, "OrthographicCameraZoom" -> 0.255, Epilog -> {MeshMaterial[MeshToonMaterial[]], Translate[{GrayLevel[0], Text[Style["L", Bold, FontSize -> 28], {-5.0026, -10.8503, 2.2156}], Arrowheads[0.14], MeshMaterial[HandInked["Teal"]], Arrow[Tube[{{-6.2711, -8.1797, -0.8982000000000001}, {-6.2711, -8.1797, 5.1018}}, 0.07]]}, {3.8124000000000002, 0., 0.5455}], Arrowheads[0.14], MeshMaterial[HandInked["Coral"]], Arrow[Tube[{{5.0066, 3.4165, 0.2045}, {5.0066, 3.4165, 6.2045}}, 0.07]], GrayLevel[0], Text[Style["P", Bold, FontSize -> 28], {5.7886, 4.4249, 3.7273}], Arrowheads[0.1], MeshMaterial[HandInked["Coral"]], Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-5.6004, 0.0082, 0.5241}}, 0.04]], MeshMaterial[HandInked["Green"]], Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-2.7167, 4.7583, 0.5241}}, 0.04]], MeshMaterial[HandInked["Blue"]], Arrow[Tube[{{-5.4903, 3.1815, 0.6}, {-5.4903, 3.1815, 4}}, 0.04]], RGBColor[0.025, 0.04, 0.12], Directive[FontSize -> 26], Text["a", {-5.6004, 0.0082, -0.1759}], Text["b", {-2.7167, 4.7583, -0.1759}], Text["c", {-5.4903, 3.9315, 4}]}, ImageSize -> {436.84210526315786, 292.10526315789474}]]|>
+
+%-------------------------------------------------------------------------%
+Key: Feb9b1528-372d-4281-928a-e728dda7d1b8
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Graphics3D[{{MeshMaterial[HandInked["Gold"]], Sphere[{-1.0499999999999998, -3, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Gold", {-1.2499999999999998, -2.8, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Lavender"]], Sphere[{-0.7, -2, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Lavender", {-0.8999999999999999, -1.8, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Coral"]], Sphere[{-0.35, -1, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Coral", {-0.55, -0.8, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Teal"]], Sphere[{0., 0, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Teal", {-0.2, 0.2, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Green"]], Sphere[{0.35, 1, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Green", {0.14999999999999997, 1.2, -0.6}, {1, 0}]}, {MeshMaterial[HandInked[RGBColor[0.87, 0.94, 1], RGBColor[1, 0, 0]]], Sphere[{0.7, 2, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["LightBlue, Red", {0.49999999999999994, 2.2, -0.6}, {1, 0}]}, {MeshMaterial[HandInked[RGBColor[1, 0.5, 0], GrayLevel[1], 10.]], Sphere[{1.0499999999999998, 3, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Orange, White", {0.8499999999999999, 3.2, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Glass"]], Sphere[{1.4, 4, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Glass", {1.2, 4.2, -0.6}, {1, 0}]}, {MeshMaterial[HandInked["Ice"]], Sphere[{1.75, 5, 0}, 0.4], GrayLevel[0], Directive[FontSize -> 14], Text["Ice", {1.55, 5.2, -0.6}, {1, 0}]}}]]|>
 
 %-------------------------------------------------------------------------%
 Key: 96
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[EditorView["0[0]", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 48
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0", "ReadOnly" -> True, "Selectable" -> False]]|>
 
 %-----------------------------%EndOfObjects%------------------------------%
 
