@@ -58,7 +58,7 @@ const SUB = zipIt(
   "0123456789+-=()aehijklmnoprstuvx",
   "₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ",
 );
-const SCRIPT_RE = /([\\p{L}\\p{N}])([\\^_])\\{([^{}]+)\\}/gu;
+const SCRIPT_RE = /([\\p{L}\\p{N})])([\\^_])\\{([^{}]+)\\}/gu;
 const convertScript = (match, base, op, body) => {
   const map = op === "^" ? SUP : SUB;
   let out = "";
@@ -81,6 +81,12 @@ const normalizeText = text => {
   return normalized.replace(SCRIPT_RE, convertScript);
 };`;
 
+// Migrate dependencies patched by the previous revision of this script.
+const previousNormalizeText = newNormalizeText.replace(
+  "([\\p{L}\\p{N})])",
+  "([\\p{L}\\p{N}])",
+);
+
 const oldOnInput = `    editable.oninput = () => {
       onChange((0,_textElement__WEBPACK_IMPORTED_MODULE_6__.normalizeText)(editable.value));
     };`;
@@ -100,6 +106,10 @@ const newOnInput = `    editable.oninput = () => {
 
 const developmentPath = path.join(packageDir, "dist", "excalidraw.development.js");
 let development = fs.readFileSync(developmentPath, "utf8");
+development = development.replace(
+  encodeEvalSource(previousNormalizeText),
+  encodeEvalSource(newNormalizeText),
+);
 development = replaceOnce(
   development,
   encodeEvalSource(
@@ -127,10 +137,22 @@ fs.writeFileSync(developmentPath, development);
 
 const productionPath = path.join(packageDir, "dist", "excalidraw.production.min.js");
 let production = fs.readFileSync(productionPath, "utf8");
+const productionNormalizeBefore =
+  'var y,x,w=function(e){return e.replace(/\\t/g,"        ").replace(/\\r?\\n|\\r/g,"\\n")}';
+const productionNormalizeAfter =
+  'var y,x,wljsZipIt=function(e,t){var n=[...e],r=[...t];if(n.length!==r.length)throw new Error("zipIt: length mismatch (".concat(n.length," vs ").concat(r.length,")"));return new Map(n.map((function(e,n){return[e,r[n]]})))},wljsSup=wljsZipIt("0123456789+-=()abcdefghijklmnoprstuvwxyzABDEGHIJKLMNOPRTUVW","⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻᴬᴮᴰᴱᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᴿᵀᵁⱽᵂ"),wljsSub=wljsZipIt("0123456789+-=()aehijklmnoprstuvx","₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ"),wljsScriptRe=/([\\p{L}\\p{N})])([\\^_])\\{([^{}]+)\\}/gu,wljsConvertScript=function(e,t,n,r){for(var o="",i="^"===n?wljsSup:wljsSub,a=0;a<r.length;a++){var l=i.get(r[a]);if(void 0===l)return e;o+=l}return t+o},wljsNormalizeEOL=function(e){return e.replace(/\\r?\\n|\\r/g,"\\n")},w=function(e){var t=wljsNormalizeEOL(e).replace(/\\t/g,"        ");return t.includes("{")?t.replace(wljsScriptRe,wljsConvertScript):t}';
+const previousProductionNormalizeAfter = productionNormalizeAfter.replace(
+  "([\\p{L}\\p{N})])",
+  "([\\p{L}\\p{N}])",
+);
+production = production.replace(
+  previousProductionNormalizeAfter,
+  productionNormalizeAfter,
+);
 production = replaceOnce(
   production,
-  'var y,x,w=function(e){return e.replace(/\\t/g,"        ").replace(/\\r?\\n|\\r/g,"\\n")}',
-  'var y,x,wljsZipIt=function(e,t){var n=[...e],r=[...t];if(n.length!==r.length)throw new Error("zipIt: length mismatch (".concat(n.length," vs ").concat(r.length,")"));return new Map(n.map((function(e,n){return[e,r[n]]})))},wljsSup=wljsZipIt("0123456789+-=()abcdefghijklmnoprstuvwxyzABDEGHIJKLMNOPRTUVW","⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖʳˢᵗᵘᵛʷˣʸᶻᴬᴮᴰᴱᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾᴿᵀᵁⱽᵂ"),wljsSub=wljsZipIt("0123456789+-=()aehijklmnoprstuvx","₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎ₐₑₕᵢⱼₖₗₘₙₒₚᵣₛₜᵤᵥₓ"),wljsScriptRe=/([\\p{L}\\p{N}])([\\^_])\\{([^{}]+)\\}/gu,wljsConvertScript=function(e,t,n,r){for(var o="",i="^"===n?wljsSup:wljsSub,a=0;a<r.length;a++){var l=i.get(r[a]);if(void 0===l)return e;o+=l}return t+o},wljsNormalizeEOL=function(e){return e.replace(/\\r?\\n|\\r/g,"\\n")},w=function(e){var t=wljsNormalizeEOL(e).replace(/\\t/g,"        ");return t.includes("{")?t.replace(wljsScriptRe,wljsConvertScript):t}',
+  productionNormalizeBefore,
+  productionNormalizeAfter,
   "normalizeText in the production bundle",
 );
 production = replaceOnce(

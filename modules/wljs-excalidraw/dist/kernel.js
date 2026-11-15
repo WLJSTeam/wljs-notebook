@@ -1,5 +1,5 @@
 const exLoader = async (self) => {
-  self["Excalidraw"] = (await import('./main-8316094f.js').then(function (n) { return n.m; }));
+  self["Excalidraw"] = (await import('./main-f1c5696b.js').then(function (n) { return n.m; }));
 };
 
 const reactLoader = async (self) => {
