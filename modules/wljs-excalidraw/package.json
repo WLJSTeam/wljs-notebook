@@ -3,6 +3,8 @@
     "version": "0.0.7",
     "description": "A shared library of Excalidraw & React",
     "scripts": {
+        "postinstall": "node scripts/patch-excalidraw.mjs",
+        "prebuild": "node scripts/patch-excalidraw.mjs",
         "build": "node --max-old-space-size=8192 ./node_modules/.bin/rollup --config rollup.config.mjs",
         "restore": "mkdir _temp && cd _temp && git clone --branch base https://github.com/JerryI/wljs-excalidraw && mv wljs-excalidraw/.git ../.git && cd .. && rm -rf _temp"
     },

@@ -612,3 +612,7 @@ input::selection {
    mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
    -webkit-mask-image: radial-gradient(ellipse 68% 58% at 50% 50%, #000 42%, transparent 100%);
  }
+
+ .excalidraw-textEditorContainer::selection {
+   color:var(--system-accent-color);
+ }
