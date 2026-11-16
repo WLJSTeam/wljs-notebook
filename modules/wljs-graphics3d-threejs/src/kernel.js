@@ -39,13 +39,39 @@ g3d.All = () => 'All'
 let THREE;
 let MathUtils;
 
+// Properties that are not consistently forwarded by every primitive's
+// material constructor are applied when the material is registered.
+const deferredMaterialProps = [
+  'sheen',
+  'anisotropy',
+  'anisotropyRotation',
+  'normalMap',
+  'emissiveMap',
+  'metalnessMap',
+  'roughnessMap',
+  'clearcoatMap',
+  'specularColorMap',
+  'sheenColorMap',
+  'aoMap',
+  'aoMapIntensity'
+];
+
 const registerDynamicMaterial = (env, material) => {
   const materials = Array.isArray(material) ? material : [material];
 
   if (!env.local.dynamicMaterials) env.local.dynamicMaterials = new Set();
 
   for (const item of materials) {
-    if (item) env.local.dynamicMaterials.add(item);
+    if (!item) continue;
+
+    for (const property of deferredMaterialProps) {
+      if (env[property] !== undefined && property in item) {
+        item[property] = env[property];
+        item.needsUpdate = true;
+      }
+    }
+
+    env.local.dynamicMaterials.add(item);
   }
 
   const supportsColor = materials.some(item =>
@@ -3942,6 +3968,7 @@ g3d.Texture = async (args, env) => {
   env.local.texture = texture;
   env.local.img = img;
   env.exposed.texture = texture;
+  return texture;
 }
 
 g3d.Texture.destroy = (args, env) => {
@@ -4470,19 +4497,368 @@ g3d.Text.virtual = true
       'opacity',
       'clearcoat',
       'clearcoatRoughness',
+      'sheen',
       'sheenColor',
       'sheenRoughness',
+      'anisotropy',
+      'anisotropyRotation',
       'iridescence',
       'iridescenceIOR',
       'iridescenceThickness',
       'specularColor',
       'specularIntensity',
+      'normalMap',
+      'emissiveMap',
+      'metalnessMap',
+      'roughnessMap',
+      'clearcoatMap',
+      'specularColorMap',
+      'sheenColorMap',
+      'aoMap',
+      'aoMapIntensity',
       'matte',
       'flatShading',
       'castShadow',
       'shadows',
       'fontSize'
   ];
+
+const materialShadingPresets = {
+  Aluminum: {
+    color: [0.95, 0.95, 0.95], roughness: 0.75, metalness: 0.8,
+    anisotropy: 0.6
+  },
+  Brass: {
+    color: [0.9, 0.855, 0.45], roughness: 0.65, metalness: 0.8,
+    anisotropy: 0.4
+  },
+  Bronze: {
+    color: [0.9, 0.68625, 0.45], roughness: 0.65, metalness: 0.8,
+    anisotropy: 0.3
+  },
+  Copper: {
+    color: [1, 0.65, 0.5], roughness: 0.65, metalness: 0.8,
+    anisotropy: 0.3
+  },
+  Electrum: {
+    color: [0.9, 0.774, 0.45], roughness: 0.7, metalness: 0.7,
+    anisotropy: 0.3
+  },
+  Gold: {
+    color: [1, 0.75, 0], roughness: 0.65, metalness: 0.8,
+    anisotropy: 0.3
+  },
+  Iron: {
+    color: [0.6, 0.576, 0.54], roughness: 0.6, metalness: 0.7,
+    anisotropy: 0.3
+  },
+  Pewter: {
+    color: [0.9, 0.864, 0.81], roughness: 0.75, metalness: 1,
+    anisotropy: 0.3
+  },
+  Silver: {
+    color: [1, 1, 1], roughness: 0.75, metalness: 1,
+    anisotropy: 0.3
+  },
+  Clay: {
+    color: [0.8, 0.32, 0.16], roughness: 0, metalness: 0
+  },
+  Foil: {
+    color: [0.5, 1, 0], roughness: 0.6, metalness: 0.5,
+    clearcoat: 0.75, clearcoatRoughness: 0.6
+  },
+  Glazed: {
+    color: [1, 0.24, 0], roughness: 0.6, metalness: 0.5,
+    clearcoat: 0.75, clearcoatRoughness: 0.2, anisotropy: 0.6
+  },
+  Plastic: {
+    color: [0.3, 0.58, 1], roughness: 1, metalness: 0,
+    clearcoat: 0.75, clearcoatRoughness: 0.3, anisotropy: 0.5
+  },
+  Rubber: {
+    color: [0.5, 0.5, 0.5], roughness: 0.6, metalness: 0.2
+  },
+  Satin: {
+    color: [0.75, 0.5, 1], roughness: 0.75, metalness: 0.5,
+    specularIntensity: 0.5, anisotropy: 0.8
+  },
+  Velvet: {
+    color: [0.5, 1, 0], roughness: 0, metalness: 0,
+    sheen: 1, sheenColor: [1, 1, 0], sheenRoughness: 0.3
+  }
+};
+
+const materialShadingDefaults = {
+  opacity: 1,
+  clearcoat: 0,
+  clearcoatRoughness: 0,
+  sheen: 0,
+  sheenColor: [1, 1, 1],
+  sheenRoughness: 1,
+  anisotropy: 0,
+  anisotropyRotation: 0,
+  specularColor: [1, 1, 1],
+  specularIntensity: 1
+};
+
+const materialShadingColor = (value) => new THREE.Color(...value);
+const defaultMaterialShadingPreset = {
+  color: [1, 1, 1], roughness: 1, metalness: 0
+};
+
+const applyMaterialShadingPreset = (preset, color, env) => {
+  const properties = {...materialShadingDefaults, ...preset};
+
+  env.texture = undefined;
+  env.emissive = undefined;
+  env.emissiveIntensity = undefined;
+  env.transmission = undefined;
+  env.iridescence = undefined;
+  for (const property of deferredMaterialProps) env[property] = undefined;
+
+  env.color = color?.isColor === true
+    ? color.clone()
+    : materialShadingColor(properties.color);
+  env.roughness = properties.roughness;
+  env.metalness = properties.metalness;
+  env.opacity = properties.opacity;
+  env.clearcoat = properties.clearcoat;
+  env.clearcoatRoughness = properties.clearcoatRoughness;
+  env.sheen = properties.sheen;
+  env.sheenColor = materialShadingColor(properties.sheenColor);
+  env.sheenRoughness = properties.sheenRoughness;
+  env.anisotropy = properties.anisotropy;
+  env.anisotropyRotation = properties.anisotropyRotation;
+  env.specularColor = materialShadingColor(properties.specularColor);
+  env.specularIntensity = properties.specularIntensity;
+};
+
+const isPlainObject = value => value?.constructor === Object;
+
+const materialShadingPropertyAliases = {
+  BaseColor: 'color',
+  EmissionColor: 'emissive',
+  EmissionIntensity: 'emissiveIntensity',
+  Opacity: 'opacity',
+  MetallicCoefficient: 'metalness',
+  RoughnessCoefficient: 'roughness',
+  CoatIntensity: 'clearcoat',
+  CoatRoughnessCoefficient: 'clearcoatRoughness',
+  SheenIntensity: 'sheen',
+  SheenRoughnessCoefficient: 'sheenRoughness',
+  SpecularIntensity: 'specularIntensity',
+  SpecularAnisotropyCoefficient: 'anisotropy',
+  IndexOfRefraction: 'ior',
+  IOR: 'ior',
+  TransmissionCoefficient: 'transmission',
+  Thickness: 'materialThickness'
+};
+
+const weightedMaterialValue = value => {
+  if (Array.isArray(value) && value.length === 2 && typeof value[1] === 'number') {
+    return {value: value[0], intensity: value[1]};
+  }
+  return {value, intensity: undefined};
+};
+
+const copyMaterialValue = value => value?.isColor === true ? value.clone() : value;
+
+const applyColorOrTexture = (value, env, colorProperty, mapProperty, intensityProperty) => {
+  const weighted = weightedMaterialValue(value);
+
+  if (weighted.value?.isTexture === true && mapProperty) {
+    env[mapProperty] = weighted.value;
+  } else if (weighted.value?.isColor === true) {
+    env[colorProperty] = weighted.value.clone();
+  }
+
+  if (weighted.intensity !== undefined && intensityProperty) {
+    env[intensityProperty] = weighted.intensity;
+  }
+
+  return weighted;
+};
+
+const applyTextureTransform = (texture, scale, offset) => {
+  if (texture?.isTexture !== true) return;
+
+  if (Array.isArray(scale) && scale.length >= 2) {
+    texture.repeat.set(scale[0], scale[1]);
+  }
+  if (Array.isArray(offset) && offset.length >= 2) {
+    texture.offset.set(offset[0], offset[1]);
+  }
+  texture.needsUpdate = true;
+};
+
+const applyMaterialShadingProperties = (properties, env) => {
+  const handled = new Set([
+    'BaseColor', 'EmissionColor', 'SpecularColor', 'CoatColor', 'SheenColor', 'Opacity',
+    'MetallicCoefficient', 'RoughnessCoefficient', 'DiffuseRoughnessCoefficient',
+    'AmbientExposureFraction', 'SurfaceNormals',
+    'SpecularAnisotropyCoefficient', 'CoatAnisotropyCoefficient',
+    'TextureCoordinateScale', 'TextureCoordinateOffset'
+  ]);
+
+  if ('BaseColor' in properties) {
+    const weighted = weightedMaterialValue(properties.BaseColor);
+    if (weighted.value?.isTexture === true) {
+      env.texture = weighted.value;
+    } else if (weighted.value?.isColor === true) {
+      env.color = weighted.value.clone();
+    }
+  }
+
+  if (typeof properties.Opacity === 'number') {
+    env.opacity = Math.min(1, Math.max(0, properties.Opacity));
+  }
+
+  if ('EmissionColor' in properties) {
+    applyColorOrTexture(
+      properties.EmissionColor, env, 'emissive', 'emissiveMap', 'emissiveIntensity'
+    );
+  }
+
+  if ('SpecularColor' in properties) {
+    applyColorOrTexture(
+      properties.SpecularColor, env, 'specularColor', 'specularColorMap', 'specularIntensity'
+    );
+  }
+
+  if ('CoatColor' in properties) {
+    const coat = weightedMaterialValue(properties.CoatColor);
+    env.clearcoat = coat.intensity ?? 1;
+    if (coat.value?.isTexture === true) {
+      env.clearcoatMap = coat.value;
+    } else if (coat.value?.isColor === true && !('SpecularColor' in properties)) {
+      // Three.js has no clear-coat tint, so use the specular tint as the closest
+      // available approximation while retaining a physically separate coat.
+      env.specularColor = coat.value.clone();
+    }
+  }
+
+  if ('SheenColor' in properties) {
+    const sheen = applyColorOrTexture(
+      properties.SheenColor, env, 'sheenColor', 'sheenColorMap', 'sheen'
+    );
+    if (sheen.intensity === undefined) env.sheen = 1;
+  }
+
+  if ('MetallicCoefficient' in properties) {
+    const metallic = properties.MetallicCoefficient;
+    if (metallic?.isTexture === true) {
+      env.metalnessMap = metallic;
+      env.metalness = 1;
+    } else if (typeof metallic === 'number') {
+      env.metalness = metallic;
+    }
+  }
+
+  if ('RoughnessCoefficient' in properties) {
+    const roughness = properties.RoughnessCoefficient;
+    if (roughness?.isTexture === true) {
+      env.roughnessMap = roughness;
+      env.roughness = 1;
+    } else if (typeof roughness === 'number') {
+      env.roughness = roughness;
+    }
+  } else if (typeof properties.DiffuseRoughnessCoefficient === 'number') {
+    // MeshPhysicalMaterial has one roughness channel, so use it for diffuse
+    // roughness when the primary WL roughness property was not specified.
+    env.roughness = properties.DiffuseRoughnessCoefficient;
+  }
+
+  if ('AmbientExposureFraction' in properties) {
+    const ambient = properties.AmbientExposureFraction;
+    if (ambient?.isTexture === true) {
+      env.aoMap = ambient;
+      env.aoMapIntensity = 1;
+    } else if (typeof ambient === 'number') {
+      env.aoMapIntensity = ambient;
+    }
+  }
+
+  if (properties.SurfaceNormals?.isTexture === true) {
+    env.normalMap = properties.SurfaceNormals;
+  }
+
+  const anisotropy = properties.SpecularAnisotropyCoefficient
+    ?? properties.CoatAnisotropyCoefficient;
+  if (Array.isArray(anisotropy)) {
+    if (typeof anisotropy[0] === 'number') env.anisotropy = anisotropy[0];
+    if (typeof anisotropy[1] === 'number') env.anisotropyRotation = anisotropy[1];
+  } else if (typeof anisotropy === 'number') {
+    env.anisotropy = anisotropy;
+  }
+
+  for (const [name, value] of Object.entries(properties)) {
+    if (handled.has(name)) continue;
+
+    const fallbackName = name.charAt(0).toLowerCase() + name.slice(1);
+    const property = materialShadingPropertyAliases[name] || fallbackName;
+    if (materialProps.includes(property)) {
+      env[property] = copyMaterialValue(value);
+    }
+  }
+
+  const textures = [
+    env.texture, env.normalMap, env.emissiveMap, env.metalnessMap,
+    env.roughnessMap, env.specularColorMap, env.sheenColorMap,
+    env.clearcoatMap, env.aoMap
+  ];
+  for (const texture of textures) {
+    applyTextureTransform(
+      texture, properties.TextureCoordinateScale, properties.TextureCoordinateOffset
+    );
+  }
+};
+
+g3d.MaterialShading = async (args, env) => {
+  if (!args.length) {
+    applyMaterialShadingPreset(defaultMaterialShadingPreset, undefined, env);
+    return;
+  }
+
+  const payload = await interpretate(args[0], {...env});
+  if (isPlainObject(payload)) {
+    applyMaterialShadingPreset(defaultMaterialShadingPreset, undefined, env);
+    applyMaterialShadingProperties(payload, env);
+    return;
+  }
+  if (typeof payload === 'function') {
+    env.material = payload; //if this is a material factory
+    return;
+  }
+  const name = Array.isArray(payload) ? payload[0] : payload;
+  if (typeof name !== 'string') return;
+
+  const handlerName = Object.keys(g3d.MaterialShading).find(
+    candidate => candidate.toLowerCase() === name.toLowerCase()
+  );
+  const handler = handlerName ? g3d.MaterialShading[handlerName] : undefined;
+  if (!handler) return;
+
+  handler(Array.isArray(payload) ? payload[1] : undefined, env);
+};
+
+for (const [name, preset] of Object.entries(materialShadingPresets)) {
+  g3d.MaterialShading[name] = (color, env) => {
+    applyMaterialShadingPreset(preset, color, env);
+  };
+}
+
+g3d.MaterialShading.MeshPhysicalMaterial = (any, env) => {
+  env.material = THREE.MeshPhysicalMaterial;
+};
+g3d.MaterialShading.MeshLambertMaterial = (any, env) => {
+  env.material = THREE.MeshLambertMaterial;
+};
+g3d.MaterialShading.MeshPhongMaterial = (any, env) => {
+  env.material = THREE.MeshPhongMaterial;
+};
+g3d.MaterialShading.MeshToonMaterial = (any, env) => {
+  env.material = THREE.MeshToonMaterial;
+};
 
 g3d.Directive = async (args, env) => { 
   const opts = await core._getRules(args, {...env, hold:true});
@@ -4492,7 +4868,8 @@ g3d.Directive = async (args, env) => {
       const r = await interpretate(args[0][i], env);
     }
   } else {
-    for (let i=0; i<args.length - Object.keys(opts).length; ++i) {
+    for (let i=0; i<args.length; ++i) {
+      if (args[i][0]=='Rule') continue;
       const r = await interpretate(args[i], env);
     }
   }
@@ -5580,12 +5957,12 @@ if (typeof options.Intensity == 'number') intensity = options.Intensity;
 const hemiLight = new THREE.HemisphereLight( skyColor, groundColor, intensity );
 env.global.scene.add( hemiLight );
 }
-
+//depricated in a favour of native MaterialShading WL12+
 g3d.MeshMaterial = async (args, env) => {
-const mat = await interpretate(args[0], env);
-env.material = mat;
+  const mat = await interpretate(args[0], env);
+  env.material = mat;
 }
-
+//depricated!
 g3d['CoffeeLiqueur`Extensions`Graphics3D`MeshMaterial'] = g3d.MeshMaterial
 
 g3d.MeshPhysicalMaterial = () => THREE.MeshPhysicalMaterial
@@ -6654,13 +7031,25 @@ const envcopy = {
   opacity: undefined,
   clearcoat: undefined,
   clearcoatRoughness: undefined,
+  sheen: undefined,
   sheenColor: undefined,
   sheenRoughness: undefined,
+  anisotropy: undefined,
+  anisotropyRotation: undefined,
   iridescence: undefined,
   iridescenceIOR: undefined,
   iridescenceThickness: undefined,
   specularColor: undefined,
   specularIntensity: undefined,
+  normalMap: undefined,
+  emissiveMap: undefined,
+  metalnessMap: undefined,
+  roughnessMap: undefined,
+  clearcoatMap: undefined,
+  specularColorMap: undefined,
+  sheenColorMap: undefined,
+  aoMap: undefined,
+  aoMapIntensity: undefined,
   matte: undefined
 }  
 
@@ -6703,6 +7092,8 @@ if ('Lighting' in options) {
       if (options.Lighting == "'Neutral'") {
         //neutralMaterial = true;
         envcopy.material = THREE.MeshBasicMaterial;
+      } else if (typeof options.Lighting == 'string') {
+        noLighting = false;
       } else {
         noLighting = true;
       }

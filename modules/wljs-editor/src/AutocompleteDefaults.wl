@@ -15236,6 +15236,29 @@ local names of the form <i>x</i>$<i>nnn</i>. "|>,
 >form</i>] returns True if <i>expr</i> matches the pattern <i>form</i>, and \
 returns False otherwise.\n\nMatchQ[<i>form</i>] represents an operator form \
 of MatchQ that can be applied to an expression."|>, 
+ <|"label" -> "MaterialShading", "type" -> "keyword",
+  "info" -> "MaterialShading[] is a three-dimensional graphics directive \
+that uses a white, nonmetallic material.\n\nMaterialShading[\"<i>material</i>\"] \
+uses the named material preset. MaterialShading[{\"<i>material</i>\",<i>col</i>}] \
+uses <i>col</i> as the preset's base color.\n\nMaterialShading[<i>assoc</i>] \
+specifies physically based material properties with an Association. Named \
+presets are \"Aluminum\", \"Brass\", \"Bronze\", \"Copper\", \"Electrum\", \
+\"Gold\", \"Iron\", \"Pewter\", \"Silver\", \"Clay\", \"Foil\", \"Glazed\", \
+\"Plastic\", \"Rubber\", \"Satin\" and \"Velvet\". WLJS renderer selectors \
+\"MeshPhysicalMaterial\", \"MeshLambertMaterial\", \"MeshPhongMaterial\" and \
+\"MeshToonMaterial\" select the corresponding underlying Three.js material \
+class.\n\nSupported Association \
+properties include \"BaseColor\", \"EmissionColor\", \"EmissionIntensity\", \
+\"Opacity\", \"SpecularColor\", \"SpecularIntensity\", \"MetallicCoefficient\", \
+\"RoughnessCoefficient\", \"DiffuseRoughnessCoefficient\", \"CoatColor\", \
+\"CoatIntensity\", \"CoatRoughnessCoefficient\", \"SheenColor\", \
+\"SheenIntensity\", \"SheenRoughnessCoefficient\", \
+\"SpecularAnisotropyCoefficient\", \"CoatAnisotropyCoefficient\", \
+\"AmbientExposureFraction\", \"SurfaceNormals\", \"TextureCoordinateScale\" \
+and \"TextureCoordinateOffset\". WLJS additionally accepts \"IOR\", \
+\"IndexOfRefraction\", \"TransmissionCoefficient\" and \"Thickness\". \
+Color and texture values are supported where applicable; \"Opacity\" is \
+clamped to the range 0 through 1."|>,
   <|"label" -> "MathematicalFunctionData", "type" -> "keyword", 
   "info" -> "MathematicalFunctionData[<i>entity</i>,<i>property</i>] gives \
 data corresponding to <i>property</i> for the mathematical function specified \
