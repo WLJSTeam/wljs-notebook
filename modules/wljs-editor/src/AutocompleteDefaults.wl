@@ -1397,9 +1397,8 @@ approximations of solutions \
 >,...},<i>n</i>}] computes the asymptotic approximation to order \
 <i>n</i>. \n\nAsymptoticSolve[...,Reals] computes only solutions that \
 are real valued for real argument values."|>, <|"label" -> "Asynchronous", 
-  "type" -> "keyword", "info" -> "Asynchronous is an option for WolframAlpha \
-that determines whether to use the asynchronous features of the Wolfram|Alpha \
-API."|>, <|"label" -> "AsynchronousTaskObject", "type" -> "keyword", 
+  "type" -> "keyword", "info" -> "Asynchronous is an option for WolframAlpha or other functions \
+that determines whether to use the asynchronous features"|>, <|"label" -> "AsynchronousTaskObject", "type" -> "keyword", 
   "info" -> "AsynchronousTaskObject[\"<i>name</i>\",<i>id</i>,<i>sessionid</i\
 >] is an object that represents asynchronous evaluations from a particular \
 asynchronous task."|>, <|"label" -> "AsynchronousTasks", "type" -> "keyword", 
@@ -7350,9 +7349,7 @@ functions that specifies which lines should be ignored for further \
 processing."|>, <|"label" -> "ExcludedPhysicalQuantities", 
   "type" -> "keyword", "info" -> "ExcludedPhysicalQuantities is an option for \
 FormulaLookup that specifies physical quantities that should be not used by \
-the formulas returned."|>, <|"label" -> "ExcludePods", "type" -> "keyword", 
-  "info" -> "ExcludePods is an option to WolframAlpha that specifies pod IDs \
-to exclude from the results."|>, <|"label" -> "Exclusions", 
+the formulas returned."|>,  <|"label" -> "Exclusions", 
   "type" -> "keyword", "info" -> "Exclusions is an option that specifies \
 where to exclude in regions used by functions like Plot, Plot3D, and \
 NIntegrate."|>, <|"label" -> "ExclusionsStyle", "type" -> "keyword", 
@@ -12331,9 +12328,6 @@ specifies whether inflected forms of words should be included in results."|>,
  <|"label" -> "IncludeMetaInformation", "type" -> "keyword", 
   "info" -> "IncludeMetaInformation is an option for Import, Thumbnail, and \
 other functions to specify what types of metadata to include."|>, 
- <|"label" -> "IncludePods", "type" -> "keyword", 
-  "info" -> "IncludePods is an option for WolframAlpha that determines \
-specific pod IDs to include in the results."|>, 
  <|"label" -> "IncludeQuantities", "type" -> "keyword", 
   "info" -> "IncludeQuantities is an option for DimensionalCombinations for \
 additional quantities to include in the result."|>, 
@@ -16000,10 +15994,8 @@ that integers should be treated modulo <i>n</i>. "|>,
  <|"label" -> "MoebiusMu", "type" -> "keyword", 
   "info" -> 
    "MoebiusMu[<i>n</i>] gives the M\[ODoubleDot]bius function \[Mu](n). "|>, 
- <|"label" -> "MoleculeDraw", "type" -> "keyword", 
-  "info" -> "MoleculeDraw[] displays a window with interactive tools for \
-drawing a Molecule, and returns the result.\n\nMoleculeDraw[<i>mol</i>] \
-displays a window that initially contains the Molecule <i>mol</i>."|>, 
+ <|"label" -> "Molecule", "type" -> "keyword",
+  "info" -> "Molecule[{<i>atom</i><sub>1</sub>,<i>atom</i><sub>2</sub>,...},{<i>bond</i><sub>1</sub>,<i>bond</i><sub>2</sub>,...}] represents a molecule with the specified atoms and bonds.\n\nMolecule[<i>name</i>] gives the molecule corresponding to the input name."|>,
  <|"label" -> "MoleculeMatchQ", "type" -> "keyword", 
   "info" -> "MoleculeMatchQ[<i>mol</i>,<i>patt</i>] returns True if the \
 Molecule matches the given pattern.\n\nMoleculeMatchQ[<i>patt</i>] represents \
@@ -19108,12 +19100,7 @@ length of <i>list</i> to determine the inflection to use. "|>,
 <i>x</i>\[PlusMinus]<i>y</i>\[PlusMinus]...."|>, 
  <|"label" -> "Pochhammer", "type" -> "keyword", 
   "info" -> "Pochhammer[<i>a</i>,<i>n</i>] gives the Pochhammer symbol \
-(a)<sub>n</sub>."|>, <|"label" -> "PodStates", "type" -> "keyword", 
-  "info" -> "PodStates is an option for WolframAlpha that determines \
-information about the states of the pods."|>, 
- <|"label" -> "PodWidth", "type" -> "keyword", "info" -> "PodWidth is an \
-option for WolframAlpha that determines the width parameters of the content \
-returned by the Wolfram|Alpha API."|>, <|"label" -> "Point", 
+(a)<sub>n</sub>."|>, <|"label" -> "Point", 
   "type" -> "keyword", "info" -> "Point[<i>p</i>] is a graphics and geometry \
 primitive that represents a point at <i>p</i>. \
 \n\nPoint[{<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,...}] represents \

@@ -370,7 +370,7 @@ class ExcalidrawWidget extends codemirror.WidgetType {
         }
       };
     
-      const cchange = throttle(change, 700);
+      const cchange = throttle(change, 800);
       
       let scene;
       
