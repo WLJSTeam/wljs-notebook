@@ -1207,10 +1207,42 @@ interpretate.shared = class {
   constructor (key, loader) {
     this.key = key;
     const self = this;
+    let loading;
+    let loaded = false;
 
-    self.load = async () => {
-      await loader(self);
-      self.load = async () => {console.log('Already loaded!');};
+    self.load = () => {
+      if (loaded) console.log('Already loaded!');
+
+      if (!loading) {
+        let resolveLoader;
+        let rejectLoader;
+        const loaderResult = new Promise((resolve, reject) => {
+          resolveLoader = resolve;
+          rejectLoader = reject;
+        });
+
+        // Store the promise before invoking the loader so concurrent and
+        // re-entrant calls observe the same in-flight operation.
+        loading = loaderResult
+          .then(() => {
+            loaded = true;
+          })
+          .catch((error) => {
+            // Preserve the previous retry behavior after a failed load.
+            loading = undefined;
+            throw error;
+          });
+
+        try {
+          // Keep the previous behavior where synchronous loader work starts
+          // before load() returns, while still adopting async loader results.
+          resolveLoader(loader(self));
+        } catch (error) {
+          rejectLoader(error);
+        }
+      }
+
+      return loading;
     };
 
     interpretate.shared[key] = this;

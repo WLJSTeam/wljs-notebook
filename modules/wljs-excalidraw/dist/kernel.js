@@ -22,6 +22,58 @@ let ExcalidrawLib;
 let React;
 let ReactDOM;
 
+const excalidrawStyleId = 'wljs-excalidraw-overrides';
+const excalidrawStyles = `
+  .excalidraw {
+    --color-selection: var(--system-accent-color);
+    --color-primary: var(--system-accent-color);
+    --color-primary-darker: var(--system-accent-color);
+    --color-primary-darkest: var(--system-accent-color);
+    --color-primary-light: var(--system-accent-color-25);
+    --color-primary-light-darker: var(--system-accent-color-25);
+    --color-brand-hover: var(--system-accent-color);
+    --color-brand-active: var(--system-accent-color);
+    --color-on-primary-container: var(--system-accent-color);
+    --color-surface-primary-container: var(--system-accent-color-25);
+    --color-logo-icon: var(--system-accent-color);
+    --color-logo-text: var(--system-accent-color);
+    --color-promo: var(--system-accent-color);
+    accent-color: var(--system-accent-color);
+  }
+
+  .excalidraw .sidebar-trigger {
+    display: none !important;
+  }
+
+  .excalidraw-textEditorContainer::selection {
+    color: var(--system-accent-color);
+  }
+
+  .excalidraw-textEditorContainer {
+    caret-color: black;
+  }
+`;
+
+const ensureExcalidrawStyles = () => {
+  let style = document.getElementById(excalidrawStyleId);
+
+  if (!style) {
+    style = document.createElement('style');
+    style.id = excalidrawStyleId;
+    style.type = 'text/css';
+    document.head.appendChild(style);
+  }
+
+  if (style.textContent !== excalidrawStyles) {
+    style.textContent = excalidrawStyles;
+  }
+
+  // Keep the overrides after Excalidraw's runtime-injected stylesheet.
+  if (style.parentNode !== document.head || style !== document.head.lastElementChild) {
+    document.head.appendChild(style);
+  }
+};
+
 const codemirror = window.SupportedCells['codemirror'].context; 
 
 function throttle(func, ms) {
@@ -279,20 +331,13 @@ class ExcalidrawWidget extends codemirror.WidgetType {
         ExcalidrawLib = window.interpretate.shared.Excalidraw.Excalidraw.default;
       }
 
+      ensureExcalidrawStyles();
+
       if (!React) {
         if (!window.interpretate.shared.React) {
           element.innerHTML = `<span style="color:red">No shared library React found</span>`;
           return;
-        }          
-        const css = `
-          .excalidraw .sidebar-trigger {
-            display: none !important;
-          }
-        `;
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(css));
-        document.head.appendChild(style);        
+        }
         await window.interpretate.shared.React.load();
         React = window.interpretate.shared.React.React.default;
         ReactDOM = window.interpretate.shared.React.ReactDOM.default;
