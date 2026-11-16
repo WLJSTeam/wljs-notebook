@@ -39,6 +39,10 @@ const excalidrawStyles = `
     --color-logo-icon: var(--system-accent-color);
     --color-logo-text: var(--system-accent-color);
     --color-promo: var(--system-accent-color);
+    --button-hover-bg: var(--system-accent-color-25);
+    --button-active-bg: var(--system-accent-color-25);
+    --button-gray-2: var(--system-accent-color-25);
+    --button-gray-3: var(--system-accent-color-25);
     accent-color: var(--system-accent-color);
   }
 

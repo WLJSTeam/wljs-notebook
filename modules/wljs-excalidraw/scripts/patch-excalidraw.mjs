@@ -133,6 +133,52 @@ development = replaceOnce(
   encodeEvalSource(newOnInput),
   "the WYSIWYG input handler in the development bundle",
 );
+
+const oldRenderSelectionElement = `const renderSelectionElement = (element, context, appState) => {
+  context.save();
+  context.translate(element.x + appState.scrollX, element.y + appState.scrollY);
+  context.fillStyle = "rgba(0, 0, 200, 0.04)"; // render from 0.5px offset  to get 1px wide line
+  // https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
+  // TODO can be be improved by offseting to the negative when user selects
+  // from right to left
+
+  const offset = 0.5 / appState.zoom.value;
+  context.fillRect(offset, offset, element.width, element.height);
+  context.lineWidth = 1 / appState.zoom.value;
+  context.strokeStyle = " rgb(105, 101, 219)";
+  context.strokeRect(offset, offset, element.width, element.height);
+  context.restore();
+};`;
+
+const newRenderSelectionElement = `const renderSelectionElement = (element, context, appState) => {
+  const styles = getComputedStyle(
+    context.canvas.closest(".excalidraw") || context.canvas,
+  );
+  context.save();
+  context.translate(element.x + appState.scrollX, element.y + appState.scrollY);
+  context.fillStyle =
+    styles.getPropertyValue("--color-primary-light").trim() ||
+    "rgba(0, 0, 200, 0.04)"; // render from 0.5px offset  to get 1px wide line
+  // https://stackoverflow.com/questions/7530593/html5-canvas-and-line-width/7531540#7531540
+  // TODO can be be improved by offseting to the negative when user selects
+  // from right to left
+
+  const offset = 0.5 / appState.zoom.value;
+  context.fillRect(offset, offset, element.width, element.height);
+  context.lineWidth = 1 / appState.zoom.value;
+  context.strokeStyle =
+    styles.getPropertyValue("--color-selection").trim() ||
+    "rgb(105, 101, 219)";
+  context.strokeRect(offset, offset, element.width, element.height);
+  context.restore();
+};`;
+
+development = replaceOnce(
+  development,
+  encodeEvalSource(oldRenderSelectionElement),
+  encodeEvalSource(newRenderSelectionElement),
+  "selection rectangle colors in the development bundle",
+);
 fs.writeFileSync(developmentPath, development);
 
 const productionPath = path.join(packageDir, "dist", "excalidraw.production.min.js");
@@ -161,6 +207,16 @@ production = replaceOnce(
   'C.oninput=function(){var e=(0,h.bG)(C.value);if(C.value!==e){var t=C.selectionStart;C.value=e,C.selectionStart=t,C.selectionEnd=t}n(C.value)}',
   "the WYSIWYG input handler in the production bundle",
 );
+const productionSelectionBefore =
+  'q=function(e,t,n){t.save(),t.translate(e.x+n.scrollX,e.y+n.scrollY),t.fillStyle="rgba(0, 0, 200, 0.04)";var r=.5/n.zoom.value;t.fillRect(r,r,e.width,e.height),t.lineWidth=1/n.zoom.value,t.strokeStyle=" rgb(105, 101, 219)",t.strokeRect(r,r,e.width,e.height),t.restore()}';
+const productionSelectionAfter =
+  'q=function(e,t,n){var r=getComputedStyle(t.canvas.closest(".excalidraw")||t.canvas);t.save(),t.translate(e.x+n.scrollX,e.y+n.scrollY),t.fillStyle=r.getPropertyValue("--color-primary-light").trim()||"rgba(0, 0, 200, 0.04)";var o=.5/n.zoom.value;t.fillRect(o,o,e.width,e.height),t.lineWidth=1/n.zoom.value,t.strokeStyle=r.getPropertyValue("--color-selection").trim()||"rgb(105, 101, 219)",t.strokeRect(o,o,e.width,e.height),t.restore()}';
+production = replaceOnce(
+  production,
+  productionSelectionBefore,
+  productionSelectionAfter,
+  "selection rectangle colors in the production bundle",
+);
 fs.writeFileSync(productionPath, production);
 
 const typesPath = path.join(packageDir, "types", "element", "textElement.d.ts");
@@ -174,4 +230,6 @@ types = replaceOnce(
 );
 fs.writeFileSync(typesPath, types);
 
-console.log("Patched @excalidraw/excalidraw@0.17.6 text normalization");
+console.log(
+  "Patched @excalidraw/excalidraw@0.17.6 text normalization and selection colors",
+);
