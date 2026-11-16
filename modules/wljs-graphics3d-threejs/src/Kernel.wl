@@ -202,4 +202,54 @@ Image3D /: MakeBoxes[Image`ImageDump`img:Image3D[o_Offload, Image`ImageDump`type
 End[]
 EndPackage[]
 
+Unprotect[MaterialShading];
+FormatValues[MaterialShading] = {};
+makeIcon[m_] := Graphics3D[{m, Sphere[], PointLight[White, 5{-1,0,1}]}, "Controls"->False, ImageSize->100, "OrthographicCameraZoom"->1.5, Lighting->None];
+MaterialShading /: MakeBoxes[m: MaterialShading[{name_, baseColor_}], StandardForm] := With[{},
+  Module[{above, below},
+        above = { 
+          {BoxForm`SummaryItem[{"Name: ", name}]},
+          {BoxForm`SummaryItem[{"Color: ", baseColor}]}
+        };
+        BoxForm`ArrangeSummaryBox[
+           MaterialShading, (* head *)
+           m,      (* interpretation *)
+           makeIcon[m],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+    ]
+]
+MaterialShading /: MakeBoxes[m: MaterialShading[name_String], StandardForm] := With[{},
+  Module[{above, below},
+        above = { 
+          {BoxForm`SummaryItem[{"Name: ", name}]}
+        };
+        BoxForm`ArrangeSummaryBox[
+           MaterialShading, (* head *)
+           m,      (* interpretation *)
+           makeIcon[m],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+    ]
+]
+MaterialShading /: MakeBoxes[m: MaterialShading[assoc_Association], StandardForm] := With[{},
+  Module[{above, below},
+        above = Table[ 
+          {BoxForm`SummaryItem[{key<>": ", assoc[key]}]}
+        , {key, Keys[assoc]}];
+        BoxForm`ArrangeSummaryBox[
+           MaterialShading, (* head *)
+           m,      (* interpretation *)
+           makeIcon[m],    (* icon, use None if not needed *)
+           (* above and below must be in a format suitable for Grid or Column *)
+           above,    (* always shown content *)
+           Null (* expandable content. Currently not supported!*)
+        ]
+    ]
+]
+
 $ContextAliases["Graphics3D`"] = "CoffeeLiqueur`Extensions`Graphics3D`Tools`";

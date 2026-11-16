@@ -7084,6 +7084,8 @@ if (options.Axes && plotRange) {
 
 let noLighting = false;
 
+
+
 if ('Lighting' in options) {
   if (options.Lighting) {
     if (options.Lighting[0] == 'List') {
@@ -7092,6 +7094,8 @@ if ('Lighting' in options) {
       if (options.Lighting == "'Neutral'") {
         //neutralMaterial = true;
         envcopy.material = THREE.MeshBasicMaterial;
+      } else if (options.Lighting == "'None'" || options.Lighting == "None" || options.Lighting == "'False'" || options.Lighting == "'Null'" || options.Lighting == "Null") {
+        noLighting = true;
       } else if (typeof options.Lighting == 'string') {
         noLighting = false;
       } else {
