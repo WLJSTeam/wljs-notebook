@@ -231,7 +231,7 @@ const ExcalidrawWindow = (scene, cchange, files) => () => {
         {
           style: { height: "60vh", minHeight: "400px"},
         },
-        React.createElement(ExcalidrawLib.Excalidraw, {UIOptions:UIOptions, initialData: {elements: scene, files:files, appState: {viewBackgroundColor: 'transparent', zenModeEnabled: true}}, onChange: cchange, excalidrawAPI : (api) => setExcalidrawAPI(api)}),
+        React.createElement(ExcalidrawLib.Excalidraw, {UIOptions:UIOptions, initialData: {elements: scene, files:files, appState: {viewBackgroundColor: 'transparent', zenModeEnabled: false}}, onChange: cchange, excalidrawAPI : (api) => setExcalidrawAPI(api)}),
       ),
     );
 };
