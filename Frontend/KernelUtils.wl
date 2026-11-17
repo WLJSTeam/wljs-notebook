@@ -83,24 +83,24 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
         
-        Module[{Internal`Kernel`ws},
+        Module[{Internal`Kernel`ws, Internal`Kernel`updateSymbol},
           Internal`Kernel`ws = WebSocketUHandler[];
 
           (* configure the handler for WLJS communications *)
           Internal`Kernel`ws["MessageHandler", "Evaluate"]  = Function[True] -> WLJSTransportHandler;
 
 
-          Off[Function::fpct]; (* fixme, when a symbol gets cleared, see  Experimental`ValueFunction *)
-          Off[Function::slotn]; (* fixme they changed it in WL15 *)
-          
+          updateSymbol[fullName_, cli_, callback_][_] := Experimental`ValueFunction[ fullName ] // Unset;
+
+          updateSymbol[fullName_, cli_, callback_][_, value_] := If[FailureQ[callback[cli, value] ],
+            updateSymbol[fullName, cli, callback][fullName];
+          ];
+
+
           (* symbols tracking *)
           WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
               (*Print["Add tracking... for "<>name];*)
-              Experimental`ValueFunction[ fullName ] = ( 
-                If[FailureQ[callback[cli, #2] ], 
-                  Experimental`ValueFunction[ fullName ] // Unset
-                ];
-              )&;
+              Experimental`ValueFunction[ fullName ] = updateSymbol[fullName, cli, callback];
           , HoldFirst];
 
           WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},

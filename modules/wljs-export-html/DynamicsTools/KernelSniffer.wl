@@ -77,13 +77,23 @@ KernelSniffer[kernel_, "Inject"] := With[{
             ];            
 
             (* Mirrors AddTracking; keep it aligned with Frontend/KernelUtils.wl. *)
+            Internal`Kernel`captureUpdateSymbol[fullName_, cli_, callback_][_] :=
+                Experimental`ValueFunction[fullName] // Unset;
+
+            Internal`Kernel`captureUpdateSymbol[fullName_, cli_, callback_][_, value_] := (
+                Internal`Kernel`CaptureEvent[{
+                    "Symbol",
+                    StringReplace[fullName, {"Global`" -> "", "System`" -> ""}],
+                    value
+                }];
+                If[FailureQ[callback[cli, value]],
+                    Internal`Kernel`captureUpdateSymbol[fullName, cli, callback][fullName];
+                ];
+            );
+
             WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
-                Experimental`ValueFunction[ fullName ] = ( 
-                  Internal`Kernel`CaptureEvent[{"Symbol", StringReplace[fullName, {"Global`" -> "", "System`" -> ""}], #2}];
-                  If[FailureQ[callback[cli, #2] ], 
-                    Experimental`ValueFunction[ fullName ] // Unset
-                  ];
-                )&;
+                Experimental`ValueFunction[fullName] =
+                    Internal`Kernel`captureUpdateSymbol[fullName, cli, callback];
             , HoldFirst]; 
             
         ,
