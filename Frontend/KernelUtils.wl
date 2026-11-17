@@ -30,7 +30,8 @@ initializeKernel[parameters_][kernel_] := With[{
   wsPort = parameters["env", "ws2"], 
   hash = kernel["Hash"],
   spinner = Notifications`Spinner["Topic"->"Initialization of the Kernel", "Body"->"Please, wait"],
-  paths = {FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir}
+  paths = {FileNameJoin[{Directory[], "modules"}], AppExtensions`ExtensionsDir},
+  pacletsDir = AppExtensions`PacletsDir
 },
   Print["Init Kernel!!!"];
   EventFire[kernel, spinner, Null];  
@@ -44,6 +45,13 @@ initializeKernel[parameters_][kernel_] := With[{
   ] &/@ WLJSPackages`Includes["kernel"]},
     GenericKernel`Send[kernel, Get[#, Path->paths]&/@files // Quiet;];
   ];
+
+  (* load shared paclets *)
+  Echo[StringJoin["[Frontend/KernelUtils] Loading paclets directory: ", pacletsDir]];
+  GenericKernel`Send[kernel, 
+     Map[PacletDirectoryLoad] @  Map[DirectoryName] @  DeleteDuplicatesBy[FileNames["PacletInfo.wl" | "PacletInfo.m", {#}, {2}], DirectoryName]& @ pacletsDir
+  ];
+  
 
   (* GenericKernel`SendAsync[kernel, 1]; *)
 
@@ -101,6 +109,7 @@ wsStartListerning[kernel_, port_, host_] := With[{},
                 callback[ToExpression[exprString, InputForm]];
               ,
                 callback[$Failed];
+                LinkWrite[$ParentLink, MessagePacket["Silent", "Failed attempt to fetch "<>exprString<>" as symbol"]];
               ]
           ];
 

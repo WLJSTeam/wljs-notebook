@@ -190,6 +190,9 @@ If[!DirectoryQ[AppExtensions`DemosDir], CreateDirectory[AppExtensions`DemosDir];
 AppExtensions`ExtensionsDir = FileNameJoin[{AppExtensions`DefaultDocumentsDir, "Extensions"}];
 If[!DirectoryQ[AppExtensions`ExtensionsDir], CreateDirectory[AppExtensions`ExtensionsDir]; ];
 
+AppExtensions`PacletsDir = FileNameJoin[{AppExtensions`DefaultDocumentsDir, "Paclets"}];
+If[!DirectoryQ[AppExtensions`PacletsDir], CreateDirectory[AppExtensions`PacletsDir]; ];
+
 AppExtensions`AppDataDir = Lookup[$Env, "AppData", Directory[] ];
 
 AppExtensions`AppConfig = FileNameJoin[{AppExtensions`AppDataDir, "_settings.wl"}];
@@ -207,6 +210,7 @@ Echo[StringJoin["[Startup] Backup directory: ", AppExtensions`BackupsDir]];
 Echo[StringJoin["[Startup] Default documents directory: ", AppExtensions`DefaultDocumentsDir]];
 Echo[StringJoin["[Startup] Demo directory: ", AppExtensions`DemosDir]];
 Echo[StringJoin["[Startup] Extensions directory: ", AppExtensions`ExtensionsDir]];
+Echo[StringJoin["[Startup] Paclets directory: ", AppExtensions`PacletsDir]];
 Echo[StringJoin["[Startup] Application-data directory: ", AppExtensions`AppDataDir]];
 Echo[StringJoin["[Startup] Application configuration file: ", AppExtensions`AppConfig]];
 Echo[StringJoin["[Startup] Application root directory: ", Directory[]]];

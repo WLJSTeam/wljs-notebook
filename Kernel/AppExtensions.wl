@@ -27,6 +27,7 @@ QuickNotesDir;
 BackupsDir;
 DefaultDocumentsDir;
 DemosDir;
+PacletsDir;
 ExtensionsDir;
 AppDataDir;
 AppConfig;
