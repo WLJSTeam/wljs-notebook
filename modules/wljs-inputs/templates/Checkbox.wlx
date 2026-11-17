@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = OptionValue["Topic"], Uid = CreateUUID[], Label = OptionValue["Label"], Description = OptionValue["Description"], Checked = OptionValue["Checked"], class = OptionValue["Class"], style = OptionValue["Style"], labelClass = OptionValue["LabelClass"], labelStyle = OptionValue["LabelStyle"]},
+Component[OptionsPattern[]] := With[{Event = OptionValue["Event"], Topic = OptionValue["Topic"], Uid = CreateUUID[], Label = $normalizeSubSupscriptText[OptionValue["Label"]], Description = OptionValue["Description"], Checked = OptionValue["Checked"], class = OptionValue["Class"], style = OptionValue["Style"], labelClass = OptionValue["LabelClass"], labelStyle = OptionValue["LabelStyle"]},
     {
         <div class="relative flex items-start sm-controls">
             <div class="flex h-6 items-center">

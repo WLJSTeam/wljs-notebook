@@ -40,7 +40,7 @@ makeScript[_, Event_String, {TopicChange_String, TopicBlur_String}, True] := (
 )
 
 Component[value_:"", OptionsPattern[]] := With[{
-    event = OptionValue["Event"], size = OptionValue[ImageSize], Label = OptionValue["Label"], Descp = OptionValue["Description"], Placeholder = OptionValue["Placeholder"], topic = OptionValue["Topic"],
+    event = OptionValue["Event"], size = OptionValue[ImageSize], Label = $normalizeSubSupscriptText[OptionValue["Label"]], Descp = $normalizeSubSupscriptText[OptionValue["Description"]], Placeholder = OptionValue["Placeholder"], topic = OptionValue["Topic"],
     EditableQ = OptionValue["Editable"]
 },{
     ClassName = With[{c=If[OptionValue[Appearance] === Automatic, 

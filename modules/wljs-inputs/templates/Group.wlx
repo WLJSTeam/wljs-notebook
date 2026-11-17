@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = OptionValue["Label"], Description = OptionValue["Description"], LabelClass = OptionValue["LabelClass"], LabelStyle = OptionValue["LabelStyle"], ContainerClass = OptionValue["ContainerClass"], ContainerStyle = OptionValue["ContainerStyle"]},
+Component[OptionsPattern[]] := With[{UId = OptionValue["UId"], Label = $normalizeSubSupscriptText[OptionValue["Label"]], Description = OptionValue["Description"], LabelClass = OptionValue["LabelClass"], LabelStyle = OptionValue["LabelStyle"], ContainerClass = OptionValue["ContainerClass"], ContainerStyle = OptionValue["ContainerStyle"]},
 
   If[OptionValue["Layout"] === "Vertical", 
     <div class="overflow-hidden rounded-md sm-controls {ContainerClass}" style="{ContainerStyle}">

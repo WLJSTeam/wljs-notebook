@@ -69,6 +69,68 @@ End[]
 Begin["`Private`"]
 
 
+$normalizeSubSupscriptText = Module[{normalizeText, zipIt, sup, sub, scriptPattern, convertScript},
+(* zip two strings into a char -> char association *)
+zipIt[from_String, to_String] :=
+  Module[{src = Characters[from], dst = Characters[to]},
+    If[Length[src] =!= Length[dst],
+      Throw[
+        Failure["zipIt", <|
+          "MessageTemplate" -> "zipIt: length mismatch (`1` vs `2`)",
+          "MessageParameters" -> {Length[src], Length[dst]}
+        |>]
+      ],
+      AssociationThread[src, dst]
+    ]
+  ];
+
+(* superscripts: digits and signs, lowercase, uppercase *)
+sup = zipIt[
+  "0123456789+-=()abcdefghijklmnoprstuvwxyzABDEGHIJKLMNOPRTUVW",
+  StringJoin[
+    "\:2070\:00B9\:00B2\:00B3\:2074\:2075\:2076\:2077\:2078\:2079",
+    "\:207A\:207B\:207C\:207D\:207E",
+    "\:1D43\:1D47\:1D9C\:1D48\:1D49\:1DA0\:1D4D\:02B0\:2071\:02B2\:1D4F\:02E1\:1D50",
+    "\:207F\:1D52\:1D56\:02B3\:02E2\:1D57\:1D58\:1D5B\:02B7\:02E3\:02B8\:1DBB",
+    "\:1D2C\:1D2E\:1D30\:1D31\:1D33\:1D34\:1D35\:1D36\:1D37\:1D38\:1D39\:1D3A",
+    "\:1D3C\:1D3E\:1D3F\:1D40\:1D41\:2C7D\:1D42"
+  ]
+];
+
+(* subscripts: digits and signs, then letters *)
+sub = zipIt[
+  "0123456789+-=()aehijklmnoprstuvx",
+  StringJoin[
+    "\:2080\:2081\:2082\:2083\:2084\:2085\:2086\:2087\:2088\:2089",
+    "\:208A\:208B\:208C\:208D\:208E",
+    "\:2090\:2091\:2095\:1D62\:2C7C\:2096\:2097\:2098\:2099",
+    "\:2092\:209A\:1D63\:209B\:209C\:1D64\:1D65\:2093"
+  ]
+];
+
+(* one pass for both ^{...} and _{...} scripts *)
+scriptPattern =
+  m : (base : (LetterCharacter | DigitCharacter | ")") ~~
+       op : ("^" | "_") ~~ "{" ~~
+       body : Except["{" | "}"] .. ~~ "}");
+
+convertScript[match_String, base_String, op_String, body_String] :=
+  Module[{map = If[op === "^", sup, sub], mapped},
+    mapped = Lookup[map, Characters[body], None];
+    If[MemberQ[mapped, None],
+      match,                      (* unmappable char: leave untouched *)
+      base <> StringJoin[mapped]
+    ]
+  ];
+
+normalizeText[text_String] :=
+  If[! StringContainsQ[text, "{"],
+    text,                         (* cheap pre-check: skip the pattern match *)
+    (* convert TeX-like sub/superscripts to Unicode equivalents *)
+    StringReplace[text, scriptPattern :> convertScript[m, base, op, body]]
+  ];
+  normalizeText
+];
 
 
 $ContextAliases["htmlTool`"] = "CoffeeLiqueur`Extensions`InputsOutputs`Tools`";

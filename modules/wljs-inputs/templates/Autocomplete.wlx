@@ -2,7 +2,7 @@ AutocompleteComponent[OptionsPattern[]] := With[{
     Event = OptionValue["Event"], 
     HandlerSymbol = OptionValue["HandlerSymbol"],
     UId = CreateUUID[], 
-    Label = OptionValue["Label"],
+    Label = OptionValue["Label"]//$normalizeSubSupscriptText,
     Default = OptionValue["Default"],
     ClearOnSubmit = If[OptionValue["ClearOnSubmit"], "true", "false"]
 },

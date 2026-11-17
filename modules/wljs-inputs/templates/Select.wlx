@@ -1,6 +1,6 @@
 Component[opts_Association, OptionsPattern[]] := With[{
     Selected = If[OptionValue["Selected"]===Null, First @ Keys @ opts, OptionValue["Selected"]], 
-    Label = OptionValue["Label"], 
+    Label = $normalizeSubSupscriptText[OptionValue["Label"]], 
     Event = OptionValue["Event"],
     Topic = OptionValue["Topic"],
     UId   = CreateUUID[],

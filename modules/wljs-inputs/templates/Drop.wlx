@@ -1,4 +1,4 @@
-Component[OptionsPattern[]] := With[{Class = OptionValue["Class"], Event = OptionValue["Event"], Label = OptionValue["Label"], Descr = OptionValue["Description"]},
+Component[OptionsPattern[]] := With[{Class = OptionValue["Class"], Event = OptionValue["Event"], Label = $normalizeSubSupscriptText[OptionValue["Label"]], Descr = OptionValue["Description"]},
  {
     <div class="flex items-center sm-controls {Class}">
         <label id="label-#instanceId" for="#instanceId" class="relative transition-all text-sm cursor-default pl-3 pr-2 text-left text-gray-500  wljs-card wljs-button">

@@ -1152,7 +1152,7 @@ Convert[n_] := With[{s = TextString[n]},
 Component[OptionsPattern[]] := With[{
     Event = OptionValue["Event"], 
     Topic = OptionValue["Topic"], 
-    Label = OptionValue["Label"], 
+    Label = $normalizeSubSupscriptText[OptionValue["Label"]], 
     MinX = Convert[OptionValue["Min"]], 
     MaxX = Convert[OptionValue["Max"]], 
     Step = Convert[OptionValue["Step"]], 
