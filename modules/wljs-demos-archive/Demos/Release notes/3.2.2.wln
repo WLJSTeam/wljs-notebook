@@ -868,6 +868,46 @@ Type: Output
 %-------------------------------------------------------------------------%
 ChemicalReaction[(*VB[*) <|Molecule[{"O", "C", "O"}, {Bond[{1, 2}, "Double"], Bond[{2, 3}, "Double"]}, {}] -> 1, Molecule[{"O"}, {}, {}] -> 2|> -> <|Molecule[{"C"}, {}, {}] -> 1, Molecule[{"O", "O"}, {Bond[{1, 2}, "Double"]}, {}] -> 2|> (*,*)(*"1:eJxdUU1zmzAUdJN2Js0fyExvPXDHuMT4iGxhPoQTI0xCTiUgYyyBWpCD4ddH2Jm0yYxm3+6+N0+j1c9nHmwvR6NR80MC4EeL1+Vvs66TKicZPpRlUnfS3n4ZZr5KsDnLTmTFK/LPRkUjPqmLQd38t/ZtnSNIGRWkxbI1Ok9dS4BZIXg9ND5edlbfJWwCtCApzwjeSE/RDEUzI6DoQFZFm0ljdWDszE7W/L1xItpYmZjEPYahz+9xuaLx0uRPOcT2C9W9YE7sP6Dt6QxhdTLucNuEWBW4mgsPVivPmPp9J+4MqDYdnbrImPVhM3G9zS8Hx6rTqa3YKRrY7cERyZo8UF2WmK3zvgDBsljvVfE3rXQveTEfHahoVjRGlIrEheOsdx+yxxSkdi8fY6FiHwAjwn7owG00d3J/vWz3C2D1VudD+3Z6bxpqShFdg7DSCWFWSeiTGzMr2FYshr6fIrp8drirJ7dyITC5Wagg2+XKZDEcTfuQjL6I3jI8f8cQfXBgBF8NhCTZXcW6kxvWB9J8k8RKWENeAdaQm7w="*)(*]VB*)]
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Dedicated `Paclets` folder
+
+A WLJS Notebook installation usually creates the following directory in your default documents folder:
+
+```text
+WLJS Notebooks/
+|-- Demos/            # Example notebooks and demonstrations.
+|-- Extensions/       # WLJS-specific extensions for the frontend and kernel.
+|-- User palette/     # User-defined command palette items.
+|-- User templates/   # Templates for creating notebooks.
+`-- Paclets/          # Local Wolfram paclets discovered when WLJS starts.
+```
+
+The `Paclets` directory is new. During startup, WLJS checks each of its direct subdirectories for a `PacletInfo.m` or `PacletInfo.wl` file. For every paclet it finds, WLJS calls `PacletDirectoryLoad` on the containing directory, making the Wolfram kernel aware of the package and its location.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Dedicated `Paclets` folder
+
+A WLJS Notebook installation usually creates the following directory in your default documents folder:
+
+```text
+WLJS Notebooks/
+|-- Demos/            # Example notebooks and demonstrations.
+|-- Extensions/       # WLJS-specific extensions for the frontend and kernel.
+|-- User palette/     # User-defined command palette items.
+|-- User templates/   # Templates for creating notebooks.
+`-- Paclets/          # Local Wolfram paclets discovered when WLJS starts.
+```
+
+The `Paclets` directory is new. During startup, WLJS checks each of its direct subdirectories for a `PacletInfo.m` or `PacletInfo.wl` file. For every paclet it finds, WLJS calls `PacletDirectoryLoad` on the containing directory, making the Wolfram kernel aware of the package and its location.
+
 %------------------------------%EndOfCells%-------------------------------%
 
 
@@ -941,6 +981,16 @@ Key: Fdd3662b8-ad02-49e1-a364-21b40f1bf085
 Key: Fe5ee1e6d-d9f8-4ea5-9ff5-eea6d3d0eefa
 %-------------------------------------------------------------------------%
 <|"Public" -> Hold[Graphics3D[{MaterialShading[Association["MetallicCoefficient" -> 1., "RoughnessCoefficient" -> 0.5]], Sphere[{0, 0, 0}], PointLight[GrayLevel[1], {-5, 0, 5}]}, "Controls" -> False, ImageSize -> 100, "OrthographicCameraZoom" -> 1.5, Lighting -> None]]|>
+
+%-------------------------------------------------------------------------%
+Key: 96
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0[0]", "ReadOnly" -> True, "Selectable" -> False]]|>
+
+%-------------------------------------------------------------------------%
+Key: 48
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0", "ReadOnly" -> True, "Selectable" -> False]]|>
 
 %-----------------------------%EndOfObjects%------------------------------%
 

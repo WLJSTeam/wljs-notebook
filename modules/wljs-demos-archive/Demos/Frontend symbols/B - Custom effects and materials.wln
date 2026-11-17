@@ -300,20 +300,24 @@ Type: Input
 %-------------------------------------------------------------------------%
 Graphics3D[{
   Translate[Tetrahedron[], {-1,-2,0}],
-  MeshMaterial[CustomMaterial[]],
+  MaterialShading[CustomMaterial[]],
   Translate[Octahedron[], {1,2,0}]
 }]
 
 %-------------------------------------------------------------------------%
 Type: Output
 %-------------------------------------------------------------------------%
-(*VB[*)(Graphics3D[{Translate[Tetrahedron[], {-1, -2, 0}], MeshMaterial[CustomMaterial[]], Translate[Octahedron[], {1, 2, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOGqfDJLC5JYwLxOIFESFFiXnFOYklqGgNIiBsklFpSlJiRmlKUn4eqK/M/EGT+AxEgxRBreICEb2pxhi/QjKLMxByIOXxAwrm0uCQ/Fy6Oy0qQO/2TS7DbCLIiE6QTbCMA2Ug5vw=="*)(*]VB*)
+(*VB[*)(Graphics3D[{Translate[Tetrahedron[], {-1, -2, 0}], MaterialShading[CustomMaterial[]], Translate[Octahedron[], {1, 2, 0}]}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwL0osyMhMLjZ2SWOGqfDJLC5JYwLxOIFESFFiXnFOYklqGgNIiBsklFpSlJiRmlKUn4eqK/M/EGT+AxEgxRBr+IGEL1B/UWZiTnBGYkpmXjrEKD4g4VxaXJKfC5PGaSvIqf7JJdgtBdmSCdIJthQAvMw68w=="*)(*]VB*)
 
 %------------------------------%EndOfCells%-------------------------------%
 
 
 
 %--------------------------------%Objects%--------------------------------%
+Key: 48
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[EditorView["0", "ReadOnly" -> True, "Selectable" -> False]]|>
+
 %-----------------------------%EndOfObjects%------------------------------%
 
 
