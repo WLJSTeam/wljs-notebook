@@ -16,7 +16,7 @@ interpretate.contextExpand(g3d);
 "PreserveImageOptions", "Prolog", "RotationAction", 
 "SphericalRegion", "Ticks", "TicksStyle", "TouchscreenAutoZoom", 
 "ViewAngle", "ViewCenter", "ViewMatrix", "ViewPoint", 
-"ViewProjection", "ViewSize", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "VertexNormals", "VertexColors"].map((e)=>{
+"ViewProjection", "ViewSize", "VertexTextureCoordinates", "RTX","ViewRange", "ViewVector", "ViewVertical", "Controls", "PointerLockControls", "SpinShow", "VertexNormals", "VertexColors"].map((e)=>{
   g3d[e] = () => e;
 });
 
@@ -6438,6 +6438,19 @@ if (Object.keys(options).length === 0 && args.length > 1) {
 
 console.warn(options);  
 
+let spinShow = 'SpinShow' in options
+  ? await interpretate(options.SpinShow, {...env, context: g3d}) : false;
+let spinSpeed = 0.6; // radians per second
+if (Array.isArray(spinShow)) {
+  spinSpeed = spinShow[1];
+  spinShow = spinShow[0];
+}
+const spinMaxAngle = spinShow === true || spinShow === 'Automatic'
+  ? Infinity : Math.abs(spinShow);
+const spinEnabled = spinShow !== false && spinShow != null &&
+  (spinMaxAngle === Infinity || Number.isFinite(spinMaxAngle) && spinMaxAngle > 0) &&
+  Number.isFinite(spinSpeed) && spinSpeed !== 0;
+
 
 let noGrid = true;
 
@@ -7744,6 +7757,30 @@ if (envcopy.camera.isOrthographicCamera) {
 
 scene.updateMatrixWorld();
 
+let spinGroup;
+if (spinEnabled) {
+  // Keep explicit lights (and directional/spot targets) fixed while the plot turns.
+  const lights = [];
+  group.traverse(object => { if (object.isLight) lights.push(object); });
+  const keepFixed = object => {
+    const position = object.getWorldPosition(new THREE.Vector3());
+    const quaternion = object.getWorldQuaternion(new THREE.Quaternion());
+    scene.add(object);
+    object.position.copy(position);
+    object.quaternion.copy(quaternion);
+  };
+  for (const light of lights) {
+    if (light.target?.parent && light.target !== light) keepFixed(light.target);
+    keepFixed(light);
+  }
+
+  spinGroup = new THREE.Group();
+  spinGroup.position.copy(group.position);
+  group.position.set(0, 0, 0);
+  spinGroup.add(group);
+  scene.add(spinGroup);
+}
+
 //console.error(new THREE.Box3().setFromObject(scene));
 
 
@@ -7959,8 +7996,60 @@ function updateCamera( cameraProjection ) {
 }
 
 let animate;
+let spinElapsed = 0;
+let spinLastFrame = performance.now();
+let spinVisible = true;
+
+if (spinEnabled) {
+  const isVisible = () => {
+    if (document.hidden || !container.isConnected) return false;
+    for (let node = container; node; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0) return false;
+    }
+
+    const rect = container.getBoundingClientRect();
+    const left = Math.max(0, rect.left);
+    const right = Math.min(window.innerWidth, rect.right);
+    const top = Math.max(0, rect.top);
+    const bottom = Math.min(window.innerHeight, rect.bottom);
+    if (right <= left || bottom <= top) return false;
+
+    return [[0.5, 0.5], [0.1, 0.1], [0.9, 0.1], [0.1, 0.9], [0.9, 0.9]]
+      .some(([x, y]) => container.contains(document.elementFromPoint(
+        left + (right - left) * x, top + (bottom - top) * y
+      )));
+  };
+
+  const checkVisibility = () => {
+    const visible = isVisible();
+    console.log('Graphics3D SpinShow visible:', visible);
+    if (visible === spinVisible) return;
+    spinVisible = visible;
+    if (visible) {
+      spinLastFrame = performance.now();
+      wakeFunction(PathRendering);
+    } else {
+      sleeping = true;
+      cancelAnimationFrame(env.local.aid);
+    }
+  };
+
+  checkVisibility();
+  env.local.spinVisibilityTimer = setInterval(checkVisibility, 2000);
+}
 
 animate = () => {
+  if (spinEnabled) {
+    if (!spinVisible) { sleeping = true; return; }
+    const now = performance.now();
+    spinElapsed += (now - spinLastFrame) / 1000;
+    spinLastFrame = now;
+    spinGroup.rotation.y = spinMaxAngle === Infinity
+      ? spinElapsed * spinSpeed
+      : spinMaxAngle * Math.sin(spinElapsed * spinSpeed / spinMaxAngle);
+    wakeFunction(PathRendering);
+  }
   animateOnce();
 
   if (performance.now() - timeStamp > params.sleepAfter && !params.runInfinitely) {
@@ -8091,6 +8180,7 @@ return env;
 
 core.Graphics3D.destroy = (args, env) => {
   console.log('Graphics3D was removed');
+  if (env.local.spinVisibilityTimer) clearInterval(env.local.spinVisibilityTimer);
   env.local.wakeThreadUp = () => {};
   env.local.controlObject.dispose();
   cancelAnimationFrame(env.local.aid);

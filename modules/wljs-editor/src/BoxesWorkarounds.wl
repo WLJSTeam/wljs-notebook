@@ -2286,6 +2286,13 @@ If[Internal`Kernel`Watchdog["Enabled"],
     ,
       Get[file]
     , tag];
+    
+    Internal`Kernel`Watchdog["Assertion", "ChemicalReaction",
+      FormatValues[ChemicalReaction] //Hash
+    ,
+      Get[file]
+    , tag];
+    
 
     Internal`Kernel`Watchdog["Assertion", "MeshRegion",
       FormatValues[MeshRegion] //Hash

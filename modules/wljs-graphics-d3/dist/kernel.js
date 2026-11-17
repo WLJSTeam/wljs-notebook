@@ -2673,11 +2673,16 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           const scaleX = size[0] / box.width;
           const scaleY = size[1] / box.height;
           const inner = foreignObject.node().firstChild;
+          const minScale = Math.min(scaleX, scaleY);
           if (inner) {
             inner.style.transformOrigin = '0 0';
-            inner.style.transform = `scale(${scaleX}, ${scaleY})`;
+            inner.style.transform = `scale(${minScale})`;
+            const scroller = inner.getElementsByClassName('cm-scroller');
+            if (scroller[0]) {
+              console.warn([scroller[0].scrollHeight, scroller[0].offsetHeight, scroller[0].scrollWidth, scroller[0].offsetWidth]);
+            }
           }
-          box = { width: size[0], height: size[1] };
+          box = { width: box.width * minScale, height: box.height * minScale };
         } else {
           console.log('size matches');
         }
@@ -2725,6 +2730,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
 
           default:
             opos = [box.width/2, box.height/2];
+            foreignObject.node().style.textAlign = "center";
         }
       }
       

@@ -880,7 +880,9 @@ at level 1 of <i>expr</i> by \
 <i>f</i>.\n\nApply[<i>f</i>,<i>expr</i>,<i>levelspec</i>] replaces heads in \
 parts of <i>expr</i> specified by <i>levelspec</i>. \n\nApply[<i>f</i>] \
 represents an operator form of Apply that can be applied to an expression."|>\
-, <|"label" -> "ApplyTo", "type" -> "keyword", "info" -> "ApplyTo[<i>x</i>,<i\
+, <|"label" -> "ApplyReaction", "type" -> "keyword",
+  "info" -> "ApplyReaction[<i>rxn</i>,<i>mols</i>] applies the pattern reaction <i>rxn</i> to a list of molecules and returns a single list of products.\n\nApplyReaction[<i>rxn</i>,<i>mols</i>,<i>n</i>] returns up to <i>n</i> lists of products.\n\nApplyReaction[<i>rxn</i>] represents an operator form that can be applied to a list of molecules."|>,
+ <|"label" -> "ApplyTo", "type" -> "keyword", "info" -> "ApplyTo[<i>x</i>,<i\
 >f</i>] or <i>x</i><i>//</i>=<i>f</i> computes <i>f</i>[<i>x</i>] and resets \
 <i>x</i> to the result."|>, <|"label" -> "ArcCos", "type" -> "keyword", 
   "info" -> "ArcCos[<i>z</i>] gives the arc cosine cos<sup>-1</sup>(z) of the \
@@ -3196,6 +3198,8 @@ input.\n\nChemicalFormula[...,&lt;|<i>qual</i><sub>1</su\
 b>-&gt;<i>val</i><sub>1</sub>,<i>qual</i><sub>2</sub>-&gt;<i>val</i><sub>\
 2</sub> ...|>] represents a species whose qualifiers \
 <i>qual</i><sub><i>i</i></sub> have values <i>val</i><sub><i>i</i></sub>."|>, 
+ <|"label" -> "ChemicalFormulaQ", "type" -> "keyword",
+  "info" -> "ChemicalFormulaQ[<i>formula</i>] returns True if <i>formula</i> is a valid ChemicalFormula object and False otherwise."|>,
  <|"label" -> "ChemicalReaction", "type" -> "keyword", 
   "info" -> "ChemicalReaction[<i>reactants</i>-&gt;<i>products</i>] \
 represents a chemical reaction between the given reactants and products."|>, 
@@ -16002,6 +16006,12 @@ Molecule matches the given pattern.\n\nMoleculeMatchQ[<i>patt</i>] represents \
 an operator form of MoleculeMatchQ that can be applied to a molecule."|>, 
  <|"label" -> "MoleculeMesh", "type" -> "keyword",
   "info" -> "MoleculeMesh[<i>mol</i>] returns a BoundaryMeshRegion representing the Molecule or BioMolecule <i>mol</i>.\n\nMoleculeMesh[<i>mol</i>,<i>type</i>] returns a mesh of surface type <i>type</i>."|>,
+ <|"label" -> "MoleculePattern", "type" -> "keyword",
+  "info" -> "MoleculePattern[{<i>atom</i><sub>1</sub>,<i>atom</i><sub>2</sub>,...},{<i>bond</i><sub>1</sub>,<i>bond</i><sub>2</sub>,...}] represents a molecule pattern with the specified atoms and bonds.\n\nMoleculePattern[<i>smarts</i>] gives the molecule pattern corresponding to a SMARTS string."|>,
+ <|"label" -> "MoleculePlot", "type" -> "keyword",
+  "info" -> "MoleculePlot[<i>mol</i>] creates a two-dimensional structure diagram of the molecule <i>mol</i>.\n\nMoleculePlot[<i>mol</i>,<i>patt</i>] highlights all atoms and bonds matching <i>patt</i>."|>,
+ <|"label" -> "MoleculePlot3D", "type" -> "keyword",
+  "info" -> "MoleculePlot3D[<i>mol</i>] creates a three-dimensional model of the molecule <i>mol</i>.\n\nMoleculePlot3D[<i>mol</i>,<i>patt</i>] highlights all atoms and bonds matching <i>patt</i>."|>,
  <|"label" -> "MoleculeProperty", "type" -> "keyword", 
   "info" -> "MoleculeProperty[<i>pname</i>] represents a property identified \
 by <i>pname</i> for use in \
@@ -18577,6 +18587,8 @@ the specified pattern \
 of the object \
 <i>obj</i>.\n\nPatternFilling[<i>obj</i>,<i>size</i>,{<i>dx</i>,<i>dy</i>}] \
 moves the object <i>obj</i> by the offset {<i>dx</i>,<i>dy</i>}."|>, 
+ <|"label" -> "PatternReaction", "type" -> "keyword",
+  "info" -> "PatternReaction[<i>reactants</i>-&gt;<i>products</i>] represents a templated reaction between molecule patterns.\n\nPatternReaction[<i>reactants</i>-&gt;<i>products</i>,<i>mapping</i>] specifies an atom mapping between reactants and products.\n\nPatternReaction[<i>smarts</i>] represents a reaction defined by a reaction SMARTS string."|>,
  <|"label" -> "PatternSequence", "type" -> "keyword", 
   "info" -> "PatternSequence[<i>p</i><sub>1</sub>,<i>p</i><sub>2</sub>,\
 ...] is a pattern object that represents a sequence of arguments \
