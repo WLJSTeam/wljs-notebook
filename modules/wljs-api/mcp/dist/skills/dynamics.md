@@ -85,7 +85,6 @@ symbols. Give it a polling interval or trigger it from an event:
 Module[{count = 0}, Refresh[count = count + 1, 0.5]]
 ```
 
-Use `Offload` instead when assignments can be pushed directly to a supported view.
 
 ## Specialized dynamic plot functions
 
@@ -178,7 +177,7 @@ pushed to dependent frontend objects:
 - `Cuboid`  
 - `Disk`  
 - `Circle`  
-- `Polygon` (2D only)  
+- `Polygon` 
 - `Text` (inside `Graphics`)  
 - `Arrow`  
 - `Cylinder`  
@@ -249,18 +248,17 @@ EventHandler[InputButton["Random word!"], Function[Null, text = RandomWord[]]]
 
 Some primitives support direct user interaction:
 
-- **2D:** `Point` (single), `Rectangle`, `Disk`  
-- **3D:** `Sphere`  
+- **2D:** `Point` (single), `Rectangle`, `Disk`, `Locator`  
+- **3D:** `Sphere`, `Locator`   
 
 Event patterns:  
 
-- `"drag"` → make a primitive draggable and return its coordinates
+- `"drag"` → make a primitive draggable and return its coordinates (2D and 3D)
 - `"dragsignal"` → report dragging without moving the primitive
 - `"dragall"` → report drag start, movement, and end
 - `"mousemove"`, `"mousedown"`, `"mouseup"`, `"mouseover"` → pointer events
 - `"click"` and `"altclick"` → click with or without the Alt key
 - `"zoom"` → mouse-wheel input on supported primitives
-- `"transform"` (3D) → make object draggable (returns association with `"position" -> {x,y,z}`)  
 
 The entire 2D `Graphics` canvas additionally supports `"keydown"`,
 `"capturekeydown"`, and `"onload"`.
