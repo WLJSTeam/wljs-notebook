@@ -4871,13 +4871,13 @@ g3d.MaterialShading.MeshToonMaterial = (any, env) => {
 g3d.Directive = async (args, env) => { 
   const opts = await core._getRules(args, {...env, hold:true});
 
-  if (args[0][0] == 'List') {
+  if (args?.[0]?.[0] == 'List') {
     for (let i=1; i<args[0].length; ++i) {
       await interpretate(args[0][i], env);
     }
   } else {
     for (let i=0; i<args.length; ++i) {
-      if (args[i][0]=='Rule') continue;
+      if (args?.[i]?.[0]=='Rule') continue;
       await interpretate(args[i], env);
     }
   }
