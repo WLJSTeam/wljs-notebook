@@ -168,7 +168,8 @@ applyLocatorPatch[expr_Graphics, vars_] := If[FreeQ[vars, Locator], expr,
 (* I hate you Wolfram! API is nonsence *)
 includeLocatorsQ[vars_] := !FreeQ[vars, Locator]
 
-Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | Delimiter | _Item | _Style | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}} | {_Symbol, {{_?NumericQ, _?NumericQ}..}}, Locator} ).., OptionsPattern[] ] := Module[{code, currentData, locatorData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
+
+Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symbol, _?NumericQ | Automatic, _}, ___?NumericQ, ___Rule} | {_Symbol | {_Symbol, _} | {_Symbol, _, _String}, _List, ___Rule} | {_Symbol, _?colorQ, ___String, ___Rule} | Delimiter | _Item | _Style | {_Symbol | {_Symbol, {_?NumericQ, _?NumericQ}} | {_Symbol, {{_?NumericQ, _?NumericQ}..}}, Locator} ).., OptionsPattern[] ] := Module[{code, currentData, locatorData, jitMessage=Null, originalExpression, sliders, protected = {}, jitFailedQQ = True, instance = <||>}, With[{
   pvars = Map[makeVariableObject, Unevaluated @ List[parameters] ],
   hash = ToString[Hash[{f//Hold, parameters, Now}] ],
   updateFunction = OptionValue["UpdateFunction"],
@@ -176,6 +177,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
   diffTable = Unique["diffTable"],
   init = OptionValue[Initialization],
   copyButton = EventObject[],
+  controlPlacement = OptionValue[ControlPlacement],
   initialValues = OptionValue["InitialValues"],
   widgetInstance = wapi`Tools`WidgetLike["Interpolation"->False, "Notebook"->First[EvaluationNotebook[] ], "Meta"-><|"Description" -> "Manipulate expression widget"|> ],
   jit = (OptionValue[PerformanceGoal] === "Speed" && TrueQ[OptionValue["JITFeature"] ])
@@ -260,6 +262,9 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
 
               InputSelect,
                 Select[v["List"], !SameQ[#, v["Initial"]] &],
+
+              InputColor,
+                {Lighter[v["Initial"]], v["Initial"]},
 
               Locator, (* yeah, this is kinda stupid *)
                 If[NumberQ[v["Initial"][[1]]],
@@ -364,6 +369,9 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                   InputSelect,
                     InputSelect[#["List"], #["Initial"], "Label"->(#["Label"]), "TrackedExpression"->passPart[index, OptionValue["TrackedExpression"] ] ],
 
+                  InputColor,
+                    InputColor[#["Initial"], "Label"->(#["Label"]), "TrueColorForm"->True],
+
                   Locator,
                     If[ListQ[#["Initial"][[1]]], (* if there are multiple locators within one *)
                         With[{accumulatedData = Unique[]}, (* Hello memory leak! *)
@@ -394,17 +402,29 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                 ] ]
 
           ,
-          InputSelect,
+          InputColor,
 
             wapi`Tools`RangeSet[
-                  "Range"->c[[2]][[1]]["HashList"],
-                  "Event"->{c[[2]][[1]]["InternalId"], "Default"},
-                  "Initial"->FirstPosition[c[[2]][[1]]["HashList"], c[[2]][[1]]["HashSelected"] ],
+                  "Range"->Table[RandomColor[], {10}], (* this is stupid! Just use manual sampling instead, it has interpolation at least... *)
+                  "Event"->{c[[2]][[1]]["Id"], "Default"},
+                  "Initial"->c[[1]]["Initial"],
                   "Type"->"Select",
-                  "Delay"->If[jitFailedQQ, 500, 100]
+                  "Delay"->If[jitFailedQQ, 500, 100],
+                  "Unsupported" -> True (* !!! *)
             ]
-
+          
           ,
+
+          InputSelect,
+            wapi`Tools`RangeSet[
+                "Range"->c[[2]][[1]]["HashList"],
+                "Event"->{c[[2]][[1]]["InternalId"], "Default"},
+                "Initial"->FirstPosition[c[[2]][[1]]["HashList"], c[[2]][[1]]["HashSelected"] ],
+                "Type"->"Select",
+                "Delay"->If[jitFailedQQ, 500, 100]
+            ]          
+          ,
+          
           Locator,
 
             wapi`Tools`RangeSet[
@@ -414,7 +434,8 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
                   "Event"->{c[[2]][[1]]["Id"], "Default"},
                   "Initial"->c[[2]][[1]]["Initial"],
                   "Type"->"Select",
-                  "Delay"->If[jitFailedQQ, 500, 100]
+                  "Delay"->If[jitFailedQQ, 500, 100],
+                  "Unsupported" -> True (* !!! *)
             ]
 
           ,          
@@ -481,7 +502,7 @@ Manipulate[f_, parameters:({_Symbol | {_Symbol, _?NumericQ | Automatic} | {_Symb
       ManipulateHelper[
           sliders[[1, "View"]],
           EditorView[code // Offload, "FullReset"->True, "KeepMaxHeight"->True, "KeepMaxWidth"->True]  (* EditorView works only with strings, FullReset for the cleanest update *)
-      , "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "OptionsButton"->copyButton[[1, "Id"]], "JITMessage"->jitMessage ]
+      , "ViewChange"->widgetInstance["Hash"], "JIT"->Offload[code], Appearance->OptionValue[Appearance], "OptionsButton"->copyButton[[1, "Id"]], "JITMessage"->jitMessage, ControlPlacement->controlPlacement ]
     ]
 ] ]
 
@@ -693,6 +714,8 @@ If[$VersionNumber < 13.3,
   RealValuedNumericQ = NumericQ
 ];
 
+colorQ[color_] := MatchQ[_RGBColor | _Hue | _GrayLevel | _LABColor][color]
+
 (* convert parameters to objects *)
 
 makeVariableObject[Delimiter | _Style | _Item] := Nothing
@@ -732,6 +755,10 @@ makeVariableObject[{{s_Symbol, init_, _}, min_, max_, step_, ___Rule}] := <|"Con
 
 
 makeVariableObject[{{s_Symbol, init_, label_String}, min_, max_, step_, ___Rule}] := <|"Controller"->InputRange, "Symbol" :> s, "Label"->label, "MinRaw"->min, "MaxRaw"->max, "Min"->N[min], "Max"->N[max], "Step" -> N[step], "StepRaw" -> step, "Initial" -> Round[init // N, step]|>
+
+makeVariableObject[{s_Symbol, color_?colorQ, label_String, ___Rule}] := <|"Controller"->InputColor, "Symbol" :> s, "Label"->label, "Initial" -> color|>
+
+makeVariableObject[{s_Symbol, color_?colorQ,  ___Rule}] := <|"Controller"->InputColor, "Symbol" :> s, "Label"->ToString[Unevaluated[s]], "Initial" -> color|>
 
 
 makeVariableObject[{s_Symbol}] := <|"Controller"->InputRange, "Symbol" :> s, "Label"->ToString[Unevaluated[s]], "Min"->-1, "Max"->1, "Step" -> 0.1, "MinRaw"->-1, "MaxRaw"->1, "StepRaw" -> 0.1, "Initial" -> 0.|>
@@ -1188,7 +1215,7 @@ multipleTraces[tracer_, anonymous_, traces_, t_, tmin_, tmax_, plotPoints_, styl
 SetAttributes[singleTrace, HoldAll]
 SetAttributes[multipleTraces, HoldAll]
 
-Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True, Initialization:>None}
+Options[Manipulate] = {"InitialValues"->Automatic, Appearance->"Default", "TrackedExpression"->Null, "UpdateFunction"->(True&), ContinuousAction->False, "ControlsLayout"->"Vertical", PerformanceGoal->"Speed", "JITFeature"->True, Initialization:>None, ControlPlacement->Top}
 
 Options[manipulatePlot] = Normal[ Join[Association[Options[Graphics] ], <|Appearance->"Default", "TrackedExpression"->Null, "ControlsLayout"->"Vertical", "UpdateFunction"->(True&), PlotRange -> Automatic, "SamplingPoints" -> 200.0, ImageSize -> {400, 300}, PlotStyle->ColorData[97, "ColorList"], TransitionType->"Linear", TransitionDuration->50, Epilog->{}, Prolog->{}, AxesLabel->{}|>] ]
 Options[ManipulatePlot] = Options[manipulatePlot]

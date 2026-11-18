@@ -35,6 +35,10 @@
   boxes.Center = () => "center"
   boxes.Left = () => "left"
   boxes.Right = () => "right"
+
+  boxes.Center.update = () => "center"
+  boxes.Left.update = () => "left"
+  boxes.Right.update = () => "right"
   
   boxes.ShowContents = () => "ShowContents"
 

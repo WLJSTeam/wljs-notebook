@@ -88,7 +88,8 @@ CreateUType[RangeSet, init, {
     "Initial"->1,
     "Event"->Null,
     "Hash"->Null,
-    "Delay"->300
+    "Delay"->300,
+    "Unsupported"->False
 }]
 
 Serialize[r_RangeSet] := With[{

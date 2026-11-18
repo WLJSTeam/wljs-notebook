@@ -1,6 +1,8 @@
 
 core.AnimationRate = () => "AnimationRate"
 
+core.ControlPlacement = () => "ControlPlacement"
+
 core.RefreshBox = async (args, env) => {
     const event = await interpretate(args[1], env);
     const interval = await interpretate(args[2], env);
@@ -416,9 +418,39 @@ const man = async (args, env) => {
                 container.appendChild(sliders);
         }
     } else {
-        container.classList.add('flex', 'flex-col', 'gap-y-2');
-        container.appendChild(sliders);
-        container.appendChild(view);
+          container.classList.add('flex', 'flex-col', 'gap-y-2');
+
+          switch(opts.ControlPlacement) {
+            case 'left':
+            case 'Left': {
+              const wrap = document.createElement('div');
+              wrap.classList.add('flex', 'flex-row', 'gap-x-2');
+              
+              wrap.appendChild(sliders); 
+              wrap.appendChild(view);
+              container.appendChild(wrap);
+            }
+            break;
+            case 'right':
+            case 'Right': {
+              const wrap = document.createElement('div');
+              wrap.classList.add('flex', 'flex-row', 'gap-x-2');
+              
+              wrap.appendChild(view); 
+              wrap.appendChild(sliders);
+              container.appendChild(wrap);
+            }
+            break;
+            case 'bottom':
+            case 'Bottom':
+              container.appendChild(view); 
+              container.appendChild(sliders);
+            break;
+            default:
+              container.appendChild(sliders);
+              container.appendChild(view);    
+      
+          }      
     }
 
     let Appearance = true;

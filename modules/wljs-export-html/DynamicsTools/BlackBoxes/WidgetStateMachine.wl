@@ -139,6 +139,16 @@ stateMachine /: blackBox`process[machine_stateMachine, {controls_, modals_, mess
     notification = Notifications`Custom["Topic"->widget["Meta"]["Description"], "Body"->infoWindow["Channel"->channel, "Message"->"Sampling states", "Client"->client, "Log"->messager, "Notebook"->notebookOnLine], "Controls"->False]
   },
 
+    If[Or@@Map[#["Unsupported"]&, ranges],
+        Block[{$CurrentWebSocket = client},
+            EventFire[messager, "Warning", "Widgets includes unsupported control types. This can only be sampled manually" ];
+        ];
+
+        Delete[notification];
+        EventFire[promise, Reject, True];
+        Return[promise];        
+    ];
+    
     total = Product[Length[i["Range"] ], {i, ranges}];
 
 

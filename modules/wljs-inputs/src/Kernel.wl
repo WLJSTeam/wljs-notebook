@@ -431,7 +431,17 @@ InputColor[initialColor_:{1,1,1}, opts: OptionsPattern[] ] := With[{id = OptionV
 	],
 	initialAlpha = If[Length[initialColor] === 4, ToString[initialColor[[4]]], "1"]
 	},
-		EventObject[<|"Id"->id, "Initial"->initialColor, "View"->HTMLView[ColorX["InitialColor"->hexColor, "InitialAlpha"->initialAlpha, "ShowAlpha"->showAlpha, "Event"->id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+	    If[OptionValue["TrueColorForm"], With[{internalId = CreateUUID[]},
+			EventHandler[internalId, {
+			    topic_ :> Function[data,
+				   EventFire[id, topic, RGBColor@@data];
+				]
+			}];
+			
+			EventObject[<|"Id"->id, "Initial"->initialColor, "View"->HTMLView[ColorX["InitialColor"->hexColor, "InitialAlpha"->initialAlpha, "ShowAlpha"->showAlpha, "Event"->internalId, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+		],
+		    EventObject[<|"Id"->id, "Initial"->initialColor, "View"->HTMLView[ColorX["InitialColor"->hexColor, "InitialAlpha"->initialAlpha, "ShowAlpha"->showAlpha, "Event"->id, opts], Prolog->htmlTool`TemplateProcessor[<|"instanceId" -> CreateUUID[]|>] ]|>]
+		]
 	]
 ]
 
@@ -441,7 +451,7 @@ InputColor[EventObject[a_Association], rest_]  := InputColor[rest, "Event" -> a[
 InputColor[EventObject[a_Association], rest__] := InputColor[rest, "Event" -> a["Id"] ]
 InputColor[EventObject[a_Association] ] := InputColor["Event" -> a["Id"] ]
 
-Options[InputColor] = {"Label"->"Color", "Description"->"", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "ShowAlpha"->False, "Topic"->"Default", "Event":>CreateUUID[]}
+Options[InputColor] = {"Label"->"Color", "Description"->"", "Style"->"", "Class"->"", "LabelClass"->"", "LabelStyle"->"", "ShowAlpha"->False, "Topic"->"Default", "Event":>CreateUUID[], "TrueColorForm"->False}
 
 TextX = ImportComponent[FileNameJoin[{$troot, "Text.wlx"}] ];
 
