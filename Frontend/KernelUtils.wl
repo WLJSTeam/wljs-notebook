@@ -83,24 +83,24 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
         
-        With[{Internal`Kernel`ws = Unqiue["Internal`Kernel`ws"], Internal`Kernel`updateSymbol = Unqiue["Internal`Kernel`updateSymbol"]},
+        With[{Internal`Kernel`ws = Unique["Internal`Kernel`ws"], Internal`Kernel`updateSymbol = Unique["Internal`Kernel`updateSymbol"]},
           Internal`Kernel`ws = WebSocketUHandler[];
 
           (* configure the handler for WLJS communications *)
           Internal`Kernel`ws["MessageHandler", "Evaluate"]  = Function[True] -> WLJSTransportHandler;
 
 
-          updateSymbol[fullName_, cli_, callback_][_] := Experimental`ValueFunction[ fullName ] // Unset;
+          Internal`Kernel`updateSymbol[fullName_, cli_, callback_][_] := Experimental`ValueFunction[ fullName ] // Unset;
 
-          updateSymbol[fullName_, cli_, callback_][_, value_] := If[FailureQ[callback[cli, value] ],
-            updateSymbol[fullName, cli, callback][fullName];
+          Internal`Kernel`updateSymbol[fullName_, cli_, callback_][_, value_] := If[FailureQ[callback[cli, value] ],
+            Internal`Kernel`updateSymbol[fullName, cli, callback][fullName];
           ];
 
 
           (* symbols tracking *)
           WLJSTransportHandler["AddTracking"] = Function[{symbolName, fullName, cli, callback},
               (*Print["Add tracking... for "<>name];*)
-              Experimental`ValueFunction[ fullName ] = updateSymbol[fullName, cli, callback];
+              Experimental`ValueFunction[ fullName ] = Internal`Kernel`updateSymbol[fullName, cli, callback];
           , HoldFirst];
 
           WLJSTransportHandler["GetSymbol"] = Function[{exprString, client, callback},
