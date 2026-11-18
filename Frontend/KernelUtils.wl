@@ -83,7 +83,7 @@ wsStartListerning[kernel_, port_, host_] := With[{},
     GenericKernel`Send[kernel,  (  
         (*Print["Establishing WS link..."];*)
         
-        Module[{Internal`Kernel`ws, Internal`Kernel`updateSymbol},
+        With[{Internal`Kernel`ws = Unqiue["Internal`Kernel`ws"], Internal`Kernel`updateSymbol = Unqiue["Internal`Kernel`updateSymbol"]},
           Internal`Kernel`ws = WebSocketUHandler[];
 
           (* configure the handler for WLJS communications *)
