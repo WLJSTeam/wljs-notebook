@@ -180,6 +180,14 @@ const SKILL_DOCS = [
     text: readBundledMarkdown("./skills/markdown.md"),
   },
   {
+    key: "advanced-plots",
+    title: "Advanced Graphics & Plots",
+    uri: "wljs://skills/advanced-plots",
+    summary: "Optional deep guide for complex WLJS 2D/3D graphics, insets, legends, materials, animation, and frontend export; skip for routine Plot/ListPlot/Graphics calls.",
+    aliases: ["advanced plot", "advanced graphics", "graphics inset", "3d material", "spinshow", "path tracing", "sleepafter", "frontend plot export"],
+    text: readBundledMarkdown("./skills/advanced-plots.md"),
+  },
+  {
     key: "mermaid",
     title: "Mermaid Diagram Cells",
     uri: "wljs://skills/mermaid",
@@ -251,6 +259,7 @@ These bundled MCP resources cover rich and special cell types, expression format
 Routing:
 - Usually read one primary resource selected by the explicit cell marker or requested output type.
 - Add a cross-cutting resource (dynamics, async-programming, formatting, or migration) only when that concern is actually present.
+- Use symbol documentation for routine plots; read advanced-plots only for frontend-specific composition, 3D rendering, animation, or capture behavior.
 - Do not combine marker-specific rules: for example, .js returns output with return, .mjs uses this.return(...), and .latex does not use Markdown escaping.
 
 ${SKILL_INDEX}`;
