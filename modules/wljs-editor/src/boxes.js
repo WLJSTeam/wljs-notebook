@@ -3322,3 +3322,344 @@
   }
 
   boxes.TabViewBox =   boxes["BoxForm`TabViewBox"];
+
+  const ink = '#334155';
+  const accent = 'var(--system-accent-color, #2563eb)';
+  const track = 'var(--system-accent-color-25, #dbeafe)';
+  const surface = '#fff';
+  const gaugeColor = opts => opts.GaugeStyle === undefined ? accent : opts.GaugeStyle;
+  const gaugeTrack = opts => opts.GaugeStyle === undefined ? track
+    : `color-mix(in srgb, ${opts.GaugeStyle} 25%, white)`;
+  const base = {display:'inline-flex', alignItems:'center', gap:'8px', color:ink,
+    font:'12px system-ui, sans-serif', verticalAlign:'middle', padding:'8px 10px'};
+
+  const gauges = {};
+  gauges.GaugeStyle = () => "GaugeStyle"
+  gauges.GaugeLabels = () => "GaugeLabels"
+  gauges.RGBColor =   boxes.RGBColor;
+  gauges.GrayLevel =  boxes.GrayLevel;
+  gauges.DateObject = async (args, env) => {
+      const list = await interpretate(args[0], env);
+      switch(list.length) {
+        case 1:
+          return new Date(list[0]);
+        case 2:
+          return new Date(list[0], list[1]-1);
+        case 3:
+          return new Date(list[0], list[1]-1, list[2]);
+        case 4:
+          return new Date(list[0], list[1]-1, list[2], list[3]);
+        case 5:
+          return new Date(list[0], list[1]-1, list[2], list[3], list[4]);
+        case 6:
+          return new Date(list[0], list[1]-1, list[2], list[3], list[4], list[5]);
+        case 7:
+          return new Date(list[0], list[1]-1, list[2], list[3], list[4], list[5], list[6]);
+        default:
+          return new Date();
+      }
+    }
+
+  function make(tag, parent, style = {}, text) {
+    const el = document.createElement(tag);
+    Object.assign(el.style, style);
+    if (text !== undefined) el.textContent = text;
+    if (parent) parent.append(el);
+    return el;
+  }
+  const number = v => Number.isFinite(Number(v)) ? Number(v) : NaN;
+  const bounds = spec => {
+    const a = Array.isArray(spec) ? number(spec[0]) : NaN;
+    const b = Array.isArray(spec) ? number(spec[spec.length - 1]) : NaN;
+    return Number.isFinite(a) && b > a ? [a, b] : [0, 1];
+  };
+  const fraction = (v, range) => Math.max(0, Math.min(1,
+    (number(v) - range[0]) / (range[1] - range[0]) || 0));
+  const shown = v => Number.isFinite(number(v))
+    ? String(Number(number(v).toFixed(2))) : '—';
+  function setText(el, value) {
+    const next = shown(value);
+    if (el.textContent !== next) el.textContent = next;
+  }
+  function makeLabel(root) {
+    return make('span', root, {minWidth:'2ch', fontVariantNumeric:'tabular-nums'});
+  }
+  function makeMeter(parent, range, name) {
+    const meter = make('meter', parent, {position:'absolute', width:'1px',
+      height:'1px', opacity:'0', pointerEvents:'none'});
+    meter.min = range[0];
+    meter.max = range[1];
+    meter.setAttribute('aria-label', name);
+    return meter;
+  }
+  function makeNativeMeter(parent, range, name) {
+    const meter = make('meter', parent);
+    meter.min = range[0];
+    meter.max = range[1];
+    meter.low = range[0] + 0.33 * (range[1] - range[0]);
+    meter.high = range[0] + 0.66 * (range[1] - range[0]);
+    meter.optimum = range[0] + 0.8 * (range[1] - range[0]);
+    meter.setAttribute('aria-label', name);
+    return meter;
+  }
+  function setMeter(meter, value, range) {
+    const next = range[0] + fraction(value, range) * (range[1] - range[0]);
+    if (meter.value !== next) meter.value = next;
+  }
+
+  function mount(env, initial, create, singleValue = false, initialOptions = {}) {
+    const group = make('span', env.element, {display:'inline-flex',
+      alignItems:'center', gap:'12px'});
+    const slots = [];
+    let previousColor;
+    env.local.draw = (current, opts = initialOptions) => {
+      const colorChanged = opts.GaugeStyle !== previousColor;
+      const values = singleValue || !Array.isArray(current) ? [current] : current;
+      values.forEach((value, index) => {
+        let slot = slots[index];
+        if (!slot) {
+          slot = slots[index] = create(index);
+          slot.optionLabel = make('span', slot.root, {display:'none'});
+          group.append(slot.root);
+        }
+        if (slot.root.style.display === 'none') slot.root.style.display = 'inline-flex';
+        if (opts.GaugeLabels === undefined) {
+          if (slot.optionLabel.style.display !== 'none')
+            slot.optionLabel.style.display = 'none';
+        } else {
+          if (slot.optionLabel.textContent !== opts.GaugeLabels)
+            slot.optionLabel.textContent = opts.GaugeLabels;
+          if (slot.optionLabel.style.display === 'none')
+            slot.optionLabel.style.display = '';
+        }
+        // Objects (including Date and clock arrays) can change without changing identity.
+        if (colorChanged || !Object.is(slot.last, value) || value === undefined ||
+            (value !== null && typeof value === 'object')) {
+          slot.update(value, opts);
+          slot.last = value;
+        }
+      });
+      for (let i = values.length; i < slots.length; i++) {
+        if (slots[i].root.style.display !== 'none') slots[i].root.style.display = 'none';
+      }
+      previousColor = opts.GaugeStyle;
+    };
+    env.local.draw(initial, initialOptions);
+  }
+  const readValue = async (args, env) => args[0] === undefined
+    ? undefined : await interpretate(args[0], env);
+  const readArg = async (args, index, env) => args[index] === undefined
+    ? undefined : await interpretate(args[index], env);
+  const readClockValue = (args, env) => readValue(args, {...env, context:gauges});
+  function clockDate(item) {
+    if (Array.isArray(item)) {
+      if (item.length >= 6)
+        return new Date(item[0], item[1] - 1, item[2], item[3], item[4], item[5]);
+      const date = new Date();
+      date.setHours(item[0] || 0, item[1] || 0, 0, 0);
+      date.setTime(date.getTime() + (item[2] || 0) * 1000);
+      return date;
+    }
+    if (item === undefined) return new Date();
+    if (typeof item === 'number') return new Date((item - 2208988800) * 1000);
+    return new Date(item);
+  }
+
+  core.AngularGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readValue(args, env);
+    const range = bounds(await readArg(args, 1, env));
+    mount(env, value, () => {
+      const root = make('span', null, base);
+      const dial = make('span', root, {position:'relative', display:'inline-block',
+        width:'92px', height:'92px', borderRadius:'50%'});
+      make('span', dial, {position:'absolute', inset:'9px',
+        borderRadius:'50%', background:surface});
+      const needle = make('span', dial, {position:'absolute', left:'45px', top:'13px',
+        width:'2px', height:'33px', borderRadius:'2px', background:ink,
+        transformOrigin:'50% 100%'});
+      const hub = make('span', dial, {position:'absolute', left:'42px', top:'42px',
+        width:'8px', height:'8px', borderRadius:'50%', background:ink});
+      const meter = makeMeter(dial, range, 'Angular gauge');
+      const text = make('span', dial, {position:'absolute', left:'0', top:'58px',
+        width:'100%', textAlign:'center', lineHeight:'1',
+        fontVariantNumeric:'tabular-nums'});
+      return {root, update(item, options) {
+        const amount = fraction(item, range);
+        const color = gaugeColor(options);
+        dial.style.background = `conic-gradient(from 225deg, ${color} 0deg ${amount * 270}deg, ${gaugeTrack(options)} 0deg 270deg, transparent 270deg)`;
+        needle.style.transform = `rotate(${-135 + amount * 270}deg)`;
+        setMeter(meter, item, range);
+        setText(text, item);
+      }};
+    }, false, opts);
+  };
+  core.AngularGauge.update = async (args, env) =>
+    env.local.draw(await readValue(args, env));
+  core.AngularGauge.virtual = true;
+
+  core.BulletGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readValue(args, env);
+    const reference = await readArg(args, 1, env);
+    const spec = await readArg(args, 2, env);
+    const range = bounds(spec);
+    mount(env, value, index => {
+      const root = make('span', null, base);
+      const strip = make('span', root, {position:'relative', display:'inline-block',
+        width:'140px', height:'28px'});
+      const cuts = [range[0], ...(Array.isArray(spec) ? spec.slice(1, -1) : []), range[1]];
+      const shades = [track, ...[18, 28, 38].map(p =>
+        `color-mix(in srgb, ${accent} ${p}%, white)`)];
+      const regions = [];
+      for (let i = 0; i < cuts.length - 1; i++) {
+        const start = fraction(cuts[i], range) * 100;
+        const end = fraction(cuts[i + 1], range) * 100;
+        regions.push(make('span', strip, {position:'absolute', left:`${start}%`, top:'5px',
+          width:`${end - start}%`, height:'18px',
+          background:shades[Math.min(i, shades.length - 1)]}));
+      }
+      const fill = make('span', strip, {position:'absolute', left:'0', top:'10px',
+        height:'8px', background:accent});
+      const markerValue = Array.isArray(reference) ? reference[index] : reference;
+      if (Number.isFinite(number(markerValue))) {
+        make('span', strip, {position:'absolute',
+          left:`calc(${fraction(markerValue, range) * 100}% - 1px)`, top:'2px',
+          width:'2px', height:'24px', background:ink});
+      }
+      const meter = makeMeter(strip, range, 'Bullet gauge');
+      const text = makeLabel(root);
+      return {root, update(item, options) {
+        const color = gaugeColor(options);
+        const colors = [gaugeTrack(options), ...[18, 28, 38].map(p =>
+          `color-mix(in srgb, ${color} ${p}%, white)`)];
+        regions.forEach((region, i) => {
+          region.style.background = colors[Math.min(i, colors.length - 1)];
+        });
+        fill.style.background = color;
+        fill.style.width = `${fraction(item, range) * 100}%`;
+        setMeter(meter, item, range);
+        setText(text, item);
+      }};
+    }, false, opts);
+  };
+  core.BulletGauge.update = async (args, env) =>
+    env.local.draw(await readValue(args, env));
+  core.BulletGauge.virtual = true;
+
+  core.ClockGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readClockValue(args, env);
+    mount(env, value, () => {
+      const root = make('span', null, base);
+      const face = make('time', root, {position:'relative', display:'inline-block',
+        width:'96px', height:'96px', border:`2px solid ${track}`,
+        borderRadius:'50%', background:surface});
+      for (const [left, top] of [['50%','8px'],['calc(100% - 8px)','50%'],
+        ['50%','calc(100% - 8px)'],['8px','50%']]) {
+        make('span', face, {position:'absolute', left, top, width:'3px', height:'3px',
+          transform:'translate(-50%, -50%)', borderRadius:'50%', background:ink});
+      }
+      const hand = (length, width, color) => make('span', face, {
+        position:'absolute', left:'50%', bottom:'50%', marginLeft:`${-width / 2}px`,
+        width:`${width}px`, height:`${length}px`, borderRadius:'3px',
+        background:color, transformOrigin:'50% 100%'});
+      const hour = hand(25, 4, ink);
+      const minute = hand(35, 3, ink);
+      const second = hand(38, 1, accent);
+      const hub = make('span', face, {position:'absolute', left:'50%', top:'50%',
+        width:'6px', height:'6px', transform:'translate(-50%, -50%)',
+        borderRadius:'50%', background:accent});
+      return {root, update(item, options) {
+        const date = clockDate(item);
+        const time = Number.isNaN(date.getTime()) ? new Date() : date;
+        face.style.borderColor = gaugeTrack(options);
+        second.style.background = gaugeColor(options);
+        hub.style.background = gaugeColor(options);
+        const iso = time.toISOString();
+        const name = time.toLocaleTimeString();
+        if (face.dateTime !== iso) face.dateTime = iso;
+        if (face.getAttribute('aria-label') !== name) face.setAttribute('aria-label', name);
+        const seconds = time.getSeconds() + time.getMilliseconds() / 1000;
+        const minutes = time.getMinutes() + seconds / 60;
+        hour.style.transform = `rotate(${(time.getHours() % 12 + minutes / 60) * 30}deg)`;
+        minute.style.transform = `rotate(${minutes * 6}deg)`;
+        second.style.transform = `rotate(${seconds * 6}deg)`;
+      }};
+    }, true, opts);
+  };
+  core.ClockGauge.update = async (args, env) =>
+    env.local.draw(await readClockValue(args, env));
+  core.ClockGauge.virtual = true;
+
+  core.HorizontalGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readValue(args, env);
+    const range = bounds(await readArg(args, 1, env));
+    mount(env, value, () => {
+      const root = make('span', null, base);
+      const meter = makeNativeMeter(root, range, 'Horizontal gauge');
+      meter.className = "h-6";
+      const text = makeLabel(root);
+      return {root, update(item) {
+        setMeter(meter, item, range);
+        setText(text, item);
+      }};
+    }, false, opts);
+  };
+  core.HorizontalGauge.update = async (args, env) =>
+    env.local.draw(await readValue(args, env));
+  core.HorizontalGauge.virtual = true;
+
+  core.ThermometerGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readValue(args, env);
+    const range = bounds(await readArg(args, 1, env));
+    mount(env, value, () => {
+      const root = make('span', null, base);
+      const holder = make('span', root, {position:'relative', display:'inline-block',
+        width:'24px', height:'112px'});
+      const bar = make('span', holder, {position:'absolute', left:'5px',
+        bottom:'12px', width:'14px', height:'94px', overflow:'hidden',
+        borderRadius:'9px', background:track});
+      const fill = make('span', bar, {position:'absolute', left:'0', bottom:'0',
+        width:'100%', background:accent});
+      const bulb = make('span', holder, {position:'absolute', left:'1px', bottom:'0',
+        width:'22px', height:'22px', borderRadius:'50%', background:accent});
+      const meter = makeMeter(holder, range, 'Thermometer gauge');
+      const text = makeLabel(root);
+      return {root, update(item, options) {
+        bar.style.background = gaugeTrack(options);
+        fill.style.background = gaugeColor(options);
+        bulb.style.background = gaugeColor(options);
+        fill.style.height = `${fraction(item, range) * 100}%`;
+        setMeter(meter, item, range);
+        setText(text, item);
+      }};
+    }, false, opts);
+  };
+  core.ThermometerGauge.update = async (args, env) =>
+    env.local.draw(await readValue(args, env));
+  core.ThermometerGauge.virtual = true;
+
+  core.VerticalGauge = async (args, env) => {
+    const opts = await core._getRules(args, {...env, context:gauges});
+    const value = await readValue(args, env);
+    const range = bounds(await readArg(args, 1, env));
+    mount(env, value, () => {
+      const root = make('span', null, base);
+      // Writing mode gives the native meter a vertical, bottom-to-top layout.
+      const holder = make('span', root, {display:'inline-block',
+        writingMode:'vertical-lr', direction:'rtl'});
+      const meter = makeNativeMeter(holder, range, 'Vertical gauge');
+      meter.className = "w-6";
+      const text = makeLabel(root);
+      return {root, update(item) {
+        setMeter(meter, item, range);
+        setText(text, item);
+      }};
+    }, false, opts);
+  };
+  core.VerticalGauge.update = async (args, env) =>
+    env.local.draw(await readValue(args, env));
+  core.VerticalGauge.virtual = true;

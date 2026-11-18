@@ -1729,36 +1729,16 @@ GraphicsGrid /: MakeBoxes[GraphicsGrid[list_, ___], any_] := With[{b = Grid[list
   MakeBoxes[b, any]
 ]
 
+Do[With[{g=g},
+    Unprotect[g];
+    ClearAll[g];
+    g /: MakeBoxes[expr : Blank[g], StandardForm] := ViewBox[expr, expr];
+    g /: MakeBoxes[expr : Blank[g], WLXForm] := With[{f = CreateFrontEndObject[expr]},
+        MakeBoxes[f, WLXForm]
+    ];
+  ], {g, {AngularGauge,BulletGauge,ClockGauge,HorizontalGauge,ThermometerGauge,VerticalGauge}}];
 
-HorizontalGauge[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-
-  ParallelSubmit[Rasterize[HorizontalGauge[all] ]]//WaitAll
-);
-
-BulletGauge[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-
-  ParallelSubmit[Rasterize[BulletGauge[all] ]]//WaitAll
-);
-
-AngularGauge[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-
-  ParallelSubmit[Rasterize[AngularGauge[all] ]]//WaitAll
-);
-
-ThermometerGauge[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-
-  ParallelSubmit[Rasterize[ThermometerGauge[all] ]]//WaitAll
-);
-
-ClockGauge[all__] := (
-  If[Length[Kernels[] ] == 0, LaunchKernels[1] ];
-
-  ParallelSubmit[Rasterize[ClockGauge[all] ]]//WaitAll
-);
+ClockGauge[d_DateObject] := ClockGauge[AbsoluteTime[d]]
 
 (* :: GeoGraphics :: *)
 (* Sorry, it is soo complicated to implement this :() *)

@@ -1044,6 +1044,70 @@ Type: Output
 %-------------------------------------------------------------------------%
 ![](/attachments/Screenshot-2026-11-18-at-11.26.18%E2%80%AFAM-eaf.png)
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## All kinds of Gauges
+We added support for many indicators, angular, linear and etc
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## All kinds of Gauges
+We added support for many indicators, angular, linear and etc
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+{
+  AngularGauge[20, {0,2}],
+  BulletGauge[0.2, 0.3, {0,1}, GaugeStyle->Green],
+  ClockGauge[Now],
+  HorizontalGauge[0.6],
+  ThermometerGauge[100],
+  VerticalGauge[0.2]
+};
+Partition[%, 3]//Grid 
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*GB[*){{(*VB[*)(AngularGauge[20, {0, 2}])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWlMIB4PkHDMSy/NSSxyTyxNT80UAQpApEAKfTKLSzKBNEMmSAgA6Y4NEA=="*)(*]VB*)(*|*),(*|*)(*VB[*)(BulletGauge[0.2, 0.3, {0, 1}, GaugeStyle -> RGBColor[0, 1, 0]])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KWkgRjE3kHAqzclJLXFPLE1PLZo1EwRO2hcZg8Fl+zQmmCafzOKSTCDNkAkyByEeVJqTWswFZIBNCC6pzElNYwZJcoAk3Z2c83PyixAawSwAsVYf4A=="*)(*]VB*)(*|*),(*|*)(*VB[*)(ClockGauge[4.004002356473822`16.355069303743353*^9])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeF5BwzslPznZPLE1PDVIHck30DAxMDAyMjE3NTMyNLYyMEgzN9IxNTQ3MLI0NjM1NjI1NjbXiLAG0FxD9"*)(*]VB*)}(*||*),(*||*){(*VB[*)(HorizontalGauge[0.6])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeP5hXlFmVn1eSmOOeWJqeWmQMBo/tAS8TDWw="*)(*]VB*)(*|*),(*|*)(*VB[*)(ThermometerGauge[100])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeAJAIyUgtys3PTS1JLXJPLE1PzUwBCgIACDoL1g=="*)(*]VB*)(*|*),(*|*)(*VB[*)(VerticalGauge[0.2])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRAeL5AISy0qyUxOzHFPLE1PLZo1EwRO2gMAHYIOxQ=="*)(*]VB*)}}(*||*)(*1:eJxTTMoPSmNkYGAo5gUSYZmp5S6pyflFiSX5RcEsQBH3oswUAJ89CUc=*)(*]GB*)
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Try the dynamic version
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Try the dynamic version
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+level = 0.2;
+EventHandler[InputRange[0,1,0.01], (level=#)&]
+
+{
+  AngularGauge[level//Offload, {0,2}],
+  BulletGauge[level//Offload, 0.3, {0,1}, GaugeStyle->Green],
+  ClockGauge[{12 level//Offload,12,0}],
+  HorizontalGauge[level//Offload],
+  ThermometerGauge[100 level//Offload, {0,100}],
+  VerticalGauge[level//Offload]
+};
+Partition[%, 3]//Grid 
+
 %------------------------------%EndOfCells%-------------------------------%
 
 

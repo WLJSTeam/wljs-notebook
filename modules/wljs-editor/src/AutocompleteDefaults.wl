@@ -1,6 +1,10 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+  <|"label" -> "AngularGauge", "type" -> "keyword", "info" -> "AngularGauge[value] draws a dial gauge for a value from 0 to 1.\nAngularGauge[value, {min, max}] uses the specified range.\nAngularGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeStyle and GaugeLabels."|>,
+  <|"label" -> "HorizontalGauge", "type" -> "keyword", "info" -> "HorizontalGauge[value] draws a horizontal gauge for a value from 0 to 1.\nHorizontalGauge[value, {min, max}] uses the specified range.\nHorizontalGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeLabels."|>,
+  <|"label" -> "ThermometerGauge", "type" -> "keyword", "info" -> "ThermometerGauge[value] draws a thermometer gauge for a value from 0 to 1.\nThermometerGauge[value, {min, max}] uses the specified range.\nThermometerGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeStyle and GaugeLabels."|>,
+  <|"label" -> "VerticalGauge", "type" -> "keyword", "info" -> "VerticalGauge[value] draws a vertical gauge for a value from 0 to 1.\nVerticalGauge[value, {min, max}] uses the specified range.\nVerticalGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeLabels."|>,
 <|"label"->"ControlPlacement", "type"->"keyword", "info"->"ControlPlacement->Left, Right, Top, Bottom is an option for Manipulate expression to specify the layout of view and controls"|>,
   <|"label" -> "EditorView", "type" -> "keyword", "info" -> "EditorView[string] represents a virtual editor, that renders string expression as in input cell"|>,
   <|"label" -> "CellView", "type" -> "keyword", "info" -> "CellView[Cell[\"Hello World\", \"Output\", \"markdown\"]] renders cell expression as markdown or other subtype"|>,
@@ -9721,7 +9725,8 @@ the size of the frame around the gauge."|>, <|"label" -> "GaugeFrameStyle",
 functions that specifies the style in which the frame is to be drawn."|>, 
  <|"label" -> "GaugeLabels", "type" -> "keyword", 
   "info" -> "GaugeLabels is an option for gauge functions that specifies \
-labels to be placed on the gauge."|>, <|"label" -> "GaugeMarkers", 
+labels to be placed on the gauge. WLJS frontend-rendered gauges currently \
+support a single label repeated beside each gauge."|>, <|"label" -> "GaugeMarkers",
   "type" -> "keyword", "info" -> "GaugeMarkers is an option for gauge \
 functions that specifies what markers to draw to mark the values."|>, 
  <|"label" -> "GaugeStyle", "type" -> "keyword", 
