@@ -452,7 +452,28 @@ With[{r = #},
         ]
       |>
     ];
-] &/@ {TextView, HTMLView, TeXView, EditorView};
+] &/@ {TextView, HTMLView, TeXView, EditorView, ProgressIndicator, AngularGauge, BulletGauge, HorizontalGauge, ThermometerGauge, VerticalGauge};
+
+diff[ClockGauge[data1_, m___], ClockGauge[data2_, m___], level_, attributes_] := 
+    diffObject[ClockGauge[data1, m], ClockGauge[data2, m], Hash[ClockGauge[data1, m]], Hash[ClockGauge[data2, m]]
+];
+
+transpile[ClockGauge[_,___], ClockGauge[d_, m___], hash1_, hash2_] := With[{
+  symbol = Unique["cmpled"]
+},
+  symbol = Round[d];
+  
+  <|
+    "Priority"->1, "Rule" -> (ClockGauge[d, m] -> ClockGauge[Offload[symbol], m]),
+    "Reset" -> Function[Null, symbol = Round[d] ],
+    "Update" -> Function[{e1, e2, h1, h2},
+      symbol = Round[e2[[1]]];
+    ],
+    "Destroy" -> Function[Null,
+      ClearAll[symbol] // Quiet;
+    ]
+  |>
+];
 
 transpile[Inset[_,_], Inset[d_, u_], hash1_, hash2_] := With[{
   symbol = Unique["cmpled"]

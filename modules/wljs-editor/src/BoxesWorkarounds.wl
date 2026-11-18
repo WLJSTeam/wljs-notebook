@@ -1738,7 +1738,7 @@ Do[With[{g=g},
     ];
   ], {g, {AngularGauge,BulletGauge,ClockGauge,HorizontalGauge,ThermometerGauge,VerticalGauge}}];
 
-ClockGauge[d_DateObject] := ClockGauge[AbsoluteTime[d]]
+ClockGauge[d_DateObject] := ClockGauge[AbsoluteTime[d]//Round]
 
 (* :: GeoGraphics :: *)
 (* Sorry, it is soo complicated to implement this :() *)
