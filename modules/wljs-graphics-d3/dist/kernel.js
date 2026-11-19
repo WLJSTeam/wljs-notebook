@@ -2677,10 +2677,6 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           if (inner) {
             inner.style.transformOrigin = '0 0';
             inner.style.transform = `scale(${minScale})`;
-            const scroller = inner.getElementsByClassName('cm-scroller');
-            if (scroller[0]) {
-              console.warn([scroller[0].scrollHeight, scroller[0].offsetHeight, scroller[0].scrollWidth, scroller[0].offsetWidth]);
-            }
           }
           box = { width: box.width * minScale, height: box.height * minScale };
         } else {
@@ -7410,41 +7406,25 @@ return object;
   };
 
 g2d.EventListener.dragsignal = (uid, object, env) => {
-  console.log('dragsignal event generator');
-  console.log(env.local);
-
   object.classed("cursor-pointer", true);
 
-  //read the live zoom transform from the shared store so both user gestures and
-  //programmatic ZoomAt are reflected immediately (see env.local.currentZoomTransform)
-  const currentTransform = () => env.local.currentZoomTransform || { k: 1, x: 0, y: 0 };
-
-  const xAxisinvert = (x) => {
-    const t = currentTransform();
-    const X = (x - t.x - env.panZoomEntites.left) / t.k;
-    return env.xAxis.invert(X);
-  };
-
-  const yAxisinvert = (y) => {
-    const t = currentTransform();
-    const Y = (y - t.y - env.panZoomEntites.top) / t.k;
-    return env.yAxis.invert(Y);
-  };
-
   const svgNode = env.panZoomEntites.canvas.node();
-
-  let offset = [0, 0]; // offset from cursor to element center
+  // The graphics group is inside the pan/zoom group but outside any primitive
+  // transforms (such as Translate). Its inverse screen CTM gives plot pixels
+  // directly, including during animated zoom transitions.
+  const graphicsNode = env.rootSVG.node();
 
   const updatePos = throttle((x, y) => {
     server.kernel.io.fire(uid, [x, y], 'dragsignal');
   });
 
-  function onMouseMove(e) {
-    const coords = d3.pointer(e, svgNode);
-    const x = coords[0] + 0* offset[0];
-    const y = coords[1] + 0*offset[1];
+  function sendPosition(e) {
+    const [x, y] = d3.pointer(e, graphicsNode);
+    updatePos(env.xAxis.invert(x), env.yAxis.invert(y));
+  }
 
-    updatePos(xAxisinvert(x), yAxisinvert(y));
+  function onMouseMove(e) {
+    sendPosition(e);
   }
 
   function onMouseUp() {
@@ -7456,23 +7436,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     e.stopPropagation();
     e.preventDefault();
 
-    // Use `this` to refer to the clicked DOM node
-    const bbox = e.target.getBBox();
-    const center = [
-      bbox.x + bbox.width / 2,
-      bbox.y + bbox.height / 2
-    ];
-
-    const pointer = d3.pointer(e, svgNode);
-    offset = [
-      center[0] - pointer[0],
-      center[1] - pointer[1]
-    ];
-
-    // Fire the first event immediately, adjusted to center
-    const adjX = pointer[0] ;
-    const adjY = pointer[1] ;
-    updatePos(xAxisinvert(adjX), yAxisinvert(adjY));
+    sendPosition(e);
 
     svgNode.addEventListener("mousemove", onMouseMove);
     svgNode.addEventListener("mouseup", onMouseUp);
