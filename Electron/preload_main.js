@@ -88,8 +88,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.send('system-window-toggle',  {});
   },
 
-  harptic: () => {
-    ipcRenderer.send('system-harptic',  {});
+  harptic: (pattern = 'alignment') => {
+    ipcRenderer.send('system-harptic', pattern);
   },
 
   enlargeWindowSizeIfneeded: () => {

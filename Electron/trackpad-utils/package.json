@@ -1,0 +1,16 @@
+{
+  "name": "wljs-trackpad-utils",
+  "version": "1.0.3-wljs.0",
+  "description": "Vendored macOS trackpad support for WLJS Notebook",
+  "main": "addon.js",
+  "types": "types.d.ts",
+  "license": "MIT",
+  "os": ["darwin"],
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "gypfile": true,
+  "dependencies": {
+    "node-addon-api": "^7.0.0"
+  }
+}

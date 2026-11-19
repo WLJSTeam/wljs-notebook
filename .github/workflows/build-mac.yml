@@ -46,6 +46,9 @@ jobs:
           source venv/bin/activate
           npm install
 
+      - name: Verify vendored trackpad addon
+        run: test -s Electron/trackpad-utils/build/Release/addon.node
+
       - name: Install the Apple certificate and provisioning profile
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
@@ -128,6 +131,9 @@ jobs:
       - name: Install Node.js dependencies
         run: |
           npm install
+
+      - name: Verify vendored trackpad addon
+        run: test -s Electron/trackpad-utils/build/Release/addon.node
 
       - name: Install the Apple certificate and provisioning profile
         env:

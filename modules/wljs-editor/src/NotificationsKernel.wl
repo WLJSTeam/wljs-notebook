@@ -1,7 +1,7 @@
-BeginPackage["CoffeeLiqueur`Extensions`Notifications`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`Extensions`RemoteCells`"}]
+BeginPackage["CoffeeLiqueur`Extensions`Notifications`", {"CoffeeLiqueur`Misc`Events`", "CoffeeLiqueur`Misc`Events`Promise`", "CoffeeLiqueur`Extensions`RemoteCells`", "CoffeeLiqueur`Extensions`Communication"}]
 
 System`HapticFeedback; (* make it on the same level as Beep *)
-HapticFeedback::usage = "HapticFeedback[] make a haptic feedback on MacOS devices (Desktop App only)"
+HapticFeedback::usage = "HapticFeedback[] make a haptic feedback on MacOS devices. Possible presets HapticFeedback[\"Generic\"], HapticFeedback[\"LevelChange\"], HapticFeedback[\"Alignment\"]"
 
 
 Begin["`Private`"]
@@ -17,9 +17,12 @@ Beep[_] := Beep[]
 
 
 
-HapticFeedback[]  := EventFire[Internal`Kernel`RemoteEvent[ Internal`Kernel`Hash ], Notifications`Rumble[], True]; 
-HapticFeedback[_] := HapticFeedback[]
-
+HapticFeedback[any_String]  := FrontSubmit[HapticFeedback[any]//Offload]
+HapticFeedback[_] := HapticFeedback["Generic"]
+HapticFeedback[] := HapticFeedback["Generic"]
+HapticFeedback["LevelChange"] := HapticFeedback["levelChange"]
+HapticFeedback["Generic"] := HapticFeedback["generic"]
+HapticFeedback["Alignment"] := HapticFeedback["alignment"]
 
 Unprotect[EchoLabel];
 

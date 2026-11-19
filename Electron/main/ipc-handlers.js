@@ -63,8 +63,8 @@ function registerIpcHandlers({
     const blocked_windows = blockedWindows;
     const blocked_windows_messages = blockedWindowMessages;
     const create_window = createWindow;
-    ipcMain.on('system-harptic', () => {
-        trackpadUtils.triggerFeedback();
+    ipcMain.on('system-harptic', (_event, pattern) => {
+        trackpadUtils.triggerFeedback(pattern);
     });
 
     ipcMain.on('system-window-zoom-set', (e, value) => {

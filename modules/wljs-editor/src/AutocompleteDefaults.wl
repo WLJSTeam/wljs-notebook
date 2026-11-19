@@ -1,6 +1,9 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
 
 {
+<|"label"->"HapticFeedback", "type"->"keyword", "info"->"HapticFeedback[type] makes trackpad brrrr.\n   type can be \"Generic\", \"Alignment\", \"LevelChange\""|>,
+<|"label"->"ViewBox", "type"->"keyword",  "info"->"ViewBox[expr or exprBoxes, deco] used in MakeBoxes (StandardForm) to display deco covering the input form of expr or already transformed form exprBoxes. deco must be a frontend symbol acting on DOM provided by env.element"|>,
+<|"label"->"BoxBox", "type"->"keyword",  "info"->"BoxBox[exprBoxes, deco] used in MakeBoxes (StandardForm) to display exprBoxes already in StandardForm wrapped with element decorated by frontend symbol deco acting on DOM provided by env.element. Displayed expr remains fully editable"|>,
   <|"label" -> "AngularGauge", "type" -> "keyword", "info" -> "AngularGauge[value] draws a dial gauge for a value from 0 to 1.\nAngularGauge[value, {min, max}] uses the specified range.\nAngularGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeStyle and GaugeLabels."|>,
   <|"label" -> "HorizontalGauge", "type" -> "keyword", "info" -> "HorizontalGauge[value] draws a horizontal gauge for a value from 0 to 1.\nHorizontalGauge[value, {min, max}] uses the specified range.\nHorizontalGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeLabels."|>,
   <|"label" -> "ThermometerGauge", "type" -> "keyword", "info" -> "ThermometerGauge[value] draws a thermometer gauge for a value from 0 to 1.\nThermometerGauge[value, {min, max}] uses the specified range.\nThermometerGauge[{v1, v2, ...}, range] draws multiple gauges. The WLJS frontend supports GaugeStyle and GaugeLabels."|>,

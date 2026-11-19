@@ -41,8 +41,7 @@ jobs:
           const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
 
           const depsToRemove = [
-            "dmg-license",
-            "electron-trackpad-utils"
+            "dmg-license"
           ];
 
           ['dependencies', 'devDependencies'].forEach(section => {
@@ -117,7 +116,6 @@ jobs:
           for (const section of ['dependencies', 'devDependencies', 'optionalDependencies']) {
             if (!pkg[section]) continue;
             delete pkg[section]['dmg-license'];
-            delete pkg[section]['electron-trackpad-utils'];
           }
 
           fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
@@ -178,8 +176,7 @@ jobs:
           const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
 
           const depsToRemove = [
-            "dmg-license",
-            "electron-trackpad-utils"
+            "dmg-license"
           ];
 
           ['dependencies', 'devDependencies'].forEach(section => {

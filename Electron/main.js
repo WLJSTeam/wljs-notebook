@@ -107,7 +107,7 @@ let trackpadUtils = {
     onForceClick: () => {},
     triggerFeedback: () => {}
 };
-if (isMac) trackpadUtils = require("electron-trackpad-utils");
+if (isMac) trackpadUtils = require("./trackpad-utils");
 
 //all routes to important folders
 let appDataFolder;

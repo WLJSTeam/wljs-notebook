@@ -37,8 +37,7 @@ jobs:
           $json = Get-Content $pkgPath -Raw | ConvertFrom-Json
           
           $dependenciesToRemove = @(
-            "dmg-license",
-            "electron-trackpad-utils"
+            "dmg-license"
           )
           
           foreach ($dep in $dependenciesToRemove) {
