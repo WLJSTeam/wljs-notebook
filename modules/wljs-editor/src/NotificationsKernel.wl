@@ -17,12 +17,11 @@ Beep[_] := Beep[]
 
 
 
-HapticFeedback[any_String]  := FrontSubmit[HapticFeedback[any]//Offload]
+HapticFeedback["Generic"] := FrontSubmit[HapticFeedback[0]//Offload]
+HapticFeedback["LevelChange"] := FrontSubmit[HapticFeedback[2]//Offload]
+HapticFeedback["Alignment"] := FrontSubmit[HapticFeedback[1]//Offload]
 HapticFeedback[_] := HapticFeedback["Generic"]
 HapticFeedback[] := HapticFeedback["Generic"]
-HapticFeedback["LevelChange"] := HapticFeedback["levelChange"]
-HapticFeedback["Generic"] := HapticFeedback["generic"]
-HapticFeedback["Alignment"] := HapticFeedback["alignment"]
 
 Unprotect[EchoLabel];
 

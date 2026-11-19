@@ -7,8 +7,8 @@ Builder rebuilds it for the packaged Electron runtime. The app loads this
 directory directly, and the Electron packaging list includes it.
 
 This copy provides trackpad scroll start/end callbacks, force-click detection,
-and `triggerFeedback(pattern)`. The renderer bridge accepts the same pattern:
-`window.electronAPI.harptic('generic')` or `harptic('levelChange')`. Calling
-`harptic()` uses `alignment`, as before. Unknown patterns also fall back to
-`alignment`. AppKit does not expose a strength setting for these trackpad
-patterns.
+and `triggerFeedback(pattern)`. The renderer bridge accepts the same numeric
+pattern: `0` is Generic, `1` is Alignment, and `2` is Level Change. For example,
+`window.electronAPI.harptic(2)` requests Level Change. Calling `harptic()` or
+passing an invalid value uses Alignment. AppKit does not expose a strength
+setting for these trackpad patterns.

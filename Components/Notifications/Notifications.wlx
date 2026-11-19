@@ -14,9 +14,6 @@ Filter[_Notifications`NotificationMessage(*`*)]   = True
 
 beepTimeout = Now
 
-(* Make it global/system as it was Beep *)
-System`HapticFeedback;
-
 assignClient[target_, data_, buffer_, evCloned_] := With[{c = EventClone[data]},
     target = data;
     EventHandler[c, {
@@ -72,12 +69,6 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
                 EventFire[Controller, "Append", Join[<|"Client"->client, "Type"->"Custom"|>, CustomTemplate[n, client, Controller]] ]
             ]
         ], 
-
-        _Notifications`Rumble (*`*) -> Function[Null,
-            With[{},
-                WebUISubmit[Hold[HapticFeedback], client]
-            ]
-        ],
 
         _Notifications`Beeper (*`*) -> Function[type,
             Print["BEEEP!"];
@@ -157,10 +148,6 @@ Component[OptionsPattern[]] := Module[{buffer = {}, lastClient = Null}, With[{
                     console.warn("Unable to play notification chime", error);
                 }
                 if (typeof type == 'string') interpretate.alert('Why the Beep? '+type);
-            }
-            core.HapticFeedback = () => {
-                if (!window.electronAPI) return;
-                window.electronAPI.harptic();
             }
         </script>
     }

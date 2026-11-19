@@ -1141,6 +1141,32 @@ Type: Output
 %-------------------------------------------------------------------------%
 Now you have a clock!
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## HapticFeedback improvements (MacOS)
+We extended `HapticFeedback` expression, and also added haptic (brrr) on the UI elements such as cell groups. Try to hover over them. `InputRange` now has slightly lighter haptic texture on the trackpad
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## HapticFeedback improvements (MacOS)
+We extended `HapticFeedback` expression, and also added haptic (brrr) on the UI elements such as cell groups. Try to hover over them. `InputRange` now has slightly lighter haptic texture on the trackpad
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Print["Generic"];
+Do[Pause[0.1]; HapticFeedback["Generic"], {15}];
+Print["Alignment"];
+Do[Pause[0.1]; HapticFeedback["Alignment"], {15}];
+Print["LevelChange"];
+Do[Pause[0.1]; HapticFeedback["LevelChange"], {15}];
+
 %------------------------------%EndOfCells%-------------------------------%
 
 

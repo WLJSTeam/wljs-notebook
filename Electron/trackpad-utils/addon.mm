@@ -1,7 +1,6 @@
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 #include <napi.h>
-#include <string>
 #import <objc/runtime.h>
 
 Napi::ThreadSafeFunction tsfnBegan = NULL;
@@ -122,10 +121,14 @@ void setupForceClick(const Napi::CallbackInfo &info) {
 
 void triggerFeedback(const Napi::CallbackInfo &info) {
 	NSHapticFeedbackPattern pattern = NSHapticFeedbackPatternAlignment;
-	if (info.Length() > 0 && info[0].IsString()) {
-		const std::string requested = info[0].As<Napi::String>().Utf8Value();
-		if (requested == "generic") pattern = NSHapticFeedbackPatternGeneric;
-		else if (requested == "levelChange") pattern = NSHapticFeedbackPatternLevelChange;
+	if (info.Length() > 0 && info[0].IsNumber()) {
+		const Napi::Number value = info[0].As<Napi::Number>();
+		const int32_t requested = value.Int32Value();
+        switch (requested) {
+            case 0: pattern = NSHapticFeedbackPatternGeneric; break;
+            case 1: pattern = NSHapticFeedbackPatternAlignment; break;
+            case 2: pattern = NSHapticFeedbackPatternLevelChange; break;
+        }
 	}
 
 	[[NSHapticFeedbackManager defaultPerformer] performFeedbackPattern:pattern

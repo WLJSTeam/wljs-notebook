@@ -227,7 +227,7 @@ window.CellWrapper = class {
 
     gutter.addEventListener('mouseenter', () => {
       if (this.invisible || this.props["Locked"]) return;
-      window.electronAPI.harptic('generic');
+      window.electronAPI.harptic(0);
     });
   }
 

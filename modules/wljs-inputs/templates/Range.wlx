@@ -21,7 +21,7 @@ makeScript[Uid_, Event_String, Topic_String, Null, Automatic] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
     </script>
@@ -49,7 +49,7 @@ makeScript[Uid_, Event_String, Topic_String, Controller_, Automatic] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
 
@@ -91,7 +91,7 @@ makeScript[Uid_, Event_String, Topic_String, {Controller_, "Debounce"}, Automati
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
 
@@ -132,7 +132,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Null, Automatic] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
     </script>
@@ -159,7 +159,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Controller_, Automatic] :
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
 
@@ -201,7 +201,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, {Controller_, "Debounce"}
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
 
@@ -242,7 +242,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Null, Automatic] := (
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
     </script>
@@ -268,7 +268,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Controller_, Automatic] 
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
 
@@ -309,7 +309,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, {Controller_, "Debounce"
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
 
@@ -486,7 +486,7 @@ makeScript[Uid_, Event_String, Topic_String, Null, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
 
@@ -497,7 +497,7 @@ makeScript[Uid_, Event_String, Topic_String, Null, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
     </script>
@@ -527,7 +527,7 @@ makeScript[Uid_, Event_String, Topic_String, Controller_, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });        
 
@@ -538,7 +538,7 @@ makeScript[Uid_, Event_String, Topic_String, Controller_, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
 
@@ -584,7 +584,7 @@ makeScript[Uid_, Event_String, Topic_String, {Controller_, "Debounce"}, "FineTun
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });           
 
@@ -595,7 +595,7 @@ makeScript[Uid_, Event_String, Topic_String, {Controller_, "Debounce"}, "FineTun
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });
 
@@ -640,7 +640,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Null, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });  
 
@@ -651,7 +651,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Null, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
     </script>
@@ -680,7 +680,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Controller_, "FineTuning"
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });         
 
@@ -691,7 +691,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, Controller_, "FineTuning"
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
 
@@ -737,7 +737,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, {Controller_, "Debounce"}
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });          
 
@@ -748,7 +748,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, _}, {Controller_, "Debounce"}
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }                
         });
 
@@ -794,7 +794,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Null, "FineTuning"] := (
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });                     
                  ran.addEventListener('change', (event)=> {
@@ -804,7 +804,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Null, "FineTuning"] := (
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
     </script>
@@ -833,7 +833,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Controller_, "FineTuning
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });  
 
@@ -844,7 +844,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, Controller_, "FineTuning
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
 
@@ -890,7 +890,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, {Controller_, "Debounce"
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         }); 
 
@@ -901,7 +901,7 @@ makeScript[Uid_, Event_String, {_, ChangeTopic_String}, {Controller_, "Debounce"
                         if (harpticQ) {
                             if (!window.electronAPI) {harpticQ = false; return}
             
-                            window.electronAPI.harptic('levelChange');
+                            window.electronAPI.harptic(2);
                         }   
                     });
 
@@ -953,7 +953,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, Null, "F
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         }); 
 
@@ -964,7 +964,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, Null, "F
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });                        
 
@@ -1011,7 +1011,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, Controll
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         }); 
 
@@ -1022,7 +1022,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, Controll
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });               
 
@@ -1087,7 +1087,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, {Control
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         }); 
 
@@ -1098,7 +1098,7 @@ makeScript[Uid_, Event_String, {InputTopic_String, ChangeTopic_String}, {Control
             if (harpticQ) {
                 if (!window.electronAPI) {harpticQ = false; return}
 
-                window.electronAPI.harptic('levelChange');
+                window.electronAPI.harptic(2);
             }               
         });               
 
