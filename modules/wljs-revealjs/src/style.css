@@ -87,6 +87,7 @@ margin-right: auto;
 display:inline-block;
 position: relative;
 }
+.slide-frontend-object:empty {padding:0}
 
 img.fragment.fade-out {
 text-align: center;

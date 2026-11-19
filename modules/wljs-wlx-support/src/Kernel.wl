@@ -59,6 +59,9 @@ CoffeeLiqueur`WLX`Private`IdentityTransform[x_] := ToBoxes[x , WLXForm]
 (* [TODO]: Move me to Packages/WLX *)
 WLXForm /: MakeBoxes[s_Symbol, WLXForm] := If[Context[s] == "Global`" || Context[s] == "System`", SymbolName[s], Context[s]<>SymbolName[s]]
 
+(* convert directly to strings *)
+FrontEndExecutable /: MakeBoxes[f_FrontEndExecutable, WLXForm] := ToString[f]
+
 End[]
 
 EndPackage[]
