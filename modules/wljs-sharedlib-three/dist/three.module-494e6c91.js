@@ -9284,7 +9284,7 @@ class Material extends EventDispatcher {
 
 			if ( currentValue === undefined ) {
 
-				//console.warn( `THREE.Material: '${ key }' is not a property of THREE.${ this.type }.` );
+				console.warn( `THREE.Material: '${ key }' is not a property of THREE.${ this.type }.` );
 				continue;
 
 			}

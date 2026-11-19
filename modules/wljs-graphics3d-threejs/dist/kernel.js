@@ -6593,26 +6593,19 @@ domElement = renderer.domElement;
 env.local.domElement = domElement;
 env.local.renderer = renderer;
 
-//fix for translate-50% layout
-const layoutOffset = {x:0, y:0};
-if (env.element.classList.contains('slide-frontend-object')) {
-  layoutOffset.x = -1.0;
-}
 
-//if (CSS2D) {
-  const labelRenderer = new CSS2D.CSS2DRenderer({globalOffset: layoutOffset});
-  labelRenderer.setSize( ImageSize[0], ImageSize[1] );
-  labelRenderer.domElement.style.position = 'absolute';
-  labelRenderer.domElement.style.top = '0px';
-  labelRenderer.domElement.style.bottom = '0px';
-  labelRenderer.domElement.style.marginTop = 'auto';
-  labelRenderer.domElement.style.marginBottom = 'auto';
- // labelRenderer.domElement.style.pointerEvents = 'none';
-  container.appendChild( labelRenderer.domElement );
-  env.local.labelContainer = labelRenderer.domElement;
+const labelRenderer = new CSS2D.CSS2DRenderer();
 
-  domElement = labelRenderer.domElement;
-//}
+labelRenderer.setSize(ImageSize[0], ImageSize[1]);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.left = '0px';
+labelRenderer.domElement.style.top = '0px';
+
+container.appendChild(labelRenderer.domElement);
+env.local.labelContainer = labelRenderer.domElement;
+
+// Required for OrbitControls and pointer handling
+domElement = labelRenderer.domElement;
 
 
 if (ImageSize[0] > 250 && ImageSize[1] > 150 && PathRendering) ;

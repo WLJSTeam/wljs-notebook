@@ -2,7 +2,7 @@ const loader = async (self) => {
     self.THREE         = (await import('./three.module-494e6c91.js'));
     self.OrbitControls = (await import('./OrbitControls-199dbeff.js')).OrbitControls;
     self.RGBELoader    = (await import('./RGBELoader-dc5102ec.js')).RGBELoader; 
-    self.CSS2D         = (await import('./labels-7119234c.js'));
+    self.CSS2D         = (await import('./labels-c4e9851d.js'));
     
     console.log('THREE shared library loader!');
   };
