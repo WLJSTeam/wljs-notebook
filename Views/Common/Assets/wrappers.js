@@ -219,6 +219,8 @@ window.CellWrapper = class {
   channel;
 
   bindGutterHaptic() {
+    //haptic is distracting...
+    /*
     if (!window.electronAPI) return;
     if (this.type !== 'Input') return;
 
@@ -228,7 +230,7 @@ window.CellWrapper = class {
     gutter.addEventListener('mouseenter', () => {
       if (this.invisible || this.props["Locked"]) return;
       window.electronAPI.harptic(0);
-    });
+      }); */
   }
 
   ignoreNextUpdate() {
