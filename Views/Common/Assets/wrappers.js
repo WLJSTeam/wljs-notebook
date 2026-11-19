@@ -219,6 +219,7 @@ window.CellWrapper = class {
   channel;
 
   bindGutterHaptic() {
+    if (!window.electronAPI) return;
     if (this.type !== 'Input') return;
 
     const gutter = this.group;
@@ -226,9 +227,7 @@ window.CellWrapper = class {
 
     gutter.addEventListener('mouseenter', () => {
       if (this.invisible || this.props["Locked"]) return;
-      const haptic = window.electronAPI?.harptic('generic');
-      if (!haptic) return;
-      haptic();
+      window.electronAPI.harptic('generic');
     });
   }
 
