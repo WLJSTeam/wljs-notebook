@@ -267,7 +267,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
             </div> 
 
             <StringRiffle>
-                <Checkbox Label={"Haptic feedback"} Event={controller} Topic={"Haptic"} Description={"Generate brr when the cursor hovers over cells"} Checked={defaultHaptic}/>
+                <Checkbox Label={"Haptic feedback"} Event={controller} Topic={"Haptic"} Description={"Generate brr when the cursor hovers over cells (MacOS only)"} Checked={defaultHaptic}/>
             </StringRiffle>            
             
             <StringRiffle>

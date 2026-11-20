@@ -1185,6 +1185,100 @@ Type: Output
 You can always turn this feature off in the settings
 :::
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Refresh got new patterns
+Did you know you can manually trigger `Refresh`? Now it got even more options to control the evaluation and display:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Refresh got new patterns
+Did you know you can manually trigger `Refresh`? Now it got even more options to control the evaluation and display:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ev = EventObject[];
+Refresh[ListPlot[RandomReal[{-1,1}, {2,100}]], ev]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To update it normally with JIT enabled
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To update it normally with JIT enabled
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventFire[ev, True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Or
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Or
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventFire[ev, "Refresh", True]
+EventFire[ev, "I love cucumbers", True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+To bypass JIT and make a hard refresh (clear and rebuild)
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+To bypass JIT and make a hard refresh (clear and rebuild)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+EventFire[ev, "FullRefresh", True]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+This might come handy if you need to update the plot ranges, since these are usually ignored by diff-engine and JIT.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+This might come handy if you need to update the plot ranges, since these are usually ignored by diff-engine and JIT.
+
 %------------------------------%EndOfCells%-------------------------------%
 
 

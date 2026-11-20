@@ -3359,7 +3359,8 @@
           return new Date();
       }
     }
-
+  gauges.DateObject.update = gauges.DateObject
+  
   function make(tag, parent, style = {}, text) {
     const el = document.createElement(tag);
     Object.assign(el.style, style);
@@ -3497,6 +3498,7 @@
   core.AngularGauge.update = async (args, env) =>
     env.local.draw(await readValue(args, env));
   core.AngularGauge.virtual = true;
+  core.AngularGauge.destroy = (args, env) => {env.element.replaceChildren()}
 
   core.BulletGauge = async (args, env) => {
     const opts = await core._getRules(args, {...env, context:gauges});
@@ -3546,6 +3548,7 @@
   core.BulletGauge.update = async (args, env) =>
     env.local.draw(await readValue(args, env));
   core.BulletGauge.virtual = true;
+  core.BulletGauge.destroy = (args, env) => {env.element.replaceChildren()}
 
   core.ClockGauge = async (args, env) => {
     const opts = await core._getRules(args, {...env, context:gauges});
@@ -3591,6 +3594,7 @@
   core.ClockGauge.update = async (args, env) =>
     env.local.draw(await readClockValue(args, env));
   core.ClockGauge.virtual = true;
+  core.ClockGauge.destroy = (args, env) => {env.element.replaceChildren()}  
 
   core.HorizontalGauge = async (args, env) => {
     const opts = await core._getRules(args, {...env, context:gauges});
@@ -3610,7 +3614,8 @@
   core.HorizontalGauge.update = async (args, env) =>
     env.local.draw(await readValue(args, env));
   core.HorizontalGauge.virtual = true;
-
+  core.HorizontalGauge.destroy = (args, env) => {env.element.replaceChildren()}  
+  
   core.ThermometerGauge = async (args, env) => {
     const opts = await core._getRules(args, {...env, context:gauges});
     const value = await readValue(args, env);
@@ -3641,7 +3646,8 @@
   core.ThermometerGauge.update = async (args, env) =>
     env.local.draw(await readValue(args, env));
   core.ThermometerGauge.virtual = true;
-
+  core.ThermometerGauge.destroy = (args, env) => {env.element.replaceChildren()}  
+  
   core.VerticalGauge = async (args, env) => {
     const opts = await core._getRules(args, {...env, context:gauges});
     const value = await readValue(args, env);
@@ -3663,3 +3669,4 @@
   core.VerticalGauge.update = async (args, env) =>
     env.local.draw(await readValue(args, env));
   core.VerticalGauge.virtual = true;
+  core.VerticalGauge.destroy = (args, env) => {env.element.replaceChildren()}  

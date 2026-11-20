@@ -668,25 +668,29 @@ Refresh /: MakeBoxes[Refresh[expr_, ev_String | ev_EventObject,opts: OptionsPatt
       str = ToString[newExpr, StandardForm];
     ] ] ];
   ,
-    EventHandler[ev, Function[Null,
-        With[
-          {
-            newExpr = expr
-          },
-
-          {
-            diffList = Flatten[{df`Private`diff[currentExpression, newExpr, 1, <||>]}]
-          },
-
-          df`Private`processDiffs[diffTable, currentExpression, newExpr, diffList, Function[editorExpr,
-              str = ToString[editorExpr, StandardForm];
-            False
-          ] ];
-          currentExpression = newExpr; 
-
-          
-        ];
-    ] ];  
+  EventHandler[ev, {("FullRefresh" | "Reset") -> Function[Null,
+    (* drop all tables and do again *)
+    currentExpression = Null;
+    EventFire[ev, "Refresh"];
+  ], _ -> Function[Null,
+         With[
+           {
+             newExpr = expr
+           },
+ 
+           {
+             diffList = Flatten[{df`Private`diff[currentExpression, newExpr, 1, <||>]}]
+           },
+ 
+           df`Private`processDiffs[diffTable, currentExpression, newExpr, diffList, Function[editorExpr,
+               str = ToString[editorExpr, StandardForm];
+             False
+           ] ];
+           currentExpression = newExpr; 
+ 
+           
+         ];
+     ] }];  
   ];
 
     With[{
