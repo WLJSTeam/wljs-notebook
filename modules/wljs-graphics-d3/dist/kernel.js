@@ -7293,9 +7293,11 @@ return object;
     const copy = {...env};
 
     let object = await interpretate(args[0], copy);
-
+    let gcanvasQ = false;
+    
     if (!object) {
       object = getCanvas(copy);
+      gcanvasQ = true;
     } else {
       if (Array.isArray(object)) object = object[0];
     }
@@ -7303,7 +7305,7 @@ return object;
     if (!object.on_list) object.on_list = {};
 
     rules.forEach((rule)=>{
-      g2d.EventListener[rule.lhs](rule.rhs, object, copy);
+      g2d.EventListener[rule.lhs](rule.rhs, object, copy, gcanvasQ);
     });
 
     return null;
@@ -7313,62 +7315,19 @@ return object;
     console.log('EventListener does not support updates');
   };
   
-  g2d.EventListener.onload = (uid, object, env) => {
+  g2d.EventListener.onload = (uid, object, env, gcanvasQ) => {
 
     console.log('onload event generator');
     server.kernel.io.fire(uid, true, 'onload');
   };  
 
-  g2d.MiddlewareListener = async (args, env) => {
-    const options = await core._getRules(args, env);
-    const name = await interpretate(args[1], env);
-    const uid = await interpretate(args[2], env);
-    console.log(args);
-    env.local.middleware = g2d.MiddlewareListener[name](uid, options, env);
-
-    return (await interpretate(args[0], env));
-  };
-
-  g2d.MiddlewareListener.update = (args, env) => {
-    return interpretate(args[0], env);
-  };
-
-  //g2d.MiddlewareListener.destroy = (args, env) => {
-    //return interpretate(args[0], env);
-  //}  
-
-  g2d.MiddlewareListener.end = (uid, params, env) => {
-    const threshold = params.Threshold || 1.0;
-    
-    server.kernel.io.fire(uid, true, 'end');
-    console.log("pre Fire");
-
-    return (object) => {
-      let state = false;
-      
-
-      return object.then((r) => r.tween(uid, function (d) {
-        return function (t) {
-          if (t >= threshold && !state) {
-            server.kernel.io.fire(uid, true, 'end');
-            state = true;
-          }
-        }
-      }))
-    }
-  };
-
-  g2d.MiddlewareListener.endtransition = g2d.MiddlewareListener.end;
-
-  //g2d.EventListener.destroy = (args, env) => {interpretate(args[0], env)}
-
-  g2d.EventListener.drag = (uid, object, env) => {
+  g2d.EventListener.drag = (uid, object, env, gcanvasQ) => {
     const xAxis = env.xAxis;
     const yAxis = env.yAxis;
 
     let bbox = null;
 
-    object.classed("cursor-pointer", true);
+    object.classed("cursor-grab", true);
 
     function dragstarted(event, d) {
       // `this` is the DOM element being dragged
@@ -7405,8 +7364,8 @@ return object;
     );
   };
 
-g2d.EventListener.dragsignal = (uid, object, env) => {
-  object.classed("cursor-pointer", true);
+g2d.EventListener.dragsignal = (uid, object, env, gcanvasQ) => {
+  object.classed("cursor-grab", true);
 
   const svgNode = env.panZoomEntites.canvas.node();
   // The graphics group is inside the pan/zoom group but outside any primitive
@@ -7445,8 +7404,8 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   object.on("mousedown", onMouseDown);
 };
 
-  g2d.EventListener.dragall = (uid, object, env) => {
-
+  g2d.EventListener.dragall = (uid, object, env, gcanvasQ) => {
+    object.classed("cursor-grab", true);
     console.log('drag event generator');
     console.log(env.local);
     const xAxis = env.xAxis;
@@ -7478,7 +7437,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   };
 
 
-  g2d.EventListener.click = (uid, object, env) => {
+  g2d.EventListener.click = (uid, object, env, gcanvasQ) => {
 
     console.log('click event generator');
     console.log(env.local);
@@ -7494,7 +7453,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
         updatePos(xAxis.invert(p[0]), yAxis.invert(p[1]));
     }
 
-    object.classed("cursor-pointer", true);
+    if (!gcanvasQ) object.classed("cursor-pointer", true);
   
     if ('click' in object.on_list) {
       object.on_list.click.push((e)=>clicked(e, d3.pointer(e)));
@@ -7508,7 +7467,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     }
   };  
 
-  g2d.EventListener.mousedown = (uid, object, env) => {
+  g2d.EventListener.mousedown = (uid, object, env, gcanvasQ) => {
 
     console.log('mousedown event generator');
     console.log(env.local);
@@ -7528,7 +7487,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     object.on("mousedown", (e)=>clicked(e, d3.pointer(e)), true);
   };  
 
-  g2d.EventListener.mouseup = (uid, object, env) => {
+  g2d.EventListener.mouseup = (uid, object, env, gcanvasQ) => {
 
     console.log('mouseup event generator');
     console.log(env.local);
@@ -7550,7 +7509,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   };  
 
-  g2d.EventListener.rightclick = (uid, object, env) => {
+  g2d.EventListener.rightclick = (uid, object, env, gcanvasQ) => {
 
     console.log('mouseup event generator');
     console.log(env.local);
@@ -7573,7 +7532,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   }; 
 
-  g2d.EventListener.contextmenu = (uid, object, env) => {
+  g2d.EventListener.contextmenu = (uid, object, env, gcanvasQ) => {
 
     console.log('mouseup event generator');
     console.log(env.local);
@@ -7596,7 +7555,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   };  
   
-  const modifierClickListener = (eventName, modifierKey) => (uid, object, env) => {
+  const modifierClickListener = (eventName, modifierKey) => (uid, object, env, gcanvasQ) => {
     console.log(`${eventName} event generator`);
     console.log(env.local);
     const xAxis = env.xAxis;
@@ -7627,7 +7586,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   g2d.EventListener.metaclick = modifierClickListener('metaclick', 'metaKey');
   g2d.EventListener.shiftclick = modifierClickListener('shiftclick', 'shiftKey');
 
-  const capturedKeyListener = (eventNames, channel, formatEvent) => (uid, object, env) => {
+  const capturedKeyListener = (eventNames, channel, formatEvent) => (uid, object, env, gcanvasQ) => {
     //console.error('You cannot listen keys from the SVG element!');
     let focus;
     let enabled = true;
@@ -7685,7 +7644,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     keyEvent
   );
 
-  g2d.EventListener.keydown = (uid, object, env) => {
+  g2d.EventListener.keydown = (uid, object, env, gcanvasQ) => {
     //console.error('You cannot listen keys from the SVG element!');
     let focus;
     let enabled = true;
@@ -7723,7 +7682,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   };  
 
-  g2d.EventListener.mousemove = (uid, object, env) => {
+  g2d.EventListener.mousemove = (uid, object, env, gcanvasQ) => {
 
     console.log('mouse event generator');
     const xAxis = env.xAxis;
@@ -7743,7 +7702,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     });
   };   
 
-  g2d.EventListener.mouseover = (uid, object, env) => {
+  g2d.EventListener.mouseover = (uid, object, env, gcanvasQ) => {
 
     console.log('mouse event generator');
 
@@ -7761,7 +7720,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     object.on("mouseover", e => moved(d3.pointer(e)));
   };  
 
-  g2d.EventListener.mouseenter = (uid, object, env) => {
+  g2d.EventListener.mouseenter = (uid, object, env, gcanvasQ) => {
 
     console.log('mouse event generator');
     console.log(env.local);
@@ -7780,7 +7739,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
   };  
   
   
-  g2d.EventListener.mouseleave = (uid, object, env) => {
+  g2d.EventListener.mouseleave = (uid, object, env, gcanvasQ) => {
 
     console.log('mouse event generator');
     console.log(env.local);
@@ -7798,7 +7757,7 @@ g2d.EventListener.dragsignal = (uid, object, env) => {
     object.on("mouseleave", e => moved(d3.pointer(e)));
   };   
 
-  g2d.EventListener.zoom = (uid, object, env) => {
+  g2d.EventListener.zoom = (uid, object, env, gcanvasQ) => {
 
     console.log('zoom event generator');
     console.log(env.local);

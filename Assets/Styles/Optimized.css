@@ -1312,6 +1312,10 @@ ol {
   cursor: pointer;
 }
 
+.cursor-grab {
+  cursor: grab;
+}
+
 .cursor-vertical-text {
   cursor: vertical-text;
 }
