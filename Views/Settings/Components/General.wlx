@@ -26,6 +26,8 @@ parseInt[any_] := any
 darkBrightness =  Lookup[settings, "Brightness", 1.1];
 darkContrast = Lookup[settings, "Contrast", 0.9];
 
+defaultHaptic = If[KeyExistsQ[settings, "Haptic"], settings["Haptic"], True]
+
 defaultBackupTime = If[KeyExistsQ[settings, "BackupTimeout"], Round[settings["BackupTimeout"]/60/1000], 3]
 defaultInputSaveDelay = If[KeyExistsQ[settings, "InputSaveDelay"], settings["InputSaveDelay"], 180]
 defaultTheme = If[KeyExistsQ[settings, "Theme"], settings["Theme"], "System"]
@@ -96,6 +98,12 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 onSave[settings, False];
             ];
         ],
+
+        "Haptic" -> Function[state,
+            Echo[state, "[Views/General] state: "];
+            settings = Join[settings, <|"Haptic"->state|>];
+            onSave[settings, False];
+        ],        
 
         "ColorChoice" -> Function[state,
             defaultColorChoice = state;
@@ -200,7 +208,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400"></p>
     </div> 
 ,
-    <div class="mt-4 overflow-y-auto" style="max-height:60%">   
+    <div class="mt-4">   
         <span class="dark:text-gray-400">Frontend</span>
         <div class="pb-10 mt-5 gap-y-2 flex flex-col">
             <p class="mt-1 max-w-2xl text-sm  text-gray-500 dark:text-gray-400">Home folder</p>
@@ -258,6 +266,10 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 </div> 
             </div> 
 
+            <StringRiffle>
+                <Checkbox Label={"Haptic feedback"} Event={controller} Topic={"Haptic"} Description={"Generate brr when the cursor hovers over cells"} Checked={defaultHaptic}/>
+            </StringRiffle>            
+            
             <StringRiffle>
                 <Checkbox Label={"Expert mode"} Event={controller} Topic={"ExpertMode"} Description={"Shows invisible cells and inspect button"} Checked={settings["ExpertMode"]}/>
             </StringRiffle>

@@ -58,7 +58,7 @@ EventHandler[Secret, {"Load" -> Function[Null,
                 </div>
             ]
         , {key, categoryPackages[CategoryName]}]},
-            <div class="mt-4 overflow-y-auto" style="max-height:60%">   
+            <div class="mt-4">   
                 <span class="dark:text-gray-400"><CategoryName/></span>
                 <StringRiffle><Tb/></StringRiffle>
             </div> 

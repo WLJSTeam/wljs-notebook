@@ -813,11 +813,13 @@ evaluateCellPromised[cell_, notebook_, secret_String, log_String, kernels_, cli_
 
 Script[OptionsPattern[]] := With[{
     ExtensionTemplateInjection = OptionValue["ExtensionTemplateInjection"],
-    InputSaveDelay = Lookup[OptionValue["Parameters"], "InputSaveDelay", 180]
+    InputSaveDelay = Lookup[OptionValue["Parameters"], "InputSaveDelay", 180],
+    HapticQ = If[Lookup[OptionValue["Parameters"], "Haptic", True], "true", "false"]
 },
     <div>
         <script type="module">
             CellWrapper.inputSaveDelay = <InputSaveDelay/>;
+            CellWrapper.hapticQ = <HapticQ/>;
 
             core['<UINotebook/>'] = async (args, env) => {
                 const type = await interpretate(args[0], env);

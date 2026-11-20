@@ -1167,6 +1167,24 @@ Do[Pause[0.1]; HapticFeedback["Alignment"], {15}];
 Print["LevelChange"];
 Do[Pause[0.1]; HapticFeedback["LevelChange"], {15}];
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+:::info
+You can always turn this feature off in the settings
+:::
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+:::info
+You can always turn this feature off in the settings
+:::
+
 %------------------------------%EndOfCells%-------------------------------%
 
 
