@@ -207,7 +207,7 @@ With[{
   ,
     <WebUIEventListener Type={"click"} Id={Button2Id} Event={Button2Id} />
   ,
-    <WebUIRefresh Event={SidebarId} UId={DropZone} Class={"flex grow flex-col gap-y-5 overflow-y-auto px-4 sc-b"}>
+    <WebUIRefresh Event={SidebarId} UId={DropZone} Class={"flex grow flex-col gap-y-5 overflow-y-auto px-4 sc-b"} Style={"-webkit-app-region:none"}>
       <Sidebar Id={navId} ElectronQ={electronQ} Port={Secret} RawPath={RawPath} Icons={Icons} Parameters={Parameters} Secret={"blackhole"} Path={Path} />
     </WebUIRefresh>
   ,
