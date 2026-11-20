@@ -1279,6 +1279,56 @@ Type: Output
 %-------------------------------------------------------------------------%
 This might come handy if you need to update the plot ranges, since these are usually ignored by diff-engine and JIT.
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Pointer events (Mouse / Digitizer / Stylus)
+We added new general input event listeners, which can be used for `Graphics`-like  and `Image` expressions
+
+- `"pointerup"`
+- `"pointerdown"`
+- `"pointermove"`
+
+send position, tilt angle, pressure level and buttons state of an input device. Unlike `"click"` or `"mousemove"` these events are not throttled, but may come with 15-30 ms latency.
+
+- `"pointerrawupdate"`
+
+is emitted for any property changes in position, pressure, tilt, geometry, or chorded-button changes as soon as they happen (very high frequency, less than 10 ms). For reliable drawing lifecycle using some Wacom pen, you can listen to:
+
+```
+pointerdown      - begin stroke
+pointerrawupdate - append samples
+pointerup        - finish stroke
+```
+
+
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Pointer events (Mouse / Digitizer / Stylus)
+We added new general input event listeners, which can be used for `Graphics`-like  and `Image` expressions
+
+- `"pointerup"`
+- `"pointerdown"`
+- `"pointermove"`
+
+send position, tilt angle, pressure level and buttons state of an input device. Unlike `"click"` or `"mousemove"` these events are not throttled, but may come with 15-30 ms latency.
+
+- `"pointerrawupdate"`
+
+is emitted for any property changes in position, pressure, tilt, geometry, or chorded-button changes as soon as they happen (very high frequency, less than 10 ms). For reliable drawing lifecycle using some Wacom pen, you can listen to:
+
+```
+pointerdown      - begin stroke
+pointerrawupdate - append samples
+pointerup        - finish stroke
+```
+
 %------------------------------%EndOfCells%-------------------------------%
 
 

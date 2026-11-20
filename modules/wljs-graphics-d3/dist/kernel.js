@@ -7702,6 +7702,27 @@ g2d.EventListener.dragsignal = (uid, object, env, gcanvasQ) => {
     });
   };   
 
+  const pointerEventData = (event, Position) => {
+    const Tilt = [event.tiltX, event.tiltY];
+    const Pressure = event.pressure;
+    const Buttons = event.buttons;
+
+    return {Position, Tilt, Pressure, Buttons};
+  };
+
+  const graphicsPointerEventListener = (eventName) => (uid, object, env, gcanvasQ) => {
+    object.on(eventName, function(event) {
+      const point = d3.pointer(event, this);
+      const Position = [env.xAxis.invert(point[0]), env.yAxis.invert(point[1])];
+      server.kernel.io.fire(uid, pointerEventData(event, Position), eventName);
+    });
+  };
+
+  g2d.EventListener.pointerdown = graphicsPointerEventListener('pointerdown');
+  g2d.EventListener.pointerup = graphicsPointerEventListener('pointerup');
+  g2d.EventListener.pointermove = graphicsPointerEventListener('pointermove');
+  g2d.EventListener.pointerrawupdate = graphicsPointerEventListener('pointerrawupdate');
+
   g2d.EventListener.mouseover = (uid, object, env, gcanvasQ) => {
 
     console.log('mouse event generator');
@@ -9448,6 +9469,20 @@ g2d.EventListener.dragsignal = (uid, object, env, gcanvasQ) => {
 
     canvas.addEventListener("mousemove", clicked);
   };  
+
+  const imagePointerEventListener = (eventName) => (uid, canvas, env) => {
+    const dpr = window.devicePixelRatio;
+
+    canvas.addEventListener(eventName, (event) => {
+      const Position = [event.offsetX*dpr, event.offsetY*dpr];
+      server.kernel.io.fire(uid, pointerEventData(event, Position), eventName);
+    });
+  };
+
+  imageContext.EventListener.pointerdown = imagePointerEventListener('pointerdown');
+  imageContext.EventListener.pointerup = imagePointerEventListener('pointerup');
+  imageContext.EventListener.pointermove = imagePointerEventListener('pointermove');
+  imageContext.EventListener.pointerrawupdate = imagePointerEventListener('pointerrawupdate');
 
   imageContext.EventListener.mouseover = (uid, canvas, env) => {
     const dpr = window.devicePixelRatio;
