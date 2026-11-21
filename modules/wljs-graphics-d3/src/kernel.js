@@ -2734,6 +2734,17 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     }
 
     if (needsScalingAfter) {
+
+    if (typeof size === 'number') {
+      size = [Math.abs(env.xAxis(size) - env.xAxis(0)), 'Automatic'];
+      foreignObject.attr('width', size[0]);
+      foreignObject.attr('height', 2*size[0]); 
+      possiblyNeedsScaling = true;        
+    } else if (Array.isArray(size)) {
+      if (typeof size[0] == 'number' && typeof size[1] == 'number') {
+        size = [Math.abs(env.xAxis(size[0]) - env.xAxis(0)), Math.abs(env.yAxis(size[1]) - env.yAxis(0))];
+      } }
+      
       if (!size) {
           console.log('no size preference');
       } else if (size[1] == 'Automatic') {
