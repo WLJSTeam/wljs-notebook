@@ -2480,6 +2480,7 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
   };  
 
   g2d.CapForm = () => {};
+  g2d.ContentSize = () => "ContentSize";
 
   g2d.FilledCurve = async (args, env) => {
     const path = d3.path();
@@ -2527,19 +2528,23 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
     }    
 
     const foreignObject = group.append('foreignObject');
-
-
+    //consume all mousedown events
+    foreignObject.node().addEventListener("mousedown", (event) => {
+      event.stopPropagation();
+    });   
+   
+   
+    
+    
     //const foreignObject = foreignObject.append('xhtml:canvas').attr('xmlns', 'http://www.w3.org/1999/xhtml').node();
     const stack = {};
     env.local.stack = stack;
 
     const copy = {global: {...env.global, stack: stack}, inset:true, element: foreignObject.node(), context: g2d};
 
-    if (args.length - oLength > 3) {
-      await interpretate(args[3], env);
-    }
-
     let box;
+    let possiblyNeedsScaling = false;
+    let needsScalingAfter = false;
 
     if (opts.ImageSizeRaw) {
       const dims = opts.ImageSizeRaw;
@@ -2548,7 +2553,24 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       box = {width: dims[0], height: dims[1]};
     }
 
-    let possiblyNeedsScaling = false;
+    if (opts.ImageSize || opts.ContentSize) {
+      //if container size is defined already
+      //this helps for element which adjust their size based on the parent
+      const dims = opts.ImageSize || opts.ContentSize;
+      foreignObject.attr('width', dims[0]);
+      foreignObject.attr('height', dims[1]);    
+      box = {width: dims[0], height: dims[1]};   
+
+      needsScalingAfter = true;
+      //create additional container with fixed size
+      const container = document.createElement('div');
+      container.style.width = Math.floor(dims[0])+'px';
+      container.style.height = Math.floor(dims[1])+'px';   
+      foreignObject.node().appendChild(container);
+      copy.element = container; //replace in copy
+    }
+
+    
     if (size && !box) {
       if (typeof size === 'number') {
         size = [Math.abs(env.xAxis(size) - env.xAxis(0)), 'Automatic'];
@@ -2683,6 +2705,39 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
           console.log('size matches');
         }
       }
+    }
+
+    if (needsScalingAfter) {
+      if (!size) {
+          console.log('no size preference');
+      } else if (size[1] == 'Automatic') {
+          const aspect = box.height / box.width;
+          const scale = size[0] / box.width;
+          const inner = foreignObject.node().firstChild;
+          if (inner) {
+            inner.style.transformOrigin = '0 0';
+            inner.style.transform = `scale(${scale})`;
+          }
+          box = { width: size[0], height: aspect * size[0] };
+          foreignObject.attr('width', Math.floor(box.width));
+          foreignObject.attr('height', Math.floor(box.height));
+
+      } else if (Math.abs(box.width - size[0]) > 2 || Math.abs(box.height - size[1]) > 2) {
+          const scaleX = size[0] / box.width;
+          const scaleY = size[1] / box.height;
+          const inner = foreignObject.node().firstChild;
+          
+          const minScale = Math.min(scaleX, scaleY);
+          if (inner) {
+            inner.style.transformOrigin = '0 0';
+            inner.style.transform = `scale(${minScale})`;
+          }
+          box = { width: box.width * minScale, height: box.height * minScale };
+          foreignObject.attr('width', Math.floor(box.width));
+          foreignObject.attr('height', Math.floor(box.height));
+      } else {
+          console.log('size matches');
+      }  
     }
 
     env.local.box = box;
@@ -2895,8 +2950,8 @@ async function processLabel(ref0, gX, env, textFallback, nodeFallback) {
       // prevent scrolling then apply the default filter
       function filter(event) {
         event.preventDefault();
-        return (!event.ctrlKey || event.type === 'wheel') && !event.button;
-      }    
+        return event.type !== 'dblclick' && (!event.ctrlKey || event.type === 'wheel') && !event.button;
+      }   
   };
 
   g2d.Texture = async (args, env) => {
