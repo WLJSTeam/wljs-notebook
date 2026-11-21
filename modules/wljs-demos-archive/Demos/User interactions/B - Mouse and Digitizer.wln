@@ -128,16 +128,147 @@ Module[{
   }]
 ] // Deploy 
 
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Raster Canvas
+To make full use of pressure data, we need to switch to raster graphics. The most efficient and straightforward approach is to use the `Canvas2D` package. It bridges the GPU-accelerated HTML Canvas API to Wolfram Language through an opcode pipeline. You specify where to move the pen, set its parameters, and dispatch the queue of commands to the frontend.
+
+Let's import it first.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Raster Canvas
+To make full use of pressure data, we need to switch to raster graphics. The most efficient and straightforward approach is to use the `Canvas2D` package. It bridges the GPU-accelerated HTML Canvas API to Wolfram Language through an opcode pipeline. You specify where to move the pen, set its parameters, and dispatch the queue of commands to the frontend.
+
+Let's import it first.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Needs["Canvas2D`"->"ctx`"];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Here is a simple example that draws a few strokes:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Here is a simple example that draws a few strokes:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+context = ctx`Canvas2D[];
+Image[context, ImageResolution->{200,200}]
+
+%-------------------------------------------------------------------------%
+Type: Output
+%-------------------------------------------------------------------------%
+(*VB[*)(FrontEndRef["Ff2f78767-1528-4703-92c8-1a6d99b5a58a"])(*,*)(*"1:eJxTTMoPSmNkYGAoZgESHvk5KRCeEJBwK8rPK3HNS3GtSE0uLUlMykkNVgUJpxmlmVuYm5nrGpoaWeiamBsY61oaJVvoGiaapVhaJpkmmlokAgCJ2xVD"*)(*]VB*)
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+ctx`BeginPath[context];
+ctx`MoveTo[context, {100,100}];
+ctx`LineTo[context, {150,150}];
+ctx`LineTo[context, {50,150}];
+ctx`LineTo[context, {100,100}];
+ctx`Stroke[context];
+ctx`Dispatch[context];
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+Now we need to do the same for every `"pointermove"` event. One caveat is that whenever the pressure changes, we have to create a subpath. This costs a few extra bytes, but since we send only a few strokes per second, it will not noticeably affect performance.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+Now we need to do the same for every `"pointermove"` event. One caveat is that whenever the pressure changes, we have to create a subpath. This costs a few extra bytes, but since we send only a few strokes per second, it will not noticeably affect performance.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+aContext = ctx`Canvas2D[];
+ctx`SetFillStyle[aContext, Blend[{White, Yellow}, 0.1]];
+ctx`FillRect[aContext, {0,0}, {500, 500}];
+ctx`Dispatch[aContext];
+
+downQ = False;
+lastPressure = 0;
+
+EventHandler[
+  Image[aContext, ImageResolution->{500,500}, Epilog->{
+      EventHandler[AnimationFrameListener[aContext], Function[Null,
+        ctx`Dispatch[aContext];
+        cursorPos = {cursor[[1]],500-cursor[[2]]};
+      ]]
+    }], {
+      "pointerdown" -> Function[data, 
+        downQ = True;
+        ctx`BeginPath[aContext];
+        ctx`SetLineWidth[aContext, lastPressure = 10 data["Pressure"]];
+        ctx`MoveTo[aContext, data["Position"]];
+      ],
+      
+      "pointermove" -> Function[data, 
+        If[downQ, With[{p = 10 data["Pressure"]},
+          If[Abs[p - lastPressure] > 0.1, 
+            ctx`LineTo[aContext, data["Position"]];
+            ctx`Stroke[aContext];
+            ctx`BeginPath[aContext];
+            ctx`SetLineWidth[aContext, p];
+            ctx`MoveTo[aContext, data["Position"]];
+          ,
+            ctx`LineTo[aContext, data["Position"]];
+            ctx`Stroke[aContext];            
+          ];
+          lastPressure = p;
+        ]];
+      ],
+      
+      "pointerup" -> Function[data, 
+        downQ = False;
+        ctx`Stroke[aContext];
+      ]
+  }
+] 
+
 %------------------------------%EndOfCells%-------------------------------%
 
 
 
 %--------------------------------%Objects%--------------------------------%
+Key: Ff2f78767-1528-4703-92c8-1a6d99b5a58a
+%-------------------------------------------------------------------------%
+<|"Public" -> Hold[Image[Canvas2D`Private`ctx[c2d92, c2d93, c2d94], ImageResolution -> {200, 200}]]|>
+
 %-----------------------------%EndOfObjects%------------------------------%
 
 
 
 %--------------------------------%Symbols%--------------------------------%
+Key: c2d93
+%-------------------------------------------------------------------------%
+{{3, 0, 0, 0, 0, 0, 0}, {5, 100, 100, 0, 0, 0, 0}, {6, 150, 150, 0, 0, 0, 0}, {6, 50, 150, 0, 0, 0, 0}, {6, 100, 100, 0, 0, 0, 0}, {9, 0, 0, 0, 0, 0, 0}, {0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0}}
+
 %-----------------------------%EndOfSymbols%------------------------------%
 
 
