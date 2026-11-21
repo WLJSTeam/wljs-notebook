@@ -49,6 +49,8 @@ WLJS is designed for researchers, educators, and developers who value Wolfram La
 - **Local and offline** — Keep notebooks and computation on your machine without depending on a hosted service.
 - **Agent-ready** — Inspect, edit, and evaluate notebook cells through the built-in CLI and Model Context Protocol server.
 
+160+ built-in handcrafted examples! Start with Wolfram Language and the WLJS framework, then try curve fitting, signal processing, and physics simulations.
+
 ## Quick start
 
 1. Install the recommended [Wolfram Engine 15.0](https://www.wolfram.com/engine/).
