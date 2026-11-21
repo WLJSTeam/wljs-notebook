@@ -39,6 +39,38 @@ Materials["Acrylic"] = Directive[White, "Roughness"->0, "Metalness"->0, "Transmi
 
 Serialize;
 
+SpinShow::usage = "SpinShow[graphics] rotates a Graphics3D scene continuously around its vertical axis at the default speed.\nSpinShow[graphics, maxAngle] swings the scene between -Abs[maxAngle] and Abs[maxAngle] radians.\nSpinShow[graphics, {maxAngle, speed}] uses the specified maximum angle and speed in radians per second; use Automatic for maxAngle to rotate continuously."
+
+angleNumberQ[x_] := NumberQ[N[x]]
+
+SpinShow[Graphics3D[args_, first_, rest___]] := With[{},
+  If[ListQ[first],
+    Graphics3D[args, Join[first, {"SpinShow"->True}], rest]
+  ,
+    Graphics3D[args, first, rest, "SpinShow"->True]
+  ]
+]
+
+SpinShow[Graphics3D[args_, first_, rest___], maxAngle_?angleNumberQ] := With[{},
+  If[ListQ[first],
+    Graphics3D[args, Join[first, {"SpinShow"->maxAngle}], rest]
+  ,
+    Graphics3D[args, first, rest, "SpinShow"->maxAngle]
+  ]
+]
+
+SpinShow[Graphics3D[args_, first_, rest___], {maxAngle:(_?angleNumberQ | Automatic), speed_?angleNumberQ}] := With[{},
+  If[ListQ[first],
+    Graphics3D[args, Join[first, {"SpinShow"->{maxAngle, speed}}], rest]
+  ,
+    Graphics3D[args, first, rest, "SpinShow"->{maxAngle, speed}]
+  ]
+]
+
+SpinShow::unsupported = "SpinShow only works with Graphics3D and forms SpinShow[graphics, maxAngle], SpinShow[graphics, {maxAngle, speed}] or SpinShow[graphics, {Automatic, speed}]"
+SpinShow[_]   := (Message[SpinShow::unsupported]; $Failed)
+SpinShow[_,_] := (Message[SpinShow::unsupported]; $Failed)
+
 End[]
 
 
