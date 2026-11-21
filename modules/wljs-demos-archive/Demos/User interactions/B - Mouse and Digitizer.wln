@@ -1,0 +1,147 @@
+%-------------------------------%Notebook%--------------------------------%
+HaveToSaveAs: false
+ObjectFields:
+  - Objects
+  - Symbols
+Quick: true
+%-------------------------------------------------------------------------%
+
+
+%---------------------------------%Cells%---------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+## Mouse and Digitizer Input
+In this notebook, we create a short demo of a vector drawing board. It uses low-level `"pointer*"` event listeners to capture mouse, digitizer, or touch events on a `Graphics` object. Most importantly, unlike `"click"` and other events, pointer events are not throttled and can capture every small detail.
+
+There are three types of events:
+
+- `"pointerup"`
+- `"pointerdown"`
+- `"pointermove"`
+
+These events send the following properties:
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+## Mouse and Digitizer Input
+In this notebook, we create a short demo of a vector drawing board. It uses low-level `"pointer*"` event listeners to capture mouse, digitizer, or touch events on a `Graphics` object. Most importantly, unlike `"click"` and other events, pointer events are not throttled and can capture every small detail.
+
+There are three types of events:
+
+- `"pointerup"`
+- `"pointerdown"`
+- `"pointermove"`
+
+These events send the following properties:
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+<|"Position"->{x,y}, "Tilt"->{e,w}, "Pressure"->p, "Buttons"->i|>
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+For basic mouse input, pressure and tilt are fixed at constant values, but if you have a Wacom tablet, you can take advantage of both as well. A reliable drawing cycle includes:
+
+```
+pointerdown      - begin a new stroke and add the first point
+pointermove      - append new points
+pointerup        - stop appending new points
+```
+
+For strokes, we can rely on the `Line` primitive, since it supports multiple lines within a single primitive. Therefore, we don't need to continually append new objects to `Graphics`. Normally, `Graphics` attempts to interpolate changes to the point coordinates, but for freehand drawing, we don't need that, so we disable it using `Directive`.
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+For basic mouse input, pressure and tilt are fixed at constant values, but if you have a Wacom tablet, you can take advantage of both as well. A reliable drawing cycle includes:
+
+```
+pointerdown      - begin a new stroke and add the first point
+pointermove      - append new points
+pointerup        - stop appending new points
+```
+
+For strokes, we can rely on the `Line` primitive, since it supports multiple lines within a single primitive. Therefore, we don't need to continually append new objects to `Graphics`. Normally, `Graphics` attempts to interpolate changes to the point coordinates, but for freehand drawing, we don't need that, so we disable it using `Directive`.
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Directive["TransitionType"->None]
+
+%-------------------------------------------------------------------------%
+Props:
+  Hidden: true
+Type: Input
+%-------------------------------------------------------------------------%
+.md
+One more important thing: we need to disable panning and zooming for obvious reasons by setting `"Controls"->False`. Let's assemble it!
+
+%-------------------------------------------------------------------------%
+Display: markdown
+Type: Output
+%-------------------------------------------------------------------------%
+One more important thing: we need to disable panning and zooming for obvious reasons by setting `"Controls"->False`. Let's assemble it!
+
+%-------------------------------------------------------------------------%
+Type: Input
+%-------------------------------------------------------------------------%
+Module[{
+  segments = {},
+  paint = False, pressure = 0.0
+},
+  Row[{
+    EventHandler[
+      Graphics[{Black, 
+        Directive["TransitionType"->None], Line[segments//Offload]
+      }, PlotRange->1, ImageSize->{500,500}, "Controls"->False], {
+      
+      "pointerdown" -> Function[data, 
+        segments = Append[segments, {data["Position"]}]; 
+        paint = True
+      ], 
+      
+      "pointerup" -> Function[data, 
+        paint = False;
+      ], 
+      
+      "pointermove" -> Function[data,
+        If[paint, 
+          segments[[-1]] = Append[segments[[-1]], data["Position"]]; 
+          segments = segments
+        ];
+        pressure = data["Pressure"];
+      ]
+      
+    }]//Framed,
+    VerticalGauge[pressure//Offload, {0,1}]
+  }]
+] // Deploy 
+
+%------------------------------%EndOfCells%-------------------------------%
+
+
+
+%--------------------------------%Objects%--------------------------------%
+%-----------------------------%EndOfObjects%------------------------------%
+
+
+
+%--------------------------------%Symbols%--------------------------------%
+%-----------------------------%EndOfSymbols%------------------------------%
+
+
+
+
+
+%-----------------------------%EndOfNotebook%-----------------------------%
