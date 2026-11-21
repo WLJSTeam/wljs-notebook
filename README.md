@@ -33,6 +33,8 @@ WLJS Notebook is free and open-source software that runs with the [Wolfram Engin
 > [!IMPORTANT]
 > WLJS Notebook is not affiliated with, endorsed by, or sponsored by Wolfram Research.
 
+> This is not just another notebook interface. We carefully handcrafted highly optimized 2D and 3D graphics and math renderers. They quickly swap between static (SVG, PNG) and live (Canvas, WebGL) views, depending on the underlying data, to save resources and maximize performance. Components can be mixed and matched.
+
 ## Why WLJS?
 
 WLJS is designed for researchers, educators, and developers who value Wolfram Language but want a notebook workflow that is local, works with [freeware Wolfram Engine](https://www.wolfram.com/engine/), Git-friendly, lightweight, and easy to share.
