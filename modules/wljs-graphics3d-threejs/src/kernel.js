@@ -6,7 +6,7 @@ interpretate.contextExpand(g3d);
 ["AlignmentPoint", "AspectRatio", "AutomaticImageSize", "Axes", 
 "AxesEdge", "AxesLabel", "AxesOrigin", "AxesStyle", "Background", 
 "BaselinePosition", "BaseStyle", "Boxed", "BoxRatios", "BoxStyle", 
-"ClipPlanes", "ClipPlanesStyle", "ColorOutput", "ContentSelectable", 
+"ClipPlanes", "ClipPlanesStyle", "ColorOutput", "ContentSelectable", "ContentSize",
 "ColorFunction",
 "ControllerLinking", "ControllerMethod", "ControllerPath", 
 "CoordinatesToolOptions", "DisplayFunction", "Epilog", "FaceGrids", 
@@ -4255,9 +4255,8 @@ g3d.Inset = async (args, env) => {
     const copy = {global: {...env.global, stack: stack}, inset:true, element: foreignObject, context: g3d};
 
 
-    if (opts.ImageSizeRaw) {
-      size = opts.ImageSizeRaw;
-    }
+    if (opts.ImageSizeRaw) size = opts.ImageSizeRaw;
+    if (opts.ContentSize) size = opts.ContentSize;
 
     if (size) {
       //if (typeof size === 'number') size = [size, size/1.6];
