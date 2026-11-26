@@ -5,6 +5,7 @@ SetInterval::usage = "SetInterval[expr, milliseconds_Number] async scheldued tas
 CancelTimeout::usage = "CancelTimeout[task] cancel the timer"
 CancelInterval::usage = "CancelInterval[task] cancel the timer"
 
+Snooze::usage = "Snooze[] returns Promise object, that will be resolved last in the current internal event loop. It can be used to rescheldule some tasks for later after the WL's internal que has been emptied"
 
 AsyncFunction::usage = "AsyncFunction[args, body] is a pure (or \"anonymous\") async function. Returns Promise"
 Await::usage = "Await[expr] is used in AsyncFunction to pause the execution until expr is resolved"
@@ -20,6 +21,10 @@ MicrotaskSubmit::usage = "MicrotaskSubmit[expr_] submit held expression to a mic
 
 Begin["`Private`"]; 
 
+Snooze = Function[Null, With[{p = Promise[]},
+  SessionSubmit[EventFire[p, Resolve, True]];
+  p
+]]
 
 SetTimeout[expr_, timeout_] := SessionSubmit[ScheduledTask[expr, {Quantity[timeout/1000, "Seconds"]}] ]
 SetTimeout[expr_, timeout_Quantity] := SessionSubmit[ScheduledTask[expr, {timeout}] ]
