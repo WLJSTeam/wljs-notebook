@@ -22,7 +22,7 @@ MicrotaskSubmit::usage = "MicrotaskSubmit[expr_] submit held expression to a mic
 Begin["`Private`"]; 
 
 Snooze = Function[Null, With[{p = Promise[]},
-  SessionSubmit[ScheduledTask[EventFire[p, Resolve, True], {Quantity[0.0000000001, "Seconds"], 1}]];
+  SessionSubmit[ScheduledTask[EventFire[p, Resolve, True], {0.0000000001, 1}]];
   p
 ]]
 
