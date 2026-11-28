@@ -90,7 +90,7 @@ syncDemoFolder := With[{},
     DeleteDirectory[AppExtensions`DemosDir, DeleteContents->True];
     Echo[CopyDirectory[FileNameJoin[{root, "Demos"}], AppExtensions`DemosDir], "[wljs-demos-archive/Frontend] Synchronized demo directory: "];
   ]; 
-];
+] /; Internal`WolframQ;
 
 
 Needs["CoffeeLiqueur`Notebook`SettingsUtils`"->"settings`", FileNameJoin[{"Frontend", "Settings.wl"}] ];
